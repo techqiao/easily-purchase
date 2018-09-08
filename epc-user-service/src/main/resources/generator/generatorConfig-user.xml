@@ -17,9 +17,9 @@
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
-                        userId="debian-sys-maint"
-                        password="B5s7Dc38lSeHWVmb">
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/db0"
+                        userId="root"
+                        password="root">
         </jdbcConnection>
 
         <!-- 生成model模型，对应的包，存放位置可以指定具体的路径-->
@@ -38,7 +38,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="treetop" tableName="test" domainObjectName="Test">
+        <table schema="db0" tableName="user" domainObjectName="User">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

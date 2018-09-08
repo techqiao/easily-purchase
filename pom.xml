@@ -35,7 +35,38 @@
         <module>epc-web-client</module>
         <!--  web端接口api  -->
         <module>epc-web-facade</module>
-
     </modules>
 
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+                <mvn.log.path>./logs</mvn.log.path>
+                <mvn.log.level>INFO</mvn.log.level>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 测试环境 -->
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+                <mvn.log.path>/opt/logs</mvn.log.path>
+                <mvn.log.level>DEBUG</mvn.log.level>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+                <mvn.log.path>/data/logs/</mvn.log.path>
+                <mvn.log.level>WARN</mvn.log.level>
+            </properties>
+        </profile>
+    </profiles>
 </project>

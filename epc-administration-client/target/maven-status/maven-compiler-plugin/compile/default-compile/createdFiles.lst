@@ -1,0 +1,5 @@
+com/epc/administration/client/EpcAdministractionClientApplication.class
+com/epc/administration/client/controller/user/UserController.class
+com/epc/administration/client/remoteapi/test/HelloServiceClient.class
+com/epc/administration/client/remoteapi/user/HelloServiceClient.class
+com/epc/administration/client/controller/test/TestController.class

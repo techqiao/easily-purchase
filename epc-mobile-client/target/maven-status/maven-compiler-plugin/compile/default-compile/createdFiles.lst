@@ -1,0 +1,5 @@
+com/epc/mobile/client/controller/user/UserController.class
+com/epc/mobile/client/EpcMobileClientApplication.class
+com/epc/mobile/client/controller/test/TestController.class
+com/epc/mobile/client/remoteapi/test/HelloServiceClient.class
+com/epc/mobile/client/remoteapi/user/HelloServiceClient.class

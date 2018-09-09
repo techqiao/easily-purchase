@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "根据token获取用户信息", notes = "根据token获取用户信息")
-    @GetMapping(value = "getUserInfo")
+    @GetMapping(value = "getUser")
     public Result<User> getUserInfo(HttpServletRequest httpServletRequest) {
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){

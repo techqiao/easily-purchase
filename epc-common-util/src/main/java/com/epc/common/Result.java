@@ -50,10 +50,6 @@ public class Result<T> {
         return msg;
     }
 
-    public int getCode() {
-        return code;
-    }
-
     public Result setCode(int code) {
         this.code = code;
         return this;

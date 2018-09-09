@@ -17,7 +17,7 @@
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/db0"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -38,7 +38,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="db0" tableName="user" domainObjectName="User">
+        <table schema="test" tableName="user" domainObjectName="User">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

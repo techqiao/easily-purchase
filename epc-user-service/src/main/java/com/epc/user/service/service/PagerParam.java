@@ -1,4 +1,4 @@
-package com.epc.user.service.common;
+package com.epc.user.service.service;
 
 
 import org.apache.ibatis.session.RowBounds;

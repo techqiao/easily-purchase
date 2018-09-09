@@ -1,9 +1,11 @@
 package com.epc.user.service.service;
 
-import com.epc.user.service.common.BaseResult;
+import com.epc.common.Result;
 import com.epc.user.service.domain.User;
 import com.epc.user.service.domain.dto.QueryUserDTO;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -18,14 +20,22 @@ public interface UserService {
      * @param userId 用户id
      * @return
      */
-    User getUserById(Integer userId);
+    User getUserById(Long userId);
+
+    /**
+     * 登录
+     * @param phone
+     * @param password
+     * @return
+     */
+    User login(String phone, String password);
 
     /**
      * 删除用户
      * @param userId 用户id
      * @return
      */
-    Boolean deleteUserById(Integer userId);
+    Boolean deleteUserById(Long userId);
 
     /**
      * 更新用户
@@ -39,6 +49,6 @@ public interface UserService {
      * 获取用户列表
      * @return
      */
-    BaseResult<List<User>> getUserList(QueryUserDTO queryUserDTO);
+    Result<List<User>> getUserList(QueryUserDTO queryUserDTO);
 
 }

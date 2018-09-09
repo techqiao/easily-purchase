@@ -1,20 +1,17 @@
 package com.epc.user.service.service.impl;
 
-import com.epc.user.service.common.BaseResult;
-import com.epc.user.service.common.BizErrorCode;
+import com.epc.common.Result;
 import com.epc.user.service.domain.User;
 import com.epc.user.service.domain.UserCriteria;
 import com.epc.user.service.domain.dto.QueryUserDTO;
 import com.epc.user.service.mapper.UserMapper;
 import com.epc.user.service.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,12 +27,19 @@ public class UserServiceImpl implements UserService{
     private UserMapper userMapper;
 
     @Override
-    public User getUserById(Integer userId) {
+    public User getUserById(Long userId) {
         return userMapper.selectByPrimaryKey(userId);
     }
 
     @Override
-    public Boolean deleteUserById(Integer userId) {
+    public User login(String phone, String password) {
+        User user = new User();
+        user.setId(1L);
+        return user;
+    }
+
+    @Override
+    public Boolean deleteUserById(Long userId) {
         return userMapper.deleteByPrimaryKey(userId) > 0;
     }
 
@@ -45,20 +49,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public BaseResult<List<User>> getUserList(QueryUserDTO queryUserDTO) {
-        BaseResult<List<User>> result = new BaseResult<List<User>>();
+    public Result<List<User>> getUserList(QueryUserDTO queryUserDTO) {
         try {
             final UserCriteria criteria = new UserCriteria();
             final UserCriteria.Criteria subCriteria = criteria.createCriteria();
             if(StringUtils.isNotBlank(queryUserDTO.getUserName())) {
                 subCriteria.andUserEqualTo(queryUserDTO.getUserName());
             }
-            result.setData(userMapper.selectByExampleWithRowbounds(criteria, queryUserDTO.getRowBounds()));
+            return Result.createBySuccess(userMapper.selectByExampleWithRowbounds(criteria, queryUserDTO.getRowBounds()));
         }catch (Throwable e){
             LOGGER.error("Exception {}", e);
-            result.setBizCode(BizErrorCode.ACCOUNT_ERROR);
+            return Result.createByErrorCodeMessage(001, "xxx");
         }
-
-        return result;
     }
 }

@@ -1,19 +1,16 @@
 package com.epc.user.service.domain.dto;
 
-import com.epc.user.service.common.PagerParam;
+import com.epc.user.service.service.PagerParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
 
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-09 00:21
  * <p>@Author : wjq
  */
-@Data
 @ApiModel(value = "QueryUserDTO", description = "用户查询动态类")
-public class QueryUserDTO extends PagerParam{
+public class QueryUserDTO extends PagerParam {
     @ApiModelProperty(value = "用户姓名")
     private String userName;
 

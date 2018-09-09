@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 //保证序列化json的时候如果是null的对象，key也会消失 就不会出现data :{}这种情况
-public class Result<T> implements Serializable {
+public class Result<T>{
 
     private int status;
     private String msg;

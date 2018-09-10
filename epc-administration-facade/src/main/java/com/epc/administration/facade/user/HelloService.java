@@ -1,4 +1,4 @@
-package com.epc.administration.fasade.user;
+package com.epc.administration.facade.user;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

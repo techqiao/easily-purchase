@@ -1,6 +1,6 @@
 package com.epc.administration.client.remoteapi.user;
 
-import com.epc.administration.fasade.user.HelloService;
+import com.epc.administration.facade.user.HelloService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * @author junlee
  * @date {date}       // 创建时间
  */
-@FeignClient("epc-mobile-service")
+@FeignClient(value = "epc-mobile-service",fallback = HelloServiceHystrix.class)
 public interface HelloServiceClient extends HelloService {
 
 }

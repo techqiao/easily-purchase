@@ -95,4 +95,8 @@ public class Result<T> {
         return new Result<T>(errorCode,errorMessage);
     }
 
+    public static <T> Result<T> createByErrorHystrix(){
+        return new Result<T>(ResultCode.SERVICE_EXCEPTION.getCode(),ResultCode.SERVICE_EXCEPTION.getDesc());
+    }
+
 }

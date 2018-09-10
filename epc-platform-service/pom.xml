@@ -64,6 +64,19 @@
             <scope>compile</scope>
         </dependency>
 
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.1.2</version>
+			<scope>compile</scope>
+		</dependency>
+
     </dependencies>
 
 	<dependencyManagement>
@@ -77,8 +90,28 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>generator/*</exclude>
+					<exclude>logback.xml</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>logback.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -103,6 +136,7 @@
 				</dependencies>
 			</plugin>
 		</plugins>
+
 	</build>
 
 </project>

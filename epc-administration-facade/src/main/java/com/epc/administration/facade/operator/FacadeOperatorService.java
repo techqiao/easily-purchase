@@ -1,8 +1,5 @@
 package com.epc.administration.facade.operator;
-
 import com.epc.administration.facade.operator.handle.HandleOperator;
-import com.epc.common.Result;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**

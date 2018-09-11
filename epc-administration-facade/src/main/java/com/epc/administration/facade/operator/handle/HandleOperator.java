@@ -1,6 +1,5 @@
 package com.epc.administration.facade.operator.handle;
 
-import lombok.Data;
 
 /**
  * <p>Description : easily-purchase

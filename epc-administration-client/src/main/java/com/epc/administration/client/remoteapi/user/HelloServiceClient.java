@@ -10,7 +10,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * @author junlee
  * @date {date}       // 创建时间
  */
-@FeignClient(value = "epc-mobile-service",fallback = HelloServiceHystrix.class)
+@FeignClient(value = "epc-platform-service",fallback = HelloServiceHystrix.class)
 public interface HelloServiceClient extends HelloService {
 
 }

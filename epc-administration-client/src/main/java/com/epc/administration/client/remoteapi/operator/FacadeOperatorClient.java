@@ -8,7 +8,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * <p>Date : 2018-09-10  18:09
  * <p>@author : wjq
  */
-@FeignClient(value = "epc-platform-service",fallback = FacadeOperatorHystrix.class)
+@FeignClient(value = "epc-platform-service")
 public interface FacadeOperatorClient extends FacadeOperatorService {
 
 }

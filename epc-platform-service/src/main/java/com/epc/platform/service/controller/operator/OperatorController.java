@@ -17,12 +17,12 @@ import java.util.Date;
  * <p>@author : wjq
  */
 @RestController
-public class FacadeOperatorController implements FacadeOperatorService {
+public class OperatorController implements FacadeOperatorService {
     @Autowired
     private OperatorService operatorService;
 
     @Override
-    public Result<Boolean> insertOperator(HandleOperator handleOperator) {
+    public Boolean insert(HandleOperator handleOperator) {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date = new Date();
         pojo.setCellphone(handleOperator.getCellphone());
@@ -32,6 +32,6 @@ public class FacadeOperatorController implements FacadeOperatorService {
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         pojo.setState(Const.STATE.REGISTERED);
-        return Result.createBySuccess(operatorService.insertOperator(pojo));
+        return operatorService.insertOperator(pojo);
     }
 }

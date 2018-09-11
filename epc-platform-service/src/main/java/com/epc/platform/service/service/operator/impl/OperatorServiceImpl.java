@@ -5,6 +5,7 @@ import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.platform.service.service.operator.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>Description : 运营商接口实现类
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  * <p>@author : wjq
  */
 @Service
+@Transactional
 public class OperatorServiceImpl implements OperatorService{
     @Autowired
     private TOperatorBasicInfoMapper tOperatorBasicInfoMapper;

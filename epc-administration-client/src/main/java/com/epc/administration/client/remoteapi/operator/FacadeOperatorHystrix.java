@@ -11,7 +11,7 @@ import com.epc.common.Result;
  */
 public class FacadeOperatorHystrix implements FacadeOperatorService {
     @Override
-    public Result<Boolean> insertOperator(HandleOperator handleOperator) {
-        return Result.createByErrorHystrix();
+    public Boolean insert(HandleOperator handleOperator) {
+        return null;
     }
 }

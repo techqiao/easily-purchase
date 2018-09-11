@@ -2,6 +2,7 @@ package com.epc.administration.facade.operator;
 
 import com.epc.administration.facade.operator.handle.HandleOperator;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -10,6 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
  * <p>@author : wjq
  */
 public interface FacadeOperatorService {
-
-    Result<Boolean> insertOperator(HandleOperator handleOperator);
+    @PostMapping("/insert")
+    Boolean insert(HandleOperator handleOperator);
 }

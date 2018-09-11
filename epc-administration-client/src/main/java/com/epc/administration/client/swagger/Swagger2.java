@@ -10,8 +10,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Configuration
-@EnableSwagger2
+//@Configuration
+//@EnableSwagger2
 public class Swagger2 {
 
   @Bean
@@ -28,7 +28,7 @@ public class Swagger2 {
     return new ApiInfoBuilder()
         .title("admin client doc")
         .description("平台中心API 文档")
-        .termsOfServiceUrl("http://www.epc.com/")
+        .termsOfServiceUrl("http://www.epc.com/").contact("")
         .version("1.0")
         .build();
   }

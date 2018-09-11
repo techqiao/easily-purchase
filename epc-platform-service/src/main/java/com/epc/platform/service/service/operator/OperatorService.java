@@ -1,6 +1,8 @@
 package com.epc.platform.service.service.operator;
 
-import com.epc.platform.service.domain.operator.TOperatorBasicInfo;
+import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
+import com.epc.common.Result;
+import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 
 /**
  * <p>Description : 运营商相关接口
@@ -10,8 +12,15 @@ import com.epc.platform.service.domain.operator.TOperatorBasicInfo;
 public interface OperatorService {
     /**
      * 预添加运营商
-     * @param tOperatorBasicInfo
+     * @param handleOperator
      * @return
      */
-    Boolean insertOperator(TOperatorBasicInfo tOperatorBasicInfo);
+    Result<Boolean> insertOperatorBasicInfo(HandleOperatorBasicInfo handleOperator);
+
+    /**
+     * 运营商完善资料
+     * @param tOperatorDetailInfo
+     * @return
+     */
+    Boolean insertOperatorDetailInfo(TOperatorDetailInfo tOperatorDetailInfo);
 }

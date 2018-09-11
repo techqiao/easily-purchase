@@ -1,8 +1,7 @@
 package com.epc.platform.service.controller.user;
 
-import com.epc.administration.facade.user.HelloService;
+import com.epc.administration.facade.user.UserService;
 import com.epc.platform.service.domain.user.User;
-import com.epc.platform.service.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +16,10 @@ import java.util.Date;
  */
 
 @RestController
-public class HelloController implements HelloService {
+public class HelloController implements UserService {
 
     @Autowired
-    private UserService userService;
+    private com.epc.platform.service.service.user.UserService userService;
 
         @Override
         public String hello(String name) {

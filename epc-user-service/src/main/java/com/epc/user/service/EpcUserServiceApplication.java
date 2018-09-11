@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulServer;
 
-@EnableZuulServer
+@EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan(value = "com.epc.user.service.mapper")
 public class EpcUserServiceApplication {

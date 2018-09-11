@@ -1,11 +1,13 @@
 package com.epc.platform.service;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
+@MapperScan("com.epc.platform.service.mapper")
 public class EpcPlatformServiceApplication {
 
 	public static void main(String[] args) {

@@ -27,7 +27,7 @@
 
 		<dependency>
 			<groupId>com.epc</groupId>
-			<artifactId>epc-mobile-facade</artifactId>
+			<artifactId>epc-administration-facade</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>

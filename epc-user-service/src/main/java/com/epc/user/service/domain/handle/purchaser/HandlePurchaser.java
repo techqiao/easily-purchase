@@ -3,8 +3,6 @@ package com.epc.user.service.domain.handle.purchaser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 @ApiModel(value = "HandlePurchaser", description = "新增采购人")
 
 public class HandlePurchaser {
@@ -20,30 +18,6 @@ public class HandlePurchaser {
     private String purchaserName;
     @ApiModelProperty(value = "密码")
     private String password;
-
-    public String getPurchaserName() {
-        return purchaserName;
-    }
-
-    public void setPurchaserName(String purchaserName) {
-        this.purchaserName = purchaserName;
-    }
-
-    public String getCellPhone() {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getCompanyName() {
         return companyName;
@@ -67,5 +41,29 @@ public class HandlePurchaser {
 
     public void setPublicBankCount(String publicBankCount) {
         this.publicBankCount = publicBankCount;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getPurchaserName() {
+        return purchaserName;
+    }
+
+    public void setPurchaserName(String purchaserName) {
+        this.purchaserName = purchaserName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

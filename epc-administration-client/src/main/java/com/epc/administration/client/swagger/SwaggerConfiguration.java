@@ -1,12 +1,5 @@
 package com.epc.administration.client.swagger;
 
-/**
- *
- * <p> To describe how this class works </p>
- *
- * @author junlee
- * @date {date}       // 创建时间
- */
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +11,12 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 /**
- * Swagger配置类.
+ *
+ *  To describe how this class works
+ *  Swagger配置类.
+ *  @author junlee
+ *  @date {date}       // 创建时间
  */
 // Swagger的开关，表示已经启用Swagger
 @EnableSwagger2

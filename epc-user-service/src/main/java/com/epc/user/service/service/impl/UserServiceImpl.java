@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService{
             }
             return Result.success(userMapper.selectByExampleWithRowbounds(criteria, queryUserDTO.getRowBounds()));
         }catch (Throwable e){
-            LOGGER.error("Exception {}", e);
-            return Result.error(001, "xxx");
+            LOGGER.error("Exception {}," , e);
+            return Result.error("001", "com.epc.user.service.domain");
         }
     }
 }

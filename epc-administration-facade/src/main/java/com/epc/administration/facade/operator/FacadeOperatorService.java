@@ -1,7 +1,7 @@
 package com.epc.administration.facade.operator;
 
-import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
-import com.epc.administration.facade.operator.handle.HandleOperatorDetailIfo;
+import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.*;
 public interface FacadeOperatorService {
     /**
      * 运营商注册
-     * @param handleOperatorBasicInfo 基本信息
+     * @param userBasicInfo 基本信息
      * @return
      */
     @PostMapping(value = "insertOperatorBasicInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOperatorBasicInfo(@RequestBody HandleOperatorBasicInfo handleOperatorBasicInfo);
+    Result<Boolean> insertOperatorBasicInfo(@RequestBody UserBasicInfo userBasicInfo);
 
     /**
      * 运营商完善资料
-     * @param handleOperatorDetailIfo 附件信息
+     * @param roleDetailIfo 附件信息
      * @return
      */
     @PostMapping(value = "insertOperatorDetailInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOperatorDetailInfo(@RequestBody HandleOperatorDetailIfo handleOperatorDetailIfo);
+    Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo);
+
 }

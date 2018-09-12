@@ -1,10 +1,12 @@
 package com.epc.platform.service.service.operator.impl;
 
-import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
-import com.epc.administration.facade.operator.handle.HandleOperatorDetailIfo;
+import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.ErrorMessagesEnum;
+import com.epc.common.exception.BusinessException;
 import com.epc.platform.service.domain.operator.TOperatorAttachment;
 import com.epc.platform.service.domain.operator.TOperatorBasicInfo;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
@@ -38,7 +40,7 @@ public class OperatorServiceImpl implements OperatorService {
     private TOperatorAttachmentMapper tOperatorAttachmentMapper;
 
     @Override
-    public Result<Boolean> insertOperatorBasicInfo(HandleOperatorBasicInfo handleOperator) {
+    public Result<Boolean> insertOperatorBasicInfo(UserBasicInfo handleOperator) {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date = new Date();
         pojo.setCellphone(handleOperator.getCellphone());
@@ -50,23 +52,26 @@ public class OperatorServiceImpl implements OperatorService {
         pojo.setState(Const.STATE.REGISTERED);
         try {
             return Result.success(tOperatorBasicInfoMapper.insertSelective(pojo) > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("BusinessException insertOperatorBasicInfo : {}", e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         } catch (Exception e) {
-            LOGGER.error("exception insertOperatorBasicInfo : {}", e);
+            LOGGER.error("BusinessException insertOperatorBasicInfo : {}", e);
             return Result.error(e.getMessage());
         }
     }
 
     @Override
     @Transactional
-    public Result<Boolean> insertOperatorDetailInfo(HandleOperatorDetailIfo handleOperatorDetailIfo) {
+    public Result<Boolean> insertOperatorDetailInfo(RoleDetailIfo roleDetailIfo) {
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
-        BeanUtils.copyProperties(handleOperatorDetailIfo, detailInfo);
+        BeanUtils.copyProperties(roleDetailIfo, detailInfo);
         Date date = new Date();
         detailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         TOperatorAttachment attachment = new TOperatorAttachment();
-        attachment.setOperatorId(handleOperatorDetailIfo.getOperatorId());
+        attachment.setOperatorId(roleDetailIfo.getUserId());
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
         attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
@@ -74,31 +79,34 @@ public class OperatorServiceImpl implements OperatorService {
             tOperatorDetailInfoMapper.insertSelective(detailInfo);
             //带公章的授权书照片url
             attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(handleOperatorDetailIfo.getCertificateOfAuthorization());
+            attachment.setCertificateFilePath(roleDetailIfo.getCertificateOfAuthorization());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //经办人(运营商员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(handleOperatorDetailIfo.getOperatorIdCardFront());
+            attachment.setCertificateFilePath(roleDetailIfo.getOperatorIdCardFront());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //法人身份证反面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(handleOperatorDetailIfo.getLegalIdCardOther());
+            attachment.setCertificateFilePath(roleDetailIfo.getLegalIdCardOther());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //法人身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateFilePath(handleOperatorDetailIfo.getLegalIdCardPositive());
+            attachment.setCertificateFilePath(roleDetailIfo.getLegalIdCardPositive());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //营业执照照片url
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateFilePath(handleOperatorDetailIfo.getBusinessLicense());
+            attachment.setCertificateFilePath(roleDetailIfo.getBusinessLicense());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //资质证书url
             attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            attachment.setCertificateFilePath(handleOperatorDetailIfo.getQualificationCertificate());
+            attachment.setCertificateFilePath(roleDetailIfo.getQualificationCertificate());
             tOperatorAttachmentMapper.insertSelective(attachment);
             return Result.success();
-        }catch (Exception e) {
-            LOGGER.error("exception insertOperatorDetailInfo : {}", e);
+        }catch (BusinessException e) {
+            LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);
             return Result.error(e.getMessage());
         }
     }

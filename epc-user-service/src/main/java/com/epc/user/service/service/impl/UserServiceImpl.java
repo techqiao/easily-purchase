@@ -56,10 +56,10 @@ public class UserServiceImpl implements UserService{
             if(StringUtils.isNotBlank(queryUserDTO.getUserName())) {
                 subCriteria.andUserEqualTo(queryUserDTO.getUserName());
             }
-            return Result.createBySuccess(userMapper.selectByExampleWithRowbounds(criteria, queryUserDTO.getRowBounds()));
+            return Result.success(userMapper.selectByExampleWithRowbounds(criteria, queryUserDTO.getRowBounds()));
         }catch (Throwable e){
             LOGGER.error("Exception {}", e);
-            return Result.createByErrorCodeMessage(001, "xxx");
+            return Result.error(001, "xxx");
         }
     }
 }

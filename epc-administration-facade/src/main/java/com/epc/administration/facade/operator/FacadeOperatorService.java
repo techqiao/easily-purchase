@@ -1,8 +1,10 @@
 package com.epc.administration.facade.operator;
 
-import com.epc.administration.facade.operator.handle.HandleOperator;
+import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
 import com.epc.common.Result;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * <p>Description : easily-purchase
@@ -10,6 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
  * <p>@author : wjq
  */
 public interface FacadeOperatorService {
-
-    Result<Boolean> insertOperator(HandleOperator handleOperator);
+    @RequestMapping(value = "/insert", method = RequestMethod.POST, consumes = "application/json; charset=UTF-8")
+    Result<Boolean> insertOperatorBasicInfo(@RequestBody HandleOperatorBasicInfo handleOperatorBasicInfo);
 }

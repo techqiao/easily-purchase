@@ -1,21 +1,27 @@
 package com.epc.administration.facade.operator.handle;
 
-import lombok.Data;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 /**
- * <p>Description : easily-purchase
+ * <p>Description : 预注册运营商
  * <p>Date : 2018-09-10  18:14
  * <p>@author : wjq
  */
-public class HandleOperator {
+public class HandleOperatorBasicInfo {
+    //电话号
+    @NotEmpty(message = "OperatorBasicInfo.cellphone.null")
     private String cellphone;
+    //密码
+    @NotEmpty(message = "OperatorBasicInfo.password.null")
     private String password;
 
     public String getCellphone() {
         return cellphone;
     }
 
-    public HandleOperator setCellphone(String cellphone) {
+    public HandleOperatorBasicInfo setCellphone(String cellphone) {
         this.cellphone = cellphone;
         return this;
     }
@@ -24,7 +30,7 @@ public class HandleOperator {
         return password;
     }
 
-    public HandleOperator setPassword(String password) {
+    public HandleOperatorBasicInfo setPassword(String password) {
         this.password = password;
         return this;
     }

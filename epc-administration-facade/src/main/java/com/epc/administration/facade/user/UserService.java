@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date {date}       // 创建时间
  */
 
-public interface HelloService {
+public interface UserService {
 
     @GetMapping("/hello")
     String hello(@RequestParam(value = "name") String name);

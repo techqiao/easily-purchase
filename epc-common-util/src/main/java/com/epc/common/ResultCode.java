@@ -1,12 +1,14 @@
 package com.epc.common;
 
 
+import java.io.Serializable;
+
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018/9/9/009 18:08
  * <p>@author : wjq
  */
-public enum ResultCode {
+public enum ResultCode implements Serializable {
 
     SUCCESS(0,"SUCCESS"),
     ERROR(1,"ERROR"),
@@ -16,7 +18,7 @@ public enum ResultCode {
 
     private final int code;
     private final String desc;
-
+    private static final long serialVersionUID = 1L;
 
     ResultCode(int code, String desc){
         this.code = code;

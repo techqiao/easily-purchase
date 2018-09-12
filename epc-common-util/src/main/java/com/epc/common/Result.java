@@ -3,6 +3,8 @@ package com.epc.common;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.io.Serializable;
+
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018/9/9/009 18:07
@@ -10,7 +12,10 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  */
 @JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
 //保证序列化json的时候,如果是null的对象,key也会消失
-public class Result<T> {
+public class Result<T> implements Serializable {
+
+    private static final long serialVersionUID = 9219485591159741586L;
+
     private int code;
     private String msg;
     private T data;

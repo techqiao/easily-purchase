@@ -1,6 +1,6 @@
 package com.epc.user.service.service.impl.purchaser;
 
-import com.epc.common.Const;
+import com.epc.common.constants.Const;
 import com.epc.user.service.domain.handle.purchaser.HandlePurchaser;
 import com.epc.user.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.user.service.domain.purchaser.TPurchaserDetailInfo;

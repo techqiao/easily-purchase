@@ -27,7 +27,7 @@ public class OperatorController {
     @ApiOperation(value = "运营商新增员工", notes = "运营商新增员工")
     @PostMapping(value = "/insertOperatorUser")
     public Result<Boolean> insertOperatorUser(HandleOperator handleOperator) {
-        return Result.success(operatorService.createOperatorUserInfo(handleOperator));
+        return operatorService.createOperatorUserInfo(handleOperator);
     }
 
     @ApiOperation(value = "运营商新增采购人", notes = "运营商新增采购人")

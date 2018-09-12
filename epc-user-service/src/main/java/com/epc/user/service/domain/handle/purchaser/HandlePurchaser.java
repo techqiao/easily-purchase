@@ -20,15 +20,6 @@ public class HandlePurchaser {
     private String purchaserName;
     @ApiModelProperty(value = "密码")
     private String password;
-    private List<Attachment> attachmentList;//附件
-
-    public List<Attachment> getAttachmentList() {
-        return attachmentList;
-    }
-
-    public void setAttachmentList(List<Attachment> attachmentList) {
-        this.attachmentList = attachmentList;
-    }
 
     public String getPurchaserName() {
         return purchaserName;

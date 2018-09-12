@@ -1,6 +1,7 @@
 package com.epc.platform.service.service.operator;
 
 import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
+import com.epc.administration.facade.operator.handle.HandleOperatorDetailIfo;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 
@@ -12,15 +13,15 @@ import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 public interface OperatorService {
     /**
      * 预添加运营商
-     * @param handleOperator
+     * @param handleOperatorBasicInfo
      * @return
      */
-    Result<Boolean> insertOperatorBasicInfo(HandleOperatorBasicInfo handleOperator);
+    Result<Boolean> insertOperatorBasicInfo(HandleOperatorBasicInfo handleOperatorBasicInfo);
 
     /**
      * 运营商完善资料
-     * @param tOperatorDetailInfo
+     * @param handleOperatorDetailIfo
      * @return
      */
-    Boolean insertOperatorDetailInfo(TOperatorDetailInfo tOperatorDetailInfo);
+    Result<Boolean> insertOperatorDetailInfo(HandleOperatorDetailIfo handleOperatorDetailIfo);
 }

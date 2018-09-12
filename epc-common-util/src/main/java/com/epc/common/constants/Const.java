@@ -1,4 +1,4 @@
-package com.epc.common;
+package com.epc.common.constants;
 
 
 /**

@@ -38,7 +38,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="test" tableName="t_operator_detail_info" domainObjectName="TOperatorDetailInfo">
+        <table schema="test" tableName="t_operator_attachment" domainObjectName="TOperatorAttachment">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

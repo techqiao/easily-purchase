@@ -70,37 +70,37 @@ public class Result<T> implements Serializable {
         return this;
     }
 
-    public static <T> Result<T> createBySuccess(){
+    public static <T> Result<T> success(){
         return new Result<T>(ResultCode.SUCCESS.getCode());
     }
 
-    public static <T> Result<T> createBySuccessMessage(String msg){
+    public static <T> Result<T> success(String msg){
         return new Result<T>(ResultCode.SUCCESS.getCode(),msg);
     }
 
-    public static <T> Result<T> createBySuccess(T data){
+    public static <T> Result<T> success(T data){
         return new Result<T>(ResultCode.SUCCESS.getCode(),data);
     }
 
-    public static <T> Result<T> createBySuccess(String msg,T data){
+    public static <T> Result<T> success(String msg,T data){
         return new Result<T>(ResultCode.SUCCESS.getCode(),msg,data);
     }
 
 
-    public static <T> Result<T> createByError(){
+    public static <T> Result<T> error(){
         return new Result<T>(ResultCode.ERROR.getCode(),ResultCode.ERROR.getDesc());
     }
 
 
-    public static <T> Result<T> createByErrorMessage(String errorMessage){
+    public static <T> Result<T> error(String errorMessage){
         return new Result<T>(ResultCode.ERROR.getCode(),errorMessage);
     }
 
-    public static <T> Result<T> createByErrorCodeMessage(int errorCode,String errorMessage){
+    public static <T> Result<T> error(int errorCode,String errorMessage){
         return new Result<T>(errorCode,errorMessage);
     }
 
-    public static <T> Result<T> createByErrorHystrix(){
+    public static <T> Result<T> hystrixError(){
         return new Result<T>(ResultCode.SERVICE_EXCEPTION.getCode(),ResultCode.SERVICE_EXCEPTION.getDesc());
     }
 

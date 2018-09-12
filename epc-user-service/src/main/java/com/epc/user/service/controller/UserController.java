@@ -1,8 +1,8 @@
 package com.epc.user.service.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.epc.common.Const;
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.user.service.domain.User;
@@ -36,7 +36,7 @@ public class UserController {
     @ApiOperation(value = "获取信息用户", notes = "获取信息用户")
     @GetMapping(value = "/getUserInfo")
     public Result<User> getUserInfo(Long userId) {
-        return Result.createBySuccess(userService.getUserById(userId));
+        return Result.success(userService.getUserById(userId));
     }
 
 
@@ -53,7 +53,7 @@ public class UserController {
         User user = userService.login(username, password);
         CookieUtil.writeLoginToken(httpServletResponse,session.getId());
         RedisShardedPoolUtil.setEx(session.getId(), JSONObject.toJSONString(user), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
-        return Result.createBySuccess(user);
+        return Result.success(user);
     }
 
     @ApiOperation(value = "根据token获取用户信息", notes = "根据token获取用户信息")
@@ -61,11 +61,11 @@ public class UserController {
     public Result<User> getUserInfo(HttpServletRequest httpServletRequest) {
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){
-            return Result.createByErrorMessage("未登录");
+            return Result.error("未登录");
         }
         String userJsonStr = RedisShardedPoolUtil.get(loginToken);
         User user = JSONObject.parseObject(userJsonStr, User.class);
-        return Result.createBySuccess(user);
+        return Result.success(user);
     }
 
     @ApiOperation(value = "登出", notes = "登出")
@@ -74,6 +74,6 @@ public class UserController {
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
         RedisShardedPoolUtil.del(loginToken);
-        return Result.createBySuccess();
+        return Result.success();
     }
 }

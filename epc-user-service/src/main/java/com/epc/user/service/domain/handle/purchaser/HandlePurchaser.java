@@ -1,6 +1,5 @@
 package com.epc.user.service.domain.handle.purchaser;
 
-import com.epc.user.service.domain.Attachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

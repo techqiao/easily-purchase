@@ -1,7 +1,7 @@
 package com.epc.platform.service.service.operator.impl;
 
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;

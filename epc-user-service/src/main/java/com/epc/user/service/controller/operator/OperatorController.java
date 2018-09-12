@@ -27,13 +27,13 @@ public class OperatorController {
     @ApiOperation(value = "运营商新增员工", notes = "运营商新增员工")
     @PostMapping(value = "/insertOperatorUser")
     public Result<Boolean> insertOperatorUser(HandleOperator handleOperator) {
-        return Result.createBySuccess(operatorService.createOperatorUserInfo(handleOperator));
+        return Result.success(operatorService.createOperatorUserInfo(handleOperator));
     }
 
     @ApiOperation(value = "运营商新增采购人", notes = "运营商新增采购人")
     @PostMapping(value = "/insertPurchaserUser")
     public Result<Boolean> insertPurchaserUser(HandlePurchaser handlePurchaser) {
-        return Result.createBySuccess(purchaserService.createPurchaserUserInfo(handlePurchaser));
+        return Result.success(purchaserService.createPurchaserUserInfo(handlePurchaser));
     }
 
 

@@ -16,6 +16,9 @@ public class UserBasicInfo {
     @ApiModelProperty(value = "电话号")
     @NotEmpty(message = "UserBasicInfo.cellphone.null")
     private String cellphone;
+    @ApiModelProperty(value = "电话号")
+    @NotEmpty(message = "UserBasicInfo.username.null")
+    private String username;
     @ApiModelProperty(value = "密码")
     @NotEmpty(message = "UserBasicInfo.password.null")
     private String password;
@@ -33,8 +36,20 @@ public class UserBasicInfo {
         return password;
     }
 
-    public UserBasicInfo setPassword(String password) {
-        this.password = password;
-        return this;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBasicInfo{" +
+                "cellphone='" + cellphone + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

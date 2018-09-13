@@ -1,5 +1,6 @@
 package com.epc.platform.service.service.operator.impl;
 
+import com.epc.administration.facade.operator.handle.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
@@ -7,13 +8,17 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.platform.service.domain.admin.SysAdminResourceCriteria;
+import com.epc.platform.service.domain.admin.SysAdminUserCriteria;
 import com.epc.platform.service.domain.operator.TOperatorAttachment;
 import com.epc.platform.service.domain.operator.TOperatorBasicInfo;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
+import com.epc.platform.service.domain.operator.TOperatorDetailInfoCriteria;
 import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.platform.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.platform.service.service.operator.OperatorService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Description : 运营商接口实现类
@@ -29,9 +35,9 @@ import java.util.Date;
  * <p>@author : wjq
  */
 @Service
-@Transactional
 public class OperatorServiceImpl implements OperatorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
+
     @Autowired
     private TOperatorBasicInfoMapper tOperatorBasicInfoMapper;
     @Autowired
@@ -39,7 +45,13 @@ public class OperatorServiceImpl implements OperatorService {
     @Autowired
     private TOperatorAttachmentMapper tOperatorAttachmentMapper;
 
+    /**
+     * 新增运营商基本信息
+     * @param handleOperator
+     * @return
+     */
     @Override
+    @Transactional
     public Result<Boolean> insertOperatorBasicInfo(UserBasicInfo handleOperator) {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date = new Date();
@@ -61,9 +73,20 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+    /**
+     * 新增运营商补全信息
+     * @param roleDetailIfo
+     * @return
+     */
     @Override
     @Transactional
     public Result<Boolean> insertOperatorDetailInfo(RoleDetailIfo roleDetailIfo) {
+        SysAdminResourceCriteria sysAdminResourceCriteria = new SysAdminResourceCriteria();
+        SysAdminResourceCriteria.Criteria criteria1 = sysAdminResourceCriteria.createCriteria();
+
+        SysAdminUserCriteria sysAdminUserCriteria = new SysAdminUserCriteria();
+        SysAdminUserCriteria.Criteria criteria = sysAdminUserCriteria.createCriteria();
+
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
         BeanUtils.copyProperties(roleDetailIfo, detailInfo);
         Date date = new Date();
@@ -111,4 +134,84 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+
+    /**
+     * 删除运营商
+     * @param
+     * @return
+     */
+    @Override
+    public Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+        TOperatorAttachment tOperatorAttachment = new TOperatorAttachment();
+        tOperatorAttachment.setId(queryDetailIfo.getId());
+        try{
+            return Result.success(tOperatorAttachmentMapper.updateByPrimaryKeySelective(tOperatorAttachment)>0);
+        }catch (BusinessException e){
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+    }
+
+    /**
+     * 查询运营商基本信息
+     * @param
+     * @return
+     */
+    @Override
+    public Result<TOperatorDetailInfo> queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+            try {
+                TOperatorDetailInfo tOperatorDetailInfo = tOperatorDetailInfoMapper.selectByPrimaryKey(queryDetailIfo.getId());
+                return Result.success(tOperatorDetailInfo);
+            } catch (BusinessException e) {
+                LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
+                return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+            }
+    }
+
+    /**
+     * 根据公司名模糊查询运营商
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result<List<TOperatorDetailInfo>> selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+        TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
+        TOperatorDetailInfoCriteria.Criteria criteria = tOperatorDetailInfoCriteria.createCriteria();
+        String where = queryDetailIfo.getWhere();
+        if(StringUtils.isNotBlank(queryDetailIfo.getWhere())){
+            where = "%" + where + "%";
+        }
+        if(StringUtils.isNotBlank(where)){
+            criteria.andCompanyNameEqualTo(where);
+        }
+        return Result.success(tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria)) ;
+    }
+
+    /**
+     * 运营商新增员工
+     * @param userBasicInfo
+     * @return
+     */
+//    @Override
+//    public Result<Boolean> createSupplierUser(UserBasicInfo userBasicInfo) {
+//        Date date = new Date();
+//        TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+//        tOperatorBasicInfo.setCellphone(userBasicInfo.getCellphone());
+//        tOperatorBasicInfo.setPassword(userBasicInfo.getPassword());
+//        tOperatorBasicInfo.setCreateAt(date);
+//        tOperatorBasicInfo.setUpdateAt(date);
+//        tOperatorBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+//        tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+//        tOperatorBasicInfo.setState(Const.STATE.REGISTERED);
+//        try {
+//            return Result.success(tOperatorBasicInfoMapper.insertSelective(tOperatorBasicInfo) > 0);
+//        } catch (BusinessException e) {
+//            LOGGER.error("BusinessException tOperatorBasicInfo : {}", e);
+//            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+//        } catch (Exception e) {
+//            LOGGER.error("BusinessException tOperatorBasicInfo : {}", e);
+//            return Result.error(e.getMessage());
+//        }
+//
+//    }
 }

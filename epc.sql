@@ -82,7 +82,7 @@ CREATE TABLE `t_operator_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
-	`name` VARCHAR(16) NOT NULL COMMENT '运营商员工姓名',
+	`name` VARCHAR(16) DEFAULT NULL COMMENT '运营商员工姓名',
 	`operator_id` BIGINT(11) UNSIGNED COMMENT '运营商(法人)ID',
 	`state` INT(2) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
@@ -123,7 +123,7 @@ CREATE TABLE  `t_operator_attachment`(
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8 COMMENT='运营商:附件信息';
 
 
---私库 运营商添加采购人
+-- 私库 运营商添加采购人
 DROP TABLE IF EXISTS `t_operator_purchaser`;
 CREATE TABLE `t_operator_purchaser` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -136,11 +136,11 @@ CREATE TABLE `t_operator_purchaser` (
 	`operator_id` CHAR(32) NOT NULL COMMENT '操作人ID',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_deleted` BIT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商-采购人:私库';
 
---私库 运营商添加供应商
+-- 私库 运营商添加供应商
 DROP TABLE IF EXISTS `t_operator_supplier`;
 CREATE TABLE `t_operator_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -153,7 +153,7 @@ CREATE TABLE `t_operator_supplier` (
 	`operator_id` CHAR(32) NOT NULL COMMENT '操作人ID',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_deleted` BIT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商-采购人:私库';
 
@@ -162,7 +162,7 @@ CREATE TABLE `t_operator_supplier` (
 DROP TABLE IF EXISTS `t_supplier_basic_info`;
 CREATE TABLE `t_supplier_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`name` VARCHAR(16) NOT NULL COMMENT '员工姓名',
+	`name` VARCHAR(16) DEFAULT NULL COMMENT '员工姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`supplier_id` BIGINT(11) UNSIGNED COMMENT '供应商(法人)ID',
@@ -174,7 +174,7 @@ CREATE TABLE `t_supplier_basic_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商:法人及其员工基本(登录)信息';
 
---供应商 详情
+-- 供应商 详情
 DROP TABLE IF EXISTS `t_supplier_detail_info`;
 CREATE TABLE `t_supplier_detail_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -191,7 +191,7 @@ CREATE TABLE `t_supplier_detail_info` (
 
 
 
---供应商 附件
+-- 供应商 附件
 CREATE TABLE  `t_supplier_attachment`(
     `id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`supplier_id` BIGINT(11) UNSIGNED COMMENT '运营商法人ID',
@@ -210,12 +210,12 @@ CREATE TABLE  `t_supplier_attachment`(
 DROP TABLE IF EXISTS `t_purchaser_basic_info`;
 CREATE TABLE `t_purchaser_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`name` VARCHAR(16) NOT NULL COMMENT '采购人员工姓名',
+	`name` VARCHAR(16) DEFAULT NULL COMMENT '采购人员工姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`purchaser_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
 	`state` INT(2) UNSIGNED COMMENT '审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败',
-	`role` INT(2) COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
+	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
@@ -238,7 +238,7 @@ CREATE TABLE `t_purchaser_detail_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人:审核所需详细信息';
 
---私库：采购人--供应商
+-- 私库：采购人--供应商
 DROP TABLE IF EXISTS `t_purchaser_supplier`;
 CREATE TABLE `t_purchaser_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -251,12 +251,12 @@ CREATE TABLE `t_purchaser_supplier` (
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_deleted` BIT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-供应商:私库';
 
 
---私库：采购人--招标代理机构
+-- 私库：采购人--招标代理机构
 DROP TABLE IF EXISTS `t_purchaser_agency`;
 CREATE TABLE `t_purchaser_agency` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -269,11 +269,11 @@ CREATE TABLE `t_purchaser_agency` (
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_deleted` BIT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-供应商:私库';
 
---私库：采购人--专家
+-- 私库：采购人--专家
 DROP TABLE IF EXISTS `t_purchaser_expert`;
 CREATE TABLE `t_purchaser_expert` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -286,7 +286,7 @@ CREATE TABLE `t_purchaser_expert` (
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_deleted` BIT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-专家:私库';
 
@@ -311,7 +311,7 @@ CREATE TABLE  `t_purchaser_attachment`(
 DROP TABLE IF EXISTS `t_agency_basic_info`;
 CREATE TABLE `t_agency_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`name` VARCHAR(16) NOT NULL COMMENT '招标代理机构员工姓名',
+	`name` VARCHAR(16) DEFAULT NULL COMMENT '招标代理机构员工姓名',
 	`agency_id` BIGINT(11) UNSIGNED COMMENT '招标(采购)代理机构 ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
@@ -338,6 +338,41 @@ CREATE TABLE `t_agency_detail_info` (
     `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标(采购)代理机构:审核所需详细信息';
+
+-- 私库：代理机构--供应商
+DROP TABLE IF EXISTS `t_agency_supplier`;
+CREATE TABLE `t_agency_supplier` (
+	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
+	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
+	`agency_id` CHAR(32) NOT NULL COMMENT '操作人ID',
+	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-供应商:私库';
+
+-- 私库：代理机构--专家
+DROP TABLE IF EXISTS `t_agency_expert`;
+CREATE TABLE `t_agency_expert` (
+	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`expert_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
+	`expert_name` VARCHAR(16) NOT NULL COMMENT '专家姓名',
+	`agency_id` CHAR(32) NOT NULL COMMENT '操作人ID',
+	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-专家:私库';
+
 
 -- 招标(采购)代理机构 附件
 DROP TABLE IF EXISTS `t_agency_attachment`;
@@ -427,8 +462,7 @@ DROP TABLE IF EXISTS `t_project_tender`;
 
 
 
---项目基本信息表：项目ID、采购商ID、项目名称、项目编号、项目介绍、项目投资总额、投资资金来源（国有投资、私有投资、国有占主体投资）、项目地址、项目分类、项目类型、经办人姓名、经办人联系方式、审核人姓名、审核人联系方式、是否委托代理机构、委托项目负责人、委托项目负责人联系方式、代理机构项目负责人、代理结构项目负责人联系方式、备注信息、创建时间、创建人、是否删除。
-
+-- 项目基本信息表：项目ID、采购商ID、项目名称、项目编号、项目介绍、项目投资总额、投资资金来源（国有投资、私有投资、国有占主体投资）、项目地址、项目分类、项目类型、经办人姓名、经办人联系方式、审核人姓名、审核人联系方式、是否委托代理机构、委托项目负责人、委托项目负责人联系方式、代理机构项目负责人、代理结构项目负责人联系方式、备注信息、创建时间、创建人、是否删除。
 
 DROP TABLE IF EXISTS `t_purchase_project`;
 
@@ -445,6 +479,6 @@ CREATE TABLE `t_project_evaluation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:采购项目评价';
 DROP TABLE IF EXISTS `t_project_evaluation`;
 
---采购项目评价表：评价ID、采购人ID、中标供应商名称、评分、评语、创建时间、创建人
+-- 采购项目评价表：评价ID、采购人ID、中标供应商名称、评分、评语、创建时间、创建人
 
 

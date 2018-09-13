@@ -5,21 +5,23 @@ import java.util.Date;
 
 public class TOperatorBasicInfo implements Serializable {
 
-    private Long id;
+    private Long id;//员工ID
 
-    private String cellphone;
+    private String Name;//运营商员工姓名
 
-    private String password;
+    private String cellphone;//手机号
 
-    private Integer state;
+    private String password;//登录密码
 
-    private Integer role;
+    private Integer state;//0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+
+    private Integer role;//用户角色:0-法人,1-管理员,2-普通员工
 
     private Date createAt;
 
     private Date updateAt;
 
-    private Integer isDeleted;
+    private Integer isDeleted;//是否删除: 0-存在,1-删除
 
     private static final long serialVersionUID = 1L;
 
@@ -85,6 +87,14 @@ public class TOperatorBasicInfo implements Serializable {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     @Override

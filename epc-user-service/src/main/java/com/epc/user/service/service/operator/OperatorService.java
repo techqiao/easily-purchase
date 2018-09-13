@@ -1,16 +1,23 @@
 package com.epc.user.service.service.operator;
 
 import com.epc.common.Result;
-import com.epc.user.service.domain.handle.operator.HandleOperator;
+import com.epc.web.facade.operator.handle.HandleOperator;
+import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 
 public interface OperatorService {
     /**
-     * 创建运营人员
+     * 新增运营商人员
+     * @param handleOperator
+     * @return
      */
+    Result<Boolean> createOperatorBasicInfo(HandleOperator handleOperator);
 
-    Result<Boolean> createOperatorUserInfo(HandleOperator handleOperator);
 
-    void createOperatorUser(HandleOperator handleOperator,Long userId);
+    /**
+     * 新增采购人
+     * @param handlePurchaser
+     * @return
+     */
+    Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser);
 
-   // Boolean createPurchaserUserInfo(HandleOperator handleOperator);
 }

@@ -49,9 +49,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.epc</groupId>
-            <artifactId>epc-administration-facade</artifactId>
+            <artifactId>epc-web-facade</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>

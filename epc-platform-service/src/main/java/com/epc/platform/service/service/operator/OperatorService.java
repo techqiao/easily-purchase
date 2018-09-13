@@ -1,8 +1,12 @@
 package com.epc.platform.service.service.operator;
 
+import com.epc.administration.facade.operator.handle.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.common.Result;
+import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
+
+import java.util.List;
 
 /**
  * <p>Description : 运营商相关接口
@@ -23,4 +27,30 @@ public interface OperatorService {
      * @return
      */
     Result<Boolean> insertOperatorDetailInfo(RoleDetailIfo roleDetailIfo);
+
+
+    /**
+     * 删除运营商资料
+     * @param
+     * @return
+     */
+    Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 根据传入运营商ID查询
+     * 查询运营商资料
+     * @param
+     * @return
+     */
+    Result<TOperatorDetailInfo> queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
+
+
+    /**
+     * 根据传入运营商公司名称模糊查询
+     * @param queryDetailIfo
+     * @return
+     */
+    Result<List<TOperatorDetailInfo>> selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
+
+
 }

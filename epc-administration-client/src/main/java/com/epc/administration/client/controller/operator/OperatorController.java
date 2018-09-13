@@ -1,6 +1,7 @@
 package com.epc.administration.client.controller.operator;
 
 import com.epc.administration.client.remoteapi.operator.OperatorClient;
+import com.epc.administration.facade.operator.handle.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
@@ -23,7 +24,6 @@ public class OperatorController {
     @Autowired
     private OperatorClient operatorClient;
 
-
     @ApiOperation(value = "注册运营商",notes = "平台添加运营商")
     @PostMapping(value = "registry")
     public Result<Boolean> insertOperatorBasicInfo(@RequestBody UserBasicInfo userBasicInfo) {
@@ -37,6 +37,22 @@ public class OperatorController {
     }
 
 
+    @ApiOperation(value = "运营商删除资料",notes = "运营商删除资料")
+    @PostMapping(value = "deleteOperatorDetailInfo")
+    public Result deleteOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return operatorClient.deleteOperatorDetailInfo(queryDetailIfo);
+    }
 
+    @ApiOperation(value = "运营商查询资料",notes = "运营商查询资料")
+    @PostMapping(value = "queryOperatorDetailInfo")
+    public Result queryOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return operatorClient.queryOperatorDetailInfo(queryDetailIfo);
+    }
+
+    @ApiOperation(value = "运营商模糊搜索查询资料",notes = "运营商模糊搜索查询资料")
+    @PostMapping(value = "selectOperatorDetailInfo")
+    public Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return operatorClient.selectOperatorDetailInfo(queryDetailIfo);
+    }
 
 }

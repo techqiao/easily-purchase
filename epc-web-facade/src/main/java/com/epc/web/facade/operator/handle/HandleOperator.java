@@ -1,36 +1,30 @@
-package com.epc.user.service.domain.handle.operator;
+package com.epc.web.facade.operator.handle;
+
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-@ApiModel(value = "HandleOperator", description = "新增运营商员工")
+import org.hibernate.validator.constraints.NotEmpty;
 
+@ApiModel(value = "HandleOperator", description = "运营商人员信息")
 public class HandleOperator {
-    @ApiModelProperty(value = "用户姓名")
+    /**
+    * @Description:    运营商信息录入
+    * @Author:         linzhixiang
+    * @CreateDate:     2018/9/13 9:56
+    * @UpdateUser:     linzhixiang
+    * @UpdateDate:     2018/9/13 9:56
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
+    @ApiModelProperty(value = "员工姓名")
+    @NotEmpty(message = "HandleOperator.userName.null")
     private String userName;
     @ApiModelProperty(value = "手机号")
+    @NotEmpty(message = "HandleOperator.cellPhone.null")
     private String cellPhone;
     @ApiModelProperty(value = "密码")
+    @NotEmpty(message = "HandleOperator.passWord.null")
     private String passWord;
-    @ApiModelProperty(value = "运营商ID")
-    private long OperatorId;
-    @ApiModelProperty(value = "角色")
-    private int role;
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public long getOperatorId() {
-        return OperatorId;
-    }
-
-    public void setOperatorId(long operatorId) {
-        OperatorId = operatorId;
-    }
 
     public String getUserName() {
         return userName;
@@ -55,7 +49,6 @@ public class HandleOperator {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-
 
     @Override
     public String toString() {

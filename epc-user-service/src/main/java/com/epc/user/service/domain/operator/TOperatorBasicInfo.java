@@ -7,6 +7,8 @@ public class TOperatorBasicInfo implements Serializable {
 
     private Long id;
 
+    private String Name;
+
     private String cellphone;
 
     private String password;
@@ -85,6 +87,14 @@ public class TOperatorBasicInfo implements Serializable {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     @Override

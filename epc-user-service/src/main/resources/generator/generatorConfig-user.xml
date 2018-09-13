@@ -17,7 +17,7 @@
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/yjx"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/easily_purchase"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -38,7 +38,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="yjx" tableName="t_purchaser_basic_info" domainObjectName="TPurchaserBasicInfo">
+        <table schema="easily-purchase" tableName="t_purchaser_attachment" domainObjectName="TPurchaserAttachment">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

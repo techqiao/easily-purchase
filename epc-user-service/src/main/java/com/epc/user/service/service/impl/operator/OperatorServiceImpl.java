@@ -11,6 +11,7 @@ import com.epc.user.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.user.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserAttachmentMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserDetailInfoMapper;
+import com.epc.user.service.service.impl.purchaser.PurchaserServiceImpl;
 import com.epc.user.service.service.operator.OperatorService;
 import com.epc.web.facade.operator.handle.HandleOperator;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
@@ -35,6 +36,8 @@ public class OperatorServiceImpl implements OperatorService {
     @Autowired
     TPurchaserAttachmentMapper tPurchaserAttachmentMapper;
     @Autowired
+    PurchaserServiceImpl purchaserServiceImpl;
+
     /**
     * @Description:    新增运营商人员
     * @Author:         linzhixiang
@@ -44,7 +47,9 @@ public class OperatorServiceImpl implements OperatorService {
     * @UpdateRemark:   修改内容
     * @Version:        1.0
     */
+
     @Override
+    @Transactional
     public Result<Boolean> createOperatorBasicInfo(HandleOperator handleOperator) {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date =new Date();
@@ -64,8 +69,6 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
-
-
     /**
     * @Description:    运营商新增采购人
     * @Author:         linzhixiang
@@ -78,6 +81,11 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional
     public Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser){
+        //BaseInfo新增采购人
+        purchaserServiceImpl.createPurchaserUserInfo(handlePurchaser,Const.Role.ROLE_CORPORATION);
+        //新增 运营商-采购人 记录
+        purchaserServiceImpl.createOperatePurchaser(handlePurchaser);
+        //新增 采购人（法人）证照信息
         TPurchaserDetailInfo detailInfo =new TPurchaserDetailInfo();
         BeanUtils.copyProperties(handlePurchaser,detailInfo);
         Date date = new Date();

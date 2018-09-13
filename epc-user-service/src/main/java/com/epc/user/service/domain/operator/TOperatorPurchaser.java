@@ -3,25 +3,31 @@ package com.epc.user.service.domain.operator;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TOperatorBasicInfo implements Serializable {
+public class TOperatorPurchaser implements Serializable {
 
-    private Long id;//员工ID
+    private Long id;
 
-    private String Name;//运营商员工姓名
+    private String cellphone;
 
-    private String cellphone;//手机号
 
-    private String password;//登录密码
+    private String password;
 
-    private Integer state;//0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+    private Integer state;
 
-    private Integer role;//用户角色:0-法人,1-管理员,2-普通员工
+    private Long purchaserId;
+
+    private String purchaserName;
+
+    private String source;
+
+    private long operatorId;
 
     private Date createAt;
 
+
     private Date updateAt;
 
-    private Integer isDeleted;//是否删除: 0-存在,1-删除
+    private Integer isDeleted;
 
     private static final long serialVersionUID = 1L;
 
@@ -53,18 +59,45 @@ public class TOperatorBasicInfo implements Serializable {
         return state;
     }
 
+
     public void setState(Integer state) {
         this.state = state;
     }
 
-    public Integer getRole() {
-        return role;
+
+    public Long getPurchaserId() {
+        return purchaserId;
     }
 
-    public void setRole(Integer role) {
-        this.role = role;
+
+    public void setPurchaserId(Long purchaserId) {
+        this.purchaserId = purchaserId;
     }
 
+
+    public String getPurchaserName() {
+        return purchaserName;
+    }
+
+    public void setPurchaserName(String purchaserName) {
+        this.purchaserName = purchaserName == null ? null : purchaserName.trim();
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source == null ? null : source.trim();
+    }
+
+    public long getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(long operatorId) {
+        this.operatorId = operatorId;
+    }
     public Date getCreateAt() {
         return createAt;
     }
@@ -73,9 +106,11 @@ public class TOperatorBasicInfo implements Serializable {
         this.createAt = createAt;
     }
 
+
     public Date getUpdateAt() {
         return updateAt;
     }
+
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
@@ -85,16 +120,9 @@ public class TOperatorBasicInfo implements Serializable {
         return isDeleted;
     }
 
+
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
     }
 
     @Override
@@ -107,7 +135,10 @@ public class TOperatorBasicInfo implements Serializable {
         sb.append(", cellphone=").append(cellphone);
         sb.append(", password=").append(password);
         sb.append(", state=").append(state);
-        sb.append(", role=").append(role);
+        sb.append(", purchaserId=").append(purchaserId);
+        sb.append(", purchaserName=").append(purchaserName);
+        sb.append(", source=").append(source);
+        sb.append(", operatorId=").append(operatorId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

@@ -12,6 +12,7 @@ import com.epc.web.facade.purchaser.handle.HandlePurchaser;
  */
 public class OperatorHystrix implements FacadeOperatorService {
 
+
     @Override
     public Result<Boolean> createOperatorUserInfo(HandleOperator handleOperator) {
 

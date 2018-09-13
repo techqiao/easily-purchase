@@ -55,6 +55,17 @@ public class HandlePurchaser {
     @ApiModelProperty(value = "密码")
     @NotEmpty(message = "HandlePurchaser.password.null")
     private String password;
+    @ApiModelProperty(value = "操作人Id")
+    @NotEmpty(message = "HandlePurchaser.OperatorId.null")
+    private long OperatorId;
+
+    public long getOperatorId() {
+        return OperatorId;
+    }
+
+    public void setOperatorId(long operatorId) {
+        OperatorId = operatorId;
+    }
 
     public long getUserId() {
         return userId;

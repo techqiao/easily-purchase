@@ -1,13 +1,20 @@
 package com.epc.user.service.service.impl.purchaser;
 
+import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.ErrorMessagesEnum;
+import com.epc.common.exception.BusinessException;
+import com.epc.user.service.domain.operator.TOperatorPurchaser;
 import com.epc.user.service.domain.purchaser.TPurchaserBasicInfo;
-import com.epc.user.service.domain.purchaser.TPurchaserUser;
+import com.epc.user.service.mapper.operator.TOperatorPurchaserMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserUserMapper;
+import com.epc.user.service.service.impl.operator.OperatorServiceImpl;
 import com.epc.user.service.service.purchaser.PurchaserService;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,43 +30,60 @@ public class PurchaserServiceImpl implements PurchaserService {
     TPurchaserUserMapper tPurchaserUserMapper;
     @Autowired
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
-
+    @Autowired
+    TOperatorPurchaserMapper tOperatorPurchaserMapper;
     /**
      * @Description 新增 采购人员登陆信息
      * @Author lzx
      * @param handleOperator
      * @return
      */
-    public void createPurchaserUserInfo(HandlePurchaser handleOperator) {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
+
+    public Result<Boolean> createPurchaserUserInfo(HandlePurchaser handleOperator, int roleType) {
+
         TPurchaserBasicInfo pojo=new TPurchaserBasicInfo();
         Date date = new Date();
         pojo.setCellphone(handleOperator.getCellPhone());
         pojo.setPassword(handleOperator.getPassword());
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        pojo.setState(Const.STATE.AUDIT_SUCCESS);
-        pojo.setRole((long)Const.Role.ROLE_CORPORATION);
+        pojo.setState(Const.STATE.COMMITTED);
+        pojo.setRole(roleType);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        tPurchaserBasicInfoMapper.insertSelective(pojo);
-        createPurchaserUser(handleOperator,pojo.getId());
+
+        try {
+            tPurchaserBasicInfoMapper.insertSelective(pojo);
+        }catch (BusinessException e) {
+            LOGGER.error("BusinessException createPurchaserUserInfo : {}", e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("BusinessException createPurchaserUserInfo : {}", e);
+            return Result.error(e.getMessage());
+        }
+        return Result.success();
     }
 
-
-    /**
-     * @Description 新增 采购人员--法人关系 记录
-     * @Author lzx
-     * @param handleOperator
-     * @param userId 采购人ID
-     */
-
-    public void createPurchaserUser(HandlePurchaser handleOperator,Long userId) {
-        TPurchaserUser pojo = new TPurchaserUser();
-        Date date = new Date();
+    public  Result<Boolean> createOperatePurchaser(HandlePurchaser handleOperator){
+        TOperatorPurchaser pojo=new TOperatorPurchaser();
+        Date date =new Date();
+        pojo.setCellphone(handleOperator.getCellPhone());
+        pojo.setPassword(handleOperator.getPassword());
+        pojo.setOperatorId(handleOperator.getOperatorId());
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        pojo.setPurchaserId(userId);
-        tPurchaserUserMapper.insertSelective(pojo);
+        try {
+            tOperatorPurchaserMapper.insertSelective(pojo);
+        }catch (BusinessException e){
+            LOGGER.error("BusinessException createOperatePurchaser : {}", e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("BusinessException createOperatePurchaser : {}", e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }
+        return Result.success();
     }
 
 }

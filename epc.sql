@@ -339,6 +339,41 @@ CREATE TABLE `t_agency_detail_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标(采购)代理机构:审核所需详细信息';
 
+-- 私库：代理机构--供应商
+DROP TABLE IF EXISTS `t_agency_supplier`;
+CREATE TABLE `t_agency_supplier` (
+	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
+	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
+	`agency_id` CHAR(32) NOT NULL COMMENT '操作人ID',
+	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-供应商:私库';
+
+-- 私库：代理机构--专家
+DROP TABLE IF EXISTS `t_agency_expert`;
+CREATE TABLE `t_agency_expert` (
+	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`expert_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
+	`expert_name` VARCHAR(16) NOT NULL COMMENT '专家姓名',
+	`agency_id` CHAR(32) NOT NULL COMMENT '操作人ID',
+	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-专家:私库';
+
+
 -- 招标(采购)代理机构 附件
 DROP TABLE IF EXISTS `t_agency_attachment`;
 CREATE TABLE  `t_agency_attachment`(

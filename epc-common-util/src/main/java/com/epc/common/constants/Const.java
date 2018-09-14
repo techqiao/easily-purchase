@@ -23,8 +23,8 @@ public class Const {
     }
 
     public interface IS_DELETED {
-        int IS_DELETED = 0;
-        int NOT_DELETED = 1;
+        int IS_DELETED = 1;
+        int NOT_DELETED = 0;
     }
 
     public interface STATE {
@@ -33,6 +33,11 @@ public class Const {
         int COMMITTED = 2;
         int AUDIT_SUCCESS = 3;
         int AUDIT_FAILD = 4;
+    }
+
+    public interface RESOURCE_TYPE {
+        String PAGE = "page";
+        String ACTION = "action";
     }
 
 

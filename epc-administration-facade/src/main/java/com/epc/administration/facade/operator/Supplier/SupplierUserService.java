@@ -1,33 +1,36 @@
-package com.epc.administration.facade.operator;
+package com.epc.administration.facade.operator.Supplier;
+
 
 import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailInfo;
+import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * <p>Description : 运营商接口
- * <p>Date : 2018-09-10  18:08
- * <p>@author : wjq
+ * 供应商接口
+ * @date 2018-09-14 09:35:58
+ * @author lzx
  */
-public interface FacadeOperatorService {
+public interface SupplierUserService {
+
+
     /**
-     * 运营商注册
+     * 供应商注册注册
      * @param userBasicInfo 基本信息
      * @return
      */
-    @PostMapping(value = "insertOperatorBasicInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOperatorBasicInfo(@RequestBody UserBasicInfo userBasicInfo);
+    @PostMapping(value = "createSupplierUserInfo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> createSupplierUserInfo(UserBasicInfo userBasicInfo);
 
     /**
-     * 运营商完善资料
-     * @param roleDetailInfo 附件信息
+     * 供应商完善资料
+     * @param roleDetailIfo 附件信息
      * @return
      */
     @PostMapping(value = "insertOperatorDetailInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailInfo);
+    Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo);
 
 
     /**
@@ -53,8 +56,6 @@ public interface FacadeOperatorService {
      */
     @PostMapping(value = "selectOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
     Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
-
-
 
 
 }

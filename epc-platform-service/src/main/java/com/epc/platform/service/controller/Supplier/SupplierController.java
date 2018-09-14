@@ -1,8 +1,9 @@
-package com.epc.platform.service.controller.operator;
+package com.epc.platform.service.controller.Supplier;
 
 import com.epc.administration.facade.operator.FacadeOperatorService;
+import com.epc.administration.facade.operator.Supplier.SupplierUserService;
 import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailInfo;
+import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
@@ -23,19 +24,19 @@ import java.util.List;
  */
 @Api(value = "运营商服务", description = "运营商服务")
 @RestController
-public class OperatorServerController implements FacadeOperatorService {
+public class SupplierController implements SupplierUserService {
     @Autowired
     private OperatorService operatorService;
 
     @ApiOperation(value = "运营商注册", notes = "运营商注册")
     @Override
-    public Result<Boolean> insertOperatorBasicInfo(@RequestBody UserBasicInfo handleOperator) {
+    public Result<Boolean> createSupplierUserInfo(@RequestBody UserBasicInfo handleOperator) {
         return operatorService.insertOperatorBasicInfo(handleOperator);
     }
     @ApiOperation(value = "运营商资料补全", notes = "运营商资料补全")
     @Override
-    public Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailInfo) {
-        return operatorService.insertOperatorDetailInfo(roleDetailInfo);
+    public Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo) {
+        return operatorService.insertOperatorDetailInfo(roleDetailIfo);
     }
 
 

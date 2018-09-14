@@ -1,8 +1,8 @@
 package com.epc.platform.service.service.operator;
 
 import com.epc.administration.facade.operator.handle.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 
@@ -23,10 +23,10 @@ public interface OperatorService {
 
     /**
      * 运营商完善资料
-     * @param roleDetailIfo
+     * @param roleDetailInfo
      * @return
      */
-    Result<Boolean> insertOperatorDetailInfo(RoleDetailIfo roleDetailIfo);
+    Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo);
 
 
     /**

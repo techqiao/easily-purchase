@@ -1,12 +1,14 @@
 package com.epc.administration.client.controller.operator;
 
+import com.epc.administration.client.controller.operator.handle.ClientRoleDetailInfo;
 import com.epc.administration.client.remoteapi.operator.OperatorClient;
 import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,10 @@ public class OperatorController {
 
     @ApiOperation(value = "运营商完善资料",notes = "运营商完善资料")
     @PostMapping(value = "registryDetail")
-    public Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailIfo handleOperatorBasicInfo) {
-        return operatorClient.insertOperatorDetailInfo(handleOperatorBasicInfo);
+    public Result<Boolean> insertOperatorDetailInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo) {
+        RoleDetailInfo pojo = new RoleDetailInfo();
+        BeanUtils.copyProperties(clientRoleDetailInfo,pojo);
+        return operatorClient.insertOperatorDetailInfo(pojo);
     }
 
 

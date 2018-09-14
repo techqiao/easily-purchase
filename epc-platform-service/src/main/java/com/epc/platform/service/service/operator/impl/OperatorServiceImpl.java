@@ -1,7 +1,7 @@
 package com.epc.platform.service.service.operator.impl;
 
 import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
@@ -75,12 +75,12 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 新增运营商补全信息
-     * @param roleDetailIfo
+     * @param roleDetailInfo
      * @return
      */
     @Override
     @Transactional
-    public Result<Boolean> insertOperatorDetailInfo(RoleDetailIfo roleDetailIfo) {
+    public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
         SysAdminResourceCriteria sysAdminResourceCriteria = new SysAdminResourceCriteria();
         SysAdminResourceCriteria.Criteria criteria1 = sysAdminResourceCriteria.createCriteria();
 
@@ -88,13 +88,13 @@ public class OperatorServiceImpl implements OperatorService {
         SysAdminUserCriteria.Criteria criteria = sysAdminUserCriteria.createCriteria();
 
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
-        BeanUtils.copyProperties(roleDetailIfo, detailInfo);
+        BeanUtils.copyProperties(roleDetailInfo, detailInfo);
         Date date = new Date();
         detailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         TOperatorAttachment attachment = new TOperatorAttachment();
-        attachment.setOperatorId(roleDetailIfo.getUserId());
+        attachment.setOperatorId(roleDetailInfo.getUserId());
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
         attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
@@ -102,27 +102,27 @@ public class OperatorServiceImpl implements OperatorService {
             tOperatorDetailInfoMapper.insertSelective(detailInfo);
             //带公章的授权书照片url
             attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(roleDetailIfo.getCertificateOfAuthorization());
+            attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //经办人(运营商员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(roleDetailIfo.getOperatorIdCardFront());
+            attachment.setCertificateFilePath(roleDetailInfo.getOperatorIdCardFront());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //法人身份证反面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(roleDetailIfo.getLegalIdCardOther());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //法人身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateFilePath(roleDetailIfo.getLegalIdCardPositive());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //营业执照照片url
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateFilePath(roleDetailIfo.getBusinessLicense());
+            attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
             tOperatorAttachmentMapper.insertSelective(attachment);
             //资质证书url
             attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            attachment.setCertificateFilePath(roleDetailIfo.getQualificationCertificate());
+            attachment.setCertificateFilePath(roleDetailInfo.getQualificationCertificate());
             tOperatorAttachmentMapper.insertSelective(attachment);
             return Result.success();
         }catch (BusinessException e) {

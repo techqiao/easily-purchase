@@ -1,4 +1,4 @@
-package com.epc.administration.facade.operator.handle;
+package com.epc.administration.client.controller.operator.handle;
 
 
 import io.swagger.annotations.ApiModel;
@@ -10,8 +10,9 @@ import org.hibernate.validator.constraints.NotEmpty;
  * <p>Date : 2018-09-11 16:07
  * <p>@Author : wjq
  */
-@ApiModel(value = "RoleDetailIfo", description = "运营商完善信息")
-public class RoleDetailIfo {
+@ApiModel(value = "ClientRoleDetailInfo", description = "运营商完善信息")
+public class ClientRoleDetailInfo {
+
 
     @ApiModelProperty(value = "角色")
     @NotEmpty(message = "RoleDetailIfo.systemRole.null")
@@ -51,7 +52,7 @@ public class RoleDetailIfo {
         return systemRole;
     }
 
-    public RoleDetailIfo setSystemRole(String systemRole) {
+    public ClientRoleDetailInfo setSystemRole(String systemRole) {
         this.systemRole = systemRole;
         return this;
     }
@@ -60,7 +61,7 @@ public class RoleDetailIfo {
         return userId;
     }
 
-    public RoleDetailIfo setUserId(Long userId) {
+    public ClientRoleDetailInfo setUserId(Long userId) {
         this.userId = userId;
         return this;
     }
@@ -69,7 +70,7 @@ public class RoleDetailIfo {
         return companyName;
     }
 
-    public RoleDetailIfo setCompanyName(String companyName) {
+    public ClientRoleDetailInfo setCompanyName(String companyName) {
         this.companyName = companyName;
         return this;
     }
@@ -78,7 +79,7 @@ public class RoleDetailIfo {
         return publicBankName;
     }
 
-    public RoleDetailIfo setPublicBankName(String publicBankName) {
+    public ClientRoleDetailInfo setPublicBankName(String publicBankName) {
         this.publicBankName = publicBankName;
         return this;
     }
@@ -87,7 +88,7 @@ public class RoleDetailIfo {
         return publicBanAccountNumber;
     }
 
-    public RoleDetailIfo setPublicBanAccountNumber(String publicBanAccountNumber) {
+    public ClientRoleDetailInfo setPublicBanAccountNumber(String publicBanAccountNumber) {
         this.publicBanAccountNumber = publicBanAccountNumber;
         return this;
     }
@@ -96,7 +97,7 @@ public class RoleDetailIfo {
         return qualificationCertificate;
     }
 
-    public RoleDetailIfo setQualificationCertificate(String qualificationCertificate) {
+    public ClientRoleDetailInfo setQualificationCertificate(String qualificationCertificate) {
         this.qualificationCertificate = qualificationCertificate;
         return this;
     }
@@ -105,7 +106,7 @@ public class RoleDetailIfo {
         return businessLicense;
     }
 
-    public RoleDetailIfo setBusinessLicense(String businessLicense) {
+    public ClientRoleDetailInfo setBusinessLicense(String businessLicense) {
         this.businessLicense = businessLicense;
         return this;
     }
@@ -114,7 +115,7 @@ public class RoleDetailIfo {
         return legalIdCardPositive;
     }
 
-    public RoleDetailIfo setLegalIdCardPositive(String legalIdCardPositive) {
+    public ClientRoleDetailInfo setLegalIdCardPositive(String legalIdCardPositive) {
         this.legalIdCardPositive = legalIdCardPositive;
         return this;
     }
@@ -123,7 +124,7 @@ public class RoleDetailIfo {
         return legalIdCardOther;
     }
 
-    public RoleDetailIfo setLegalIdCardOther(String legalIdCardOther) {
+    public ClientRoleDetailInfo setLegalIdCardOther(String legalIdCardOther) {
         this.legalIdCardOther = legalIdCardOther;
         return this;
     }
@@ -132,7 +133,7 @@ public class RoleDetailIfo {
         return certificateOfAuthorization;
     }
 
-    public RoleDetailIfo setCertificateOfAuthorization(String certificateOfAuthorization) {
+    public ClientRoleDetailInfo setCertificateOfAuthorization(String certificateOfAuthorization) {
         this.certificateOfAuthorization = certificateOfAuthorization;
         return this;
     }
@@ -141,7 +142,7 @@ public class RoleDetailIfo {
         return operatorIdCardFront;
     }
 
-    public RoleDetailIfo setOperatorIdCardFront(String operatorIdCardFront) {
+    public ClientRoleDetailInfo setOperatorIdCardFront(String operatorIdCardFront) {
         this.operatorIdCardFront = operatorIdCardFront;
         return this;
     }

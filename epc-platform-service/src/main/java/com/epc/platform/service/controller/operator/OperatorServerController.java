@@ -2,8 +2,8 @@ package com.epc.platform.service.controller.operator;
 
 import com.epc.administration.facade.operator.FacadeOperatorService;
 import com.epc.administration.facade.operator.handle.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import com.epc.platform.service.service.operator.OperatorService;
@@ -34,8 +34,8 @@ public class OperatorServerController implements FacadeOperatorService {
     }
     @ApiOperation(value = "运营商资料补全", notes = "运营商资料补全")
     @Override
-    public Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo) {
-        return operatorService.insertOperatorDetailInfo(roleDetailIfo);
+    public Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailInfo) {
+        return operatorService.insertOperatorDetailInfo(roleDetailInfo);
     }
 
 

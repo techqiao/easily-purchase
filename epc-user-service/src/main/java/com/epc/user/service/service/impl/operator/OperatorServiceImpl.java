@@ -71,7 +71,7 @@ public class OperatorServiceImpl implements OperatorService {
         try {
             return Result.success(tOperatorBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (Exception e) {
-            LOGGER.error("exception insertOperatorBasicInfo : {}", e);
+            LOGGER.error("exception createOperatorBasicInfo : {}", e);
             return Result.error(e.getMessage());
         }
     }

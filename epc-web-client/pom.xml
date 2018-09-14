@@ -21,7 +21,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>com.epc</groupId>
             <artifactId>epc-web-facade</artifactId>

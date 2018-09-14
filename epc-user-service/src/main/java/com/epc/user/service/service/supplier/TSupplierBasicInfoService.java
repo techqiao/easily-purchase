@@ -2,6 +2,7 @@ package com.epc.user.service.service.supplier;
 
 
 import com.epc.common.Result;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.facade.supplier.handle.HandlerSupplierUser;
 
 
@@ -14,7 +15,7 @@ public interface TSupplierBasicInfoService {
      */
     public abstract Result<Boolean> createSupplierUser(HandlerSupplierUser handlerSupplierUser);
 
-
+    public abstract Result<Boolean> createSupplierBasicInfo(HandleSupplierDetail handlerSupplierUser);
 
 
 

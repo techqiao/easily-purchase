@@ -5,6 +5,7 @@ import com.epc.common.constants.Const;
 import com.epc.user.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.user.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.user.service.service.supplier.TSupplierBasicInfoService;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.facade.supplier.handle.HandlerSupplierUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,30 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     }
 
 
+    /**
+     * 采购人录入供应商
+     * @param handleSupplierDetail
+     * @Author linzhixiang
+     * @return
+     */
+    @Override
+    public Result<Boolean> createSupplierBasicInfo(HandleSupplierDetail handleSupplierDetail) {
+        TSupplierBasicInfo pojo=new TSupplierBasicInfo();
+        Date date=new Date();// 创建的时间
+        pojo.setState(Const.STATE.COMMITTED);   //  供应商状态2提交
+        pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED); // 是否删除，0存在
+        pojo.setRole(Const.Role.ROLE_CORPORATION);      //角色0法人
+        pojo.setCellphone(handleSupplierDetail.getCellPhone());
+        pojo.setPassword(handleSupplierDetail.getPassword());
+        pojo.setCreateAt(date);
+        pojo.setUpdateAt(date);
+        try {
+            return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo)>0);
+        }catch (Exception e){
+            LOGGER.error("exception insertTSupplierBasicInfoMapper:{}",e);
+            return Result.error(e.getMessage());
+        }
+    }
 
 
 //    @Override

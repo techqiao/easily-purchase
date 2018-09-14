@@ -1,9 +1,11 @@
-package com.epc.web.client.controller.Operator;
+package com.epc.web.client.controller.operator;
 
 import com.epc.web.facade.operator.handle.HandleOperator;
 import com.epc.common.Result;
-import com.epc.web.client.remoteApi.OperatorClient;
+import com.epc.web.client.remoteApi.operator.OperatorClient;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@Api(value = "运营商服务")
+@Api(value = "运营商服务")
 @RestController
 @RequestMapping(value = "/operator", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
@@ -32,7 +34,7 @@ public class OperatorController {
      */
 
     @ApiOperation(value = "注册 运营商",notes = "平台添加运营商人员")
-    @PostMapping(value = "/createOperatorBasicInfo")
+    @PostMapping(value = "/registerOperator")
     public Result<Boolean> createOperatorBasicInfo(@RequestBody HandleOperator handleOperator) {
         return operatorClient.createOperatorUserInfo(handleOperator);
     }
@@ -49,8 +51,24 @@ public class OperatorController {
     */
 
     @ApiOperation(value = "运营商添加采购人",notes = "运营商添加采购人")
-    @PostMapping(value = "/createPurchaseByOperator")
+    @PostMapping(value = "/registerPurchaser")
     public Result<Boolean> createPurchaseByOperator(@RequestBody HandlePurchaser handleOperator) {
         return operatorClient.createPurchaseByOperator(handleOperator);
+    }
+
+
+    /**
+    * @Description:    完善供应商信息
+    * @Author:         linzhixiang
+    * @CreateDate:     2018/9/14 19:21
+    * @UpdateUser:     linzhixiang
+    * @UpdateDate:     2018/9/14 19:21
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
+    @ApiOperation(value = "完善供应商信息",notes = "完善供应商信息")
+    @PostMapping(value = "/updateSupplierDetail")
+    public Result<Boolean> updateSupplierDetail(@RequestBody HandleSupplierDetail handleSupplierDetail) {
+        return operatorClient.updateSupplierDetail(handleSupplierDetail);
     }
 }

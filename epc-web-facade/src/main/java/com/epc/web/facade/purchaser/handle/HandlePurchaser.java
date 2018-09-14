@@ -19,6 +19,9 @@ public class HandlePurchaser {
     @ApiModelProperty(value = "采购人Id")
     @NotEmpty(message = "HandlePurchaser.userId.null")
     private long userId;
+    @ApiModelProperty(value = "采购人姓名")
+    @NotEmpty(message = "HandlePurchaser.name.null")
+    private String name;
     @ApiModelProperty(value = "公司名称")
     @NotEmpty(message = "HandlePurchaser.companyName.null")
     private String companyName;
@@ -58,6 +61,14 @@ public class HandlePurchaser {
     @ApiModelProperty(value = "操作人Id")
     @NotEmpty(message = "HandlePurchaser.OperatorId.null")
     private long OperatorId;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public long getOperatorId() {
         return OperatorId;

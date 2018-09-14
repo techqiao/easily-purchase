@@ -16,4 +16,5 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     public Result<Boolean> createSupplierUser(HandlerSupplierUser handlerSupplierUser) {
         return Result.hystrixError();
     }
+    
 }

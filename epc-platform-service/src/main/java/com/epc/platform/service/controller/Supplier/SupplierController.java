@@ -18,7 +18,6 @@ import java.util.List;
 
 /**
  * <p>Description : 供应商控制器
- * <p>Date : 2018-09-10  18:08
  * <p>@author : wjq
  */
 @Api(value = "供应商服务", description = "供应商服务")

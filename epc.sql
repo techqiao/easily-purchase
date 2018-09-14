@@ -10,6 +10,7 @@ CREATE TABLE `sys_admin_user` (
   `name` varchar(256) DEFAULT NULL COMMENT '姓名',
   `phone` varchar(32) DEFAULT NULL COMMENT '手机号',
   `password` CHAR(32) DEFAULT NULL COMMENT '密码',
+  `dept_id` BIGINT(11) NOT NULL COMMENT '部门id',
   `create_at` DATETIME NOT NULL COMMENT '创建时间',
   `update_at` DATETIME NOT NULL COMMENT '最后修改时间',
   `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
@@ -26,6 +27,9 @@ CREATE TABLE `sys_admin_role` (
   `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='平台:角色表';
+
+INSERT INTO `sys_admin_role` VALUES ('1', '管理员', '管理员', '', '');
+INSERT INTO `sys_admin_role` VALUES ('2', '注册账户', '注册账户，只可查看，不可操作', '', '');
 
 DROP TABLE IF EXISTS `sys_admin_user_role`;
 CREATE TABLE `sys_admin_user_role` (
@@ -60,8 +64,20 @@ CREATE TABLE `sys_admin_role_resource` (
   `update_at` DATETIME NOT NULL COMMENT '最后修改时间',
   `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
-
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='平台:角色资源关联表';
+
+
+DROP TABLE IF EXISTS `sys_admin_dept`;
+CREATE TABLE `sys_admin_dept` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+  `parent_id` bigint(20) NOT NULL COMMENT '上级部门ID',
+  `dept_name` varchar(100) NOT NULL COMMENT '部门名称',
+  `order_num` bigint(20) DEFAULT NULL COMMENT '排序',
+  `create_at` DATETIME NOT NULL COMMENT '创建时间',
+  `update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统：部门表';
 
 DROP TABLE IF EXISTS `sys_admin_user_operator`;
 CREATE TABLE `sys_admin_user_operator` (

@@ -5,31 +5,31 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class BaseDetailIfo {
     @ApiModelProperty(value = "公司名称")
-    @NotEmpty(message = "RoleDetailIfo.companyName.null")
+    @NotEmpty(message = "RoleDetailInfo.companyName.null")
     private String companyName;
     @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "RoleDetailIfo.publicBankName.null")
+    @NotEmpty(message = "RoleDetailInfo.publicBankName.null")
     private String publicBankName;
     @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "RoleDetailIfo.publicBanAccountNumber.null")
+    @NotEmpty(message = "RoleDetailInfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
     @ApiModelProperty(value = "资质证书url")
-    @NotEmpty(message = "RoleDetailIfo.qualificationCertificate.null")
+    @NotEmpty(message = "RoleDetailInfo.qualificationCertificate.null")
     private String qualificationCertificate;
     @ApiModelProperty(value = "营业执照照片url")
-    @NotEmpty(message = "RoleDetailIfo.businessLicense.null")
+    @NotEmpty(message = "RoleDetailInfo.businessLicense.null")
     private String businessLicense;
     @ApiModelProperty(value = "法人身份证正面照片url")
-    @NotEmpty(message = "RoleDetailIfo.legalIdCardPositive.null")
+    @NotEmpty(message = "RoleDetailInfo.legalIdCardPositive.null")
     private String legalIdCardPositive;
     @ApiModelProperty(value = "法人身份证反面照片url")
-    @NotEmpty(message = "RoleDetailIfo.legalIdCardOther.null")
+    @NotEmpty(message = "RoleDetailInfo.legalIdCardOther.null")
     private String legalIdCardOther;
     @ApiModelProperty(value = "带公章的授权书照片url")
-    @NotEmpty(message = "RoleDetailIfo.certificateOfAuthorization.null")
+    @NotEmpty(message = "RoleDetailInfo.certificateOfAuthorization.null")
     private String certificateOfAuthorization;
     @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
-    @NotEmpty(message = "RoleDetailIfo.operatorIdCardFront.null")
+    @NotEmpty(message = "RoleDetailInfo.operatorIdCardFront.null")
     private String operatorIdCardFront;
 
     public String getCompanyName() {

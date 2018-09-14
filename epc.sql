@@ -149,6 +149,9 @@ CREATE TABLE `t_operator_supplier` (
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商姓名',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`operator_id` CHAR(32) NOT NULL COMMENT '操作人ID',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -166,6 +169,8 @@ CREATE TABLE `t_supplier_basic_info` (
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`supplier_id` BIGINT(11) UNSIGNED COMMENT '供应商(法人)ID',
+	`InviterType` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构',
+	`InviterId` BIGINT(11) NOT NULL COMMENT '邀请人Id',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -173,6 +178,7 @@ CREATE TABLE `t_supplier_basic_info` (
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商:法人及其员工基本(登录)信息';
+
 
 -- 供应商 详情
 DROP TABLE IF EXISTS `t_supplier_detail_info`;
@@ -188,7 +194,6 @@ CREATE TABLE `t_supplier_detail_info` (
     `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商:审核所需详细信息';
-
 
 
 -- 供应商 附件
@@ -214,6 +219,8 @@ CREATE TABLE `t_purchaser_basic_info` (
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`purchaser_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
+	`InviterType` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构',
+	`InviterId` BIGINT(11) NOT NULL COMMENT '邀请人Id',
 	`state` INT(2) UNSIGNED COMMENT '审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -247,6 +254,9 @@ CREATE TABLE `t_purchaser_supplier` (
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`purchaser_id` CHAR(32) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -265,6 +275,9 @@ CREATE TABLE `t_purchaser_agency` (
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '招标代理机构名称',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`purchaser_id` CHAR(32) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -315,6 +328,8 @@ CREATE TABLE `t_agency_basic_info` (
 	`agency_id` BIGINT(11) UNSIGNED COMMENT '招标(采购)代理机构 ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`InviterType` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,',
+	`InviterId` BIGINT(11) NOT NULL COMMENT '邀请人Id',
 	`state` INT(2) UNSIGNED COMMENT '审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -348,6 +363,9 @@ CREATE TABLE `t_agency_supplier` (
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`agency_id` CHAR(32) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -395,30 +413,22 @@ CREATE TABLE `t_expert_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`name` VARCHAR(16) NOT NULL COMMENT '评标专家姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`profession` CHAR(11) NOT NULL COMMENT '专业',
+	`positional` CHAR(11) NOT NULL COMMENT '职称',
+	`level` CHAR(11) NOT NULL COMMENT '级别',
+	`circular_dt` DATETIME NOT NULL COMMENT '通知时间',
+	`circular_method` CHAR(11) NOT NULL COMMENT '通知方式',
+	`other_information` VARCHAR(8000) NOT NULL COMMENT '其他信息',
 	`password` CHAR(32) NOT NULL COMMENT '登录密码',
-	`expert_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
+	`InviterType` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构',
+	`InviterId` BIGINT(11) NOT NULL COMMENT '邀请人Id',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-    `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评标专家:基本(登录)信息';
 
--- 评标专家 详情
-DROP TABLE IF EXISTS `t_expert_detail_info`;
-CREATE TABLE `t_expert_detail_info` (
-	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`expert_id` BIGINT(11) UNSIGNED COMMENT '运营商法人ID',
-	`company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
-	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
-	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
-	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
-	`extended_field` varchar(128) DEFAULT NULL COMMENT '扩展字段',
-    `create_at` DATETIME NOT NULL COMMENT '创建时间',
-    `update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-    `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
-	PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评标专家:审核所需详细信息';
 
 -- 评标专家 附件
 DROP TABLE IF EXISTS `t_expert_attachment`;

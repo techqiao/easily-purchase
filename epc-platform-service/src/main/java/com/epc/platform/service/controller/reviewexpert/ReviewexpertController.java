@@ -32,6 +32,7 @@ public class ReviewexpertController implements ReviewexpertService {
     public Result<Boolean> insertReviewexpertBasicInfo(@RequestBody UserBasicInfo handleOperator) {
         return operatorService.insertOperatorBasicInfo(handleOperator);
     }
+
     @ApiOperation(value = "评审专家资料补全", notes = "评审专家资料补全")
     @Override
     public Result<Boolean> insertReviewexpertDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo) {

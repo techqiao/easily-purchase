@@ -12,7 +12,6 @@ public interface OperatorService {
      */
     Result<Boolean> createOperatorBasicInfo(HandleOperator handleOperator);
 
-
     /**
      * 新增采购人
      * @param handlePurchaser

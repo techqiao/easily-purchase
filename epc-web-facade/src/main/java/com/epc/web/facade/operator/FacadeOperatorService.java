@@ -2,6 +2,7 @@ package com.epc.web.facade.operator;
 
 import com.epc.web.facade.operator.handle.HandleOperator;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +34,13 @@ public interface FacadeOperatorService {
      */
     @PostMapping(value = "createPurchaseByOperator", consumes = "application/json; charset=UTF-8")
     Result<Boolean> createPurchaseByOperator(@RequestBody HandlePurchaser handleOperator);
+
+    /**
+     * 完善信息
+     * @param handlePurchaser
+     * @return
+     */
+    @PostMapping(value = "updateSupplierDetail", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateSupplierDetail(@RequestBody HandleSupplierDetail handlePurchaser) ;
 
 }

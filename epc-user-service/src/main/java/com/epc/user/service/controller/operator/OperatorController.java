@@ -7,10 +7,15 @@ import com.epc.user.service.service.purchaser.PurchaserService;
 import com.epc.web.facade.operator.FacadeOperatorService;
 import com.epc.web.facade.operator.handle.HandleOperator;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 
+/**
+ * <p>Description : 运营商控制器
+ * <p>Date : 2018-09-10  18:08
+ */
 @RestController
 public class OperatorController  implements FacadeOperatorService {
 
@@ -42,9 +47,19 @@ public class OperatorController  implements FacadeOperatorService {
      * @UpdateRemark:   修改内容
      * @Version:        1.0
      */
+
     @Override
     public Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser) {
         return operatorService.createPurchaseByOperator(handlePurchaser);
     }
 
+    /**
+     * 完善 供应商信息
+     * @param handleSupplierDetail
+     * @return
+     */
+    @Override
+    public Result<Boolean> updateSupplierDetail(HandleSupplierDetail handleSupplierDetail) {
+        return purchaserService.updateSupplierDetail(handleSupplierDetail);
+    }
 }

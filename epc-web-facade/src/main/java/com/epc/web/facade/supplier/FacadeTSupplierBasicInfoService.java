@@ -24,5 +24,4 @@ public interface FacadeTSupplierBasicInfoService {
     @PostMapping(value = "createSupplierUser", consumes = "application/json;charset=UTF-8")
     Result<Boolean> createSupplierUser(@RequestBody HandlerSupplierUser handlerSupplierUser);
 
-
 }

@@ -9,7 +9,6 @@ public class TOperatorPurchaser implements Serializable {
 
     private String cellphone;
 
-
     private String password;
 
     private Integer state;

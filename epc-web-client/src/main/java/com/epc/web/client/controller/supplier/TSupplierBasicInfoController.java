@@ -1,4 +1,4 @@
-package com.epc.web.client.controller.Operator.controller.supplier;
+package com.epc.web.client.controller.supplier;
 
 import com.epc.common.Result;
 import com.epc.web.client.remoteApi.supplier.SupplierClient;

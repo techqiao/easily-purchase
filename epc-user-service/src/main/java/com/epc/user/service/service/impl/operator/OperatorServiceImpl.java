@@ -6,10 +6,14 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.user.service.domain.operator.TOperatorBasicInfo;
+import com.epc.user.service.domain.operator.TOperatorPurchaser;
 import com.epc.user.service.domain.purchaser.TPurchaserAttachment;
+import com.epc.user.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.user.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.user.service.mapper.operator.TOperatorBasicInfoMapper;
+import com.epc.user.service.mapper.operator.TOperatorPurchaserMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserAttachmentMapper;
+import com.epc.user.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.user.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.user.service.service.impl.purchaser.PurchaserServiceImpl;
 import com.epc.user.service.service.operator.OperatorService;
@@ -37,6 +41,10 @@ public class OperatorServiceImpl implements OperatorService {
     TPurchaserAttachmentMapper tPurchaserAttachmentMapper;
     @Autowired
     PurchaserServiceImpl purchaserServiceImpl;
+    @Autowired
+    TPurchaserBasicInfoMapper tPurchaserBasicInfoMapper;
+    @Autowired
+    TOperatorPurchaserMapper tOperatorPurchaserMapper;
 
     /**
     * @Description:    新增运营商人员
@@ -55,7 +63,6 @@ public class OperatorServiceImpl implements OperatorService {
         Date date =new Date();
         pojo.setName(handleOperator.getUserName());
         pojo.setCellphone(handleOperator.getCellPhone());
-        pojo.setPassword(handleOperator.getPassWord());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         pojo.setCreateAt(date);
@@ -81,54 +88,35 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional
     public Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser){
-        //BaseInfo新增采购人
-        purchaserServiceImpl.createPurchaserUserInfo(handlePurchaser,Const.Role.ROLE_CORPORATION);
-        //新增 运营商-采购人 记录
-        purchaserServiceImpl.createOperatePurchaser(handlePurchaser);
-        //新增 采购人（法人）证照信息
-        TPurchaserDetailInfo detailInfo =new TPurchaserDetailInfo();
-        BeanUtils.copyProperties(handlePurchaser,detailInfo);
+
+        //创建公库信息
+        TPurchaserBasicInfo pojo=new TPurchaserBasicInfo();
         Date date = new Date();
-        detailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        detailInfo.setCreateAt(date);
-        detailInfo.setUpdateAt(date);
-        TPurchaserAttachment attachment = new TPurchaserAttachment();
-        attachment.setPurchaserId(handlePurchaser.getUserId());
-        attachment.setCreateAt(date);
-        attachment.setUpdateAt(date);
-        attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        pojo.setCellphone(handlePurchaser.getCellPhone());
+        pojo.setName(handlePurchaser.getName());
+        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        pojo.setState(Const.STATE.REGISTERED);
+        pojo.setRole(Const.Role.ROLE_CORPORATION);
+        pojo.setCreateAt(date);
+        pojo.setUpdateAt(date);
+
+        //创建私库信息
+        TOperatorPurchaser operator=new TOperatorPurchaser();
+        operator.setCellphone(handlePurchaser.getCellPhone());
+        operator.setPurchaserName(handlePurchaser.getName());
+        operator.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        operator.setState(Const.STATE.REGISTERED);
+        operator.setCreateAt(date);
+        operator.setUpdateAt(date);
+
         try {
-            tPurchaserDetailInfoMapper.insertSelective(detailInfo);
-            //带公章的授权书照片url
-            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(handlePurchaser.getCertificateOfAuthorization());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //经办人(运营商员工)手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(handlePurchaser.getOperatorIdCardFront());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //法人身份证反面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(handlePurchaser.getLegalIdCardOther());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //法人身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateFilePath(handlePurchaser.getLegalIdCardPositive());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //营业执照照片url
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateFilePath(handlePurchaser.getBusinessLicense());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //资质证书url
-            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            attachment.setCertificateFilePath(handlePurchaser.getQualificationCertificate());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
+            tPurchaserBasicInfoMapper.insertSelective(pojo);
+            tOperatorPurchaserMapper.insertSelective(operator);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);
+            LOGGER.error("BusinessException createPurchaseByOperator : {}", e);
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
-            LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);
+            LOGGER.error("BusinessException createPurchaseByOperator : {}", e);
             return Result.error(e.getMessage());
         }
         return Result.success();

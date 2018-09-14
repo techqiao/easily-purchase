@@ -1,9 +1,11 @@
 package com.epc.administration.facade.operator.dto;
 
 import com.epc.administration.facade.operator.handle.BaseDetailIfo;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+@ApiModel
 public class QueryDetailIfo  extends BaseDetailIfo {
     @ApiModelProperty(value = "ID")
     @NotEmpty(message = "QueryDetailIfo.userId.null")

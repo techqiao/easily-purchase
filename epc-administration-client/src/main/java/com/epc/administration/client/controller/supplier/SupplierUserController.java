@@ -1,4 +1,4 @@
-package com.epc.administration.client.controller.Supplier;
+package com.epc.administration.client.controller.supplier;
 
 
 import com.epc.administration.client.controller.reviewexpert.handle.ClientRoleDetailInfo;

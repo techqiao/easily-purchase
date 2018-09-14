@@ -1,7 +1,6 @@
-package com.epc.administration.client.remoteapi.biddingAgency;
+package com.epc.administration.client.remoteapi.biddingagency;
 
-import com.epc.administration.facade.operator.FacadeOperatorService;
-import com.epc.administration.facade.operator.biddingAgency.BiddingAgencyService;
+import com.epc.administration.facade.biddingagency.BiddingAgencyService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**
@@ -9,7 +8,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * <p>Date : 2018-09-10  18:09
  * <p>@author : wjq
  */
-@FeignClient(value = "epc-platform-service",fallback = BiddingAgencyHystrix.class)
+@FeignClient(value = "epc-platform-service",fallback = com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyHystrix.class)
 public interface BiddingAgencyClient extends BiddingAgencyService {
 
 }

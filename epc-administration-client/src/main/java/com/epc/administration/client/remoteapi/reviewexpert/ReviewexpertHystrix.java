@@ -1,9 +1,9 @@
 package com.epc.administration.client.remoteapi.reviewexpert;
 
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.administration.facade.operator.reviewexpert.ReviewexpertService;
+import com.epc.administration.facade.reviewexpert.ReviewexpertService;
 import com.epc.common.Result;
 
 /**
@@ -18,7 +18,7 @@ public class ReviewexpertHystrix implements ReviewexpertService {
     }
 
     @Override
-    public Result<Boolean> insertReviewexpertDetailInfo(RoleDetailIfo roleDetailIfo) {
+    public Result<Boolean> insertReviewexpertDetailInfo(RoleDetailInfo roleDetailIfo) {
         return Result.hystrixError();
     }
 

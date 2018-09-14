@@ -1,7 +1,7 @@
-package com.epc.administration.client.controller.BiddingAgency;
+package com.epc.administration.client.controller.biddingagency;
 
 
-import com.epc.administration.client.remoteapi.biddingAgency.BiddingAgencyClient;
+import com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyClient;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;

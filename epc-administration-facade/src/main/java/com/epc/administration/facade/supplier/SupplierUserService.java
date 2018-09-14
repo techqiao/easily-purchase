@@ -1,8 +1,8 @@
-package com.epc.administration.facade.operator.Supplier;
+package com.epc.administration.facade.supplier;
 
 
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +30,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "insertOperatorDetailInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo);
+    Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo);
 
 
     /**

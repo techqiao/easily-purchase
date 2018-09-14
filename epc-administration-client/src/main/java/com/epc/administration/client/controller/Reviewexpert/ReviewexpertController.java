@@ -1,11 +1,12 @@
-package com.epc.administration.client.controller.Reviewexpert;
+package com.epc.administration.client.controller.reviewexpert;
 
-
+import com.epc.administration.client.controller.reviewexpert.handle.ClientRoleDetailInfo;
 import com.epc.administration.client.remoteapi.reviewexpert.ReviewexpertClient;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,9 @@ public class ReviewexpertController {
 
     @ApiOperation(value = "添加评审专家",notes = "添加评审专家")
     @PostMapping(value = "createReviewexpert", consumes = "application/json;charset=UTF-8")
-    public Result<Boolean> createReviewexpert(@RequestBody RoleDetailIfo roleDetailIfo){
-        return supplierClient.insertReviewexpertDetailInfo(roleDetailIfo);
+    public Result<Boolean> createReviewexpert(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo){
+        RoleDetailInfo pojo = new RoleDetailInfo();
+        BeanUtils.copyProperties(clientRoleDetailInfo,pojo);
+        return supplierClient.insertReviewexpertDetailInfo(pojo);
     }
 }

@@ -1,10 +1,11 @@
-package com.epc.administration.facade.operator.handle;
+package com.epc.administration.facade.operator.dto;
 
+import com.epc.administration.facade.operator.handle.BaseDetailIfo;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class QueryDetailIfo  extends BaseDetailIfo{
-    @ApiModelProperty(value = "运营商ID")
+public class QueryDetailIfo  extends BaseDetailIfo {
+    @ApiModelProperty(value = "ID")
     @NotEmpty(message = "QueryDetailIfo.userId.null")
     private Long Id;
     @ApiModelProperty(value = "模糊名称")

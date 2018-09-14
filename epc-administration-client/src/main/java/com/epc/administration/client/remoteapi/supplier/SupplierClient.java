@@ -1,7 +1,7 @@
 package com.epc.administration.client.remoteapi.supplier;
 
 
-import com.epc.administration.facade.operator.Supplier.SupplierUserService;
+import com.epc.administration.facade.supplier.SupplierUserService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**

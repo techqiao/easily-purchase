@@ -1,9 +1,8 @@
-package com.epc.platform.service.controller.biddingAgency;
+package com.epc.platform.service.controller.biddingagency;
 
-import com.epc.administration.facade.operator.FacadeOperatorService;
-import com.epc.administration.facade.operator.biddingAgency.BiddingAgencyService;
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.biddingagency.BiddingAgencyService;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
@@ -35,7 +34,7 @@ public class BiddingAgencyController implements BiddingAgencyService {
     }
     @ApiOperation(value = "招标代理机构资料补全", notes = "招标代理机构资料补全")
     @Override
-    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo) {
+    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo) {
         return operatorService.insertOperatorDetailInfo(roleDetailIfo);
     }
 

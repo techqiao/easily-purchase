@@ -1,6 +1,6 @@
 package com.epc.platform.service.service.operator.impl;
 
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
@@ -81,12 +81,6 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional
     public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
-        SysAdminResourceCriteria sysAdminResourceCriteria = new SysAdminResourceCriteria();
-        SysAdminResourceCriteria.Criteria criteria1 = sysAdminResourceCriteria.createCriteria();
-
-        SysAdminUserCriteria sysAdminUserCriteria = new SysAdminUserCriteria();
-        SysAdminUserCriteria.Criteria criteria = sysAdminUserCriteria.createCriteria();
-
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
         BeanUtils.copyProperties(roleDetailInfo, detailInfo);
         Date date = new Date();

@@ -1,8 +1,8 @@
-package com.epc.administration.client.remoteapi.biddingAgency;
+package com.epc.administration.client.remoteapi.biddingagency;
 
-import com.epc.administration.facade.operator.biddingAgency.BiddingAgencyService;
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.biddingagency.BiddingAgencyService;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 
@@ -19,8 +19,8 @@ public class BiddingAgencyHystrix  implements BiddingAgencyService {
     }
 
     @Override
-    public Result<Boolean> insertBiddingAgencyDetailInfo(RoleDetailIfo roleDetailIfo) {
-        return Result.hystrixError();
+    public Result<Boolean> insertBiddingAgencyDetailInfo(RoleDetailInfo roleDetailInfo) {
+        return null;
     }
 
     @Override

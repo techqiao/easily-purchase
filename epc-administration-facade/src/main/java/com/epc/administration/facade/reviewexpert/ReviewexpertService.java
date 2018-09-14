@@ -1,7 +1,7 @@
-package com.epc.administration.facade.operator.reviewexpert;
+package com.epc.administration.facade.reviewexpert;
 
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +22,10 @@ public interface ReviewexpertService {
 
     /**
      * 评审专家完善资料
-     * @param roleDetailIfo 附件信息
      * @return
      */
     @PostMapping(value = "insertReviewexpertDetailInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertReviewexpertDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo);
+    Result<Boolean> insertReviewexpertDetailInfo(@RequestBody RoleDetailInfo roleDetailInfo);
 
 
     /**

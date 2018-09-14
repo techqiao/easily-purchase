@@ -1,10 +1,9 @@
 package com.epc.platform.service.controller.reviewexpert;
 
-import com.epc.administration.facade.operator.FacadeOperatorService;
-import com.epc.administration.facade.operator.handle.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.administration.facade.operator.reviewexpert.ReviewexpertService;
+import com.epc.administration.facade.reviewexpert.ReviewexpertService;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import com.epc.platform.service.service.operator.OperatorService;
@@ -35,7 +34,7 @@ public class ReviewexpertController implements ReviewexpertService {
     }
     @ApiOperation(value = "评审专家资料补全", notes = "评审专家资料补全")
     @Override
-    public Result<Boolean> insertReviewexpertDetailInfo(@RequestBody RoleDetailIfo roleDetailIfo) {
+    public Result<Boolean> insertReviewexpertDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo) {
         return operatorService.insertOperatorDetailInfo(roleDetailIfo);
     }
 

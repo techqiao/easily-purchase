@@ -1,6 +1,6 @@
 package com.epc.administration.client.remoteapi.reviewexpert;
 
-import com.epc.administration.facade.operator.reviewexpert.ReviewexpertService;
+import com.epc.administration.facade.reviewexpert.ReviewexpertService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**

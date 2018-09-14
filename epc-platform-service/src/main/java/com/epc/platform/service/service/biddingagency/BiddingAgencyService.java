@@ -4,7 +4,6 @@ import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
-import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 
 /**
  * <p>Description : 招标代理机构

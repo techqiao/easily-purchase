@@ -102,4 +102,13 @@ public interface SysAdminResourceMapper {
      * @mbggenerated Mon Sep 10 16:49:57 CST 2018
      */
     int updateByPrimaryKey(SysAdminResource record);
+
+    //根据手机号查看资源
+    List<SysAdminResource> findResource(String phone);
+
+
+    // 删除父节点，子节点变成顶级节点（根据实际业务调整）
+    void changeToTop(List<Long> resourceIds);
+
+    List<SysAdminResource> findUserPermissions(String userName);
 }

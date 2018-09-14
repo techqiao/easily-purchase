@@ -29,7 +29,7 @@ public interface SupplierUserService {
      * @param roleDetailIfo 附件信息
      * @return
      */
-    @PostMapping(value = "insertSupplierDetailInfo", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "insertOperatorDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo);
 
 
@@ -38,7 +38,7 @@ public interface SupplierUserService {
      * @param
      * @return
      */
-    @PostMapping(value = "deleteSupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "deleteOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
     Result<Boolean> deleteOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
@@ -46,7 +46,7 @@ public interface SupplierUserService {
      * @param
      * @return
      */
-    @PostMapping(value = "querySupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "queryOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
     Result queryOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
@@ -54,7 +54,7 @@ public interface SupplierUserService {
      * @param
      * @return
      */
-    @PostMapping(value = "selectSupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "selectOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
     Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
 

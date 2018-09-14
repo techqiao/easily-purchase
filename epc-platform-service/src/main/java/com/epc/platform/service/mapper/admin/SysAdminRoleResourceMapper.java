@@ -102,4 +102,5 @@ public interface SysAdminRoleResourceMapper {
      * @mbggenerated Mon Sep 10 16:51:28 CST 2018
      */
     int updateByPrimaryKey(SysAdminRoleResource record);
+
 }

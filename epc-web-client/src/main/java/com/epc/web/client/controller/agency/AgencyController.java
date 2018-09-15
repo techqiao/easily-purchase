@@ -19,25 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RequestMapping(value = "/agency", method = RequestMethod.POST)
 @RestController
-public class AgencyController implements FacadeAgencyService {
+public class AgencyController  {
 
     @Autowired
     AgencyClient agencyClient;
 
     @PostMapping(value = "/insertEmployeee", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
-    @Override
     public Result insertEmployee(HandleEmployee employee) {
         return agencyClient.insertEmployee(employee);
     }
 
     @PostMapping(value = "/insertExpert", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
-    @Override
     public Result insertExpert(HandleExpert handleExpert) {
         return agencyClient.insertExpert(handleExpert);
     }
 
     @PostMapping(value = "/insertSupplier", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
-    @Override
     public Result insertSupplier(HandleSupplier handleSupplier) {
         return agencyClient.insertSupplier(handleSupplier);
     }

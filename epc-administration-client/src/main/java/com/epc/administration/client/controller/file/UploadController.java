@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.Date;
  * <p>Date : 2018-09-11  22:50
  * <p>@author : wjq
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/upload")
 public class UploadController {

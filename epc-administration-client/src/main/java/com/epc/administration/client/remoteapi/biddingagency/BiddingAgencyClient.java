@@ -8,7 +8,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * <p>Date : 2018-09-10  18:09
  * <p>@author : wjq
  */
-@FeignClient(value = "epc-platform-service",fallback = com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyHystrix.class)
+@FeignClient(value = "epc-platform-service",fallback = BiddingAgencyHystrix.class)
 public interface BiddingAgencyClient extends BiddingAgencyService {
 
 }

@@ -2,6 +2,7 @@ package com.epc.administration.client.controller.file;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import java.io.InputStream;
  * <p>Date : 2018-09-11  22:31
  * <p>@author : wjq
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/download")
 public class DownLoadController {

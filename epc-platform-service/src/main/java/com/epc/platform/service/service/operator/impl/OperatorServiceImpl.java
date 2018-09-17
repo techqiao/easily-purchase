@@ -57,6 +57,7 @@ public class OperatorServiceImpl implements OperatorService {
         Date date = new Date();
         pojo.setCellphone(handleOperator.getCellphone());
         pojo.setPassword(handleOperator.getPassword());
+        pojo.setName(handleOperator.getUsername());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         pojo.setCreateAt(date);

@@ -2,9 +2,12 @@ package com.epc.user.service.mapper.agency;
 
 import com.epc.user.service.domain.agency.TAgencyAttachment;
 import com.epc.user.service.domain.agency.TAgencyAttachmentCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 
 public interface TAgencyAttachmentMapper {
     /**

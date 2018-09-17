@@ -30,7 +30,7 @@
         <!--  招标采购数据服务  -->
         <module>epc-tenders-service</module>
         <!--  平台用户数据服务  -->
-        <module>epc-user-service</module>
+        <module>epc-web-service</module>
         <!--  web端数据服务  -->
         <module>epc-web-client</module>
         <!--  web端接口api  -->

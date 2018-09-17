@@ -5,6 +5,7 @@ import com.epc.user.service.domain.agency.TAgencyBasicInfoCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Component;
 
 public interface TAgencyBasicInfoMapper {
     /**

@@ -29,7 +29,7 @@ public interface FacadeAgencyService {
      * @return
      */
     @PostMapping(value = "insertExpert", consumes = "application/json; charset=UTF-8")
-    public Result insertExpert(HandleExpert handleExpert);
+    public Result insertExpert( @RequestBody HandleExpert handleExpert);
 
     /**
      * 代理商新增供货商
@@ -38,5 +38,5 @@ public interface FacadeAgencyService {
      * @return
      */
     @PostMapping(value = "insertSupplier", consumes = "application/json; charset=UTF-8")
-    public Result insertSupplier(HandleSupplier handleSupplier);
+    public Result insertSupplier( @RequestBody HandleSupplier handleSupplier);
 }

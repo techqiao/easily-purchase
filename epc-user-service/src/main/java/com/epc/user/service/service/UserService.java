@@ -1,12 +1,6 @@
 package com.epc.user.service.service;
 
-import com.epc.common.Result;
 import com.epc.user.service.domain.User;
-import com.epc.user.service.domain.dto.QueryUserDTO;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * <p>Description : 用户接口
@@ -43,12 +37,5 @@ public interface UserService {
      * @return
      */
     Boolean updateUserById(User user);
-
-
-    /**
-     * 获取用户列表
-     * @return
-     */
-    Result<List<User>> getUserList(QueryUserDTO queryUserDTO);
 
 }

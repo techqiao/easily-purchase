@@ -1,12 +1,14 @@
 package com.epc.administration.client.controller.operator;
 
+import com.epc.administration.client.controller.operator.handle.ClientRoleDetailInfo;
 import com.epc.administration.client.remoteapi.operator.OperatorClient;
-import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
-import com.epc.administration.facade.operator.handle.HandleOperatorDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
+import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,23 +19,44 @@ import org.springframework.web.bind.annotation.*;
  * <p>Date : 2018-09-10  18:31
  * <p>@author : wjq
  */
-@Api(value = "运营商服务")
+@Api(value = "用户服务",tags = {"用户服务"})
 @RestController
-@RequestMapping(value = "/operator", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController {
     @Autowired
     private OperatorClient operatorClient;
 
-
     @ApiOperation(value = "注册运营商",notes = "平台添加运营商")
-    @PostMapping(value = "insertOperatorBasicInfo")
-    public Result<Boolean> insertOperatorBasicInfo(@RequestBody HandleOperatorBasicInfo handleOperatorBasicInfo) {
-        return operatorClient.insertOperatorBasicInfo(handleOperatorBasicInfo);
+    @PostMapping(value = "registry")
+    public Result<Boolean> insertOperatorBasicInfo(@RequestBody UserBasicInfo userBasicInfo) {
+        return operatorClient.insertOperatorBasicInfo(userBasicInfo);
     }
 
     @ApiOperation(value = "运营商完善资料",notes = "运营商完善资料")
-    @PostMapping(value = "insertOperatorDetailInfo")
-    public Result<Boolean> insertOperatorDetailInfo(@RequestBody HandleOperatorDetailIfo handleOperatorBasicInfo) {
-        return operatorClient.insertOperatorDetailInfo(handleOperatorBasicInfo);
+    @PostMapping(value = "registryDetail")
+    public Result<Boolean> insertOperatorDetailInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo) {
+        RoleDetailInfo pojo = new RoleDetailInfo();
+        BeanUtils.copyProperties(clientRoleDetailInfo,pojo);
+        return operatorClient.insertOperatorDetailInfo(pojo);
     }
+
+
+    @ApiOperation(value = "运营商删除资料",notes = "运营商删除资料")
+    @PostMapping(value = "deleteOperatorDetailInfo")
+    public Result deleteOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return operatorClient.deleteOperatorDetailInfo(queryDetailIfo);
+    }
+
+    @ApiOperation(value = "运营商查询资料",notes = "运营商查询资料")
+    @PostMapping(value = "queryOperatorDetailInfo")
+    public Result queryOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return operatorClient.queryOperatorDetailInfo(queryDetailIfo);
+    }
+
+    @ApiOperation(value = "运营商模糊搜索查询资料",notes = "运营商模糊搜索查询资料")
+    @PostMapping(value = "selectOperatorDetailInfo")
+    public Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return operatorClient.selectOperatorDetailInfo(queryDetailIfo);
+    }
+
 }

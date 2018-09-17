@@ -1,8 +1,9 @@
 package com.epc.administration.client.remoteapi.operator;
 
 import com.epc.administration.facade.operator.FacadeOperatorService;
-import com.epc.administration.facade.operator.handle.HandleOperatorBasicInfo;
-import com.epc.administration.facade.operator.handle.HandleOperatorDetailIfo;
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.common.Result;
 
 /**
@@ -12,12 +13,28 @@ import com.epc.common.Result;
  */
 public class OperatorHystrix implements FacadeOperatorService {
     @Override
-    public Result<Boolean> insertOperatorBasicInfo(HandleOperatorBasicInfo handleOperator) {
+    public Result<Boolean> insertOperatorBasicInfo(UserBasicInfo handleOperator) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result<Boolean> insertOperatorDetailInfo(HandleOperatorDetailIfo handleOperatorDetailIfo) {
+    public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+        return Result.hystrixError();
+    }
+
 }

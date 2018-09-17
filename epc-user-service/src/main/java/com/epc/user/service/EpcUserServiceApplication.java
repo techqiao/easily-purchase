@@ -9,6 +9,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulServer;
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan(value = "com.epc.user.service.mapper")
+
 public class EpcUserServiceApplication {
 
 	public static void main(String[] args) {

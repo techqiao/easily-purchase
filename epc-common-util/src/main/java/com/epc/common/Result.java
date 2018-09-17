@@ -1,5 +1,7 @@
 package com.epc.common;
 
+import com.epc.common.constants.ErrorMessagesEnum;
+import io.swagger.annotations.ApiModel;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -12,29 +14,33 @@ import java.io.Serializable;
  */
 @JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
 //保证序列化json的时候,如果是null的对象,key也会消失
+@ApiModel(value = "返回数据（Json）对象", description = "接口返回数据对象", discriminator = "吴江桥")
 public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = 9219485591159741586L;
 
-    private int code;
+    private String code;
     private String msg;
     private T data;
 
-    private Result(int code){
+    public Result() {
+    }
+
+    private Result(String code){
         this.code = code;
     }
-    private Result(int code,T data){
+    private Result(String code,T data){
         this.code = code;
         this.data = data;
     }
 
-    private Result(int code,String msg,T data){
+    private Result(String code,String msg,T data){
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    private Result(int code,String msg){
+    private Result(String code,String msg){
         this.code = code;
         this.msg = msg;
     }
@@ -45,7 +51,7 @@ public class Result<T> implements Serializable {
         return this.code == ResultCode.SUCCESS.getCode();
     }
 
-    public int getcode(){
+    public String getcode(){
         return code;
     }
     public T getData(){
@@ -55,7 +61,7 @@ public class Result<T> implements Serializable {
         return msg;
     }
 
-    public Result setCode(int code) {
+    public Result setCode(String code) {
         this.code = code;
         return this;
     }
@@ -96,12 +102,16 @@ public class Result<T> implements Serializable {
         return new Result<T>(ResultCode.ERROR.getCode(),errorMessage);
     }
 
-    public static <T> Result<T> error(int errorCode,String errorMessage){
+    public static <T> Result<T> error(String errorCode,String errorMessage){
         return new Result<T>(errorCode,errorMessage);
     }
 
     public static <T> Result<T> hystrixError(){
         return new Result<T>(ResultCode.SERVICE_EXCEPTION.getCode(),ResultCode.SERVICE_EXCEPTION.getDesc());
+    }
+
+    public static <T> Result<T> error(ErrorMessagesEnum errorMessagesEnum){
+        return new Result<T>(errorMessagesEnum.getErrCode(),errorMessagesEnum.getErrInfo());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.epc.platform.service.mapper.admin;
 
+import com.epc.platform.service.domain.admin.RoleWithSource;
 import com.epc.platform.service.domain.admin.SysAdminRole;
 import com.epc.platform.service.domain.admin.SysAdminRoleCriteria;
 import java.util.List;
@@ -102,4 +103,9 @@ public interface SysAdminRoleMapper {
      * @mbggenerated Mon Sep 10 16:50:56 CST 2018
      */
     int updateByPrimaryKey(SysAdminRole record);
+
+
+    List<RoleWithSource> findById(Long roleId);
+
+    List<SysAdminRole> findUserRole(String userName);
 }

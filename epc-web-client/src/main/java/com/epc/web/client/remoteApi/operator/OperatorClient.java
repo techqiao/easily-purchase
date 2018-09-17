@@ -7,7 +7,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * Description : easily-purchase
  * @author lin
  */
-@FeignClient(value = "epc-user-service",fallback = OperatorHystrix.class)
+@FeignClient(value = "epc-web-service",fallback = OperatorHystrix.class)
 public interface OperatorClient extends FacadeOperatorService {
 
 }

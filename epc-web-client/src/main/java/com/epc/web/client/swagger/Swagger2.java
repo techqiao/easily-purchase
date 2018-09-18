@@ -23,6 +23,6 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("admin web center").description("后台 openApi").termsOfServiceUrl(
-                "http://127.0.0.1:4101/swagger-ui.html").version("1.0").build();
+                "http://127.0.0.1:3105/swagger-ui.html").version("1.0").build();
     }
 }

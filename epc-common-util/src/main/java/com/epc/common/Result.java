@@ -19,28 +19,28 @@ public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = 9219485591159741586L;
 
-    private String code;
+    private Integer code;
     private String msg;
     private T data;
 
     public Result() {
     }
 
-    private Result(String code){
+    private Result(Integer code){
         this.code = code;
     }
-    private Result(String code,T data){
+    private Result(Integer code,T data){
         this.code = code;
         this.data = data;
     }
 
-    private Result(String code,String msg,T data){
+    private Result(Integer code,String msg,T data){
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    private Result(String code,String msg){
+    private Result(Integer code,String msg){
         this.code = code;
         this.msg = msg;
     }
@@ -48,10 +48,10 @@ public class Result<T> implements Serializable {
     @JsonIgnore
     //使之不在json序列化结果当中
     public boolean isSuccess(){
-        return this.code.equals(ResultCode.SUCCESS.getCode());
+        return this.code==ResultCode.SUCCESS.getCode();
     }
 
-    public String getcode(){
+    public Integer getcode(){
         return code;
     }
     public T getData(){
@@ -61,7 +61,7 @@ public class Result<T> implements Serializable {
         return msg;
     }
 
-    public Result setCode(String code) {
+    public Result setCode(Integer code) {
         this.code = code;
         return this;
     }
@@ -102,7 +102,7 @@ public class Result<T> implements Serializable {
         return new Result<T>(ResultCode.ERROR.getCode(),errorMessage);
     }
 
-    public static <T> Result<T> error(String errorCode,String errorMessage){
+    public static <T> Result<T> error(Integer errorCode,String errorMessage){
         return new Result<T>(errorCode,errorMessage);
     }
 

@@ -10,22 +10,22 @@ import java.io.Serializable;
  */
 public enum ResultCode implements Serializable {
 
-    SUCCESS("0","SUCCESS"),
-    ERROR("1","ERROR"),
-    NEED_LOGIN("10","NEED_LOGIN"),
-    ILLEGAL_ARGUMENT("2","ILLEGAL_ARGUMENT"),
-    SERVICE_EXCEPTION("3","服务异常");
+    SUCCESS(0,"SUCCESS"),
+    ERROR(1,"ERROR"),
+    NEED_LOGIN(10,"NEED_LOGIN"),
+    ILLEGAL_ARGUMENT(2,"ILLEGAL_ARGUMENT"),
+    SERVICE_EXCEPTION(3,"服务异常");
 
-    private final String code;
+    private final Integer code;
     private final String desc;
     private static final long serialVersionUID = 1L;
 
-    ResultCode(String code, String desc){
+    ResultCode(Integer code, String desc){
         this.code = code;
         this.desc = desc;
     }
 
-    public String getCode(){
+    public Integer getCode(){
         return code;
     }
     public String getDesc(){

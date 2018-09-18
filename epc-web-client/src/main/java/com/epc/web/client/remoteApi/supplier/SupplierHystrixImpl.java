@@ -15,7 +15,7 @@ import java.util.List;
  * <p>Date : 2018-09-13  15:10
  * <p>@author : donghuan
  */
-public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
+public class SupplierHystrixImpl implements FacadeTSupplierBasicInfoService {
 
     @Override
     public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {

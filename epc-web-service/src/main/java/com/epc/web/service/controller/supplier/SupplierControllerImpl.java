@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @RestController
-public class SupplierController implements FacadeTSupplierBasicInfoService {
+public class SupplierControllerImpl implements FacadeTSupplierBasicInfoService {
 
     @Autowired
     TSupplierBasicInfoService tSupplierBasicInfoService;

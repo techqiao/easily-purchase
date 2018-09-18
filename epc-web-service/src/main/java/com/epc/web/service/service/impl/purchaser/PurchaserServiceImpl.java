@@ -88,6 +88,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @UpdateRemark: 修改内容，所有的新增先依据name和cellphone查询是否存在
      * @Version: 1.0
      */
+    @Override
     public Result<Boolean> createOperatePurchaser(HandlePurchaser handleOperator) {
 
         TOperatorPurchaserCriteria criteria = new TOperatorPurchaserCriteria();
@@ -297,6 +298,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @Description 新增 采购人员信息
      * @Author linzhixiang
      */
+    @Override
     public Result<Boolean> createPurchaserUserInfo(HandlePurchaser handleOperator, int roleType) {
         //先查询是否存在,不存在添加私库
         TPurchaserBasicInfoCriteria infoCriteria = new TPurchaserBasicInfoCriteria();

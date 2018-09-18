@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -24,7 +25,7 @@ import java.util.List;
 
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
 public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(TSupplierBasicInfoServiceImpl.class);
@@ -43,36 +44,41 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     * @Version:        1.0
     */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {
 
-        //  创建数据库插入对象
+        // 创建数据库插入对象
         TSupplierBasicInfo pojo=new TSupplierBasicInfo();
 
         //设置供应商的id
         pojo.setSupplierId(handlerSupplierAddEmployee.getSupplierId());
 
-        //  供应商状态3审核通过
+        //供应商状态3审核通过
         pojo.setState(Const.STATE.AUDIT_SUCCESS);
 
-        // 是否删除，0存在
+        //是否删除，0存在
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
         //角色2员工
         pojo.setRole(Const.Role.ROLE_CUSTOMER);
-        System.out.println("用户角色 "+Const.Role.ROLE_CUSTOMER);
 
+        //设置名字
         pojo.setName(handlerSupplierAddEmployee.getName());
 
+        //设置电话
         pojo.setCellphone(handlerSupplierAddEmployee.getCellphone());
 
+        //设置密码
         pojo.setPassword(MD5Util.MD5EncodeUtf8(handlerSupplierAddEmployee.getPassword()));
+
         //创建时间
         pojo.setCreateAt(new Date());
+
         //最后修改时间
         pojo.setUpdateAt(new Date());
 
 
+        //返回成功或者失败
         try {
             return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo)>0);
         }catch (Exception e){
@@ -93,7 +99,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
      * @Version:        1.0
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
 
         //通过这个员工的id来查询出他的所有信息
@@ -133,14 +139,14 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     * @Version:        1.0
     */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<List<TSupplierBasicInfo>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
 
-        //
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
 
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
 
+        //获取输入的名字,来进行模糊查询
         String where=handleSupplierFindAllByName.getWhere();
         if(StringUtils.isNotBlank(where)){
             criteria1.andNameLike("%"+where+"%");

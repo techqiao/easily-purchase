@@ -2,11 +2,17 @@ package com.epc.web.service.service.impl.supplier;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.ErrorMessagesEnum;
+import com.epc.common.exception.BusinessException;
+import com.epc.common.util.MD5Util;
+import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
+import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
+import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.epc.web.facade.supplier.handle.HandlerSupplierUser;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -26,9 +33,9 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
 
     /**
-    * @Description:    java类作用描述
+    * @Description:    供应商增加一个员工
     * @Author:         donghuan
-    * @param           handlerSupplierUser:供应商添加用户表单数据封装
+    * @param           handlerSupplierAddEmployee:供应商添加用户表单数据封装
     * @CreateDate:     13:57 2018/9/13
     * @UpdateUser:
     * @UpdateDate:
@@ -36,21 +43,35 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     * @Version:        1.0
     */
     @Override
-    public Result<Boolean> createSupplierUser(HandlerSupplierUser handlerSupplierUser) {
-        TSupplierBasicInfo pojo=new TSupplierBasicInfo();
-        Date date=new Date();// 创建的时间
-        String name = handlerSupplierUser.getName();//从表单中得到员工的姓名
-        String cellphone = handlerSupplierUser.getCellphone();//从表单中得到员工的电话
-        String password = handlerSupplierUser.getPassword();//从表单中得到员工的密码
+    @Transactional
+    public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {
 
-        pojo.setState(Const.STATE.AUDIT_SUCCESS);   //  供应商状态3审核通过
-        pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED); // 是否删除，0存在
-        pojo.setRole(Const.Role.ROLE_CORPORATION);      //角色0法人
-        pojo.setName(name);
-        pojo.setCellphone(cellphone);
-        pojo.setPassword(password);
-        pojo.setCreateAt(date);
-        pojo.setUpdateAt(date);
+        //  创建数据库插入对象
+        TSupplierBasicInfo pojo=new TSupplierBasicInfo();
+
+        //设置供应商的id
+        pojo.setSupplierId(handlerSupplierAddEmployee.getSupplierId());
+
+        //  供应商状态3审核通过
+        pojo.setState(Const.STATE.AUDIT_SUCCESS);
+
+        // 是否删除，0存在
+        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+
+        //角色2员工
+        pojo.setRole(Const.Role.ROLE_CUSTOMER);
+        System.out.println("用户角色 "+Const.Role.ROLE_CUSTOMER);
+
+        pojo.setName(handlerSupplierAddEmployee.getName());
+
+        pojo.setCellphone(handlerSupplierAddEmployee.getCellphone());
+
+        pojo.setPassword(MD5Util.MD5EncodeUtf8(handlerSupplierAddEmployee.getPassword()));
+//        pojo.setPassword(password);
+        pojo.setCreateAt(new Date()); //创建时间
+        pojo.setUpdateAt(new Date()); //最后修改时间
+
+
         try {
             return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo)>0);
         }catch (Exception e){
@@ -61,57 +82,71 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
 
 
     /**
-     * 采购人录入供应商
-     * @param handleSupplierDetail
-     * @Author linzhixiang
-     * @return
+     * @Description:    通过id查询这个用户信息，得到用户提交的数据，并且设置到对应的实体类中
+     * @Author:         donghuan
+     * @param
+     * @CreateDate:     10:05 2018/9/15
+     * @UpdateUser:
+     * @UpdateDate:     10:05 2018/9/15
+     * @UpdateRemark:   修改内容
+     * @Version:        1.0
      */
     @Override
-    public Result<Boolean> createSupplierBasicInfo(HandleSupplierDetail handleSupplierDetail) {
-        TSupplierBasicInfo pojo=new TSupplierBasicInfo();
-        Date date=new Date();// 创建的时间
-        pojo.setState(Const.STATE.COMMITTED);   //  供应商状态2提交
-        pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED); // 是否删除，0存在
-        pojo.setRole(Const.Role.ROLE_CORPORATION);      //角色0法人
-        pojo.setCellphone(handleSupplierDetail.getCellPhone());
-        pojo.setPassword(handleSupplierDetail.getPassword());
-        pojo.setCreateAt(date);
-        pojo.setUpdateAt(date);
-        try {
-            return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo)>0);
-        }catch (Exception e){
-            LOGGER.error("exception insertTSupplierBasicInfoMapper:{}",e);
-            return Result.error(e.getMessage());
+    @Transactional
+    public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
+
+        //通过这个员工的id来查询出他的所有信息
+        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(handlerUpdateSupplierEmployeeById.getId());
+
+        //将最新的名字传入进去
+        tSupplierBasicInfo.setName(handlerUpdateSupplierEmployeeById.getName());
+
+        //将最新的电话传入进去
+        tSupplierBasicInfo.setCellphone(handlerUpdateSupplierEmployeeById.getCellphone());
+
+        //将状态传入进去
+        tSupplierBasicInfo.setIsDeleted(handlerUpdateSupplierEmployeeById.getIsDeleted());
+
+        //将最新的时间存进去
+        tSupplierBasicInfo.setUpdateAt(new Date());
+
+        //存入数据库
+        try{
+            return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
+        }catch (BusinessException e){
+            LOGGER.error("BusinessException updateSupplierEmployeeById : {}", e);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
+
     }
 
 
-//    @Override
-//    public boolean updateSupplierUser(HandlerUpdateSupplierUser handlerUpdateSupplierUser) {
-//        //通过id查询这个用户信息，然后得到用户提交的数据，并且设置到对应的实体类中
-//        String name=handlerUpdateSupplierUser.getName();
-//        String cellphone = handlerUpdateSupplierUser.getCellphone();
-//        Date date=new Date();
-//        TSupplierBasicInfo pojo=new TSupplierBasicInfo();
-//        pojo.setName(name);
-//        pojo.setCellphone(cellphone);
-//        pojo.setCreateAt(date);
-//        tSupplierBasicInfoMapper.insertSelective(pojo);
-//        return true;
-//
-//
-//
-//    }
-//
-//    @Override
-//    public List<TSupplierBasicInfo> querySupplierAll() {
-//
-//        //  ？？？？？？？？？
-//        //  查询所有的员工,有问题，不知道传啥参数
-//        List<TSupplierBasicInfo> ListTSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(null);
-//
-//        return ListTSupplierBasicInfos;
-//    }
+    /**
+    * @Description:    根据员工的名字来匹配出符合条件的员工返回一个list
+    * @Author:         donghuan
+    * @param
+    * @CreateDate:     19:24 2018/9/14
+    * @UpdateUser:
+    * @UpdateDate:     19:24 2018/9/14
+    * @UpdateRemark:   修改内容
+    * @Version:        1.0
+    */
+    @Override
+    @Transactional
+    public Result<List<TSupplierBasicInfo>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
+
+        //
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+
+        TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
+
+        String where=handleSupplierFindAllByName.getWhere();
+        if(StringUtils.isNotBlank(where)){
+            criteria1.andNameLike("%"+where+"%");
+        }
+        return Result.success(tSupplierBasicInfoMapper.selectByExample(criteria));
+    }
+
 
 
 }

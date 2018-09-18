@@ -174,4 +174,25 @@ public class HandleSupplierDetail {
     public void setOperatorId(long operatorId) {
         OperatorId = operatorId;
     }
+
+    @Override
+    public String toString() {
+        return "HandleSupplierDetail{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", uniformCreditCode='" + uniformCreditCode + '\'' +
+                ", businessLicense='" + businessLicense + '\'' +
+                ", legalIdCardPositive='" + legalIdCardPositive + '\'' +
+                ", legalIdCardOther='" + legalIdCardOther + '\'' +
+                ", certificateOfAuthorization='" + certificateOfAuthorization + '\'' +
+                ", operatorIdCardFront='" + operatorIdCardFront + '\'' +
+                ", qualificationCertificate='" + qualificationCertificate + '\'' +
+                ", publicBankName='" + publicBankName + '\'' +
+                ", publicBankCount='" + publicBankCount + '\'' +
+                ", cellPhone='" + cellPhone + '\'' +
+                ", password='" + password + '\'' +
+                ", OperatorId=" + OperatorId +
+                '}';
+    }
 }

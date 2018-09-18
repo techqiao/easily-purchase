@@ -34,5 +34,54 @@ public class HandlerUpdateSupplierEmployeeById implements Serializable {
     // 最后更新的时间
     private Date updateAt;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCellphone() {
+        return cellphone;
+    }
+
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    @Override
+    public String toString() {
+        return "HandlerUpdateSupplierEmployeeById{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cellphone='" + cellphone + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", updateAt=" + updateAt +
+                '}';
+    }
 }

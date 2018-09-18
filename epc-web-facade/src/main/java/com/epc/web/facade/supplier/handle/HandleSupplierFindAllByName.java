@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
-@Data
 @ApiModel(value = "HandleSupplierFindAllByName",description = "模糊查询")
 public class HandleSupplierFindAllByName implements Serializable {
 
@@ -19,5 +18,27 @@ public class HandleSupplierFindAllByName implements Serializable {
     @NotEmpty(message = "HandleSupplierFindAllByName.where.null")
     private String where;
 
+    public Long getSupplierId() {
+        return supplierId;
+    }
 
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+
+    public void setWhere(String where) {
+        this.where = where;
+    }
+
+    @Override
+    public String toString() {
+        return "HandleSupplierFindAllByName{" +
+                "supplierId=" + supplierId +
+                ", where='" + where + '\'' +
+                '}';
+    }
 }

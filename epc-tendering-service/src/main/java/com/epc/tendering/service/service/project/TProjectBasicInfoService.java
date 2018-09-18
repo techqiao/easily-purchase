@@ -1,11 +1,10 @@
-package com.epc.tendering.service.service;
+package com.epc.tendering.service.service.project;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.handle.HandleProjectBasicInfo;
-import com.epc.web.facade.terdering.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.vo.ProjectBasicInfoVO;
-import com.epc.web.facade.terdering.vo.ProjectDetailInfoVO;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
+import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 
 import java.util.List;
 

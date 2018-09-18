@@ -1,6 +1,6 @@
 package com.epc.web.client.remoteApi.terdering.project;
 
-import com.epc.web.facade.terdering.FacadeTProjectBasicInfoService;
+import com.epc.web.facade.terdering.project.FacadeTProjectBasicInfoService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**

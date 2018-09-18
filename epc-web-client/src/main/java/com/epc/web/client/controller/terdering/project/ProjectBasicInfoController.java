@@ -1,15 +1,13 @@
 package com.epc.web.client.controller.terdering.project;
 
 import com.epc.common.Result;
-import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.project.handle.ClientHandleProjectBasicInfo;
 import com.epc.web.client.controller.terdering.project.query.ClientQueryProjectInfoDTO;
-import com.epc.web.client.controller.terdering.project.vo.ClientProjectBasicInfoVO;
 import com.epc.web.client.remoteApi.terdering.project.ProjectClient;
-import com.epc.web.facade.terdering.handle.HandleProjectBasicInfo;
-import com.epc.web.facade.terdering.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.vo.ProjectBasicInfoVO;
-import com.epc.web.facade.terdering.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
+import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,17 +46,10 @@ public class ProjectBasicInfoController {
 
     @ApiOperation(value = "项目列表")
     @PostMapping(value="/getProjectList")
-    public Result<List<ClientProjectBasicInfoVO>> getProjectList(@RequestBody ClientQueryProjectInfoDTO clientQueryProjectInfoDTO){
+    public Result<List<ProjectBasicInfoVO>> getProjectList(@RequestBody ClientQueryProjectInfoDTO clientQueryProjectInfoDTO){
         QueryProjectInfoDTO queryProjectInfoDTO = new QueryProjectInfoDTO();
         BeanUtils.copyProperties(clientQueryProjectInfoDTO, queryProjectInfoDTO);
-        List<ClientProjectBasicInfoVO> returnList = new ArrayList<>();
-        Result<List<ProjectBasicInfoVO>> resultList = projectClient.getProjectList(queryProjectInfoDTO);
-        resultList.getData().forEach(item -> {
-            ClientProjectBasicInfoVO pojo = new ClientProjectBasicInfoVO();
-            BeanUtils.copyProperties(item, pojo);
-            returnList.add(pojo);
-        });
-        return Result.success(returnList);
+        return projectClient.getProjectList(queryProjectInfoDTO);
     }
 
 

@@ -1,4 +1,4 @@
-package com.epc.tendering.service.service.impl;
+package com.epc.tendering.service.service.project.impl;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -7,11 +7,11 @@ import com.epc.common.exception.BusinessException;
 import com.epc.tendering.service.domain.project.TProjectBasicInfo;
 import com.epc.tendering.service.domain.project.TProjectBasicInfoCriteria;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
-import com.epc.tendering.service.service.TProjectBasicInfoService;
-import com.epc.web.facade.terdering.handle.HandleProjectBasicInfo;
-import com.epc.web.facade.terdering.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.vo.ProjectBasicInfoVO;
-import com.epc.web.facade.terdering.vo.ProjectDetailInfoVO;
+import com.epc.tendering.service.service.project.TProjectBasicInfoService;
+import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
+import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(new Date());
         try {
-            if(handleProjectBasicInfo.getId() == null){
+            if(pojo.getId() == null){
                 return Result.success(tProjectBasicInfoMapper.insertSelective(pojo) > 0);
             }else {
                 return Result.success(tProjectBasicInfoMapper.updateByPrimaryKeySelective(pojo) > 0);

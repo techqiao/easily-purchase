@@ -5,6 +5,10 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.purchaser.handle.HandleAgnecy;
+import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.service.domain.agency.TAgencyAttachment;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
@@ -12,7 +16,6 @@ import com.epc.web.service.domain.expert.TExpertBasicInfo;
 import com.epc.web.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.web.service.domain.operator.TOperatorPurchaser;
 import com.epc.web.service.domain.operator.TOperatorPurchaserCriteria;
-import com.epc.web.service.domain.purchaser.*;
 import com.epc.web.service.domain.purchaser.*;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
@@ -29,11 +32,6 @@ import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.impl.operator.OperatorServiceImpl;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
-import com.epc.web.facade.expert.handle.HandleExpert;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.epc.web.service.mapper.purchaser.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -88,6 +86,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @UpdateRemark: 修改内容，所有的新增先依据name和cellphone查询是否存在
      * @Version: 1.0
      */
+    @Override
     public Result<Boolean> createOperatePurchaser(HandlePurchaser handleOperator) {
 
         TOperatorPurchaserCriteria criteria = new TOperatorPurchaserCriteria();
@@ -297,6 +296,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @Description 新增 采购人员信息
      * @Author linzhixiang
      */
+    @Override
     public Result<Boolean> createPurchaserUserInfo(HandlePurchaser handleOperator, int roleType) {
         //先查询是否存在,不存在添加私库
         TPurchaserBasicInfoCriteria infoCriteria = new TPurchaserBasicInfoCriteria();

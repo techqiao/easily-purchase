@@ -3,6 +3,7 @@ package com.epc.web.service.mapper.operator;
 import com.epc.web.service.domain.operator.TOperatorPurchaser;
 import com.epc.web.service.domain.operator.TOperatorPurchaserCriteria;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 

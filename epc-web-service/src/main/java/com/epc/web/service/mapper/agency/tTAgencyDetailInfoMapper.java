@@ -3,6 +3,7 @@ package com.epc.web.service.mapper.agency;
 import com.epc.web.service.domain.agency.tTAgencyDetailInfo;
 import com.epc.web.service.domain.agency.tTAgencyDetailInfoCriteria;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 

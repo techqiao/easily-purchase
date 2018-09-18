@@ -3,8 +3,10 @@ package com.epc.web.service.mapper.agency;
 import com.epc.web.service.domain.agency.TAgencySupplier;
 import com.epc.web.service.domain.agency.TAgencySupplierCriteria;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
 
 public interface TAgencySupplierMapper {
     /**

@@ -8,11 +8,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan(value = "com.epc.web.service.mapper")
-
-public class EpcWebServiceApplication {
+public class EpcUserServiceApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(EpcWebServiceApplication.class).web(true).run(args);
+		new SpringApplicationBuilder(EpcUserServiceApplication.class).web(true).run(args);
 	}
 
 }

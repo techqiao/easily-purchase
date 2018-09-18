@@ -8,8 +8,6 @@ import com.epc.web.facade.operator.FacadeOperatorService;
 import com.epc.web.facade.operator.handle.HandleOperator;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>Description : 运营商控制器
  * <p>Date : 2018-09-10  18:08
  */
-@Api(value = "运营商服务", description = "运营商服务")
 @RestController
 public class OperatorController  implements FacadeOperatorService {
 
@@ -37,7 +34,6 @@ public class OperatorController  implements FacadeOperatorService {
     * @Version:        1.0
     */
     @Override
-    @ApiOperation(value = "运营商注册", notes = "新增运营商人员")
     public Result<Boolean> createOperatorUserInfo(HandleOperator handleOperator) {
         return operatorService.createOperatorBasicInfo(handleOperator);
     }
@@ -53,7 +49,6 @@ public class OperatorController  implements FacadeOperatorService {
      */
 
     @Override
-    @ApiOperation(value = "运营商新增采购人", notes = "运营商新增采购人")
     public Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser) {
         return operatorService.createPurchaseByOperator(handlePurchaser);
     }
@@ -64,7 +59,6 @@ public class OperatorController  implements FacadeOperatorService {
      * @return
      */
     @Override
-    @ApiOperation(value = "完善供应商信息", notes = "完善供应商信息")
     public Result<Boolean> updateSupplierDetail(HandleSupplierDetail handleSupplierDetail) {
         return purchaserService.updateSupplierDetail(handleSupplierDetail);
     }

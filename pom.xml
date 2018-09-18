@@ -37,6 +37,7 @@
         <module>epc-web-facade</module>
         <!--  公共工具包-->
         <module>epc-common-util</module>
+        <module>epc-bidding-service</module>
     </modules>
 
     <profiles>

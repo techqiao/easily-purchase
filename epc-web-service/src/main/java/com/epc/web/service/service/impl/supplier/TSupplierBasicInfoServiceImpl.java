@@ -67,9 +67,10 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         pojo.setCellphone(handlerSupplierAddEmployee.getCellphone());
 
         pojo.setPassword(MD5Util.MD5EncodeUtf8(handlerSupplierAddEmployee.getPassword()));
-//        pojo.setPassword(password);
-        pojo.setCreateAt(new Date()); //创建时间
-        pojo.setUpdateAt(new Date()); //最后修改时间
+        //创建时间
+        pojo.setCreateAt(new Date());
+        //最后修改时间
+        pojo.setUpdateAt(new Date());
 
 
         try {

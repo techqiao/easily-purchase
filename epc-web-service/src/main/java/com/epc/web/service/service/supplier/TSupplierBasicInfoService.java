@@ -10,6 +10,9 @@ import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import java.util.List;
 
 
+/**
+ * @author donghuan
+ */
 public interface TSupplierBasicInfoService {
 
     /**

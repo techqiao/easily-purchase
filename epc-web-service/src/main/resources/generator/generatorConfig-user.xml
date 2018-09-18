@@ -38,7 +38,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="easily_purchase" tableName="t_supplier_attachment" domainObjectName="TSupplierAttachment">
+        <table schema="easily_purchase" tableName="t_supplier_detail_info" domainObjectName="TSupplierDetailInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
+
 @ApiModel(value="HandlerUpdateSupplierEmployeeById",description = "供应商修改员工信息")
 public class HandlerUpdateSupplierEmployeeById implements Serializable {
     /**

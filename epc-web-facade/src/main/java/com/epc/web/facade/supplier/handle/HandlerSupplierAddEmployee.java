@@ -17,7 +17,7 @@ import java.util.Date;
  * @UpdateRemark:   修改内容
  * @Version:        1.0
  */
-@Data
+
 @ApiModel(value = "HandlerSupplierAddEmployee", description = "供应商录入员工信息")
 public class HandlerSupplierAddEmployee implements Serializable{
 

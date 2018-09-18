@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 
 @ApiModel(value = "HandleSupplierDetail", description = "供应商人员信息")
-
 public class HandleSupplierDetail {
 
     @ApiModelProperty(value = "供应商Id")

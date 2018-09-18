@@ -2,7 +2,9 @@ package com.epc.web.client.remoteApi.supplier;
 
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
-import com.epc.web.facade.supplier.handle.HandlerSupplierUser;
+import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
+import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
 
 
 /**
@@ -13,7 +15,17 @@ import com.epc.web.facade.supplier.handle.HandlerSupplierUser;
 public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
 
     @Override
-    public Result<Boolean> createSupplierUser(HandlerSupplierUser handlerSupplierUser) {
+    public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
         return Result.hystrixError();
     }
     

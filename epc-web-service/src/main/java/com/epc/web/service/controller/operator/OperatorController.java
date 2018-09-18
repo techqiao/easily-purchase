@@ -9,6 +9,7 @@ import com.epc.web.facade.operator.handle.HandleOperator;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -34,7 +35,7 @@ public class OperatorController  implements FacadeOperatorService {
     * @Version:        1.0
     */
     @Override
-    public Result<Boolean> createOperatorUserInfo(HandleOperator handleOperator) {
+    public Result<Boolean> createOperatorUserInfo(@RequestBody HandleOperator handleOperator) {
         return operatorService.createOperatorBasicInfo(handleOperator);
     }
 
@@ -49,7 +50,7 @@ public class OperatorController  implements FacadeOperatorService {
      */
 
     @Override
-    public Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser) {
+    public Result<Boolean> createPurchaseByOperator(@RequestBody HandlePurchaser handlePurchaser) {
         return operatorService.createPurchaseByOperator(handlePurchaser);
     }
 
@@ -59,7 +60,7 @@ public class OperatorController  implements FacadeOperatorService {
      * @return
      */
     @Override
-    public Result<Boolean> updateSupplierDetail(HandleSupplierDetail handleSupplierDetail) {
+    public Result<Boolean> updateSupplierDetail(@RequestBody HandleSupplierDetail handleSupplierDetail) {
         return purchaserService.updateSupplierDetail(handleSupplierDetail);
     }
 }

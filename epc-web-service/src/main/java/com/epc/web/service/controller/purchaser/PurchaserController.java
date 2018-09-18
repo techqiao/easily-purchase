@@ -10,6 +10,7 @@ import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -27,7 +28,7 @@ public class PurchaserController implements FacadePurchaserService {
      * 新增采购人员
      */
     @Override
-    public Result<Boolean> createPurchaseBasicInfo(HandlePurchaser handleOperator) {
+    public Result<Boolean> createPurchaseBasicInfo(@RequestBody HandlePurchaser handleOperator) {
         return purchaserService.createPurchaserUserInfo(handleOperator,Const.Role.ROLE_CUSTOMER);
     }
 
@@ -35,7 +36,7 @@ public class PurchaserController implements FacadePurchaserService {
      * 采购人 添加 供应商
      */
     @Override
-    public Result<Boolean> createSupplierByPurchaser(HandleSupplierDetail handleSupplierDetail) {
+    public Result<Boolean> createSupplierByPurchaser(@RequestBody HandleSupplierDetail handleSupplierDetail) {
         return purchaserService.createSupplierByPurchaser(handleSupplierDetail);
     }
 
@@ -44,7 +45,7 @@ public class PurchaserController implements FacadePurchaserService {
      * 采购人 添加 专家
      */
     @Override
-    public Result<Boolean> createExpertByPurchaser(HandleExpert handleExpert) {
+    public Result<Boolean> createExpertByPurchaser(@RequestBody HandleExpert handleExpert) {
         return purchaserService.createExpertUserInfo(handleExpert);
     }
 
@@ -52,7 +53,7 @@ public class PurchaserController implements FacadePurchaserService {
      * 采购人 添加 代理机构
      */
     @Override
-    public Result<Boolean> createAgencyByPurchaser(HandleAgnecy handleAgnecy) {
+    public Result<Boolean> createAgencyByPurchaser(@RequestBody HandleAgnecy handleAgnecy) {
         return purchaserService.createAgencyUserInfo(handleAgnecy);
     }
 
@@ -62,7 +63,7 @@ public class PurchaserController implements FacadePurchaserService {
      * @return
      */
     @Override
-    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
+    public Result<Boolean> updatePurchaserDetail(@RequestBody HandlePurchaser handlePurchaser) {
         return purchaserService.updatePurchaserDetail(handlePurchaser);
     }
 
@@ -72,7 +73,7 @@ public class PurchaserController implements FacadePurchaserService {
      * @return
      */
     @Override
-    public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
+    public Result<Boolean> updateAgencyDetail(@RequestBody HandleAgnecy handleAgnecy) {
         return purchaserService.updateAgencyDetail(handleAgnecy);
     }
 

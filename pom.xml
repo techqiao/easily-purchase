@@ -35,8 +35,10 @@
         <module>epc-web-client</module>
         <!--  web端接口api  -->
         <module>epc-web-facade</module>
-        <!--  公共工具包-->
+        <!--  公共工具包 -->
         <module>epc-common-util</module>
+        <!--  招标数据服务 -->
+        <module>epc-tendering-service</module>
     </modules>
 
     <profiles>

@@ -37,6 +37,7 @@
         <module>epc-web-facade</module>
         <!--  公共工具包 -->
         <module>epc-common-util</module>
+        <module>epc-bidding-service</module>
         <!--  招标数据服务 -->
         <module>epc-tendering-service</module>
     </modules>
@@ -47,8 +48,8 @@
             <id>dev</id>
             <properties>
                 <profiles.active>dev</profiles.active>
-                <mvn.log.path>./logs</mvn.log.path>
-                <mvn.log.level>INFO</mvn.log.level>
+                <logging.path>./logs</logging.path>
+                <log.level>DEBUG</log.level>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -59,8 +60,8 @@
             <id>test</id>
             <properties>
                 <profiles.active>test</profiles.active>
-                <mvn.log.path>/opt/logs</mvn.log.path>
-                <mvn.log.level>DEBUG</mvn.log.level>
+                <logging.path>./logs</logging.path>
+                <log.level>DEBUG</log.level>
             </properties>
         </profile>
         <profile>
@@ -68,8 +69,8 @@
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
-                <mvn.log.path>/data/logs/</mvn.log.path>
-                <mvn.log.level>WARN</mvn.log.level>
+                <logging.path>/opt/logs/</logging.path>
+                <log.level>WARN</log.level>
             </properties>
         </profile>
     </profiles>

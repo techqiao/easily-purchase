@@ -2,6 +2,7 @@ package com.epc.tendering.service.service.purchase;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
+import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 
@@ -16,10 +17,10 @@ public interface TPurchaseProjectBasicInfoService {
 
     /**
      * 新增|修改采购项目
-     * @param handlePurchaseProjectBasicInfo
+     * @param handlePurchaseProjectBasicInfoSub
      * @return
      */
-    Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfo handlePurchaseProjectBasicInfo);
+    Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub);
 
 
     /**

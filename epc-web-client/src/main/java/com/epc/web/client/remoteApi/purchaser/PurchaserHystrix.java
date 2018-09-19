@@ -3,8 +3,12 @@ package com.epc.web.client.remoteApi.purchaser;
 import com.epc.common.Result;
 import com.epc.web.facade.expert.handle.HandleExpert;
 import com.epc.web.facade.purchaser.FacadePurchaserService;
+import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
+import com.epc.web.facade.purchaser.dto.HandleExpertDto;
+import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
 import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 
 public class PurchaserHystrix implements FacadePurchaserService {
@@ -35,6 +39,82 @@ public class PurchaserHystrix implements FacadePurchaserService {
 
     @Override
     public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result registerPurchaser(HandleRegisterPurchaser purchaser) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result allEmployee(Long purchaserId) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result findEmployeeByName(String fuzzyName, Long purchaseId) {
+        return Result.hystrixError();
+    }
+
+
+    @Override
+    public Result updateEmployeeState(String cellphone, Integer state) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result updateEmployeeStateById(Long id, Integer state) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryEmployee(String cellphone) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryEmployee(Long id) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryEmplyee(HandleEmployeeDto employeeDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result updateRole(Long id, Integer role) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryAllSuppliers(Long purchaseId) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result querySuppliers(String fuzzyName, Long purchaseId) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result querySuppliers(Long id) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result updateSuppliers(HandPurchaserAttachment attachment) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryExperts(HandleExpertDto dto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result updateExpertState(Long id, Integer state) {
         return Result.hystrixError();
     }
 }

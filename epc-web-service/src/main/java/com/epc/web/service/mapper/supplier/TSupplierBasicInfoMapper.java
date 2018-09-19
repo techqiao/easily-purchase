@@ -1,11 +1,12 @@
 package com.epc.web.service.mapper.supplier;
 
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TSupplierBasicInfoMapper {
     /**
@@ -103,4 +104,7 @@ public interface TSupplierBasicInfoMapper {
      * @mbggenerated Tue Sep 18 10:14:05 CST 2018
      */
     int updateByPrimaryKey(TSupplierBasicInfo record);
+
+    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+
 }

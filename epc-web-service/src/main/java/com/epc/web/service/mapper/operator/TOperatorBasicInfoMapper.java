@@ -1,5 +1,6 @@
 package com.epc.web.service.mapper.operator;
 
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.service.domain.operator.TOperatorBasicInfo;
 import com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria;
 import java.util.List;
@@ -103,4 +104,6 @@ public interface TOperatorBasicInfoMapper {
      * @mbggenerated Thu Sep 13 16:24:39 CST 2018
      */
     int updateByPrimaryKey(TOperatorBasicInfo record);
+
+    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 }

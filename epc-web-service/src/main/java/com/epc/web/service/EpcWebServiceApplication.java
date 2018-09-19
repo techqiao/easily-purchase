@@ -13,5 +13,4 @@ public class EpcWebServiceApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(EpcWebServiceApplication.class).web(true).run(args);
 	}
-
 }

@@ -3,6 +3,8 @@ package com.epc.web.client.controller.bidding.handle.file;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 /**
  * 上传文件附件信息
  * @author linzhixiang

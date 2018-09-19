@@ -12,8 +12,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "ClientNoticeDTO",description = "根据供应商ID查看公告列表")
-public class ClientNoticeDTO implements Serializable {
-    private static final long serialVersionUID = -4204083265444147940L;
+public class ClientNoticeDTO  {
     @ApiModelProperty(value = "供应商ID")
     private Long supplierId;
     @ApiModelProperty(value = "公告标题")

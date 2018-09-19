@@ -42,7 +42,7 @@ public interface TPurchaserBasicInfoMapper {
 
     List<PurchaserEmplyeeVo>queryEmplyees(Long supplierId);
 
-    List<PurchaserEmplyeeVo> findEmployeeByName(String fuzzyName);
+    List<PurchaserEmplyeeVo> findEmployeeByName(@Param("fuzzyName") String fuzzyName,@Param("purchaseId")Long purchaseId);
 
     int updateEmployeeStateByCellphone(@Param("cellphone") String cellphone,@Param("state") Integer state);
 

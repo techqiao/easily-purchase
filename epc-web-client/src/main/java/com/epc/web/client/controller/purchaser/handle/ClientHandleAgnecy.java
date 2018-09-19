@@ -1,26 +1,19 @@
-package com.epc.web.facade.purchaser.handle;
+package com.epc.web.client.controller.purchaser.handle;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
-/**
-* @Description:    运营商录入采购人
-* @Author:          linzhixiang
-* @CreateDate:     2018/9/13 10:00
-* @UpdateUser:     linzhixiang
-* @UpdateDate:     2018/9/13 10:00
-* @UpdateRemark:   修改内容
-* @Version:        1.0
-*/
+import java.io.Serializable;
+
+@ApiModel(value = "ClientHandleAgnecy", description = "录入代理机构")
 @Data
-@ApiModel(value = "HandlePurchaser", description = "采购人员信息")
-public class HandlePurchaser {
+public class ClientHandleAgnecy implements Serializable {
+    private static final long serialVersionUID = -5543183867560975179L;
     @ApiModelProperty(value = "采购人Id")
     private long userId;
-    @ApiModelProperty(value = "采购人姓名")
-    @NotEmpty(message = "HandlePurchaser.name.null")
+    @ApiModelProperty(value = "代理机构人员姓名")
     private String name;
     @ApiModelProperty(value = "公司名称")
     private String companyName;
@@ -43,10 +36,10 @@ public class HandlePurchaser {
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
     @ApiModelProperty(value = "手机号")
+    @NotEmpty(message = "ClientHandlePurchaser.cellPhone.null")
     private String cellPhone;
     @ApiModelProperty(value = "密码")
     private String password;
     @ApiModelProperty(value = "操作人Id")
     private long OperatorId;
-
 }

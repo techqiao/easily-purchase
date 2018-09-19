@@ -7,14 +7,13 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.common.util.MD5Util;
 import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
 import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
 import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
 import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
-import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
-import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.service.domain.agency.TAgencyAttachment;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
@@ -39,7 +38,6 @@ import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.impl.operator.OperatorServiceImpl;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -547,8 +545,8 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @return
      */
     @Override
-    public Result findEmployeeByName(String fuzzyName) {
-        List<PurchaserEmplyeeVo> emplyeeVos = tPurchaserBasicInfoMapper.findEmployeeByName(fuzzyName);
+    public Result findEmployeeByName(String fuzzyName,Long purchaseId) {
+        List<PurchaserEmplyeeVo> emplyeeVos = tPurchaserBasicInfoMapper.findEmployeeByName(fuzzyName,purchaseId);
         if (emplyeeVos.isEmpty()) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
@@ -607,11 +605,11 @@ public class PurchaserServiceImpl implements PurchaserService {
     /**
      * 根据条件查询
      *
-     * @param basicInfo
+     * @param employeeDto
      * @return
      */
     @Override
-    public Result queryEmplyee(TPurchaserBasicInfo basicInfo) {
+    public Result queryEmplyee(HandleEmployeeDto employeeDto) {
 //        List<PurchaserEmplyeeVo> emplyeeVos = tPurchaserBasicInfoMapper.queryEmplyeeByCriteria(basicInfo);
 //        if (emplyeeVos.isEmpty()) {
 //            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
@@ -656,7 +654,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @return
      */
     @Override
-    public Result querySuppliers(String fuzzyName) {
+    public Result querySuppliers(String fuzzyName,Long purchaseId) {
 //        List<PurchaserSupplierVo> supplierVos = tPurchaserBasicInfoMapper.querySuppliersByName(fuzzyName);
 //        if (supplierVos.isEmpty()) {
 //            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);

@@ -127,6 +127,28 @@
     AND agency.agency_id=boss.agency_id
     AND boss.role=0;
   </select>
+
+    <select id="queryEmployeeByCellphone" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo" parameterType="java.lang.String">
+         SELECT agency.id AS userId,agency.`name` AS userName,agency.cellphone,agency.agency_id AS companyId,boss.name AS bossName ,d.company_name AS
+    companyName
+     FROM t_agency_basic_info agency
+     LEFT JOIN t_agency_basic_info boss ON agency.agency_id=boss.agency_id
+    LEFT JOIN t_agency_detail_info  d ON d.agency_id = agency.agency_id
+    WHERE agency.cellphone=#{cellphone}
+    AND agency.agency_id=boss.agency_id
+    AND boss.role=0;
+    </select>
+
+    <select id="queryEmployeeById" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo" parameterType="java.lang.Long">
+        SELECT agency.id AS userId,agency.`name` AS userName,agency.cellphone,agency.agency_id AS companyId,boss.name AS bossName ,d.company_name AS
+        companyName
+        FROM t_agency_basic_info agency
+        LEFT JOIN t_agency_basic_info boss ON agency.agency_id=boss.agency_id
+        LEFT JOIN t_agency_detail_info  d ON d.agency_id = agency.agency_id
+        WHERE agency.id=#{id}
+        AND agency.agency_id=boss.agency_id
+        AND boss.role=0;
+    </select>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         <!--
           WARNING - @mbggenerated

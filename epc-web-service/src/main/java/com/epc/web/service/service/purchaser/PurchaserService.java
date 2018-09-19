@@ -2,6 +2,7 @@ package com.epc.web.service.service.purchaser;
 
 import com.epc.common.Result;
 import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
 import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
 import com.epc.web.facade.purchaser.handle.HandleAgnecy;
@@ -105,7 +106,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result findEmployeeByName(String fuzzyName);
+    public Result findEmployeeByName(String fuzzyName,Long purchaseId);
 
     /**
      * @author :winlin
@@ -149,7 +150,7 @@ public interface PurchaserService {
      *@return:
      *@date:2018/9/19
      */
-    public Result queryEmplyee(TPurchaserBasicInfo basicInfo);
+    public Result queryEmplyee(HandleEmployeeDto employeeDto);
 
     /**
      *@author :winlin
@@ -176,7 +177,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result querySuppliers(String fuzzyName);
+    public Result querySuppliers(String fuzzyName,Long purchaseId);
 
     /**
      * @author :winlin

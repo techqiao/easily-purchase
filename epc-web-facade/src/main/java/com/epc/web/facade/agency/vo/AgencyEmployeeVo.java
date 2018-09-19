@@ -8,5 +8,6 @@ public class AgencyEmployeeVo {
     private String userName;
     private String cellphone;
     private String companyId;
+    private String bossName;
     private String companyName;
 }

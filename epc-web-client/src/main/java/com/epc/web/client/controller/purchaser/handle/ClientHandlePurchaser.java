@@ -1,9 +1,11 @@
-package com.epc.web.facade.purchaser.handle;
+package com.epc.web.client.controller.purchaser.handle;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.io.Serializable;
 
 /**
 * @Description:    运营商录入采购人
@@ -15,12 +17,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 * @Version:        1.0
 */
 @Data
-@ApiModel(value = "HandlePurchaser", description = "采购人员信息")
-public class HandlePurchaser {
+@ApiModel(value = "ClientHandlePurchaser", description = "采购人员信息")
+public class ClientHandlePurchaser implements Serializable {
+    private static final long serialVersionUID = -2197056195533241604L;
     @ApiModelProperty(value = "采购人Id")
     private long userId;
     @ApiModelProperty(value = "采购人姓名")
-    @NotEmpty(message = "HandlePurchaser.name.null")
+    @NotEmpty(message = "ClientHandlePurchaser.name.null")
     private String name;
     @ApiModelProperty(value = "公司名称")
     private String companyName;

@@ -76,4 +76,14 @@ public class HandlePurchaseProjectBasicInfo {
      */
     private Integer isOtherAgency;
 
+    /**
+     * 经办人ID
+     */
+    private Integer agentId;
+
+    /**
+     * 审核人ID
+     */
+    private Integer auditorId;
+
 }

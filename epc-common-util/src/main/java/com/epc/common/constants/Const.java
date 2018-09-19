@@ -40,5 +40,9 @@ public class Const {
         String ACTION = "action";
     }
 
+    public interface IS_OTHER_AGENCY {
+        int NOT_OTHER_AGENCY = 0;
+        int IS_OTHER_AGENCY = 1;
+    }
 
 }

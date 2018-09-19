@@ -70,17 +70,10 @@
 
 
     <build>
+        <filters>
+            <filter>src/main/resources/application-${filter-resource-name}.properties</filter>
+        </filters>
         <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-                <excludes>
-                    <exclude>generator/*</exclude>
-                    <exclude>logback.xml</exclude>
-                </excludes>
-            </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
@@ -88,11 +81,37 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>filters/*</exclude>
+                    <exclude>filters/*</exclude>
+                    <exclude>application-dev.properties</exclude>
+                    <exclude>application-test.properties</exclude>
+                    <exclude>application-prod.properties</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>application-${filter-resource-name}.properties</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
             <!--generator插件-->
             <plugin>
@@ -115,4 +134,34 @@
         </plugins>
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <filter-resource-name>dev</filter-resource-name>
+                <logging.path>./logs</logging.path>
+                <log.level>DEBUG</log.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <filter-resource-name>test</filter-resource-name>
+                <logging.path>./logs</logging.path>
+                <log.level>DEBUG</log.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <filter-resource-name>prod</filter-resource-name>
+                <logging.path>/opt/logs/</logging.path>
+                <log.level>WARN</log.level>
+            </properties>
+        </profile>
+    </profiles>
 </project>

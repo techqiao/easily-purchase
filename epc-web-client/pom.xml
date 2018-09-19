@@ -26,7 +26,11 @@
             <artifactId>epc-web-facade</artifactId>
             <version>1.0.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.epc</groupId>
+            <artifactId>epc-web-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -101,7 +105,6 @@
                     <exclude>filters/*</exclude>
                     <exclude>application-dev.properties</exclude>
                     <exclude>application-test.properties</exclude>
-                    <exclude>application-alpha.properties</exclude>
                     <exclude>application-prod.properties</exclude>
                 </excludes>
             </resource>

@@ -88,9 +88,9 @@ public class AgencyServiceImpl implements AgencyService {
         //设置状态为已审核
         handleEmployee.setState(Const.STATE.AUDIT_SUCCESS);
         //创建时间
-        handleEmployee.setCreateAt(new Date());
+       // handleEmployee.setCreateAt(new Date());
         //更新时间
-        handleEmployee.setUpdateAt(new Date());
+       // handleEmployee.setUpdateAt(new Date());
         //创建数据库插入对象
         TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
         //复制对象数据到数据库对象中

@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.purchase.FacadeTPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
+import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class TPurchaseProjectBasicInfoController implements FacadeTPurchaseProje
     private TPurchaseProjectBasicInfoService tPurchaseProjectBasicInfoService;
 
     @Override
-    public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfo handlePurchaseProjectBasicInfo) {
-        return tPurchaseProjectBasicInfoService.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfo);
+    public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
+        return tPurchaseProjectBasicInfoService.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfoSub);
     }
 
     @Override

@@ -43,5 +43,8 @@ public class ClientHandlePurchaseProjectBasicInfo {
     private Integer isAdjust;
     @ApiModelProperty(value = "是否全权委托招标代理机构")
     private Integer isOtherAgency;
-
+    @ApiModelProperty(value = "经办人ID")
+    private Integer agentId;
+    @ApiModelProperty(value = "审核人ID")
+    private Integer auditorId;
 }

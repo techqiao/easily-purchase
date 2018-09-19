@@ -6,9 +6,11 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfoCriteria;
+import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
+import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import org.apache.commons.lang3.StringUtils;
@@ -32,24 +34,44 @@ import java.util.List;
 public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBasicInfoService {
     @Autowired
     private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+    @Autowired
+    private TPurchaseProjectParticipantMapper tPurchaseProjectParticipantMapper;
 
     @Override
-    public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfo handlePurchaseProjectBasicInfo) {
-        TPurchaseProjectBasicInfo pojo = new TPurchaseProjectBasicInfo();
-        BeanUtils.copyProperties(handlePurchaseProjectBasicInfo, pojo);
-        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        pojo.setCreateAt(new Date());
-        try {
-            if(pojo.getId() == null){
-                return Result.success(tPurchaseProjectBasicInfoMapper.insertSelective(pojo) > 0);
-            }else {
-                return Result.success(tPurchaseProjectBasicInfoMapper.updateByPrimaryKeySelective(pojo) > 0);
+    public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
+        //不全权委托招标代理机构
+        if(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY==handlePurchaseProjectBasicInfoSub.getIsOtherAgency()){
+            TPurchaseProjectBasicInfo pojo = new TPurchaseProjectBasicInfo();
+            BeanUtils.copyProperties(handlePurchaseProjectBasicInfoSub, pojo);
+            pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            pojo.setCreateAt(new Date());
+            try {
+                if(pojo.getId() == null){
+                    tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    //TODO
+                    //批复人
+                    //负责人
+                    //经办人ID
+                    Integer agentId = handlePurchaseProjectBasicInfoSub.getAgentId();
+                    //审核人ID
+                    Integer auditorId = handlePurchaseProjectBasicInfoSub.getAuditorId();
+                }else {
+                   tPurchaseProjectBasicInfoMapper.updateByPrimaryKeySelective(pojo);
+
+                }
+            }catch (BusinessException e){
+                return Result.error(ErrorMessagesEnum.FAILURE);
+            }catch (Exception e){
+                return Result.error(e.getMessage());
             }
-        }catch (BusinessException e){
-            return Result.error(ErrorMessagesEnum.FAILURE);
-        }catch (Exception e){
-            return Result.error(e.getMessage());
         }
+        //全权委托招标代理机构
+        else {
+            //TODO
+            return null;
+        }
+        return null;
+
     }
 
     @Override

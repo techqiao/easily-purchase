@@ -1,10 +1,10 @@
-package com.epc.web.facade.terdering;
+package com.epc.web.facade.terdering.project;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.handle.HandleProjectBasicInfo;
-import com.epc.web.facade.terdering.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.vo.ProjectBasicInfoVO;
-import com.epc.web.facade.terdering.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
+import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

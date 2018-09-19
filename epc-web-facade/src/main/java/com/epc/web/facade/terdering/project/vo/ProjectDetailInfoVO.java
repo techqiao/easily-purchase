@@ -1,4 +1,4 @@
-package com.epc.web.facade.terdering.vo;
+package com.epc.web.facade.terdering.project.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

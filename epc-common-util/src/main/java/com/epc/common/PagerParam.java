@@ -1,6 +1,5 @@
 package com.epc.common;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.apache.ibatis.session.RowBounds;
 

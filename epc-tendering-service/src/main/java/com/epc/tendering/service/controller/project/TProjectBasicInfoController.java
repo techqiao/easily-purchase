@@ -1,12 +1,12 @@
-package com.epc.tendering.service.controller;
+package com.epc.tendering.service.controller.project;
 
 import com.epc.common.Result;
-import com.epc.tendering.service.service.TProjectBasicInfoService;
-import com.epc.web.facade.terdering.FacadeTProjectBasicInfoService;
-import com.epc.web.facade.terdering.handle.HandleProjectBasicInfo;
-import com.epc.web.facade.terdering.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.vo.ProjectBasicInfoVO;
-import com.epc.web.facade.terdering.vo.ProjectDetailInfoVO;
+import com.epc.tendering.service.service.project.TProjectBasicInfoService;
+import com.epc.web.facade.terdering.project.FacadeTProjectBasicInfoService;
+import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
+import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +21,7 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @RestController
-public class FacadeTProjectBasicInfoController implements FacadeTProjectBasicInfoService {
+public class TProjectBasicInfoController implements FacadeTProjectBasicInfoService {
 
     @Autowired
     private TProjectBasicInfoService tProjectBasicInfoService;

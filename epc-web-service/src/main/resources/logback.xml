@@ -1,63 +1,30 @@
-<configuration scan="true" scanPeriod="60 seconds" debug="false">
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <contextName>sms</contextName>
+<configuration>
+    <springProperty scope="context" name="app_name" source="spring.application.name"/>
+    <springProperty scope="context" name="logPath" source="log.path"/>
+    <springProperty scope="context" name="logLevel" source="log.level"/>
 
-    <property name="log.path" value="log" />
-    <property name="log.maxHistory" value="15" />
-    <property name="log.pattern" value="%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n" />
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <!--输出到控制台-->
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
+    <jmxConfigurator/>
+
+    <appender name="appLog" class="com.jason.support.common.common.log.AutoConfigRollingFileAppender">
+        <file>${logPath}/cloud-webhook-moxie.log</file>
     </appender>
 
-    <appender name="appLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>@logging.path@/app.%d{yyyy-MM-dd}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logging.path}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <MaxHistory>${log.maxHistory}</MaxHistory>
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
+    <springProfile name="dev,test">
+        <root level="${logLevel}">
+            <appender-ref ref="appLog"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
 
-    <appender name="dbLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>@logging.path@/db.%d{yyyy-MM-dd}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/db.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <MaxHistory>${log.maxHistory}</MaxHistory>
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
-    </appender>
 
-    <root level="debug">
-        <appender-ref ref="console" />
-    </root>
+    <springProfile name="prod">
+        <root level="${logLevel}">
+            <appender-ref ref="appLog"/>
+        </root>
+    </springProfile>
 
-    <Logger name="appLog" level="@logging.pattern.level@" additivity="false">
-        <appender-ref ref="appLog"/>
-    </Logger>
-
-    <Logger name="dbLog" level="@logging.pattern.level@" additivity="false">
-        <appender-ref ref="dbLog"/>
-    </Logger>
-
-    <root level="@mvn.log.level@">
-        <appender-ref ref="appLog" />
-        <appender-ref ref="dbLog" />
-    </root>
 </configuration>

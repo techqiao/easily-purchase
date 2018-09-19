@@ -104,4 +104,6 @@ public interface TAgencyAttachmentMapper {
      * @mbggenerated Thu Sep 13 21:06:35 CST 2018
      */
     int updateByPrimaryKey(TAgencyAttachment record);
+
+    int insertListAttachment(List<TAgencyAttachment> list);
 }

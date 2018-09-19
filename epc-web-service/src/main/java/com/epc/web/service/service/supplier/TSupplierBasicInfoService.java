@@ -5,7 +5,6 @@ import com.epc.common.Result;
 import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
 import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
 import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
-import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 
 import java.util.List;
 

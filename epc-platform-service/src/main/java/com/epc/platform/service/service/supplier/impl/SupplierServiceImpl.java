@@ -44,7 +44,7 @@ public class SupplierServiceImpl  implements SupplierUserService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> insertSupplierUserInfo(UserBasicInfo handleOperator) {
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         Date date = new Date();
@@ -72,7 +72,7 @@ public class SupplierServiceImpl  implements SupplierUserService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> insertSupplierDetailInfo(SupplierHandle supplierHandle) {
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
         BeanUtils.copyProperties(supplierHandle, tSupplierDetailInfo);

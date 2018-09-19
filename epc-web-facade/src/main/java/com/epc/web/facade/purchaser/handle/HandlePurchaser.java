@@ -48,6 +48,7 @@ public class HandlePurchaser {
     @ApiModelProperty(value = "操作人Id")
     private long OperatorId;
 
+
     public String getName() {
         return name;
     }

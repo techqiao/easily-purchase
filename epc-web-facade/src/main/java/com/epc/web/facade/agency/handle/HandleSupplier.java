@@ -5,9 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
+
+/**
+ * @author winlin
+ */
 @Data
 @ApiModel(value = "HandleSupplier",description = "新增供货商的信息")
-public class HandleSupplier {
+public class HandleSupplier implements Serializable{
     @ApiModelProperty(value = "供货商姓名")
     @NotEmpty(message = "HandleSupplier.name.null")
     private String name;

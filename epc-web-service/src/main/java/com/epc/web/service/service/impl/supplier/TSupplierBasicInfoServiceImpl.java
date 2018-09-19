@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @Service
-@Transactional
+@Transactional(rollbackFor = {Exception.class})
 public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(TSupplierBasicInfoServiceImpl.class);

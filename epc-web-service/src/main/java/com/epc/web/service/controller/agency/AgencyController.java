@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author winlin
+ */
 @RestController
 public class AgencyController implements FacadeAgencyService {
 
     @Autowired
     AgencyService agencyService;
-   /* @Autowired
-    AgencyServiceImpl agencyService;*/
-
 
     @Override
     public Result insertEmployee(@RequestBody HandleEmployee employee) {

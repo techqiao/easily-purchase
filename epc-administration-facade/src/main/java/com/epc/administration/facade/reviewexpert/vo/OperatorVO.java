@@ -6,7 +6,4 @@ package com.epc.administration.facade.reviewexpert.vo;
  * <p>@author : wjq
  */
 public class OperatorVO {
-
-
-
 }

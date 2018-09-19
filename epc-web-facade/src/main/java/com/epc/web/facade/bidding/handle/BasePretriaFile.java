@@ -3,7 +3,14 @@ package com.epc.web.facade.bidding.handle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-public class BasePretriaFile {
+import java.io.Serializable;
+/** 
+* @Description: 上传文件
+* @Author: linzhixiang
+* @Date: 2018/9/19 
+*/ 
+public class BasePretriaFile implements Serializable {
+    private static final long serialVersionUID = -2062443423483279136L;
     private String filePath;
     private String fileName;
 

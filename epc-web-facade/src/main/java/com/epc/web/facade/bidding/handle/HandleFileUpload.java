@@ -3,16 +3,16 @@ package com.epc.web.facade.bidding.handle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 供应商上传文件
  */
 
-@ApiModel(value = "HandleFileUpload",description = "文件上传")
+public class HandleFileUpload implements Serializable {
 
-public class HandleFileUpload {
-
+    private static final long serialVersionUID = 7632117491204100213L;
     private Long supplierId;
     private String certificateType;
     private List<BasePretriaFile> filePathList;

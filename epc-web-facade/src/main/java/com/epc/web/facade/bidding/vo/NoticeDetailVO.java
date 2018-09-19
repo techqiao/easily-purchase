@@ -3,14 +3,16 @@ package com.epc.web.facade.bidding.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 公告详情
  * @author linzhixiang
  */
-public class NoticeDetailVO {
+public class NoticeDetailVO implements Serializable {
 
+    private static final long serialVersionUID = -8445436128833921499L;
     private Long id;
     private Date biddingStart;
     private Date biddingEnd;

@@ -1,13 +1,15 @@
 package com.epc.web.facade.bidding.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 /** 
 * @Description: 答疑列表
 * @Author: linzhixiang
 * @Date: 2018/9/18 
 */ 
-public class QueryAnswerQustionListVO {
+public class QueryAnswerQustionListVO implements Serializable {
 
+    private static final long serialVersionUID = 3150403019447676651L;
     private Long id;
 
     private String questionerName;

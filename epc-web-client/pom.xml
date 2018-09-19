@@ -39,12 +39,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-feign</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.epc</groupId>
-            <artifactId>epc-administration-facade</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- swagger生成接口API -->
         <dependency>
@@ -79,6 +73,65 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
         </plugins>
+
+        <filters>
+            <filter>src/main/resources/application-${filter-resource-name}.properties</filter>
+        </filters>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>filters/*</exclude>
+                    <exclude>filters/*</exclude>
+                    <exclude>application-dev.properties</exclude>
+                    <exclude>application-test.properties</exclude>
+                    <exclude>application-alpha.properties</exclude>
+                    <exclude>application-prod.properties</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>application-${filter-resource-name}.properties</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <filter-resource-name>dev</filter-resource-name>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <filter-resource-name>test</filter-resource-name>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <filter-resource-name>prod</filter-resource-name>
+            </properties>
+        </profile>
+    </profiles>
+
 </project>

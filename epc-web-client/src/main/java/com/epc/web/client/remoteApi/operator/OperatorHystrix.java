@@ -3,6 +3,9 @@ package com.epc.web.client.remoteApi.operator;
 import com.epc.common.Result;
 import com.epc.web.facade.operator.FacadeOperatorService;
 import com.epc.web.facade.operator.handle.HandleOperator;
+import com.epc.web.facade.operator.handle.HandleOperatorDetail;
+import com.epc.web.facade.operator.handle.HandleOperatorForgetPassword;
+import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 
@@ -13,6 +16,21 @@ import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
  */
 public class OperatorHystrix implements FacadeOperatorService {
 
+
+    @Override
+    public Result<Boolean> registerOperator(HandleOperatorDetail HandleOperatorDetail) {
+        return null;
+    }
+
+    @Override
+    public Result<OperatorBasicInfoVO> findByName(String name, String cellphone) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> forgetPassword(HandleOperatorForgetPassword handleOperatorForgetPassword) {
+        return null;
+    }
 
     @Override
     public Result<Boolean> createOperatorUserInfo(HandleOperator handleOperator) {

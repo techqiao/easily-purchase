@@ -27,8 +27,6 @@
         <module>epc-administration-client</module>
         <!--  支付数据服务  -->
         <module>epc-payment-service</module>
-        <!--  招标采购数据服务  -->
-        <module>epc-tenders-service</module>
         <!--  平台用户数据服务  -->
         <module>epc-web-service</module>
         <!--  web端数据服务  -->

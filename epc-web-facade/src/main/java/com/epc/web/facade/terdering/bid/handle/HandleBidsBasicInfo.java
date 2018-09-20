@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.bid.handle;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -10,7 +11,8 @@ import java.math.BigDecimal;
  * <p>@Author : wjq
  */
 @Data
-public class HandleBidsBasicInfo {
+public class HandleBidsBasicInfo implements Serializable {
+    private static final long serialVersionUID = -1638765685536416837L;
     /**
      * 主键ID 修改时传
      */

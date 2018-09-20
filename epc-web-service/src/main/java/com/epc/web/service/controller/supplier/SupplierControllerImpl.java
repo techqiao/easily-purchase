@@ -2,11 +2,11 @@ package com.epc.web.service.controller.supplier;
 
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
-import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
-import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
-import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
+import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
+import com.epc.web.service.service.supplier.TSupplierUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,37 @@ import java.util.List;
 public class SupplierControllerImpl implements FacadeTSupplierBasicInfoService {
 
     @Autowired
-    TSupplierBasicInfoService tSupplierBasicInfoService;
+    private TSupplierBasicInfoService tSupplierBasicInfoService;
+
+    @Autowired
+    private TSupplierUserService tSupplierUserService;
+
+
+    //供应商注册
+    @Override
+    public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
+        return tSupplierUserService.registerSupplier(handleSupplierDetail);
+    }
+
+    //登陆
+    @Override
+    public Result<SupplierBasicInfoVO> login(String cellphone, String password) {
+        return tSupplierUserService.login(cellphone,password);
+    }
+
+    //根据名字或者电话来得到这个人的信息
+    @Override
+    public Result<SupplierDetailInfoVO> findByName(String name, String cellphone) {
+        return tSupplierUserService.findByName(name,cellphone);
+    }
+
+    //忘记密码
+    @Override
+    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+        return tSupplierUserService.forgetPassword(handleSupplierForgetPassword);
+    }
+
+    /*===========================================================*/
 
     //供应商添加员工
     @Override
@@ -33,7 +63,7 @@ public class SupplierControllerImpl implements FacadeTSupplierBasicInfoService {
 
    //根据员工的姓名来模糊查询出一个符合要求的列表
     @Override
-    public Result<List<TSupplierBasicInfo>> querySupplierEmployeeAll(@RequestBody HandleSupplierFindAllByName handleSupplierFindAllByName) {
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleSupplierFindAllByName handleSupplierFindAllByName) {
         return tSupplierBasicInfoService.querySupplierEmployeeAll(handleSupplierFindAllByName);
     }
 

@@ -79,6 +79,35 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <build.profile.id>test</build.profile.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -94,8 +123,9 @@
             </plugin>
         </plugins>
 
+
         <filters>
-            <filter>src/main/resources/application-${filter-resource-name}.properties</filter>
+            <filter>src/main/resources/application-${build.profile.id}.properties</filter>
         </filters>
 
         <resources>
@@ -104,7 +134,7 @@
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>filters/*</exclude>
-                    <exclude>filters/*</exclude>
+                    <exclude>application.properties</exclude>
                     <exclude>application-dev.properties</exclude>
                     <exclude>application-test.properties</exclude>
                     <exclude>application-prod.properties</exclude>
@@ -114,33 +144,10 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>application-${filter-resource-name}.properties</include>
+                    <include>application-${build.profile.id}.properties</include>
                 </includes>
             </resource>
         </resources>
     </build>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <filter-resource-name>dev</filter-resource-name>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <filter-resource-name>test</filter-resource-name>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <filter-resource-name>prod</filter-resource-name>
-            </properties>
-        </profile>
-    </profiles>
 </project>

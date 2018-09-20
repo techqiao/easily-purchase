@@ -1,5 +1,6 @@
 package com.epc.web.service.mapper.supplier;
 
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
 import java.util.List;
@@ -30,4 +31,7 @@ public interface TSupplierBasicInfoMapper {
     int updateByPrimaryKeySelective(TSupplierBasicInfo record);
 
     int updateByPrimaryKey(TSupplierBasicInfo record);
+
+    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+
 }

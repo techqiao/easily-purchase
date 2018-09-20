@@ -1,28 +1,19 @@
-package com.epc.web.facade.supplier.handle;
+package com.epc.web.facade.operator.handle;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
-
 /**
- * 供应商注册详情
- * @author donghuan
+ * 运营商注册详情
  */
 @Data
-public class HandleSupplierDetail implements Serializable {
+public class HandleOperatorDetail implements Serializable {
 
-    private static final long serialVersionUID = 8608242287921574415L;
-    /**
-     * 用户id
-     */
-    private Long userId;
-
-    /**
-     * 供应商注册id
-     */
-    private Long supplierId;
-
+    private static final long serialVersionUID = 4284847845112939775L;
     /**
      * 公司名称
      */
@@ -64,11 +55,6 @@ public class HandleSupplierDetail implements Serializable {
     private String qualificationCertificate;
 
     /**
-     * 所在地区
-     */
-    private String[] location;
-
-    /**
      * 对公银行名称
      */
     private String publicBankName;
@@ -76,7 +62,7 @@ public class HandleSupplierDetail implements Serializable {
     /**
      * 对公银行账号
      */
-    private String publicBankCount;
+    private String publicBanAccountNumber;
 
     /**
      * 手机号
@@ -87,6 +73,11 @@ public class HandleSupplierDetail implements Serializable {
      * 密码
      */
     private String password;
+
+
+
+
+
 
 
 }

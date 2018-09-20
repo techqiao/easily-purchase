@@ -7,6 +7,9 @@ import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
 
 /**
  * @Author :winlin
@@ -108,8 +111,8 @@ public interface FacadeAgencyService {
      *@return:
      *@date:2018/9/18
      */
-    @PostMapping(value = "queryEmployeeByCellphone", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployeeByCellphone(String cellphone);
+    @PostMapping(value = "queryEmployeeByCellphone")
+    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map);
     /**
      *@author :winlin
      *@Description :根据id查询员工信息
@@ -118,7 +121,7 @@ public interface FacadeAgencyService {
      *@date:2018/9/19
      */
     @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployeeById(Long id);
+    public Result queryEmployeeById(@RequestBody HashMap<String,Long> map);
     /**
      /**
      *@author :winlin

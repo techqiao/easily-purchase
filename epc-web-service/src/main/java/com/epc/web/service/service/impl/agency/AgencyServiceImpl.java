@@ -321,14 +321,16 @@ public class AgencyServiceImpl implements AgencyService {
      * @date:2018/9/18
      */
     @Override
-    public Result regesityAgency(HandleAgency agency) {
+    public Result <HandleAgency>regesityAgency(HandleAgency agency) {
         TAgencyBasicInfo basicInfo = new TAgencyBasicInfo();
         //或的基本信息密码加密密码加密
         basicInfo.setCellphone(agency.getCellphone());
         basicInfo.setPassword(MD5Util.MD5EncodeUtf8(agency.getPassword()));
         Result result = new Result();
         int sucess = tAgencyBasicInfoMapper.insertSelective(basicInfo);
+        Long id = basicInfo.getId();
         if (sucess > 0) {
+            agency.setAgencyId(basicInfo.getId());
             result.setData(agency);
             result.setMsg("注册成功");
             return result;
@@ -373,15 +375,16 @@ public class AgencyServiceImpl implements AgencyService {
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public Result completeInfo(HandleAgency agency) {
+        //查询注册时候走动生成的主键
+
         //创建时间
         Date date = new Date();
         //生成唯一的代理商的id
-        Long agencyId = System.currentTimeMillis() + Math.round(Math.random() * 10000000);
+        Long agencyId =agency.getAgencyId();
 
         //基本t_agency_basic_info信息的封装
         TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
         tAgencyBasicInfo.setName(agency.getName());
-        tAgencyBasicInfo.setAgencyId(agencyId);
         tAgencyBasicInfo.setCellphone(agency.getCellphone());
         //注册状态需要待平台审核
         tAgencyBasicInfo.setState(Const.STATE.REGISTERED);
@@ -428,13 +431,35 @@ public class AgencyServiceImpl implements AgencyService {
 
     }
 
+    /**
+     *
+     * 代理机构名下的所有项目
+     * @return
+     */
     @Override
     public Result proxySubjects() {
         return Result.success();
     }
 
+    /**
+     * 查询该机构下所有的员工
+     * @return
+     */
     @Override
-    public Result queryEmployee(HandleEmployee employee) {
+    public Result<List<HandleEmployee>> queryAllEmployee() {
+        return Result.success();
+    }
+
+    /**
+     * 依据封装好的条件查询员工
+     * @param employee
+     * @return
+     */
+    @Override
+    public Result<List<HandleEmployee>> queryEmployee(HandleEmployee employee) {
+        if(employee==null){
+            return this.queryAllEmployee();
+        }
         return Result.success();
     }
 

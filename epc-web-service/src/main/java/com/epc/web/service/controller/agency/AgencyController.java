@@ -10,7 +10,10 @@ import com.epc.web.facade.agency.handle.HandleSupplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 /**
  * @author winlin
@@ -36,24 +39,23 @@ public class AgencyController implements FacadeAgencyService {
         return agencyService.insertSupplier(handleSupplier);
     }
 
-    @PostMapping(value = "regesityAgency", consumes = "application/json; charset=UTF-8")
     @Override
-    public Result regesityAgency(HandleAgency agency) {
+    public Result regesityAgency(@RequestBody HandleAgency agency) {
         return agencyService.regesityAgency(agency);
     }
 
     @Override
-    public Result queryAgencies(HandleAgency agency) {
+    public Result queryAgencies( @RequestBody HandleAgency agency) {
         return agencyService.queryAgencies(agency);
     }
 
     @Override
-    public Result modifypassword(HandleAgency agency) {
+    public Result modifypassword( @RequestBody HandleAgency agency) {
         return agencyService.modifypassword(agency);
     }
 
     @Override
-    public Result completeInfo(HandleAgency agency) {
+    public Result completeInfo( @RequestBody HandleAgency agency) {
         return agencyService.completeInfo(agency);
     }
 
@@ -63,22 +65,24 @@ public class AgencyController implements FacadeAgencyService {
     }
 
     @Override
-    public Result queryEmployee(HandleEmployee employee) {
+    public Result queryEmployee( @RequestBody HandleEmployee employee) {
         return agencyService.queryEmployee(employee);
     }
 
     @Override
-    public Result queryEmployeeByCellphone(String cellphone) {
+    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map) {
+        String cellphone = map.get("cellphone");
         return agencyService.queryEmployeeByCellphone(cellphone);
     }
 
     @Override
-    public Result queryEmployeeById(Long id) {
+    public Result queryEmployeeById(@RequestBody HashMap<String,Long> map) {
+        Long id = map.get("id");
         return agencyService.queryEmployeeById(id);
     }
 
     @Override
-    public Result updateEmployeeBy(HandleEmployee employee) {
+    public Result updateEmployeeBy( @RequestBody HandleEmployee employee) {
         return agencyService.updateEmployeeBy(employee);
     }
 }

@@ -18,6 +18,9 @@ import java.util.List;
 public class HandleAgency implements Serializable {
 
     private static final long serialVersionUID = -5650940360397347119L;
+
+    private Long agencyId;
+
     private String name;
 
     private String password;

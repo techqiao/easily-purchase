@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 /**
  * @Author :winlin
  * @Description :
@@ -100,13 +102,13 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构按手机查询员工" , notes = "代理机构按手机查询员工")
     @PostMapping(value = "/queryEmployeeByCellphone")
-    public Result queryEmployeeByCellphone(String cellphone) {
-        return agencyClient.queryEmployeeByCellphone(cellphone);
+    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map) {
+        return agencyClient.queryEmployeeByCellphone(map);
     }
     @ApiOperation(value = "代理机构按id查询员工" , notes = "代理机id查询员工")
     @PostMapping(value = "/queryEmployeeById")
-    public Result queryEmployeeById(Long id) {
-        return agencyClient.queryEmployeeById(id);
+    public Result queryEmployeeById(@RequestBody HashMap<String,Long> map) {
+        return agencyClient.queryEmployeeById(map);
     }
 
     @ApiOperation(value = "代理机构修改员工信息" , notes = "代理机构修改员工信息")

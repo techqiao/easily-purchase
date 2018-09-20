@@ -8,6 +8,8 @@ import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.HashMap;
+
 /**
  *@Author :winlin
  *@Description :
@@ -61,12 +63,12 @@ public class AgencyHystrix implements FacadeAgencyService{
     }
 
     @Override
-    public Result queryEmployeeByCellphone(String cellphone) {
+    public Result queryEmployeeByCellphone(HashMap<String,String> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryEmployeeById(Long id) {
+    public Result queryEmployeeById(HashMap<String,Long> map) {
         return Result.hystrixError();
     }
 

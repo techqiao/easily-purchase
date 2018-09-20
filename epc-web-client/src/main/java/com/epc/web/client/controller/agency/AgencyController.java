@@ -92,7 +92,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构按条件查询员工" , notes = "代理机构按条件查询员工")
     @PostMapping(value = "/queryEmployee")
-    public Result queryEmployee(@RequestBody  ClientHandleEmployee employee) {
+    public Result queryEmployee(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee handleEmployee =new HandleEmployee();
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.queryEmployee(handleEmployee);
@@ -111,7 +111,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构修改员工信息" , notes = "代理机构修改员工信息")
     @PostMapping(value = "/updateEmployeeBy")
-    public Result updateEmployeeBy(@RequestBody  ClientHandleEmployee employee) {
+    public Result updateEmployeeBy(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee handleEmployee =new HandleEmployee();
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.updateEmployeeBy(handleEmployee);

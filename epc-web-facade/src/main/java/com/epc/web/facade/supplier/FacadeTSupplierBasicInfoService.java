@@ -22,17 +22,8 @@ public interface FacadeTSupplierBasicInfoService {
      * @param handleSupplierDetail
      * @return
      */
-    @PostMapping(value = "registerSupplier",consumes = "application/json,charset=UTF-8")
+    @PostMapping(value = "registerSupplier",consumes = "application/json;charset=UTF-8")
     Result<Boolean> registerSupplier(@RequestBody  HandleSupplierDetail handleSupplierDetail);
-
-    /**
-     *  登陆
-     * @param cellphone
-     * @param password
-     * @return
-     */
-    @PostMapping(value = "login",consumes = "application/json,charset=UTF-8")
-    Result<SupplierBasicInfoVO> login(@RequestParam String cellphone, String password);
 
     /**
      * 查询用户信息，依据电话或者密码来查找这个人的详细信息
@@ -40,14 +31,14 @@ public interface FacadeTSupplierBasicInfoService {
      * @param cellphone
      * @return
      */
-    @PostMapping(value = "findByName",consumes = "application/json,charset=UTF-8")
-    Result<SupplierDetailInfoVO> findByName(@RequestParam String name, String cellphone);
+    @PostMapping(value = "findByName",consumes = "application/json;charset=UTF-8")
+    Result<SupplierDetailInfoVO> findByName(@RequestParam("name") String name,@RequestParam("cellphone") String cellphone);
 
     /**
      * 忘记密码
      * @param handleSupplierForgetPassword
      */
-    @PostMapping(value = "forgetPassword",consumes = "application/json,charset=UTF-8")
+    @PostMapping(value = "forgetPassword",consumes = "application/json;charset=UTF-8")
     Result<Boolean> forgetPassword(@RequestBody HandleSupplierForgetPassword handleSupplierForgetPassword);
 
     /*====================================================*/

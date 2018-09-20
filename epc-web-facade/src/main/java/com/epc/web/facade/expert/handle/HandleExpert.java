@@ -7,14 +7,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 import java.util.Date;
 
 /**
-* @Description:    采购人录入专家信息
-* @Author:         linzhixiang
-* @CreateDate:     2018/9/13 19:51
-* @UpdateUser:     linzhixiang
-* @UpdateDate:     2018/9/13 19:51
-* @UpdateRemark:   修改内容
-* @Version:        1.0
+* @Description:  采购人录入专家信息
+* @Param:
+* @return:
+* @Author: linzhixiang
+* @Date: 2018/9/18
 */
+
 @ApiModel(value = "HandleExpert", description = "专家信息")
 public class HandleExpert {
     @ApiModelProperty(value = "手机号")

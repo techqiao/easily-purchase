@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 * @UpdateRemark:   修改内容
 * @Version:        1.0
 */
+
 public interface FacadeOperatorService {
 
 
@@ -40,15 +41,15 @@ public interface FacadeOperatorService {
      * @param cellphone
      * @return
      */
-    @PostMapping(value = "findByName", consumes = "application/json; charset=UTF-8")
-    Result<OperatorBasicInfoVO> findByName(@RequestParam String name, String cellphone);
+    @PostMapping(value = "findOperatorByName", consumes = "application/json; charset=UTF-8")
+    Result<OperatorBasicInfoVO> findByName(@RequestParam("name") String name,@RequestParam("cellphone") String cellphone);
 
     /**
      * 忘记密码
      * @author donghuan
      * @param handleOperatorForgetPassword
      */
-    @PostMapping(value = "forgetPassword", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "forgetOperatorPassword", consumes = "application/json; charset=UTF-8")
     Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword);
 
 

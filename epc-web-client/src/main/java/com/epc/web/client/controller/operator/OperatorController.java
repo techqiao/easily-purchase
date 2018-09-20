@@ -54,9 +54,6 @@ public class OperatorController {
     @ApiOperation(value = "运营商添加采购人",notes = "运营商添加采购人")
     @PostMapping(value = "/registerPurchaser")
     public Result<Boolean> createPurchaseByOperator(@RequestBody HandlePurchaser handleOperator) {
-
-//        HandleOperator handleOperator1=new HandleOperator();
-//        BeanUtils.copyProperties(clientHandleOperator,handleOperator1);
         return operatorClient.createPurchaseByOperator(handleOperator);
     }
 

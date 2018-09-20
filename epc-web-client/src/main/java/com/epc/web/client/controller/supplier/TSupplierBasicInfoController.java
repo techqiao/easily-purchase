@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@Api(value = "供应商服务",tags = {"供应商项目服务"})
+@Api(value = "供应商服务")
 @RestController
 @RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TSupplierBasicInfoController {
@@ -30,11 +30,6 @@ public class TSupplierBasicInfoController {
         HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
         BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
         return supplierClient.registerSupplier(handleSupplierDetail);
-    }
-
-    //登陆
-    public Result<SupplierBasicInfoVO> login(@RequestParam String cellphone, String password) {
-        return supplierClient.login(cellphone,password);
     }
 
 

@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.purchase.handle;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +12,8 @@ import java.util.Date;
  * <p>@Author : wjq
  */
 @Data
-public class HandlePurchaseProjectBasicInfo {
+public class HandlePurchaseProjectBasicInfo implements Serializable {
+    private static final long serialVersionUID = -8833590808507549773L;
     /**
      * 主键ID
      */

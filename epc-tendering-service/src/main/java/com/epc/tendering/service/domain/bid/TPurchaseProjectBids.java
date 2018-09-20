@@ -11,9 +11,13 @@ public class TPurchaseProjectBids implements Serializable {
 
     private String purchaseProjectName;
 
+    private String purchaseProjectCode;
+
     private Long projectId;
 
     private String projectName;
+
+    private String projectCode;
 
     private String bidCode;
 
@@ -63,6 +67,14 @@ public class TPurchaseProjectBids implements Serializable {
         this.purchaseProjectName = purchaseProjectName == null ? null : purchaseProjectName.trim();
     }
 
+    public String getPurchaseProjectCode() {
+        return purchaseProjectCode;
+    }
+
+    public void setPurchaseProjectCode(String purchaseProjectCode) {
+        this.purchaseProjectCode = purchaseProjectCode == null ? null : purchaseProjectCode.trim();
+    }
+
     public Long getProjectId() {
         return projectId;
     }
@@ -77,6 +89,14 @@ public class TPurchaseProjectBids implements Serializable {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode == null ? null : projectCode.trim();
     }
 
     public String getBidCode() {
@@ -176,8 +196,10 @@ public class TPurchaseProjectBids implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", purchaseProjectName=").append(purchaseProjectName);
+        sb.append(", purchaseProjectCode=").append(purchaseProjectCode);
         sb.append(", projectId=").append(projectId);
         sb.append(", projectName=").append(projectName);
+        sb.append(", projectCode=").append(projectCode);
         sb.append(", bidCode=").append(bidCode);
         sb.append(", bidName=").append(bidName);
         sb.append(", bidBudgetaryAmount=").append(bidBudgetaryAmount);

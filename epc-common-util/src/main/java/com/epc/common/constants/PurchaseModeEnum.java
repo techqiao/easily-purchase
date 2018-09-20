@@ -1,4 +1,4 @@
-package com.epc.tendering.service.common.constants;
+package com.epc.common.constants;
 
 /**
  * <p>Description : 采购方式

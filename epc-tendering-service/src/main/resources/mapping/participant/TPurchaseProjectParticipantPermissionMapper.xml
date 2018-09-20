@@ -1,35 +1,35 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="participant_id" property="participantId" jdbcType="BIGINT" />
-    <result column="participant_permission" property="participantPermission" jdbcType="INTEGER" />
-    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="participant_id" jdbcType="BIGINT" property="participantId" />
+    <result column="participant_permission" jdbcType="VARCHAR" property="participantPermission" />
+    <result column="operate_id" jdbcType="BIGINT" property="operateId" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -40,25 +40,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -69,186 +69,186 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, participant_id, participant_permission, operate_id, creator, create_at, update_at, 
     is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" >
+  <select id="selectByExample" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from t_purchase_project_participant_permission
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_purchase_project_participant_permission
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_purchase_project_participant_permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria">
     delete from t_purchase_project_participant_permission
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_purchase_project_participant_permission (participant_id, participant_permission, 
       operate_id, creator, create_at, 
       update_at, is_deleted)
-    values (#{participantId,jdbcType=BIGINT}, #{participantPermission,jdbcType=INTEGER}, 
+    values (#{participantId,jdbcType=BIGINT}, #{participantPermission,jdbcType=VARCHAR}, 
       #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_purchase_project_participant_permission
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="participantId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="participantId != null">
         participant_id,
       </if>
-      <if test="participantPermission != null" >
+      <if test="participantPermission != null">
         participant_permission,
       </if>
-      <if test="operateId != null" >
+      <if test="operateId != null">
         operate_id,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="createAt != null" >
+      <if test="createAt != null">
         create_at,
       </if>
-      <if test="updateAt != null" >
+      <if test="updateAt != null">
         update_at,
       </if>
-      <if test="isDeleted != null" >
+      <if test="isDeleted != null">
         is_deleted,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="participantId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="participantId != null">
         #{participantId,jdbcType=BIGINT},
       </if>
-      <if test="participantPermission != null" >
-        #{participantPermission,jdbcType=INTEGER},
+      <if test="participantPermission != null">
+        #{participantPermission,jdbcType=VARCHAR},
       </if>
-      <if test="operateId != null" >
+      <if test="operateId != null">
         #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createAt != null" >
+      <if test="createAt != null">
         #{createAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateAt != null" >
+      <if test="updateAt != null">
         #{updateAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDeleted != null" >
+      <if test="isDeleted != null">
         #{isDeleted,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" resultType="java.lang.Integer">
     select count(*) from t_purchase_project_participant_permission
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update t_purchase_project_participant_permission
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.participantId != null" >
+      <if test="record.participantId != null">
         participant_id = #{record.participantId,jdbcType=BIGINT},
       </if>
-      <if test="record.participantPermission != null" >
-        participant_permission = #{record.participantPermission,jdbcType=INTEGER},
+      <if test="record.participantPermission != null">
+        participant_permission = #{record.participantPermission,jdbcType=VARCHAR},
       </if>
-      <if test="record.operateId != null" >
+      <if test="record.operateId != null">
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.createAt != null" >
+      <if test="record.createAt != null">
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateAt != null" >
+      <if test="record.updateAt != null">
         update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.isDeleted != null" >
+      <if test="record.isDeleted != null">
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update t_purchase_project_participant_permission
     set id = #{record.id,jdbcType=BIGINT},
       participant_id = #{record.participantId,jdbcType=BIGINT},
-      participant_permission = #{record.participantPermission,jdbcType=INTEGER},
+      participant_permission = #{record.participantPermission,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission">
     update t_purchase_project_participant_permission
-    <set >
-      <if test="participantId != null" >
+    <set>
+      <if test="participantId != null">
         participant_id = #{participantId,jdbcType=BIGINT},
       </if>
-      <if test="participantPermission != null" >
-        participant_permission = #{participantPermission,jdbcType=INTEGER},
+      <if test="participantPermission != null">
+        participant_permission = #{participantPermission,jdbcType=VARCHAR},
       </if>
-      <if test="operateId != null" >
+      <if test="operateId != null">
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createAt != null" >
+      <if test="createAt != null">
         create_at = #{createAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateAt != null" >
+      <if test="updateAt != null">
         update_at = #{updateAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDeleted != null" >
+      <if test="isDeleted != null">
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission">
     update t_purchase_project_participant_permission
     set participant_id = #{participantId,jdbcType=BIGINT},
-      participant_permission = #{participantPermission,jdbcType=INTEGER},
+      participant_permission = #{participantPermission,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -256,18 +256,19 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" id="selectByExampleWithRowbounds" >
+  <select id="selectByExampleWithRowbounds" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from t_purchase_project_participant_permission
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
+
 </mapper>

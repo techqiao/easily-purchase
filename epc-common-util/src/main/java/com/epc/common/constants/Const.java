@@ -41,6 +41,7 @@ public class Const {
     }
 
     public interface IS_OTHER_AGENCY {
+        //不全权委托代理结构
         int NOT_OTHER_AGENCY = 0;
         int IS_OTHER_AGENCY = 1;
     }

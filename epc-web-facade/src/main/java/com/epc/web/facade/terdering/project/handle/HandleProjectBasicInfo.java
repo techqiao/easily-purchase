@@ -48,6 +48,13 @@ public class HandleProjectBasicInfo {
     /**
      * 采购人ID
      */
-    private String purchaserId;
-
+    private Long purchaserId;
+    /**
+     * 操作人ID
+     */
+    private Long operateId;
+    /**
+     * 创建者姓名
+     */
+    private String creator;
 }

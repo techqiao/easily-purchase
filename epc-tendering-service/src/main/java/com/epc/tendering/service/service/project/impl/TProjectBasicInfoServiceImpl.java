@@ -40,6 +40,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         BeanUtils.copyProperties(handleProjectBasicInfo, pojo);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(new Date());
+        pojo.setUpdateAt(new Date());
         try {
             if(pojo.getId() == null){
                 return Result.success(tProjectBasicInfoMapper.insertSelective(pojo) > 0);
@@ -75,6 +76,10 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         //项目名称
         if(StringUtils.isNotBlank(queryProjectInfoDTO.getProjectName())) {
             subCriteria.andProjectNameEqualTo(queryProjectInfoDTO.getProjectName());
+        }
+        //采购人
+        if(queryProjectInfoDTO.getPurchaserId() != null) {
+            subCriteria.andPurchaserIdEqualTo(queryProjectInfoDTO.getPurchaserId());
         }
         criteria.setOrderByClause("id desc");
         List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExampleWithRowbounds(criteria, queryProjectInfoDTO.getRowBounds());

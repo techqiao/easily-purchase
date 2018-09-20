@@ -70,7 +70,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/18
      */
     @PostMapping(value = "registerPurchaser", consumes = "application/json; charset=UTF-8")
-    public Result registerPurchaser(HandleRegisterPurchaser purchaser);
+    Result registerPurchaser(HandleRegisterPurchaser purchaser);
 
     /**
      * @author :winlin
@@ -80,7 +80,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "allEmployee", consumes = "application/json; charset=UTF-8")
-    public Result allEmployee(Long purchaserId);
+    Result allEmployee(Long purchaserId);
 
     /**
      * @author :winlin
@@ -90,7 +90,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "findEmployeeByName", consumes = "application/json; charset=UTF-8")
-    public Result findEmployeeByName(@RequestParam("fuzzyName")String fuzzyName, @RequestParam("id")Long purchaseId);
+    Result findEmployeeByName(@RequestParam("fuzzyName")String fuzzyName, @RequestParam("id")Long purchaseId);
 
     /**
      * @author :winlin
@@ -100,7 +100,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "updateEmployeeState", consumes = "application/json; charset=UTF-8")
-    public Result updateEmployeeState(@RequestParam("cellphone")String cellphone,@RequestParam("state")Integer state);
+    Result updateEmployeeState(@RequestParam("cellphone")String cellphone,@RequestParam("state")Integer state);
 
     /**
      * @author :winlin
@@ -110,7 +110,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "updateEmployeeStateById", consumes = "application/json; charset=UTF-8")
-    public Result updateEmployeeStateById(@RequestParam("id")Long id,@RequestParam("state")Integer state);
+    Result updateEmployeeStateById(@RequestParam("id")Long id,@RequestParam("state")Integer state);
 
     /**
      * @author :winlin
@@ -120,7 +120,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryEmployee", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployee(String cellphone);
+    Result queryEmployee(String cellphone);
 
     /**
      * @author :winlin
@@ -129,8 +129,8 @@ public interface FacadePurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    @PostMapping(value = "querEmployeeById", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployee(Long id);
+    @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
+    Result queryEmployee(Long id);
     /**
      *@author :winlin
      *@Description :根据条件查询多有符合条件的员工
@@ -139,7 +139,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/19
      */
     @PostMapping(value = "queryEmplyeeByCriteria", consumes = "application/json; charset=UTF-8")
-    public Result queryEmplyee(HandleEmployeeDto employeeDto);
+    Result queryEmplyee(HandleEmployeeDto employeeDto);
 
     /**
      *@author :winlin
@@ -149,7 +149,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/19
      */
     @PostMapping(value = "updateRole", consumes = "application/json; charset=UTF-8")
-    public Result updateRole(@RequestParam("id")Long id,@RequestParam("role")Integer role);
+    Result updateRole(@RequestParam("id")Long id,@RequestParam("role")Integer role);
 
     /**
      * @author :winlin
@@ -159,7 +159,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryAllSuppliers", consumes = "application/json; charset=UTF-8")
-    public Result queryAllSuppliers(Long purchaseId);
+    Result queryAllSuppliers(Long purchaseId);
 
     /**
      * @author :winlin
@@ -169,7 +169,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "querySuppliers", consumes = "application/json; charset=UTF-8")
-    public Result querySuppliers(@RequestParam("fuzzyName")String fuzzyName,@RequestParam("purchaseId")Long purchaseId);
+    Result querySuppliers(@RequestParam("fuzzyName")String fuzzyName,@RequestParam("purchaseId")Long purchaseId);
 
     /**
      * @author :winlin
@@ -179,7 +179,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "querySuppliersById", consumes = "application/json; charset=UTF-8")
-    public Result querySuppliers(Long id);
+    Result querySuppliers(Long id);
 
     /**
      * @author :winlin
@@ -189,7 +189,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "updateSuppliers", consumes = "application/json; charset=UTF-8")
-    public Result updateSuppliers(HandPurchaserAttachment attachment);
+    Result updateSuppliers(HandPurchaserAttachment attachment);
 
     /**
      * @author :winlin
@@ -199,7 +199,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryExperts", consumes = "application/json; charset=UTF-8")
-    public Result queryExperts(HandleExpertDto dto);
+    Result queryExperts(HandleExpertDto dto);
     /**
      *@author :winlin
      *@Description :根据id删除专家,修改is_delete状态
@@ -208,5 +208,5 @@ public interface FacadePurchaserService {
      *@date:2018/9/19
      */
     @PostMapping(value = "updateExpertState", consumes = "application/json; charset=UTF-8")
-    public Result updateExpertState(@RequestParam("id")Long id ,@RequestParam("state")Integer state);
+    Result updateExpertState(@RequestParam("id")Long id ,@RequestParam("state")Integer state);
 }

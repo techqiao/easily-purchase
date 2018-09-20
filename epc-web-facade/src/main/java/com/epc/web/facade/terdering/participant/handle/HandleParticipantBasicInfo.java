@@ -1,10 +1,13 @@
 package com.epc.web.facade.terdering.participant.handle;
 
+import lombok.Data;
+
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-19 09:52
  * <p>@Author : wjq
  */
+@Data
 public class HandleParticipantBasicInfo {
     /**
      * 采购项目ID

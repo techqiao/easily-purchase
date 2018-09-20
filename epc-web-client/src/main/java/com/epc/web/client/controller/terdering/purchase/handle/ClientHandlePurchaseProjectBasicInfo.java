@@ -3,6 +3,7 @@ package com.epc.web.client.controller.terdering.purchase.handle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,6 +26,9 @@ public class ClientHandlePurchaseProjectBasicInfo {
     private String purchaseProjectName;
     @ApiModelProperty(value = "采购项目编号")
     private String purchaseProjectCode;
+    @ApiModelProperty(value = "采购项目ID")
+    @NotEmpty(message = "ClientHandlePurchaseProjectBasicInfo.purchaseProjectId.null")
+    private Long purchaseProjectId;
     @ApiModelProperty(value = "采购项目开始时间")
     private Date purchaseStartTime;
     @ApiModelProperty(value = "采购项目结束时间")
@@ -43,8 +47,12 @@ public class ClientHandlePurchaseProjectBasicInfo {
     private Integer isAdjust;
     @ApiModelProperty(value = "是否全权委托招标代理机构")
     private Integer isOtherAgency;
+    @ApiModelProperty(value = "招标代理机构ID")
+    private Long purchaserAgencyId;
     @ApiModelProperty(value = "经办人ID")
-    private Integer agentId;
+    private Long agentId;
     @ApiModelProperty(value = "审核人ID")
-    private Integer auditorId;
+    private Long auditorId;
+    @ApiModelProperty(value = "是否删除")
+    private Integer isDeleted;
 }

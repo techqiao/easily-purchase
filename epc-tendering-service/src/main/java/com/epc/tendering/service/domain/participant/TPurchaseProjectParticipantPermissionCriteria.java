@@ -235,52 +235,62 @@ public class TPurchaseProjectParticipantPermissionCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionEqualTo(Integer value) {
+        public Criteria andParticipantPermissionEqualTo(String value) {
             addCriterion("participant_permission =", value, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionNotEqualTo(Integer value) {
+        public Criteria andParticipantPermissionNotEqualTo(String value) {
             addCriterion("participant_permission <>", value, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionGreaterThan(Integer value) {
+        public Criteria andParticipantPermissionGreaterThan(String value) {
             addCriterion("participant_permission >", value, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionGreaterThanOrEqualTo(Integer value) {
+        public Criteria andParticipantPermissionGreaterThanOrEqualTo(String value) {
             addCriterion("participant_permission >=", value, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionLessThan(Integer value) {
+        public Criteria andParticipantPermissionLessThan(String value) {
             addCriterion("participant_permission <", value, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionLessThanOrEqualTo(Integer value) {
+        public Criteria andParticipantPermissionLessThanOrEqualTo(String value) {
             addCriterion("participant_permission <=", value, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionIn(List<Integer> values) {
+        public Criteria andParticipantPermissionLike(String value) {
+            addCriterion("participant_permission like", value, "participantPermission");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantPermissionNotLike(String value) {
+            addCriterion("participant_permission not like", value, "participantPermission");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantPermissionIn(List<String> values) {
             addCriterion("participant_permission in", values, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionNotIn(List<Integer> values) {
+        public Criteria andParticipantPermissionNotIn(List<String> values) {
             addCriterion("participant_permission not in", values, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionBetween(Integer value1, Integer value2) {
+        public Criteria andParticipantPermissionBetween(String value1, String value2) {
             addCriterion("participant_permission between", value1, value2, "participantPermission");
             return (Criteria) this;
         }
 
-        public Criteria andParticipantPermissionNotBetween(Integer value1, Integer value2) {
+        public Criteria andParticipantPermissionNotBetween(String value1, String value2) {
             addCriterion("participant_permission not between", value1, value2, "participantPermission");
             return (Criteria) this;
         }

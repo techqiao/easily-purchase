@@ -25,6 +25,10 @@ public class HandlePurchaseProjectBasicInfo {
      */
     private String projectName;
     /**
+     * 采购项目ID
+     */
+    private Long purchaseProjectId;
+    /**
      * 采购项目名称
      */
     private String purchaseProjectName;
@@ -77,13 +81,29 @@ public class HandlePurchaseProjectBasicInfo {
     private Integer isOtherAgency;
 
     /**
+     * 招标代理机构ID
+     */
+    private Long purchaserAgencyId;
+
+    /**
      * 经办人ID
      */
-    private Integer agentId;
-
+    private Long agentId;
     /**
      * 审核人ID
      */
-    private Integer auditorId;
+    private Long auditorId;
+    /**
+     * 操作人ID
+     */
+    private Long operateId;
+    /**
+     * 创建者
+     */
+    private String creator;
+    /**
+     * 是否删除
+     */
+    private Integer isDeleted;
 
 }

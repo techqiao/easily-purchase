@@ -11,15 +11,12 @@ import com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria;
 import com.epc.web.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.web.service.service.operator.OperatorUserService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.krb5.internal.PAData;
 
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 

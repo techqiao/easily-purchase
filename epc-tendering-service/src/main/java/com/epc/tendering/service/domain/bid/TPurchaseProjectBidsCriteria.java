@@ -296,6 +296,76 @@ public class TPurchaseProjectBidsCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andPurchaseProjectCodeIsNull() {
+            addCriterion("purchase_project_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeIsNotNull() {
+            addCriterion("purchase_project_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeEqualTo(String value) {
+            addCriterion("purchase_project_code =", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeNotEqualTo(String value) {
+            addCriterion("purchase_project_code <>", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeGreaterThan(String value) {
+            addCriterion("purchase_project_code >", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("purchase_project_code >=", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeLessThan(String value) {
+            addCriterion("purchase_project_code <", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeLessThanOrEqualTo(String value) {
+            addCriterion("purchase_project_code <=", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeLike(String value) {
+            addCriterion("purchase_project_code like", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeNotLike(String value) {
+            addCriterion("purchase_project_code not like", value, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeIn(List<String> values) {
+            addCriterion("purchase_project_code in", values, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeNotIn(List<String> values) {
+            addCriterion("purchase_project_code not in", values, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeBetween(String value1, String value2) {
+            addCriterion("purchase_project_code between", value1, value2, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectCodeNotBetween(String value1, String value2) {
+            addCriterion("purchase_project_code not between", value1, value2, "purchaseProjectCode");
+            return (Criteria) this;
+        }
+
         public Criteria andProjectIdIsNull() {
             addCriterion("project_id is null");
             return (Criteria) this;
@@ -423,6 +493,76 @@ public class TPurchaseProjectBidsCriteria {
 
         public Criteria andProjectNameNotBetween(String value1, String value2) {
             addCriterion("project_name not between", value1, value2, "projectName");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeIsNull() {
+            addCriterion("project_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeIsNotNull() {
+            addCriterion("project_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeEqualTo(String value) {
+            addCriterion("project_code =", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeNotEqualTo(String value) {
+            addCriterion("project_code <>", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeGreaterThan(String value) {
+            addCriterion("project_code >", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("project_code >=", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeLessThan(String value) {
+            addCriterion("project_code <", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeLessThanOrEqualTo(String value) {
+            addCriterion("project_code <=", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeLike(String value) {
+            addCriterion("project_code like", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeNotLike(String value) {
+            addCriterion("project_code not like", value, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeIn(List<String> values) {
+            addCriterion("project_code in", values, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeNotIn(List<String> values) {
+            addCriterion("project_code not in", values, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeBetween(String value1, String value2) {
+            addCriterion("project_code between", value1, value2, "projectCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectCodeNotBetween(String value1, String value2) {
+            addCriterion("project_code not between", value1, value2, "projectCode");
             return (Criteria) this;
         }
 

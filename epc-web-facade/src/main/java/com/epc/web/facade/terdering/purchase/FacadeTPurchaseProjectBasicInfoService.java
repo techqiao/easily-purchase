@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface FacadeTPurchaseProjectBasicInfoService {
     /**
-     * 新增|修改采购项目
+     * 新增|修改|删除采购项目
      * @param handlePurchaseProjectBasicInfoSub
      * @return
      */

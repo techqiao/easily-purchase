@@ -3,6 +3,7 @@ package com.epc.web.facade.terdering.purchase.query;
 import com.epc.common.PagerParam;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,8 @@ import java.util.Date;
  * <p>@Author : wjq
  */
 @Data
-public class QueryPurchaseBasicInfoVO extends PagerParam {
+public class QueryPurchaseBasicInfoVO extends PagerParam implements Serializable {
+    private static final long serialVersionUID = -5063764601070440894L;
     /**
      * 采购项目名称
      */

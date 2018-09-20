@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.bidding.mapper.bidding.BSaleDocumentsMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BSaleDocuments" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
+    <result column="auditor_id" property="auditorId" jdbcType="BIGINT" />
+    <result column="replies_id" property="repliesId" jdbcType="BIGINT" />
+    <result column="bidding_documents_up_url" property="biddingDocumentsUpUrl" jdbcType="VARCHAR" />
+    <result column="bidding_documents_download_url" property="biddingDocumentsDownloadUrl" jdbcType="VARCHAR" />
+    <result column="is_under_line" property="isUnderLine" jdbcType="INTEGER" />
+    <result column="bidding_end_time" property="biddingEndTime" jdbcType="TIMESTAMP" />
+    <result column="bidding_bond_end_time" property="biddingBondEndTime" jdbcType="TIMESTAMP" />
+    <result column="bid_opening_time" property="bidOpeningTime" jdbcType="TIMESTAMP" />
+    <result column="bid_opening_place" property="bidOpeningPlace" jdbcType="VARCHAR" />
+    <result column="clarification_problem_end_time" property="clarificationProblemEndTime" jdbcType="TIMESTAMP" />
+    <result column="decryption_method" property="decryptionMethod" jdbcType="INTEGER" />
+    <result column="process_status" property="processStatus" jdbcType="INTEGER" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, procurement_project_id, auditor_id, replies_id, bidding_documents_up_url, bidding_documents_download_url, 
+    is_under_line, bidding_end_time, bidding_bond_end_time, bid_opening_time, bid_opening_place, 
+    clarification_problem_end_time, decryption_method, process_status, operate_id, create_at, 
+    update_at, is_deleted
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_sale_documents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_sale_documents
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_sale_documents
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" >
+    delete from b_sale_documents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_sale_documents (procurement_project_id, auditor_id, replies_id, 
+      bidding_documents_up_url, bidding_documents_download_url, 
+      is_under_line, bidding_end_time, bidding_bond_end_time, 
+      bid_opening_time, bid_opening_place, clarification_problem_end_time, 
+      decryption_method, process_status, operate_id, 
+      create_at, update_at, is_deleted
+      )
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT}, 
+      #{biddingDocumentsUpUrl,jdbcType=VARCHAR}, #{biddingDocumentsDownloadUrl,jdbcType=VARCHAR}, 
+      #{isUnderLine,jdbcType=INTEGER}, #{biddingEndTime,jdbcType=TIMESTAMP}, #{biddingBondEndTime,jdbcType=TIMESTAMP}, 
+      #{bidOpeningTime,jdbcType=TIMESTAMP}, #{bidOpeningPlace,jdbcType=VARCHAR}, #{clarificationProblemEndTime,jdbcType=TIMESTAMP}, 
+      #{decryptionMethod,jdbcType=INTEGER}, #{processStatus,jdbcType=INTEGER}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_sale_documents
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="procurementProjectId != null" >
+        procurement_project_id,
+      </if>
+      <if test="auditorId != null" >
+        auditor_id,
+      </if>
+      <if test="repliesId != null" >
+        replies_id,
+      </if>
+      <if test="biddingDocumentsUpUrl != null" >
+        bidding_documents_up_url,
+      </if>
+      <if test="biddingDocumentsDownloadUrl != null" >
+        bidding_documents_download_url,
+      </if>
+      <if test="isUnderLine != null" >
+        is_under_line,
+      </if>
+      <if test="biddingEndTime != null" >
+        bidding_end_time,
+      </if>
+      <if test="biddingBondEndTime != null" >
+        bidding_bond_end_time,
+      </if>
+      <if test="bidOpeningTime != null" >
+        bid_opening_time,
+      </if>
+      <if test="bidOpeningPlace != null" >
+        bid_opening_place,
+      </if>
+      <if test="clarificationProblemEndTime != null" >
+        clarification_problem_end_time,
+      </if>
+      <if test="decryptionMethod != null" >
+        decryption_method,
+      </if>
+      <if test="processStatus != null" >
+        process_status,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="procurementProjectId != null" >
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="auditorId != null" >
+        #{auditorId,jdbcType=BIGINT},
+      </if>
+      <if test="repliesId != null" >
+        #{repliesId,jdbcType=BIGINT},
+      </if>
+      <if test="biddingDocumentsUpUrl != null" >
+        #{biddingDocumentsUpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="biddingDocumentsDownloadUrl != null" >
+        #{biddingDocumentsDownloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isUnderLine != null" >
+        #{isUnderLine,jdbcType=INTEGER},
+      </if>
+      <if test="biddingEndTime != null" >
+        #{biddingEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="biddingBondEndTime != null" >
+        #{biddingBondEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bidOpeningTime != null" >
+        #{bidOpeningTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bidOpeningPlace != null" >
+        #{bidOpeningPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="clarificationProblemEndTime != null" >
+        #{clarificationProblemEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="decryptionMethod != null" >
+        #{decryptionMethod,jdbcType=INTEGER},
+      </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=INTEGER},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" resultType="java.lang.Integer" >
+    select count(*) from b_sale_documents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_sale_documents
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.procurementProjectId != null" >
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.auditorId != null" >
+        auditor_id = #{record.auditorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.repliesId != null" >
+        replies_id = #{record.repliesId,jdbcType=BIGINT},
+      </if>
+      <if test="record.biddingDocumentsUpUrl != null" >
+        bidding_documents_up_url = #{record.biddingDocumentsUpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.biddingDocumentsDownloadUrl != null" >
+        bidding_documents_download_url = #{record.biddingDocumentsDownloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isUnderLine != null" >
+        is_under_line = #{record.isUnderLine,jdbcType=INTEGER},
+      </if>
+      <if test="record.biddingEndTime != null" >
+        bidding_end_time = #{record.biddingEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.biddingBondEndTime != null" >
+        bidding_bond_end_time = #{record.biddingBondEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bidOpeningTime != null" >
+        bid_opening_time = #{record.bidOpeningTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bidOpeningPlace != null" >
+        bid_opening_place = #{record.bidOpeningPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clarificationProblemEndTime != null" >
+        clarification_problem_end_time = #{record.clarificationProblemEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.decryptionMethod != null" >
+        decryption_method = #{record.decryptionMethod,jdbcType=INTEGER},
+      </if>
+      <if test="record.processStatus != null" >
+        process_status = #{record.processStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null" >
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_sale_documents
+    set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      auditor_id = #{record.auditorId,jdbcType=BIGINT},
+      replies_id = #{record.repliesId,jdbcType=BIGINT},
+      bidding_documents_up_url = #{record.biddingDocumentsUpUrl,jdbcType=VARCHAR},
+      bidding_documents_download_url = #{record.biddingDocumentsDownloadUrl,jdbcType=VARCHAR},
+      is_under_line = #{record.isUnderLine,jdbcType=INTEGER},
+      bidding_end_time = #{record.biddingEndTime,jdbcType=TIMESTAMP},
+      bidding_bond_end_time = #{record.biddingBondEndTime,jdbcType=TIMESTAMP},
+      bid_opening_time = #{record.bidOpeningTime,jdbcType=TIMESTAMP},
+      bid_opening_place = #{record.bidOpeningPlace,jdbcType=VARCHAR},
+      clarification_problem_end_time = #{record.clarificationProblemEndTime,jdbcType=TIMESTAMP},
+      decryption_method = #{record.decryptionMethod,jdbcType=INTEGER},
+      process_status = #{record.processStatus,jdbcType=INTEGER},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+    update b_sale_documents
+    <set >
+      <if test="procurementProjectId != null" >
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="auditorId != null" >
+        auditor_id = #{auditorId,jdbcType=BIGINT},
+      </if>
+      <if test="repliesId != null" >
+        replies_id = #{repliesId,jdbcType=BIGINT},
+      </if>
+      <if test="biddingDocumentsUpUrl != null" >
+        bidding_documents_up_url = #{biddingDocumentsUpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="biddingDocumentsDownloadUrl != null" >
+        bidding_documents_download_url = #{biddingDocumentsDownloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isUnderLine != null" >
+        is_under_line = #{isUnderLine,jdbcType=INTEGER},
+      </if>
+      <if test="biddingEndTime != null" >
+        bidding_end_time = #{biddingEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="biddingBondEndTime != null" >
+        bidding_bond_end_time = #{biddingBondEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bidOpeningTime != null" >
+        bid_opening_time = #{bidOpeningTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bidOpeningPlace != null" >
+        bid_opening_place = #{bidOpeningPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="clarificationProblemEndTime != null" >
+        clarification_problem_end_time = #{clarificationProblemEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="decryptionMethod != null" >
+        decryption_method = #{decryptionMethod,jdbcType=INTEGER},
+      </if>
+      <if test="processStatus != null" >
+        process_status = #{processStatus,jdbcType=INTEGER},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+    update b_sale_documents
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      auditor_id = #{auditorId,jdbcType=BIGINT},
+      replies_id = #{repliesId,jdbcType=BIGINT},
+      bidding_documents_up_url = #{biddingDocumentsUpUrl,jdbcType=VARCHAR},
+      bidding_documents_download_url = #{biddingDocumentsDownloadUrl,jdbcType=VARCHAR},
+      is_under_line = #{isUnderLine,jdbcType=INTEGER},
+      bidding_end_time = #{biddingEndTime,jdbcType=TIMESTAMP},
+      bidding_bond_end_time = #{biddingBondEndTime,jdbcType=TIMESTAMP},
+      bid_opening_time = #{bidOpeningTime,jdbcType=TIMESTAMP},
+      bid_opening_place = #{bidOpeningPlace,jdbcType=VARCHAR},
+      clarification_problem_end_time = #{clarificationProblemEndTime,jdbcType=TIMESTAMP},
+      decryption_method = #{decryptionMethod,jdbcType=INTEGER},
+      process_status = #{processStatus,jdbcType=INTEGER},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_sale_documents
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TOperatorPurchaser implements Serializable {
-
     private Long id;
 
     private String cellphone;
@@ -19,10 +18,9 @@ public class TOperatorPurchaser implements Serializable {
 
     private String source;
 
-    private long operatorId;
+    private String operatorId;
 
     private Date createAt;
-
 
     private Date updateAt;
 
@@ -58,21 +56,17 @@ public class TOperatorPurchaser implements Serializable {
         return state;
     }
 
-
     public void setState(Integer state) {
         this.state = state;
     }
-
 
     public Long getPurchaserId() {
         return purchaserId;
     }
 
-
     public void setPurchaserId(Long purchaserId) {
         this.purchaserId = purchaserId;
     }
-
 
     public String getPurchaserName() {
         return purchaserName;
@@ -90,13 +84,14 @@ public class TOperatorPurchaser implements Serializable {
         this.source = source == null ? null : source.trim();
     }
 
-    public long getOperatorId() {
+    public String getOperatorId() {
         return operatorId;
     }
 
-    public void setOperatorId(long operatorId) {
-        this.operatorId = operatorId;
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId == null ? null : operatorId.trim();
     }
+
     public Date getCreateAt() {
         return createAt;
     }
@@ -105,11 +100,9 @@ public class TOperatorPurchaser implements Serializable {
         this.createAt = createAt;
     }
 
-
     public Date getUpdateAt() {
         return updateAt;
     }
-
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
@@ -118,7 +111,6 @@ public class TOperatorPurchaser implements Serializable {
     public Integer getIsDeleted() {
         return isDeleted;
     }
-
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;

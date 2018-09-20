@@ -1,11 +1,17 @@
 package com.epc.web.facade.terdering.participant.handle;
 
+import lombok.Data;
+
+import java.io.Serializable;
+
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-19 09:52
  * <p>@Author : wjq
  */
-public class HandleParticipantBasicInfo {
+@Data
+public class HandleParticipantBasicInfo implements Serializable {
+    private static final long serialVersionUID = -8974203125944337113L;
     /**
      * 采购项目ID
      */

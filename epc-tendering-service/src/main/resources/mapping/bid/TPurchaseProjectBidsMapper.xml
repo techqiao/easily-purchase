@@ -5,8 +5,10 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="purchase_project_id" jdbcType="BIGINT" property="purchaseProjectId" />
     <result column="purchase_project_name" jdbcType="VARCHAR" property="purchaseProjectName" />
+    <result column="purchase_project_code" jdbcType="VARCHAR" property="purchaseProjectCode" />
     <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
     <result column="bid_code" jdbcType="VARCHAR" property="bidCode" />
     <result column="bid_name" jdbcType="VARCHAR" property="bidName" />
     <result column="bid_budgetary_amount" jdbcType="DECIMAL" property="bidBudgetaryAmount" />
@@ -80,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, purchase_project_id, purchase_project_name, project_id, project_name, bid_code, 
-    bid_name, bid_budgetary_amount, guarantee_payment, bid_file_path, operate_id, creator, 
-    create_at, update_at, is_deleted
+    id, purchase_project_id, purchase_project_name, purchase_project_code, project_id, 
+    project_name, project_code, bid_code, bid_name, bid_budgetary_amount, guarantee_payment, 
+    bid_file_path, operate_id, creator, create_at, update_at, is_deleted
   </sql>
   <sql id="Blob_Column_List">
     bid_memo
@@ -140,17 +142,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_purchase_project_bids (purchase_project_id, purchase_project_name, 
-      project_id, project_name, bid_code, 
-      bid_name, bid_budgetary_amount, guarantee_payment, 
-      bid_file_path, operate_id, creator, 
-      create_at, update_at, is_deleted, 
-      bid_memo)
+      purchase_project_code, project_id, project_name, 
+      project_code, bid_code, bid_name, 
+      bid_budgetary_amount, guarantee_payment, bid_file_path, 
+      operate_id, creator, create_at, 
+      update_at, is_deleted, bid_memo
+      )
     values (#{purchaseProjectId,jdbcType=BIGINT}, #{purchaseProjectName,jdbcType=VARCHAR}, 
-      #{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, 
-      #{bidName,jdbcType=VARCHAR}, #{bidBudgetaryAmount,jdbcType=DECIMAL}, #{guaranteePayment,jdbcType=DECIMAL}, 
-      #{bidFilePath,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
-      #{bidMemo,jdbcType=LONGVARCHAR})
+      #{purchaseProjectCode,jdbcType=VARCHAR}, #{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, 
+      #{projectCode,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, #{bidName,jdbcType=VARCHAR}, 
+      #{bidBudgetaryAmount,jdbcType=DECIMAL}, #{guaranteePayment,jdbcType=DECIMAL}, #{bidFilePath,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{bidMemo,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TPurchaseProjectBids">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -164,11 +168,17 @@
       <if test="purchaseProjectName != null">
         purchase_project_name,
       </if>
+      <if test="purchaseProjectCode != null">
+        purchase_project_code,
+      </if>
       <if test="projectId != null">
         project_id,
       </if>
       <if test="projectName != null">
         project_name,
+      </if>
+      <if test="projectCode != null">
+        project_code,
       </if>
       <if test="bidCode != null">
         bid_code,
@@ -211,11 +221,17 @@
       <if test="purchaseProjectName != null">
         #{purchaseProjectName,jdbcType=VARCHAR},
       </if>
+      <if test="purchaseProjectCode != null">
+        #{purchaseProjectCode,jdbcType=VARCHAR},
+      </if>
       <if test="projectId != null">
         #{projectId,jdbcType=BIGINT},
       </if>
       <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null">
+        #{projectCode,jdbcType=VARCHAR},
       </if>
       <if test="bidCode != null">
         #{bidCode,jdbcType=VARCHAR},
@@ -270,11 +286,17 @@
       <if test="record.purchaseProjectName != null">
         purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
       </if>
+      <if test="record.purchaseProjectCode != null">
+        purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectId != null">
         project_id = #{record.projectId,jdbcType=BIGINT},
       </if>
       <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCode != null">
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
       <if test="record.bidCode != null">
         bid_code = #{record.bidCode,jdbcType=VARCHAR},
@@ -319,8 +341,10 @@
     set id = #{record.id,jdbcType=BIGINT},
       purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
+      purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=BIGINT},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_code = #{record.projectCode,jdbcType=VARCHAR},
       bid_code = #{record.bidCode,jdbcType=VARCHAR},
       bid_name = #{record.bidName,jdbcType=VARCHAR},
       bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
@@ -341,8 +365,10 @@
     set id = #{record.id,jdbcType=BIGINT},
       purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
+      purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=BIGINT},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_code = #{record.projectCode,jdbcType=VARCHAR},
       bid_code = #{record.bidCode,jdbcType=VARCHAR},
       bid_name = #{record.bidName,jdbcType=VARCHAR},
       bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
@@ -366,11 +392,17 @@
       <if test="purchaseProjectName != null">
         purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
       </if>
+      <if test="purchaseProjectCode != null">
+        purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
+      </if>
       <if test="projectId != null">
         project_id = #{projectId,jdbcType=BIGINT},
       </if>
       <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null">
+        project_code = #{projectCode,jdbcType=VARCHAR},
       </if>
       <if test="bidCode != null">
         bid_code = #{bidCode,jdbcType=VARCHAR},
@@ -412,8 +444,10 @@
     update t_purchase_project_bids
     set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
+      purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
       bid_code = #{bidCode,jdbcType=VARCHAR},
       bid_name = #{bidName,jdbcType=VARCHAR},
       bid_budgetary_amount = #{bidBudgetaryAmount,jdbcType=DECIMAL},
@@ -431,8 +465,10 @@
     update t_purchase_project_bids
     set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
+      purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
       bid_code = #{bidCode,jdbcType=VARCHAR},
       bid_name = #{bidName,jdbcType=VARCHAR},
       bid_budgetary_amount = #{bidBudgetaryAmount,jdbcType=DECIMAL},

@@ -1,7 +1,14 @@
 package com.epc.tendering.service.service.bid;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleBidsBasicInfo;
+import com.epc.web.facade.terdering.bid.query.QueryBidsDTO;
+import com.epc.web.facade.terdering.bid.vo.BidsBasicInfoSubVO;
+import com.epc.web.facade.terdering.bid.vo.BidsBasicInfoVO;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * <p>Description : easily-purchase
@@ -16,4 +23,19 @@ public interface TPurchaseProjectBidsService {
      * @return
      */
     Result<Boolean> handleBidsBasicInfo(HandleBidsBasicInfo handleBidsBasicInfo);
+
+    /**
+     * 查询标段详情
+     * @param bidId
+     * @return
+     */
+    Result<BidsBasicInfoSubVO> getBidsDetailInfo(Long bidId);
+
+    /**
+     * 查询采购项目标段列表
+     * @param queryBidsDTO
+     * @return
+     */
+    Result<List<BidsBasicInfoVO>> getBidsList(QueryBidsDTO queryBidsDTO);
+
 }

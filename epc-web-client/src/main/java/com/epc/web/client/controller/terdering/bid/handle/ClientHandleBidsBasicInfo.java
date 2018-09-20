@@ -38,4 +38,6 @@ public class ClientHandleBidsBasicInfo {
     private String bidFilePath;
     @ApiModelProperty(value = "标段说明")
     private String bidMemo;
+    @ApiModelProperty(value = "是否删除")
+    private Integer isDeleted;
 }

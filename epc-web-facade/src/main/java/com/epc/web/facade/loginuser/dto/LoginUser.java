@@ -10,8 +10,8 @@ public class LoginUser implements Serializable {
     private String password;
     private String cellphone;
     private Integer type;
-    private String bossId;
+    private Long bossId;
     private String bossName;
-    private String selfId;
-    private String CompanyName;
+    private Long userId;
+    private String companyName;
 }

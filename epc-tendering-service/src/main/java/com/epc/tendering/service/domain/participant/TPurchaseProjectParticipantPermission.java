@@ -8,7 +8,7 @@ public class TPurchaseProjectParticipantPermission implements Serializable {
 
     private Long participantId;
 
-    private Integer participantPermission;
+    private String participantPermission;
 
     private Long operateId;
 
@@ -38,12 +38,12 @@ public class TPurchaseProjectParticipantPermission implements Serializable {
         this.participantId = participantId;
     }
 
-    public Integer getParticipantPermission() {
+    public String getParticipantPermission() {
         return participantPermission;
     }
 
-    public void setParticipantPermission(Integer participantPermission) {
-        this.participantPermission = participantPermission;
+    public void setParticipantPermission(String participantPermission) {
+        this.participantPermission = participantPermission == null ? null : participantPermission.trim();
     }
 
     public Long getOperateId() {

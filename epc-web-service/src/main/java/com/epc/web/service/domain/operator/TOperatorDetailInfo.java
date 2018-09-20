@@ -4,24 +4,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TOperatorDetailInfo implements Serializable {
-
     private Long id;
 
-    private Long operatorId;//运营商法人ID
+    private Long operatorId;
 
-    private String companyName;//公司名称
+    private String companyName;
 
-    private String uniformCreditCode;//统一信用代码
+    private String uniformCreditCode;
 
-    private String publicBankName;//对公银行名称
+    private String publicBankName;
 
-    private String publicBanAccountNumber;//对公银行账号
+    private String publicBanAccountNumber;
 
-    private Date createAt;//创建时间
+    private Date createAt;
 
     private Date updateAt;
 
-    private Integer isDeleted;//是否删除: 0-存在,1-删除'
+    private Integer isDeleted;
 
     private static final long serialVersionUID = 1L;
 
@@ -69,7 +68,6 @@ public class TOperatorDetailInfo implements Serializable {
         return publicBanAccountNumber;
     }
 
-
     public void setPublicBanAccountNumber(String publicBanAccountNumber) {
         this.publicBanAccountNumber = publicBanAccountNumber == null ? null : publicBanAccountNumber.trim();
     }
@@ -82,14 +80,13 @@ public class TOperatorDetailInfo implements Serializable {
         this.createAt = createAt;
     }
 
-
     public Date getUpdateAt() {
         return updateAt;
     }
+
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
-
 
     public Integer getIsDeleted() {
         return isDeleted;

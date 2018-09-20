@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.purchase.handle;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +12,8 @@ import java.util.Date;
  * <p>@Author : wjq
  */
 @Data
-public class HandlePurchaseProjectBasicInfo {
+public class HandlePurchaseProjectBasicInfo implements Serializable {
+    private static final long serialVersionUID = -8833590808507549773L;
     /**
      * 主键ID
      */
@@ -24,6 +26,10 @@ public class HandlePurchaseProjectBasicInfo {
      * 项目名称
      */
     private String projectName;
+    /**
+     * 采购项目ID
+     */
+    private Long purchaseProjectId;
     /**
      * 采购项目名称
      */
@@ -77,13 +83,29 @@ public class HandlePurchaseProjectBasicInfo {
     private Integer isOtherAgency;
 
     /**
+     * 招标代理机构ID
+     */
+    private Long purchaserAgencyId;
+
+    /**
      * 经办人ID
      */
-    private Integer agentId;
-
+    private Long agentId;
     /**
      * 审核人ID
      */
-    private Integer auditorId;
+    private Long auditorId;
+    /**
+     * 操作人ID
+     */
+    private Long operateId;
+    /**
+     * 创建者
+     */
+    private String creator;
+    /**
+     * 是否删除
+     */
+    private Integer isDeleted;
 
 }

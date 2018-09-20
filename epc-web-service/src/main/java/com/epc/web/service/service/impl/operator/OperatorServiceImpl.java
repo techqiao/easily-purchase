@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
 public class OperatorServiceImpl implements OperatorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
 
@@ -63,7 +64,7 @@ public class OperatorServiceImpl implements OperatorService {
     */
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> createOperatorBasicInfo(HandleOperator handleOperator) {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date =new Date();
@@ -92,7 +93,7 @@ public class OperatorServiceImpl implements OperatorService {
     * @Version:        1.0
     */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> createPurchaseByOperator(HandlePurchaser handlePurchaser){
 
         //创建公库信息
@@ -139,7 +140,7 @@ public class OperatorServiceImpl implements OperatorService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> createOperatorEmployee(HandleOperatorAddEmployee handleOperatorAddEmployee) {
         //实例化一个与数据库映射对象
         TOperatorBasicInfo pojo=new TOperatorBasicInfo();
@@ -165,6 +166,7 @@ public class OperatorServiceImpl implements OperatorService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> updateOperatorEmployeeById(HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById) {
         //通过id来查询出一条员工对象信息
         TOperatorBasicInfo pojo = tOperatorBasicInfoMapper.selectByPrimaryKey(handleOperatorUpdateEmployeeById.getId());
@@ -188,6 +190,7 @@ public class OperatorServiceImpl implements OperatorService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(HandleOperatorFindAllByName handleOperatorFindAllByName) {
 
         TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();

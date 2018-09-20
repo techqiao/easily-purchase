@@ -37,7 +37,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     private static final Logger LOGGER= LoggerFactory.getLogger(TSupplierBasicInfoServiceImpl.class);
 
     @Autowired
-    TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
+    private TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
 
     /**
      * 供应商增加一个员工

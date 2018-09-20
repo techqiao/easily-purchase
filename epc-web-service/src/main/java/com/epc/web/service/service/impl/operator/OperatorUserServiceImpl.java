@@ -14,6 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import sun.security.krb5.internal.PAData;
 
 import javax.validation.Valid;
@@ -23,6 +26,8 @@ import java.util.List;
 /**
  * @author donghuan
  */
+@Service
+@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
 public class OperatorUserServiceImpl implements OperatorUserService {
 
 
@@ -37,6 +42,7 @@ public class OperatorUserServiceImpl implements OperatorUserService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> registerOperator(HandleOperatorDetail HandleOperatorDetail) {
         TOperatorBasicInfo pojo=new TOperatorBasicInfo();
 
@@ -62,6 +68,7 @@ public class OperatorUserServiceImpl implements OperatorUserService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<OperatorBasicInfoVO> findByName(String name, String cellphone) {
         TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
@@ -83,6 +90,7 @@ public class OperatorUserServiceImpl implements OperatorUserService {
      * @param handleOperatorForgetPassword
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> forgetPassword(HandleOperatorForgetPassword handleOperatorForgetPassword) {
 
         TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();

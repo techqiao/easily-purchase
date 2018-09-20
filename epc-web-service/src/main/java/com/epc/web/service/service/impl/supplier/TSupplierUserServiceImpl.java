@@ -18,17 +18,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
-
+@Service
+@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
 public class TSupplierUserServiceImpl implements TSupplierUserService {
 
     @Autowired
-    TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
+    private TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
     @Autowired
-    TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+    private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
 
     /**
      * 注册供应商
@@ -36,6 +40,7 @@ public class TSupplierUserServiceImpl implements TSupplierUserService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
         //将公司名称，电话，密码信息存入到这个表对象中
         TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
@@ -69,6 +74,7 @@ public class TSupplierUserServiceImpl implements TSupplierUserService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<SupplierBasicInfoVO> login(String cellphone, String password) {
         //判断不为null
         Validate.notNull(cellphone);
@@ -96,6 +102,7 @@ public class TSupplierUserServiceImpl implements TSupplierUserService {
      * @return
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<SupplierDetailInfoVO> findByName(String name, String cellphone) {
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
@@ -117,6 +124,7 @@ public class TSupplierUserServiceImpl implements TSupplierUserService {
      * @param handleSupplierForgetPassword
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();

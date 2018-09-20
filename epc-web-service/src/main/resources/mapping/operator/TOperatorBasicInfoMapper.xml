@@ -74,6 +74,17 @@
   <sql id="Base_Column_List">
     id, cellphone, password, name, operator_id, state, role, create_at, update_at, is_deleted
   </sql>
+  <select id="login" resultType="com.epc.web.facade.loginuser.dto.LoginUser">
+  SELECT agency.id AS selfId,agency.`name`,agency.cellphone,agency.agency_id AS bossId,boss.name AS bossName ,d.company_name AS
+    companyName
+     FROM t_operator_basic_info agency
+     LEFT JOIN t_operator_basic_info boss ON agency.agency_id=boss.agency_id
+    LEFT JOIN t_operator_detail_info  d ON d.agency_id = agency.agency_id
+    WHERE agency.cellphone=#{cellphone}
+    AND agency.password=#{pwd}
+    AND agency.agency_id=boss.agency_id
+    AND boss.role=0;
+  </select>
   <select id="selectByExample" parameterType="com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria" resultMap="BaseResultMap">
     select
     <if test="distinct">

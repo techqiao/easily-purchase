@@ -1,7 +1,7 @@
 # system file for storing directory properties
 # ===================================================
 .DS_Store
-
+epc.sql
 # ===================================================
 # idea project file 
 # ===================================================
@@ -9,7 +9,10 @@
 *.iml
 .iws
 .idea/
-
+@logging.path@
+target
+*.log
+README.md
 # ===================================================
 # eclipse project file
 # ===================================================
@@ -56,3 +59,12 @@ logs/
 #
 # ===================================================
 #.travis.yml
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+out
+gen
+@logging.path@/
+epc-eureka-server.log

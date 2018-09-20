@@ -2,10 +2,11 @@ package com.epc.web.service.service.supplier;
 
 
 import com.epc.common.Result;
-import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
-import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
-import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
+import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -35,12 +36,7 @@ public interface TSupplierBasicInfoService {
      *  传入员工的姓名查询所有的员工列表
      * @return
      */
-    Result<List<TSupplierBasicInfo>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName);
-
-
-
-
-
+    Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName);
 
 
 }

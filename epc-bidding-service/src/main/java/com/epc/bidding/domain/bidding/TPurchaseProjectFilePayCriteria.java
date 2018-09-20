@@ -1,11 +1,14 @@
 package com.epc.bidding.domain.bidding;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TPurchaseProjectFilePayCriteria {
+
+public class TPurchaseProjectFilePayCriteria implements Serializable {
+    private static final long serialVersionUID = -8078812936267964032L;
     protected String orderByClause;
 
     protected boolean distinct;

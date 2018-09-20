@@ -6,16 +6,14 @@
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="questioner_id" property="questionerId" jdbcType="BIGINT" />
     <result column="questioner_name" property="questionerName" jdbcType="VARCHAR" />
+    <result column="problem" property="problem" jdbcType="VARCHAR" />
     <result column="answer_id" property="answerId" jdbcType="BIGINT" />
     <result column="answer_name" property="answerName" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" extends="BaseResultMap" >
-    <result column="problem" property="problem" jdbcType="LONGVARCHAR" />
-    <result column="answer" property="answer" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,28 +74,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, procurement_project_id, questioner_id, questioner_name, answer_id, answer_name, 
-    operate_id, create_at, update_at, is_deleted
+    id, procurement_project_id, questioner_id, questioner_name, problem, answer_id, answer_name, 
+    answer, operate_id, create_at, update_at, is_deleted
   </sql>
-  <sql id="Blob_Column_List" >
-    problem, answer
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from b_answer_question
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" >
     select
     <if test="distinct" >
@@ -112,11 +91,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from b_answer_question
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -130,22 +107,22 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestion" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into b_answer_question (procurement_project_id, questioner_id, 
-      questioner_name, answer_id, answer_name, 
-      operate_id, create_at, update_at, 
-      is_deleted, problem, answer
+      questioner_name, problem, answer_id, 
+      answer_name, answer, operate_id, 
+      create_at, update_at, is_deleted
       )
     values (#{procurementProjectId,jdbcType=BIGINT}, #{questionerId,jdbcType=BIGINT}, 
-      #{questionerName,jdbcType=VARCHAR}, #{answerId,jdbcType=BIGINT}, #{answerName,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER}, #{problem,jdbcType=LONGVARCHAR}, #{answer,jdbcType=LONGVARCHAR}
+      #{questionerName,jdbcType=VARCHAR}, #{problem,jdbcType=VARCHAR}, #{answerId,jdbcType=BIGINT}, 
+      #{answerName,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestion" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -160,11 +137,17 @@
       <if test="questionerName != null" >
         questioner_name,
       </if>
+      <if test="problem != null" >
+        problem,
+      </if>
       <if test="answerId != null" >
         answer_id,
       </if>
       <if test="answerName != null" >
         answer_name,
+      </if>
+      <if test="answer != null" >
+        answer,
       </if>
       <if test="operateId != null" >
         operate_id,
@@ -178,12 +161,6 @@
       <if test="isDeleted != null" >
         is_deleted,
       </if>
-      <if test="problem != null" >
-        problem,
-      </if>
-      <if test="answer != null" >
-        answer,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="procurementProjectId != null" >
@@ -195,11 +172,17 @@
       <if test="questionerName != null" >
         #{questionerName,jdbcType=VARCHAR},
       </if>
+      <if test="problem != null" >
+        #{problem,jdbcType=VARCHAR},
+      </if>
       <if test="answerId != null" >
         #{answerId,jdbcType=BIGINT},
       </if>
       <if test="answerName != null" >
         #{answerName,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        #{answer,jdbcType=VARCHAR},
       </if>
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
@@ -212,12 +195,6 @@
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
-      </if>
-      <if test="problem != null" >
-        #{problem,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="answer != null" >
-        #{answer,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -242,11 +219,17 @@
       <if test="record.questionerName != null" >
         questioner_name = #{record.questionerName,jdbcType=VARCHAR},
       </if>
+      <if test="record.problem != null" >
+        problem = #{record.problem,jdbcType=VARCHAR},
+      </if>
       <if test="record.answerId != null" >
         answer_id = #{record.answerId,jdbcType=BIGINT},
       </if>
       <if test="record.answerName != null" >
         answer_name = #{record.answerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.answer != null" >
+        answer = #{record.answer,jdbcType=VARCHAR},
       </if>
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
@@ -260,31 +243,7 @@
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="record.problem != null" >
-        problem = #{record.problem,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.answer != null" >
-        answer = #{record.answer,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update b_answer_question
-    set id = #{record.id,jdbcType=BIGINT},
-      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
-      questioner_id = #{record.questionerId,jdbcType=BIGINT},
-      questioner_name = #{record.questionerName,jdbcType=VARCHAR},
-      answer_id = #{record.answerId,jdbcType=BIGINT},
-      answer_name = #{record.answerName,jdbcType=VARCHAR},
-      operate_id = #{record.operateId,jdbcType=BIGINT},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
-      problem = #{record.problem,jdbcType=LONGVARCHAR},
-      answer = #{record.answer,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -295,8 +254,10 @@
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{record.questionerId,jdbcType=BIGINT},
       questioner_name = #{record.questionerName,jdbcType=VARCHAR},
+      problem = #{record.problem,jdbcType=VARCHAR},
       answer_id = #{record.answerId,jdbcType=BIGINT},
       answer_name = #{record.answerName,jdbcType=VARCHAR},
+      answer = #{record.answer,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
@@ -305,7 +266,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestion" >
     update b_answer_question
     <set >
       <if test="procurementProjectId != null" >
@@ -317,11 +278,17 @@
       <if test="questionerName != null" >
         questioner_name = #{questionerName,jdbcType=VARCHAR},
       </if>
+      <if test="problem != null" >
+        problem = #{problem,jdbcType=VARCHAR},
+      </if>
       <if test="answerId != null" >
         answer_id = #{answerId,jdbcType=BIGINT},
       </if>
       <if test="answerName != null" >
         answer_name = #{answerName,jdbcType=VARCHAR},
+      </if>
+      <if test="answer != null" >
+        answer = #{answer,jdbcType=VARCHAR},
       </if>
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
@@ -335,28 +302,7 @@
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="problem != null" >
-        problem = #{problem,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="answer != null" >
-        answer = #{answer,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
-    update b_answer_question
-    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
-      questioner_id = #{questionerId,jdbcType=BIGINT},
-      questioner_name = #{questionerName,jdbcType=VARCHAR},
-      answer_id = #{answerId,jdbcType=BIGINT},
-      answer_name = #{answerName,jdbcType=VARCHAR},
-      operate_id = #{operateId,jdbcType=BIGINT},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=INTEGER},
-      problem = #{problem,jdbcType=LONGVARCHAR},
-      answer = #{answer,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestion" >
@@ -364,30 +310,16 @@
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{questionerId,jdbcType=BIGINT},
       questioner_name = #{questionerName,jdbcType=VARCHAR},
+      problem = #{problem,jdbcType=VARCHAR},
       answer_id = #{answerId,jdbcType=BIGINT},
       answer_name = #{answerName,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from b_answer_question
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >

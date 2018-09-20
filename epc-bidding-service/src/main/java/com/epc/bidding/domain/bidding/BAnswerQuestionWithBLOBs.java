@@ -13,6 +13,7 @@ public class BAnswerQuestionWithBLOBs extends BAnswerQuestion implements Seriali
         return problem;
     }
 
+    @Override
     public void setProblem(String problem) {
         this.problem = problem == null ? null : problem.trim();
     }

@@ -19,6 +19,11 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
     @Autowired
     BiddingService biddingService;
 
+    /**
+     * 文件上传
+     * @param handleFileUpload
+     * @return
+     */
     @Override
     public Result<Boolean> updatePretrialFile(@RequestBody HandleFileUpload handleFileUpload) {
         return biddingService.updatePretrialFile(handleFileUpload);

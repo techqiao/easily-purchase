@@ -355,6 +355,76 @@ public class BAnswerQuestionCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andProblemIsNull() {
+            addCriterion("problem is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemIsNotNull() {
+            addCriterion("problem is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemEqualTo(String value) {
+            addCriterion("problem =", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemNotEqualTo(String value) {
+            addCriterion("problem <>", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemGreaterThan(String value) {
+            addCriterion("problem >", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemGreaterThanOrEqualTo(String value) {
+            addCriterion("problem >=", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemLessThan(String value) {
+            addCriterion("problem <", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemLessThanOrEqualTo(String value) {
+            addCriterion("problem <=", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemLike(String value) {
+            addCriterion("problem like", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemNotLike(String value) {
+            addCriterion("problem not like", value, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemIn(List<String> values) {
+            addCriterion("problem in", values, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemNotIn(List<String> values) {
+            addCriterion("problem not in", values, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemBetween(String value1, String value2) {
+            addCriterion("problem between", value1, value2, "problem");
+            return (Criteria) this;
+        }
+
+        public Criteria andProblemNotBetween(String value1, String value2) {
+            addCriterion("problem not between", value1, value2, "problem");
+            return (Criteria) this;
+        }
+
         public Criteria andAnswerIdIsNull() {
             addCriterion("answer_id is null");
             return (Criteria) this;
@@ -482,6 +552,76 @@ public class BAnswerQuestionCriteria {
 
         public Criteria andAnswerNameNotBetween(String value1, String value2) {
             addCriterion("answer_name not between", value1, value2, "answerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerIsNull() {
+            addCriterion("answer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerIsNotNull() {
+            addCriterion("answer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerEqualTo(String value) {
+            addCriterion("answer =", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerNotEqualTo(String value) {
+            addCriterion("answer <>", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerGreaterThan(String value) {
+            addCriterion("answer >", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerGreaterThanOrEqualTo(String value) {
+            addCriterion("answer >=", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerLessThan(String value) {
+            addCriterion("answer <", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerLessThanOrEqualTo(String value) {
+            addCriterion("answer <=", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerLike(String value) {
+            addCriterion("answer like", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerNotLike(String value) {
+            addCriterion("answer not like", value, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerIn(List<String> values) {
+            addCriterion("answer in", values, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerNotIn(List<String> values) {
+            addCriterion("answer not in", values, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerBetween(String value1, String value2) {
+            addCriterion("answer between", value1, value2, "answer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnswerNotBetween(String value1, String value2) {
+            addCriterion("answer not between", value1, value2, "answer");
             return (Criteria) this;
         }
 

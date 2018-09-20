@@ -12,9 +12,13 @@ public class BAnswerQuestion implements Serializable {
 
     private String questionerName;
 
+    private String problem;
+
     private Long answerId;
 
     private String answerName;
+
+    private String answer;
 
     private Long operateId;
 
@@ -58,6 +62,14 @@ public class BAnswerQuestion implements Serializable {
         this.questionerName = questionerName == null ? null : questionerName.trim();
     }
 
+    public String getProblem() {
+        return problem;
+    }
+
+    public void setProblem(String problem) {
+        this.problem = problem == null ? null : problem.trim();
+    }
+
     public Long getAnswerId() {
         return answerId;
     }
@@ -72,6 +84,14 @@ public class BAnswerQuestion implements Serializable {
 
     public void setAnswerName(String answerName) {
         this.answerName = answerName == null ? null : answerName.trim();
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer == null ? null : answer.trim();
     }
 
     public Long getOperateId() {
@@ -116,8 +136,10 @@ public class BAnswerQuestion implements Serializable {
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", questionerId=").append(questionerId);
         sb.append(", questionerName=").append(questionerName);
+        sb.append(", problem=").append(problem);
         sb.append(", answerId=").append(answerId);
         sb.append(", answerName=").append(answerName);
+        sb.append(", answer=").append(answer);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

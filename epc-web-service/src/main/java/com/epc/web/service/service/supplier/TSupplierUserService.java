@@ -7,6 +7,7 @@ import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface TSupplierUserService {
 
@@ -17,8 +18,7 @@ public interface TSupplierUserService {
      * @param handleSupplierDetail
      * @return
      */
-    @PostMapping(value = "registerSupplier",consumes = "application/json,charset=UTF-8")
-    Result<Boolean> registerSupplier(@RequestBody HandleSupplierDetail handleSupplierDetail);
+    Result<Boolean> registerSupplier( HandleSupplierDetail handleSupplierDetail);
 
     /**
      *  登陆
@@ -26,8 +26,7 @@ public interface TSupplierUserService {
      * @param password
      * @return
      */
-    @PostMapping(value = "login",consumes = "application/json,charset=UTF-8")
-    Result<SupplierBasicInfoVO> login(@RequestBody String cellphone, String password);
+    Result<SupplierBasicInfoVO> login( String cellphone, String password);
 
     /**
      * 查询用户信息，依据电话或者密码来查找这个人的详细信息
@@ -35,15 +34,13 @@ public interface TSupplierUserService {
      * @param cellphone
      * @return
      */
-    @PostMapping(value = "findByName",consumes = "application/json,charset=UTF-8")
-    Result<SupplierDetailInfoVO> findByName(@RequestBody String name, String cellphone);
+    Result<SupplierDetailInfoVO> findByName(String name, String cellphone);
 
     /**
      * 忘记密码
      * @param handleSupplierForgetPassword
      */
-    @PostMapping(value = "forgetPassword",consumes = "application/json,charset=UTF-8")
-    Result<Boolean> forgetPassword(@RequestBody HandleSupplierForgetPassword handleSupplierForgetPassword);
+    Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword);
 
 
 

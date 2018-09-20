@@ -9,9 +9,6 @@ import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
-import io.swagger.models.auth.In;
-import sun.util.resources.ga.LocaleNames_ga;
 
 /**
  * @author :winlin &linzhixiang

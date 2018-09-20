@@ -9,6 +9,7 @@ import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
 import com.epc.web.service.service.supplier.TSupplierUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,29 +26,28 @@ public class SupplierControllerImpl implements FacadeTSupplierBasicInfoService {
 
     //供应商注册
     @Override
-    public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
+    public Result<Boolean> registerSupplier(@RequestBody HandleSupplierDetail handleSupplierDetail) {
         return tSupplierUserService.registerSupplier(handleSupplierDetail);
     }
 
     //登陆
     @Override
-    public Result<SupplierBasicInfoVO> login(String cellphone, String password) {
+    public Result<SupplierBasicInfoVO> login(@RequestBody String cellphone, String password) {
         return tSupplierUserService.login(cellphone,password);
     }
 
     //根据名字或者电话来得到这个人的信息
     @Override
-    public Result<SupplierDetailInfoVO> findByName(String name, String cellphone) {
+    public Result<SupplierDetailInfoVO> findByName(@RequestParam String name, String cellphone) {
         return tSupplierUserService.findByName(name,cellphone);
     }
 
     //忘记密码
     @Override
-    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+    public Result<Boolean> forgetPassword(@RequestBody HandleSupplierForgetPassword handleSupplierForgetPassword) {
         return tSupplierUserService.forgetPassword(handleSupplierForgetPassword);
     }
 
-    /*===========================================================*/
 
     //供应商添加员工
     @Override

@@ -5,6 +5,10 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
+import com.epc.web.facade.purchaser.dto.HandleExpertDto;
+import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
+import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
 import com.epc.web.service.domain.agency.TAgencyAttachment;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
@@ -104,7 +108,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         TOperatorPurchaser pojo = new TOperatorPurchaser();
         Date date = new Date();
         pojo.setCellphone(handleOperator.getCellPhone() != null ? handleOperator.getCellPhone() : null);
-        pojo.setOperatorId(handleOperator.getOperatorId() != 0 ? handleOperator.getOperatorId() : 0);
+//        pojo.setOperatorId(handleOperator.getOperatorId() != 0 ? handleOperator.getOperatorId() : 0);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
@@ -138,18 +142,18 @@ public class PurchaserServiceImpl implements PurchaserService {
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
         criteria1.andCellphoneEqualTo(handleSupplierDetail.getCellPhone());
-        criteria1.andNameEqualTo(handleSupplierDetail.getName());
-        criteria1.andInviterIdEqualTo(handleSupplierDetail.getOperatorId());
+        criteria1.andNameEqualTo(handleSupplierDetail.getCompanyName());
+        criteria1.andInviterIdEqualTo(handleSupplierDetail.getSupplierId());
         List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
         if (list.size() > 0) {
-            return Result.error("供应商" + handleSupplierDetail.getName() + "已存在,勿重复添加");
+            return Result.error("供应商" + handleSupplierDetail.getCompanyName() + "已存在,勿重复添加");
         }
 
 
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         Date date = new Date();
         pojo.setCellphone(handleSupplierDetail.getCellPhone() != null ? handleSupplierDetail.getCellPhone() : null);
-        pojo.setName(handleSupplierDetail.getName() != null ? handleSupplierDetail.getName() : null);
+        pojo.setName(handleSupplierDetail.getCompanyName() != null ? handleSupplierDetail.getCompanyName() : null);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setState(Const.STATE.REGISTERED);
         pojo.setRole(Const.Role.ROLE_CORPORATION);
@@ -495,6 +499,81 @@ public class PurchaserServiceImpl implements PurchaserService {
             return Result.error(e.getMessage());
         }
         return Result.success();
+    }
+
+    @Override
+    public Result registerPurchaser(HandleRegisterPurchaser purchaser) {
+        return null;
+    }
+
+    @Override
+    public Result allEmployee(Long purchaserId) {
+        return null;
+    }
+
+    @Override
+    public Result findEmployeeByName(String fuzzyName, Long purchaseId) {
+        return null;
+    }
+
+    @Override
+    public Result updateEmployeeState(String cellphone, Integer state) {
+        return null;
+    }
+
+    @Override
+    public Result updateEmployeeState(Long id, Integer state) {
+        return null;
+    }
+
+    @Override
+    public Result queryEmployee(String cellphone) {
+        return null;
+    }
+
+    @Override
+    public Result queryEmployee(Long id) {
+        return null;
+    }
+
+    @Override
+    public Result queryEmplyee(HandleEmployeeDto employeeDto) {
+        return null;
+    }
+
+    @Override
+    public Result updateRole(Long id, Integer role) {
+        return null;
+    }
+
+    @Override
+    public Result queryAllSuppliers(Long purchaseId) {
+        return null;
+    }
+
+    @Override
+    public Result querySuppliers(String fuzzyName, Long purchaseId) {
+        return null;
+    }
+
+    @Override
+    public Result querySuppliers(Long id) {
+        return null;
+    }
+
+    @Override
+    public Result updateSuppliers(HandPurchaserAttachment attachment) {
+        return null;
+    }
+
+    @Override
+    public Result queryExperts(HandleExpertDto dto) {
+        return null;
+    }
+
+    @Override
+    public Result updateExpertState(Long id, Integer state) {
+        return null;
     }
 
 }

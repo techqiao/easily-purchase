@@ -3,18 +3,28 @@ package com.epc.web.service.domain.operator;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TOperatorDetailInfo implements Serializable {
+public class TOperatorSupplier implements Serializable {
     private Long id;
 
-    private Long operatorId;
+    private String cellphone;
 
-    private String companyName;
+    private String password;
+
+    private Integer state;
+
+    private Long supplierId;
+
+    private String supplierName;
 
     private String uniformCreditCode;
 
     private String publicBankName;
 
     private String publicBanAccountNumber;
+
+    private String source;
+
+    private String operatorId;
 
     private Date createAt;
 
@@ -32,20 +42,44 @@ public class TOperatorDetailInfo implements Serializable {
         this.id = id;
     }
 
-    public Long getOperatorId() {
-        return operatorId;
+    public String getCellphone() {
+        return cellphone;
     }
 
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone == null ? null : cellphone.trim();
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName == null ? null : supplierName.trim();
     }
 
     public String getUniformCreditCode() {
@@ -70,6 +104,22 @@ public class TOperatorDetailInfo implements Serializable {
 
     public void setPublicBanAccountNumber(String publicBanAccountNumber) {
         this.publicBanAccountNumber = publicBanAccountNumber == null ? null : publicBanAccountNumber.trim();
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source == null ? null : source.trim();
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId == null ? null : operatorId.trim();
     }
 
     public Date getCreateAt() {
@@ -103,11 +153,16 @@ public class TOperatorDetailInfo implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", operatorId=").append(operatorId);
-        sb.append(", companyName=").append(companyName);
+        sb.append(", cellphone=").append(cellphone);
+        sb.append(", password=").append(password);
+        sb.append(", state=").append(state);
+        sb.append(", supplierId=").append(supplierId);
+        sb.append(", supplierName=").append(supplierName);
         sb.append(", uniformCreditCode=").append(uniformCreditCode);
         sb.append(", publicBankName=").append(publicBankName);
         sb.append(", publicBanAccountNumber=").append(publicBanAccountNumber);
+        sb.append(", source=").append(source);
+        sb.append(", operatorId=").append(operatorId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

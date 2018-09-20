@@ -3,18 +3,18 @@ package com.epc.web.service.domain.operator;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TOperatorDetailInfo implements Serializable {
+public class TOperatorAttachment implements Serializable {
     private Long id;
 
     private Long operatorId;
 
-    private String companyName;
+    private String certificateType;
 
-    private String uniformCreditCode;
+    private String certificateFilePath;
 
-    private String publicBankName;
+    private String certificateNumber;
 
-    private String publicBanAccountNumber;
+    private String certificateName;
 
     private Date createAt;
 
@@ -40,36 +40,36 @@ public class TOperatorDetailInfo implements Serializable {
         this.operatorId = operatorId;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getCertificateType() {
+        return certificateType;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
+    public void setCertificateType(String certificateType) {
+        this.certificateType = certificateType == null ? null : certificateType.trim();
     }
 
-    public String getUniformCreditCode() {
-        return uniformCreditCode;
+    public String getCertificateFilePath() {
+        return certificateFilePath;
     }
 
-    public void setUniformCreditCode(String uniformCreditCode) {
-        this.uniformCreditCode = uniformCreditCode == null ? null : uniformCreditCode.trim();
+    public void setCertificateFilePath(String certificateFilePath) {
+        this.certificateFilePath = certificateFilePath == null ? null : certificateFilePath.trim();
     }
 
-    public String getPublicBankName() {
-        return publicBankName;
+    public String getCertificateNumber() {
+        return certificateNumber;
     }
 
-    public void setPublicBankName(String publicBankName) {
-        this.publicBankName = publicBankName == null ? null : publicBankName.trim();
+    public void setCertificateNumber(String certificateNumber) {
+        this.certificateNumber = certificateNumber == null ? null : certificateNumber.trim();
     }
 
-    public String getPublicBanAccountNumber() {
-        return publicBanAccountNumber;
+    public String getCertificateName() {
+        return certificateName;
     }
 
-    public void setPublicBanAccountNumber(String publicBanAccountNumber) {
-        this.publicBanAccountNumber = publicBanAccountNumber == null ? null : publicBanAccountNumber.trim();
+    public void setCertificateName(String certificateName) {
+        this.certificateName = certificateName == null ? null : certificateName.trim();
     }
 
     public Date getCreateAt() {
@@ -104,10 +104,10 @@ public class TOperatorDetailInfo implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", operatorId=").append(operatorId);
-        sb.append(", companyName=").append(companyName);
-        sb.append(", uniformCreditCode=").append(uniformCreditCode);
-        sb.append(", publicBankName=").append(publicBankName);
-        sb.append(", publicBanAccountNumber=").append(publicBanAccountNumber);
+        sb.append(", certificateType=").append(certificateType);
+        sb.append(", certificateFilePath=").append(certificateFilePath);
+        sb.append(", certificateNumber=").append(certificateNumber);
+        sb.append(", certificateName=").append(certificateName);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

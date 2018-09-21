@@ -25,18 +25,20 @@ public class TSupplierBasicInfoController {
     @Autowired
     private SupplierClient supplierClient;
 
-    //供应商注册
-    public Result registerSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail) {
+    @ApiModelProperty(value="供应商注册")
+    @PostMapping(value = "/registerSupplier")
+    public Result<Boolean> registerSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail) {
         HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
         BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
         return supplierClient.registerSupplier(handleSupplierDetail);
     }
 
-
     @ApiModelProperty(value="根据名字或者电话来得到这个人的信息")
-    @PostMapping(value = "/findByName")
-    public Result<SupplierDetailInfoVO> findByName(@RequestParam String name, String cellphone) {
-        return supplierClient.findByName(name,cellphone);
+    @PostMapping(value = "/findByNameSupplier")
+    public Result<SupplierDetailInfoVO> findByName(@RequestBody ClientHandleSupplierNameAndCellphone clientHandleSupplierNameAndCellphone) {
+        HandleSupplierNameAndCellphone handleSupplierNameAndCellphone=new HandleSupplierNameAndCellphone();
+        BeanUtils.copyProperties(clientHandleSupplierNameAndCellphone,handleSupplierNameAndCellphone);
+        return supplierClient.findByName(handleSupplierNameAndCellphone);
     }
 
 

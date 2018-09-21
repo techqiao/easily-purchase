@@ -9,6 +9,7 @@
     <result column="purchase_project_code" jdbcType="VARCHAR" property="purchaseProjectCode" />
     <result column="purchase_start_time" jdbcType="TIMESTAMP" property="purchaseStartTime" />
     <result column="purchase_end_time" jdbcType="TIMESTAMP" property="purchaseEndTime" />
+    <result column="is_state_designation" jdbcType="INTEGER" property="isStateDesignation" />
     <result column="purchase_project_budgetary_amount" jdbcType="DECIMAL" property="purchaseProjectBudgetaryAmount" />
     <result column="purchase_mode" jdbcType="VARCHAR" property="purchaseMode" />
     <result column="purchase_category" jdbcType="VARCHAR" property="purchaseCategory" />
@@ -83,9 +84,9 @@
   </sql>
   <sql id="Base_Column_List">
     id, project_id, project_name, purchase_project_name, purchase_project_code, purchase_start_time, 
-    purchase_end_time, purchase_project_budgetary_amount, purchase_mode, purchase_category, 
-    purchase_type, purchase_range, purchase_project_status, is_adjust, is_other_agency, 
-    operate_id, creator, create_at, update_at, is_deleted
+    purchase_end_time, is_state_designation, purchase_project_budgetary_amount, purchase_mode, 
+    purchase_category, purchase_type, purchase_range, purchase_project_status, is_adjust, 
+    is_other_agency, operate_id, creator, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfoCriteria" resultMap="BaseResultMap">
     select
@@ -123,20 +124,20 @@
     </selectKey>
     insert into t_purchase_project_basic_info (project_id, project_name, purchase_project_name, 
       purchase_project_code, purchase_start_time, 
-      purchase_end_time, purchase_project_budgetary_amount, 
-      purchase_mode, purchase_category, purchase_type, 
-      purchase_range, purchase_project_status, is_adjust, 
-      is_other_agency, operate_id, creator, 
-      create_at, update_at, is_deleted
-      )
+      purchase_end_time, is_state_designation, 
+      purchase_project_budgetary_amount, purchase_mode, 
+      purchase_category, purchase_type, purchase_range, 
+      purchase_project_status, is_adjust, is_other_agency, 
+      operate_id, creator, create_at, 
+      update_at, is_deleted)
     values (#{projectId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{purchaseProjectName,jdbcType=VARCHAR}, 
       #{purchaseProjectCode,jdbcType=VARCHAR}, #{purchaseStartTime,jdbcType=TIMESTAMP}, 
-      #{purchaseEndTime,jdbcType=TIMESTAMP}, #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL}, 
-      #{purchaseMode,jdbcType=VARCHAR}, #{purchaseCategory,jdbcType=VARCHAR}, #{purchaseType,jdbcType=VARCHAR}, 
-      #{purchaseRange,jdbcType=INTEGER}, #{purchaseProjectStatus,jdbcType=VARCHAR}, #{isAdjust,jdbcType=INTEGER}, 
-      #{isOtherAgency,jdbcType=INTEGER}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+      #{purchaseEndTime,jdbcType=TIMESTAMP}, #{isStateDesignation,jdbcType=INTEGER}, 
+      #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL}, #{purchaseMode,jdbcType=VARCHAR}, 
+      #{purchaseCategory,jdbcType=VARCHAR}, #{purchaseType,jdbcType=VARCHAR}, #{purchaseRange,jdbcType=INTEGER}, 
+      #{purchaseProjectStatus,jdbcType=VARCHAR}, #{isAdjust,jdbcType=INTEGER}, #{isOtherAgency,jdbcType=INTEGER}, 
+      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -161,6 +162,9 @@
       </if>
       <if test="purchaseEndTime != null">
         purchase_end_time,
+      </if>
+      <if test="isStateDesignation != null">
+        is_state_designation,
       </if>
       <if test="purchaseProjectBudgetaryAmount != null">
         purchase_project_budgetary_amount,
@@ -220,6 +224,9 @@
       </if>
       <if test="purchaseEndTime != null">
         #{purchaseEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStateDesignation != null">
+        #{isStateDesignation,jdbcType=INTEGER},
       </if>
       <if test="purchaseProjectBudgetaryAmount != null">
         #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL},
@@ -292,6 +299,9 @@
       <if test="record.purchaseEndTime != null">
         purchase_end_time = #{record.purchaseEndTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.isStateDesignation != null">
+        is_state_designation = #{record.isStateDesignation,jdbcType=INTEGER},
+      </if>
       <if test="record.purchaseProjectBudgetaryAmount != null">
         purchase_project_budgetary_amount = #{record.purchaseProjectBudgetaryAmount,jdbcType=DECIMAL},
       </if>
@@ -345,6 +355,7 @@
       purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
       purchase_start_time = #{record.purchaseStartTime,jdbcType=TIMESTAMP},
       purchase_end_time = #{record.purchaseEndTime,jdbcType=TIMESTAMP},
+      is_state_designation = #{record.isStateDesignation,jdbcType=INTEGER},
       purchase_project_budgetary_amount = #{record.purchaseProjectBudgetaryAmount,jdbcType=DECIMAL},
       purchase_mode = #{record.purchaseMode,jdbcType=VARCHAR},
       purchase_category = #{record.purchaseCategory,jdbcType=VARCHAR},
@@ -382,6 +393,9 @@
       </if>
       <if test="purchaseEndTime != null">
         purchase_end_time = #{purchaseEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStateDesignation != null">
+        is_state_designation = #{isStateDesignation,jdbcType=INTEGER},
       </if>
       <if test="purchaseProjectBudgetaryAmount != null">
         purchase_project_budgetary_amount = #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL},
@@ -433,6 +447,7 @@
       purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
       purchase_start_time = #{purchaseStartTime,jdbcType=TIMESTAMP},
       purchase_end_time = #{purchaseEndTime,jdbcType=TIMESTAMP},
+      is_state_designation = #{isStateDesignation,jdbcType=INTEGER},
       purchase_project_budgetary_amount = #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL},
       purchase_mode = #{purchaseMode,jdbcType=VARCHAR},
       purchase_category = #{purchaseCategory,jdbcType=VARCHAR},
@@ -462,4 +477,5 @@
       order by ${orderByClause}
     </if>
   </select>
+
 </mapper>

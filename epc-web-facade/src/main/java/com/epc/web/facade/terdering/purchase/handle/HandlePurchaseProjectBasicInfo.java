@@ -35,6 +35,10 @@ public class HandlePurchaseProjectBasicInfo implements Serializable {
      */
     private String purchaseProjectName;
     /**
+     * 是否国有必须招标项目
+     */
+    private String isStateDesignation;
+    /**
      * 采购项目编号
      */
     private String purchaseProjectCode;

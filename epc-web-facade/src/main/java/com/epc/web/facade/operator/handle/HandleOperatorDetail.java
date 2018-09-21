@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class HandleOperatorDetail implements Serializable {
 
     private static final long serialVersionUID = 4284847845112939775L;
+
     /**
      * 公司名称
      */

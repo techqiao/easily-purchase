@@ -24,6 +24,10 @@ public class HandleOperator implements Serializable {
     private static final long serialVersionUID = -1601501922746938L;
 
     /**
+     * 员工id
+     */
+    private Long id;
+    /**
      * 员工姓名
      */
     private String userName;

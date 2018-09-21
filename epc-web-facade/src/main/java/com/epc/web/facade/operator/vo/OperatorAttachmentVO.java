@@ -1,7 +1,10 @@
 package com.epc.web.facade.operator.vo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class OperatorAttachmentVO implements Serializable {
     private static final long serialVersionUID = 6416073010409804648L;
 

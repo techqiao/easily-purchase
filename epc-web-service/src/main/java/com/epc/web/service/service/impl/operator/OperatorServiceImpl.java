@@ -55,8 +55,6 @@ public class OperatorServiceImpl implements OperatorService {
     private TOperatorSupplierMapper tOperatorSupplierMapper;
 
 
-
-
     /**
      * 运营商增加一个员工
      * @author donghuan

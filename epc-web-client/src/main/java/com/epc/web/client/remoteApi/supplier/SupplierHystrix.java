@@ -5,8 +5,6 @@ import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
-import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
-
 import java.util.List;
 
 

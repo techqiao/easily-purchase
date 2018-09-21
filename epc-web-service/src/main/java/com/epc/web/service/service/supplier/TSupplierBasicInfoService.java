@@ -2,10 +2,9 @@ package com.epc.web.service.service.supplier;
 
 
 import com.epc.common.Result;
-import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
-import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
+import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 
 import java.util.List;
 
@@ -14,6 +13,25 @@ import java.util.List;
  * @author donghuan
  */
 public interface TSupplierBasicInfoService {
+
+    /**
+     * 注册供应商
+     * @param handleSupplierDetail
+     * @return
+     */
+    Result<Boolean> registerSupplier( HandleSupplierDetail handleSupplierDetail);
+
+    /**
+     * 查询用户信息，依据电话或者密码来查找这个人的详细信息
+     */
+    Result<SupplierDetailInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone);
+
+    /**
+     * 忘记密码
+     * @param handleSupplierForgetPassword
+     */
+    Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword);
+
 
     /**
      * @Description:    供应商添加员工

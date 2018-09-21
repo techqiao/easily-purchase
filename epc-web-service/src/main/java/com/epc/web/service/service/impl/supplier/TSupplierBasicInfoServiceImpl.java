@@ -5,14 +5,16 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.common.util.MD5Util;
-import com.epc.web.facade.supplier.handle.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
-import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
+import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
+import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
+import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -38,11 +40,91 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
 
     @Autowired
     private TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
+    @Autowired
+    private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+
+    /**
+     * 注册供应商
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
+        //将公司名称，电话，密码信息存入到这个表对象中
+        TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
+        TSupplierDetailInfo tSupplierDetailInfo=new TSupplierDetailInfo();
+        //设置公司名称
+        tSupplierDetailInfo.setCompanyName(handleSupplierDetail.getCompanyName());
+        //设置电话
+        tSupplierBasicInfo.setCellphone(handleSupplierDetail.getCellPhone());
+        //设置密码
+        tSupplierBasicInfo.setPassword(handleSupplierDetail.getPassword());
+        //设置状态
+        tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+        //设置角色
+        tSupplierBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+        //设置状态,已注册
+        tSupplierBasicInfo.setState(Const.STATE.REGISTERED);
+        //创建时间
+        tSupplierBasicInfo.setCreateAt(new Date());
+        //最后修改时间(预计注册时可能不需要，默认没有，只有当修改了才会有这个 修改时间)
+        //tSupplierBasicInfo.setUpdateAt(new Date());
+
+        int i = tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
+        int i2 = tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
+        return (i>0 && i2>0)?Result.success(true):Result.success(false);
+    }
+
+
+    /**
+     * 依据名字和电话查询用户信息
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<SupplierDetailInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
+
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        String name=handleSupplierNameAndCellphone.getName();
+        String cellphone=handleSupplierNameAndCellphone.getCellphone();
+        if(StringUtils.isNotBlank(name)){
+            subCriteria.andNameEqualTo(name);
+        }
+        if(StringUtils.isNotBlank(cellphone)){
+            subCriteria.andCellphoneEqualTo(cellphone);
+        }
+        List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
+        SupplierDetailInfoVO vo=new SupplierDetailInfoVO();
+        BeanUtils.copyProperties(list.get(0),vo);
+        return Result.success(vo);
+    }
+
+    /**
+     *  忘记密码
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        //得到手机号,查询数据库中有没有这条数据
+        String cellphone=handleSupplierForgetPassword.getCellphone();
+        if(StringUtils.isNotBlank(cellphone)){
+            subCriteria.andCellphoneEqualTo(cellphone);
+        }
+        //查询出一条结果,然后将密码改掉
+        List<TSupplierBasicInfo> listTSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+        //加密传过来的密码
+        String newPassword = MD5Util.MD5EncodeUtf8(handleSupplierForgetPassword.getPassword());
+        TSupplierBasicInfo tSupplierBasicInfo=listTSupplierBasicInfos.get(0);
+        tSupplierBasicInfo.setPassword(newPassword);
+        //将新数据更新到数据 库中
+        return tSupplierBasicInfoMapper.updateByExampleSelective(tSupplierBasicInfo,criteria)>0?Result.<Boolean>success(true):Result.<Boolean>success(false);
+    }
+
 
     /**
      * 供应商增加一个员工
-     * @param handlerSupplierAddEmployee
-     * @return
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
@@ -79,8 +161,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
 
 
     /**
-     * @Description:    通过id查询这个用户信息，得到用户提交的数据，并且设置到对应的实体类中
-     * @Author:         donghuan
+     *     通过id查询这个用户信息，得到用户提交的数据，并且设置到对应的实体类中
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
@@ -107,9 +188,9 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
 
 
     /**
-    * @Description:    根据员工的名字来匹配出符合条件的员工返回一个list
-    * @Author:         donghuan
-    */
+     * @Description:    根据员工的名字来匹配出符合条件的员工返回一个list
+     * @Author:         donghuan
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {

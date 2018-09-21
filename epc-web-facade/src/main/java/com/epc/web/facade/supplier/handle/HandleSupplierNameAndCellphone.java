@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class HandleSupplierNameAndCellphone implements Serializable {
 
 
-
+    private static final long serialVersionUID = 4237267317328216566L;
     /**
      * 姓名
      */

@@ -20,8 +20,6 @@ public class ClientHandleProjectBasicInfo {
     private String projectName;
     @ApiModelProperty(value = "项目描述")
     private String projectDescription;
-    @ApiModelProperty(value = "是否国家指定必须招标项目")
-    private String isStateDesignation;
     @ApiModelProperty(value = "项目总投资")
     private String totalProjectInvestment;
     @ApiModelProperty(value = "投资来源")

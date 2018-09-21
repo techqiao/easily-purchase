@@ -10,10 +10,9 @@ import java.io.Serializable;
 
 @Data
 @ApiModel(value = "ClientHandleSupplierForgetPassword",description = "忘记密码")
-public class ClientHandleSupplierForgetPassword implements Serializable {
+public class ClientHandleSupplierForgetPassword {
 
 
-    private static final long serialVersionUID = -5061533612458075858L;
     /**
      * 忘记密码
      * @author donghuan

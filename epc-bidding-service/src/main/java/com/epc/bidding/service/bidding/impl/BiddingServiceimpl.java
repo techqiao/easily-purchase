@@ -8,6 +8,7 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleFileUpload;
+import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
@@ -47,6 +48,8 @@ public class BiddingServiceimpl implements BiddingService {
     BSaleDocumentsMapper bSaleDocumentsMapper;
     @Autowired
     TPurchaseProjectFilePayMapper tPurchaseProjectFilePayMapper;
+
+
     /**
      * 查询公告列表（暂时不做黑名单）
      * @param queryNoticeDTO
@@ -61,12 +64,15 @@ public class BiddingServiceimpl implements BiddingService {
         if(StringUtils.isNotBlank(queryNoticeDTO.getTitle())){
             subCriteria.andTitleLike("%"+queryNoticeDTO.getTitle()+"%");
         }
+        //开始日期
         if(queryNoticeDTO.getBiddingStart()!=null){
             subCriteria.andBiddingStartGreaterThanOrEqualTo(queryNoticeDTO.getBiddingStart());
         }
+        //结束日期
         if(queryNoticeDTO.getBiddingEnd()!=null){
             subCriteria.andBiddingEndGreaterThanOrEqualTo(queryNoticeDTO.getBiddingEnd());
         }
+        //招标类型
         if(StringUtils.isNotBlank(queryNoticeDTO.getBiddingType())){
             subCriteria.andBiddingTypeEqualTo(queryNoticeDTO.getBiddingType());
         }
@@ -133,6 +139,28 @@ public class BiddingServiceimpl implements BiddingService {
             returnList.add(vo);
         });
         return Result.success(returnList);
+    }
+
+    /**
+     * 供应商新增一条问题
+     * @param handleQuestion
+     * @return
+     */
+    @Override
+    public Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion){
+        BAnswerQuestion entity= new BAnswerQuestion();
+        entity.setQuestionerId(handleQuestion.getQuestionerId());
+        entity.setQuestionerName(handleQuestion.getQuestionerName());
+        entity.setProblem(handleQuestion.getProblem());
+        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        entity.setCreateAt(new Date());
+        entity.setUpdateAt(new Date());
+        try{
+            bAnswerQuestionMapper.insertSelective(entity);
+        }catch (Exception e){
+            return  Result.error();
+        }
+        return  Result.success(true);
     }
 
 

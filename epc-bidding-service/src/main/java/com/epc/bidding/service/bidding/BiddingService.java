@@ -2,6 +2,7 @@ package com.epc.bidding.service.bidding;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleFileUpload;
+import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
@@ -23,6 +24,13 @@ public interface BiddingService {
 
 
     /**
+     * 查询供应商是否支付下载招标文件金额
+     * @return
+     */
+    Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto);
+
+
+    /**
      *  查看公告详情 及 下载文件路径
      * @param queryNoticeDetail 公告详情
      * @param isPay 是否支付
@@ -37,6 +45,14 @@ public interface BiddingService {
      */
     Result<List<QueryAnswerQustionListVO>> getAnswerQuestionfindByNoticeId(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 
+
+    /**
+     * 新增一条问题
+     * @param handleQuestion
+     * @return
+     */
+    Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion);
+
     /**
      * 文件上传
      * @param handleFileUpload
@@ -44,10 +60,5 @@ public interface BiddingService {
      */
     Result<Boolean> updatePretrialFile(HandleFileUpload handleFileUpload);
 
-    /**
-     * 查询供应商是否支付下载招标文件金额
-     * @return
-     */
-    Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto);
 
 }

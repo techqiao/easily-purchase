@@ -129,7 +129,7 @@ public interface FacadePurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "queryPurchaserEmployeeById", consumes = "application/json; charset=UTF-8")
     Result queryEmployee(Long id);
     /**
      *@author :winlin

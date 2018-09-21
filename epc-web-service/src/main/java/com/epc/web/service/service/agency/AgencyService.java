@@ -1,10 +1,17 @@
 package com.epc.web.service.service.agency;
 
 import com.epc.common.Result;
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
+import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.agency.vo.AgencySubjectsVo;
+import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,7 +79,7 @@ public interface AgencyService {
      * @return: 数据库添加状态
      * @date:2018/9/18
      */
-    public Result completeInfo(HandleAgency agency);
+    public Result<Boolean> completeInfo(HandleAgency agency);
 
     /**
      * @author :winlin
@@ -81,7 +88,7 @@ public interface AgencyService {
      * @return: 序号, 项目名称, 项目编号, 项目区域, 招标信息条数, 采购人, 创建时间, 项目状态
      * @date:2018/9/18
      */
-    public Result proxySubjects();
+    public Result<List<AgencySubjectsVo>> proxySubjects(AgencySubjectDto subjectDto);
     /**
      *@author :winlin
      *@Description :
@@ -89,7 +96,7 @@ public interface AgencyService {
      *@return:
      *@date:2018/9/20
      */
-    public Result<List<HandleEmployee>> queryAllEmployee();
+    public Result<List<AgencyEmployeeVo>> queryAllEmployee(Long agencyId);
     /**
      * @author :winlin
      * @Description :查询员工信息
@@ -97,7 +104,7 @@ public interface AgencyService {
      * @return: 员工的信息
      * @date:2018/9/18
      */
-    public Result queryEmployee(HandleEmployee employee);
+    public Result<List<AgencyEmployeeVo>> queryEmployee(HandleEmployee employee);
 
     /**
      * @author :winlin
@@ -106,7 +113,7 @@ public interface AgencyService {
      * @return:
      * @date:2018/9/18
      */
-    public Result queryEmployeeByCellphone(String cellphone);
+    public Result<AgencyEmployeeVo> queryEmployeeByCellphone(String cellphone);
 
     /**
      * @author :winlin
@@ -115,7 +122,7 @@ public interface AgencyService {
      * @return:
      * @date:2018/9/19
      */
-    public Result queryEmployeeById(Long id);
+    public Result<AgencyEmployeeVo> queryEmployeeById(Long id);
 
     /**
      * /**
@@ -126,6 +133,24 @@ public interface AgencyService {
      * @return:yes or no
      * @date:2018/9/18
      */
-    public Result updateEmployeeBy(HandleEmployee employee);
+    public Result<Boolean> updateEmployeeBy(HandleEmployee employee);
+
+    /**
+     *@author :winlin
+     *@Description : 封装条件查供应商
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto);
+    /**
+     *@author :winlin
+     *@Description :封装条件查询专家
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+
+    public Result<List<AgencyExpertVo>>queryExpertCriteria(AgencyExpertDto expertDto);
 
 }

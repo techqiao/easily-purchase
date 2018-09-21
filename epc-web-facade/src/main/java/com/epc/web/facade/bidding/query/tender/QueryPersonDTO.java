@@ -1,0 +1,12 @@
+package com.epc.web.facade.bidding.query.tender;
+
+import com.epc.common.PagerParam;
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class QueryPersonDTO  implements Serializable {
+    private static final long serialVersionUID = 236072143731594167L;
+    private Long supplierId;
+}

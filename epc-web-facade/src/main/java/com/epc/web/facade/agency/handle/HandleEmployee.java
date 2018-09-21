@@ -13,6 +13,7 @@ import java.util.Date;
 public class HandleEmployee implements Serializable {
 
     private static final long serialVersionUID = -373772042506965841L;
+
     private Long id;
 
     private String name;

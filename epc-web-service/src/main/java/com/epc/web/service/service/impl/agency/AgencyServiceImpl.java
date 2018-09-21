@@ -4,8 +4,14 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.util.MD5Util;
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.*;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.agency.vo.AgencySubjectsVo;
+import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import com.epc.web.service.domain.agency.*;
 import com.epc.web.service.domain.expert.TAgencyExpertCriteria;
 import com.epc.web.service.domain.expert.TAgencyExpert;
@@ -24,6 +30,7 @@ import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.agency.AgencyService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -77,7 +84,7 @@ public class AgencyServiceImpl implements AgencyService {
      * @Date:2018/9/13
      */
     @Override
-    public Result insertEmployee(HandleEmployee handleEmployee) {
+    public Result<Integer> insertEmployee(HandleEmployee handleEmployee) {
         //根据name和cellPhone查询
         TAgencyBasicInfoCriteria infoCriteria = new TAgencyBasicInfoCriteria();
         TAgencyBasicInfoCriteria.Criteria criteria = infoCriteria.createCriteria();
@@ -90,9 +97,9 @@ public class AgencyServiceImpl implements AgencyService {
         //设置状态为已审核
         handleEmployee.setState(Const.STATE.AUDIT_SUCCESS);
         //创建时间
-       // handleEmployee.setCreateAt(new Date());
+        // handleEmployee.setCreateAt(new Date());
         //更新时间
-       // handleEmployee.setUpdateAt(new Date());
+        // handleEmployee.setUpdateAt(new Date());
         //创建数据库插入对象
         TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
         //复制对象数据到数据库对象中
@@ -118,7 +125,7 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Transactional(rollbackFor = {Exception.class})
     @Override
-    public Result insertExpert(HandleExpert handleExpert) {
+    public Result<Integer> insertExpert(HandleExpert handleExpert) {
 
         //依旧专家提供的信息来查询是否在公库中有此专家的信息
         TExpertBasicInfoCriteria criteria = new TExpertBasicInfoCriteria();
@@ -217,7 +224,7 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Transactional(rollbackFor = {Exception.class})
     @Override
-    public Result insertSupplier(HandleSupplier handleSupplier) {
+    public Result <Integer>insertSupplier(HandleSupplier handleSupplier) {
 
         //根据页面传入的信息查询依据手机号和姓名来查询
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
@@ -321,7 +328,7 @@ public class AgencyServiceImpl implements AgencyService {
      * @date:2018/9/18
      */
     @Override
-    public Result <HandleAgency>regesityAgency(HandleAgency agency) {
+    public Result<HandleAgency> regesityAgency(HandleAgency agency) {
         TAgencyBasicInfo basicInfo = new TAgencyBasicInfo();
         //或的基本信息密码加密密码加密
         basicInfo.setCellphone(agency.getCellphone());
@@ -330,6 +337,7 @@ public class AgencyServiceImpl implements AgencyService {
         int sucess = tAgencyBasicInfoMapper.insertSelective(basicInfo);
         Long id = basicInfo.getId();
         if (sucess > 0) {
+            //数据库生成的id放入对象传入下个页面
             agency.setAgencyId(basicInfo.getId());
             result.setData(agency);
             result.setMsg("注册成功");
@@ -337,12 +345,17 @@ public class AgencyServiceImpl implements AgencyService {
         }
         return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
     }
-
+    /**
+     *@author :winlin
+     *@Description :依据综合条件查询代理商
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
     @Override
-    public Result queryAgencies(HandleAgency agency) {
+    public Result<List<HandleAgency>> queryAgencies(HandleAgency agency) {
         return Result.success();
     }
-
 
 
     /**
@@ -353,7 +366,7 @@ public class AgencyServiceImpl implements AgencyService {
      * @date:2018/9/18
      */
     @Override
-    public Result modifypassword(HandleAgency agency) {
+    public Result<Boolean> modifypassword(HandleAgency agency) {
         //封装跟新信息
         TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
         tAgencyBasicInfo.setCellphone(agency.getCellphone());
@@ -374,13 +387,11 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Transactional(rollbackFor = {Exception.class})
     @Override
-    public Result completeInfo(HandleAgency agency) {
-        //查询注册时候走动生成的主键
-
+    public Result<Boolean> completeInfo(HandleAgency agency) {
         //创建时间
         Date date = new Date();
         //生成唯一的代理商的id
-        Long agencyId =agency.getAgencyId();
+        Long agencyId = agency.getAgencyId();
 
         //基本t_agency_basic_info信息的封装
         TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
@@ -430,63 +441,81 @@ public class AgencyServiceImpl implements AgencyService {
         return (sucess + sucess1 + sucess2) > 3 ? Result.success("信息完善成功") : Result.error(ErrorMessagesEnum.INSERT_FAILURE);
 
     }
-
     /**
-     *
      * 代理机构名下的所有项目
+     *
      * @return
      */
     @Override
-    public Result proxySubjects() {
+    public Result<List<AgencySubjectsVo>> proxySubjects(AgencySubjectDto subjectDto) {
         return Result.success();
     }
 
+
+
     /**
      * 查询该机构下所有的员工
+     *不查询的字段不返回,password
      * @return
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Override
-    public Result<List<HandleEmployee>> queryAllEmployee() {
-        return Result.success();
+    public Result<List<AgencyEmployeeVo>> queryAllEmployee(Long agencyId) {
+        List<AgencyEmployeeVo> employees = tAgencyBasicInfoMapper.queryAllAgencyEmployees(agencyId);
+        if (employees == null) {
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",employees);
     }
 
     /**
      * 依据封装好的条件查询员工
+     *
      * @param employee
      * @return
      */
     @Override
-    public Result<List<HandleEmployee>> queryEmployee(HandleEmployee employee) {
-        if(employee==null){
-            return this.queryAllEmployee();
-        }
+    public Result<List<AgencyEmployeeVo>> queryEmployee(HandleEmployee employee) {
+
         return Result.success();
     }
 
     /**
      * 依据手机号查询员工
+     *
      * @param cellphone
      * @return
      */
     @Override
-    public Result queryEmployeeByCellphone(String cellphone) {
+    public Result<AgencyEmployeeVo> queryEmployeeByCellphone(String cellphone) {
         AgencyEmployeeVo employeeVo = tAgencyBasicInfoMapper.queryEmployeeByCellphone(cellphone);
-        return employeeVo==null?Result.error(ErrorMessagesEnum.SELECT_FAILURE):Result.success("查询成功",employeeVo);
+        return employeeVo == null ? Result.error(ErrorMessagesEnum.SELECT_FAILURE) : Result.success("查询成功", employeeVo);
     }
 
     /**
      * 依据id查询员工
+     *
      * @param id
      * @return
      */
     @Override
     public Result queryEmployeeById(Long id) {
         AgencyEmployeeVo employeeVo = tAgencyBasicInfoMapper.queryEmployeeById(id);
-        return employeeVo==null?Result.error(ErrorMessagesEnum.SELECT_FAILURE):Result.success("查询成功",employeeVo);
+        return employeeVo == null ? Result.error(ErrorMessagesEnum.SELECT_FAILURE) : Result.success("查询成功", employeeVo);
     }
 
     @Override
-    public Result updateEmployeeBy(HandleEmployee employee) {
+    public Result<Boolean> updateEmployeeBy(HandleEmployee employee) {
         return Result.success();
+    }
+
+    @Override
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto) {
+        return null;
+    }
+
+    @Override
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(AgencyExpertDto expertDto) {
+        return null;
     }
 }

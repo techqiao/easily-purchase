@@ -1,11 +1,13 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,13 +27,23 @@ public interface FacadeNoticeService {
     Result<List<NoticeDetailVO>> queryBIssueDocumentsList(@RequestBody QueryNoticeDTO queryNoticeDTO);
 
     /**
-     * 根据公告ID 查看公告详情
+     * 根据公告ID 查看公告详情 及 下载文件路径
      * @param queryNoticeDetail
+     * @param isPay 是否支付下载金额
      * @return
      */
     @PostMapping(value = "getNoticeDetail", consumes = "application/json; charset=UTF-8")
-    Result<NoticeDetailVO>  getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail,Boolean isPay);
+    Result<NoticeDetailVO>  getNoticeDetail(@RequestParam("queryNoticeDetail") QueryNoticeDetail queryNoticeDetail, @RequestParam("isPay") Boolean isPay);
 
-}
+
+    /**
+     * 是否支付下载金额
+     * @param dto
+     * @return
+     */
+    @PostMapping(value = "isPayForProjectFile", consumes = "application/json; charset=UTF-8")
+     Result<Boolean> isPayForProjectFile(@RequestBody QueryProgramPayDTO dto);
+
+    }
 
 

@@ -30,15 +30,10 @@ public class SupplierControllerImpl implements FacadeTSupplierBasicInfoService {
         return tSupplierUserService.registerSupplier(handleSupplierDetail);
     }
 
-    //登陆
-    @Override
-    public Result<SupplierBasicInfoVO> login(@RequestBody String cellphone, String password) {
-        return tSupplierUserService.login(cellphone,password);
-    }
 
     //根据名字或者电话来得到这个人的信息
     @Override
-    public Result<SupplierDetailInfoVO> findByName(@RequestParam String name, String cellphone) {
+    public Result<SupplierDetailInfoVO> findByName(@RequestParam("name") String name,@RequestParam("cellphone") String cellphone) {
         return tSupplierUserService.findByName(name,cellphone);
     }
 

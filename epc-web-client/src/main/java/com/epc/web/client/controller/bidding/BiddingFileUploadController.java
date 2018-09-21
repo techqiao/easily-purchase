@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+* @Description:  提交 文件
+* @Author: linzhixiang
+* @Date: 2018/9/20
+*/
 @Api(value = "投标流程",tags = {"上传预审信息"})
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

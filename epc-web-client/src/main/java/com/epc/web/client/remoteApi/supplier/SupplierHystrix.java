@@ -22,10 +22,6 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<SupplierBasicInfoVO> login(String cellphone, String password) {
-        return Result.hystrixError();
-    }
 
     @Override
     public Result<SupplierDetailInfoVO> findByName(String name, String cellphone) {

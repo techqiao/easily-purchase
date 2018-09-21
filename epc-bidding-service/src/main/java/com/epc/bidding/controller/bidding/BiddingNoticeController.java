@@ -3,11 +3,13 @@ package com.epc.bidding.controller.bidding;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeNoticeService;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,14 +37,28 @@ public class BiddingNoticeController implements FacadeNoticeService {
 
 
     /**
-     * 根据Id查看招标公告详情
+     * 根据Id查看招标公告详情 及 附件路径
      * @param queryNoticeDetail
      * @param isPay
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(QueryNoticeDetail queryNoticeDetail,Boolean isPay) {
+    public Result<NoticeDetailVO> getNoticeDetail(@RequestParam("queryNoticeDetail") QueryNoticeDetail queryNoticeDetail,@RequestParam("isPay") Boolean isPay) {
         return biddingService.findByNoticeId(queryNoticeDetail,isPay);
     }
+
+
+    /**
+     * 是否支付下载文件金额
+     * @param dto
+     * @return
+     */
+
+    @Override
+    public Result<Boolean> isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
+        return biddingService.IsPayForProjectFile(dto);
+    }
+
+
 
 }

@@ -111,8 +111,13 @@ public interface FacadeAgencyService {
      *@return:
      *@date:2018/9/18
      */
+<<<<<<< HEAD
     @PostMapping(value = "queryEmployeeByCellphone")
     public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map);
+=======
+    @PostMapping(value = "queryEmployeeByCellphone", consumes = "application/json; charset=UTF-8")
+    public Result queryEmployeeByCellphone(String cellphone);
+>>>>>>> origin/master
     /**
      *@author :winlin
      *@Description :根据id查询员工信息
@@ -121,7 +126,11 @@ public interface FacadeAgencyService {
      *@date:2018/9/19
      */
     @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
+<<<<<<< HEAD
     public Result queryEmployeeById(@RequestBody HashMap<String,Long> map);
+=======
+    public Result queryEmployeeById(Long id);
+>>>>>>> origin/master
     /**
      /**
      *@author :winlin

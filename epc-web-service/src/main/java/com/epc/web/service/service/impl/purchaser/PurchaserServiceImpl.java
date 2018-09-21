@@ -5,10 +5,16 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
+import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
 import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
 import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
+import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
+import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
+import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.service.domain.agency.TAgencyAttachment;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
@@ -80,7 +86,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Autowired
     TPurchaserExpertMapper tPurchaserExpertMapper;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PurchaserServiceImpl.class);
 
 
     /**
@@ -103,12 +109,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         if (list.size() > 0) {
             return Result.error("采购人员" + handleOperator.getName() + "已存在,勿重复添加");
         }
-
-
         TOperatorPurchaser pojo = new TOperatorPurchaser();
         Date date = new Date();
-        pojo.setCellphone(handleOperator.getCellPhone() != null ? handleOperator.getCellPhone() : null);
-//        pojo.setOperatorId(handleOperator.getOperatorId() != 0 ? handleOperator.getOperatorId() : 0);
+        pojo.setCellphone(handleOperator.getCellPhone() );
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
@@ -152,8 +155,8 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         Date date = new Date();
-        pojo.setCellphone(handleSupplierDetail.getCellPhone() != null ? handleSupplierDetail.getCellPhone() : null);
-        pojo.setName(handleSupplierDetail.getCompanyName() != null ? handleSupplierDetail.getCompanyName() : null);
+        pojo.setCellphone(handleSupplierDetail.getCellPhone() );
+        pojo.setName(handleSupplierDetail.getCompanyName());
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setState(Const.STATE.REGISTERED);
         pojo.setRole(Const.Role.ROLE_CORPORATION);
@@ -215,7 +218,6 @@ public class PurchaserServiceImpl implements PurchaserService {
                     return tPurchaserExpertMapper.insertSelective(tPurchaserExpert) > 0 ? Result.<Boolean>success() : Result.<Boolean>error();
                 }
             }
-
         } else {
             //公库新增
             TExpertBasicInfo pojo = new TExpertBasicInfo();
@@ -448,7 +450,13 @@ public class PurchaserServiceImpl implements PurchaserService {
             return Result.error(e.getMessage());
         }
     }
-
+    /**
+     *@author :lingzhixiang
+     *@Description :完善代理机构的信息
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
     @Override
     public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
         TAgencyBasicInfo detailInfo = new TAgencyBasicInfo();
@@ -500,79 +508,149 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
         return Result.success();
     }
-
+    /**
+     *@author :winlin
+     *@Description :采购人注册
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
     @Override
-    public Result registerPurchaser(HandleRegisterPurchaser purchaser) {
+    public Result<HandleRegisterPurchaser> registerPurchaser(HandleRegisterPurchaser purchaser) {
+        return null;
+    }
+    /**
+     *@author :winlin
+     *@Description :采购人下的所有员工
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    @Override
+    public Result<List<PurchaserEmplyeeVo>> allEmployee(Long purchaserId) {
+        return null;
+    }
+    /**
+     *@author :winlin
+     *@Description :模糊查询员工
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    @Override
+    public Result<List<PurchaserEmplyeeVo>> findEmployeeByName(String fuzzyName, Long purchaseId) {
+        return null;
+    }
+    /**
+     *@author :winlin
+     *@Description :根据手机号修改状态
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    @Override
+    public Result<Boolean> updateEmployeeState(String cellphone, Integer state) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :根据id修改状态
+ *@param:
+ *@return:
+ *@date:2018/9/20
+ */
+    @Override
+    public Result<Boolean> updateEmployeeState(Long id, Integer state) {
+        return null;
+    }
+    /**
+     *@author :winlin
+     *@Description :根据手机查员工
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    @Override
+    public Result<PurchaserEmplyeeVo> queryEmployee(String cellphone) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :根据id查员工
+ *@param:
+ *@return:
+ *@date:2018/9/20
+ */
+    @Override
+    public Result<PurchaserEmplyeeVo> queryEmployee(Long id) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :根据综合条件查员工
+ *@param:
+ *@return:
+ *@date:2018/9/20
+ */
+    @Override
+    public Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :根据id改权限
+ *@param:
+ *@return:
+ *@date:2018/9/20
+ */
+    @Override
+    public Result<Boolean> updateRole(Long id, Integer role) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :查找所有的供货商
+ *@param:
+ *@return:
+ *@date:2018/9/20
+ */
+    @Override
+    public Result<List<PurchaserSupplierVo>> queryAllSuppliers(Long purchaseId) {
         return null;
     }
 
     @Override
-    public Result allEmployee(Long purchaserId) {
+    public Result<List<PurchaserSupplierVo>> querySuppliers(String fuzzyName, Long purchaseId) {
         return null;
     }
 
     @Override
-    public Result findEmployeeByName(String fuzzyName, Long purchaseId) {
+    public Result<PurchaserSupplierVo> querySuppliers(Long id) {
         return null;
     }
 
     @Override
-    public Result updateEmployeeState(String cellphone, Integer state) {
+    public Result<Boolean> updateSuppliers(HandPurchaserAttachment attachment) {
         return null;
     }
 
     @Override
-    public Result updateEmployeeState(Long id, Integer state) {
+    public Result<List<PurchaserExpertVo>> queryExperts(HandleExpertDto dto) {
         return null;
     }
 
     @Override
-    public Result queryEmployee(String cellphone) {
+    public Result<Boolean> updateExpertState(Long id, Integer state) {
         return null;
     }
 
     @Override
-    public Result queryEmployee(Long id) {
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
         return null;
     }
 
     @Override
-    public Result queryEmplyee(HandleEmployeeDto employeeDto) {
-        return null;
-    }
-
-    @Override
-    public Result updateRole(Long id, Integer role) {
-        return null;
-    }
-
-    @Override
-    public Result queryAllSuppliers(Long purchaseId) {
-        return null;
-    }
-
-    @Override
-    public Result querySuppliers(String fuzzyName, Long purchaseId) {
-        return null;
-    }
-
-    @Override
-    public Result querySuppliers(Long id) {
-        return null;
-    }
-
-    @Override
-    public Result updateSuppliers(HandPurchaserAttachment attachment) {
-        return null;
-    }
-
-    @Override
-    public Result queryExperts(HandleExpertDto dto) {
-        return null;
-    }
-
-    @Override
-    public Result updateExpertState(Long id, Integer state) {
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
         return null;
     }
 

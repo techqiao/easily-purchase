@@ -34,7 +34,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构新增员工" , notes = "新增代理机构员工")
     @PostMapping(value = "/insertEmployeee")
-    public Result insertEmployee(@RequestBody ClientHandleEmployee employee) {
+    public Result<Boolean > insertEmployee(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee employee1 = new HandleEmployee();
         BeanUtils.copyProperties(employee,employee1);
         return agencyClient.insertEmployee(employee1);
@@ -42,7 +42,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构新增专家" , notes = "新增代理机构专家")
     @PostMapping(value = "/insertExpert")
-    public Result insertExpert(@RequestBody ClientHandleExpert handleExpert) {
+    public Result<Boolean> insertExpert(@RequestBody ClientHandleExpert handleExpert) {
        HandleExpert expert = new HandleExpert();
        BeanUtils.copyProperties(handleExpert,expert);
         return agencyClient.insertExpert(expert);
@@ -50,14 +50,14 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构新增供货商" , notes = "新增代理机构供货商")
     @PostMapping(value = "/insertSupplier")
-    public Result insertSupplier(@RequestBody ClientHandleSupplier handleSupplier) {
+    public Result<Boolean> insertSupplier(@RequestBody ClientHandleSupplier handleSupplier) {
         HandleSupplier supplier=new HandleSupplier();
         BeanUtils.copyProperties(handleSupplier,supplier);
         return agencyClient.insertSupplier(supplier);
     }
     @ApiOperation(value = "代理机构注册" , notes = "注册")
     @PostMapping(value = "/regesityAgency")
-    public Result regesityAgency(@RequestBody ClientHandleAgency agency) {
+    public Result<Boolean> regesityAgency(@RequestBody ClientHandleAgency agency) {
         HandleAgency handleAgency=new HandleAgency();
         BeanUtils.copyProperties(agency,handleAgency);
         return agencyClient.regesityAgency(handleAgency);
@@ -94,7 +94,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构按条件查询员工" , notes = "代理机构按条件查询员工")
     @PostMapping(value = "/queryEmployee")
-    public Result queryEmployee(@RequestBody  ClientHandleEmployee employee) {
+    public Result queryEmployee(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee handleEmployee =new HandleEmployee();
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.queryEmployee(handleEmployee);
@@ -113,7 +113,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构修改员工信息" , notes = "代理机构修改员工信息")
     @PostMapping(value = "/updateEmployeeBy")
-    public Result updateEmployeeBy(@RequestBody  ClientHandleEmployee employee) {
+    public Result updateEmployeeBy(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee handleEmployee =new HandleEmployee();
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.updateEmployeeBy(handleEmployee);

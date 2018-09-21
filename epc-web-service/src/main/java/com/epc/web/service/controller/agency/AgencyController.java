@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author winlin
@@ -38,23 +40,30 @@ public class AgencyController implements FacadeAgencyService {
         return agencyService.insertSupplier(handleSupplier);
     }
 
+
     @Override
     public Result regesityAgency(@RequestBody HandleAgency agency) {
         return agencyService.regesityAgency(agency);
     }
 
     @Override
-    public Result queryAgencies( @RequestBody HandleAgency agency) {
+
+    public Result<List<HandleAgency>>  queryAgencies(@RequestBody HandleAgency agency) {
+
         return agencyService.queryAgencies(agency);
     }
 
     @Override
+
     public Result modifypassword( @RequestBody HandleAgency agency) {
+
         return agencyService.modifypassword(agency);
     }
 
     @Override
+
     public Result completeInfo( @RequestBody HandleAgency agency) {
+
         return agencyService.completeInfo(agency);
     }
 
@@ -64,7 +73,9 @@ public class AgencyController implements FacadeAgencyService {
     }
 
     @Override
+
     public Result queryEmployee( @RequestBody HandleEmployee employee) {
+
         return agencyService.queryEmployee(employee);
     }
 
@@ -75,13 +86,17 @@ public class AgencyController implements FacadeAgencyService {
     }
 
     @Override
+
     public Result queryEmployeeById(@RequestBody HashMap<String,Long> map) {
         Long id = map.get("id");
+
         return agencyService.queryEmployeeById(id);
     }
 
     @Override
+
     public Result updateEmployeeBy( @RequestBody HandleEmployee employee) {
+
         return agencyService.updateEmployeeBy(employee);
     }
 }

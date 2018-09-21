@@ -125,10 +125,9 @@
      FROM t_purchaser_basic_info agency
      LEFT JOIN t_purchaser_basic_info boss ON agency.agency_id=boss.agency_id
     LEFT JOIN t_purchaser_detail_info  d ON d.agency_id = agency.agency_id
-     WHERE agency.purchaser_id=boss.purchaser_id
+     WHERE agency.`name` LIKE #{pattern}
+    AND agency.purchaser_id=boss.purchaser_id
     AND boss.role=0;
-    AND agency.purchaser_id =#{purchaserId}
-    AND agency.`name` LIKE #{pattern}
   </select>
 
   <select id="queryEmplyeeByCellphone" resultType="com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo" parameterType="java.lang.String">

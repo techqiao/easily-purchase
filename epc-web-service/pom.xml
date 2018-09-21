@@ -105,6 +105,7 @@
                 <excludes>
                     <exclude>filters/*</exclude>
                     <exclude>filters/*</exclude>
+                    <exclude>application.properties</exclude>
                     <exclude>application-dev.properties</exclude>
                     <exclude>application-test.properties</exclude>
                     <exclude>application-prod.properties</exclude>
@@ -130,17 +131,20 @@
                 <filter-resource-name>dev</filter-resource-name>
             </properties>
         </profile>
+
         <profile>
             <id>test</id>
             <properties>
                 <filter-resource-name>test</filter-resource-name>
             </properties>
         </profile>
+
         <profile>
             <id>prod</id>
             <properties>
                 <filter-resource-name>prod</filter-resource-name>
             </properties>
         </profile>
+
     </profiles>
 </project>

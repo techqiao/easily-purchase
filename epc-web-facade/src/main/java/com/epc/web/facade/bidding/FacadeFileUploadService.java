@@ -1,7 +1,6 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
-import com.epc.web.facade.bidding.handle.HandleFileUpload;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import org.springframework.web.bind.annotation.PostMapping;

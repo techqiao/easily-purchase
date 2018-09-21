@@ -89,13 +89,19 @@
            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
        </table>-->
 
-        <table schema="easily_purchase" tableName="t_pretrial_message" domainObjectName="TPretrialMessage">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-      <!--  <table schema="easily_purchase" tableName="t_pretrial_file" domainObjectName="TPretrialFile">
+       <!-- <table schema="easily_purchase" tableName="t_pretrial_message" domainObjectName="TPretrialMessage">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>-->
+      <!--<table schema="easily_purchase" tableName="t_pretrial_file" domainObjectName="TPretrialFile">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+      </table>-->
+        <!--<table schema="easily_purchase" tableName="b_bids_guarantee_amount" domainObjectName="BBidsGuaranteeAmount">
+                    <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+              </table>-->
 
+        <table schema="easily_purchase" tableName="b_bid_opening_pay" domainObjectName="BBidOpeningPay">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
     </context>
 
 </generatorConfiguration>

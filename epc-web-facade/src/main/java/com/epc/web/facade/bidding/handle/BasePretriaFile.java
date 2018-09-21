@@ -16,5 +16,6 @@ public class BasePretriaFile implements Serializable {
     private Long id;
     private String filePath;
     private String fileName;
+    private String fileType;
     private int isDeleted;
 }

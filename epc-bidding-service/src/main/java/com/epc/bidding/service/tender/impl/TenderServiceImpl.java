@@ -1,15 +1,19 @@
 package com.epc.bidding.service.tender.impl;
 
+import com.epc.bidding.domain.bidding.BBidOpeningPayCriteria;
 import com.epc.bidding.domain.bidding.TPurchaseProjectBids;
 import com.epc.bidding.domain.bidding.TPurchaseProjectBidsCriteria;
+import com.epc.bidding.mapper.bidding.BBidOpeningPayMapper;
 import com.epc.bidding.mapper.bidding.TPurchaseProjectBidsMapper;
 import com.epc.bidding.mapper.bidding.TSupplierBasicInfoMapper;
 import com.epc.bidding.service.bidding.impl.BiddingServiceimpl;
 import com.epc.bidding.service.tender.TenderService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.PersonDTO;
+import com.epc.web.facade.bidding.query.tender.QueryBidPayDTO;
 import com.epc.web.facade.bidding.query.tender.QueryPersonDTO;
 import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
+import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,9 @@ public class TenderServiceImpl implements TenderService {
     TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
     @Autowired
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+    @Autowired
+    BBidOpeningPayMapper bBidOpeningPayMapper;
+
 
     /**
      * 获取机构下面的人员列表
@@ -40,9 +47,9 @@ public class TenderServiceImpl implements TenderService {
      * @return
      */
     @Override
-    public List<PersonDTO> getPersonList(QueryPersonDTO dto){
+    public Result<List<PersonDTO>> getPersonList(QueryPersonDTO dto){
         List<PersonDTO>  list=tSupplierBasicInfoMapper.selectCompanyPerson(dto.getSupplierId());
-      return list;
+      return Result.success(list);
     }
 
 
@@ -66,4 +73,16 @@ public class TenderServiceImpl implements TenderService {
         return Result.success(newList);
     }
 
+
+    /**
+     * 根据招标公告Id 获取标段列表及保证金支付情况
+     * @param dto
+     * @return
+     */
+
+    @Override
+    public Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(QueryBidPayDTO dto){
+        List<QueryTenderMoneyRecordVO> vo=bBidOpeningPayMapper.selectBidPayRecord(dto.getId());
+        return Result.success(vo);
+    }
 }

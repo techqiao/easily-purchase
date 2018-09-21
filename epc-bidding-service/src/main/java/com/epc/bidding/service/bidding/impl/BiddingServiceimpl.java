@@ -6,6 +6,7 @@ import com.epc.bidding.mapper.bidding.*;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleFileUpload;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
@@ -220,6 +221,7 @@ public class BiddingServiceimpl implements BiddingService {
      * @param handlePretriaFile
      * @return
      */
+    @Override
     public Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile){
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
@@ -267,7 +269,7 @@ public class BiddingServiceimpl implements BiddingService {
 
 
     /**
-     * 供应商 查看预审信息
+     * 供应商 查看预审信息 + 附件列表
      * @return
      */
 
@@ -278,12 +280,27 @@ public class BiddingServiceimpl implements BiddingService {
         cubCriteria.andPurchasProjectIdEqualTo(handlePretriaFile.getPurchasProjectId());
         cubCriteria.andReleaseAnnouncementIdEqualTo(handlePretriaFile.getReleaseAnnouncementId());
         cubCriteria.andCompanyIdEqualTo(handlePretriaFile.getCompanyId());
+        //获取预审信息
         List<TPretrialMessage> list=tPretrialMessageMapper.selectByExample(criteria);
         if(list.size()==0){
             return Result.error();
         }
         PretrialMessageVO vo =new PretrialMessageVO();
         BeanUtils.copyProperties(list.get(0),vo);
+
+        //获取预审信息 对应的文件列表
+        TPretrialFileCriteria newCriteria =new TPretrialFileCriteria();
+        TPretrialFileCriteria.Criteria cubNewCriteria=newCriteria.createCriteria();
+        cubNewCriteria.andPretrialMessageIdEqualTo(vo.getId());
+        List<TPretrialFile> newList=tPretrialFileMapper.selectByExample(newCriteria);
+        FileListDTO dto=new FileListDTO();
+        List<FileListDTO> dtoList=new ArrayList<>();
+        for(TPretrialFile entity:newList){
+            BeanUtils.copyProperties(entity,dto);
+            dtoList.add(dto);
+        }
+
+        vo.setFileList(dtoList);
         return Result.success(vo);
     }
 

@@ -1,9 +1,11 @@
 package com.epc.web.facade.bidding.vo;
 
+import com.epc.web.facade.bidding.dto.FileListDTO;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PretrialMessageVO implements Serializable {
@@ -31,5 +33,7 @@ public class PretrialMessageVO implements Serializable {
     private Integer isDeleted;
 
     private String content;
+
+    private List<FileListDTO> fileList;
 
 }

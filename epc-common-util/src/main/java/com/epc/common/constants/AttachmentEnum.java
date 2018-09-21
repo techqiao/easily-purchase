@@ -14,7 +14,9 @@ public enum AttachmentEnum {
     CERTIFICATE_OF_AUTHORIZATION("certificate_of_authorization","带公章的授权书照片url"),
     OPERATOR_ID_CARD_FRONT("operator_id_card_front","经办人(运营商员工)手持身份证正面照片url"),
     PRETRIAL_FILE("pretrial_file","预审文件"),
-    BIDDING_FILE("bidding_file","投标文件");
+    BIDDING_FILE("bidding_file","投标文件"),
+    POWER_OF_ATTORNEY("power_of_attorney","委托书"),
+    ID_CARD("id_card","身份证");
     private String code;
     private String desc;
 

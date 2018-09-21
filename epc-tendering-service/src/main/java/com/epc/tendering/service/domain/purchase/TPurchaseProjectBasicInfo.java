@@ -19,6 +19,8 @@ public class TPurchaseProjectBasicInfo implements Serializable {
 
     private Date purchaseEndTime;
 
+    private Integer isStateDesignation;
+
     private BigDecimal purchaseProjectBudgetaryAmount;
 
     private String purchaseMode;
@@ -101,6 +103,14 @@ public class TPurchaseProjectBasicInfo implements Serializable {
 
     public void setPurchaseEndTime(Date purchaseEndTime) {
         this.purchaseEndTime = purchaseEndTime;
+    }
+
+    public Integer getIsStateDesignation() {
+        return isStateDesignation;
+    }
+
+    public void setIsStateDesignation(Integer isStateDesignation) {
+        this.isStateDesignation = isStateDesignation;
     }
 
     public BigDecimal getPurchaseProjectBudgetaryAmount() {
@@ -220,6 +230,7 @@ public class TPurchaseProjectBasicInfo implements Serializable {
         sb.append(", purchaseProjectCode=").append(purchaseProjectCode);
         sb.append(", purchaseStartTime=").append(purchaseStartTime);
         sb.append(", purchaseEndTime=").append(purchaseEndTime);
+        sb.append(", isStateDesignation=").append(isStateDesignation);
         sb.append(", purchaseProjectBudgetaryAmount=").append(purchaseProjectBudgetaryAmount);
         sb.append(", purchaseMode=").append(purchaseMode);
         sb.append(", purchaseCategory=").append(purchaseCategory);

@@ -85,9 +85,17 @@
         <!--<table schema="easily_purchase" tableName="t_supplier_basic_info" domainObjectName="TSupplierBasicInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>-->
-        <table schema="easily_purchase" tableName="t_purchase_project_bids" domainObjectName="TPurchaseProjectBids">
+        <!--<table schema="easily_purchase" tableName="t_purchase_project_bids" domainObjectName="TPurchaseProjectBids">
            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-       </table>
+       </table>-->
+
+        <table schema="easily_purchase" tableName="t_pretrial_message" domainObjectName="TPretrialMessage">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+      <!--  <table schema="easily_purchase" tableName="t_pretrial_file" domainObjectName="TPretrialFile">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
     </context>
 
 </generatorConfiguration>

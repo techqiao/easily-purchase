@@ -1,13 +1,15 @@
 package com.epc.bidding.service.bidding;
 
+import com.epc.bidding.domain.bidding.TPretrialMessage;
 import com.epc.common.Result;
-import com.epc.web.facade.bidding.handle.HandleFileUpload;
+import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
+import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import com.epc.web.facade.bidding.vo.QueryAnswerQustionListVO;
 
 import java.util.List;
@@ -55,10 +57,22 @@ public interface BiddingService {
 
     /**
      * 文件上传
-     * @param handleFileUpload
+     * @param handlePretriaFile
      * @return
      */
-    Result<Boolean> updatePretrialFile(HandleFileUpload handleFileUpload);
+    Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile);
 
+    /**
+     * 预审信息 修改/删除
+     * @param handlePretriaFile
+     * @return
+     */
+    Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile);
 
+    /**
+     * 获取预审信息 详情
+     * @param handlePretriaFile
+     * @return
+     */
+    Result<PretrialMessageVO> getTPretrialMessage(HandlePretriaFile handlePretriaFile);
 }

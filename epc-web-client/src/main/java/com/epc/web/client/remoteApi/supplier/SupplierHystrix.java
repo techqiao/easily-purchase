@@ -20,11 +20,12 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-
     @Override
-    public Result<SupplierDetailInfoVO> findByName(String name, String cellphone) {
+    public Result<SupplierDetailInfoVO> findByName(HandleSupplierNameAndCellphone HandleSupplierNameAndCellphone) {
         return Result.hystrixError();
     }
+
+
 
     @Override
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
@@ -45,5 +46,5 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
         return Result.hystrixError();
     }
-    
+
 }

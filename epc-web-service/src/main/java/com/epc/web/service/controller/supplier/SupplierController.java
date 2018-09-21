@@ -3,8 +3,10 @@ package com.epc.web.service.controller.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
+import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,10 +33,18 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     }
 
     /**
+     * 根据电话来查找一条记录,返回一个记录
+     */
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone) {
+        return tSupplierBasicInfoService.findSupplierByCellphone(handleFindSupplierByCellphone);
+    }
+
+    /**
      * 根据名字或者电话来得到这个人的信息
      */
     @Override
-    public Result<SupplierDetailInfoVO> findByName(@RequestBody HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
+    public Result<SupplierBasicInfoVO> findByName(@RequestBody HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
         return tSupplierBasicInfoService.findByName(handleSupplierNameAndCellphone);
     }
 

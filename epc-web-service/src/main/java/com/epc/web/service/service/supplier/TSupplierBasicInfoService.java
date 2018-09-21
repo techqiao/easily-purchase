@@ -2,9 +2,14 @@ package com.epc.web.service.service.supplier;
 
 
 import com.epc.common.Result;
-import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import com.epc.web.facade.supplier.handle.HandleSupplierForgetPassword;
+import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
+import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
+import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 
 import java.util.List;
 
@@ -22,9 +27,14 @@ public interface TSupplierBasicInfoService {
     Result<Boolean> registerSupplier( HandleSupplierDetail handleSupplierDetail);
 
     /**
+     * 根据电话来查找一条记录,返回一个记录
+     */
+    Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone);
+
+    /**
      * 查询用户信息，依据电话或者密码来查找这个人的详细信息
      */
-    Result<SupplierDetailInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone);
+    Result<SupplierBasicInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone);
 
     /**
      * 忘记密码

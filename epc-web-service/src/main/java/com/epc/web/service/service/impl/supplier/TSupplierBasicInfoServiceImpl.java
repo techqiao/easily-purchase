@@ -6,8 +6,10 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.common.util.MD5Util;
 import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
+import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
@@ -49,15 +51,18 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
+
+        Date date=new Date();
+
+        //电话提出来
+        String cellphone=handleSupplierDetail.getCellPhone();
+
         //将公司名称，电话，密码信息存入到这个表对象中
         TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
-        TSupplierDetailInfo tSupplierDetailInfo=new TSupplierDetailInfo();
-        //设置公司名称
-        tSupplierDetailInfo.setCompanyName(handleSupplierDetail.getCompanyName());
         //设置电话
-        tSupplierBasicInfo.setCellphone(handleSupplierDetail.getCellPhone());
+        tSupplierBasicInfo.setCellphone(cellphone);
         //设置密码
-        tSupplierBasicInfo.setPassword(handleSupplierDetail.getPassword());
+        tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(handleSupplierDetail.getPassword()));
         //设置状态
         tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
         //设置角色
@@ -65,14 +70,70 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         //设置状态,已注册
         tSupplierBasicInfo.setState(Const.STATE.REGISTERED);
         //创建时间
-        tSupplierBasicInfo.setCreateAt(new Date());
+        tSupplierBasicInfo.setCreateAt(date);
         //最后修改时间(预计注册时可能不需要，默认没有，只有当修改了才会有这个 修改时间)
         //tSupplierBasicInfo.setUpdateAt(new Date());
 
-        int i = tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
-        int i2 = tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
-        return (i>0 && i2>0)?Result.success(true):Result.success(false);
+        int supplierBoss = tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
+        //查出这个这条已经插入的数据的id，得到这个供应商法人的id
+        //根据电话来查询这个人的基本信息，从中得到id
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andCellphoneEqualTo(cellphone);
+        List<TSupplierBasicInfo> nowSupperBoss = tSupplierBasicInfoMapper.selectByExample(criteria);
+
+//        TSupplierBasicInfoServiceImpl impl=new TSupplierBasicInfoServiceImpl();
+//        TSupplierBasicInfo supplierByCellphone = impl.findSupplierByCellphone(cellphone);
+//        Long id=supplierByCellphone.getSupplierId();.
+        Long id=nowSupperBoss.get(0).getSupplierId();
+
+        TSupplierDetailInfo tSupplierDetailInfo=new TSupplierDetailInfo();
+        //在详情表中插入这个id
+        tSupplierDetailInfo.setSupplierId(id);
+        //设置公司名称
+        tSupplierDetailInfo.setCompanyName(handleSupplierDetail.getCompanyName());
+        //设置创建时间
+        tSupplierDetailInfo.setCreateAt(date);
+
+        int supplierBoss2 = tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
+
+        return (supplierBoss>0 && supplierBoss2>0)?Result.success(true):Result.success(false);
     }
+
+
+
+    /**
+     * 根据电话来查找一条记录,返回一个运营商法人基本记录
+     */
+    private TSupplierBasicInfo findSupplierByCellphone(String cellphone){
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        if(StringUtils.isNotBlank(cellphone)){
+            subCriteria.andCellphoneEqualTo(cellphone);
+        }
+        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+        return tSupplierBasicInfos.get(0);
+    }
+
+    /**
+     * 根据电话来查找一条记录,返回一个记录
+     */
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone) {
+        String cellphone=handleFindSupplierByCellphone.getCellPhone();
+
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+
+        if(StringUtils.isNotBlank(cellphone)){
+            subCriteria.andCellphoneEqualTo(cellphone);
+        }
+        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
+        BeanUtils.copyProperties(tSupplierBasicInfos.get(0),vo);
+        return Result.success(vo);
+    }
+
 
 
     /**
@@ -80,7 +141,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
-    public Result<SupplierDetailInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
+    public Result<SupplierBasicInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
@@ -93,7 +154,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
             subCriteria.andCellphoneEqualTo(cellphone);
         }
         List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
-        SupplierDetailInfoVO vo=new SupplierDetailInfoVO();
+        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
         BeanUtils.copyProperties(list.get(0),vo);
         return Result.success(vo);
     }
@@ -121,6 +182,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         //将新数据更新到数据 库中
         return tSupplierBasicInfoMapper.updateByExampleSelective(tSupplierBasicInfo,criteria)>0?Result.<Boolean>success(true):Result.<Boolean>success(false);
     }
+
 
 
     /**

@@ -3,8 +3,11 @@ package com.epc.web.client.remoteApi.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
+import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
+
 import java.util.List;
 
 
@@ -21,7 +24,12 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<SupplierDetailInfoVO> findByName(HandleSupplierNameAndCellphone HandleSupplierNameAndCellphone) {
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierBasicInfoVO> findByName(HandleSupplierNameAndCellphone HandleSupplierNameAndCellphone) {
         return Result.hystrixError();
     }
 

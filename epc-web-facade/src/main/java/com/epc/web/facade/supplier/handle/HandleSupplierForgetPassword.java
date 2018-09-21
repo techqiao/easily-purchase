@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 忘记密码
+ * 忘记密码，修改密码记录
  * @author donghuan
  */
 @Data

@@ -2,12 +2,13 @@ package com.epc.web.facade.supplier;
 
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
+import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
+import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -27,10 +28,17 @@ public interface FacadeTSupplierBasicInfoService {
     Result<Boolean> registerSupplier(@RequestBody  HandleSupplierDetail handleSupplierDetail);
 
     /**
+     * 根据电话来查找一条记录,返回一个记录
+     */
+    @PostMapping(value = "findSupplierByCellphone",consumes = "application/json;charset=UTF-8")
+    Result<SupplierBasicInfoVO> findSupplierByCellphone(@RequestBody HandleFindSupplierByCellphone handleFindSupplierByCellphone);
+
+
+    /**
      * 查询用户信息，依据电话或者密码来查找这个人的详细信息
      */
     @GetMapping(value = "supplierFindByName",consumes = "application/json;charset=UTF-8")
-    Result<SupplierDetailInfoVO> findByName(@RequestBody HandleSupplierNameAndCellphone HandleSupplierNameAndCellphone);
+    Result<SupplierBasicInfoVO> findByName(@RequestBody HandleSupplierNameAndCellphone HandleSupplierNameAndCellphone);
 
     /**
      * 忘记密码

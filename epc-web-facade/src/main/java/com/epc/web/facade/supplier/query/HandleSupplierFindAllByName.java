@@ -1,4 +1,4 @@
-package com.epc.web.facade.supplier.handle;
+package com.epc.web.facade.supplier.query;
 
 import lombok.Data;
 

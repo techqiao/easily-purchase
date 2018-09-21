@@ -140,6 +140,10 @@ public class OperatorServiceImpl implements OperatorService {
 
         pojo.setCellphone(handleOperatorDetail.getCellPhone());
         pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperatorDetail.getPassword()));
+
+        //短信验证
+
+
         //已注册
         pojo.setState(Const.STATE.REGISTERED);
         //法人

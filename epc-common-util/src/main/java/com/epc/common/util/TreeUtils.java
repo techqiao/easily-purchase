@@ -1,7 +1,5 @@
 package com.epc.common.util;
 
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +15,7 @@ public class TreeUtils {
 		if (nodes == null) {
 			return null;
 		}
-		List<Tree<T>> topNodes = new ArrayList<>();
+		List<Tree<T>> topNodes = new ArrayList<Tree<T>>();
 		nodes.forEach(children -> {
 			String pid = children.getParentId();
 			if (pid == null || "0".equals(pid)) {

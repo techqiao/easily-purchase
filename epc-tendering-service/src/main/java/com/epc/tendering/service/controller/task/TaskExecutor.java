@@ -1,7 +1,5 @@
 package com.epc.tendering.service.controller.task;
 
-import com.epc.common.Result;
-import com.epc.common.util.RandomNumberGenerator;
 import com.epc.tendering.service.service.announcement.AnnouncementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

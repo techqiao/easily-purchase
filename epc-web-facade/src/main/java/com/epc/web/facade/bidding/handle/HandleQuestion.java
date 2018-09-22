@@ -16,4 +16,35 @@ public class HandleQuestion implements Serializable {
 
     private String title;
 
+    public Long getQuestionerId() {
+        return questionerId;
+    }
+
+    public void setQuestionerId(Long questionerId) {
+        this.questionerId = questionerId;
+    }
+
+    public String getQuestionerName() {
+        return questionerName;
+    }
+
+    public void setQuestionerName(String questionerName) {
+        this.questionerName = questionerName;
+    }
+
+    public String getProblem() {
+        return problem;
+    }
+
+    public void setProblem(String problem) {
+        this.problem = problem;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

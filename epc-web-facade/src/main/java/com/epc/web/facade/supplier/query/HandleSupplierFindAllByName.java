@@ -24,4 +24,19 @@ public class HandleSupplierFindAllByName implements Serializable {
     private String where;
 
 
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+
+    public void setWhere(String where) {
+        this.where = where;
+    }
 }

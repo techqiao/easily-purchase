@@ -16,4 +16,11 @@ public class QueryBidsDTO extends PagerParam implements Serializable {
     private static final long serialVersionUID = -8086278045980297780L;
     private Long purchaseProjectId;
 
+    public Long getPurchaseProjectId() {
+        return purchaseProjectId;
+    }
+
+    public void setPurchaseProjectId(Long purchaseProjectId) {
+        this.purchaseProjectId = purchaseProjectId;
+    }
 }

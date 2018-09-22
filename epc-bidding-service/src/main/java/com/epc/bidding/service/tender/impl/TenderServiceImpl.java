@@ -30,8 +30,6 @@ import java.util.List;
  */
 @Service
 public class TenderServiceImpl implements TenderService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BiddingServiceimpl.class);
-
 
     @Autowired
     TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
@@ -39,7 +37,6 @@ public class TenderServiceImpl implements TenderService {
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     BBidOpeningPayMapper bBidOpeningPayMapper;
-
 
     /**
      * 获取机构下面的人员列表

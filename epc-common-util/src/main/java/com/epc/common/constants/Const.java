@@ -46,4 +46,10 @@ public class Const {
         int IS_OTHER_AGENCY = 1;
     }
 
+    public interface WIN_SORT {
+        String FIRST = "first";
+        String SECOND = "second";
+        String THREE = "three";
+    }
+
 }

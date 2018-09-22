@@ -99,9 +99,19 @@
                     <generatedKey column="id" sqlStatement="MySql" identity="true"/>
               </table>-->
 
-        <table schema="easily_purchase" tableName="b_bid_opening_pay" domainObjectName="BBidOpeningPay">
+        <!--<table schema="easily_purchase" tableName="b_bid_opening_pay" domainObjectName="BBidOpeningPay">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
+
+       <!-- <table schema="easily_purchase" tableName="t_supplier_sign" domainObjectName="TSupplierSign">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+
+        <table schema="easily_purchase" tableName="t_win_bid" domainObjectName="TWinBid">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
+
     </context>
 
 </generatorConfiguration>

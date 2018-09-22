@@ -35,7 +35,7 @@ public interface FacadeTSupplierBasicInfoService {
     /**
      * 根据员工id来查询 公司详情
      */
-    Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee();
+//    Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee();
 
     /**
      * 根据电话来查找一条记录,返回一个记录

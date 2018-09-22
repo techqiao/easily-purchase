@@ -34,7 +34,6 @@ public class BiddingTenderController {
     @Autowired
     TenderClient tenderClient;
 
-
     @ApiOperation(value = "获取标段列表及保证金支付情况")
     @PostMapping(value = "/queryTenderMoneyRecordVO", consumes = "application/json; charset=UTF-8")
     public Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(@RequestBody  ClientBidPay dto){
@@ -43,8 +42,6 @@ public class BiddingTenderController {
        return tenderClient.queryTenderMoneyRecordVO(queryBidPayDTO);
     }
 
-
-
     @ApiOperation(value = "根据采购项目id获取标段列表")
     @PostMapping(value = "/getTenderListByPurchaseProgramId", consumes = "application/json; charset=UTF-8")
     public Result<List<TenderVO>> getTenderListByPurchaseProgramId(@RequestBody ClientTenderList dto){
@@ -52,7 +49,6 @@ public class BiddingTenderController {
         BeanUtils.copyProperties(dto,queryTenderDTO);
         return tenderClient.getTenderListByPurchaseProgramId(queryTenderDTO);
     }
-
 
     @ApiOperation(value = "获取机构下面的人员列表")
     @PostMapping(value = "/getPersonList", consumes = "application/json; charset=UTF-8")

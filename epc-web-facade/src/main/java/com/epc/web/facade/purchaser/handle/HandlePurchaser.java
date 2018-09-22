@@ -49,4 +49,123 @@ public class HandlePurchaser {
     @ApiModelProperty(value = "操作人Id")
     private long OperatorId;
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getUniformCreditCode() {
+        return uniformCreditCode;
+    }
+
+    public void setUniformCreditCode(String uniformCreditCode) {
+        this.uniformCreditCode = uniformCreditCode;
+    }
+
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    public String getLegalIdCardPositive() {
+        return legalIdCardPositive;
+    }
+
+    public void setLegalIdCardPositive(String legalIdCardPositive) {
+        this.legalIdCardPositive = legalIdCardPositive;
+    }
+
+    public String getLegalIdCardOther() {
+        return legalIdCardOther;
+    }
+
+    public void setLegalIdCardOther(String legalIdCardOther) {
+        this.legalIdCardOther = legalIdCardOther;
+    }
+
+    public String getCertificateOfAuthorization() {
+        return certificateOfAuthorization;
+    }
+
+    public void setCertificateOfAuthorization(String certificateOfAuthorization) {
+        this.certificateOfAuthorization = certificateOfAuthorization;
+    }
+
+    public String getOperatorIdCardFront() {
+        return operatorIdCardFront;
+    }
+
+    public void setOperatorIdCardFront(String operatorIdCardFront) {
+        this.operatorIdCardFront = operatorIdCardFront;
+    }
+
+    public String getQualificationCertificate() {
+        return qualificationCertificate;
+    }
+
+    public void setQualificationCertificate(String qualificationCertificate) {
+        this.qualificationCertificate = qualificationCertificate;
+    }
+
+    public String getPublicBankName() {
+        return publicBankName;
+    }
+
+    public void setPublicBankName(String publicBankName) {
+        this.publicBankName = publicBankName;
+    }
+
+    public String getPublicBankCount() {
+        return publicBankCount;
+    }
+
+    public void setPublicBankCount(String publicBankCount) {
+        this.publicBankCount = publicBankCount;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public long getOperatorId() {
+        return OperatorId;
+    }
+
+    public void setOperatorId(long operatorId) {
+        OperatorId = operatorId;
+    }
 }

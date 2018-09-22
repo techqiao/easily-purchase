@@ -1,16 +1,20 @@
 package com.epc.bidding.controller.bidding;
 
 
+import com.epc.bidding.domain.bidding.TPretrialFile;
+import com.epc.bidding.domain.bidding.TPretrialMessage;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
 import com.epc.web.facade.bidding.handle.HandleFileUpload;
+import com.epc.web.facade.bidding.handle.HandlePretriaFile;
+import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 文件上传
+ * 文件功能
  * @author linzhixiang
  */
 @RestController
@@ -20,12 +24,33 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
     BiddingService biddingService;
 
     /**
-     * 文件上传
-     * @param handleFileUpload
+     * 预审信息新增+文件上传
+     * @param handlePretriaFile
      * @return
      */
     @Override
-    public Result<Boolean> updatePretrialFile(@RequestBody HandleFileUpload handleFileUpload) {
-        return biddingService.updatePretrialFile(handleFileUpload);
+    public Result<Boolean> insertPretrialFile(@RequestBody HandlePretriaFile handlePretriaFile) {
+        return biddingService.insertPretrialFile(handlePretriaFile);
+    }
+
+
+    /**
+     * 预审信息 修改
+     * @param handlePretriaFile
+     * @return
+     */
+    @Override
+    public Result<Boolean> updatePretrialFile(@RequestBody HandlePretriaFile handlePretriaFile) {
+        return biddingService.updatePretrialFile(handlePretriaFile);
+    }
+
+    /**
+     * 获取预审信息
+     * @param handlePretriaFile
+     * @return
+     */
+    @Override
+    public Result<PretrialMessageVO> getTPretrialMessage(@RequestBody HandlePretriaFile handlePretriaFile) {
+        return biddingService.getTPretrialMessage(handlePretriaFile);
     }
 }

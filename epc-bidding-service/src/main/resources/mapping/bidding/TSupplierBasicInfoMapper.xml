@@ -350,7 +350,7 @@
     </if>
   </select>
 
-  <select id="selectCompanyPerson" parameterType="com.epc.web.facade.bidding.dto.PersonDTO">
+  <select id="selectCompanyPerson" resultType="com.epc.web.facade.bidding.dto.PersonDTO">
     SELECT
 	tsa.certificate_number as idCard,t.`name`
     FROM

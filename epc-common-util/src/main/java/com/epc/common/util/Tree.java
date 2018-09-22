@@ -41,7 +41,7 @@ public class Tree<T> {
     /**
      * 节点的子节点
      */
-    private List<Tree<T>> children = new ArrayList<>();
+    private List<Tree<T>> children = new ArrayList<Tree<T>>();
 
     /**
      * 父ID

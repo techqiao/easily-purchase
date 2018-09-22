@@ -2,6 +2,7 @@ package com.epc.web.client.controller.bidding.handle.file;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.List;
 
@@ -11,37 +12,22 @@ import java.util.List;
  */
 
 @ApiModel(value = "HandleFileUpload",description = "文件上传")
-
+@Data
 public class ClientHandleFileUpload {
-
+    @ApiModelProperty(value = "记录Id")
+    private Long id;
+    @ApiModelProperty(value = "采购项目ID")
+    private Long purchasProjectId;
+    @ApiModelProperty(value = "公告ID")
+    private Long releaseAnnouncementId;
     @ApiModelProperty(value = "供应商Id")
-    private Long supplierId;
-    @ApiModelProperty(value = "文件类型")
-    private String certificateType;
+    private Long companyId;
+    @ApiModelProperty(value = "操作人ID")
+    private Long operateId;
+    @ApiModelProperty(value = "操作人姓名")
+    private String operateName;
+    @ApiModelProperty(value = "内容")
+    private String content;
     @ApiModelProperty(value = "文件路径集合")
     private List<BasePretriaFile> filePathList;
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getCertificateType() {
-        return certificateType;
-    }
-
-    public void setCertificateType(String certificateType) {
-        this.certificateType = certificateType;
-    }
-
-    public List<BasePretriaFile> getFilePathList() {
-        return filePathList;
-    }
-
-    public void setFilePathList(List<BasePretriaFile> filePathList) {
-        this.filePathList = filePathList;
-    }
 }

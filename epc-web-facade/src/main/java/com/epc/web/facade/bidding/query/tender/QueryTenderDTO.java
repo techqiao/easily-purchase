@@ -10,4 +10,12 @@ import java.io.Serializable;
 public class QueryTenderDTO extends PagerParam implements Serializable {
     private static final long serialVersionUID = 7595673216080302862L;
     private Long purchasProgramId;
+
+    public Long getPurchasProgramId() {
+        return purchasProgramId;
+    }
+
+    public void setPurchasProgramId(Long purchasProgramId) {
+        this.purchasProgramId = purchasProgramId;
+    }
 }

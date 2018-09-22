@@ -9,4 +9,12 @@ import java.io.Serializable;
 public class QueryPersonDTO  implements Serializable {
     private static final long serialVersionUID = 236072143731594167L;
     private Long supplierId;
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
 }

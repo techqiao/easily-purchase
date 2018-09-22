@@ -6,14 +6,17 @@ import com.epc.bidding.mapper.bidding.*;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleFileUpload;
+import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
+import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import com.epc.web.facade.bidding.vo.QueryAnswerQustionListVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -48,6 +51,10 @@ public class BiddingServiceimpl implements BiddingService {
     BSaleDocumentsMapper bSaleDocumentsMapper;
     @Autowired
     TPurchaseProjectFilePayMapper tPurchaseProjectFilePayMapper;
+    @Autowired
+    TPretrialMessageMapper tPretrialMessageMapper;
+    @Autowired
+    TPretrialFileMapper tPretrialFileMapper;
 
 
     /**
@@ -166,28 +173,135 @@ public class BiddingServiceimpl implements BiddingService {
 
     /**
      * 上传 预审/投标 文件列表
-     * @param handleFileUpload
+     * @param handlePretriaFile
      * @return
      */
 
     @Override
-    public Result<Boolean> updatePretrialFile(HandleFileUpload handleFileUpload){
-        TSupplierAttachment attachment=new TSupplierAttachment();
-        attachment.setSupplierId(handleFileUpload.getSupplierId());
+    public Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile){
+        TPretrialMessage attachment=new TPretrialMessage();
+        BeanUtils.copyProperties(handlePretriaFile,attachment);
         attachment.setCreateAt(new Date());
-        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setUpdateAt(new Date());
-        List<BasePretriaFile> list=handleFileUpload.getFilePathList();
-        for(BasePretriaFile filePath:list){
-            attachment.setCertificateFilePath(filePath.getFilePath());
-            attachment.setCertificateName(filePath.getFileName());
-            try{
-                tSupplierAttachmentMapper.insertSelective(attachment);
-            }catch(Exception e){
-                return Result.error();
-            }
+        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        try{
+            //新增审查信息记录
+            tPretrialMessageMapper.insertSelective(attachment);
+        }catch (Exception e){
+            Result.error();
+        }
+
+        //查看文件是否上传
+        List<BasePretriaFile> list=handlePretriaFile.getFilePathList();
+        if(list.size()==0){
+            return  Result.success(true);
+        }
+
+        //新增 修改 审查文件（一条记录可以对应多个文件）
+        for(BasePretriaFile entity:list){
+            TPretrialFile tPretrialFile=new TPretrialFile();
+            tPretrialFile.setPretrialMessageId(attachment.getId());
+            tPretrialFile.setFilePath(entity.getFilePath());
+            tPretrialFile.setFileName(entity.getFileName());
+            tPretrialFile.setCreateAt(new Date());
+            tPretrialFile.setUpdateAt(new Date());
+                //文件id为空则新增记录
+                try{
+                    tPretrialFileMapper.insertSelective(tPretrialFile);
+                }catch(Exception e){
+                    return  Result.error();
+                }
         }
         return Result.success();
+    }
+
+
+    /**
+     * 预审文件记录 更新
+     * @param handlePretriaFile
+     * @return
+     */
+    @Override
+    public Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile){
+        TPretrialMessage attachment=new TPretrialMessage();
+        BeanUtils.copyProperties(handlePretriaFile,attachment);
+        attachment.setUpdateAt(new Date());
+
+        try{
+            //更新 审查信息记录
+            tPretrialMessageMapper.updateByPrimaryKey(attachment);
+        }catch (Exception e){
+            Result.error();
+        }
+
+        //查看是否存在文件
+        List<BasePretriaFile> list=handlePretriaFile.getFilePathList();
+        if(list.size()==0){
+            return  Result.success(true);
+        }
+
+        for(BasePretriaFile entity:list){
+            TPretrialFile tPretrialFile=new TPretrialFile();
+            tPretrialFile.setPretrialMessageId(attachment.getId());
+            tPretrialFile.setFilePath(entity.getFilePath());
+            tPretrialFile.setFileName(entity.getFileName());
+            tPretrialFile.setCreateAt(new Date());
+            tPretrialFile.setUpdateAt(new Date());
+
+            if(entity.getId()!=null && entity.getId()>0){
+                //文件id为空则修改原记录
+                try{
+                    tPretrialFileMapper.updateByPrimaryKey(tPretrialFile);
+                }catch(Exception e){
+                    return  Result.error();
+                }
+            }else{
+                //文件id为空则新增记录
+                try{
+                    tPretrialFileMapper.insertSelective(tPretrialFile);
+                }catch(Exception e){
+                    return  Result.error();
+                }
+            }
+        }
+        return  Result.success(true);
+    }
+
+
+    /**
+     * 供应商 查看预审信息 + 附件列表
+     * @return
+     */
+
+    @Override
+    public Result<PretrialMessageVO>  getTPretrialMessage(HandlePretriaFile handlePretriaFile){
+        TPretrialMessageCriteria criteria =new TPretrialMessageCriteria();
+        TPretrialMessageCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andPurchasProjectIdEqualTo(handlePretriaFile.getPurchasProjectId());
+        cubCriteria.andReleaseAnnouncementIdEqualTo(handlePretriaFile.getReleaseAnnouncementId());
+        cubCriteria.andCompanyIdEqualTo(handlePretriaFile.getCompanyId());
+        //获取预审信息
+        List<TPretrialMessage> list=tPretrialMessageMapper.selectByExample(criteria);
+        if(list.size()==0){
+            return Result.error();
+        }
+        PretrialMessageVO vo =new PretrialMessageVO();
+        BeanUtils.copyProperties(list.get(0),vo);
+
+        //获取预审信息 对应的文件列表
+        TPretrialFileCriteria newCriteria =new TPretrialFileCriteria();
+        TPretrialFileCriteria.Criteria cubNewCriteria=newCriteria.createCriteria();
+        cubNewCriteria.andPretrialMessageIdEqualTo(vo.getId());
+        List<TPretrialFile> newList=tPretrialFileMapper.selectByExample(newCriteria);
+        FileListDTO dto=new FileListDTO();
+        List<FileListDTO> dtoList=new ArrayList<>();
+        for(TPretrialFile entity:newList){
+            BeanUtils.copyProperties(entity,dto);
+            dtoList.add(dto);
+        }
+
+        vo.setFileList(dtoList);
+        return Result.success(vo);
     }
 
 

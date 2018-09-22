@@ -13,4 +13,36 @@ public class QueryProgramPayDTO implements Serializable {
     private Long purchaserId;
     private Long companyId;
     private BigDecimal money;
+
+    public Long getProcurementProjectId() {
+        return procurementProjectId;
+    }
+
+    public void setProcurementProjectId(Long procurementProjectId) {
+        this.procurementProjectId = procurementProjectId;
+    }
+
+    public Long getPurchaserId() {
+        return purchaserId;
+    }
+
+    public void setPurchaserId(Long purchaserId) {
+        this.purchaserId = purchaserId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
 }

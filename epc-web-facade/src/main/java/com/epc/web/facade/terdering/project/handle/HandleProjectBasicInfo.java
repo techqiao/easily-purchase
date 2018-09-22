@@ -29,10 +29,6 @@ public class HandleProjectBasicInfo implements Serializable {
      */
     private String projectDescription;
     /**
-     * 是否国家指定必须招标项目
-     */
-    private String isStateDesignation;
-    /**
      * 项目总投资
      */
     private String totalProjectInvestment;

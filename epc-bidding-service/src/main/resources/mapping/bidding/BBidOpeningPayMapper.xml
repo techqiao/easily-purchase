@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.bidding.mapper.bidding.BBidOpeningPayMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="bids_guarantee_amount_id" property="bidsGuaranteeAmountId" jdbcType="BIGINT" />
+    <result column="tenderer_id" property="tendererId" jdbcType="BIGINT" />
+    <result column="tenderer_company_id" property="tendererCompanyId" jdbcType="BIGINT" />
+    <result column="tenderer_name" property="tendererName" jdbcType="VARCHAR" />
+    <result column="tenderer_company_name" property="tendererCompanyName" jdbcType="BIGINT" />
+    <result column="amount_money_time" property="amountMoneyTime" jdbcType="TIMESTAMP" />
+    <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
+    <result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
+    <result column="payment_account_number" property="paymentAccountNumber" jdbcType="VARCHAR" />
+    <result column="payment_id" property="paymentId" jdbcType="BIGINT" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bids_guarantee_amount_id, tenderer_id, tenderer_company_id, tenderer_name, tenderer_company_name, 
+    amount_money_time, amount_money, payment_name, payment_account_number, payment_id, 
+    operate_id, create_at, update_at, is_deleted
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_bid_opening_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_bid_opening_pay
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_bid_opening_pay
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" >
+    delete from b_bid_opening_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_bid_opening_pay (bids_guarantee_amount_id, tenderer_id, 
+      tenderer_company_id, tenderer_name, tenderer_company_name, 
+      amount_money_time, amount_money, payment_name, 
+      payment_account_number, payment_id, operate_id, 
+      create_at, update_at, is_deleted
+      )
+    values (#{bidsGuaranteeAmountId,jdbcType=BIGINT}, #{tendererId,jdbcType=BIGINT}, 
+      #{tendererCompanyId,jdbcType=BIGINT}, #{tendererName,jdbcType=VARCHAR}, #{tendererCompanyName,jdbcType=BIGINT}, 
+      #{amountMoneyTime,jdbcType=TIMESTAMP}, #{amountMoney,jdbcType=DECIMAL}, #{paymentName,jdbcType=VARCHAR}, 
+      #{paymentAccountNumber,jdbcType=VARCHAR}, #{paymentId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_bid_opening_pay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bidsGuaranteeAmountId != null" >
+        bids_guarantee_amount_id,
+      </if>
+      <if test="tendererId != null" >
+        tenderer_id,
+      </if>
+      <if test="tendererCompanyId != null" >
+        tenderer_company_id,
+      </if>
+      <if test="tendererName != null" >
+        tenderer_name,
+      </if>
+      <if test="tendererCompanyName != null" >
+        tenderer_company_name,
+      </if>
+      <if test="amountMoneyTime != null" >
+        amount_money_time,
+      </if>
+      <if test="amountMoney != null" >
+        amount_money,
+      </if>
+      <if test="paymentName != null" >
+        payment_name,
+      </if>
+      <if test="paymentAccountNumber != null" >
+        payment_account_number,
+      </if>
+      <if test="paymentId != null" >
+        payment_id,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bidsGuaranteeAmountId != null" >
+        #{bidsGuaranteeAmountId,jdbcType=BIGINT},
+      </if>
+      <if test="tendererId != null" >
+        #{tendererId,jdbcType=BIGINT},
+      </if>
+      <if test="tendererCompanyId != null" >
+        #{tendererCompanyId,jdbcType=BIGINT},
+      </if>
+      <if test="tendererName != null" >
+        #{tendererName,jdbcType=VARCHAR},
+      </if>
+      <if test="tendererCompanyName != null" >
+        #{tendererCompanyName,jdbcType=BIGINT},
+      </if>
+      <if test="amountMoneyTime != null" >
+        #{amountMoneyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amountMoney != null" >
+        #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentName != null" >
+        #{paymentName,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentAccountNumber != null" >
+        #{paymentAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" resultType="java.lang.Integer" >
+    select count(*) from b_bid_opening_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_bid_opening_pay
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidsGuaranteeAmountId != null" >
+        bids_guarantee_amount_id = #{record.bidsGuaranteeAmountId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tendererId != null" >
+        tenderer_id = #{record.tendererId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tendererCompanyId != null" >
+        tenderer_company_id = #{record.tendererCompanyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tendererName != null" >
+        tenderer_name = #{record.tendererName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tendererCompanyName != null" >
+        tenderer_company_name = #{record.tendererCompanyName,jdbcType=BIGINT},
+      </if>
+      <if test="record.amountMoneyTime != null" >
+        amount_money_time = #{record.amountMoneyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.amountMoney != null" >
+        amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentName != null" >
+        payment_name = #{record.paymentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentAccountNumber != null" >
+        payment_account_number = #{record.paymentAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentId != null" >
+        payment_id = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null" >
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_bid_opening_pay
+    set id = #{record.id,jdbcType=BIGINT},
+      bids_guarantee_amount_id = #{record.bidsGuaranteeAmountId,jdbcType=BIGINT},
+      tenderer_id = #{record.tendererId,jdbcType=BIGINT},
+      tenderer_company_id = #{record.tendererCompanyId,jdbcType=BIGINT},
+      tenderer_name = #{record.tendererName,jdbcType=VARCHAR},
+      tenderer_company_name = #{record.tendererCompanyName,jdbcType=BIGINT},
+      amount_money_time = #{record.amountMoneyTime,jdbcType=TIMESTAMP},
+      amount_money = #{record.amountMoney,jdbcType=DECIMAL},
+      payment_name = #{record.paymentName,jdbcType=VARCHAR},
+      payment_account_number = #{record.paymentAccountNumber,jdbcType=VARCHAR},
+      payment_id = #{record.paymentId,jdbcType=BIGINT},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+    update b_bid_opening_pay
+    <set >
+      <if test="bidsGuaranteeAmountId != null" >
+        bids_guarantee_amount_id = #{bidsGuaranteeAmountId,jdbcType=BIGINT},
+      </if>
+      <if test="tendererId != null" >
+        tenderer_id = #{tendererId,jdbcType=BIGINT},
+      </if>
+      <if test="tendererCompanyId != null" >
+        tenderer_company_id = #{tendererCompanyId,jdbcType=BIGINT},
+      </if>
+      <if test="tendererName != null" >
+        tenderer_name = #{tendererName,jdbcType=VARCHAR},
+      </if>
+      <if test="tendererCompanyName != null" >
+        tenderer_company_name = #{tendererCompanyName,jdbcType=BIGINT},
+      </if>
+      <if test="amountMoneyTime != null" >
+        amount_money_time = #{amountMoneyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amountMoney != null" >
+        amount_money = #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentName != null" >
+        payment_name = #{paymentName,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentAccountNumber != null" >
+        payment_account_number = #{paymentAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentId != null" >
+        payment_id = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+    update b_bid_opening_pay
+    set bids_guarantee_amount_id = #{bidsGuaranteeAmountId,jdbcType=BIGINT},
+      tenderer_id = #{tendererId,jdbcType=BIGINT},
+      tenderer_company_id = #{tendererCompanyId,jdbcType=BIGINT},
+      tenderer_name = #{tendererName,jdbcType=VARCHAR},
+      tenderer_company_name = #{tendererCompanyName,jdbcType=BIGINT},
+      amount_money_time = #{amountMoneyTime,jdbcType=TIMESTAMP},
+      amount_money = #{amountMoney,jdbcType=DECIMAL},
+      payment_name = #{paymentName,jdbcType=VARCHAR},
+      payment_account_number = #{paymentAccountNumber,jdbcType=VARCHAR},
+      payment_id = #{paymentId,jdbcType=BIGINT},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_bid_opening_pay
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectBidPayRecord" resultType="com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO">
+    SELECT DISTINCT
+	bsd.procurement_project_id,
+	bsd.id,
+	bsd.bidding_bond_end_time,
+	bga.bids_id,
+	bga.bids_name,
+	bga.tender_guarantee_amount,
+	bga.bank_account,
+	bga.receivables,
+	bop.tenderer_company_id,
+	bop.amount_money,
+	bop.create_at
+FROM
+	b_sale_documents bsd
+INNER JOIN b_bids_guarantee_amount bga ON bsd.id = bga.b_issue_documents_id
+AND bga.is_deleted = 0
+LEFT JOIN b_bid_opening_pay bop ON bop.bids_guarantee_amount_id = bga.id
+AND bop.is_deleted = 0
+WHERE
+	1 = 1
+AND bsd.is_deleted = 0
+AND  bsd.id= #{issueDocumentsId,jdbcType=BIGINT}
+AND bsd.process_status = 2
+GROUP BY  bga.bids_id ORDER BY bga.create_at asc
+  </select>
+</mapper>

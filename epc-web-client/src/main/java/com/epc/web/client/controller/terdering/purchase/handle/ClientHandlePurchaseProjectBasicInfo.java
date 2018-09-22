@@ -29,6 +29,8 @@ public class ClientHandlePurchaseProjectBasicInfo {
     @ApiModelProperty(value = "采购项目ID")
     @NotEmpty(message = "ClientHandlePurchaseProjectBasicInfo.purchaseProjectId.null")
     private Long purchaseProjectId;
+    @ApiModelProperty(value = "是否国家指定必须招标项目")
+    private String isStateDesignation;
     @ApiModelProperty(value = "采购项目开始时间")
     private Date purchaseStartTime;
     @ApiModelProperty(value = "采购项目结束时间")

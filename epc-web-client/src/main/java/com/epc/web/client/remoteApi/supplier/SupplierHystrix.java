@@ -3,8 +3,9 @@ package com.epc.web.client.remoteApi.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.facade.supplier.vo.SupplierDetailInfoVO;
+
 import java.util.List;
 
 
@@ -20,9 +21,19 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
+    @Override
+    public Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
 
     @Override
-    public Result<SupplierDetailInfoVO> findByName(String name, String cellphone) {
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
 
@@ -42,8 +53,13 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
-    
+
+    @Override
+    public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
+        return Result.hystrixError();
+    }
+
 }

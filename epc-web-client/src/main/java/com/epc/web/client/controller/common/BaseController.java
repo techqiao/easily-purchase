@@ -5,7 +5,6 @@ import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

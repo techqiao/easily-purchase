@@ -8,9 +8,7 @@ import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.facade.supplier.handle.HandleSupplierForgetPassword;
 import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
 import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
-import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,18 +39,18 @@ public class TSupplierBasicInfoController {
     @ApiOperation(value = "根据电话来查找一条记录,返回一个记录",notes = "根据电话来查找一条记录,返回一个记录")
     @PostMapping(value = "/findSupplierByCellphone")
     public  Result<SupplierBasicInfoVO> findSupplierByCellphone(@RequestBody ClientHandleFindSupplierByCellphone clientHandleFindSupplierByCellphone){
-        HandleFindSupplierByCellphone handleFindSupplierByCellphone=new HandleFindSupplierByCellphone();
-        BeanUtils.copyProperties(clientHandleFindSupplierByCellphone,handleFindSupplierByCellphone);
-        return supplierClient.findSupplierByCellphone(handleFindSupplierByCellphone);
+        HandleFindSupplierByInfo handleFindSupplierByInfo =new HandleFindSupplierByInfo();
+        BeanUtils.copyProperties(clientHandleFindSupplierByCellphone, handleFindSupplierByInfo);
+        return supplierClient.findSupplierByCellphone(handleFindSupplierByInfo);
     }
 
 
     @ApiOperation(value="根据名字电话来得到这个人的信息",notes = "根据名字电话来得到这个人的信息")
     @PostMapping(value = "/findByNameSupplier")
-    public Result<SupplierBasicInfoVO> findByName(@RequestBody ClientHandleSupplierNameAndCellphone clientHandleSupplierNameAndCellphone) {
-        HandleSupplierNameAndCellphone handleSupplierNameAndCellphone=new HandleSupplierNameAndCellphone();
-        BeanUtils.copyProperties(clientHandleSupplierNameAndCellphone,handleSupplierNameAndCellphone);
-        return supplierClient.findByName(handleSupplierNameAndCellphone);
+    public Result<SupplierBasicInfoVO> findByName(@RequestBody ClientHandleFindSupplierByCellphone clientHandleFindSupplierByCellphone) {
+        HandleFindSupplierByInfo handleFindSupplierByInfo =new HandleFindSupplierByInfo();
+        BeanUtils.copyProperties(clientHandleFindSupplierByCellphone,handleFindSupplierByInfo);
+        return supplierClient.findByName(handleFindSupplierByInfo);
     }
 
 
@@ -64,7 +62,6 @@ public class TSupplierBasicInfoController {
         return supplierClient.forgetPassword(handleSupplierForgetPassword);
     }
 
-    /*===========================================================*/
 
 
     @ApiOperation(value = "供应商添加员工",notes = "供应商添加自己的员工")
@@ -88,9 +85,9 @@ public class TSupplierBasicInfoController {
     @ApiOperation(value = "根据员工姓名模糊查询",notes = "根据员工姓名模糊查询")
     @PostMapping(value="/createSupplierUser")
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody ClientHandleSupplierFindAllByName clientHandleSupplierFindAllByName){
-        HandleSupplierFindAllByName handleSupplierFindAllByName=new HandleSupplierFindAllByName();
-        BeanUtils.copyProperties(clientHandleSupplierFindAllByName,handleSupplierFindAllByName);
-        return supplierClient.querySupplierEmployeeAll(handleSupplierFindAllByName);
+        HandleFindSupplierByInfo handleFindSupplierByInfo =new HandleFindSupplierByInfo();
+        BeanUtils.copyProperties(clientHandleSupplierFindAllByName,handleFindSupplierByInfo);
+        return supplierClient.querySupplierEmployeeAll(handleFindSupplierByInfo);
     }
 
 

@@ -120,7 +120,7 @@ public class OperatorServiceImpl implements OperatorService {
         }
         subCriteria.andOperatorIdEqualTo(operatorId);
         List<TOperatorBasicInfo> listTOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-        List<OperatorBasicInfoVO> listVO=new ArrayList<>();
+        List<OperatorBasicInfoVO> listVO=new ArrayList<OperatorBasicInfoVO>();
         for(TOperatorBasicInfo tOperatorBasicInfo: listTOperatorBasicInfos){
             OperatorBasicInfoVO vo=new OperatorBasicInfoVO();
             BeanUtils.copyProperties(tOperatorBasicInfo,vo);

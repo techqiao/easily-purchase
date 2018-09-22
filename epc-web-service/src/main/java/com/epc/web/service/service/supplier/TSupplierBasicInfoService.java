@@ -2,13 +2,8 @@ package com.epc.web.service.service.supplier;
 
 
 import com.epc.common.Result;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.epc.web.facade.supplier.handle.HandleSupplierForgetPassword;
-import com.epc.web.facade.supplier.handle.HandlerSupplierAddEmployee;
-import com.epc.web.facade.supplier.handle.HandlerUpdateSupplierEmployeeById;
-import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
+import com.epc.web.facade.supplier.handle.*;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
 import java.util.List;
@@ -21,49 +16,48 @@ public interface TSupplierBasicInfoService {
 
     /**
      * 注册供应商
-     * @param handleSupplierDetail
-     * @return
      */
     Result<Boolean> registerSupplier( HandleSupplierDetail handleSupplierDetail);
 
     /**
+     * 根据员工的id来查询基本信息
+     */
+    Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo);
+
+    /**
      * 根据电话来查找一条记录,返回一个记录
      */
-    Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone);
+    Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 查询用户信息，依据电话或者密码来查找这个人的详细信息
      */
-    Result<SupplierBasicInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone);
+    Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 忘记密码
-     * @param handleSupplierForgetPassword
      */
     Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword);
 
-
     /**
-     * @Description:    供应商添加员工
-     * @param handlerSupplierAddEmployee
-     * @return
+     *  供应商添加员工
      */
     Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee);
 
     /**
      * 供应商通过员工id来修改名字和手机号及状态是否可用
-     * @param
-     * @return
      */
     Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById);
-
 
     /**
      *  模糊查询
      *  传入员工的姓名查询所有的员工列表
-     * @return
      */
-    Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName);
+    Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
+    /**
+     * 完善供应商信息
+     */
+    Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo);
 
 }

@@ -1,18 +1,19 @@
 package com.epc.web.service.service.impl.supplier;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.common.util.MD5Util;
 import com.epc.web.facade.supplier.handle.*;
-import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
+import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
@@ -44,6 +45,8 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     private TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
     @Autowired
     private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+    @Autowired
+    private TSupplierAttachmentMapper tSupplierAttachmentMapper;
 
     /**
      * 注册供应商
@@ -116,11 +119,25 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     }
 
     /**
+     * 根据员工的id来查询基本信息
+     */
+    @Override
+    public Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        //得到supplierbasic表的id
+        Long id= handleFindSupplierByInfo.getId();
+        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
+        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
+        BeanUtils.copyProperties(handleFindSupplierByInfo,vo);
+        return Result.success(vo);
+    }
+
+
+    /**
      * 根据电话来查找一条记录,返回一个记录
      */
     @Override
-    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone) {
-        String cellphone=handleFindSupplierByCellphone.getCellPhone();
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        String cellphone= handleFindSupplierByInfo.getCellPhone();
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
@@ -141,12 +158,12 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
-    public Result<SupplierBasicInfoVO> findByName(HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
+    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        String name=handleSupplierNameAndCellphone.getName();
-        String cellphone=handleSupplierNameAndCellphone.getCellphone();
+        String name=handleFindSupplierByInfo.getName();
+        String cellphone=handleFindSupplierByInfo.getCellPhone();
         if(StringUtils.isNotBlank(name)){
             subCriteria.andNameEqualTo(name);
         }
@@ -255,21 +272,21 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleFindSupplierByInfo handleFindSupplierByInfo) {
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
 
         //获取输入的名字,来进行模糊查询
-        String where=handleSupplierFindAllByName.getWhere();
+        String where=handleFindSupplierByInfo.getName();
         //得到操作者本人的id，查出来的是这个供应商底下的员工列表
-        Long supplierId=handleSupplierFindAllByName.getSupplierId();
+        Long supplierId=handleFindSupplierByInfo.getSupplierId();
         if(org.apache.commons.lang.StringUtils.isNotBlank(where)){
             criteria1.andNameLike("%"+where+"%");
         }
         criteria1.andSupplierIdEqualTo(supplierId);
         List<TSupplierBasicInfo> listTSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-        List<SupplierBasicInfoVO> listVo=new ArrayList<>();
+        List<SupplierBasicInfoVO> listVo=new ArrayList<SupplierBasicInfoVO>();
 
         for(TSupplierBasicInfo tsupplierBasicInfo:listTSupplierBasicInfos){
             SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
@@ -279,6 +296,61 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         return Result.success(listVo);
     }
 
+    /**
+     * 完善供应商信息
+     * 肯定已经登陆成功，才能完善；根据本人的id来查询basic表，然后将填入的详情信息，分别存入另外两张表中
+     */
+    @Override
+    public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
+        Date date=new Date();
+        TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
+        BeanUtils.copyProperties(roleDetailInfo, detailInfo);
+        //将basic表中的主键id（员工id）设置到detail表中为法人supplier_id
+        detailInfo.setSupplierId(roleDetailInfo.getUserId());
+        detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        detailInfo.setCreateAt(date);
+        detailInfo.setUpdateAt(date);
+
+        TSupplierAttachment attachment = new TSupplierAttachment();
+        attachment.setSupplierId(roleDetailInfo.getUserId());
+        attachment.setCreateAt(date);
+        attachment.setUpdateAt(date);
+        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        try {
+            tSupplierDetailInfoMapper.insertSelective(detailInfo);
+            //带公章的授权书照片url
+            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+            //经办人(运营商员工)手持身份证正面照片url
+            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getOperatorIdCardFront());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+            //法人身份证反面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+            //法人身份证正面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+            //营业执照照片url
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+            //资质证书url
+            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getQualificationCertificate());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+            return Result.success();
+        }catch (BusinessException e) {
+            LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("BusinessException insertSupplierAttachmentInfo : {}", e);
+            return Result.error(e.getMessage());
+        }
+    }
 
 
 }

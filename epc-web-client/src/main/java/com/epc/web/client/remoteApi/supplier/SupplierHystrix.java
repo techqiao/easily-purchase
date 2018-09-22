@@ -3,9 +3,7 @@ package com.epc.web.client.remoteApi.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
-import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
 import java.util.List;
@@ -24,16 +22,20 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone) {
+    public Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result<SupplierBasicInfoVO> findByName(HandleSupplierNameAndCellphone HandleSupplierNameAndCellphone) {
+    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
-
-
 
     @Override
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
@@ -51,7 +53,12 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierFindAllByName handleSupplierFindAllByName) {
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
         return Result.hystrixError();
     }
 

@@ -3,9 +3,7 @@ package com.epc.web.service.controller.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
-import com.epc.web.facade.supplier.query.HandleFindSupplierByCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierFindAllByName;
-import com.epc.web.facade.supplier.query.HandleSupplierNameAndCellphone;
+import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +31,28 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     }
 
     /**
+     * 根据员工的id来查询基本信息
+     */
+    @Override
+    public Result<SupplierBasicInfoVO> fingSupplierBasicById(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo){
+        return tSupplierBasicInfoService.fingSupplierBasicById(handleFindSupplierByInfo);
+    }
+
+
+    /**
      * 根据电话来查找一条记录,返回一个记录
      */
     @Override
-    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByCellphone handleFindSupplierByCellphone) {
-        return tSupplierBasicInfoService.findSupplierByCellphone(handleFindSupplierByCellphone);
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return tSupplierBasicInfoService.findSupplierByCellphone(handleFindSupplierByInfo);
     }
 
     /**
      * 根据名字或者电话来得到这个人的信息
      */
     @Override
-    public Result<SupplierBasicInfoVO> findByName(@RequestBody HandleSupplierNameAndCellphone handleSupplierNameAndCellphone) {
-        return tSupplierBasicInfoService.findByName(handleSupplierNameAndCellphone);
+    public Result<SupplierBasicInfoVO> findByName(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return tSupplierBasicInfoService.findByName(handleFindSupplierByInfo);
     }
 
     /**
@@ -76,8 +83,16 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
      * 根据员工的姓名来模糊查询出一个符合要求的列表
      */
     @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleSupplierFindAllByName handleSupplierFindAllByName) {
-        return tSupplierBasicInfoService.querySupplierEmployeeAll(handleSupplierFindAllByName);
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return tSupplierBasicInfoService.querySupplierEmployeeAll(handleFindSupplierByInfo);
+    }
+
+    /**
+     * 完善供应商信息
+     */
+    @Override
+    public Result<Boolean> insertCompleteSupplierInfo(@RequestBody RoleDetailInfo roleDetailInfo) {
+        return tSupplierBasicInfoService.insertCompleteSupplierInfo(roleDetailInfo);
     }
 
 

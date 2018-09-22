@@ -46,7 +46,7 @@ public interface AgencyService {
 
     /**
      * @param agency 页面传入的信息
-     * @return 注册是否成功,成功返回注册信息
+     * @return 注册是否成功, 成功返回注册信息
      * @author :winlin
      * @Description :代理机构注册
      * @date:2018/9/18
@@ -74,7 +74,7 @@ public interface AgencyService {
 
     /**
      * @author :winlin
-     * @Description : 信息完善详细信息
+     * @Description : 代理机构注册完善信息信息完善详细信息
      * @param:
      * @return: 数据库添加状态
      * @date:2018/9/18
@@ -89,14 +89,16 @@ public interface AgencyService {
      * @date:2018/9/18
      */
     public Result<List<AgencySubjectsVo>> proxySubjects(AgencySubjectDto subjectDto);
+
     /**
-     *@author :winlin
-     *@Description :
-     *@param:
-     *@return:
-     *@date:2018/9/20
+     * @author :winlin
+     * @Description :
+     * @param:
+     * @return:
+     * @date:2018/9/20
      */
     public Result<List<AgencyEmployeeVo>> queryAllEmployee(Long agencyId);
+
     /**
      * @author :winlin
      * @Description :查询员工信息
@@ -136,21 +138,48 @@ public interface AgencyService {
     public Result<Boolean> updateEmployeeBy(HandleEmployee employee);
 
     /**
-     *@author :winlin
-     *@Description : 封装条件查供应商
-     *@param:
-     *@return:
-     *@date:2018/9/20
+     * @author :winlin
+     * @Description : 封装条件查供应商
+     * @param:
+     * @return:
+     * @date:2018/9/20
      */
     public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto);
     /**
      *@author :winlin
-     *@Description :封装条件查询专家
+     *@Description :
      *@param:
      *@return:
-     *@date:2018/9/20
+     *@date:2018/9/21
+     */
+    public Result<AgencySupplierVo> querySupplierByName(AgencySupplierDto supplierDto);
+    /**
+    /**
+     * @author :winlin
+     * @Description :封装条件查询专家
+     * @param:
+     * @return:
+     * @date:2018/9/20
      */
 
-    public Result<List<AgencyExpertVo>>queryExpertCriteria(AgencyExpertDto expertDto);
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(AgencyExpertDto expertDto);
+
+    /**
+     * @author :winlin
+     * @Description :代理机构供应商完善自己的注册信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    public Result<Boolean> completeAgencySupInfo(AgencySupplierDto supplierDto);
+
+    /**
+     * @author :winlin
+     * @Description :代理机构专家完善自己个人信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    public Result<Boolean> completeAgencyExpertInfo(AgencyExpertDto expertDto);
 
 }

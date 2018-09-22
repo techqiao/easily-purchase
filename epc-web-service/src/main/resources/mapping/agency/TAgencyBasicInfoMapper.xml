@@ -18,6 +18,27 @@
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
         <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
     </resultMap>
+    <resultMap id="agencyMap" type="com.epc.web.facade.agency.handle.HandleAgency">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="agency_id" property="agencyId" jdbcType="BIGINT"/>
+        <result column="cellphone" property="cellphone" jdbcType="CHAR"/>
+        <result column="password" property="password" jdbcType="CHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR"/>
+        <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR"/>
+        <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <collection property="atts" ofType="com.epc.web.facade.agency.handle.Attachement">
+            <result column="agency_id" property="typeId" jdbcType="BIGINT"/>
+            <result column="certificate_type" property="certificateType" jdbcType="VARCHAR"/>
+            <result column="certificate_file_path" property="certificateFilePath" jdbcType="VARCHAR"/>
+            <result column="certificate_number" property="certificateNumber" jdbcType="VARCHAR"/>
+            <result column="certificate_name" property="certificateName" jdbcType="VARCHAR"/>
+            <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+            <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+            <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
     <sql id="Example_Where_Clause">
         <!--
           WARNING - @mbggenerated
@@ -128,7 +149,8 @@
     AND boss.role=0;
   </select>
 
-    <select id="queryEmployeeByCellphone" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo" parameterType="java.lang.String">
+    <select id="queryEmployeeByCellphone" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo"
+            parameterType="java.lang.String">
          SELECT agency.id AS userId,agency.`name` AS userName,agency.cellphone,agency.agency_id AS companyId,boss.name AS bossName ,d.company_name AS
     companyName
      FROM t_agency_basic_info agency
@@ -139,7 +161,8 @@
     AND boss.role=0;
     </select>
 
-    <select id="queryEmployeeById" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo" parameterType="java.lang.Long">
+    <select id="queryEmployeeById" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo"
+            parameterType="java.lang.Long">
         SELECT agency.id AS userId,agency.`name` AS userName,agency.cellphone,agency.agency_id AS companyId,boss.name AS bossName ,d.company_name AS
         companyName
         FROM t_agency_basic_info agency
@@ -149,14 +172,144 @@
         AND agency.agency_id=boss.agency_id
         AND boss.role=0;
     </select>
-    <select id="queryAllAgencyEmployees" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo">
+    <select id="queryAllAgencyEmployees" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo"
+            parameterType="java.lang.Long">
         SELECT agency.id AS userId,agency.`name` AS userName,agency.cellphone,agency.agency_id AS companyId,boss.name AS bossName ,d.company_name AS
         companyName
         FROM t_agency_basic_info agency
         LEFT JOIN t_agency_basic_info boss ON agency.agency_id=boss.agency_id
         LEFT JOIN t_agency_detail_info  d ON d.agency_id = agency.agency_id
+        GROUP BY agency.agency_id
         WHERE agency.agency_id=boss.agency_id
         AND boss.role=0;
+        AND agency.agency_id=#{agencyId}
+
+    </select>
+    <select id="queryAllAgencyEmployeesByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyEmployeeVo"
+            parameterType="com.epc.web.facade.agency.handle.HandleEmployee">
+        SELECT agency.id AS userId,agency.`name` AS userName,agency.cellphone,agency.agency_id AS companyId,boss.name AS
+        bossName ,d.company_name AS
+        companyName
+        FROM t_agency_basic_info agency
+        LEFT JOIN t_agency_basic_info boss ON agency.agency_id=boss.agency_id
+        LEFT JOIN t_agency_detail_info d ON d.agency_id = agency.agency_id
+        GROUP BY agency.agency_id
+        <where>
+            agency.agency_id=boss.agency_id
+            <if test="id!=null">
+                agency.id=#{id}
+            </if>
+            <if test="name!=null">
+                agency.name=#{named}
+            </if>
+            <if test="cellphone!=null">
+                agency.cellphone=#{cellphone}
+            </if>
+            <if test="agencyId!=null">
+                agency.agency_id=#{agencyId}
+            </if>
+            <if test="state!=null">
+                agency.state=#{state}
+            </if>
+            <if test="role!=null">
+                agency.role=#{role}
+            </if>
+            <if test="createAt!=null">
+                agency.create_at=#{createAt}
+            </if>
+            <if test="updateAt!=null">
+                agency.update_at=#{updateAt}
+            </if>
+        </where>
+        AND boss.role=0;
+        AND agency.agency_id=#{agencyId}
+
+    </select>
+    <select id="queryAgencyByCrtiteria" resultMap="agencyMap"
+            parameterType="com.epc.web.facade.agency.handle.HandleAgency">
+        select b.name,b.agency_id as typeId,b.cellphone,
+        d.company_name as companyName,d.uniform_credit_code as uniformCreditCode,d.public_bank_name as
+        publicBankName,d.public_ban_account_number as publicBanAccountNumber,
+        a.certificate_type as certificateType ,a.certificate_file_path as certificateFilePath,a.certificate_number as
+        certificateNumber,a.certificate_name as certificateName
+        from t_agency_basic_info b left join t_agency_detail_info d on b.agency_id=d.agency_id
+        left join t_agency_attachment a on b.agency_id=a.agency_id
+        group by d.company_name
+        <where>
+            b.role=0
+            <if test="name!=null">
+                AND b.`name` LIKE '%'#{name}'%'
+            </if>
+            <if test="agencyId!=null">
+                AND b.agency_id=#{agencyId}
+            </if>
+            <if test="cellphone!=null">
+                AND b.cellphone LIKE '%'#{cellphone}'%'
+            </if>
+            <if test="companyName!=null">
+                d.company_name LIKE '%'#{companyName}'%'
+            </if>
+            <if test="uniformCreditCode!=null">
+                d.uniform_credit_code LIKE '%'#{uniformCreditCode}'%'
+            </if>
+            <if test="publicBankName!=null">
+                d.public_bank_name LIKE '%'#{publicBankName}'%'
+            </if>
+            <if test="publicBanAccountNumber!=null">
+                d.public_ban_account_number LIKE '%'#{publicBanAccountNumber}'%'
+            </if>
+            <if test="atts.certificateName!=null">
+                a.certificate_name LIKE '%'#{certificateName}'%'
+            </if>
+        </where>
+
+    </select>
+    <!--<select id="proxySubjects" resultType="com.epc.web.facade.agency.vo.AgencySubjectsVo"  parameterType="com.epc.web.facade.agency.dto.AgencySubjectDto">
+
+    </select>-->
+
+    <select id="queryquerySupplierCriteria" parameterType="com.epc.web.facade.agency.dto.AgencySupplierDto"
+            resultType="com.epc.web.facade.agency.vo.AgencySupplierVo">
+        SELECT d.company_name AS companyName,s.create_at AS createAt FROM t_agency_supplier s ,t_supplier_detail_info d
+        <where>
+            d. supplier_id = s.supplier_id
+            <if test="companyName!=null">
+                AND d.company_name LIKE '%'#{companyName}'%'
+            </if>
+            AND d. agency_id=#{agencyId}
+
+        </where>
+    </select>
+    <select id="querySupplierByName" parameterType="com.epc.web.facade.agency.dto.AgencySupplierDto"
+            resultType="com.epc.web.facade.agency.vo.AgencySupplierVo">
+       select s.cellphone,s.uniform_credit_code as uniformCreditCode,s.public_bank_name as publicBankName,s.public_ban_account_number as publicBanAccountNumber,
+                d.company_name as companyName,
+                a.certificate_type as certificateType ,a.certificate_file_path as certificateFilePath,a.certificate_number as certificateNumber,a.certificate_name as certificateName
+                from t_agency_supplier s left join t_supplier_detail_info d on s.supplier_id =d.supplier_id
+                left join t_supplier_attachment a on s.supplier_id =a.supplier_id
+                where d.company_name =#{companyName}
+    </select>
+
+    <select id="queryExpertCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo"
+            parameterType="com.epc.web.facade.agency.dto.AgencyExpertDto">
+        select e.expert_name as expertName,b.profession,b.positional,b.level,b.id as serialNum
+        from t_expert_basic_info b,t_agency_expert e
+        <where>
+            b.id = e.expert_id
+            <if test="expertName!null">
+                AND e.expert_name =#{expertName}
+            </if>
+            <if test="profession!=null">
+                b.profession=#{profession}
+            </if>
+            <if test="positional!=null">
+                b.positional=#{positional}
+            </if>
+            <if test="level!=null">
+                b.level=#{level}
+            </if>
+            AND e.agency_id=#{agencyId}
+        </where>
     </select>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         <!--
@@ -288,6 +441,46 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </select>
+    <update id="updateEmployeeByCriteria" parameterType="com.epc.web.facade.agency.handle.HandleEmployee">
+        update t_agency_basic_info
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="cellphone != null">
+                cellphone = #{cellphone,jdbcType=CHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=CHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="role != null">
+                role = #{record.role,jdbcType=INTEGER},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+        </set>
+        <where>
+            <if test="record.id != null">
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="record.agencyId != null">
+                AND agency_id = #{agencyId,jdbcType=BIGINT},
+            </if>
+            <if test="record.cellphone != null">
+                AND cellphone = #{cellphone,jdbcType=CHAR},
+            </if>
+        </where>
+    </update>
     <update id="updateByExampleSelective" parameterType="map">
         <!--
           WARNING - @mbggenerated

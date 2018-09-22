@@ -1,6 +1,7 @@
 package com.epc.web.service.controller.agency;
 
 import com.epc.common.Result;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.service.service.agency.AgencyService;
 import com.epc.web.facade.agency.FacadeAgencyService;
@@ -68,8 +69,8 @@ public class AgencyController implements FacadeAgencyService {
     }
 
     @Override
-    public Result proxySubjects() {
-        return agencyService.proxySubjects();
+    public Result proxySubjects(AgencySubjectDto subjectDto) {
+        return agencyService.proxySubjects( subjectDto);
     }
 
     @Override

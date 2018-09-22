@@ -1,7 +1,7 @@
 package com.epc.web.service.service.purchaser;
 
 import com.epc.common.Result;
-import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
@@ -15,6 +15,7 @@ import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
 import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import com.netflix.hystrix.strategy.eventnotifier.HystrixEventNotifierDefault;
 
 import java.util.List;
 
@@ -235,4 +236,30 @@ public interface PurchaserService {
      *@date:2018/9/20
      */
     public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto);
+
+    /**
+     *@author :winlin
+     *@Description :完善采购人专家信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
+
+    /**
+     *@author :winlin
+     *@Description :修改采购人代理机构详细信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto);
+    /**
+     *@author :winlin
+     *@Description :修改采购人专家的信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 }

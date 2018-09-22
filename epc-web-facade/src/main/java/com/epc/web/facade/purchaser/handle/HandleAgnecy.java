@@ -5,9 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
+
 @ApiModel(value = "HandleAgnecy", description = "录入代理机构")
 @Data
-public class HandleAgnecy {
+public class HandleAgnecy implements Serializable{
+    private static final long serialVersionUID = -319658786687249313L;
     @ApiModelProperty(value = "采购人Id")
     private long userId;
     @ApiModelProperty(value = "代理机构人员姓名")

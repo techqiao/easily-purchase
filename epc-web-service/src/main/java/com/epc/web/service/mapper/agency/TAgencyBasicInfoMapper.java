@@ -1,11 +1,20 @@
 package com.epc.web.service.mapper.agency;
 
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencySupplierDto;
+import com.epc.web.facade.agency.handle.HandleAgency;
+import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.agency.vo.AgencySubjectsVo;
+import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TAgencyBasicInfoMapper {
@@ -40,4 +49,22 @@ public interface TAgencyBasicInfoMapper {
     AgencyEmployeeVo queryEmployeeById(Long id);
 
     List<AgencyEmployeeVo> queryAllAgencyEmployees(Long agencyId);
+
+    List<HandleAgency> queryAgencyByCrtiteria(HandleAgency agency);
+
+    List<AgencySubjectsVo> proxySubjects(AgencySubjectDto subjectDto);
+
+    List<AgencyEmployeeVo> queryAllAgencyEmployeesByCriteria(HandleEmployee employee);
+
+    int updateEmployeeByCriteria(HandleEmployee employee);
+
+    List<AgencySupplierVo> queryquerySupplierCriteria(AgencySupplierDto supplierDto);
+
+    List<AgencyExpertVo> queryExpertByCriteria(AgencyExpertDto expertDto);
+
+    int completeAgencySupInfo(AgencySupplierDto supplierDto);
+
+    int completeAgencyExpertInfo(AgencyExpertDto expertDto);
+
+    AgencySupplierVo querySupplierByName(AgencySupplierDto supplierDto);
 }

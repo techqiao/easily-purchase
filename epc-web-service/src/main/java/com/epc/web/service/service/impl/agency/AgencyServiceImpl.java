@@ -13,8 +13,8 @@ import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySubjectsVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import com.epc.web.service.domain.agency.*;
-import com.epc.web.service.domain.expert.TAgencyExpertCriteria;
 import com.epc.web.service.domain.expert.TAgencyExpert;
+import com.epc.web.service.domain.expert.TAgencyExpertCriteria;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
 import com.epc.web.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
@@ -224,7 +224,7 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Transactional(rollbackFor = {Exception.class})
     @Override
-    public Result <Integer>insertSupplier(HandleSupplier handleSupplier) {
+    public Result<Integer> insertSupplier(HandleSupplier handleSupplier) {
 
         //根据页面传入的信息查询依据手机号和姓名来查询
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
@@ -322,7 +322,7 @@ public class AgencyServiceImpl implements AgencyService {
 
     /**
      * @author :winlin
-     * @Description :页面信息验证通过后传入存入
+     * @Description :页面信息验证通过后传入存入 代理机构注册
      * @param:
      * @return: 返回 agency信息给信息完善页面使用
      * @date:2018/9/18
@@ -345,16 +345,21 @@ public class AgencyServiceImpl implements AgencyService {
         }
         return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
     }
+
     /**
-     *@author :winlin
-     *@Description :依据综合条件查询代理商
-     *@param:
-     *@return:
-     *@date:2018/9/20
+     * @author :winlin
+     * @Description :依据综合条件查询代理商
+     * @param:
+     * @return:
+     * @date:2018/9/20
      */
     @Override
     public Result<List<HandleAgency>> queryAgencies(HandleAgency agency) {
-        return Result.success();
+        List<HandleAgency> list = tAgencyBasicInfoMapper.queryAgencyByCrtiteria(agency);
+        if (list == null) {
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查新成功", list);
     }
 
 
@@ -441,21 +446,30 @@ public class AgencyServiceImpl implements AgencyService {
         return (sucess + sucess1 + sucess2) > 3 ? Result.success("信息完善成功") : Result.error(ErrorMessagesEnum.INSERT_FAILURE);
 
     }
+
     /**
      * 代理机构名下的所有项目
      *
      * @return
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Override
     public Result<List<AgencySubjectsVo>> proxySubjects(AgencySubjectDto subjectDto) {
-        return Result.success();
+        /**
+         * SQL 没有写实现
+         */
+        List<AgencySubjectsVo> agencySubjectsVos = tAgencyBasicInfoMapper.proxySubjects(subjectDto);
+        if (agencySubjectsVos == null) {
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查新成功", agencySubjectsVos);
     }
-
 
 
     /**
      * 查询该机构下所有的员工
-     *不查询的字段不返回,password
+     * 不查询的字段不返回,password
+     *
      * @return
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -465,7 +479,7 @@ public class AgencyServiceImpl implements AgencyService {
         if (employees == null) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
-        return Result.success("查询成功",employees);
+        return Result.success("查询成功", employees);
     }
 
     /**
@@ -476,8 +490,11 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     public Result<List<AgencyEmployeeVo>> queryEmployee(HandleEmployee employee) {
-
-        return Result.success();
+        List<AgencyEmployeeVo> employees = tAgencyBasicInfoMapper.queryAllAgencyEmployeesByCriteria(employee);
+        if (employees == null) {
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功", employees);
     }
 
     /**
@@ -504,18 +521,101 @@ public class AgencyServiceImpl implements AgencyService {
         return employeeVo == null ? Result.error(ErrorMessagesEnum.SELECT_FAILURE) : Result.success("查询成功", employeeVo);
     }
 
+    /**
+     * @author :winlin
+     * @Description :修改员工信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
     @Override
     public Result<Boolean> updateEmployeeBy(HandleEmployee employee) {
-        return Result.success();
+        int sucess = tAgencyBasicInfoMapper.updateEmployeeByCriteria(employee);
+        if (sucess > 0) {
+            return Result.success("修改成功", true);
+        }
+        return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
     }
 
+    /**
+     * @author :winlin
+     * @Description :依据条件查询供应商
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
     @Override
     public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto) {
-        return null;
+        if (supplierDto.getAgencyId() != null) {
+            List<AgencySupplierVo> supplierVos = tAgencyBasicInfoMapper.queryquerySupplierCriteria(supplierDto);
+            if (supplierVos.isEmpty()) {
+                return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+            }
+        }
+        return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+    }
+    /**
+     *@author :winlin
+     *@Description :依据信息查询详细的信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Override
+    public Result<AgencySupplierVo> querySupplierByName(AgencySupplierDto supplierDto) {
+        if(supplierDto.getCompanyName()!=null){
+            AgencySupplierVo supplierVo =tAgencyBasicInfoMapper.querySupplierByName(supplierDto);
+            return supplierVo==null?Result.error(ErrorMessagesEnum.SELECT_FAILURE):Result.success("查询成功",supplierVo);
+        }
+       return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
     }
 
+    /**
+     * @author :winlin
+     * @Description :依据条件查专家
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
     @Override
     public Result<List<AgencyExpertVo>> queryExpertCriteria(AgencyExpertDto expertDto) {
-        return null;
+        List<AgencyExpertVo> expertVos = tAgencyBasicInfoMapper.queryExpertByCriteria(expertDto);
+        if (expertVos.isEmpty()) {
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功", expertVos);
+    }
+
+    /**
+     * @author :winlin
+     * @Description :完善代理机构信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @Override
+    public Result<Boolean> completeAgencySupInfo(AgencySupplierDto supplierDto) {
+        int sucess = tAgencyBasicInfoMapper.completeAgencySupInfo(supplierDto);
+        if (sucess > 0) {
+            return Result.success("修改成功", true);
+        }
+        return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+    }
+
+    /**
+     * @author :winlin
+     * @Description :完善专家信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @Override
+    public Result<Boolean> completeAgencyExpertInfo(AgencyExpertDto expertDto) {
+        int sucess = tAgencyBasicInfoMapper.completeAgencyExpertInfo(expertDto);
+        if (sucess > 0) {
+            return Result.success("修改成功", true);
+        }
+        return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
     }
 }

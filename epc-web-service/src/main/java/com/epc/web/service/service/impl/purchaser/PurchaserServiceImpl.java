@@ -5,6 +5,7 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.common.util.MD5Util;
 import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
@@ -23,7 +24,6 @@ import com.epc.web.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.web.service.domain.operator.TOperatorPurchaser;
 import com.epc.web.service.domain.operator.TOperatorPurchaserCriteria;
 import com.epc.web.service.domain.purchaser.*;
-import com.epc.web.service.domain.purchaser.*;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
@@ -36,14 +36,12 @@ import com.epc.web.service.mapper.purchaser.*;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
-import com.epc.web.service.service.impl.operator.OperatorServiceImpl;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
-import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.epc.web.service.mapper.purchaser.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -517,7 +515,21 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public Result<HandleRegisterPurchaser> registerPurchaser(HandleRegisterPurchaser purchaser) {
-        return null;
+        TPurchaserBasicInfo basicInfo = new TPurchaserBasicInfo();
+        //或的基本信息密码加密密码加密
+        basicInfo.setCellphone(purchaser.getCellphone());
+        basicInfo.setPassword(MD5Util.MD5EncodeUtf8(purchaser.getPassword()));
+        Result result = new Result();
+        int sucess = tPurchaserBasicInfoMapper.insertSelective(basicInfo);
+        Long id = basicInfo.getId();
+        if (sucess > 0) {
+            //数据库生成的id放入对象传入下个页面
+            purchaser.setPurchaseId(basicInfo.getId());
+            result.setData(purchaser);
+            result.setMsg("注册成功");
+            return result;
+        }
+        return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
     }
     /**
      *@author :winlin
@@ -528,7 +540,11 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public Result<List<PurchaserEmplyeeVo>> allEmployee(Long purchaserId) {
-        return null;
+        List<PurchaserEmplyeeVo> emplyeeVos = tPurchaserBasicInfoMapper.queryEmplyees(purchaserId);
+        if(emplyeeVos.isEmpty()){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",emplyeeVos);
     }
     /**
      *@author :winlin
@@ -539,7 +555,11 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public Result<List<PurchaserEmplyeeVo>> findEmployeeByName(String fuzzyName, Long purchaseId) {
-        return null;
+        List<PurchaserEmplyeeVo> emplyeeVos = tPurchaserBasicInfoMapper.findEmployeeByName(fuzzyName,purchaseId);
+        if(emplyeeVos.isEmpty()){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",emplyeeVos);
     }
     /**
      *@author :winlin
@@ -550,7 +570,11 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public Result<Boolean> updateEmployeeState(String cellphone, Integer state) {
-        return null;
+        int sucess = tPurchaserBasicInfoMapper.updateEmployeeStateByCellphone(cellphone,state);
+        if(sucess==0){
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+        return Result.success("更新成功",true);
     }
 /**
  *@author :winlin
@@ -561,7 +585,11 @@ public class PurchaserServiceImpl implements PurchaserService {
  */
     @Override
     public Result<Boolean> updateEmployeeState(Long id, Integer state) {
-        return null;
+        int sucess = tPurchaserBasicInfoMapper.updateEmployeeStateById(id,state);
+        if(sucess==0){
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+        return Result.success("更新成功",true);
     }
     /**
      *@author :winlin
@@ -572,7 +600,11 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public Result<PurchaserEmplyeeVo> queryEmployee(String cellphone) {
-        return null;
+        PurchaserEmplyeeVo emplyeeVo = tPurchaserBasicInfoMapper.queryEmplyeeByCellphone(cellphone);
+        if(emplyeeVo==null){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",emplyeeVo);
     }
 /**
  *@author :winlin
@@ -583,7 +615,11 @@ public class PurchaserServiceImpl implements PurchaserService {
  */
     @Override
     public Result<PurchaserEmplyeeVo> queryEmployee(Long id) {
-        return null;
+        PurchaserEmplyeeVo emplyeeVo = tPurchaserBasicInfoMapper.queryEmplyeeById(id);
+        if(emplyeeVo==null){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",emplyeeVo);
     }
 /**
  *@author :winlin
@@ -594,7 +630,11 @@ public class PurchaserServiceImpl implements PurchaserService {
  */
     @Override
     public Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto) {
-        return null;
+        List<PurchaserEmplyeeVo> emplyeeVos =tPurchaserBasicInfoMapper.queryEmplyeeByCriteria(employeeDto);
+        if(emplyeeVos.isEmpty()){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",emplyeeVos);
     }
 /**
  *@author :winlin
@@ -605,7 +645,11 @@ public class PurchaserServiceImpl implements PurchaserService {
  */
     @Override
     public Result<Boolean> updateRole(Long id, Integer role) {
-        return null;
+        int sucess = tPurchaserBasicInfoMapper.updateEmployeeRoleById(id,role);
+        if(sucess==0){
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+        return Result.success("更新成功",true);
     }
 /**
  *@author :winlin
@@ -616,41 +660,134 @@ public class PurchaserServiceImpl implements PurchaserService {
  */
     @Override
     public Result<List<PurchaserSupplierVo>> queryAllSuppliers(Long purchaseId) {
-        return null;
-    }
+        List<PurchaserSupplierVo> supplierVos = tPurchaserBasicInfoMapper.queryAllSuppliers(purchaseId);
+        if(supplierVos==null){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",supplierVos);
 
+    }
+/**
+ *@author :winlin
+ *@Description :依据姓名模糊查找供货商
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<List<PurchaserSupplierVo>> querySuppliers(String fuzzyName, Long purchaseId) {
-        return null;
+        List<PurchaserSupplierVo> supplierVos = tPurchaserBasicInfoMapper.querySuppliersByName(fuzzyName,purchaseId);
+        if(supplierVos==null){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",supplierVos);
     }
-
+/**
+ *@author :winlin
+ *@Description :根据id查询供应商信息
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<PurchaserSupplierVo> querySuppliers(Long id) {
-        return null;
-    }
+        PurchaserSupplierVo supplierVo = tPurchaserBasicInfoMapper.querySuppliersById(id);
+        if(supplierVo==null){
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        return Result.success("查询成功",supplierVo);
 
+    }
+/**
+ *@author :winlin
+ *@Description :修改供应商信息
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<Boolean> updateSuppliers(HandPurchaserAttachment attachment) {
         return null;
     }
-
+/**
+ *@author :winlin
+ *@Description :依据添加查询专家信息
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<List<PurchaserExpertVo>> queryExperts(HandleExpertDto dto) {
         return null;
     }
-
+/**
+ *@author :winlin
+ *@Description :根据id删除专家,修改is_delete状态
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<Boolean> updateExpertState(Long id, Integer state) {
-        return null;
+        int sucess = tPurchaserBasicInfoMapper.updateExpertStateById(id,state);
+        if(sucess==0){
+            return Result.error(ErrorMessagesEnum.DELETE_FAILURE);
+        }
+        return Result.success("删除成功",true);
     }
-
+/**
+ *@author :winlin
+ *@Description :依据条件检索代理机构
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
         return null;
     }
-
+/**
+ *@author :winlin
+ *@Description :条件检索供应商
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
     @Override
     public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :完善采购人专家信息
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
+    @Override
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :修改采购人代理机构的信息
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
+    @Override
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
+        return null;
+    }
+/**
+ *@author :winlin
+ *@Description :修改采购人专家的信息
+ *@param:
+ *@return:
+ *@date:2018/9/21
+ */
+    @Override
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
         return null;
     }
 

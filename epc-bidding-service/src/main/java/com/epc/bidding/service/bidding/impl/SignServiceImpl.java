@@ -6,12 +6,13 @@ import com.epc.bidding.service.bidding.SignService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.HandleSign;
-import io.swagger.annotations.ApiModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class SignServiceImpl implements SignService {
 
     @Autowired

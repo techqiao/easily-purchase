@@ -11,6 +11,7 @@ import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
 import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class BiddingTenderController implements FacadeTenderService {
      * @return
      */
     @Override
-    public Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(QueryBidPayDTO dto){
+    public Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(@RequestBody QueryBidPayDTO dto){
         return  tenderService.queryTenderMoneyRecordVO(dto);
     }
 
@@ -38,7 +39,7 @@ public class BiddingTenderController implements FacadeTenderService {
      * @return
      */
     @Override
-    public Result<List<TenderVO>> getTenderListByPurchaseProgramId(QueryTenderDTO dto){
+    public Result<List<TenderVO>> getTenderListByPurchaseProgramId(@RequestBody QueryTenderDTO dto){
         return  tenderService.getTenderListByPurchaseProgramId(dto);
      }
 
@@ -48,7 +49,7 @@ public class BiddingTenderController implements FacadeTenderService {
      * @return
      */
     @Override
-    public Result<List<PersonDTO>> getPersonList(QueryPersonDTO dto){
+    public Result<List<PersonDTO>> getPersonList(@RequestBody QueryPersonDTO dto){
         return  tenderService.getPersonList(dto);
     }
 

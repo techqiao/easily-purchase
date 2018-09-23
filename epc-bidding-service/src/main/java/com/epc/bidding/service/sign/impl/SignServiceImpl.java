@@ -51,7 +51,7 @@ public class SignServiceImpl implements SignService {
      */
     @Override
     public Result<SignBaseDTO> getSignBase(String name, String cellPhone) {
-        SignBaseDTO dto= tSupplierSignMapper.getSignBase(name,cellPhone);
+        SignBaseDTO dto= tSupplierSignMapper.getSignPeronInfo(name,cellPhone);
         if(dto==null){
             return Result.success("找不到该用户");
         }

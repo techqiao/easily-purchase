@@ -4,6 +4,7 @@ package com.epc.web.client.controller.bidding;
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.query.tender.ClientBackTenderDTO;
 import com.epc.web.client.controller.bidding.query.tender.ClientBidPay;
+import com.epc.web.client.controller.bidding.query.tender.ClientCompanyDTO;
 import com.epc.web.client.controller.bidding.query.tender.ClientTenderList;
 import com.epc.web.client.remoteApi.bidding.tender.TenderClient;
 import com.epc.web.facade.bidding.dto.PersonDTO;
@@ -55,7 +56,7 @@ public class BiddingTenderController {
 
     @ApiOperation(value = "获取机构下面的人员列表")
     @PostMapping(value = "/getPersonList", consumes = "application/json; charset=UTF-8")
-    public Result<List<PersonDTO>> getPersonList(@RequestBody ClientTenderList dto) {
+    public Result<List<PersonDTO>> getPersonList(@RequestBody ClientCompanyDTO dto) {
         QueryPersonDTO queryPersonDTO = new QueryPersonDTO();
         BeanUtils.copyProperties(dto, queryPersonDTO);
         return tenderClient.getPersonList(queryPersonDTO);

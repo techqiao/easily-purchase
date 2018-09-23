@@ -33,6 +33,6 @@ public interface TSupplierBasicInfoMapper {
 
     int updateByPrimaryKey(TSupplierBasicInfo record);
 
-    List<PersonDTO > selectCompanyPerson(@Param("supplierId") Long supplierId);
+    List<PersonDTO> selectCompanyPerson(@Param("supplierId") Long supplierId);
 
 }

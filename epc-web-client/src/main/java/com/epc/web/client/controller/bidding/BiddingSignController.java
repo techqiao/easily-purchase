@@ -11,6 +11,8 @@ import com.epc.web.facade.bidding.handle.BasePersonInfo;
 import com.epc.web.facade.bidding.handle.HandleSign;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,17 +25,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BiddingSignController {
-
     @Autowired
     SignClient signClient;
     @Autowired
     SupplierBaseClient supplierBaseClient;
+
     @ApiOperation(value = "签到")
     @PostMapping(value="/supplierSign")
     public Result<Boolean> supplierSign(@RequestBody ClientSign clientSign){
         BasePersonInfo basePersonInfo =new BasePersonInfo();
         BeanUtils.copyProperties(clientSign,basePersonInfo);
-        SignBaseDTO signBaseDTO= signClient.getSignBase(basePersonInfo).getData();
+        SignBaseDTO signBaseDTO=null;
+        try{
+             signBaseDTO= signClient.getSignBase(basePersonInfo).getData();
+        }catch (Exception e){
+
+        }
         HandleSign handleSign=new HandleSign();
         BeanUtils.copyProperties(clientSign,handleSign);
         BeanUtils.copyProperties(signBaseDTO,handleSign);

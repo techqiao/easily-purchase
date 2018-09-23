@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @author linzhixiang
  */
-@Api(value = "投标流程",tags = {"标段业务查询"})
+@Api(value = "标段服务",description = "标段业务查询")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BiddingTenderController {

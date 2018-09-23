@@ -23,7 +23,7 @@ import java.util.List;
 * @Author: linzhixiang
 * @Date: 2018/9/18
 */
-@Api(value = "投标流程",tags = {"招标列表"})
+@Api(value = "招标公告服务",description = "招标公告")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BiddingNoticeController {

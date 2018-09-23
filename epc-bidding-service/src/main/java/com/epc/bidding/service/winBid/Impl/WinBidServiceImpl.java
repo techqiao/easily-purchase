@@ -9,6 +9,8 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class WinBidServiceImpl implements WinBidService {
 
     @Autowired
     TWinBidMapper tWinBidMapper;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WinBidServiceImpl.class);
 
     /**
      * 获取中标通知书列表
@@ -39,14 +42,14 @@ public class WinBidServiceImpl implements WinBidService {
         TWinBidCriteria.Criteria cubCriteria=criteria.createCriteria();
         cubCriteria.andBidIdEqualTo(dto.getBidId());
         cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
-        cubCriteria.andProjectIdNotEqualTo(dto.getProjectId());
+        cubCriteria.andProjectIdEqualTo(dto.getProjectId());
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         cubCriteria.andSupplierIdEqualTo(dto.getSupplierId());
-        criteria.setOrderByClause(" bid_id desc");
         List<TWinBid> resultList= tWinBidMapper.selectByExample(criteria);
         if(resultList.size()==0){
             return Result.success(null);
         }
+
         List<WinBidLetterVO> voList=new ArrayList<>();
         for(TWinBid entity:resultList){
             WinBidLetterVO vo=new WinBidLetterVO();

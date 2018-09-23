@@ -29,6 +29,7 @@ public class BiddingWinBidController implements FacadeWinBidService {
      */
     @Override
     public Result<List<WinBidLetterVO>> getWinBidLetter(@RequestBody  QueryWinBidLetterDTO dto){
+
         return winBidService.getWinBidLetter(dto);
     }
 

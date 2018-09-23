@@ -344,6 +344,6 @@ public class BiddingServiceimpl implements BiddingService {
                 Result.success(true);
             }
         }
-        return null;
+        return Result.success();
     }
 }

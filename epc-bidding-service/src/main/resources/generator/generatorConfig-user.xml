@@ -108,10 +108,12 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>-->
 
-        <table schema="easily_purchase" tableName="t_win_bid" domainObjectName="TWinBid">
+        <!--<table schema="easily_purchase" tableName="t_service_money_pay" domainObjectName="TServiceMoneyPay">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-
+        </table>-->
+        <table schema="easily_purchase" tableName="t_purchase_project_file_download" domainObjectName="TPurchaseProjectFileDownload">
+                  <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+              </table>
     </context>
 
 </generatorConfiguration>

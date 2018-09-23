@@ -4,7 +4,6 @@ package com.epc.web.client.controller.bidding;
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.file.ClientHandleFileUpload;
 import com.epc.web.client.remoteApi.bidding.pretrialFile.BiddingClient;
-import com.epc.web.facade.bidding.handle.HandleFileUpload;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

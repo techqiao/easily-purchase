@@ -8,24 +8,26 @@ import com.epc.common.exception.BusinessException;
 import com.epc.common.util.MD5Util;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
+import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import com.epc.web.service.domain.supplier.TSupplierAttachment;
-import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
-import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
-import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
+import com.epc.web.service.domain.supplier.*;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
-import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
+import com.epc.web.service.service.supplier.SupplierService;
+import jdk.nashorn.internal.ir.ReturnNode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import sun.security.util.AuthResources_it;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,9 +39,9 @@ import java.util.List;
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
-public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService {
+public class SupplierServiceImpl implements SupplierService {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(TSupplierBasicInfoServiceImpl.class);
+    private static final Logger LOGGER= LoggerFactory.getLogger(SupplierServiceImpl.class);
 
     @Autowired
     private TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
@@ -50,17 +52,18 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
 
     /**
      * 注册供应商
+     *  {业务：第一次只需要填写电话及密码就行，注册完成登陆成功后，可以做后续的完善信息工作
+     *          所以目前，只操作一张基本信息表就行，等完善信息时，操作三张即可
+     *  }
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
-
         Date date=new Date();
 
         //电话提出来
-        String cellphone=handleSupplierDetail.getCellPhone();
-
-        //将公司名称，电话，密码信息存入到这个表对象中
+        String cellphone=handleSupplierDetail.getCellphone();
+        //将电话，密码信息存入到这个表对象中
         TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
         //设置电话
         tSupplierBasicInfo.setCellphone(cellphone);
@@ -74,81 +77,206 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         tSupplierBasicInfo.setState(Const.STATE.REGISTERED);
         //创建时间
         tSupplierBasicInfo.setCreateAt(date);
-        //最后修改时间(预计注册时可能不需要，默认没有，只有当修改了才会有这个 修改时间)
-        //tSupplierBasicInfo.setUpdateAt(new Date());
+        //最后修改时间
+        tSupplierBasicInfo.setUpdateAt(date);
 
-        int supplierBoss = tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
-        //查出这个这条已经插入的数据的id，得到这个供应商法人的id
-        //根据电话来查询这个人的基本信息，从中得到id
-        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andCellphoneEqualTo(cellphone);
-        List<TSupplierBasicInfo> nowSupperBoss = tSupplierBasicInfoMapper.selectByExample(criteria);
-
-//        TSupplierBasicInfoServiceImpl impl=new TSupplierBasicInfoServiceImpl();
-//        TSupplierBasicInfo supplierByCellphone = impl.findSupplierByCellphone(cellphone);
-//        Long id=supplierByCellphone.getSupplierId();.
-        Long id=nowSupperBoss.get(0).getSupplierId();
-
-        TSupplierDetailInfo tSupplierDetailInfo=new TSupplierDetailInfo();
-        //在详情表中插入这个id
-        tSupplierDetailInfo.setSupplierId(id);
-        //设置公司名称
-        tSupplierDetailInfo.setCompanyName(handleSupplierDetail.getCompanyName());
-        //设置创建时间
-        tSupplierDetailInfo.setCreateAt(date);
-
-        int supplierBoss2 = tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
-
-        return (supplierBoss>0 && supplierBoss2>0)?Result.success(true):Result.success(false);
+        SupplierServiceImpl serviceImpl=new SupplierServiceImpl();
+        try{
+            //将基本注册信息数据存入到数据库
+            tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
+            Long id=tSupplierBasicInfo.getId();
+            tSupplierBasicInfo.setSupplierId(id);
+            return tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0 ? Result.success(true) : Result.success(false);
+        }catch (BusinessException e){
+            LOGGER.error("tSupplierBasicInfoMapper.insertSelective:{}",e);
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }catch (Exception e) {
+            LOGGER.error("tSupplierBasicInfoMapper.insertSelective:{}", e);
+            return Result.error(e.getMessage());
+        }
     }
 
 
 
     /**
-     * 根据电话来查找一条记录,返回一个运营商法人基本记录
+     * 暂时没用,不知道后期有没有这个需求
+     *   依据 用户角色 是法人的情况下，来查出 supplier_id,
      */
-    private TSupplierBasicInfo findSupplierByCellphone(String cellphone){
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<Long> findSupplierIdByRole(Integer role){
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        if(StringUtils.isNotBlank(cellphone)){
-            subCriteria.andCellphoneEqualTo(cellphone);
+        if(role!=null && role==0){
+            subCriteria.andRoleEqualTo(role);
         }
-        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-        return tSupplierBasicInfos.get(0);
+        try {
+            return Result.success(tSupplierBasicInfoMapper.selectByExample(criteria).get(0).getId());
+        }catch (BusinessException e){
+            LOGGER.error("tSupplierBasicInfoMapper.selectByExample : {}",e);
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("tSupplierBasicInfoMapper.selectByExample : {}",e);
+            return Result.error(e.getMessage());
+        }
     }
 
     /**
      * 根据员工的id来查询基本信息
      */
     @Override
-    public Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         //得到supplierbasic表的id
         Long id= handleFindSupplierByInfo.getId();
-        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
-        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
-        BeanUtils.copyProperties(handleFindSupplierByInfo,vo);
+        if(id!=null){
+            try{
+                TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
+                //将时间格式化
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd E HH:mm:ss a");
+                String createAt = format.format(tSupplierBasicInfo.getCreateAt());
+                String updateAt = format.format(tSupplierBasicInfo.getUpdateAt());
+                SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
+                vo.setCreateAt(createAt);
+                vo.setUpdateAt(updateAt);
+                BeanUtils.copyProperties(tSupplierBasicInfo,vo);
+                return Result.success(vo);
+            }catch (BusinessException e){
+                LOGGER.error("tSupplierBasicInfoMapper.selectByPrimaryKey : {}",e);
+                return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+            }catch (Exception e){
+                LOGGER.error("tSupplierBasicInfoMapper.selectByPrimaryKey : {}",e);
+                return Result.error(e.getMessage());
+            }
+        }else{
+            LOGGER.error("handleFindSupplierByInfo.getId() {参数为null}");
+            return Result.error(ErrorMessagesEnum.ID_ILLEAGAL);
+        }
+    }
+
+    /**
+     * 根据员工id来删除一个员工
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        Long id=handleFindSupplierByInfo.getId();
+        if(id!=null){
+            try{
+                return tSupplierBasicInfoMapper.deleteByPrimaryKey(id)>0 ? Result.<Boolean>success(true) : Result.<Boolean>success(false);
+            }catch (BusinessException e){
+                LOGGER.error("tSupplierBasicInfoMapper.deleteByPrimaryKey :{}",e);
+                return Result.error(ErrorMessagesEnum.DELETE_FAILURE);
+            }catch (Exception e){
+                LOGGER.error("tSupplierBasicInfoMapper.deleteByPrimaryKey :{}",e);
+                return Result.error(e.getMessage());
+            }
+        }else{
+            return Result.error("handleFindSupplierByInfo.getId() : {参数为空}");
+        }
+    }
+
+    /**
+     * 根据电话来查找一条记录,返回一个运营商法人基本记录
+     */
+//    private TSupplierBasicInfo findSupplierByCellphone(String cellphone){
+//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+//        if(StringUtils.isNotBlank(cellphone)){
+//            subCriteria.andCellphoneEqualTo(cellphone);
+//        }
+//        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+//        return tSupplierBasicInfos.get(0);
+//    }
+
+    /**
+     * 员工来查询（公司法人supplier_id） 公司详情（包括附件）
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        //得到员工的id
+        Long id=handleFindSupplierByInfo.getId();
+        TSupplierBasicInfo supplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
+        //得到法人supplier_id
+        Long supplierId = supplierBasicInfo.getSupplierId();
+        //依据员工的法人id来查询另外两张表，supplier_detail; supplier_attachment
+        TSupplierAttachmentCriteria criteria=new TSupplierAttachmentCriteria();
+        TSupplierAttachmentCriteria.Criteria subCriteria = criteria.createCriteria();
+
+        TSupplierDetailInfoCriteria criteriaDetail=new TSupplierDetailInfoCriteria();
+        TSupplierDetailInfoCriteria.Criteria subCriteriaDetail = criteriaDetail.createCriteria();
+
+        if(supplierId!=null){
+            subCriteria.andSupplierIdEqualTo(supplierId);
+            subCriteriaDetail.andSupplierIdEqualTo(supplierId);
+        }
+
+        TSupplierDetailInfo tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(criteriaDetail).get(0);
+
+        List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(criteria);
+        RoleDetailInfo roleDetailInfo=new RoleDetailInfo();
+
+        for(TSupplierAttachment ts:tSupplierAttachments){
+            if(ts.getCertificateType()==AttachmentEnum.BUSINESS_LICENSE.getCode()){
+                roleDetailInfo.setBusinessLicense(ts.getCertificateFilePath());
+                continue;
+            }
+            if(ts.getCertificateType()==AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode()){
+                roleDetailInfo.setQualificationCertificate(ts.getCertificateFilePath());
+                continue;
+            }
+            if(ts.getCertificateType()==AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode()){
+                roleDetailInfo.setLegalIdCardPositive(ts.getCertificateFilePath());
+                continue;
+            }
+            if(ts.getCertificateType()==AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode()){
+                roleDetailInfo.setLegalIdCardOther(ts.getCertificateFilePath());
+                continue;
+            }
+            if(ts.getCertificateType()==AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode()){
+                roleDetailInfo.setOperatorIdCardFront(ts.getCertificateFilePath());
+                continue;
+            }
+        }
+        SupplierAttachmentAndDetailVO vo=new SupplierAttachmentAndDetailVO();
+        BeanUtils.copyProperties(tSupplierDetailInfos,vo);
+        BeanUtils.copyProperties(roleDetailInfo,vo);
         return Result.success(vo);
     }
 
 
     /**
-     * 根据电话来查找一条记录,返回一个记录
+     * 根据电话来查找一条记录,返回一个基本信息
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        String cellphone= handleFindSupplierByInfo.getCellPhone();
+        String cellphone= handleFindSupplierByInfo.getCellphone();
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
 
         if(StringUtils.isNotBlank(cellphone)){
             subCriteria.andCellphoneEqualTo(cellphone);
+            try{
+                List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+                TSupplierBasicInfo single = tSupplierBasicInfos.get(0);
+                SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd E HH:mm:ss a");
+                vo.setCreateAt(format.format(single.getCreateAt()));
+                vo.setUpdateAt(format.format(single.getUpdateAt()));
+                BeanUtils.copyProperties(single,vo);
+                return Result.success(vo);
+            }catch (BusinessException e){
+                LOGGER.error("tSupplierBasicInfoMapper.selectByExample : {}",e);
+                return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+            }catch (Exception e){
+                LOGGER.error("tSupplierBasicInfoMapper.selectByExample : {}",e);
+                return Result.error(e.getMessage());
+            }
+        }else{
+            return Result.error("StringUtils.isNotBlank(cellphone) : {参数为空}");
         }
-        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
-        BeanUtils.copyProperties(tSupplierBasicInfos.get(0),vo);
-        return Result.success(vo);
     }
 
 
@@ -163,7 +291,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         String name=handleFindSupplierByInfo.getName();
-        String cellphone=handleFindSupplierByInfo.getCellPhone();
+        String cellphone=handleFindSupplierByInfo.getCellphone();
         if(StringUtils.isNotBlank(name)){
             subCriteria.andNameEqualTo(name);
         }
@@ -182,16 +310,18 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
-
+//        System.out.println("进来忘记密码方法了");
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //得到手机号,查询数据库中有没有这条数据
         String cellphone=handleSupplierForgetPassword.getCellphone();
         if(StringUtils.isNotBlank(cellphone)){
             subCriteria.andCellphoneEqualTo(cellphone);
+//            System.out.println("电话不为空"+cellphone);
         }
         //查询出一条结果,然后将密码改掉
         List<TSupplierBasicInfo> listTSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+        System.out.println(listTSupplierBasicInfos.get(0).getPassword());
         //加密传过来的密码
         String newPassword = MD5Util.MD5EncodeUtf8(handleSupplierForgetPassword.getPassword());
         TSupplierBasicInfo tSupplierBasicInfo=listTSupplierBasicInfos.get(0);
@@ -240,6 +370,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
 
 
     /**
+     *  供应商修改员工
      *     通过id查询这个用户信息，得到用户提交的数据，并且设置到对应的实体类中
      */
     @Override
@@ -278,11 +409,11 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
 
         //获取输入的名字,来进行模糊查询
-        String where=handleFindSupplierByInfo.getName();
+        String name=handleFindSupplierByInfo.getName();
         //得到操作者本人的id，查出来的是这个供应商底下的员工列表
         Long supplierId=handleFindSupplierByInfo.getSupplierId();
-        if(org.apache.commons.lang.StringUtils.isNotBlank(where)){
-            criteria1.andNameLike("%"+where+"%");
+        if(org.apache.commons.lang.StringUtils.isNotBlank(name)){
+            criteria1.andNameLike("%"+name+"%");
         }
         criteria1.andSupplierIdEqualTo(supplierId);
         List<TSupplierBasicInfo> listTSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
@@ -301,6 +432,7 @@ public class TSupplierBasicInfoServiceImpl implements TSupplierBasicInfoService 
      * 肯定已经登陆成功，才能完善；根据本人的id来查询basic表，然后将填入的详情信息，分别存入另外两张表中
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
         Date date=new Date();
         TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();

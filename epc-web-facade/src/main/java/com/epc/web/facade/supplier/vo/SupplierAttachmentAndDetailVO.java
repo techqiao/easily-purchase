@@ -42,7 +42,8 @@ public class SupplierAttachmentAndDetailVO implements Serializable {
 
 
     //供应商法人ID
-    private Long supplierID;
+    private Long supplierId;
+
     //附件信息
     private RoleDetailInfo roleDetailInfo;
 

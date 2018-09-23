@@ -1,4 +1,4 @@
-package com.epc.web.facade.supplier.handle;
+package com.epc.web.client.controller.supplier.handle;
 
 
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Data;
  * <p>@Author : wjq
  */
 @Data
-public class RoleDetailInfo {
+public class ClientRoleDetailInfo {
 
     /**
      * CREATE TABLE `t_supplier_attachment` (

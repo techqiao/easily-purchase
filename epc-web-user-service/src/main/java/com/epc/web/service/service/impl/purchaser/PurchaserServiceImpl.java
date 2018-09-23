@@ -17,7 +17,6 @@ import com.epc.web.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.web.service.domain.operator.TOperatorPurchaser;
 import com.epc.web.service.domain.operator.TOperatorPurchaserCriteria;
 import com.epc.web.service.domain.purchaser.*;
-import com.epc.web.service.domain.purchaser.*;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
@@ -32,12 +31,11 @@ import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.impl.operator.OperatorServiceImpl;
 import com.epc.web.service.service.purchaser.PurchaserService;
-import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
+import com.epc.web.service.service.supplier.SupplierService;
 import com.epc.web.facade.expert.handle.HandleExpert;
 import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.epc.web.service.mapper.purchaser.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -60,7 +58,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Autowired
     TOperatorPurchaserMapper tOperatorPurchaserMapper;
     @Autowired
-    TSupplierBasicInfoService tSupplierBasicInfoService;
+    SupplierService supplierService;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired
@@ -141,7 +139,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         //同一个要约人不能再数据库中有两条以上相同信息的供货商,根据要约人的id
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
-        criteria1.andCellphoneEqualTo(handleSupplierDetail.getCellPhone());
+        criteria1.andCellphoneEqualTo(handleSupplierDetail.getCellphone());
         criteria1.andNameEqualTo(handleSupplierDetail.getCompanyName());
         criteria1.andInviterIdEqualTo(handleSupplierDetail.getSupplierId());
         List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
@@ -152,7 +150,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         Date date = new Date();
-        pojo.setCellphone(handleSupplierDetail.getCellPhone() != null ? handleSupplierDetail.getCellPhone() : null);
+        pojo.setCellphone(handleSupplierDetail.getCellphone() != null ? handleSupplierDetail.getCellphone() : null);
         pojo.setName(handleSupplierDetail.getCompanyName() != null ? handleSupplierDetail.getCompanyName() : null);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setState(Const.STATE.REGISTERED);

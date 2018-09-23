@@ -1,11 +1,11 @@
-package com.epc.web.facade.supplier.query;
+package com.epc.web.client.controller.supplier.query;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class HandleFindSupplierByInfo implements Serializable {
+public class ClientHandleFindSupplierByInfo implements Serializable {
     private static final long serialVersionUID = 8441079463359348978L;
 
     /**
@@ -28,12 +28,6 @@ public class HandleFindSupplierByInfo implements Serializable {
      * 供应商ID
      */
     private Long supplierId;
-
-    /**
-     * 依据role来查找 出supplier_id
-     */
-    private Integer role;
-
 
 
 }

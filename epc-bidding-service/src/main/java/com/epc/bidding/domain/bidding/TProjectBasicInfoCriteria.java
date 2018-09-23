@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BBidsGuaranteeAmountCriteria {
+public class TProjectBasicInfoCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public BBidsGuaranteeAmountCriteria() {
+    public TProjectBasicInfoCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -166,523 +166,523 @@ public class BBidsGuaranteeAmountCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdIsNull() {
-            addCriterion("procurement_project_id is null");
+        public Criteria andProjectCodeIsNull() {
+            addCriterion("project_code is null");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdIsNotNull() {
-            addCriterion("procurement_project_id is not null");
+        public Criteria andProjectCodeIsNotNull() {
+            addCriterion("project_code is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdEqualTo(Long value) {
-            addCriterion("procurement_project_id =", value, "procurementProjectId");
+        public Criteria andProjectCodeEqualTo(String value) {
+            addCriterion("project_code =", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdNotEqualTo(Long value) {
-            addCriterion("procurement_project_id <>", value, "procurementProjectId");
+        public Criteria andProjectCodeNotEqualTo(String value) {
+            addCriterion("project_code <>", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdGreaterThan(Long value) {
-            addCriterion("procurement_project_id >", value, "procurementProjectId");
+        public Criteria andProjectCodeGreaterThan(String value) {
+            addCriterion("project_code >", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("procurement_project_id >=", value, "procurementProjectId");
+        public Criteria andProjectCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("project_code >=", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdLessThan(Long value) {
-            addCriterion("procurement_project_id <", value, "procurementProjectId");
+        public Criteria andProjectCodeLessThan(String value) {
+            addCriterion("project_code <", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdLessThanOrEqualTo(Long value) {
-            addCriterion("procurement_project_id <=", value, "procurementProjectId");
+        public Criteria andProjectCodeLessThanOrEqualTo(String value) {
+            addCriterion("project_code <=", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdIn(List<Long> values) {
-            addCriterion("procurement_project_id in", values, "procurementProjectId");
+        public Criteria andProjectCodeLike(String value) {
+            addCriterion("project_code like", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdNotIn(List<Long> values) {
-            addCriterion("procurement_project_id not in", values, "procurementProjectId");
+        public Criteria andProjectCodeNotLike(String value) {
+            addCriterion("project_code not like", value, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdBetween(Long value1, Long value2) {
-            addCriterion("procurement_project_id between", value1, value2, "procurementProjectId");
+        public Criteria andProjectCodeIn(List<String> values) {
+            addCriterion("project_code in", values, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andProcurementProjectIdNotBetween(Long value1, Long value2) {
-            addCriterion("procurement_project_id not between", value1, value2, "procurementProjectId");
+        public Criteria andProjectCodeNotIn(List<String> values) {
+            addCriterion("project_code not in", values, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdIsNull() {
-            addCriterion("b_issue_documents_id is null");
+        public Criteria andProjectCodeBetween(String value1, String value2) {
+            addCriterion("project_code between", value1, value2, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdIsNotNull() {
-            addCriterion("b_issue_documents_id is not null");
+        public Criteria andProjectCodeNotBetween(String value1, String value2) {
+            addCriterion("project_code not between", value1, value2, "projectCode");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdEqualTo(Long value) {
-            addCriterion("b_issue_documents_id =", value, "bIssueDocumentsId");
+        public Criteria andProjectNameIsNull() {
+            addCriterion("project_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdNotEqualTo(Long value) {
-            addCriterion("b_issue_documents_id <>", value, "bIssueDocumentsId");
+        public Criteria andProjectNameIsNotNull() {
+            addCriterion("project_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdGreaterThan(Long value) {
-            addCriterion("b_issue_documents_id >", value, "bIssueDocumentsId");
+        public Criteria andProjectNameEqualTo(String value) {
+            addCriterion("project_name =", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("b_issue_documents_id >=", value, "bIssueDocumentsId");
+        public Criteria andProjectNameNotEqualTo(String value) {
+            addCriterion("project_name <>", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdLessThan(Long value) {
-            addCriterion("b_issue_documents_id <", value, "bIssueDocumentsId");
+        public Criteria andProjectNameGreaterThan(String value) {
+            addCriterion("project_name >", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdLessThanOrEqualTo(Long value) {
-            addCriterion("b_issue_documents_id <=", value, "bIssueDocumentsId");
+        public Criteria andProjectNameGreaterThanOrEqualTo(String value) {
+            addCriterion("project_name >=", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdIn(List<Long> values) {
-            addCriterion("b_issue_documents_id in", values, "bIssueDocumentsId");
+        public Criteria andProjectNameLessThan(String value) {
+            addCriterion("project_name <", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdNotIn(List<Long> values) {
-            addCriterion("b_issue_documents_id not in", values, "bIssueDocumentsId");
+        public Criteria andProjectNameLessThanOrEqualTo(String value) {
+            addCriterion("project_name <=", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdBetween(Long value1, Long value2) {
-            addCriterion("b_issue_documents_id between", value1, value2, "bIssueDocumentsId");
+        public Criteria andProjectNameLike(String value) {
+            addCriterion("project_name like", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andBIssueDocumentsIdNotBetween(Long value1, Long value2) {
-            addCriterion("b_issue_documents_id not between", value1, value2, "bIssueDocumentsId");
+        public Criteria andProjectNameNotLike(String value) {
+            addCriterion("project_name not like", value, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountIsNull() {
-            addCriterion("tender_guarantee_amount is null");
+        public Criteria andProjectNameIn(List<String> values) {
+            addCriterion("project_name in", values, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountIsNotNull() {
-            addCriterion("tender_guarantee_amount is not null");
+        public Criteria andProjectNameNotIn(List<String> values) {
+            addCriterion("project_name not in", values, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountEqualTo(BigDecimal value) {
-            addCriterion("tender_guarantee_amount =", value, "tenderGuaranteeAmount");
+        public Criteria andProjectNameBetween(String value1, String value2) {
+            addCriterion("project_name between", value1, value2, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountNotEqualTo(BigDecimal value) {
-            addCriterion("tender_guarantee_amount <>", value, "tenderGuaranteeAmount");
+        public Criteria andProjectNameNotBetween(String value1, String value2) {
+            addCriterion("project_name not between", value1, value2, "projectName");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountGreaterThan(BigDecimal value) {
-            addCriterion("tender_guarantee_amount >", value, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionIsNull() {
+            addCriterion("project_description is null");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("tender_guarantee_amount >=", value, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionIsNotNull() {
+            addCriterion("project_description is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountLessThan(BigDecimal value) {
-            addCriterion("tender_guarantee_amount <", value, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionEqualTo(String value) {
+            addCriterion("project_description =", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("tender_guarantee_amount <=", value, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionNotEqualTo(String value) {
+            addCriterion("project_description <>", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountIn(List<BigDecimal> values) {
-            addCriterion("tender_guarantee_amount in", values, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionGreaterThan(String value) {
+            addCriterion("project_description >", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountNotIn(List<BigDecimal> values) {
-            addCriterion("tender_guarantee_amount not in", values, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("project_description >=", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("tender_guarantee_amount between", value1, value2, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionLessThan(String value) {
+            addCriterion("project_description <", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andTenderGuaranteeAmountNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("tender_guarantee_amount not between", value1, value2, "tenderGuaranteeAmount");
+        public Criteria andProjectDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("project_description <=", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameIsNull() {
-            addCriterion("bids_name is null");
+        public Criteria andProjectDescriptionLike(String value) {
+            addCriterion("project_description like", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameIsNotNull() {
-            addCriterion("bids_name is not null");
+        public Criteria andProjectDescriptionNotLike(String value) {
+            addCriterion("project_description not like", value, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameEqualTo(String value) {
-            addCriterion("bids_name =", value, "bidsName");
+        public Criteria andProjectDescriptionIn(List<String> values) {
+            addCriterion("project_description in", values, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameNotEqualTo(String value) {
-            addCriterion("bids_name <>", value, "bidsName");
+        public Criteria andProjectDescriptionNotIn(List<String> values) {
+            addCriterion("project_description not in", values, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameGreaterThan(String value) {
-            addCriterion("bids_name >", value, "bidsName");
+        public Criteria andProjectDescriptionBetween(String value1, String value2) {
+            addCriterion("project_description between", value1, value2, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameGreaterThanOrEqualTo(String value) {
-            addCriterion("bids_name >=", value, "bidsName");
+        public Criteria andProjectDescriptionNotBetween(String value1, String value2) {
+            addCriterion("project_description not between", value1, value2, "projectDescription");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameLessThan(String value) {
-            addCriterion("bids_name <", value, "bidsName");
+        public Criteria andIsStateDesignationIsNull() {
+            addCriterion("is_state_designation is null");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameLessThanOrEqualTo(String value) {
-            addCriterion("bids_name <=", value, "bidsName");
+        public Criteria andIsStateDesignationIsNotNull() {
+            addCriterion("is_state_designation is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameLike(String value) {
-            addCriterion("bids_name like", value, "bidsName");
+        public Criteria andIsStateDesignationEqualTo(Integer value) {
+            addCriterion("is_state_designation =", value, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameNotLike(String value) {
-            addCriterion("bids_name not like", value, "bidsName");
+        public Criteria andIsStateDesignationNotEqualTo(Integer value) {
+            addCriterion("is_state_designation <>", value, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameIn(List<String> values) {
-            addCriterion("bids_name in", values, "bidsName");
+        public Criteria andIsStateDesignationGreaterThan(Integer value) {
+            addCriterion("is_state_designation >", value, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameNotIn(List<String> values) {
-            addCriterion("bids_name not in", values, "bidsName");
+        public Criteria andIsStateDesignationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_state_designation >=", value, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameBetween(String value1, String value2) {
-            addCriterion("bids_name between", value1, value2, "bidsName");
+        public Criteria andIsStateDesignationLessThan(Integer value) {
+            addCriterion("is_state_designation <", value, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsNameNotBetween(String value1, String value2) {
-            addCriterion("bids_name not between", value1, value2, "bidsName");
+        public Criteria andIsStateDesignationLessThanOrEqualTo(Integer value) {
+            addCriterion("is_state_designation <=", value, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeIsNull() {
-            addCriterion("bids_code is null");
+        public Criteria andIsStateDesignationIn(List<Integer> values) {
+            addCriterion("is_state_designation in", values, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeIsNotNull() {
-            addCriterion("bids_code is not null");
+        public Criteria andIsStateDesignationNotIn(List<Integer> values) {
+            addCriterion("is_state_designation not in", values, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeEqualTo(String value) {
-            addCriterion("bids_code =", value, "bidsCode");
+        public Criteria andIsStateDesignationBetween(Integer value1, Integer value2) {
+            addCriterion("is_state_designation between", value1, value2, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotEqualTo(String value) {
-            addCriterion("bids_code <>", value, "bidsCode");
+        public Criteria andIsStateDesignationNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_state_designation not between", value1, value2, "isStateDesignation");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeGreaterThan(String value) {
-            addCriterion("bids_code >", value, "bidsCode");
+        public Criteria andTotalProjectInvestmentIsNull() {
+            addCriterion("total_project_investment is null");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("bids_code >=", value, "bidsCode");
+        public Criteria andTotalProjectInvestmentIsNotNull() {
+            addCriterion("total_project_investment is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeLessThan(String value) {
-            addCriterion("bids_code <", value, "bidsCode");
+        public Criteria andTotalProjectInvestmentEqualTo(BigDecimal value) {
+            addCriterion("total_project_investment =", value, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeLessThanOrEqualTo(String value) {
-            addCriterion("bids_code <=", value, "bidsCode");
+        public Criteria andTotalProjectInvestmentNotEqualTo(BigDecimal value) {
+            addCriterion("total_project_investment <>", value, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeLike(String value) {
-            addCriterion("bids_code like", value, "bidsCode");
+        public Criteria andTotalProjectInvestmentGreaterThan(BigDecimal value) {
+            addCriterion("total_project_investment >", value, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotLike(String value) {
-            addCriterion("bids_code not like", value, "bidsCode");
+        public Criteria andTotalProjectInvestmentGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_project_investment >=", value, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeIn(List<String> values) {
-            addCriterion("bids_code in", values, "bidsCode");
+        public Criteria andTotalProjectInvestmentLessThan(BigDecimal value) {
+            addCriterion("total_project_investment <", value, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotIn(List<String> values) {
-            addCriterion("bids_code not in", values, "bidsCode");
+        public Criteria andTotalProjectInvestmentLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_project_investment <=", value, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeBetween(String value1, String value2) {
-            addCriterion("bids_code between", value1, value2, "bidsCode");
+        public Criteria andTotalProjectInvestmentIn(List<BigDecimal> values) {
+            addCriterion("total_project_investment in", values, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotBetween(String value1, String value2) {
-            addCriterion("bids_code not between", value1, value2, "bidsCode");
+        public Criteria andTotalProjectInvestmentNotIn(List<BigDecimal> values) {
+            addCriterion("total_project_investment not in", values, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdIsNull() {
-            addCriterion("bids_id is null");
+        public Criteria andTotalProjectInvestmentBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_project_investment between", value1, value2, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdIsNotNull() {
-            addCriterion("bids_id is not null");
+        public Criteria andTotalProjectInvestmentNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_project_investment not between", value1, value2, "totalProjectInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdEqualTo(Long value) {
-            addCriterion("bids_id =", value, "bidsId");
+        public Criteria andSourceOfInvestmentIsNull() {
+            addCriterion("source_of_investment is null");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdNotEqualTo(Long value) {
-            addCriterion("bids_id <>", value, "bidsId");
+        public Criteria andSourceOfInvestmentIsNotNull() {
+            addCriterion("source_of_investment is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdGreaterThan(Long value) {
-            addCriterion("bids_id >", value, "bidsId");
+        public Criteria andSourceOfInvestmentEqualTo(Integer value) {
+            addCriterion("source_of_investment =", value, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("bids_id >=", value, "bidsId");
+        public Criteria andSourceOfInvestmentNotEqualTo(Integer value) {
+            addCriterion("source_of_investment <>", value, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdLessThan(Long value) {
-            addCriterion("bids_id <", value, "bidsId");
+        public Criteria andSourceOfInvestmentGreaterThan(Integer value) {
+            addCriterion("source_of_investment >", value, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdLessThanOrEqualTo(Long value) {
-            addCriterion("bids_id <=", value, "bidsId");
+        public Criteria andSourceOfInvestmentGreaterThanOrEqualTo(Integer value) {
+            addCriterion("source_of_investment >=", value, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdIn(List<Long> values) {
-            addCriterion("bids_id in", values, "bidsId");
+        public Criteria andSourceOfInvestmentLessThan(Integer value) {
+            addCriterion("source_of_investment <", value, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdNotIn(List<Long> values) {
-            addCriterion("bids_id not in", values, "bidsId");
+        public Criteria andSourceOfInvestmentLessThanOrEqualTo(Integer value) {
+            addCriterion("source_of_investment <=", value, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdBetween(Long value1, Long value2) {
-            addCriterion("bids_id between", value1, value2, "bidsId");
+        public Criteria andSourceOfInvestmentIn(List<Integer> values) {
+            addCriterion("source_of_investment in", values, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andBidsIdNotBetween(Long value1, Long value2) {
-            addCriterion("bids_id not between", value1, value2, "bidsId");
+        public Criteria andSourceOfInvestmentNotIn(List<Integer> values) {
+            addCriterion("source_of_investment not in", values, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesIsNull() {
-            addCriterion("receivables is null");
+        public Criteria andSourceOfInvestmentBetween(Integer value1, Integer value2) {
+            addCriterion("source_of_investment between", value1, value2, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesIsNotNull() {
-            addCriterion("receivables is not null");
+        public Criteria andSourceOfInvestmentNotBetween(Integer value1, Integer value2) {
+            addCriterion("source_of_investment not between", value1, value2, "sourceOfInvestment");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesEqualTo(String value) {
-            addCriterion("receivables =", value, "receivables");
+        public Criteria andProjectAddressIsNull() {
+            addCriterion("project_address is null");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesNotEqualTo(String value) {
-            addCriterion("receivables <>", value, "receivables");
+        public Criteria andProjectAddressIsNotNull() {
+            addCriterion("project_address is not null");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesGreaterThan(String value) {
-            addCriterion("receivables >", value, "receivables");
+        public Criteria andProjectAddressEqualTo(String value) {
+            addCriterion("project_address =", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesGreaterThanOrEqualTo(String value) {
-            addCriterion("receivables >=", value, "receivables");
+        public Criteria andProjectAddressNotEqualTo(String value) {
+            addCriterion("project_address <>", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesLessThan(String value) {
-            addCriterion("receivables <", value, "receivables");
+        public Criteria andProjectAddressGreaterThan(String value) {
+            addCriterion("project_address >", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesLessThanOrEqualTo(String value) {
-            addCriterion("receivables <=", value, "receivables");
+        public Criteria andProjectAddressGreaterThanOrEqualTo(String value) {
+            addCriterion("project_address >=", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesLike(String value) {
-            addCriterion("receivables like", value, "receivables");
+        public Criteria andProjectAddressLessThan(String value) {
+            addCriterion("project_address <", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesNotLike(String value) {
-            addCriterion("receivables not like", value, "receivables");
+        public Criteria andProjectAddressLessThanOrEqualTo(String value) {
+            addCriterion("project_address <=", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesIn(List<String> values) {
-            addCriterion("receivables in", values, "receivables");
+        public Criteria andProjectAddressLike(String value) {
+            addCriterion("project_address like", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesNotIn(List<String> values) {
-            addCriterion("receivables not in", values, "receivables");
+        public Criteria andProjectAddressNotLike(String value) {
+            addCriterion("project_address not like", value, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesBetween(String value1, String value2) {
-            addCriterion("receivables between", value1, value2, "receivables");
+        public Criteria andProjectAddressIn(List<String> values) {
+            addCriterion("project_address in", values, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andReceivablesNotBetween(String value1, String value2) {
-            addCriterion("receivables not between", value1, value2, "receivables");
+        public Criteria andProjectAddressNotIn(List<String> values) {
+            addCriterion("project_address not in", values, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountIsNull() {
-            addCriterion("bank_account is null");
+        public Criteria andProjectAddressBetween(String value1, String value2) {
+            addCriterion("project_address between", value1, value2, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountIsNotNull() {
-            addCriterion("bank_account is not null");
+        public Criteria andProjectAddressNotBetween(String value1, String value2) {
+            addCriterion("project_address not between", value1, value2, "projectAddress");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountEqualTo(String value) {
-            addCriterion("bank_account =", value, "bankAccount");
+        public Criteria andPurchaserIdIsNull() {
+            addCriterion("purchaser_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountNotEqualTo(String value) {
-            addCriterion("bank_account <>", value, "bankAccount");
+        public Criteria andPurchaserIdIsNotNull() {
+            addCriterion("purchaser_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountGreaterThan(String value) {
-            addCriterion("bank_account >", value, "bankAccount");
+        public Criteria andPurchaserIdEqualTo(Long value) {
+            addCriterion("purchaser_id =", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountGreaterThanOrEqualTo(String value) {
-            addCriterion("bank_account >=", value, "bankAccount");
+        public Criteria andPurchaserIdNotEqualTo(Long value) {
+            addCriterion("purchaser_id <>", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountLessThan(String value) {
-            addCriterion("bank_account <", value, "bankAccount");
+        public Criteria andPurchaserIdGreaterThan(Long value) {
+            addCriterion("purchaser_id >", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountLessThanOrEqualTo(String value) {
-            addCriterion("bank_account <=", value, "bankAccount");
+        public Criteria andPurchaserIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("purchaser_id >=", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountLike(String value) {
-            addCriterion("bank_account like", value, "bankAccount");
+        public Criteria andPurchaserIdLessThan(Long value) {
+            addCriterion("purchaser_id <", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountNotLike(String value) {
-            addCriterion("bank_account not like", value, "bankAccount");
+        public Criteria andPurchaserIdLessThanOrEqualTo(Long value) {
+            addCriterion("purchaser_id <=", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountIn(List<String> values) {
-            addCriterion("bank_account in", values, "bankAccount");
+        public Criteria andPurchaserIdIn(List<Long> values) {
+            addCriterion("purchaser_id in", values, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountNotIn(List<String> values) {
-            addCriterion("bank_account not in", values, "bankAccount");
+        public Criteria andPurchaserIdNotIn(List<Long> values) {
+            addCriterion("purchaser_id not in", values, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountBetween(String value1, String value2) {
-            addCriterion("bank_account between", value1, value2, "bankAccount");
+        public Criteria andPurchaserIdBetween(Long value1, Long value2) {
+            addCriterion("purchaser_id between", value1, value2, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andBankAccountNotBetween(String value1, String value2) {
-            addCriterion("bank_account not between", value1, value2, "bankAccount");
+        public Criteria andPurchaserIdNotBetween(Long value1, Long value2) {
+            addCriterion("purchaser_id not between", value1, value2, "purchaserId");
             return (Criteria) this;
         }
 
@@ -743,6 +743,76 @@ public class BBidsGuaranteeAmountCriteria {
 
         public Criteria andOperateIdNotBetween(Long value1, Long value2) {
             addCriterion("operate_id not between", value1, value2, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
             return (Criteria) this;
         }
 

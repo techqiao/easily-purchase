@@ -1,18 +1,17 @@
 package com.epc.bidding.service.tender.impl;
 
-import com.epc.bidding.domain.bidding.BBidOpeningPayCriteria;
-import com.epc.bidding.domain.bidding.TPurchaseProjectBids;
-import com.epc.bidding.domain.bidding.TPurchaseProjectBidsCriteria;
-import com.epc.bidding.mapper.bidding.BBidOpeningPayMapper;
-import com.epc.bidding.mapper.bidding.TPurchaseProjectBidsMapper;
-import com.epc.bidding.mapper.bidding.TSupplierBasicInfoMapper;
+import com.epc.bidding.domain.bidding.*;
+import com.epc.bidding.mapper.bidding.*;
 import com.epc.bidding.service.bidding.impl.BiddingServiceimpl;
 import com.epc.bidding.service.tender.TenderService;
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
 import com.epc.web.facade.bidding.dto.PersonDTO;
+import com.epc.web.facade.bidding.query.tender.QueryBackTenderMoneyRecordDTO;
 import com.epc.web.facade.bidding.query.tender.QueryBidPayDTO;
 import com.epc.web.facade.bidding.query.tender.QueryPersonDTO;
 import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
+import com.epc.web.facade.bidding.vo.IsBackTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +37,10 @@ public class TenderServiceImpl implements TenderService {
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     BBidOpeningPayMapper bBidOpeningPayMapper;
+    @Autowired
+    TProjectBasicInfoMapper tProjectBasicInfoMapper;
+    @Autowired
+    BBidsGuaranteeAmountMapper bBidsGuaranteeAmountMapper;
 
     /**
      * 获取机构下面的人员列表
@@ -81,5 +85,46 @@ public class TenderServiceImpl implements TenderService {
     public Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(QueryBidPayDTO dto){
         List<QueryTenderMoneyRecordVO> vo=bBidOpeningPayMapper.selectBidPayRecord(dto.getId());
         return Result.success(vo);
+    }
+
+
+    /**
+     * 查看保证金归还情况
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<IsBackTenderMoneyRecordVO>> isBackTenderMoneyRecordList(QueryBackTenderMoneyRecordDTO dto) {
+        BBidOpeningPayCriteria criteria=new BBidOpeningPayCriteria();
+        BBidOpeningPayCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
+        cubCriteria.andTendererCompanyIdEqualTo(dto.getTendererCompanyId());
+        cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //获取供应商 标段保证金支付列表
+        List<BBidOpeningPay> result=bBidOpeningPayMapper.selectByExample(criteria);
+        if(result.size()==0){
+            return Result.error();
+        }
+        List<IsBackTenderMoneyRecordVO> voList=new ArrayList<>();
+        for(BBidOpeningPay entity:result){
+            IsBackTenderMoneyRecordVO vo=new IsBackTenderMoneyRecordVO();
+            //项目信息
+            TProjectBasicInfo projectBasicInfo= tProjectBasicInfoMapper.selectByPrimaryKey(entity.getProjectId());
+            //标段信息
+            TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
+            BigDecimal money=purchaseProjectBids.getGuaranteePayment();
+            vo.setProjectCode(projectBasicInfo.getProjectCode());
+            vo.setProjectName(projectBasicInfo.getProjectName());
+            vo.setBidsCode(purchaseProjectBids.getBidCode());
+            vo.setBidsName(purchaseProjectBids.getBidName());
+            //实付金额 和 需付金额比较
+            if(entity.getAmountMoney().compareTo(money)>-1){
+                vo.setIsBack(true);
+            }else{
+                vo.setIsBack(false);
+            }
+            voList.add(vo);
+        }
+        return Result.success(voList);
     }
 }

@@ -5,9 +5,11 @@ import com.epc.bidding.service.tender.TenderService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeTenderService;
 import com.epc.web.facade.bidding.dto.PersonDTO;
+import com.epc.web.facade.bidding.query.tender.QueryBackTenderMoneyRecordDTO;
 import com.epc.web.facade.bidding.query.tender.QueryBidPayDTO;
 import com.epc.web.facade.bidding.query.tender.QueryPersonDTO;
 import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
+import com.epc.web.facade.bidding.vo.IsBackTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,11 @@ public class BiddingTenderController implements FacadeTenderService {
         return  tenderService.getPersonList(dto);
     }
 
+
+    @Override
+    public  Result<List<IsBackTenderMoneyRecordVO>> isBackTenderMoneyRecordList(@RequestBody  QueryBackTenderMoneyRecordDTO dto){
+        return tenderService.isBackTenderMoneyRecordList(dto);
+    }
 
 
 }

@@ -2,9 +2,11 @@ package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.PersonDTO;
+import com.epc.web.facade.bidding.query.tender.QueryBackTenderMoneyRecordDTO;
 import com.epc.web.facade.bidding.query.tender.QueryBidPayDTO;
 import com.epc.web.facade.bidding.query.tender.QueryPersonDTO;
 import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
+import com.epc.web.facade.bidding.vo.IsBackTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,4 +47,13 @@ public interface FacadeTenderService {
     @PostMapping(value = "getPersonList", consumes = "application/json; charset=UTF-8")
      Result<List<PersonDTO>> getPersonList(@RequestBody QueryPersonDTO dto);
 
-}
+
+    /**
+     * 供应商查看保证金退还情况
+     * @param dto
+     * @return
+     */
+    @PostMapping(value = "isBackTenderMoneyRecordList", consumes = "application/json; charset=UTF-8")
+    Result<List<IsBackTenderMoneyRecordVO>> isBackTenderMoneyRecordList(@RequestBody QueryBackTenderMoneyRecordDTO dto);
+
+    }

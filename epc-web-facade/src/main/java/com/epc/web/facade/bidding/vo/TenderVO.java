@@ -1,7 +1,10 @@
 package com.epc.web.facade.bidding.vo;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class TenderVO {
 
     private Long id;

@@ -1,8 +1,8 @@
-package com.epc.bidding.service.bidding.impl;
+package com.epc.bidding.service.sign.impl;
 
 import com.epc.bidding.domain.bidding.TSupplierSign;
 import com.epc.bidding.mapper.bidding.TSupplierSignMapper;
-import com.epc.bidding.service.bidding.SignService;
+import com.epc.bidding.service.sign.SignService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.HandleSign;
@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+/**
+ * @author linzhixiang
+ */
 @Service
 public class SignServiceImpl implements SignService {
+
 
     @Autowired
     TSupplierSignMapper tSupplierSignMapper;
@@ -47,12 +51,11 @@ public class SignServiceImpl implements SignService {
      */
     @Override
     public Result<SignBaseDTO> getSignBase(String name, String cellPhone) {
-            SignBaseDTO dto= tSupplierSignMapper.getSignBase(name,cellPhone);
-            if(dto==null){
-                return Result.success("找不到该用户");
-            }
-            return Result.success(dto);
+        SignBaseDTO dto= tSupplierSignMapper.getSignPeronInfo(name,cellPhone);
+        if(dto==null){
+            return Result.success("找不到该用户");
+        }
+        return Result.success(dto);
     }
-
 
 }

@@ -1,7 +1,7 @@
 package com.epc.bidding.controller.bidding;
 
 
-import com.epc.bidding.service.bidding.SignService;
+import com.epc.bidding.service.sign.SignService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeSignService;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;

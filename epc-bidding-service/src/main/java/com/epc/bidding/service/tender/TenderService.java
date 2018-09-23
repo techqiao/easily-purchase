@@ -2,9 +2,11 @@ package com.epc.bidding.service.tender;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.PersonDTO;
+import com.epc.web.facade.bidding.query.tender.QueryBackTenderMoneyRecordDTO;
 import com.epc.web.facade.bidding.query.tender.QueryBidPayDTO;
 import com.epc.web.facade.bidding.query.tender.QueryPersonDTO;
 import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
+import com.epc.web.facade.bidding.vo.IsBackTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
 
@@ -32,4 +34,8 @@ public interface TenderService {
      */
          Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(QueryBidPayDTO dto);
 
-    }
+
+         Result<List<IsBackTenderMoneyRecordVO>>
+         isBackTenderMoneyRecordList(QueryBackTenderMoneyRecordDTO dto);
+
+}

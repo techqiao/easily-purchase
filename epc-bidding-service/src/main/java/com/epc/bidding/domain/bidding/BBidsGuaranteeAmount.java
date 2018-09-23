@@ -15,6 +15,8 @@ public class BBidsGuaranteeAmount implements Serializable {
 
     private String bidsName;
 
+    private String bidsCode;
+
     private Long bidsId;
 
     private String receivables;
@@ -69,6 +71,14 @@ public class BBidsGuaranteeAmount implements Serializable {
 
     public void setBidsName(String bidsName) {
         this.bidsName = bidsName == null ? null : bidsName.trim();
+    }
+
+    public String getBidsCode() {
+        return bidsCode;
+    }
+
+    public void setBidsCode(String bidsCode) {
+        this.bidsCode = bidsCode == null ? null : bidsCode.trim();
     }
 
     public Long getBidsId() {
@@ -138,6 +148,7 @@ public class BBidsGuaranteeAmount implements Serializable {
         sb.append(", bIssueDocumentsId=").append(bIssueDocumentsId);
         sb.append(", tenderGuaranteeAmount=").append(tenderGuaranteeAmount);
         sb.append(", bidsName=").append(bidsName);
+        sb.append(", bidsCode=").append(bidsCode);
         sb.append(", bidsId=").append(bidsId);
         sb.append(", receivables=").append(receivables);
         sb.append(", bankAccount=").append(bankAccount);

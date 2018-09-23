@@ -416,6 +416,76 @@ public class BBidsGuaranteeAmountCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBidsCodeIsNull() {
+            addCriterion("bids_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeIsNotNull() {
+            addCriterion("bids_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeEqualTo(String value) {
+            addCriterion("bids_code =", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotEqualTo(String value) {
+            addCriterion("bids_code <>", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeGreaterThan(String value) {
+            addCriterion("bids_code >", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("bids_code >=", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeLessThan(String value) {
+            addCriterion("bids_code <", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeLessThanOrEqualTo(String value) {
+            addCriterion("bids_code <=", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeLike(String value) {
+            addCriterion("bids_code like", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotLike(String value) {
+            addCriterion("bids_code not like", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeIn(List<String> values) {
+            addCriterion("bids_code in", values, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotIn(List<String> values) {
+            addCriterion("bids_code not in", values, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeBetween(String value1, String value2) {
+            addCriterion("bids_code between", value1, value2, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotBetween(String value1, String value2) {
+            addCriterion("bids_code not between", value1, value2, "bidsCode");
+            return (Criteria) this;
+        }
+
         public Criteria andBidsIdIsNull() {
             addCriterion("bids_id is null");
             return (Criteria) this;

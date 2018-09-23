@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class NoticeDetailVO implements Serializable {
 
-    private static final long serialVersionUID = -8445436128833921499L;
+    private static  long serialVersionUID = -8445436128833921499L;
     private Long id;
     private Date biddingStart;
     private Date biddingEnd;

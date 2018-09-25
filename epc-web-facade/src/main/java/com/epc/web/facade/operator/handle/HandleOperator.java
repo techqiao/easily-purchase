@@ -30,47 +30,20 @@ public class HandleOperator implements Serializable {
     /**
      * 员工姓名
      */
-    private String userName;
+    private String name;
 
     /**
      * 手机号
      */
-    private String cellPhone;
+    private String cellphone;
 
     /**
      * 密码
      */
-    private String passWord;
+    private String password;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
-    public String getCellPhone() {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
 }

@@ -50,7 +50,7 @@ public class TSupplierBasicInfoController {
         return supplierClient.deleteSupplierEmployeeById(handleFindSupplierByInfo);
     }
 
-    @ApiOperation(value = "员工查看 公司详情",notes = "员工查看 公司详情")
+    @ApiOperation(value = "员工id来查询（公司法人supplier_id） 公司详情（包括附件）",notes = "员工id来查询（公司法人supplier_id） 公司详情（包括附件）")
     @PostMapping(value = "/findSupplierDetailByEmployee")
     Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(@RequestBody ClientHandleFindSupplierByInfo clientHandleFindSupplierByInfo){
         HandleFindSupplierByInfo  handleFindSupplierByInfo=new HandleFindSupplierByInfo();
@@ -69,13 +69,13 @@ public class TSupplierBasicInfoController {
     }
 
 
-    @ApiOperation(value="根据名字电话来得到这个人的信息",notes = "根据名字电话来得到这个人的信息")
-    @PostMapping(value = "/findByNameSupplier")
-    public Result<SupplierBasicInfoVO> findByName(@RequestBody ClientHandleFindSupplierByInfo clientHandleFindSupplierByInfo) {
-        HandleFindSupplierByInfo handleFindSupplierByInfo =new HandleFindSupplierByInfo();
-        BeanUtils.copyProperties(clientHandleFindSupplierByInfo,handleFindSupplierByInfo);
-        return supplierClient.findByName(handleFindSupplierByInfo);
-    }
+//    @ApiOperation(value="根据名字电话来得到这个人的信息",notes = "根据名字电话来得到这个人的信息")
+//    @PostMapping(value = "/findByNameSupplier")
+//    public Result<SupplierBasicInfoVO> findByName(@RequestBody ClientHandleFindSupplierByInfo clientHandleFindSupplierByInfo) {
+//        HandleFindSupplierByInfo handleFindSupplierByInfo =new HandleFindSupplierByInfo();
+//        BeanUtils.copyProperties(clientHandleFindSupplierByInfo,handleFindSupplierByInfo);
+//        return supplierClient.findByName(handleFindSupplierByInfo);
+//    }
 
 
     @ApiOperation(value="忘记密码",notes = "忘记密码")
@@ -115,7 +115,7 @@ public class TSupplierBasicInfoController {
     }
 
     @ApiOperation(value = "完善供应商信息",notes = "完善供应商信息")
-    @PostMapping(value = "/completeSupplierInfo")
+    @PostMapping(value = "/insertCompleteSupplierInfo")
     Result<Boolean> insertCompleteSupplierInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo){
         RoleDetailInfo roleDetailInfo=new RoleDetailInfo();
         BeanUtils.copyProperties(clientRoleDetailInfo,roleDetailInfo);

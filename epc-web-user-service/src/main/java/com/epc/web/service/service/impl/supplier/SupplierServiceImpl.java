@@ -189,7 +189,7 @@ public class SupplierServiceImpl implements SupplierService {
 //    }
 
     /**
-     * 员工来查询（公司法人supplier_id） 公司详情（包括附件）
+     * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
@@ -199,9 +199,17 @@ public class SupplierServiceImpl implements SupplierService {
         TSupplierBasicInfo supplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
         //得到法人supplier_id
         Long supplierId = supplierBasicInfo.getSupplierId();
+
+        /**
+         * 然后在basic同一个表中将法人的名字，电话，状态，角色 ，创建时间，更新时间都查出来
+         * 因为supplier_id与id一样
+         */
+        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(supplierId);
+
         //依据员工的法人id来查询另外两张表，supplier_detail; supplier_attachment
-        TSupplierAttachmentCriteria criteria=new TSupplierAttachmentCriteria();
-        TSupplierAttachmentCriteria.Criteria subCriteria = criteria.createCriteria();
+
+        TSupplierAttachmentCriteria criteriaAtt=new TSupplierAttachmentCriteria();
+        TSupplierAttachmentCriteria.Criteria subCriteria = criteriaAtt.createCriteria();
 
         TSupplierDetailInfoCriteria criteriaDetail=new TSupplierDetailInfoCriteria();
         TSupplierDetailInfoCriteria.Criteria subCriteriaDetail = criteriaDetail.createCriteria();
@@ -210,37 +218,83 @@ public class SupplierServiceImpl implements SupplierService {
             subCriteria.andSupplierIdEqualTo(supplierId);
             subCriteriaDetail.andSupplierIdEqualTo(supplierId);
         }
-
         TSupplierDetailInfo tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(criteriaDetail).get(0);
+        //测试
+//        System.out.println(tSupplierDetailInfos.getSupplierId()+"\n"+tSupplierDetailInfos.getPublicBanAccountNumber()+"\n"+
+//            tSupplierDetailInfos.getPublicBankName()+"\n"+tSupplierDetailInfos.getId()+"\n"+tSupplierDetailInfos.getCompanyName()
+//        );
 
-        List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(criteria);
+        List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(criteriaAtt);
+
         RoleDetailInfo roleDetailInfo=new RoleDetailInfo();
 
         for(TSupplierAttachment ts:tSupplierAttachments){
-            if(ts.getCertificateType()==AttachmentEnum.BUSINESS_LICENSE.getCode()){
+            if(ts.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+                //营业执照照片url
                 roleDetailInfo.setBusinessLicense(ts.getCertificateFilePath());
+                roleDetailInfo.setBusinessLicenseNumber(ts.getCertificateNumber());
                 continue;
             }
-            if(ts.getCertificateType()==AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode()){
+            if(ts.getCertificateType().equals(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode())){
+                //资质证书url
                 roleDetailInfo.setQualificationCertificate(ts.getCertificateFilePath());
+                roleDetailInfo.setQualificationCertificateNumber(ts.getCertificateNumber());
                 continue;
             }
-            if(ts.getCertificateType()==AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode()){
+            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                //法人身份证正面照片url
                 roleDetailInfo.setLegalIdCardPositive(ts.getCertificateFilePath());
+                roleDetailInfo.setLegalIdCardPositiveNumber(ts.getCertificateNumber());
                 continue;
             }
-            if(ts.getCertificateType()==AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode()){
+            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                //法人身份证反面照片url
                 roleDetailInfo.setLegalIdCardOther(ts.getCertificateFilePath());
                 continue;
             }
-            if(ts.getCertificateType()==AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode()){
+            if(ts.getCertificateType().equals(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode())){
+                //经办人(运营商员工)手持身份证正面照片url
                 roleDetailInfo.setOperatorIdCardFront(ts.getCertificateFilePath());
+                roleDetailInfo.setOperatorIdCardFrontNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode())){
+                //带公章的授权书照片url
+                roleDetailInfo.setCertificateOfAuthorization(ts.getCertificateFilePath());
+                roleDetailInfo.setCertificateOfAuthorizationNumber(ts.getCertificateNumber());
                 continue;
             }
         }
         SupplierAttachmentAndDetailVO vo=new SupplierAttachmentAndDetailVO();
-        BeanUtils.copyProperties(tSupplierDetailInfos,vo);
+        //测试
+//        System.out.println(tSupplierDetailInfos.getSupplierId()+"\n"+tSupplierDetailInfos.getPublicBanAccountNumber()+"\n"+
+//            tSupplierDetailInfos.getPublicBankName()+"\n"+tSupplierDetailInfos.getId()+"\n"+tSupplierDetailInfos.getCompanyName()
+//        );
+
+
+//        vo.setName(tSupplierBasicInfo.getName());
+//        vo.setCellphone(tSupplierBasicInfo.getCellphone());
+//        vo.setState(tSupplierBasicInfo.getState());
+//        vo.setRole(tSupplierBasicInfo.getRole());
+
+
+        //将附件的所有信息复制到返回类中
         BeanUtils.copyProperties(roleDetailInfo,vo);
+
+        //将依据supplier_id查询出来detail表中信息copy到返回类中
+        BeanUtils.copyProperties(tSupplierDetailInfos,vo);
+
+        //将法人的基本信息复制到返回类中
+        BeanUtils.copyProperties(tSupplierBasicInfo,vo);
+
+        //创建时间与更新时间取的是basic表中的时间
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd E HH:mm:ss a");
+        String createAt = format.format(tSupplierBasicInfo.getCreateAt());
+        String updateAt=format.format(tSupplierBasicInfo.getUpdateAt());
+        vo.setCreateAt(createAt);
+        vo.setUpdateAt(updateAt);
+
+
         return Result.success(vo);
     }
 
@@ -284,25 +338,25 @@ public class SupplierServiceImpl implements SupplierService {
     /**
      * 依据名字和电话查询用户信息
      */
-    @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
-    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-
-        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        String name=handleFindSupplierByInfo.getName();
-        String cellphone=handleFindSupplierByInfo.getCellphone();
-        if(StringUtils.isNotBlank(name)){
-            subCriteria.andNameEqualTo(name);
-        }
-        if(StringUtils.isNotBlank(cellphone)){
-            subCriteria.andCellphoneEqualTo(cellphone);
-        }
-        List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
-        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
-        BeanUtils.copyProperties(list.get(0),vo);
-        return Result.success(vo);
-    }
+//    @Override
+//    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+//    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+//
+//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+//        String name=handleFindSupplierByInfo.getName();
+//        String cellphone=handleFindSupplierByInfo.getCellphone();
+//        if(StringUtils.isNotBlank(name)){
+//            subCriteria.andNameEqualTo(name);
+//        }
+//        if(StringUtils.isNotBlank(cellphone)){
+//            subCriteria.andCellphoneEqualTo(cellphone);
+//        }
+//        List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
+//        SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
+//        BeanUtils.copyProperties(list.get(0),vo);
+//        return Result.success(vo);
+//    }
 
     /**
      *  忘记密码
@@ -434,46 +488,100 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
+
         Date date=new Date();
-        TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
-        BeanUtils.copyProperties(roleDetailInfo, detailInfo);
+
+        //设置供应商详情表中的一些信息，并插入一条数据到detail
+        TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
+        BeanUtils.copyProperties(roleDetailInfo, tSupplierDetailInfo);
         //将basic表中的主键id（员工id）设置到detail表中为法人supplier_id
-        detailInfo.setSupplierId(roleDetailInfo.getUserId());
-        detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        detailInfo.setCreateAt(date);
-        detailInfo.setUpdateAt(date);
+        tSupplierDetailInfo.setSupplierId(roleDetailInfo.getSupplierId());
+        tSupplierDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        tSupplierDetailInfo.setCreateAt(date);
+        tSupplierDetailInfo.setUpdateAt(date);
 
         TSupplierAttachment attachment = new TSupplierAttachment();
-        attachment.setSupplierId(roleDetailInfo.getUserId());
+        attachment.setSupplierId(roleDetailInfo.getSupplierId());
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         try {
-            tSupplierDetailInfoMapper.insertSelective(detailInfo);
-            //带公章的授权书照片url
+
+            tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
+
+            //证书类型(带公章的授权书照片)
             attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+            //带公章的授权书照片url
             attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
-            tSupplierAttachmentMapper.insertSelective(attachment);
-            //经办人(运营商员工)手持身份证正面照片url
+            //公章证书名字
+            attachment.setCertificateName(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getDesc());
+            //公章证书号码
+            attachment.setCertificateNumber(roleDetailInfo.getCertificateOfAuthorizationNumber());
+            tSupplierAttachmentMapper.insertSelective(attachment); //插入一条数据
+
+            //证书类型(经办人(运营商员工)手持身份证正面照片)
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            //经办人(运营商员工)手持身份证正面照片url
             attachment.setCertificateFilePath(roleDetailInfo.getOperatorIdCardFront());
+            //证书名字
+            attachment.setCertificateName(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc());
+            //证书上的号码
+            attachment.setCertificateNumber(roleDetailInfo.getOperatorIdCardFrontNumber());
             tSupplierAttachmentMapper.insertSelective(attachment);
-            //法人身份证反面照片url
+
+            //证书类型(法人身份证反面照片)
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            //法人身份证反面照片url
             attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
+            //证书名字
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
             tSupplierAttachmentMapper.insertSelective(attachment);
-            //法人身份证正面照片url
+
+            //证书类型(法人身份证正面照片)
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            //法人身份证正面照片url
             attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
+            //证书名字
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            //证书号码
+            attachment.setCertificateNumber(roleDetailInfo.getLegalIdCardPositiveNumber());
             tSupplierAttachmentMapper.insertSelective(attachment);
-            //营业执照照片url
+
+            //证书类型(营业执照照片)
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            //营业执照照片url
             attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
+            //证书名称
+            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
+            //证书号码
+            attachment.setCertificateNumber(roleDetailInfo.getBusinessLicenseNumber());
             tSupplierAttachmentMapper.insertSelective(attachment);
-            //资质证书url
+
+            //证书类型(资质证书)
             attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+            //资质证书url
             attachment.setCertificateFilePath(roleDetailInfo.getQualificationCertificate());
+            //证书名称
+            attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+            //证书号码
+            attachment.setCertificateNumber(roleDetailInfo.getQualificationCertificateNumber());
             tSupplierAttachmentMapper.insertSelective(attachment);
+
+
+
+            //依据客户端传过来的id来查询对detail attachment 来操作
+            TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(roleDetailInfo.getSupplierId());
+            //设置法人姓名
+            tSupplierBasicInfo.setName(roleDetailInfo.getName());
+            //设置状态为（state）2:已提交
+            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            //设置更新日期
+            tSupplierBasicInfo.setUpdateAt(date);
+
+            //将修改（增加）的数据更新到其中
+            tSupplierBasicInfoMapper.updateByPrimaryKey(tSupplierBasicInfo);
+
+
             return Result.success();
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
@@ -483,6 +591,5 @@ public class SupplierServiceImpl implements SupplierService {
             return Result.error(e.getMessage());
         }
     }
-
 
 }

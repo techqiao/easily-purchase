@@ -67,10 +67,10 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     /**
      * 根据名字或者电话来得到这个人的信息
      */
-    @Override
-    public Result<SupplierBasicInfoVO> findByName(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return supplierService.findByName(handleFindSupplierByInfo);
-    }
+//    @Override
+//    public Result<SupplierBasicInfoVO> findByName(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
+//        return supplierService.findByName(handleFindSupplierByInfo);
+//    }
 
     /**
      *  忘记密码

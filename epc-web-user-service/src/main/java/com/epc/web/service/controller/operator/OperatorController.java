@@ -34,8 +34,8 @@ public class OperatorController implements FacadeOperatorService {
      * @author donghuan
      */
     @Override
-    public Result<Boolean> registerOperator(@RequestBody  HandleOperatorDetail handleOperatorDetail) {
-        return operatorService.registerOperator(handleOperatorDetail);
+    public Result<Boolean> registerOperator(@RequestBody  HandleOperator handleOperator) {
+        return operatorService.registerOperator(handleOperator);
     }
 
     /**

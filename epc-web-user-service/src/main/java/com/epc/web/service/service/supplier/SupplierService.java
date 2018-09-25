@@ -41,9 +41,9 @@ public interface SupplierService {
     Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
-     * 查询用户信息，依据电话或者密码来查找这个人的详细信息
+     * 查询用户信息，依据电话密码来查找这个人的详细信息
      */
-    Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo);
+//    Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 忘记密码

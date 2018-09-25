@@ -5,7 +5,6 @@ import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -51,11 +50,11 @@ public interface FacadeTSupplierBasicInfoService {
     Result<SupplierBasicInfoVO> findSupplierByCellphone(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo);
 
 
-    /**
-     * 查询用户信息，依据电话密码来查找这个人的详细信息
-     */
-    @GetMapping(value = "findByNameSupplier",consumes = "application/json;charset=UTF-8")
-    Result<SupplierBasicInfoVO> findByName(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo);
+//    /**
+//     * 查询用户信息，依据电话密码来查找这个人的详细信息
+//     */
+//    @GetMapping(value = "findByNameSupplier",consumes = "application/json;charset=UTF-8")
+//    Result<SupplierBasicInfoVO> findByName(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 忘记密码
@@ -89,7 +88,7 @@ public interface FacadeTSupplierBasicInfoService {
     /**
      * 完善供应商信息
      */
-    @PostMapping(value = "completeSupplierInfo",consumes ="application/json;charset=UTF-8" )
+    @PostMapping(value = "insertCompleteSupplierInfo",consumes ="application/json;charset=UTF-8" )
     Result<Boolean> insertCompleteSupplierInfo(@RequestBody RoleDetailInfo roleDetailInfo);
 
 

@@ -37,7 +37,6 @@ import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.purchaser.PurchaserService;
-import com.epc.web.service.service.supplier.TSupplierBasicInfoService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,8 +61,6 @@ public class PurchaserServiceImpl implements PurchaserService {
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
     @Autowired
     TOperatorPurchaserMapper tOperatorPurchaserMapper;
-    @Autowired
-    TSupplierBasicInfoService tSupplierBasicInfoService;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired
@@ -138,6 +135,8 @@ public class PurchaserServiceImpl implements PurchaserService {
     }
 
 
+
+
     /**
      * @Description: 采购人新增 供应商信息
      * @Author: linzhixiang
@@ -154,7 +153,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         //同一个要约人不能再数据库中有两条以上相同信息的供货商,根据要约人的id
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
-        criteria1.andCellphoneEqualTo(handleSupplierDetail.getCellPhone());
+        criteria1.andCellphoneEqualTo(handleSupplierDetail.getCellphone());
         criteria1.andNameEqualTo(handleSupplierDetail.getCompanyName());
         criteria1.andInviterIdEqualTo(handleSupplierDetail.getSupplierId());
         List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
@@ -165,7 +164,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         Date date = new Date();
-        pojo.setCellphone(handleSupplierDetail.getCellPhone());
+        pojo.setCellphone(handleSupplierDetail.getCellphone());
         pojo.setName(handleSupplierDetail.getCompanyName());
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setState(Const.STATE.REGISTERED);

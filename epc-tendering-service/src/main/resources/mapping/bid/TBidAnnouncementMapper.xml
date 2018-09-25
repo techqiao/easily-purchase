@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.tendering.service.mapper.bid.TTenderMessageMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.TTenderMessage" >
+<mapper namespace="com.epc.tendering.service.mapper.bid.TBidAnnouncementMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.TBidAnnouncement" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
-    <result column="release_announcement_id" property="releaseAnnouncementId" jdbcType="BIGINT" />
-    <result column="bid_id" property="bidId" jdbcType="BIGINT" />
-    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="operate_name" property="operateName" jdbcType="VARCHAR" />
-    <result column="delegator" property="delegator" jdbcType="VARCHAR" />
-    <result column="identit_card" property="identitCard" jdbcType="VARCHAR" />
-    <result column="bailment_path" property="bailmentPath" jdbcType="VARCHAR" />
-    <result column="bid_appendix" property="bidAppendix" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -77,17 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchase_project_id, release_announcement_id, bid_id, company_id, operate_id, 
-    operate_name, delegator, identit_card, bailment_path, bid_appendix, status, create_at, 
-    update_at, is_deleted
+    id, purchase_project_id, bids_id, file_path, operate_id, creator, create_at, update_at, 
+    is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TTenderMessageCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncementCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_tender_message
+    from t_bid_announcement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -98,74 +91,50 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from t_tender_message
+    from t_bid_announcement
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from t_tender_message
+    delete from t_bid_announcement
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.TTenderMessageCriteria" >
-    delete from t_tender_message
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncementCriteria" >
+    delete from t_bid_announcement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.TTenderMessage" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncement" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_tender_message (purchase_project_id, release_announcement_id, 
-      bid_id, company_id, operate_id, 
-      operate_name, delegator, identit_card, 
-      bailment_path, bid_appendix, status, 
-      create_at, update_at, is_deleted
-      )
-    values (#{purchaseProjectId,jdbcType=BIGINT}, #{releaseAnnouncementId,jdbcType=BIGINT}, 
-      #{bidId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
-      #{operateName,jdbcType=VARCHAR}, #{delegator,jdbcType=VARCHAR}, #{identitCard,jdbcType=VARCHAR}, 
-      #{bailmentPath,jdbcType=VARCHAR}, #{bidAppendix,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+    insert into t_bid_announcement (purchase_project_id, bids_id, file_path, 
+      operate_id, creator, create_at, 
+      update_at, is_deleted)
+    values (#{purchaseProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TTenderMessage" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncement" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_tender_message
+    insert into t_bid_announcement
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="purchaseProjectId != null" >
         purchase_project_id,
       </if>
-      <if test="releaseAnnouncementId != null" >
-        release_announcement_id,
+      <if test="bidsId != null" >
+        bids_id,
       </if>
-      <if test="bidId != null" >
-        bid_id,
-      </if>
-      <if test="companyId != null" >
-        company_id,
+      <if test="filePath != null" >
+        file_path,
       </if>
       <if test="operateId != null" >
         operate_id,
       </if>
-      <if test="operateName != null" >
-        operate_name,
-      </if>
-      <if test="delegator != null" >
-        delegator,
-      </if>
-      <if test="identitCard != null" >
-        identit_card,
-      </if>
-      <if test="bailmentPath != null" >
-        bailment_path,
-      </if>
-      <if test="bidAppendix != null" >
-        bid_appendix,
-      </if>
-      <if test="status != null" >
-        status,
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -181,35 +150,17 @@
       <if test="purchaseProjectId != null" >
         #{purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="releaseAnnouncementId != null" >
-        #{releaseAnnouncementId,jdbcType=BIGINT},
+      <if test="bidsId != null" >
+        #{bidsId,jdbcType=BIGINT},
       </if>
-      <if test="bidId != null" >
-        #{bidId,jdbcType=BIGINT},
-      </if>
-      <if test="companyId != null" >
-        #{companyId,jdbcType=BIGINT},
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
       </if>
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="operateName != null" >
-        #{operateName,jdbcType=VARCHAR},
-      </if>
-      <if test="delegator != null" >
-        #{delegator,jdbcType=VARCHAR},
-      </if>
-      <if test="identitCard != null" >
-        #{identitCard,jdbcType=VARCHAR},
-      </if>
-      <if test="bailmentPath != null" >
-        #{bailmentPath,jdbcType=VARCHAR},
-      </if>
-      <if test="bidAppendix != null" >
-        #{bidAppendix,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -222,14 +173,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.TTenderMessageCriteria" resultType="java.lang.Integer" >
-    select count(*) from t_tender_message
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncementCriteria" resultType="java.lang.Integer" >
+    select count(*) from t_bid_announcement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_tender_message
+    update t_bid_announcement
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
@@ -237,35 +188,17 @@
       <if test="record.purchaseProjectId != null" >
         purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="record.releaseAnnouncementId != null" >
-        release_announcement_id = #{record.releaseAnnouncementId,jdbcType=BIGINT},
+      <if test="record.bidsId != null" >
+        bids_id = #{record.bidsId,jdbcType=BIGINT},
       </if>
-      <if test="record.bidId != null" >
-        bid_id = #{record.bidId,jdbcType=BIGINT},
-      </if>
-      <if test="record.companyId != null" >
-        company_id = #{record.companyId,jdbcType=BIGINT},
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
       </if>
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
-      <if test="record.operateName != null" >
-        operate_name = #{record.operateName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.delegator != null" >
-        delegator = #{record.delegator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.identitCard != null" >
-        identit_card = #{record.identitCard,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bailmentPath != null" >
-        bailment_path = #{record.bailmentPath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bidAppendix != null" >
-        bid_appendix = #{record.bidAppendix,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -282,19 +215,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_tender_message
+    update t_bid_announcement
     set id = #{record.id,jdbcType=BIGINT},
       purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
-      release_announcement_id = #{record.releaseAnnouncementId,jdbcType=BIGINT},
-      bid_id = #{record.bidId,jdbcType=BIGINT},
-      company_id = #{record.companyId,jdbcType=BIGINT},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
-      operate_name = #{record.operateName,jdbcType=VARCHAR},
-      delegator = #{record.delegator,jdbcType=VARCHAR},
-      identit_card = #{record.identitCard,jdbcType=VARCHAR},
-      bailment_path = #{record.bailmentPath,jdbcType=VARCHAR},
-      bid_appendix = #{record.bidAppendix,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -302,41 +229,23 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.TTenderMessage" >
-    update t_tender_message
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncement" >
+    update t_bid_announcement
     <set >
       <if test="purchaseProjectId != null" >
         purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="releaseAnnouncementId != null" >
-        release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
+      <if test="bidsId != null" >
+        bids_id = #{bidsId,jdbcType=BIGINT},
       </if>
-      <if test="bidId != null" >
-        bid_id = #{bidId,jdbcType=BIGINT},
-      </if>
-      <if test="companyId != null" >
-        company_id = #{companyId,jdbcType=BIGINT},
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
       </if>
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="operateName != null" >
-        operate_name = #{operateName,jdbcType=VARCHAR},
-      </if>
-      <if test="delegator != null" >
-        delegator = #{delegator,jdbcType=VARCHAR},
-      </if>
-      <if test="identitCard != null" >
-        identit_card = #{identitCard,jdbcType=VARCHAR},
-      </if>
-      <if test="bailmentPath != null" >
-        bailment_path = #{bailmentPath,jdbcType=VARCHAR},
-      </if>
-      <if test="bidAppendix != null" >
-        bid_appendix = #{bidAppendix,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -350,31 +259,25 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.TTenderMessage" >
-    update t_tender_message
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncement" >
+    update t_bid_announcement
     set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
-      release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
-      bid_id = #{bidId,jdbcType=BIGINT},
-      company_id = #{companyId,jdbcType=BIGINT},
+      bids_id = #{bidsId,jdbcType=BIGINT},
+      file_path = #{filePath,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
-      operate_name = #{operateName,jdbcType=VARCHAR},
-      delegator = #{delegator,jdbcType=VARCHAR},
-      identit_card = #{identitCard,jdbcType=VARCHAR},
-      bailment_path = #{bailmentPath,jdbcType=VARCHAR},
-      bid_appendix = #{bidAppendix,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TTenderMessageCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TBidAnnouncementCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_tender_message
+    from t_bid_announcement
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

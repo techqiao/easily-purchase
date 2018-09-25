@@ -1,16 +1,10 @@
 package com.epc.tendering.service.service.committee.impl;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
-import com.epc.common.util.RandomDataUtil;
 import com.epc.tendering.service.domain.committee.BAssessmentCommittee;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert;
-import com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpertCriteria;
 import com.epc.tendering.service.domain.expert.TExpertBasicInfo;
 import com.epc.tendering.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeBidMapper;
@@ -28,6 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class CommitteeServiceImpl implements CommitteeService {
@@ -51,7 +50,7 @@ public class CommitteeServiceImpl implements CommitteeService {
         /** 组建评委员会*/
         BAssessmentCommittee committee=new BAssessmentCommittee();
         BeanUtils.copyProperties(dto,committee);
-       // committee.setProcessState(Const.PROCESS_STATE.CHECK);
+        committee.setProcessState(Const.PROCESS_STATE.CHECK);
         committee.setCreateAt(new Date());
         committee.setUpdateAt(new Date());
         committee.setIsDeleted(Const.IS_DELETED.NOT_DELETED);

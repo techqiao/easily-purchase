@@ -18,12 +18,6 @@ public interface MoneyPayService {
      */
      Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto);
 
-
-    /**
-     * 根据中标服务费表ID查询某标段供应商的服务费是否支付
-     * @param dto
-     * @return
-     */
      Result<Boolean> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto);
 
     }

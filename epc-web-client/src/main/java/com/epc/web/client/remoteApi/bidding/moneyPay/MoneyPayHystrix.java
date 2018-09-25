@@ -9,6 +9,7 @@ import com.epc.web.facade.bidding.vo.MoneyPayVO;
 import java.util.List;
 
 public class MoneyPayHystrix implements FacadeMoneyPayService {
+
     @Override
     public Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto) {
         return Result.hystrixError();

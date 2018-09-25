@@ -11,6 +11,8 @@ import lombok.Data;
 @ApiModel(value = "新增问题记录",description = "新增问题记录")
 public class ClientHandleQuestion {
 
+    @ApiModelProperty(value = "采购项目ID")
+    private Long procurementProjectId;
     @ApiModelProperty(value = "提问人ID")
     private Long questionerId;
     @ApiModelProperty("提问人姓名")

@@ -67,7 +67,7 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         if(result.size()>0 && result.get(0).getGuaranteePaymentReal().compareTo(dto.getServiceMoney())>-1){
             return Result.success(true);
         }else{
-            return Result.success(false);
+            return Result.error();
         }
     }
 

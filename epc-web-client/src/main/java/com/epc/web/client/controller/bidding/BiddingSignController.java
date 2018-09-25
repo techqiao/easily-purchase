@@ -35,12 +35,12 @@ public class BiddingSignController {
     public Result<Boolean> supplierSign(@RequestBody ClientSign clientSign){
         BasePersonInfo basePersonInfo =new BasePersonInfo();
         BeanUtils.copyProperties(clientSign,basePersonInfo);
-        SignBaseDTO signBaseDTO=null;
-        try{
-             signBaseDTO= signClient.getSignBase(basePersonInfo).getData();
-        }catch (Exception e){
+        SignBaseDTO signBaseDTO=signClient.getSignBase(basePersonInfo).getData();
 
+        if(signBaseDTO==null){
+            return Result.error("数据库查询不到该用户的信息");
         }
+
         HandleSign handleSign=new HandleSign();
         BeanUtils.copyProperties(clientSign,handleSign);
         BeanUtils.copyProperties(signBaseDTO,handleSign);

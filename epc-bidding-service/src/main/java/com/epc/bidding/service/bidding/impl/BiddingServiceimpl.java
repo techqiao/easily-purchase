@@ -156,6 +156,7 @@ public class BiddingServiceimpl implements BiddingService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion){
         BAnswerQuestion entity= new BAnswerQuestion();
         entity.setProcurementProjectId(handleQuestion.getProcurementProjectId());
@@ -169,14 +170,15 @@ public class BiddingServiceimpl implements BiddingService {
         try{
             bAnswerQuestionMapper.insertSelective(entity);
         }catch (Exception e){
-            return  Result.error();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
         }
         return  Result.success(true);
     }
 
 
     /**
-     * 上传 预审/投标 文件列表
+     * 上传 预审 文件列表
      * @param handlePretriaFile
      * @return
      */

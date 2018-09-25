@@ -70,7 +70,7 @@ public interface FacadePurchaserService {
      * @param  dto
      * @return
      */
-    @PostMapping(value = "updateSupplierDetail", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "updatePurchaserSupplierDetail", consumes = "application/json; charset=UTF-8")
     Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto dto);
 
     /**

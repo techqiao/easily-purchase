@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.tendering.service.mapper.committee.BAssessmentCommitteeExpertMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="committee_bid_id" property="committeeBidId" jdbcType="BIGINT" />
+    <result column="notice_time" property="noticeTime" jdbcType="TIMESTAMP" />
+    <result column="notice_mode" property="noticeMode" jdbcType="VARCHAR" />
+    <result column="expert_area" property="expertArea" jdbcType="VARCHAR" />
+    <result column="expert_id" property="expertId" jdbcType="BIGINT" />
+    <result column="expert_name" property="expertName" jdbcType="VARCHAR" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, committee_bid_id, notice_time, notice_mode, expert_area, expert_id, expert_name, 
+    operate_id, create_at, update_at, is_deleted
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpertCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_assessment_committee_expert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_assessment_committee_expert
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_assessment_committee_expert
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpertCriteria" >
+    delete from b_assessment_committee_expert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_assessment_committee_expert (committee_bid_id, notice_time, notice_mode, 
+      expert_area, expert_id, expert_name, 
+      operate_id, create_at, update_at, 
+      is_deleted)
+    values (#{committeeBidId,jdbcType=BIGINT}, #{noticeTime,jdbcType=TIMESTAMP}, #{noticeMode,jdbcType=VARCHAR}, 
+      #{expertArea,jdbcType=VARCHAR}, #{expertId,jdbcType=BIGINT}, #{expertName,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_assessment_committee_expert
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="committeeBidId != null" >
+        committee_bid_id,
+      </if>
+      <if test="noticeTime != null" >
+        notice_time,
+      </if>
+      <if test="noticeMode != null" >
+        notice_mode,
+      </if>
+      <if test="expertArea != null" >
+        expert_area,
+      </if>
+      <if test="expertId != null" >
+        expert_id,
+      </if>
+      <if test="expertName != null" >
+        expert_name,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="committeeBidId != null" >
+        #{committeeBidId,jdbcType=BIGINT},
+      </if>
+      <if test="noticeTime != null" >
+        #{noticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noticeMode != null" >
+        #{noticeMode,jdbcType=VARCHAR},
+      </if>
+      <if test="expertArea != null" >
+        #{expertArea,jdbcType=VARCHAR},
+      </if>
+      <if test="expertId != null" >
+        #{expertId,jdbcType=BIGINT},
+      </if>
+      <if test="expertName != null" >
+        #{expertName,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpertCriteria" resultType="java.lang.Integer" >
+    select count(*) from b_assessment_committee_expert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_assessment_committee_expert
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.committeeBidId != null" >
+        committee_bid_id = #{record.committeeBidId,jdbcType=BIGINT},
+      </if>
+      <if test="record.noticeTime != null" >
+        notice_time = #{record.noticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.noticeMode != null" >
+        notice_mode = #{record.noticeMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expertArea != null" >
+        expert_area = #{record.expertArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expertId != null" >
+        expert_id = #{record.expertId,jdbcType=BIGINT},
+      </if>
+      <if test="record.expertName != null" >
+        expert_name = #{record.expertName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null" >
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_assessment_committee_expert
+    set id = #{record.id,jdbcType=BIGINT},
+      committee_bid_id = #{record.committeeBidId,jdbcType=BIGINT},
+      notice_time = #{record.noticeTime,jdbcType=TIMESTAMP},
+      notice_mode = #{record.noticeMode,jdbcType=VARCHAR},
+      expert_area = #{record.expertArea,jdbcType=VARCHAR},
+      expert_id = #{record.expertId,jdbcType=BIGINT},
+      expert_name = #{record.expertName,jdbcType=VARCHAR},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
+    update b_assessment_committee_expert
+    <set >
+      <if test="committeeBidId != null" >
+        committee_bid_id = #{committeeBidId,jdbcType=BIGINT},
+      </if>
+      <if test="noticeTime != null" >
+        notice_time = #{noticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noticeMode != null" >
+        notice_mode = #{noticeMode,jdbcType=VARCHAR},
+      </if>
+      <if test="expertArea != null" >
+        expert_area = #{expertArea,jdbcType=VARCHAR},
+      </if>
+      <if test="expertId != null" >
+        expert_id = #{expertId,jdbcType=BIGINT},
+      </if>
+      <if test="expertName != null" >
+        expert_name = #{expertName,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
+    update b_assessment_committee_expert
+    set committee_bid_id = #{committeeBidId,jdbcType=BIGINT},
+      notice_time = #{noticeTime,jdbcType=TIMESTAMP},
+      notice_mode = #{noticeMode,jdbcType=VARCHAR},
+      expert_area = #{expertArea,jdbcType=VARCHAR},
+      expert_id = #{expertId,jdbcType=BIGINT},
+      expert_name = #{expertName,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpertCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_assessment_committee_expert
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

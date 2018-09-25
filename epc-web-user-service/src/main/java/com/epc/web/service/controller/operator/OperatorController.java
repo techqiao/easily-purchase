@@ -6,6 +6,7 @@ import com.epc.web.facade.operator.FacadeOperatorService;
 import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.service.service.operator.OperatorService;
 import com.epc.web.service.service.purchaser.PurchaserService;
@@ -113,7 +114,7 @@ public class OperatorController implements FacadeOperatorService {
      * @return
      */
     @Override
-    public Result<Boolean> updateSupplierDetail(@RequestBody HandleSupplierDetail handleSupplierDetail) {
+    public Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto handleSupplierDetail) {
         return purchaserService.updateSupplierDetail(handleSupplierDetail);
     }
 }

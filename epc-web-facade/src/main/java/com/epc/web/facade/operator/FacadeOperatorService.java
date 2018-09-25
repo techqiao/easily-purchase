@@ -3,6 +3,7 @@ package com.epc.web.facade.operator;
 import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
+import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.epc.common.Result;
@@ -89,6 +90,6 @@ public interface FacadeOperatorService {
      * @return
      */
     @PostMapping(value = "updateSupplierDetail", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> updateSupplierDetail(@RequestBody HandleSupplierDetail handlePurchaser) ;
+    Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto handlePurchaser) ;
 
 }

@@ -2,16 +2,19 @@ package com.epc.web.facade.purchaser;
 
 import com.epc.common.Result;
 import com.epc.web.facade.expert.Handle.HandleExpert;
+import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
-import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
+import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
+import com.epc.web.facade.purchaser.handle.*;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
+import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 public interface FacadePurchaserService {
 
@@ -52,7 +55,7 @@ public interface FacadePurchaserService {
      * @return
      */
     @PostMapping(value = "registerPurchaserDetail", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> updatePurchaserDetail(@RequestBody HandlePurchaser handlePurchaser);
+    Result<Boolean> updatePurchaserDetail(@RequestBody HandleRegisterPurchaser handlePurchaser);
 
     /**
      * 完善代理机构信息
@@ -61,6 +64,24 @@ public interface FacadePurchaserService {
      */
     @PostMapping(value = "updateAgencyDetail", consumes = "application/json; charset=UTF-8")
     Result<Boolean> updateAgencyDetail(@RequestBody HandleAgnecy handleAgnecy);
+    /**
+     * 完善供货商信息detail
+     *
+     * @param  dto
+     * @return
+     */
+    @PostMapping(value = "updateSupplierDetail", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto dto);
+
+    /**
+     *@author :winlin
+     *@Description :完善采购人专家信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @PostMapping(value = "completePurchaserExpertInfo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
 
     /**
      * @author :winlin
@@ -209,4 +230,43 @@ public interface FacadePurchaserService {
      */
     @PostMapping(value = "updateExpertState", consumes = "application/json; charset=UTF-8")
     Result updateExpertState(@RequestParam("id")Long id ,@RequestParam("state")Integer state);
+
+    /**
+     *@author :winlin
+     *@Description :根据条件查询代理机构
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    @PostMapping(value = "findAgenciesByCriteria", consumes = "application/json; charset=UTF-8")
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto);
+
+    /**
+     *@author :winlin
+     *@Description :
+     *@param: 依据条件检索供应商
+     *@return:
+     *@date:2018/9/20
+     */
+    @PostMapping(value = "findSupplierByCriterias", consumes = "application/json; charset=UTF-8")
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto);
+
+    /**
+     *@author :winlin
+     *@Description :修改采购人代理机构详细信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @PostMapping(value = "updatePurchaserAgency", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto);
+    /**
+     *@author :winlin
+     *@Description :修改采购人专家的信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @PostMapping(value = "updatePurchaserExpert", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 }

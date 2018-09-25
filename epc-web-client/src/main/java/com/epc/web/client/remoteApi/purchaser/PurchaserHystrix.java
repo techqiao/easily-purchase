@@ -3,13 +3,16 @@ package com.epc.web.client.remoteApi.purchaser;
 import com.epc.common.Result;
 import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.FacadePurchaserService;
+import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
-import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
+import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
+import com.epc.web.facade.purchaser.handle.*;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
+import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+
+import java.util.List;
 
 public class PurchaserHystrix implements FacadePurchaserService {
     @Override
@@ -33,12 +36,22 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
     @Override
-    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
-        return Result.hystrixError();
+    public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
+        return null;
     }
 
     @Override
     public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
         return Result.hystrixError();
     }
 
@@ -115,6 +128,26 @@ public class PurchaserHystrix implements FacadePurchaserService {
 
     @Override
     public Result updateExpertState(Long id, Integer state) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
         return Result.hystrixError();
     }
 }

@@ -15,7 +15,11 @@ import java.util.List;
 public class PurchaserSupplierVo implements Serializable{
     private static final long serialVersionUID = 3321910101848080016L;
     /**
-     * 代理机构员工的名称
+     * 供货商公司的id
+     */
+    private Long supplierId;
+    /**
+     * 员工的名称
      */
     private String employeeName;
     /**

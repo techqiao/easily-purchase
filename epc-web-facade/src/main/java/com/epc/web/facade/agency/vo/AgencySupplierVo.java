@@ -45,4 +45,8 @@ public class AgencySupplierVo implements Serializable {
      * 资料集合
      */
         private List<Attachement> atts;
+    /**
+     * 代理机构供应商id
+     */
+    private Long supplierId;
 }

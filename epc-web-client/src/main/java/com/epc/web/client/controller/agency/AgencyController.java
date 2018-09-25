@@ -1,15 +1,23 @@
 package com.epc.web.client.controller.agency;
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.agency.dto.ClientAgencyExpertDto;
+import com.epc.web.client.controller.agency.dto.ClientAgencySubjectDto;
+import com.epc.web.client.controller.agency.dto.ClientAgencySupplierDto;
 import com.epc.web.client.controller.agency.handle.ClientHandleAgency;
 import com.epc.web.client.controller.agency.handle.ClientHandleEmployee;
 import com.epc.web.client.controller.agency.handle.ClientHandleExpert;
 import com.epc.web.client.controller.agency.handle.ClientHandleSupplier;
 import com.epc.web.client.remoteApi.agency.AgencyClient;
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author :winlin
@@ -88,8 +97,10 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构注册代理的所有项目" , notes = "代理机构注册代理的所有项目")
     @PostMapping(value = "/proxySubjects")
-    public Result proxySubjects() {
-        return agencyClient.proxySubjects();
+    public Result proxySubjects(ClientAgencySubjectDto clientAgencySubjectDto) {
+        AgencySubjectDto subjectDto = new AgencySubjectDto();
+        BeanUtils.copyProperties(clientAgencySubjectDto,subjectDto);
+        return agencyClient.proxySubjects(subjectDto);
     }
 
     @ApiOperation(value = "代理机构按条件查询员工" , notes = "代理机构按条件查询员工")
@@ -118,4 +129,67 @@ public class AgencyController {
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.updateEmployeeBy(handleEmployee);
     }
+
+    /**
+     * @author :winlin
+     * @Description : 封装条件查供应商
+     * @param:
+     * @return:
+     * @date:2018/9/20
+     */
+    @ApiOperation(value = "代理机构多条件查询供货商" , notes = "代理机多条件查询供货商")
+    @PostMapping(value = "/querySuppilerCriteria")
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(@RequestBody ClientAgencySupplierDto supplierDto){
+        AgencySupplierDto supplierDto1 = new AgencySupplierDto();
+        BeanUtils.copyProperties(supplierDto,supplierDto1);
+        return agencyClient.querySupplierCriteria(supplierDto1);
+    };
+
+
+    /**
+     /**
+     * @author :winlin
+     * @Description :封装条件查询专家
+     * @param:
+     * @return:
+     * @date:2018/9/20
+     */
+    @ApiOperation(value = "代理机构多条件查询专家" , notes = "代理机构多条件查询专家")
+    @PostMapping(value = "/queryExpertCriteria")
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(@RequestBody ClientAgencyExpertDto expertDto){
+        AgencyExpertDto dto = new AgencyExpertDto();
+        BeanUtils.copyProperties(expertDto,dto);
+        return agencyClient.queryExpertCriteria(dto);
+    };
+
+    /**
+     * @author :winlin
+     * @Description :代理机构供应商完善自己的注册信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @ApiOperation(value = "代理机构完善供货商信息" , notes = "代理机构完善供货商信息")
+    @PostMapping(value = "/completeAgencySupInfo")
+    public Result<Boolean> completeAgencySupInfo(@RequestBody ClientAgencySupplierDto supplierDto){
+        AgencySupplierDto dto = new AgencySupplierDto();
+        BeanUtils.copyProperties(supplierDto,dto);
+        return agencyClient.completeAgencySupInfo(dto);
+    };
+
+    /**
+     * @author :winlin
+     * @Description :代理机构专家完善自己个人信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @ApiOperation(value = "代理机构完善专家信息" , notes = "代理机构完善专家信息")
+    @PostMapping(value = "/completeAgencyExpertInfo")
+    public Result<Boolean> completeAgencyExpertInfo(@RequestBody ClientAgencyExpertDto expertDto){
+        AgencyExpertDto dto = new AgencyExpertDto();
+        BeanUtils.copyProperties(expertDto,dto);
+        return agencyClient.completeAgencyExpertInfo(dto);
+    };
+
 }

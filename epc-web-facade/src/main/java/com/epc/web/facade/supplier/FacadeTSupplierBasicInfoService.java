@@ -3,6 +3,7 @@ package com.epc.web.facade.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
+import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,10 +32,10 @@ public interface FacadeTSupplierBasicInfoService {
     @PostMapping(value = "fingSupplierBasicById",consumes = "application/json;charset=UTF-8")
     Result<SupplierBasicInfoVO> fingSupplierBasicById(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo);
 
-//    /**
-//     * 根据员工id来查询 公司详情
-//     */
-//    Result<Boolean> findSupplierDetailByEmployee();
+    /**
+     * 根据员工id来查询 公司详情
+     */
+//    Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee();
 
     /**
      * 根据电话来查找一条记录,返回一个记录

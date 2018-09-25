@@ -57,4 +57,12 @@ public class Const {
         int UP = 1;//线上
         int UP_DOWN = 3;//线上线下
     }
+
+    public interface PROCESS_STATE {
+        //项目进程
+        int CHECK = 0;//审核
+        int REPLY = 1;//批复
+        int PASS = 2;//通过
+        int SAVE=3 ;//保存等待
+    }
 }

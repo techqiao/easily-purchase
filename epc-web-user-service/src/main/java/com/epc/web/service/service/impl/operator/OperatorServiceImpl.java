@@ -62,15 +62,21 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public Result<Boolean> createOperatorEmployee(HandleOperatorAddEmployee handleOperatorAddEmployee) {
+
+        Date date =new Date();
+
         //实例化一个与数据库映射对象
         TOperatorBasicInfo pojo=new TOperatorBasicInfo();
         //将页面的数据来封装到对象中
+        pojo.setOperatorId(handleOperatorAddEmployee.getOperatorId());
         pojo.setName(handleOperatorAddEmployee.getName());
         pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperatorAddEmployee.getPassword()));
         pojo.setCellphone(handleOperatorAddEmployee.getCellphone());
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setRole(Const.Role.ROLE_CUSTOMER);
-        pojo.setCreateAt(new Date());
+        pojo.setState(Const.STATE.REGISTERED);
+        pojo.setCreateAt(date);
+        pojo.setUpdateAt(date);
         try{
             return Result.success(tOperatorBasicInfoMapper.insertSelective(pojo)>0);
         }catch (BusinessException e){
@@ -89,7 +95,6 @@ public class OperatorServiceImpl implements OperatorService {
         //通过id来查询出一条员工对象信息
         TOperatorBasicInfo pojo = tOperatorBasicInfoMapper.selectByPrimaryKey(handleOperatorUpdateEmployeeById.getId());
         //利用这个对象把最新从网页传输过来的的数据set进去，更新数据库,达到更新的目的
-
 
         pojo.setName(handleOperatorUpdateEmployeeById.getName());
         pojo.setCellphone(handleOperatorUpdateEmployeeById.getCellphone());
@@ -138,23 +143,32 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<Boolean> registerOperator(HandleOperator handleOperator) {
 
         Date date=new Date();
-        TOperatorBasicInfo pojo=new TOperatorBasicInfo();
+
+        TOperatorBasicInfo tOperatorBasicInfo=new TOperatorBasicInfo();
         //设置 电话 密码
-        pojo.setCellphone(handleOperator.getCellphone());
-        pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperator.getPassword()));
+        tOperatorBasicInfo.setCellphone(handleOperator.getCellphone());
+        tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(handleOperator.getPassword()));
 
         //短信验证
 
-        //已注册
-        pojo.setState(Const.STATE.REGISTERED);
+        //已注册--完善中。。。
+        tOperatorBasicInfo.setState(Const.STATE.PERFECTING);
         //法人
-        pojo.setRole(Const.Role.ROLE_CORPORATION);
+        tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
         //记录创建时间
-        pojo.setCreateAt(date);
-        pojo.setUpdateAt(date);
+        tOperatorBasicInfo.setCreateAt(date);
+        tOperatorBasicInfo.setUpdateAt(date);
         //已存在
-        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        return tOperatorBasicInfoMapper.insertSelective(pojo)>0 ? Result.success(true) : Result.success(false);
+        tOperatorBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+
+        int i = tOperatorBasicInfoMapper.insertSelective(tOperatorBasicInfo);
+
+        //将主键id设置为operatorId,更新当前插入的数据
+        Long operatorId=tOperatorBasicInfo.getId();
+        tOperatorBasicInfo.setOperatorId(operatorId);
+        int i1 = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
+
+        return i>0 && i1>0 ? Result.success(true) : Result.success(false);
     }
 
 
@@ -198,14 +212,38 @@ public class OperatorServiceImpl implements OperatorService {
         if(StringUtils.isNotBlank(cellphone)){
             subCriteria.andCellphoneEqualTo(cellphone);
         }
-        List<TOperatorBasicInfo> listTOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
+        TOperatorBasicInfo tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria).get(0);
+        System.out.println("运营商的全部信息："+tOperatorBasicInfos);
         //拿到这个对象
-        TOperatorBasicInfo tOperatorBasicInfo=listTOperatorBasicInfos.get(0);
+        String newPassword=tOperatorBasicInfos.getPassword();
+        System.out.println("newPassword:::"+newPassword);
         //重新设置密码,更新数据库中的这条记录中的密码
-        tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(handleOperatorForgetPassword.getPassword()));
+        tOperatorBasicInfos.setPassword(newPassword);
 
-        return tOperatorBasicInfoMapper.updateByExample(tOperatorBasicInfo,criteria) >0 ? Result.success(true) : Result.success(false);
+        return tOperatorBasicInfoMapper.updateByExample(tOperatorBasicInfos,criteria) >0 ? Result.success(true) : Result.success(false);
     }
+    /**
+     *    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+     * //        System.out.println("进来忘记密码方法了");
+     *         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+     *         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+     *         //得到手机号,查询数据库中有没有这条数据
+     *         String cellphone=handleSupplierForgetPassword.getCellphone();
+     *         if(StringUtils.isNotBlank(cellphone)){
+     *             subCriteria.andCellphoneEqualTo(cellphone);
+     * //            System.out.println("电话不为空"+cellphone);
+     *         }
+     *         //查询出一条结果,然后将密码改掉
+     *         List<TSupplierBasicInfo> listTSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+     *         System.out.println(listTSupplierBasicInfos.get(0).getPassword());
+     *         //加密传过来的密码
+     *         String newPassword = MD5Util.MD5EncodeUtf8(handleSupplierForgetPassword.getPassword());
+     *         TSupplierBasicInfo tSupplierBasicInfo=listTSupplierBasicInfos.get(0);
+     *         tSupplierBasicInfo.setPassword(newPassword);
+     *         //将新数据更新到数据 库中
+     *         return tSupplierBasicInfoMapper.updateByExampleSelective(tSupplierBasicInfo,criteria)>0?Result.<Boolean>success(true):Result.<Boolean>success(false);
+     *     }
+     */
 
 
     /**

@@ -1,30 +1,26 @@
-package com.epc.tendering.service.domain.pretrial;
+package com.epc.tendering.service.domain.bid;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class TPretrialMessage implements Serializable {
+public class TTenderMessage implements Serializable {
     private Long id;
 
     private Long purchaseProjectId;
 
     private Long releaseAnnouncementId;
 
-    private Long bidId;
-
     private Long companyId;
-
-    private String status;
-
-    private String content;
 
     private String delegator;
 
     private String identitCard;
 
-    private Long operateId;
+    private String bailmentPath;
 
-    private String creator;
+    private String bidAppendix;
+
+    private Long operateId;
 
     private Date createAt;
 
@@ -58,36 +54,12 @@ public class TPretrialMessage implements Serializable {
         this.releaseAnnouncementId = releaseAnnouncementId;
     }
 
-    public Long getBidId() {
-        return bidId;
-    }
-
-    public void setBidId(Long bidId) {
-        this.bidId = bidId;
-    }
-
     public Long getCompanyId() {
         return companyId;
     }
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
     }
 
     public String getDelegator() {
@@ -106,20 +78,28 @@ public class TPretrialMessage implements Serializable {
         this.identitCard = identitCard == null ? null : identitCard.trim();
     }
 
+    public String getBailmentPath() {
+        return bailmentPath;
+    }
+
+    public void setBailmentPath(String bailmentPath) {
+        this.bailmentPath = bailmentPath == null ? null : bailmentPath.trim();
+    }
+
+    public String getBidAppendix() {
+        return bidAppendix;
+    }
+
+    public void setBidAppendix(String bidAppendix) {
+        this.bidAppendix = bidAppendix == null ? null : bidAppendix.trim();
+    }
+
     public Long getOperateId() {
         return operateId;
     }
 
     public void setOperateId(Long operateId) {
         this.operateId = operateId;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getCreateAt() {
@@ -155,14 +135,12 @@ public class TPretrialMessage implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", releaseAnnouncementId=").append(releaseAnnouncementId);
-        sb.append(", bidId=").append(bidId);
         sb.append(", companyId=").append(companyId);
-        sb.append(", status=").append(status);
-        sb.append(", content=").append(content);
         sb.append(", delegator=").append(delegator);
         sb.append(", identitCard=").append(identitCard);
+        sb.append(", bailmentPath=").append(bailmentPath);
+        sb.append(", bidAppendix=").append(bidAppendix);
         sb.append(", operateId=").append(operateId);
-        sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

@@ -1,17 +1,17 @@
-package com.epc.tendering.service.domain.pretrial;
+package com.epc.tendering.service.domain.bid;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TPretrialMessageCriteria {
+public class TTenderMessageCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TPretrialMessageCriteria() {
+    public TTenderMessageCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -285,66 +285,6 @@ public class TPretrialMessageCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andBidIdIsNull() {
-            addCriterion("bid_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdIsNotNull() {
-            addCriterion("bid_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdEqualTo(Long value) {
-            addCriterion("bid_id =", value, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdNotEqualTo(Long value) {
-            addCriterion("bid_id <>", value, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdGreaterThan(Long value) {
-            addCriterion("bid_id >", value, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("bid_id >=", value, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdLessThan(Long value) {
-            addCriterion("bid_id <", value, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdLessThanOrEqualTo(Long value) {
-            addCriterion("bid_id <=", value, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdIn(List<Long> values) {
-            addCriterion("bid_id in", values, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdNotIn(List<Long> values) {
-            addCriterion("bid_id not in", values, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdBetween(Long value1, Long value2) {
-            addCriterion("bid_id between", value1, value2, "bidId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidIdNotBetween(Long value1, Long value2) {
-            addCriterion("bid_id not between", value1, value2, "bidId");
-            return (Criteria) this;
-        }
-
         public Criteria andCompanyIdIsNull() {
             addCriterion("company_id is null");
             return (Criteria) this;
@@ -402,146 +342,6 @@ public class TPretrialMessageCriteria {
 
         public Criteria andCompanyIdNotBetween(Long value1, Long value2) {
             addCriterion("company_id not between", value1, value2, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(String value) {
-            addCriterion("status =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(String value) {
-            addCriterion("status <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(String value) {
-            addCriterion("status >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
-            addCriterion("status >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(String value) {
-            addCriterion("status <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(String value) {
-            addCriterion("status <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLike(String value) {
-            addCriterion("status like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("status not like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<String> values) {
-            addCriterion("status in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<String> values) {
-            addCriterion("status not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(String value1, String value2) {
-            addCriterion("status between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(String value1, String value2) {
-            addCriterion("status not between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNull() {
-            addCriterion("content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIsNotNull() {
-            addCriterion("content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentEqualTo(String value) {
-            addCriterion("content =", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotEqualTo(String value) {
-            addCriterion("content <>", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThan(String value) {
-            addCriterion("content >", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentGreaterThanOrEqualTo(String value) {
-            addCriterion("content >=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThan(String value) {
-            addCriterion("content <", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLessThanOrEqualTo(String value) {
-            addCriterion("content <=", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentLike(String value) {
-            addCriterion("content like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotLike(String value) {
-            addCriterion("content not like", value, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentIn(List<String> values) {
-            addCriterion("content in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotIn(List<String> values) {
-            addCriterion("content not in", values, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentBetween(String value1, String value2) {
-            addCriterion("content between", value1, value2, "content");
-            return (Criteria) this;
-        }
-
-        public Criteria andContentNotBetween(String value1, String value2) {
-            addCriterion("content not between", value1, value2, "content");
             return (Criteria) this;
         }
 
@@ -685,6 +485,146 @@ public class TPretrialMessageCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBailmentPathIsNull() {
+            addCriterion("bailment_path is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathIsNotNull() {
+            addCriterion("bailment_path is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathEqualTo(String value) {
+            addCriterion("bailment_path =", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathNotEqualTo(String value) {
+            addCriterion("bailment_path <>", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathGreaterThan(String value) {
+            addCriterion("bailment_path >", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathGreaterThanOrEqualTo(String value) {
+            addCriterion("bailment_path >=", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathLessThan(String value) {
+            addCriterion("bailment_path <", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathLessThanOrEqualTo(String value) {
+            addCriterion("bailment_path <=", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathLike(String value) {
+            addCriterion("bailment_path like", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathNotLike(String value) {
+            addCriterion("bailment_path not like", value, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathIn(List<String> values) {
+            addCriterion("bailment_path in", values, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathNotIn(List<String> values) {
+            addCriterion("bailment_path not in", values, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathBetween(String value1, String value2) {
+            addCriterion("bailment_path between", value1, value2, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBailmentPathNotBetween(String value1, String value2) {
+            addCriterion("bailment_path not between", value1, value2, "bailmentPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixIsNull() {
+            addCriterion("bid_appendix is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixIsNotNull() {
+            addCriterion("bid_appendix is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixEqualTo(String value) {
+            addCriterion("bid_appendix =", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixNotEqualTo(String value) {
+            addCriterion("bid_appendix <>", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixGreaterThan(String value) {
+            addCriterion("bid_appendix >", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixGreaterThanOrEqualTo(String value) {
+            addCriterion("bid_appendix >=", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixLessThan(String value) {
+            addCriterion("bid_appendix <", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixLessThanOrEqualTo(String value) {
+            addCriterion("bid_appendix <=", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixLike(String value) {
+            addCriterion("bid_appendix like", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixNotLike(String value) {
+            addCriterion("bid_appendix not like", value, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixIn(List<String> values) {
+            addCriterion("bid_appendix in", values, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixNotIn(List<String> values) {
+            addCriterion("bid_appendix not in", values, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixBetween(String value1, String value2) {
+            addCriterion("bid_appendix between", value1, value2, "bidAppendix");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidAppendixNotBetween(String value1, String value2) {
+            addCriterion("bid_appendix not between", value1, value2, "bidAppendix");
+            return (Criteria) this;
+        }
+
         public Criteria andOperateIdIsNull() {
             addCriterion("operate_id is null");
             return (Criteria) this;
@@ -742,76 +682,6 @@ public class TPretrialMessageCriteria {
 
         public Criteria andOperateIdNotBetween(Long value1, Long value2) {
             addCriterion("operate_id not between", value1, value2, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
             return (Criteria) this;
         }
 

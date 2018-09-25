@@ -57,27 +57,31 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
         bTenderDocumentsPlaceSale.setCreateAt(new Date());
         bTenderDocumentsPlaceSale.setUpdateAt(new Date());
         bTenderDocumentsPlaceSale.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        try {
-            //新增招标文件
-            if(bSaleDocuments.getId() == null && bTenderDocumentsPlaceSale.getId() == null
-                    && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
+        //新增招标文件
+        if (bSaleDocuments.getId() == null && bTenderDocumentsPlaceSale.getId() == null
+                && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
+            try {
                 bSaleDocumentsMapper.insertSelective(bSaleDocuments);
-                if(!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)){
+                if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSaleMapper.insertSelective(bTenderDocumentsPlaceSale);
                 }
                 bBidsGuaranteeAmountMapper.insertGuaranteeAmountList(handDocuments.getHandleBidsGuaranteeAmount());
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
-            //处理招标文件
-            else if(bSaleDocuments.getId() != null && bTenderDocumentsPlaceSale.getId() != null
-                    && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()){
+        }
+        //处理招标文件
+        else if (bSaleDocuments.getId() != null && bTenderDocumentsPlaceSale.getId() != null
+                && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
+            try {
                 bSaleDocumentsMapper.updateByPrimaryKeySelective(bSaleDocuments);
-                if(!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)){
+                if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSaleMapper.updateByPrimaryKeySelective(bTenderDocumentsPlaceSale);
                 }
                 bBidsGuaranteeAmountMapper.updateGuaranteeAmountList(handDocuments.getHandleBidsGuaranteeAmount());
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
-        }catch (Exception e) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return Result.success();
     }
@@ -87,13 +91,13 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
         DocumentsVO documentsVO = new DocumentsVO();
         BSaleDocuments bSaleDocuments = bSaleDocumentsMapper.selectByPrimaryKey(id);
         SaleDocumentsVO saleDocumentsVO = new SaleDocumentsVO();
-        BeanUtils.copyProperties(bSaleDocuments,saleDocumentsVO);
+        BeanUtils.copyProperties(bSaleDocuments, saleDocumentsVO);
         //招标文件
         documentsVO.setSaleDocumentsVO(saleDocumentsVO);
         BTenderDocumentsPlaceSaleCriteria criteria = new BTenderDocumentsPlaceSaleCriteria();
         criteria.createCriteria().andBIssueDocumentsIdEqualTo(bSaleDocuments.getId());
         List<BTenderDocumentsPlaceSale> list = bTenderDocumentsPlaceSaleMapper.selectByExample(criteria);
-        if(!list.isEmpty()) {
+        if (!list.isEmpty()) {
             UnderLineVO underLineVO = new UnderLineVO();
             BeanUtils.copyProperties(list.get(0), underLineVO);
             //线下招标文件
@@ -103,7 +107,7 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
         amountCriteria.createCriteria().andBIssueDocumentsIdEqualTo(bSaleDocuments.getId());
         List<BBidsGuaranteeAmount> amountList = bBidsGuaranteeAmountMapper.selectByExample(amountCriteria);
         List<BidsGuaranteeAmountVO> bidsGuaranteeAmountVOList = new ArrayList<>();
-        if(!amountList.isEmpty()) {
+        if (!amountList.isEmpty()) {
             amountList.forEach(item -> {
                 BidsGuaranteeAmountVO vo = new BidsGuaranteeAmountVO();
                 BeanUtils.copyProperties(item, vo);

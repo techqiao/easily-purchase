@@ -80,7 +80,7 @@ public class SupplierServiceImpl implements SupplierService {
         //最后修改时间
         tSupplierBasicInfo.setUpdateAt(date);
 
-        SupplierServiceImpl serviceImpl=new SupplierServiceImpl();
+//        SupplierServiceImpl serviceImpl=new SupplierServiceImpl();
         try{
             //将基本注册信息数据存入到数据库
             tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);

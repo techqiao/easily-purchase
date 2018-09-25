@@ -1,7 +1,6 @@
 package com.epc.web.client.controller.terdering.announcement;
 
 import com.epc.common.Result;
-import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.announcement.handle.ClientHandleAnnouncement;
 import com.epc.web.client.controller.terdering.announcement.handle.ClientHandleAnnouncementStatus;

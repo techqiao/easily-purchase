@@ -37,6 +37,6 @@ public interface FacadePurchaseProjectBidService {
      * @return
      */
     @PostMapping(value = "getBidsList", consumes = "application/json; charset=UTF-8")
-    Result<List<BidsBasicInfoVO>> getBidsList(@RequestBody QueryBidsDTO queryBidsDTO);
+    Result<List<BidsBasicInfoSubVO>> getBidsList(@RequestBody QueryBidsDTO queryBidsDTO);
 
 }

@@ -1,6 +1,5 @@
 package com.epc.web.client.remoteApi.terdering.preview;
 
-import com.epc.web.client.remoteApi.terdering.bid.BidHystrix;
 import com.epc.web.facade.terdering.preview.PreviewService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 

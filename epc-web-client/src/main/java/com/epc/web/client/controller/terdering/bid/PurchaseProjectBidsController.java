@@ -1,6 +1,5 @@
 package com.epc.web.client.controller.terdering.bid;
 
-import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleBidsBasicInfo;
@@ -54,7 +53,7 @@ public class PurchaseProjectBidsController extends BaseController {
 
     @ApiOperation(value = "查询标段列表")
     @PostMapping(value="/getBidsList")
-    public Result<List<BidsBasicInfoVO>> getBidsList(@RequestBody ClientQueryBidsDTO clientQueryBidsDTO){
+    public Result<List<BidsBasicInfoSubVO>> getBidsList(@RequestBody ClientQueryBidsDTO clientQueryBidsDTO){
         Validate.notNull(clientQueryBidsDTO.getPurchaseProjectId());
         QueryBidsDTO queryBidsDTO = new QueryBidsDTO();
         BeanUtils.copyProperties(clientQueryBidsDTO, queryBidsDTO);

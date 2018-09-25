@@ -52,4 +52,10 @@ public class Const {
         String THREE = "three";
     }
 
+    public interface IS_UNDER_LINE{
+        int DOWN = 0;//线下
+        int UP = 1;//线上
+        int UP_DOWN = 3;//线上线下
+    }
+
 }

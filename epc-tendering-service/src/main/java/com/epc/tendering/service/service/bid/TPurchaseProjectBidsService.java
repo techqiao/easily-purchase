@@ -36,6 +36,6 @@ public interface TPurchaseProjectBidsService {
      * @param queryBidsDTO
      * @return
      */
-    Result<List<BidsBasicInfoVO>> getBidsList(QueryBidsDTO queryBidsDTO);
+    Result<List<BidsBasicInfoSubVO>> getBidsList(QueryBidsDTO queryBidsDTO);
 
 }

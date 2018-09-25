@@ -4,24 +4,26 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class BBidsGuaranteeAmount implements Serializable {
+public class BTenderDocumentsPlaceSale implements Serializable {
     private Long id;
 
     private Long procurementProjectId;
 
     private Long bIssueDocumentsId;
 
-    private BigDecimal tenderGuaranteeAmount;
+    private Date saleTimeStart;
 
-    private String bidsName;
+    private Date saleTimeEnd;
 
-    private Long bidsId;
+    private String place;
 
-    private String bidsCode;
+    private BigDecimal price;
 
-    private String receivables;
+    private String contactsName;
 
-    private String bankAccount;
+    private String contactNumber;
+
+    private String remarks;
 
     private Long operateId;
 
@@ -57,52 +59,60 @@ public class BBidsGuaranteeAmount implements Serializable {
         this.bIssueDocumentsId = bIssueDocumentsId;
     }
 
-    public BigDecimal getTenderGuaranteeAmount() {
-        return tenderGuaranteeAmount;
+    public Date getSaleTimeStart() {
+        return saleTimeStart;
     }
 
-    public void setTenderGuaranteeAmount(BigDecimal tenderGuaranteeAmount) {
-        this.tenderGuaranteeAmount = tenderGuaranteeAmount;
+    public void setSaleTimeStart(Date saleTimeStart) {
+        this.saleTimeStart = saleTimeStart;
     }
 
-    public String getBidsName() {
-        return bidsName;
+    public Date getSaleTimeEnd() {
+        return saleTimeEnd;
     }
 
-    public void setBidsName(String bidsName) {
-        this.bidsName = bidsName == null ? null : bidsName.trim();
+    public void setSaleTimeEnd(Date saleTimeEnd) {
+        this.saleTimeEnd = saleTimeEnd;
     }
 
-    public Long getBidsId() {
-        return bidsId;
+    public String getPlace() {
+        return place;
     }
 
-    public void setBidsId(Long bidsId) {
-        this.bidsId = bidsId;
+    public void setPlace(String place) {
+        this.place = place == null ? null : place.trim();
     }
 
-    public String getBidsCode() {
-        return bidsCode;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setBidsCode(String bidsCode) {
-        this.bidsCode = bidsCode == null ? null : bidsCode.trim();
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public String getReceivables() {
-        return receivables;
+    public String getContactsName() {
+        return contactsName;
     }
 
-    public void setReceivables(String receivables) {
-        this.receivables = receivables == null ? null : receivables.trim();
+    public void setContactsName(String contactsName) {
+        this.contactsName = contactsName == null ? null : contactsName.trim();
     }
 
-    public String getBankAccount() {
-        return bankAccount;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount == null ? null : bankAccount.trim();
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber == null ? null : contactNumber.trim();
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
     }
 
     public Long getOperateId() {
@@ -146,12 +156,13 @@ public class BBidsGuaranteeAmount implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", bIssueDocumentsId=").append(bIssueDocumentsId);
-        sb.append(", tenderGuaranteeAmount=").append(tenderGuaranteeAmount);
-        sb.append(", bidsName=").append(bidsName);
-        sb.append(", bidsId=").append(bidsId);
-        sb.append(", bidsCode=").append(bidsCode);
-        sb.append(", receivables=").append(receivables);
-        sb.append(", bankAccount=").append(bankAccount);
+        sb.append(", saleTimeStart=").append(saleTimeStart);
+        sb.append(", saleTimeEnd=").append(saleTimeEnd);
+        sb.append(", place=").append(place);
+        sb.append(", price=").append(price);
+        sb.append(", contactsName=").append(contactsName);
+        sb.append(", contactNumber=").append(contactNumber);
+        sb.append(", remarks=").append(remarks);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

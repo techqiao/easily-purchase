@@ -3,6 +3,8 @@ package com.epc.tendering.service.mapper.bid;
 import com.epc.tendering.service.domain.bid.BBidsGuaranteeAmount;
 import com.epc.tendering.service.domain.bid.BBidsGuaranteeAmountCriteria;
 import java.util.List;
+
+import com.epc.web.facade.terdering.bid.handle.HandleBidsGuaranteeAmount;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
@@ -30,4 +32,10 @@ public interface BBidsGuaranteeAmountMapper {
     int updateByPrimaryKeySelective(BBidsGuaranteeAmount record);
 
     int updateByPrimaryKey(BBidsGuaranteeAmount record);
+
+
+    int insertGuaranteeAmountList(@Param("amountList") List<HandleBidsGuaranteeAmount> list);
+
+
+    int updateGuaranteeAmountList(@Param("amountList") List<HandleBidsGuaranteeAmount> list);
 }

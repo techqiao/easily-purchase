@@ -33,7 +33,7 @@ public class TPurchaseProjectBidsController implements FacadePurchaseProjectBidS
 
 
     @Override
-    public Result<List<BidsBasicInfoVO>> getBidsList(QueryBidsDTO queryBidsDTO) {
+    public Result<List<BidsBasicInfoSubVO>> getBidsList(QueryBidsDTO queryBidsDTO) {
         return tPurchaseProjectBidsService.getBidsList(queryBidsDTO);
     }
 }

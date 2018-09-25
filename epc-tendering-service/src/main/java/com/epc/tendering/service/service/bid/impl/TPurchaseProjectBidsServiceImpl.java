@@ -63,14 +63,14 @@ public class TPurchaseProjectBidsServiceImpl implements TPurchaseProjectBidsServ
     }
 
     @Override
-    public Result<List<BidsBasicInfoVO>> getBidsList(QueryBidsDTO queryBidsDTO) {
+    public Result<List<BidsBasicInfoSubVO>> getBidsList(QueryBidsDTO queryBidsDTO) {
         final TPurchaseProjectBidsCriteria criteria = new TPurchaseProjectBidsCriteria();
         final TPurchaseProjectBidsCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andPurchaseProjectIdEqualTo(queryBidsDTO.getPurchaseProjectId());
-        List<BidsBasicInfoVO> returnList = new ArrayList<>();
+        List<BidsBasicInfoSubVO> returnList = new ArrayList<>();
         List<TPurchaseProjectBids> bidsList = tPurchaseProjectBidsMapper.selectByExampleWithRowbounds(criteria, queryBidsDTO.getRowBounds());
         bidsList.forEach(item -> {
-            BidsBasicInfoVO pojo = new BidsBasicInfoVO();
+            BidsBasicInfoSubVO pojo = new BidsBasicInfoSubVO();
             BeanUtils.copyProperties(item, pojo);
             returnList.add(pojo);
         });

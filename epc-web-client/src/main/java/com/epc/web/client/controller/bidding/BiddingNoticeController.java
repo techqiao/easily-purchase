@@ -2,7 +2,7 @@ package com.epc.web.client.controller.bidding;
 
 
 import com.epc.common.Result;
-import com.epc.web.client.controller.bidding.query.notice.ClientFilePay;
+import com.epc.common.util.FTPUtil;
 import com.epc.web.client.controller.bidding.query.notice.ClientNoticeDTO;
 import com.epc.web.client.controller.bidding.query.notice.ClientNoticeDetailDTO;
 import com.epc.web.client.remoteApi.bidding.notice.NoticeClient;
@@ -12,10 +12,15 @@ import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 /**
@@ -40,14 +45,18 @@ public class BiddingNoticeController {
 
     @ApiOperation(value = "查看公告详情及下载文件")
     @PostMapping(value="/getNoticeDetailWithFile")
-    public Result<NoticeDetailVO> getProjectList(@RequestParam("dto") ClientNoticeDetailDTO dto, @RequestParam("clientFilePay") ClientFilePay clientFilePay){
+    public Result<NoticeDetailVO> getProjectList(@RequestBody  ClientNoticeDetailDTO dto){
         QueryNoticeDetail queryNoticeDetail=new QueryNoticeDetail();
         BeanUtils.copyProperties(dto,queryNoticeDetail);
         //判断下载文件是否已支付（true:支付）
         QueryProgramPayDTO queryProgramPayDTO=new QueryProgramPayDTO();
-        BeanUtils.copyProperties(clientFilePay,queryProgramPayDTO);
+        BeanUtils.copyProperties(dto.getClientFilePay(),queryProgramPayDTO);
         Boolean isPay=noticeClient.isPayForProjectFile(queryProgramPayDTO).getData();
-        return  noticeClient.getNoticeDetail(queryNoticeDetail,isPay);
+        if(isPay!=null){
+            return  noticeClient.getNoticeDetail(queryNoticeDetail,isPay);
+        }else{
+            return Result.error("尚未发布招标文件");
+        }
     }
 
 }

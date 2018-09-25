@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * @author linzhixiang
- */
 @RestController
 public class BiddingMoneyPayController implements FacadeMoneyPayService {
 

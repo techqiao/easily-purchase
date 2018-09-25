@@ -4,8 +4,11 @@ import com.epc.bidding.domain.bidding.TSupplierSign;
 import com.epc.bidding.mapper.bidding.TSupplierSignMapper;
 import com.epc.bidding.service.sign.SignService;
 import com.epc.common.Result;
+import com.epc.common.util.CookieUtil;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.HandleSign;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ import java.util.Date;
  */
 @Service
 public class SignServiceImpl implements SignService {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SignServiceImpl.class);
 
     @Autowired
     TSupplierSignMapper tSupplierSignMapper;
@@ -51,10 +54,15 @@ public class SignServiceImpl implements SignService {
      */
     @Override
     public Result<SignBaseDTO> getSignBase(String name, String cellPhone) {
-        SignBaseDTO dto= tSupplierSignMapper.getSignPeronInfo(name,cellPhone);
-        if(dto==null){
-            return Result.success("找不到该用户");
+        SignBaseDTO dto=new SignBaseDTO();
+        try{
+             dto= tSupplierSignMapper.getSignPeronInfo(name,cellPhone);
+
+        }catch (Exception e){
+            LOGGER.error("找不到该用户");
+            return Result.error();
         }
+
         return Result.success(dto);
     }
 

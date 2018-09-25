@@ -23,7 +23,7 @@ import java.util.List;
  * @Date 2018/9/23
  * @return
  */
-@Api(value = "服务费支付服务",description = "服务费支付")
+@Api(value = "服务费支付",tags = "服务费支付")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 

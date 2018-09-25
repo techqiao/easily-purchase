@@ -137,7 +137,7 @@ public class BiddingServiceimpl implements BiddingService {
         final BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
         final BAnswerQuestionCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        criteria.setOrderByClause("createAt desc");
+        criteria.setOrderByClause("create_at desc");
         List<BAnswerQuestion> list=bAnswerQuestionMapper.selectByExampleWithRowbounds(criteria,dto.getRowBounds());
         List<QueryAnswerQustionListVO> returnList = new ArrayList<QueryAnswerQustionListVO>();
         list.forEach(item -> {
@@ -156,10 +156,12 @@ public class BiddingServiceimpl implements BiddingService {
     @Override
     public Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion){
         BAnswerQuestion entity= new BAnswerQuestion();
+        entity.setProcurementProjectId(handleQuestion.getProcurementProjectId());
         entity.setQuestionerId(handleQuestion.getQuestionerId());
         entity.setQuestionerName(handleQuestion.getQuestionerName());
         entity.setProblem(handleQuestion.getProblem());
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        entity.setOperateId(handleQuestion.getQuestionerId());
         entity.setCreateAt(new Date());
         entity.setUpdateAt(new Date());
         try{
@@ -320,7 +322,8 @@ public class BiddingServiceimpl implements BiddingService {
         //根据采购项目Id 查询招标文件
         List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
         if(list.size()==0){
-            return Result.success("尚未发布招标文件");
+            LOGGER.error("尚未发布招标文件");
+            return Result.success(null);
         }
         //获取招标文件ID
         Long fileId=list.get(0).getId();
@@ -335,6 +338,7 @@ public class BiddingServiceimpl implements BiddingService {
         List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
         //未查询到支付记录
         if(payList.size()==0){
+            LOGGER.error("未找到支付记录");
             return   Result.success(false);
         }else{
             //第一次支付，暂时不考虑多次

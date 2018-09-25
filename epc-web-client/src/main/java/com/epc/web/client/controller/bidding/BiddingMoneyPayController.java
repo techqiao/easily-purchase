@@ -1,9 +1,11 @@
 package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.bidding.handle.moneyPay.ClientFilePay;
 import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayDTO;
 import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayRecordDTO;
 import com.epc.web.client.remoteApi.bidding.moneyPay.MoneyPayClient;
+import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
@@ -23,7 +25,7 @@ import java.util.List;
  * @Date 2018/9/23
  * @return
  */
-@Api(value = "服务费支付",tags = "服务费支付")
+@Api(value = "支付业务",tags = "支付业务")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
@@ -46,6 +48,15 @@ public class BiddingMoneyPayController {
         QueryMoneyPayRecordDTO queryMoneyPayRecordDTO=new QueryMoneyPayRecordDTO();
         BeanUtils.copyProperties(dto,queryMoneyPayRecordDTO);
         return moneyPayClient.IsPayForServiceMoney(queryMoneyPayRecordDTO);
+    }
+
+
+    @ApiOperation(value = "平台插入用户支付记录",tags = "平台插入用户支付记录")
+    @PostMapping(value = "insertPurchaseProjectFilePay", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> insertPurchaseProjectFilePay(@RequestBody ClientFilePay handle){
+        HandleFilePay handleFilePay=new HandleFilePay();
+        BeanUtils.copyProperties(handle,handleFilePay);
+        return moneyPayClient.insertPurchaseProjectFilePay(handleFilePay);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.epc.bidding.service.moneyPay;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.HandleFilePay;
+import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
@@ -18,12 +20,25 @@ public interface MoneyPayService {
      */
      Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto);
 
-
     /**
-     * 根据中标服务费表ID查询某标段供应商的服务费是否支付
+     * 查询是否支付服务费
      * @param dto
      * @return
      */
      Result<Boolean> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto);
+
+    /**
+     * 平台插入下载金额支付记录
+     * @param handle
+     * @return
+     */
+     Result<Boolean> insertPurchaseProjectFilePay(HandleFilePay handle);
+
+    /**
+     * 平台插入保证金支付记录
+     * @param handle
+     * @return
+     */
+     Result<Boolean> insertGuaranteeAmountPay(HandleGuaranteeAmountPay handle);
 
     }

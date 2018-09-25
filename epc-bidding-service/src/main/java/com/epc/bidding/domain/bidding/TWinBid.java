@@ -29,7 +29,7 @@ public class TWinBid implements Serializable {
 
     private String filePath;
 
-    private Long supplier;
+    private Long supplierId;
 
     private Long operateId;
 
@@ -135,12 +135,12 @@ public class TWinBid implements Serializable {
         this.filePath = filePath == null ? null : filePath.trim();
     }
 
-    public Long getSupplier() {
-        return supplier;
+    public Long getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(Long supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Long getOperateId() {
@@ -185,7 +185,7 @@ public class TWinBid implements Serializable {
         sb.append(", purchaserId=").append(purchaserId);
         sb.append(", purchaserMonety=").append(purchaserMonety);
         sb.append(", filePath=").append(filePath);
-        sb.append(", supplier=").append(supplier);
+        sb.append(", supplierId=").append(supplierId);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", isDeleted=").append(isDeleted);

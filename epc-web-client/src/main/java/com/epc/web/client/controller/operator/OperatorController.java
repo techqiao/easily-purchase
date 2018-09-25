@@ -32,10 +32,10 @@ public class OperatorController {
      */
     @ApiOperation(value = "运营商注册",notes = "运营商注册")
     @PostMapping(value = "/registerOperator")
-    public Result<Boolean> registerOperator(@RequestBody ClientHandleOperatorDetail clientHandleOperatorDetail) {
-        HandleOperatorDetail handleOperatorDetail=new HandleOperatorDetail();
-        BeanUtils.copyProperties(clientHandleOperatorDetail,handleOperatorDetail);
-        return operatorClient.registerOperator(handleOperatorDetail);
+    public Result<Boolean> registerOperator(@RequestBody ClientHandleOperator clientHandleOperator) {
+        HandleOperator handleOperator=new HandleOperator();
+        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
+        return operatorClient.registerOperator(handleOperator);
     }
 
     /**

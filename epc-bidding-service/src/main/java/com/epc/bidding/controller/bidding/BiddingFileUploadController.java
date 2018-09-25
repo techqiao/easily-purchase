@@ -1,12 +1,7 @@
 package com.epc.bidding.controller.bidding;
-
-
-import com.epc.bidding.domain.bidding.TPretrialFile;
-import com.epc.bidding.domain.bidding.TPretrialMessage;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
-import com.epc.web.facade.bidding.handle.HandleFileUpload;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;

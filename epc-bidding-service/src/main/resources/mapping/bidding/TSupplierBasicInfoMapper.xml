@@ -355,10 +355,9 @@
 	tsa.certificate_number as idCard,t.`name`
     FROM
 	t_supplier_basic_info t
-LEFT JOIN t_supplier_attachment tsa ON tsa.supplier_id = #{supplierId,jdbcType=NUMERIC}
+LEFT JOIN t_supplier_attachment tsa ON tsa.supplier_id = t.id AND tsa.certificate_type = 'id_card'
 WHERE
 	1 = 1
 AND t.supplier_id = #{supplierId,jdbcType=NUMERIC}
-AND tsa.certificate_type = 'id_card'
   </select>
 </mapper>

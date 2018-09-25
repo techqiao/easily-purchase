@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
+import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
 import java.util.List;
@@ -15,7 +16,17 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+    public Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
 
@@ -24,10 +35,10 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
+//    @Override
+//    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+//        return Result.hystrixError();
+//    }
 
     @Override
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {

@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
+import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
 import java.util.List;
@@ -21,21 +22,39 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
+    /**
+     * 根据员工的id来删除员工
+     */
     @Override
-    public Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+    public Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
 
+    /**
+     * 根据员工的id来查询基本信息
+     */
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    /**
+     * 员工查询 公司详情
+     */
+    @Override
+    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
 
     @Override
     public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
+//    @Override
+//    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+//        return Result.hystrixError();
+//    }
 
     @Override
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {

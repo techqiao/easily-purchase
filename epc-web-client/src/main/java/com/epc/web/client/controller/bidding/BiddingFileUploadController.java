@@ -4,7 +4,6 @@ package com.epc.web.client.controller.bidding;
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.file.ClientHandleFileUpload;
 import com.epc.web.client.remoteApi.bidding.pretrialFile.BiddingClient;
-import com.epc.web.facade.bidding.handle.HandleFileUpload;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 * @Author: linzhixiang
 * @Date: 2018/9/20
 */
-@Api(value = "投标流程",tags = {"上传预审信息"})
+@Api(value = "文件上传服务",description = "上传预审信息")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 

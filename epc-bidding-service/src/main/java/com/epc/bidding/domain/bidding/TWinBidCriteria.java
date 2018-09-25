@@ -886,63 +886,63 @@ public class TWinBidCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSupplierIsNull() {
-            addCriterion("supplier is null");
+        public Criteria andSupplierIdIsNull() {
+            addCriterion("supplier_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierIsNotNull() {
-            addCriterion("supplier is not null");
+        public Criteria andSupplierIdIsNotNull() {
+            addCriterion("supplier_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierEqualTo(Long value) {
-            addCriterion("supplier =", value, "supplier");
+        public Criteria andSupplierIdEqualTo(Long value) {
+            addCriterion("supplier_id =", value, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNotEqualTo(Long value) {
-            addCriterion("supplier <>", value, "supplier");
+        public Criteria andSupplierIdNotEqualTo(Long value) {
+            addCriterion("supplier_id <>", value, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierGreaterThan(Long value) {
-            addCriterion("supplier >", value, "supplier");
+        public Criteria andSupplierIdGreaterThan(Long value) {
+            addCriterion("supplier_id >", value, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierGreaterThanOrEqualTo(Long value) {
-            addCriterion("supplier >=", value, "supplier");
+        public Criteria andSupplierIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("supplier_id >=", value, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierLessThan(Long value) {
-            addCriterion("supplier <", value, "supplier");
+        public Criteria andSupplierIdLessThan(Long value) {
+            addCriterion("supplier_id <", value, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierLessThanOrEqualTo(Long value) {
-            addCriterion("supplier <=", value, "supplier");
+        public Criteria andSupplierIdLessThanOrEqualTo(Long value) {
+            addCriterion("supplier_id <=", value, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierIn(List<Long> values) {
-            addCriterion("supplier in", values, "supplier");
+        public Criteria andSupplierIdIn(List<Long> values) {
+            addCriterion("supplier_id in", values, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNotIn(List<Long> values) {
-            addCriterion("supplier not in", values, "supplier");
+        public Criteria andSupplierIdNotIn(List<Long> values) {
+            addCriterion("supplier_id not in", values, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierBetween(Long value1, Long value2) {
-            addCriterion("supplier between", value1, value2, "supplier");
+        public Criteria andSupplierIdBetween(Long value1, Long value2) {
+            addCriterion("supplier_id between", value1, value2, "supplierId");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNotBetween(Long value1, Long value2) {
-            addCriterion("supplier not between", value1, value2, "supplier");
+        public Criteria andSupplierIdNotBetween(Long value1, Long value2) {
+            addCriterion("supplier_id not between", value1, value2, "supplierId");
             return (Criteria) this;
         }
 

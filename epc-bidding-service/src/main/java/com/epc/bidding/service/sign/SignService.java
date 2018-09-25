@@ -1,4 +1,4 @@
-package com.epc.bidding.service.bidding;
+package com.epc.bidding.service.sign;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
@@ -15,6 +15,6 @@ public interface SignService {
 
     Result<Boolean> insertSupplierSign(HandleSign handleSign);
 
-     Result<SignBaseDTO> getSignBase(String name, String cellPhone) ;
+    Result<SignBaseDTO> getSignBase(String name, String cellPhone) ;
 
-    }
+}

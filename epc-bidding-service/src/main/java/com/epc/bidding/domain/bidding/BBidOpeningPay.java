@@ -7,6 +7,12 @@ import java.util.Date;
 public class BBidOpeningPay implements Serializable {
     private Long id;
 
+    private Long projectId;
+
+    private Long procurementProjectId;
+
+    private Long bidId;
+
     private Long bidsGuaranteeAmountId;
 
     private Long tendererId;
@@ -43,6 +49,30 @@ public class BBidOpeningPay implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Long getProcurementProjectId() {
+        return procurementProjectId;
+    }
+
+    public void setProcurementProjectId(Long procurementProjectId) {
+        this.procurementProjectId = procurementProjectId;
+    }
+
+    public Long getBidId() {
+        return bidId;
+    }
+
+    public void setBidId(Long bidId) {
+        this.bidId = bidId;
     }
 
     public Long getBidsGuaranteeAmountId() {
@@ -164,6 +194,9 @@ public class BBidOpeningPay implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", projectId=").append(projectId);
+        sb.append(", procurementProjectId=").append(procurementProjectId);
+        sb.append(", bidId=").append(bidId);
         sb.append(", bidsGuaranteeAmountId=").append(bidsGuaranteeAmountId);
         sb.append(", tendererId=").append(tendererId);
         sb.append(", tendererCompanyId=").append(tendererCompanyId);

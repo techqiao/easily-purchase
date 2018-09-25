@@ -130,26 +130,28 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     /**
-     * 注册
+     *  运营商注册
      * @author donghuan
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
-    public Result<Boolean> registerOperator(HandleOperatorDetail handleOperatorDetail) {
-        TOperatorBasicInfo pojo=new TOperatorBasicInfo();
+    public Result<Boolean> registerOperator(HandleOperator handleOperator) {
 
-        pojo.setCellphone(handleOperatorDetail.getCellPhone());
-        pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperatorDetail.getPassword()));
+        Date date=new Date();
+        TOperatorBasicInfo pojo=new TOperatorBasicInfo();
+        //设置 电话 密码
+        pojo.setCellphone(handleOperator.getCellphone());
+        pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperator.getPassword()));
 
         //短信验证
-
 
         //已注册
         pojo.setState(Const.STATE.REGISTERED);
         //法人
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         //记录创建时间
-        pojo.setCreateAt(new Date());
+        pojo.setCreateAt(date);
+        pojo.setUpdateAt(date);
         //已存在
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         return tOperatorBasicInfoMapper.insertSelective(pojo)>0 ? Result.success(true) : Result.success(false);
@@ -166,8 +168,8 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<OperatorBasicInfoVO> findByName(HandleOperator handleOperator) {
         TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        String name=handleOperator.getUserName();
-        String cellphone=handleOperator.getCellPhone();
+        String name=handleOperator.getName();
+        String cellphone=handleOperator.getCellphone();
         if(StringUtils.isNotBlank(name)){
             subCriteria.andNameEqualTo(name);
         }

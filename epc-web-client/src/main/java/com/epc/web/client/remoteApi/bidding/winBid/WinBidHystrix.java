@@ -1,0 +1,15 @@
+package com.epc.web.client.remoteApi.bidding.winBid;
+
+import com.epc.common.Result;
+import com.epc.web.facade.bidding.FacadeWinBidService;
+import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
+import com.epc.web.facade.bidding.vo.WinBidLetterVO;
+
+import java.util.List;
+
+public class WinBidHystrix implements FacadeWinBidService {
+    @Override
+    public Result<List<WinBidLetterVO>> getWinBidLetter(QueryWinBidLetterDTO dto) {
+        return Result.hystrixError();
+    }
+}

@@ -81,7 +81,7 @@ public class  HandleSupplierDetail implements Serializable {
     /**
      * 手机号
      */
-    private String cellPhone;
+    private String cellphone;
 
     /**
      * 密码

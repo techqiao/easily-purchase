@@ -17,7 +17,9 @@ public class ClientHandleFileUpload {
     @ApiModelProperty(value = "记录Id")
     private Long id;
     @ApiModelProperty(value = "采购项目ID")
-    private Long purchasProjectId;
+    private Long purchaseProjectId;
+    @ApiModelProperty(value = "标段Id")
+    private Long bidId;
     @ApiModelProperty(value = "公告ID")
     private Long releaseAnnouncementId;
     @ApiModelProperty(value = "供应商Id")

@@ -4,6 +4,7 @@ package com.epc.web.service.service.supplier;
 import com.epc.common.Result;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
+import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
 import java.util.List;
@@ -12,17 +13,27 @@ import java.util.List;
 /**
  * @author donghuan
  */
-public interface TSupplierBasicInfoService {
+public interface SupplierService {
 
     /**
      * 注册供应商
      */
-    Result<Boolean> registerSupplier( HandleSupplierDetail handleSupplierDetail);
+    Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail);
+
+    /**
+     * 根据员工id来删除一个员工
+     */
+    Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 根据员工的id来查询基本信息
      */
-    Result<SupplierBasicInfoVO> fingSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo);
+    Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo);
+
+    /**
+     * 根据员工id来查询 公司详情
+     */
+    Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 根据电话来查找一条记录,返回一个记录
@@ -30,9 +41,9 @@ public interface TSupplierBasicInfoService {
     Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
-     * 查询用户信息，依据电话或者密码来查找这个人的详细信息
+     * 查询用户信息，依据电话密码来查找这个人的详细信息
      */
-    Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo);
+//    Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo);
 
     /**
      * 忘记密码

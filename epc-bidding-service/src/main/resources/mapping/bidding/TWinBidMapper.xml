@@ -14,7 +14,7 @@
     <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
     <result column="purchaser_monety" property="purchaserMonety" jdbcType="DECIMAL" />
     <result column="file_path" property="filePath" jdbcType="VARCHAR" />
-    <result column="supplier" property="supplier" jdbcType="BIGINT" />
+    <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -79,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, project_name, project_code, procurement_project_id, procurement_project_name, 
-    bid_id, bid_name, bid_code, purchaser_id, purchaser_monety, file_path, supplier, 
+    bid_id, bid_name, bid_code, purchaser_id, purchaser_monety, file_path, supplier_id, 
     operate_id, create_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" >
@@ -120,13 +120,13 @@
       procurement_project_id, procurement_project_name, 
       bid_id, bid_name, bid_code, 
       purchaser_id, purchaser_monety, file_path, 
-      supplier, operate_id, create_at, 
+      supplier_id, operate_id, create_at, 
       is_deleted)
     values (#{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
       #{procurementProjectId,jdbcType=BIGINT}, #{procurementProjectName,jdbcType=VARCHAR}, 
       #{bidId,jdbcType=BIGINT}, #{bidName,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, 
       #{purchaserId,jdbcType=BIGINT}, #{purchaserMonety,jdbcType=DECIMAL}, #{filePath,jdbcType=VARCHAR}, 
-      #{supplier,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{supplierId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
@@ -168,8 +168,8 @@
       <if test="filePath != null" >
         file_path,
       </if>
-      <if test="supplier != null" >
-        supplier,
+      <if test="supplierId != null" >
+        supplier_id,
       </if>
       <if test="operateId != null" >
         operate_id,
@@ -215,8 +215,8 @@
       <if test="filePath != null" >
         #{filePath,jdbcType=VARCHAR},
       </if>
-      <if test="supplier != null" >
-        #{supplier,jdbcType=BIGINT},
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
@@ -274,8 +274,8 @@
       <if test="record.filePath != null" >
         file_path = #{record.filePath,jdbcType=VARCHAR},
       </if>
-      <if test="record.supplier != null" >
-        supplier = #{record.supplier,jdbcType=BIGINT},
+      <if test="record.supplierId != null" >
+        supplier_id = #{record.supplierId,jdbcType=BIGINT},
       </if>
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
@@ -305,7 +305,7 @@
       purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       purchaser_monety = #{record.purchaserMonety,jdbcType=DECIMAL},
       file_path = #{record.filePath,jdbcType=VARCHAR},
-      supplier = #{record.supplier,jdbcType=BIGINT},
+      supplier_id = #{record.supplierId,jdbcType=BIGINT},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -349,8 +349,8 @@
       <if test="filePath != null" >
         file_path = #{filePath,jdbcType=VARCHAR},
       </if>
-      <if test="supplier != null" >
-        supplier = #{supplier,jdbcType=BIGINT},
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
@@ -377,7 +377,7 @@
       purchaser_id = #{purchaserId,jdbcType=BIGINT},
       purchaser_monety = #{purchaserMonety,jdbcType=DECIMAL},
       file_path = #{filePath,jdbcType=VARCHAR},
-      supplier = #{supplier,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}

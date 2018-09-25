@@ -60,14 +60,14 @@ public interface BiddingService {
      * @param handlePretriaFile
      * @return
      */
-    Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile);
+    Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile) ;
 
     /**
      * 预审信息 修改/删除
      * @param handlePretriaFile
      * @return
      */
-    Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile);
+    Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile) ;
 
     /**
      * 获取预审信息 详情

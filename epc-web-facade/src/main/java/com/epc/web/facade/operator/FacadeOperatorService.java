@@ -28,8 +28,8 @@ public interface FacadeOperatorService {
      * 注册运营商
      * @author donghuan
      */
-    @PostMapping(value = "registerOperator",consumes = "application/json;charset=UTF-8")
-    Result<Boolean> registerOperator(@RequestBody HandleOperatorDetail handleOperatorDetail);
+    @PostMapping(value = "registerOperator",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> registerOperator(@RequestBody HandleOperator handleOperator);
 
     /**
      * 忘记密码

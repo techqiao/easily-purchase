@@ -47,9 +47,17 @@ public class Const {
     }
 
     public interface WIN_SORT {
+        //中标排序
         String FIRST = "first";
         String SECOND = "second";
         String THREE = "three";
     }
 
+    public interface PROCESS_STATE {
+        //项目进程
+        int CHECK = 0;//审核
+        int REPLY = 1;//批复
+        int PASS = 2;//通过
+        int SAVE=3 ;//保存等待
+    }
 }

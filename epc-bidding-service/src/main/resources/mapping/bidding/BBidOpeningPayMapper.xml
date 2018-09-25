@@ -3,6 +3,9 @@
 <mapper namespace="com.epc.bidding.mapper.bidding.BBidOpeningPayMapper" >
   <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BBidOpeningPay" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="project_id" property="projectId" jdbcType="BIGINT" />
+    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
+    <result column="bid_id" property="bidId" jdbcType="BIGINT" />
     <result column="bids_guarantee_amount_id" property="bidsGuaranteeAmountId" jdbcType="BIGINT" />
     <result column="tenderer_id" property="tendererId" jdbcType="BIGINT" />
     <result column="tenderer_company_id" property="tendererCompanyId" jdbcType="BIGINT" />
@@ -77,9 +80,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, bids_guarantee_amount_id, tenderer_id, tenderer_company_id, tenderer_name, tenderer_company_name, 
-    amount_money_time, amount_money, payment_name, payment_account_number, payment_id, 
-    operate_id, create_at, update_at, is_deleted
+    id, project_id, procurement_project_id, bid_id, bids_guarantee_amount_id, tenderer_id, 
+    tenderer_company_id, tenderer_name, tenderer_company_name, amount_money_time, amount_money, 
+    payment_name, payment_account_number, payment_id, operate_id, create_at, update_at, 
+    is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" >
     select
@@ -115,18 +119,18 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_bid_opening_pay (bids_guarantee_amount_id, tenderer_id, 
-      tenderer_company_id, tenderer_name, tenderer_company_name, 
-      amount_money_time, amount_money, payment_name, 
-      payment_account_number, payment_id, operate_id, 
-      create_at, update_at, is_deleted
-      )
-    values (#{bidsGuaranteeAmountId,jdbcType=BIGINT}, #{tendererId,jdbcType=BIGINT}, 
-      #{tendererCompanyId,jdbcType=BIGINT}, #{tendererName,jdbcType=VARCHAR}, #{tendererCompanyName,jdbcType=BIGINT}, 
-      #{amountMoneyTime,jdbcType=TIMESTAMP}, #{amountMoney,jdbcType=DECIMAL}, #{paymentName,jdbcType=VARCHAR}, 
-      #{paymentAccountNumber,jdbcType=VARCHAR}, #{paymentId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+    insert into b_bid_opening_pay (project_id, procurement_project_id, bid_id, 
+      bids_guarantee_amount_id, tenderer_id, tenderer_company_id, 
+      tenderer_name, tenderer_company_name, amount_money_time, 
+      amount_money, payment_name, payment_account_number, 
+      payment_id, operate_id, create_at, 
+      update_at, is_deleted)
+    values (#{projectId,jdbcType=BIGINT}, #{procurementProjectId,jdbcType=BIGINT}, #{bidId,jdbcType=BIGINT}, 
+      #{bidsGuaranteeAmountId,jdbcType=BIGINT}, #{tendererId,jdbcType=BIGINT}, #{tendererCompanyId,jdbcType=BIGINT}, 
+      #{tendererName,jdbcType=VARCHAR}, #{tendererCompanyName,jdbcType=BIGINT}, #{amountMoneyTime,jdbcType=TIMESTAMP}, 
+      #{amountMoney,jdbcType=DECIMAL}, #{paymentName,jdbcType=VARCHAR}, #{paymentAccountNumber,jdbcType=VARCHAR}, 
+      #{paymentId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -134,6 +138,15 @@
     </selectKey>
     insert into b_bid_opening_pay
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="procurementProjectId != null" >
+        procurement_project_id,
+      </if>
+      <if test="bidId != null" >
+        bid_id,
+      </if>
       <if test="bidsGuaranteeAmountId != null" >
         bids_guarantee_amount_id,
       </if>
@@ -178,6 +191,15 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectId != null" >
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidId != null" >
+        #{bidId,jdbcType=BIGINT},
+      </if>
       <if test="bidsGuaranteeAmountId != null" >
         #{bidsGuaranteeAmountId,jdbcType=BIGINT},
       </if>
@@ -234,6 +256,15 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.procurementProjectId != null" >
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidId != null" >
+        bid_id = #{record.bidId,jdbcType=BIGINT},
+      </if>
       <if test="record.bidsGuaranteeAmountId != null" >
         bids_guarantee_amount_id = #{record.bidsGuaranteeAmountId,jdbcType=BIGINT},
       </if>
@@ -284,6 +315,9 @@
   <update id="updateByExample" parameterType="map" >
     update b_bid_opening_pay
     set id = #{record.id,jdbcType=BIGINT},
+      project_id = #{record.projectId,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      bid_id = #{record.bidId,jdbcType=BIGINT},
       bids_guarantee_amount_id = #{record.bidsGuaranteeAmountId,jdbcType=BIGINT},
       tenderer_id = #{record.tendererId,jdbcType=BIGINT},
       tenderer_company_id = #{record.tendererCompanyId,jdbcType=BIGINT},
@@ -305,6 +339,15 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
     update b_bid_opening_pay
     <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectId != null" >
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidId != null" >
+        bid_id = #{bidId,jdbcType=BIGINT},
+      </if>
       <if test="bidsGuaranteeAmountId != null" >
         bids_guarantee_amount_id = #{bidsGuaranteeAmountId,jdbcType=BIGINT},
       </if>
@@ -352,7 +395,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
     update b_bid_opening_pay
-    set bids_guarantee_amount_id = #{bidsGuaranteeAmountId,jdbcType=BIGINT},
+    set project_id = #{projectId,jdbcType=BIGINT},
+      procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      bid_id = #{bidId,jdbcType=BIGINT},
+      bids_guarantee_amount_id = #{bidsGuaranteeAmountId,jdbcType=BIGINT},
       tenderer_id = #{tendererId,jdbcType=BIGINT},
       tenderer_company_id = #{tendererCompanyId,jdbcType=BIGINT},
       tenderer_name = #{tendererName,jdbcType=VARCHAR},
@@ -382,7 +428,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectBidPayRecord" resultType="com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO">
+  <select id="selectBidPayRecord" parameterType="com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO">
     SELECT DISTINCT
 	bsd.procurement_project_id,
 	bsd.id,

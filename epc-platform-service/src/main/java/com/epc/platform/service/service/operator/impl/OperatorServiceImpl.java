@@ -119,6 +119,8 @@ public class OperatorServiceImpl implements OperatorService {
             attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
             attachment.setCertificateFilePath(roleDetailInfo.getQualificationCertificate());
             tOperatorAttachmentMapper.insertSelective(attachment);
+
+
             return Result.success();
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);

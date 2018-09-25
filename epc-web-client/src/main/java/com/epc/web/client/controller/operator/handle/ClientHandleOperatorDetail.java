@@ -12,6 +12,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 @ApiModel(value = "ClientHandleOperatorDetail", description = "供应商信息")
 public class ClientHandleOperatorDetail {
 
+    @ApiModelProperty(value = "手机号")
+    @NotEmpty(message = "ClientHandleOperatorDetail.cellphone.null")
+    private String cellphone;
+
+    @ApiModelProperty(value = "密码")
+    @NotEmpty(message = "ClientHandleOperatorDetail.password.null")
+    private String password;
+
     @ApiModelProperty(value = "公司名称")
     private String companyName;
 
@@ -41,19 +49,6 @@ public class ClientHandleOperatorDetail {
 
     @ApiModelProperty(value = "对公银行账号")
     private String publicBanAccountNumber;
-
-    @ApiModelProperty(value = "手机号")
-    @NotEmpty(message = "ClientHandleOperatorDetail.cellPhone.null")
-    private String cellPhone;
-
-    @ApiModelProperty(value = "密码")
-    @NotEmpty(message = "ClientHandleOperatorDetail.password.null")
-    private String password;
-
-
-
-
-
 
 
 }

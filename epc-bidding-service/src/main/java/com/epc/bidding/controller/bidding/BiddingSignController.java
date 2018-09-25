@@ -1,7 +1,7 @@
 package com.epc.bidding.controller.bidding;
 
 
-import com.epc.bidding.service.bidding.SignService;
+import com.epc.bidding.service.sign.SignService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeSignService;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class BiddingSignController implements FacadeSignService {
+
     @Autowired
     SignService signService;
-
 
     /**
      * 供应商签到
@@ -33,7 +33,7 @@ public class BiddingSignController implements FacadeSignService {
      * @return
      */
     @Override
-    public Result<SignBaseDTO> getSignBase(BasePersonInfo basePersonInfo) {
+    public Result<SignBaseDTO> getSignBase(@RequestBody BasePersonInfo basePersonInfo) {
         return signService.getSignBase(basePersonInfo.getName(),basePersonInfo.getCellPhone());
     }
 

@@ -23,14 +23,18 @@ import java.io.Serializable;
 @Data
 public class ClientHandleOperator  {
 
+    @ApiModelProperty(value = "员工id")
+    private Long id;
+
     @ApiModelProperty(value = "员工姓名")
-    @NotEmpty(message = "ClientHandleOperator.userName.null")
-    private String userName;
+    private String name;
+
     @ApiModelProperty(value = "手机号")
-    @NotEmpty(message = "ClientHandleOperator.cellPhone.null")
-    private String cellPhone;
+    @NotEmpty(message = "ClientHandleOperator.cellphone.null")
+    private String cellphone;
+
     @ApiModelProperty(value = "密码")
     @NotEmpty(message = "ClientHandleOperator.passWord.null")
-    private String passWord;
+    private String password;
 
 }

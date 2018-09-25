@@ -35,7 +35,7 @@ import java.util.List;
 
 @Api(value = "采购人服务",tags = {"采购人服务"})
 @RestController
-@RequestMapping(value = "/operator", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PurchaserController  {
     @Autowired
     PurchaserClient purchaserClient;

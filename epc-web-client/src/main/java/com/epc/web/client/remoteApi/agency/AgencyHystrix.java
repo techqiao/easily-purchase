@@ -2,11 +2,20 @@ package com.epc.web.client.remoteApi.agency;
 
 import com.epc.common.Result;
 import com.epc.web.facade.agency.FacadeAgencyService;
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
+import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *@Author :winlin
@@ -29,7 +38,7 @@ public class AgencyHystrix implements FacadeAgencyService{
         return Result.hystrixError();
     }
 
-    @PostMapping(value = "regesityAgency", consumes = "application/json; charset=UTF-8")
+
     @Override
     public Result regesityAgency(HandleAgency agency) {
         return Result.hystrixError();
@@ -51,9 +60,11 @@ public class AgencyHystrix implements FacadeAgencyService{
     }
 
     @Override
-    public Result proxySubjects() {
-        return Result.hystrixError();
+    public Result proxySubjects(AgencySubjectDto subjectDto) {
+        return null;
     }
+
+
 
     @Override
     public Result queryEmployee(HandleEmployee employee) {
@@ -61,17 +72,42 @@ public class AgencyHystrix implements FacadeAgencyService{
     }
 
     @Override
-    public Result queryEmployeeByCellphone(String cellphone) {
+    public Result queryEmployeeByCellphone(HashMap<String,String> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryEmployeeById(Long id) {
+    public Result queryEmployeeById(HashMap<String,Long> map) {
         return Result.hystrixError();
     }
 
     @Override
     public Result updateEmployeeBy(HandleEmployee employee) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<AgencyEmployeeVo>> queryAllEmployee(HashMap<String, Long> map) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(AgencyExpertDto expertDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> completeAgencySupInfo(AgencySupplierDto supplierDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> completeAgencyExpertInfo(AgencyExpertDto expertDto) {
         return Result.hystrixError();
     }
 }

@@ -106,7 +106,6 @@
     AND agency.agency_id=boss.agency_id
     AND boss.role=0;
   </select>
-
   <select id="queryEmplyees" resultType="com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo" parameterType="java.lang.Long">
  SELECT agency.id AS userId,agency.`name` AS userName ,agency.cellphone,agency.agency_id AS companyId,boss.name AS bossName ,d.company_name AS
     companyName
@@ -125,10 +124,9 @@
      FROM t_purchaser_basic_info agency
      LEFT JOIN t_purchaser_basic_info boss ON agency.agency_id=boss.agency_id
     LEFT JOIN t_purchaser_detail_info  d ON d.agency_id = agency.agency_id
-     WHERE agency.purchaser_id=boss.purchaser_id
+     WHERE agency.`name` LIKE #{pattern}
+    AND agency.purchaser_id=boss.purchaser_id
     AND boss.role=0;
-    AND agency.purchaser_id =#{purchaserId}
-    AND agency.`name` LIKE #{pattern}
   </select>
 
   <select id="queryEmplyeeByCellphone" resultType="com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo" parameterType="java.lang.String">
@@ -179,6 +177,13 @@
     </set>
     WHERE id=#{id}
   </update>
+  <select id="queryAllSuppliers" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo" parameterType="java.lang.Long">
+    SELECT d.company_name AS companyName,s.create_at AS createAt FROM t_purchaser_supplier s ,t_supplier_detail_info d
+    <where>
+      d. supplier_id = s.supplier_id
+      AND d.purchaser_id=#{purchaseId}
+    </where>
+  </select>
   <update id="updateExpertStateById">
     UPDATE t_purchaser_expert
     <set>
@@ -475,4 +480,27 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="querySuppliersByName" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo">
+    SELECT d.company_name AS companyName,s.create_at AS createAt FROM t_purchaser_supplier s ,t_supplier_detail_info d
+    <where>
+      d. supplier_id = s.supplier_id
+      <if test="fuzzyName!=null">
+        AND d.company_name LIKE '%'#{fuzzyName}'%'
+      </if>
+      AND d.purchaser_id=#{purchaseId}
+    </where>
+  </select>
+  <select id="querySuppliersById" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo">
+
+    SELECT d.company_name AS companyName,s.create_at AS createAt FROM t_purchaser_supplier s ,t_supplier_detail_info d
+    WHERE
+    d. supplier_id = s.supplier_id
+    AND s.id=#{id}
+  </select>
+  <select id="queryExpertsByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserExpertVo" parameterType="com.epc.web.facade.purchaser.dto.HandleExpertDto">
+
+  </select>
+    <select id="queryEmplyeeByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo" parameterType="com.epc.web.facade.purchaser.dto.HandleEmployeeDto">
+
+    </select>
 </mapper>

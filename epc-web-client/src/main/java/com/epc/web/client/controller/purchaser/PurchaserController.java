@@ -1,18 +1,24 @@
 package com.epc.web.client.controller.purchaser;
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.purchaser.dto.ClientHandleAgencyDto;
 import com.epc.web.client.controller.purchaser.dto.ClientHandleEmployeeDto;
 import com.epc.web.client.controller.purchaser.dto.ClientHandleExpertDto;
+import com.epc.web.client.controller.purchaser.dto.ClientHandleSupplierDto;
 import com.epc.web.client.controller.purchaser.handle.*;
 import com.epc.web.client.controller.supplier.handle.ClientHandleSupplierDetail;
 import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
-import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.expert.Handle.HandleExpert;
+import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
+import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
 import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
 import com.epc.web.facade.purchaser.handle.HandleAgnecy;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
+import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +29,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.xml.crypto.Data;
+import java.util.List;
 
 @Api(value = "采购人服务",tags = {"采购人服务"})
 @RestController
@@ -65,8 +74,8 @@ public class PurchaserController  {
 
     @ApiOperation(value = "完善采购人信息",notes = "完善采购人信息")
     @PostMapping(value = "/updatePurchaserDetail")
-    public Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandlePurchaser handlePurchaser) {
-        HandlePurchaser purchaser = new HandlePurchaser();
+    public Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandleRegisterPurchaser handlePurchaser) {
+        HandleRegisterPurchaser purchaser = new HandleRegisterPurchaser();
         BeanUtils.copyProperties(handlePurchaser,purchaser);
         return purchaserClient.updatePurchaserDetail(purchaser);
     }
@@ -176,4 +185,78 @@ public class PurchaserController  {
     public Result updateExpertState(Long id, Integer state) {
         return purchaserClient.updateExpertState(id,state);
     }
+
+    /**
+     *@author :winlin
+     *@Description :根据条件查询代理机构
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    @ApiOperation(value = "根据条件查询代理机构",notes = "根据条件查询代理机构")
+    @PostMapping(value = "/queryAgenciesByCriteria")
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody ClientHandleAgencyDto agencyDto){
+        HandleAgencyDto dto = new HandleAgencyDto();
+        BeanUtils.copyProperties(agencyDto,dto);
+        return purchaserClient.queryAgenciesByCriteria(dto);
+    };
+
+    /**
+     *@author :winlin
+     *@Description :
+     *@param: 依据条件检索供应商
+     *@return:
+     *@date:2018/9/20
+     */
+    @ApiOperation(value = "根据条件查询供货商",notes = "根据条件查询供货商")
+    @PostMapping(value = "/querySupplierByCriterias")
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody ClientHandleSupplierDto supplierDto){
+        HandleSupplierDto dto = new HandleSupplierDto();
+        BeanUtils.copyProperties(supplierDto,dto);
+        return purchaserClient.querySupplierByCriterias(dto);
+    };
+
+    /**
+     *@author :winlin
+     *@Description :完善采购人专家信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @ApiOperation(value = "采购人完善专家信息",notes = "采购人完善专家信息")
+    @PostMapping(value = "/completePurchaserExpertInfo")
+    public Result<Boolean> completePurchaserExpertInfo(@RequestBody ClientHandleExpertDto expertDto){
+        HandleExpertDto dto = new HandleExpertDto();
+        BeanUtils.copyProperties(expertDto,dto);
+        return purchaserClient.completePurchaserExpertInfo(dto);
+    };
+
+    /**
+     *@author :winlin
+     *@Description :修改采购人代理机构详细信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @ApiOperation(value = "采购人完善代理机构信息",notes = "采购人完善代理机构信息")
+    @PostMapping(value = "/updatePurchaserAgency")
+    public Result<Boolean> updatePurchaserAgency(@RequestBody ClientHandleAgencyDto agencyDto){
+        HandleAgencyDto dto = new HandleAgencyDto();
+        BeanUtils.copyProperties(agencyDto,dto);
+        return purchaserClient.updatePurchaserAgency(dto);
+    };
+    /**
+     *@author :winlin
+     *@Description :修改采购人专家的信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    @ApiOperation(value = "采购人完善专家信息",notes = "采购人完善专家信息")
+    @PostMapping(value = "/updatePurchaserExpert")
+    public Result<Boolean> updatePurchaserExpert(@RequestBody ClientHandleExpertDto expertDto){
+        HandleExpertDto dto = new HandleExpertDto();
+        BeanUtils.copyProperties(expertDto,dto);
+        return purchaserClient.updatePurchaserExpert(dto);
+    };
 }

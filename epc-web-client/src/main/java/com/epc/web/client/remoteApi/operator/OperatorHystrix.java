@@ -18,7 +18,7 @@ public class OperatorHystrix implements FacadeOperatorService {
 
 
     @Override
-    public Result<Boolean> registerOperator(HandleOperatorDetail HandleOperatorDetail) {
+    public Result<Boolean> registerOperator(HandleOperator handleOperator) {
         return Result.hystrixError();
     }
 

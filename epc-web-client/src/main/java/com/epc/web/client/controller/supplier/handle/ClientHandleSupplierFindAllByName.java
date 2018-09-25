@@ -2,11 +2,13 @@ package com.epc.web.client.controller.supplier.handle;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
 @ApiModel(value = "ClientHandleSupplierFindAllByName",description = "模糊查询")
+@Data
 public class ClientHandleSupplierFindAllByName  {
 
     @ApiModelProperty(value = "供应商ID")
@@ -14,30 +16,8 @@ public class ClientHandleSupplierFindAllByName  {
     private Long supplierId;
 
     @ApiModelProperty(value = "模糊名称")
-    @NotEmpty(message = "ClientHandleSupplierFindAllByName.where.null")
-    private String where;
+    @NotEmpty(message = "ClientHandleSupplierFindAllByName.name.null")
+    private String name;
 
-    public Long getSupplierId() {
-        return supplierId;
-    }
 
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getWhere() {
-        return where;
-    }
-
-    public void setWhere(String where) {
-        this.where = where;
-    }
-
-    @Override
-    public String toString() {
-        return "ClientHandleSupplierFindAllByName{" +
-                "supplierId=" + supplierId +
-                ", where='" + where + '\'' +
-                '}';
-    }
 }

@@ -1,6 +1,5 @@
 package com.epc.web.service.mapper.agency;
 
-import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
@@ -34,8 +33,4 @@ public interface TAgencyBasicInfoMapper {
     int updateByPrimaryKey(TAgencyBasicInfo record);
 
     LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
-
-    AgencyEmployeeVo queryEmployeeByCellphone(String cellphone);
-
-    AgencyEmployeeVo queryEmployeeById(Long id);
 }

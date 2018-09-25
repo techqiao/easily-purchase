@@ -57,7 +57,7 @@ public class ClientHandleSupplierDetail {
 
     @ApiModelProperty(value = "手机号")
     @NotEmpty(message = "ClientHandleSupplierDetail.cellPhone.null")
-    private String cellPhone;
+    private String cellphone;
 
     @ApiModelProperty(value = "密码")
     @NotEmpty(message = "ClientHandleSupplierDetail.password.null")

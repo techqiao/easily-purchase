@@ -11,7 +11,7 @@ public class HandleFindSupplierByInfo implements Serializable {
     /**
      * 根据电话来查询一条记录
      */
-    private String cellPhone;
+    private String cellphone;
 
     /**
      * 根据id来查询一条记录
@@ -28,6 +28,11 @@ public class HandleFindSupplierByInfo implements Serializable {
      * 供应商ID
      */
     private Long supplierId;
+
+    /**
+     * 依据role来查找 出supplier_id
+     */
+    private Integer role;
 
 
 

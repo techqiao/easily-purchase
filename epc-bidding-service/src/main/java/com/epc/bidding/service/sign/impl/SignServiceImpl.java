@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.Date;
 
@@ -32,6 +34,7 @@ public class SignServiceImpl implements SignService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertSupplierSign(HandleSign handleSign) {
         TSupplierSign entity=new TSupplierSign();
         BeanUtils.copyProperties(handleSign,entity);
@@ -39,8 +42,9 @@ public class SignServiceImpl implements SignService {
         entity.setUpdateAt(new Date());
         try{
             tSupplierSignMapper.insertSelective(entity);
-            return Result.success();
+            return Result.success(true);
         }catch (Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error("插入失败");
         }
     }

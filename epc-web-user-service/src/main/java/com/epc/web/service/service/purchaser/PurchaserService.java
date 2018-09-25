@@ -1,14 +1,20 @@
 package com.epc.web.service.service.purchaser;
 
 import com.epc.common.Result;
-import com.epc.web.facade.expert.handle.HandleExpert;
+import com.epc.web.facade.expert.Handle.HandleExpert;
+import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
-import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
+import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
+import com.epc.web.facade.purchaser.handle.*;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
+import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
+import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
+import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import com.netflix.hystrix.strategy.eventnotifier.HystrixEventNotifierDefault;
+
+import java.util.List;
 
 /**
  * @author :winlin &linzhixiang
@@ -30,7 +36,7 @@ public interface PurchaserService {
     Result<Boolean> createOperatePurchaser(HandlePurchaser handleOperator);
 
     /**
-     * 添加运营商(私库)
+     * 添加供应商(私库)
      *
      * @param handleOperator
      * @return
@@ -60,15 +66,15 @@ public interface PurchaserService {
      * @param handlePurchaser
      * @return
      */
-    Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser);
+    Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser);
 
     /**
      * 完善供货商信息detail
      *
-     * @param HandleSupplierDetail
+     * @param  dto
      * @return
      */
-    Result<Boolean> updateSupplierDetail(HandleSupplierDetail HandleSupplierDetail);
+    Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto);
 
     /**
      * 完善代理机构detail
@@ -85,7 +91,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/18
      */
-    public Result registerPurchaser(HandleRegisterPurchaser purchaser);
+    public Result<HandleRegisterPurchaser> registerPurchaser(HandleRegisterPurchaser purchaser);
 
     /**
      * @author :winlin
@@ -94,7 +100,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result allEmployee(Long purchaserId);
+    public Result<List<PurchaserEmplyeeVo>> allEmployee(Long purchaserId);
 
     /**
      * @author :winlin
@@ -103,7 +109,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result findEmployeeByName(String fuzzyName,Long purchaseId);
+    public Result<List<PurchaserEmplyeeVo>> findEmployeeByName(String fuzzyName,Long purchaseId);
 
     /**
      * @author :winlin
@@ -112,7 +118,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result updateEmployeeState(String cellphone,Integer state);
+    public Result<Boolean> updateEmployeeState(String cellphone,Integer state);
 
     /**
      * @author :winlin
@@ -121,7 +127,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result updateEmployeeState(Long id,Integer state);
+    public Result<Boolean> updateEmployeeState(Long id,Integer state);
 
     /**
      * @author :winlin
@@ -130,7 +136,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result queryEmployee(String cellphone);
+    public Result<PurchaserEmplyeeVo> queryEmployee(String cellphone);
 
     /**
      * @author :winlin
@@ -139,7 +145,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result queryEmployee(Long id);
+    public Result<PurchaserEmplyeeVo> queryEmployee(Long id);
     /**
      *@author :winlin
      *@Description :根据条件查询多有符合条件的员工
@@ -147,7 +153,7 @@ public interface PurchaserService {
      *@return:
      *@date:2018/9/19
      */
-    public Result queryEmplyee(HandleEmployeeDto employeeDto);
+    public Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto);
 
     /**
      *@author :winlin
@@ -156,7 +162,7 @@ public interface PurchaserService {
      *@return:
      *@date:2018/9/19
      */
-    public Result updateRole(Long id,Integer role);
+    public Result<Boolean> updateRole(Long id,Integer role);
 
     /**
      * @author :winlin
@@ -165,7 +171,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result queryAllSuppliers(Long purchaseId);
+    public Result<List<PurchaserSupplierVo>> queryAllSuppliers(Long purchaseId);
 
     /**
      * @author :winlin
@@ -174,7 +180,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result querySuppliers(String fuzzyName,Long purchaseId);
+    public Result<List<PurchaserSupplierVo>> querySuppliers(String fuzzyName,Long purchaseId);
 
     /**
      * @author :winlin
@@ -183,7 +189,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result querySuppliers(Long id);
+    public Result<PurchaserSupplierVo> querySuppliers(Long id);
 
     /**
      * @author :winlin
@@ -192,7 +198,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result updateSuppliers(HandPurchaserAttachment attachment);
+    public Result<Boolean> updateSuppliers(HandPurchaserAttachment attachment);
 
     /**
      * @author :winlin
@@ -201,7 +207,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result queryExperts(HandleExpertDto dto);
+    public Result<List<PurchaserExpertVo>> queryExperts(HandleExpertDto dto);
     /**
      *@author :winlin
      *@Description :根据id删除专家,修改is_delete状态
@@ -209,5 +215,48 @@ public interface PurchaserService {
      *@return:
      *@date:2018/9/19
      */
-    public Result updateExpertState(Long id ,Integer state);
+    public Result<Boolean> updateExpertState(Long id ,Integer state);
+    /**
+     *@author :winlin
+     *@Description :根据条件查询代理机构
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto);
+
+    /**
+     *@author :winlin
+     *@Description :
+     *@param: 依据条件检索供应商
+     *@return:
+     *@date:2018/9/20
+     */
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto);
+
+    /**
+     *@author :winlin
+     *@Description :完善采购人专家信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
+
+    /**
+     *@author :winlin
+     *@Description :修改采购人代理机构详细信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto);
+    /**
+     *@author :winlin
+     *@Description :修改采购人专家的信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 }

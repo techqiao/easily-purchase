@@ -72,12 +72,12 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 }
                 break;
             case IRoleLoginService.SUPPLIER:
-                LoginUser loginUser2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
-                if (loginUser2 != null) {
-                    loginUser2.setType(type);
-                    //this.cacheInredis(request,response,loginUser2);
-                    return Result.success( loginUser2);
-                }
+//                LoginUser loginUser2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
+//                if (loginUser2 != null) {
+//                    loginUser2.setType(type);
+//                    //this.cacheInredis(request,response,loginUser2);
+//                    return Result.success( loginUser2);
+//                }
                 break;
             case IRoleLoginService.PURCHASER:
                 LoginUser loginUser3 = tPurchaserBasicInfoMapper.login(cellphone, pwd);

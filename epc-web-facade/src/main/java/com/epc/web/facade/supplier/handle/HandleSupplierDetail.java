@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author donghuan
  */
 @Data
-public class HandleSupplierDetail implements Serializable {
+public class  HandleSupplierDetail implements Serializable {
 
     private static final long serialVersionUID = 8608242287921574415L;
     /**
@@ -81,7 +81,7 @@ public class HandleSupplierDetail implements Serializable {
     /**
      * 手机号
      */
-    private String cellPhone;
+    private String cellphone;
 
     /**
      * 密码

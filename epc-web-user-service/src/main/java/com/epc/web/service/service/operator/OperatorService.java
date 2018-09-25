@@ -12,7 +12,7 @@ public interface OperatorService {
     /**
      * 注册运营商
      */
-    Result<Boolean> registerOperator(HandleOperatorDetail handleOperatorDetail);
+    Result<Boolean> registerOperator(HandleOperator handleOperator);
 
     /**
      * 查询运营商用户信息

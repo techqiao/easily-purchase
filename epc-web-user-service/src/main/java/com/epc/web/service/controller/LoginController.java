@@ -22,7 +22,7 @@ public class LoginController implements FacadeLoginUserService {
     @Autowired
     IRoleLoginService iRoleLoginService;
     @Override
-    public Result login(@RequestBody LoginUser user) {
+    public Result<LoginUser> login(@RequestBody LoginUser user) {
 
        Result result= iRoleLoginService.login(user);
        if(result.getData()!=null){

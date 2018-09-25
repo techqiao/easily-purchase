@@ -33,7 +33,7 @@ public class LoginController {
 
     @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4")
     @PostMapping(value = "/roleLogin",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result login(@RequestBody ClientLoginUser user){
+    public Result<LoginUser> login(@RequestBody ClientLoginUser user){
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(user,loginUser);
         return iLoginUserClient.login(loginUser);

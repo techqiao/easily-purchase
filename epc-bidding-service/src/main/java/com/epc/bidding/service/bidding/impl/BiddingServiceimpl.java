@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -180,6 +182,7 @@ public class BiddingServiceimpl implements BiddingService {
      */
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile){
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
@@ -190,7 +193,7 @@ public class BiddingServiceimpl implements BiddingService {
             //新增审查信息记录
             tPretrialMessageMapper.insertSelective(attachment);
         }catch (Exception e){
-            Result.error();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
         //查看文件是否上传
@@ -224,7 +227,8 @@ public class BiddingServiceimpl implements BiddingService {
      * @return
      */
     @Override
-    public Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile){
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile) {
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
         attachment.setUpdateAt(new Date());
@@ -233,7 +237,7 @@ public class BiddingServiceimpl implements BiddingService {
             //更新 审查信息记录
             tPretrialMessageMapper.updateByPrimaryKey(attachment);
         }catch (Exception e){
-            Result.error();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
         //查看是否存在文件
@@ -279,7 +283,7 @@ public class BiddingServiceimpl implements BiddingService {
     public Result<PretrialMessageVO>  getTPretrialMessage(HandlePretriaFile handlePretriaFile){
         TPretrialMessageCriteria criteria =new TPretrialMessageCriteria();
         TPretrialMessageCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andPurchasProjectIdEqualTo(handlePretriaFile.getPurchasProjectId());
+        cubCriteria.andPurchasProjectIdEqualTo(handlePretriaFile.getPurchaseProjectId());
         cubCriteria.andReleaseAnnouncementIdEqualTo(handlePretriaFile.getReleaseAnnouncementId());
         cubCriteria.andCompanyIdEqualTo(handlePretriaFile.getCompanyId());
         //获取预审信息

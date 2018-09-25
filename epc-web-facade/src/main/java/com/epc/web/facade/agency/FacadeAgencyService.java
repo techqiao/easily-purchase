@@ -1,19 +1,29 @@
 package com.epc.web.facade.agency;
 
 import com.epc.common.Result;
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
+import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author :winlin
  * @Description :代理商服务
  * @Date:2018/9/15
  */
-public interface FacadeAgencyService {
+public interface FacadeAgencyService{
     /**
      * 代理商新增员工
      *
@@ -73,7 +83,7 @@ public interface FacadeAgencyService {
     public Result modifypassword( @RequestBody HandleAgency agency);
     /**
      *@author :winlin
-     *@Description : 信息完善详细信息
+     *@Description : 代理机构信息完善详细信息
      *@param:
      *@return: 数据库添加状态
      *@date:2018/9/18
@@ -89,7 +99,7 @@ public interface FacadeAgencyService {
      *@date:2018/9/18
      */
     @PostMapping(value = "proxySubjects", consumes = "application/json; charset=UTF-8")
-    public Result proxySubjects();
+    public Result proxySubjects(AgencySubjectDto subjectDto);
 
     /**
      *@author :winlin
@@ -108,8 +118,10 @@ public interface FacadeAgencyService {
      *@return:
      *@date:2018/9/18
      */
-    @PostMapping(value = "queryEmployeeByCellphone", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployeeByCellphone(String cellphone);
+
+    @PostMapping(value = "queryEmployeeByCellphone")
+    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map);
+
     /**
      *@author :winlin
      *@Description :根据id查询员工信息
@@ -118,8 +130,8 @@ public interface FacadeAgencyService {
      *@date:2018/9/19
      */
     @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployeeById(Long id);
-    /**
+    public Result queryEmployeeById(@RequestBody HashMap<String,Long> map);
+
      /**
      *@author :winlin
      *@Description :
@@ -129,4 +141,54 @@ public interface FacadeAgencyService {
      */
     @PostMapping(value = "updateEmployeeBy", consumes = "application/json; charset=UTF-8")
     public Result updateEmployeeBy( @RequestBody HandleEmployee employee);
+    /**
+     * @author :winlin
+     * @Description :查询机构下所有员工的信息
+     * @param: 机构的id
+     * @return:
+     * @date:2018/9/20
+     */
+    @PostMapping(value = "queryAEmployees", consumes = "application/json; charset=UTF-8")
+    public Result<List<AgencyEmployeeVo>> queryAllEmployee(@RequestBody HashMap<String,Long> map);
+
+    /**
+     * @author :winlin
+     * @Description : 封装条件查供应商
+     * @param:
+     * @return:
+     * @date:2018/9/20
+     */
+    @PostMapping(value = "querySuppilerCriteria", consumes = "application/json; charset=UTF-8")
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(@RequestBody AgencySupplierDto supplierDto);
+
+    /**
+     /**
+     * @author :winlin
+     * @Description :封装条件查询专家
+     * @param:
+     * @return:
+     * @date:2018/9/20
+     */
+    @PostMapping(value = "queryExpertCriteria", consumes = "application/json; charset=UTF-8")
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(@RequestBody AgencyExpertDto expertDto);
+
+    /**
+     * @author :winlin
+     * @Description :代理机构供应商完善自己的注册信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @PostMapping(value = "completeAgencySupInfo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> completeAgencySupInfo(@RequestBody AgencySupplierDto supplierDto);
+
+    /**
+     * @author :winlin
+     * @Description :代理机构专家完善自己个人信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @PostMapping(value = "completeAgencyExpertInfo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> completeAgencyExpertInfo(AgencyExpertDto expertDto);
 }

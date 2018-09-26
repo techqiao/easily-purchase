@@ -26,4 +26,9 @@ public class EvaluationHystrix implements FacadeEvaluationService {
     public Result getFilesByCompanyId(Long BIssueDocumentsId) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result getClauseTemplateById(Long id) {
+        return Result.hystrixError();
+    }
 }

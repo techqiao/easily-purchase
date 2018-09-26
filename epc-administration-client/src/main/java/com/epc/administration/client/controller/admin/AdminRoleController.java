@@ -71,11 +71,11 @@ public class AdminRoleController {
         return sysAdminRoleClient.addRole(roleHandle, resourceIds);
     }
 
-    /**删除角色
+    /**批量删除角色
      * @param ids
      * @return
      */
-    @ApiOperation(value = "删除角色", notes = "删除角色")
+    @ApiOperation(value = "批量删除角色", notes = "批量删除角色")
     @PostMapping(value = "deleteRoles")
     public Result deleteRoles(@RequestBody String ids) {
         return sysAdminRoleClient.deleteRoles(ids);

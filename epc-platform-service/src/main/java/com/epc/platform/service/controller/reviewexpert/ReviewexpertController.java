@@ -1,6 +1,6 @@
 package com.epc.platform.service.controller.reviewexpert;
 
-import com.epc.administration.facade.reviewexpert.ReviewexpertService;
+import com.epc.administration.facade.reviewexpert.ReviewExpertService;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Api(value = "评审专家服务", description = "评审专家服务")
 @RestController
-public class ReviewexpertController  extends BaseController implements ReviewexpertService {
+public class ReviewexpertController  extends BaseController implements ReviewExpertService {
 
     @Autowired
     private ExpertService expertService;

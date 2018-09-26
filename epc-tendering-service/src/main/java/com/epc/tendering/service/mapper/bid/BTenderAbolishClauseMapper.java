@@ -17,10 +17,6 @@ public interface BTenderAbolishClauseMapper {
 
     int insertSelective(BTenderAbolishClause record);
 
-    List<BTenderAbolishClause> selectByExampleWithBLOBsWithRowbounds(BTenderAbolishClauseCriteria example, RowBounds rowBounds);
-
-    List<BTenderAbolishClause> selectByExampleWithBLOBs(BTenderAbolishClauseCriteria example);
-
     List<BTenderAbolishClause> selectByExampleWithRowbounds(BTenderAbolishClauseCriteria example, RowBounds rowBounds);
 
     List<BTenderAbolishClause> selectByExample(BTenderAbolishClauseCriteria example);
@@ -29,13 +25,9 @@ public interface BTenderAbolishClauseMapper {
 
     int updateByExampleSelective(@Param("record") BTenderAbolishClause record, @Param("example") BTenderAbolishClauseCriteria example);
 
-    int updateByExampleWithBLOBs(@Param("record") BTenderAbolishClause record, @Param("example") BTenderAbolishClauseCriteria example);
-
     int updateByExample(@Param("record") BTenderAbolishClause record, @Param("example") BTenderAbolishClauseCriteria example);
 
     int updateByPrimaryKeySelective(BTenderAbolishClause record);
-
-    int updateByPrimaryKeyWithBLOBs(BTenderAbolishClause record);
 
     int updateByPrimaryKey(BTenderAbolishClause record);
 }

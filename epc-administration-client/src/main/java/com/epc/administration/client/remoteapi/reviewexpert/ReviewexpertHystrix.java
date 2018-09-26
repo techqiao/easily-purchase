@@ -1,6 +1,6 @@
 package com.epc.administration.client.remoteapi.reviewexpert;
 
-import com.epc.administration.facade.reviewexpert.ReviewexpertService;
+import com.epc.administration.facade.reviewexpert.ReviewExpertService;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
@@ -9,11 +9,11 @@ import com.epc.common.Result;
 
 /**
  * <p>Description : easilys
- * <p>Date : 2018-09-26 11:41
+ * <p>Date : 2018-09-26 16:03
  * <p>@Author : luozhixin
- * <p>ReviewexpertHystrix
+ * <p>ReviewExpertHystrix
  */
-public class ReviewexpertHystrix implements ReviewexpertService {
+public class ReviewExpertHystrix implements ReviewExpertService {
     @Override
     public Result<Boolean> insertReviewExpertBasicInfo(UserBasicInfo userBasicInfo) {
         return Result.hystrixError();
@@ -32,7 +32,7 @@ public class ReviewexpertHystrix implements ReviewexpertService {
     @Override
     public Result queryReviewExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
         return Result.hystrixError();
-    }
+}
 
     @Override
     public Result selectReviewExpertDetailInfo(QueryDetailIfo queryDetailIfo) {

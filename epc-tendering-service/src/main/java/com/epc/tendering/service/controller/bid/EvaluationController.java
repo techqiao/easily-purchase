@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.tendering.service.service.bid.EvaluationService;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,5 +35,10 @@ public class EvaluationController implements FacadeEvaluationService {
     @Override
     public Result getFilesByCompanyId(@RequestParam("companyId") Long companyId) {
         return evaluationService.getFilesByCompanyId(companyId);
+    }
+
+    @Override
+    public Result<ClauseTemplateVO> getClauseTemplateById(@RequestParam("id")Long id) {
+        return evaluationService.getClauseTemplateById(id);
     }
 }

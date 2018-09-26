@@ -35,7 +35,8 @@ public class BiddingEvaluationController extends BaseController {
     public Result insertEvaluation(@RequestBody ClientEvaluationHandle clientEvaluationHandle){
         EvaluationHandle evaluationHandle = new EvaluationHandle();
         BeanUtils.copyProperties(clientEvaluationHandle,evaluationHandle);
-        LoginUser loginUser = new LoginUser();
+        //测试数据
+       LoginUser loginUser = new LoginUser();
         loginUser.setName("admin");
         loginUser.setPassword("admin");
         loginUser.setCellphone("admin");
@@ -59,6 +60,12 @@ public class BiddingEvaluationController extends BaseController {
     @GetMapping(value = "getFilesByCompanyId" ,consumes = "application/json; charset=UTF-8")
     public Result getFilesByCompanyId(@RequestParam("companyId") Long companyId){
          return   evaluationClient.getFilesByCompanyId(companyId);
+    }
+
+    @ApiOperation(value = "根据id查询对应废标模板",tags = "根据id查询对应废标模板")
+    @GetMapping(value = "getClauseTemplateById" ,consumes = "application/json; charset=UTF-8")
+    public Result getClauseTemplateById(@RequestParam("id") Long id){
+        return  evaluationClient.getClauseTemplateById(id);
     }
 
 

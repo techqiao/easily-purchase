@@ -3,14 +3,12 @@ package com.epc.tendering.service.domain.bid;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BTenderAbolishClause implements Serializable {
+public class BTenderAbolishClauseTemplate implements Serializable {
     private Long id;
 
-    private Long evaluationTenderStandardId;
+    private String filePath;
 
-    private Long templateId;
-
-    private Long operateId;
+    private String clauseName;
 
     private Date createAt;
 
@@ -28,28 +26,20 @@ public class BTenderAbolishClause implements Serializable {
         this.id = id;
     }
 
-    public Long getEvaluationTenderStandardId() {
-        return evaluationTenderStandardId;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setEvaluationTenderStandardId(Long evaluationTenderStandardId) {
-        this.evaluationTenderStandardId = evaluationTenderStandardId;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath == null ? null : filePath.trim();
     }
 
-    public Long getTemplateId() {
-        return templateId;
+    public String getClauseName() {
+        return clauseName;
     }
 
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
-
-    public Long getOperateId() {
-        return operateId;
-    }
-
-    public void setOperateId(Long operateId) {
-        this.operateId = operateId;
+    public void setClauseName(String clauseName) {
+        this.clauseName = clauseName == null ? null : clauseName.trim();
     }
 
     public Date getCreateAt() {
@@ -83,9 +73,8 @@ public class BTenderAbolishClause implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", evaluationTenderStandardId=").append(evaluationTenderStandardId);
-        sb.append(", templateId=").append(templateId);
-        sb.append(", operateId=").append(operateId);
+        sb.append(", filePath=").append(filePath);
+        sb.append(", clauseName=").append(clauseName);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

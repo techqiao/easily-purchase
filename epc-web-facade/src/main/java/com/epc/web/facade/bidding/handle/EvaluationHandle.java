@@ -20,29 +20,23 @@ public class EvaluationHandle implements Serializable {
      * 操作人id
      */
     private Long operateId;
-
     /**
      * 采购项目ID
      */
     private Long procurementProjectId;
-
     /**
      * 标段ID
      */
     private Long bidsId;
-
+    /**
+     * 评标方法文件url
+     */
+    private String filePath;
     /**
      * 废除条款
      */
-    private  String tenderAbolishClause;
+    private  List<ClauseHandle> tenderAbolishClauseList;
 
-    /**
-     * 评标办法
-     */
-    private CodeHandle priceBidEvaluationMethod;
-    /**
-     * 评审因素
-     */
-    private List<TechnologyHandle> technologyHandleList;
+
 
 }

@@ -2,6 +2,7 @@ package com.epc.tendering.service.service.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 
 /**
  * <p>Description : easilys
@@ -31,4 +32,11 @@ public interface EvaluationService {
      * @return
      */
     Result getFilesByCompanyId(Long companyId);
+    /**
+     * 根据id查询对应废标模板
+     * @param id 废标模板id
+     * @return
+     */
+    Result<ClauseTemplateVO> getClauseTemplateById(Long id);
+
 }

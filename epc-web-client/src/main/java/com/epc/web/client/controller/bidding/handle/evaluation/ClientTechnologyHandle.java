@@ -9,36 +9,14 @@ import org.hibernate.validator.constraints.NotEmpty;
  * <p>Description : easilys
  * <p>Date : 2018-09-25 14:49
  * <p>@Author : luozhixin
- * <p>ClientTechnologyHandle
+ * <p>
  */
 @Data
 public class ClientTechnologyHandle {
-
     /**
-     * 评审因素
+     * 废标条款模板ID
      */
-    @ApiModelProperty(value = "评审因素 办法名对应因素集合")
-    @NotEmpty(message = "ClientTechnologyHandle.evaluationFactors.null")
-    private String evaluationFactors;
+    @ApiModelProperty(value = "废标条款模板ID")
+    private Long templateId;
 
-    /**
-     * 说明
-     */
-    @ApiModelProperty(value = "说明")
-    @NotEmpty(message = "ClientTechnologyHandle.explain.null")
-    private String explain;
-
-    /**
-     * 分值开始范围
-     */
-    @ApiModelProperty(value = "分值开始范围")
-    @NotEmpty(message = "ClientTechnologyHandle.dividingRangeStart.null")
-    private String dividingRangeStart;
-
-    /**
-     * 分值结束范围
-     */
-    @ApiModelProperty(value = "分值结束范围")
-    @NotEmpty(message = "ClientTechnologyHandle.dividingRangeEnd.null")
-    private String dividingRangeEnd;
 }

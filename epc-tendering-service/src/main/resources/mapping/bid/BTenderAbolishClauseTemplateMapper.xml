@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.tendering.service.mapper.bid.BTechnologyTenderStandardMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.BTechnologyTenderStandard" >
+<mapper namespace="com.epc.tendering.service.mapper.bid.BTenderAbolishClauseTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplate" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="evaluation_tender_standard_id" property="evaluationTenderStandardId" jdbcType="BIGINT" />
-    <result column="evaluation_factors" property="evaluationFactors" jdbcType="VARCHAR" />
-    <result column="explain" property="explain" jdbcType="VARCHAR" />
-    <result column="dividing_range_start" property="dividingRangeStart" jdbcType="VARCHAR" />
-    <result column="dividing_range_end" property="dividingRangeEnd" jdbcType="VARCHAR" />
-    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="clause_name" property="clauseName" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -72,16 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, evaluation_tender_standard_id, evaluation_factors, explain, dividing_range_start, 
-    dividing_range_end, operate_id, create_at, update_at, is_deleted
+    id, file_path, clause_name, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandardCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplateCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from b_technology_tender_standard
+    from b_tender_abolish_clause_template
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,55 +87,39 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from b_technology_tender_standard
+    from b_tender_abolish_clause_template
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from b_technology_tender_standard
+    delete from b_tender_abolish_clause_template
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandardCriteria" >
-    delete from b_technology_tender_standard
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplateCriteria" >
+    delete from b_tender_abolish_clause_template
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandard" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplate" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_technology_tender_standard (evaluation_tender_standard_id, evaluation_factors, 
-      explain, dividing_range_start, dividing_range_end, 
-      operate_id, create_at, update_at, 
-      is_deleted)
-    values (#{evaluationTenderStandardId,jdbcType=BIGINT}, #{evaluationFactors,jdbcType=VARCHAR}, 
-      #{explain,jdbcType=VARCHAR}, #{dividingRangeStart,jdbcType=VARCHAR}, #{dividingRangeEnd,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+    insert into b_tender_abolish_clause_template (file_path, clause_name, create_at, 
+      update_at, is_deleted)
+    values (#{filePath,jdbcType=VARCHAR}, #{clauseName,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandard" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplate" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_technology_tender_standard
+    insert into b_tender_abolish_clause_template
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="evaluationTenderStandardId != null" >
-        evaluation_tender_standard_id,
+      <if test="filePath != null" >
+        file_path,
       </if>
-      <if test="evaluationFactors != null" >
-        evaluation_factors,
-      </if>
-      <if test="explain != null" >
-        explain,
-      </if>
-      <if test="dividingRangeStart != null" >
-        dividing_range_start,
-      </if>
-      <if test="dividingRangeEnd != null" >
-        dividing_range_end,
-      </if>
-      <if test="operateId != null" >
-        operate_id,
+      <if test="clauseName != null" >
+        clause_name,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -153,23 +132,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="evaluationTenderStandardId != null" >
-        #{evaluationTenderStandardId,jdbcType=BIGINT},
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
       </if>
-      <if test="evaluationFactors != null" >
-        #{evaluationFactors,jdbcType=VARCHAR},
-      </if>
-      <if test="explain != null" >
-        #{explain,jdbcType=VARCHAR},
-      </if>
-      <if test="dividingRangeStart != null" >
-        #{dividingRangeStart,jdbcType=VARCHAR},
-      </if>
-      <if test="dividingRangeEnd != null" >
-        #{dividingRangeEnd,jdbcType=VARCHAR},
-      </if>
-      <if test="operateId != null" >
-        #{operateId,jdbcType=BIGINT},
+      <if test="clauseName != null" >
+        #{clauseName,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -182,35 +149,23 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandardCriteria" resultType="java.lang.Integer" >
-    select count(*) from b_technology_tender_standard
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplateCriteria" resultType="java.lang.Integer" >
+    select count(*) from b_tender_abolish_clause_template
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update b_technology_tender_standard
+    update b_tender_abolish_clause_template
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.evaluationTenderStandardId != null" >
-        evaluation_tender_standard_id = #{record.evaluationTenderStandardId,jdbcType=BIGINT},
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
       </if>
-      <if test="record.evaluationFactors != null" >
-        evaluation_factors = #{record.evaluationFactors,jdbcType=VARCHAR},
-      </if>
-      <if test="record.explain != null" >
-        explain = #{record.explain,jdbcType=VARCHAR},
-      </if>
-      <if test="record.dividingRangeStart != null" >
-        dividing_range_start = #{record.dividingRangeStart,jdbcType=VARCHAR},
-      </if>
-      <if test="record.dividingRangeEnd != null" >
-        dividing_range_end = #{record.dividingRangeEnd,jdbcType=VARCHAR},
-      </if>
-      <if test="record.operateId != null" >
-        operate_id = #{record.operateId,jdbcType=BIGINT},
+      <if test="record.clauseName != null" >
+        clause_name = #{record.clauseName,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -227,14 +182,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update b_technology_tender_standard
+    update b_tender_abolish_clause_template
     set id = #{record.id,jdbcType=BIGINT},
-      evaluation_tender_standard_id = #{record.evaluationTenderStandardId,jdbcType=BIGINT},
-      evaluation_factors = #{record.evaluationFactors,jdbcType=VARCHAR},
-      explain = #{record.explain,jdbcType=VARCHAR},
-      dividing_range_start = #{record.dividingRangeStart,jdbcType=VARCHAR},
-      dividing_range_end = #{record.dividingRangeEnd,jdbcType=VARCHAR},
-      operate_id = #{record.operateId,jdbcType=BIGINT},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      clause_name = #{record.clauseName,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -242,26 +193,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandard" >
-    update b_technology_tender_standard
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplate" >
+    update b_tender_abolish_clause_template
     <set >
-      <if test="evaluationTenderStandardId != null" >
-        evaluation_tender_standard_id = #{evaluationTenderStandardId,jdbcType=BIGINT},
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
       </if>
-      <if test="evaluationFactors != null" >
-        evaluation_factors = #{evaluationFactors,jdbcType=VARCHAR},
-      </if>
-      <if test="explain != null" >
-        explain = #{explain,jdbcType=VARCHAR},
-      </if>
-      <if test="dividingRangeStart != null" >
-        dividing_range_start = #{dividingRangeStart,jdbcType=VARCHAR},
-      </if>
-      <if test="dividingRangeEnd != null" >
-        dividing_range_end = #{dividingRangeEnd,jdbcType=VARCHAR},
-      </if>
-      <if test="operateId != null" >
-        operate_id = #{operateId,jdbcType=BIGINT},
+      <if test="clauseName != null" >
+        clause_name = #{clauseName,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -275,26 +214,22 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandard" >
-    update b_technology_tender_standard
-    set evaluation_tender_standard_id = #{evaluationTenderStandardId,jdbcType=BIGINT},
-      evaluation_factors = #{evaluationFactors,jdbcType=VARCHAR},
-      explain = #{explain,jdbcType=VARCHAR},
-      dividing_range_start = #{dividingRangeStart,jdbcType=VARCHAR},
-      dividing_range_end = #{dividingRangeEnd,jdbcType=VARCHAR},
-      operate_id = #{operateId,jdbcType=BIGINT},
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplate" >
+    update b_tender_abolish_clause_template
+    set file_path = #{filePath,jdbcType=VARCHAR},
+      clause_name = #{clauseName,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BTechnologyTenderStandardCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BTenderAbolishClauseTemplateCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from b_technology_tender_standard
+    from b_tender_abolish_clause_template
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

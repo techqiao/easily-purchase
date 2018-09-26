@@ -2,6 +2,7 @@ package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,4 +39,13 @@ public interface FacadeEvaluationService {
      */
     @GetMapping(value = "getFilesByCompanyId", consumes = "application/json; charset=UTF-8")
     Result getFilesByCompanyId(@RequestParam("companyId") Long companyId);
+
+
+    /**
+     * 根据id查询对应废标模板
+     * @param id 废标模板id
+     * @return
+     */
+    @GetMapping(value = "getClauseTemplateById" ,consumes = "application/json; charset=UTF-8")
+    Result<ClauseTemplateVO> getClauseTemplateById(@RequestParam("id") Long id);
 }

@@ -57,6 +57,7 @@ public class TBidAnnouncementServiceImpl implements TBidAnnouncementService {
     }
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement) {
         TOpeningRecordCriteria criteria=new TOpeningRecordCriteria();

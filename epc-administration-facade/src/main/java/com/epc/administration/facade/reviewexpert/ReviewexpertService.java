@@ -1,5 +1,4 @@
 package com.epc.administration.facade.reviewexpert;
-
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
@@ -7,9 +6,13 @@ import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-public interface ReviewexpertService {
-
+/**
+ * <p>Description : easilys
+ * <p>Date : 2018-09-26 16:00
+ * <p>@Author : luozhixin
+ * <p>ReviewExpertService
+ */
+public interface ReviewExpertService {
     /**
      * 评审专家注册
      * @param userBasicInfo 基本信息
@@ -59,3 +62,4 @@ public interface ReviewexpertService {
     @PostMapping(value = "selectAllExpertByPage" , consumes = "application/json; charset=UTF-8")
     Result selectAllExpertByPage(@RequestBody QueryRequest queryRequest);
 }
+

@@ -10,6 +10,8 @@ public class BEvaluationTenderStandard implements Serializable {
 
     private Long bidsId;
 
+    private String filePath;
+
     private String processStatus;
 
     private Long auditorId;
@@ -23,8 +25,6 @@ public class BEvaluationTenderStandard implements Serializable {
     private Date updateAt;
 
     private Integer isDeleted;
-
-    private String priceBidEvaluationMethod;
 
     private static final long serialVersionUID = 1L;
 
@@ -50,6 +50,14 @@ public class BEvaluationTenderStandard implements Serializable {
 
     public void setBidsId(Long bidsId) {
         this.bidsId = bidsId;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath == null ? null : filePath.trim();
     }
 
     public String getProcessStatus() {
@@ -108,14 +116,6 @@ public class BEvaluationTenderStandard implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public String getPriceBidEvaluationMethod() {
-        return priceBidEvaluationMethod;
-    }
-
-    public void setPriceBidEvaluationMethod(String priceBidEvaluationMethod) {
-        this.priceBidEvaluationMethod = priceBidEvaluationMethod == null ? null : priceBidEvaluationMethod.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -125,6 +125,7 @@ public class BEvaluationTenderStandard implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", bidsId=").append(bidsId);
+        sb.append(", filePath=").append(filePath);
         sb.append(", processStatus=").append(processStatus);
         sb.append(", auditorId=").append(auditorId);
         sb.append(", repliesId=").append(repliesId);
@@ -132,7 +133,6 @@ public class BEvaluationTenderStandard implements Serializable {
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", priceBidEvaluationMethod=").append(priceBidEvaluationMethod);
         sb.append("]");
         return sb.toString();
     }

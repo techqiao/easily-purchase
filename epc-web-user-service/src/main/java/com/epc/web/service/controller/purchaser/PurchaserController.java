@@ -69,7 +69,7 @@ public  class PurchaserController implements FacadePurchaserService {
      * @return
      */
     @Override
-    public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
+    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
         return purchaserService.updatePurchaserDetail(handlePurchaser);
     }
 
@@ -82,6 +82,17 @@ public  class PurchaserController implements FacadePurchaserService {
     public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
         return purchaserService.updateAgencyDetail(handleAgnecy);
     }
+
+    @Override
+    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
+        return null;
+    }
+
     /**
      *@author :winlin
      *@Description :完善采购人供货商信息
@@ -90,9 +101,9 @@ public  class PurchaserController implements FacadePurchaserService {
      *@date:2018/9/25
      */
     @Override
-    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {
-        return purchaserService.updateSupplierDetail(dto);
-    }
+//    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {
+//        return purchaserService.updateSupplierDetail(dto);
+//    }
     /**
      *@author :winlin
      *@Description :完善采购人专家的信息
@@ -100,10 +111,10 @@ public  class PurchaserController implements FacadePurchaserService {
      *@return:
      *@date:2018/9/25
      */
-    @Override
-    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
-        return purchaserService.completePurchaserExpertInfo(expertDto);
-    }
+//    @Override
+//    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
+//        return purchaserService.completePurchaserExpertInfo(expertDto);
+//    }
 /**
  *@author :winlin
  *@Description :采购人注册
@@ -111,7 +122,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
+//    @Override
     public Result registerPurchaser(HandleRegisterPurchaser purchaser) {
         return purchaserService.registerPurchaser(purchaser);
     }
@@ -272,6 +283,26 @@ public  class PurchaserController implements FacadePurchaserService {
     public Result updateExpertState(Long id, Integer state) {
         return purchaserService.updateExpertState(id,state);
     }
+
+    @Override
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
+        return null;
+    }
+
+    @Override
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
+        return null;
+    }
 /**
  *@author :winlin
  *@Description :综合条件查询所有的代理机构
@@ -279,10 +310,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
-        return purchaserService.queryAgenciesByCriteria(agencyDto);
-    }
+//    @Override
+//    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
+//        return purchaserService.queryAgenciesByCriteria(agencyDto);
+//    }
 /**
  *@author :winlin
  *@Description :综合条件查询供货商
@@ -290,10 +321,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
-        return purchaserService.querySupplierByCriterias(supplierDto);
-    }
+//    @Override
+//    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
+//        return purchaserService.querySupplierByCriterias(supplierDto);
+//    }
 /**
  *@author :winlin
  *@Description :更新代理机构信息
@@ -301,10 +332,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
-        return purchaserService.updatePurchaserAgency(agencyDto);
-    }
+//    @Override
+//    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
+//        return purchaserService.updatePurchaserAgency(agencyDto);
+//    }
 /**
  *@author :winlin
  *@Description :更新专家信息
@@ -312,9 +343,9 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
-        return purchaserService.updatePurchaserExpert(expertDto);
-    }
+//    @Override
+//    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
+//        return purchaserService.updatePurchaserExpert(expertDto);
+//    }
 
 }

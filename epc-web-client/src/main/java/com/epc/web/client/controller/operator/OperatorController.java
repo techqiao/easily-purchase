@@ -9,7 +9,6 @@ import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "运营商服务")
+@Api(value = "运营商服务",tags = "运营商服务")
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController {
@@ -52,15 +51,15 @@ public class OperatorController {
     }
 
     /**
-     * 查询用户信息
+     * 依据id查询已经登陆的个人信息
      * @author donghuan
      */
-    @ApiOperation(value = "登陆人的信息",notes = "依据名字，电话得到个人信息")
+    @ApiOperation(value = "依据id查询已经登陆的个人信息",notes = "依据id查询已经登陆的个人信息")
     @PostMapping(value = "/findByNameOperator")
-    public Result<OperatorBasicInfoVO> findByName(@RequestBody ClientHandleOperator clientHandleOperator) {
-        HandleOperator handleOperator=new HandleOperator();
-        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
-        return operatorClient.findByName(handleOperator);
+    public Result<OperatorBasicInfoVO> findByName(@RequestBody ClientHandleOperatorId clientHandleOperatorId) {
+        HandleOperatorId handleOperatorId=new HandleOperatorId();
+        BeanUtils.copyProperties(clientHandleOperatorId,handleOperatorId);
+        return operatorClient.findByName(handleOperatorId);
     }
 
     /**

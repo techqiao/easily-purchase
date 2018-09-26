@@ -29,9 +29,9 @@ public class EvaluationHandle implements Serializable {
      */
     private Long bidsId;
     /**
-     * 评标方法文件url
+     * 评标方法类型 商务评标 技术评标
      */
-    private String filePath;
+    private List<StandardTypeHandle> standardType;
     /**
      * 废除条款
      */

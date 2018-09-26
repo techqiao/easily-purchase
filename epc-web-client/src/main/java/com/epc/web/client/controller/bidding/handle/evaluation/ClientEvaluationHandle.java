@@ -38,6 +38,12 @@ public class ClientEvaluationHandle {
     private Long bidsId;
 
     /**
+     * 评标方法类型 商务评标 技术评标
+     */
+    @ApiModelProperty(value = "评标方法类型")
+    private List<ClientStandardTypeHandle> standardType;
+
+    /**
      * 废除条款
      */
     @ApiModelProperty(value = "评标方法文件url")

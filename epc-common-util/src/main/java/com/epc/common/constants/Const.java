@@ -71,6 +71,16 @@ public class Const {
         int SAVE=3 ;//保存等待
     }
 
+    /**
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     */
+    public interface INVITER_TYPE{
+        int PURCHASER=0;
+        int OPERATOR=1;
+        int SUPPLIER=2;
+        int PROXY=3;
+    }
+
     public interface OPEN_STATUS {
         //开标记录状态
         int ABNORMA=0;

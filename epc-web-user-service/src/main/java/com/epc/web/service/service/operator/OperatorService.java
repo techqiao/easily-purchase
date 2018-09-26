@@ -17,7 +17,7 @@ public interface OperatorService {
     /**
      * 查询运营商用户信息
      */
-    Result<OperatorBasicInfoVO> findByName(HandleOperator handleOperator);
+    Result<OperatorBasicInfoVO> findByName(HandleOperatorId handleOperatorId);
 
     /**
      * 忘记密码

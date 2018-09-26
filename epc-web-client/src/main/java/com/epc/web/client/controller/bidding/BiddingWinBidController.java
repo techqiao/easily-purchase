@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.query.winBid.ClientWinBidLetter;
 import com.epc.web.client.remoteApi.bidding.winBid.WinBidClient;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
+import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +36,17 @@ public class BiddingWinBidController {
         QueryWinBidLetterDTO queryWinBidLetterDTO=new QueryWinBidLetterDTO();
         BeanUtils.copyProperties(dto,queryWinBidLetterDTO);
         return  winBidClient.getWinBidLetter(queryWinBidLetterDTO);
+    }
+
+
+    /**
+     * 获取中标公示记录
+     * @param bidId
+     * @return
+     */
+    @PostMapping(value = "/getTWinBidNominate", consumes = "application/json; charset=UTF-8")
+    public  Result<TWinBidNominateVO> getTWinBidNominate(@RequestBody Long bidId){
+        return  winBidClient.getTWinBidNominate(bidId);
     }
 
 

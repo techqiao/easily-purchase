@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.operator;
 
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfoCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TOperatorDetailInfoMapper {
     /**
@@ -102,4 +103,11 @@ public interface TOperatorDetailInfoMapper {
      * @mbggenerated Wed Sep 12 11:10:23 CST 2018
      */
     int updateByPrimaryKey(TOperatorDetailInfo record);
+
+    /**
+     * 根据名称查询
+     * @param companyName
+     * @return
+     */
+    List<TOperatorDetailInfo> selectByName(String companyName);
 }

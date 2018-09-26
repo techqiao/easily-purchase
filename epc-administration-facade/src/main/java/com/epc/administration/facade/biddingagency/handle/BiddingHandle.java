@@ -1,6 +1,12 @@
 package com.epc.administration.facade.biddingagency.handle;
 
-public class BiddingHandle {
+import java.io.Serializable;
+
+/**
+ * @author luozhixin
+ */
+public class BiddingHandle implements Serializable {
+    private static final long serialVersionUID = 2295340220100317777L;
     private String systemRole;
     private Long userId;
     private String companyName;

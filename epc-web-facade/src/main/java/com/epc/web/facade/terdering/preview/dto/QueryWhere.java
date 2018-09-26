@@ -1,5 +1,7 @@
 package com.epc.web.facade.terdering.preview.dto;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,16 +10,11 @@ import java.io.Serializable;
  * <p>@Author : luozhixin
  * <p>QueryWhere
  */
+@Data
 public class QueryWhere implements Serializable {
 
     private static final long serialVersionUID = -6385951372729314856L;
-    private  Long prID;
+    private  Long previewId;
 
-    public Long getPrID() {
-        return prID;
-    }
 
-    public void setPrID(Long prID) {
-        this.prID = prID;
-    }
 }

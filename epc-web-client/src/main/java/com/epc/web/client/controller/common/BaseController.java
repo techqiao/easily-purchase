@@ -32,6 +32,8 @@ public class BaseController {
 		HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
 		String loginToken = CookieUtil.readLoginToken(request);
 		String userJsonStr = RedisShardedPoolUtil.get(loginToken);
+		JSONObject.parseObject(userJsonStr);
+
 		return JSONObject.parseObject(userJsonStr, LoginUser.class);
 	}
 

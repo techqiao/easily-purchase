@@ -1,5 +1,7 @@
 package com.epc.platform.service.service.admin;
 
+import com.epc.administration.facade.admin.dto.UpdateRoleDTO;
+import com.epc.administration.facade.admin.handle.RoleHandle;
 import com.epc.platform.service.domain.admin.RoleWithSource;
 import com.epc.platform.service.domain.admin.SysAdminRole;
 
@@ -12,14 +14,19 @@ import java.util.List;
  */
 public interface SysAdminRoleService {
 
+    /**
+     * 查找用户角色
+     * @param userName
+     * @return
+     */
     List<SysAdminRole> findUserRole(String userName);
 
     /**
      * 查询系统所有角色
-     * @param role
+     * @param
      * @return
      */
-    List<SysAdminRole> findAllRole(SysAdminRole role);
+    List<SysAdminRole> findAllRole();
 
 
     /**
@@ -41,7 +48,7 @@ public interface SysAdminRoleService {
      * @param role
      * @param resourceIds
      */
-    void addRole(SysAdminRole role, Long[] resourceIds);
+    void addRole(RoleHandle role, Long[] resourceIds);
 
 
     /**
@@ -52,9 +59,9 @@ public interface SysAdminRoleService {
 
     /**
      * 编辑角色
-     * @param role
+     * @param updateRoleDTO
      * @param resourceIds
      */
-    void updateRole(SysAdminRole role, Long[] resourceIds);
+    void updateRole(UpdateRoleDTO updateRoleDTO, Long[] resourceIds);
 
 }

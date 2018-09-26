@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-18 15:24
@@ -11,7 +13,8 @@ import lombok.Data;
  */
 @ApiModel(value = "ProjectDetailInfoVO",description = "项目详情类")
 @Data
-public class ProjectDetailInfoVO extends ProjectBasicInfoVO{
+public class ProjectDetailInfoVO extends ProjectBasicInfoVO implements Serializable {
+    private static final long serialVersionUID = -8761487064785499329L;
     @ApiModelProperty(value = "项目描述")
     private String projectDescription;
     @ApiModelProperty(value = "是否国家指定必须招标项目")

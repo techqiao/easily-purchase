@@ -1,8 +1,9 @@
 package com.epc.administration.facade.biddingagency;
 
+import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>Description : 招标代理机构接口
+ * @author luozhixin
  */
 public interface BiddingAgencyService {
     /**
@@ -22,16 +24,16 @@ public interface BiddingAgencyService {
 
     /**
      * 招标代理机构完善资料
-     * @param roleDetailIfo 附件信息
+     * @param biddingHandle 附件信息
      * @return
      */
     @PostMapping(value = "insertBiddingAgencyDetailInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo);
+    Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody BiddingHandle biddingHandle);
 
 
     /**
      * 删除招标代理机构资料
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "deleteBiddingAgencyDetailInfo" , consumes = "application/json; charset=UTF-8")
@@ -39,7 +41,7 @@ public interface BiddingAgencyService {
 
     /**
      * 根据id查询招标代理机构详情
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "queryBiddingAgencyDetailInfo" , consumes = "application/json; charset=UTF-8")
@@ -47,13 +49,18 @@ public interface BiddingAgencyService {
 
     /**
      * 根据模糊name查询招标代理机构详情
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectBiddingAgencyDetailInfo" , consumes = "application/json; charset=UTF-8")
     Result selectBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
-
-
+    /**
+     * 查询所有招标代理机构分页
+     * @param queryRequest
+     * @return
+     */
+    @PostMapping(value = "selectAllByPage" ,consumes = "application/json; charset=UTF-8")
+    Result selectAllAgencyByPage(@RequestBody QueryRequest queryRequest);
 
 }

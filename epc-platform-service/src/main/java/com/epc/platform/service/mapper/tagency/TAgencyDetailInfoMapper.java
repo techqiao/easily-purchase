@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.tagency;
 
 import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 import com.epc.platform.service.domain.tagency.TAgencyDetailInfoCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TAgencyDetailInfoMapper {
     /**
@@ -102,4 +103,11 @@ public interface TAgencyDetailInfoMapper {
      * @mbggenerated Fri Sep 14 15:12:49 CST 2018
      */
     int updateByPrimaryKey(TAgencyDetailInfo record);
+
+    /**
+     * 根据名称查询
+     * @param companyName
+     * @return
+     */
+    List<TAgencyDetailInfo> selectByName(String companyName);
 }

@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author luozhixin
+ * @date 2018-9-19 19:02:33
+ */
 public class BaseController {
 
 	protected Map<String, Object> getDataTable(PageInfo<?> pageInfo) {

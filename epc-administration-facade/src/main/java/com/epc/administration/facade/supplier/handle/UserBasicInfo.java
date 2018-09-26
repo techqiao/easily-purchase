@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
+
 
 /**
  * <p>Description : 注册用户
@@ -12,7 +14,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  * <p>@author : wjq
  */
 @ApiModel(value = "UserBasicInfo", description = "注册运营商")
-public class UserBasicInfo {
+public class UserBasicInfo implements Serializable {
+    private static final long serialVersionUID = -3430729044791432992L;
     @ApiModelProperty(value = "电话号")
     @NotEmpty(message = "UserBasicInfo.cellphone.null")
     private String cellphone;

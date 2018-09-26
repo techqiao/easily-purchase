@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.BasePersonInfo;
 import com.epc.web.facade.bidding.handle.HandleSign;
+import com.epc.web.facade.bidding.query.sign.QuerySignerDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -14,16 +15,16 @@ public interface FacadeSignService {
      * @param handleSign
      * @return
      */
-    @PostMapping(value = "insertSullierSign", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertSullierSign(@RequestBody HandleSign handleSign);
+    @PostMapping(value = "insertSupplierSign", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> insertSupplierSign(@RequestBody HandleSign handleSign);
 
 
     /**
      * 获取签到人员基本信息
-     * @param basePersonInfo
+     * @param querySignerDTO
      * @return
      */
     @PostMapping(value = "getSignBase", consumes = "application/json; charset=UTF-8")
-    Result<SignBaseDTO> getSignBase(@RequestBody BasePersonInfo basePersonInfo) ;
+    Result<SignBaseDTO> getSignerInfo(@RequestBody QuerySignerDTO querySignerDTO) ;
 
 }

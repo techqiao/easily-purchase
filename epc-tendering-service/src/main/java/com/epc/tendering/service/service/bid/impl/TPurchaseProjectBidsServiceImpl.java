@@ -33,7 +33,6 @@ public class TPurchaseProjectBidsServiceImpl implements TPurchaseProjectBidsServ
     @Autowired
     private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
 
-
     @Override
     public Result<Boolean> handleBidsBasicInfo(HandleBidsBasicInfo handleBidsBasicInfo) {
         TPurchaseProjectBids pojo = new TPurchaseProjectBids();

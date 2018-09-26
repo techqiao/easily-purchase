@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.admin;
 
 import com.epc.platform.service.domain.admin.SysAdminResource;
 import com.epc.platform.service.domain.admin.SysAdminResourceCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface SysAdminResourceMapper {
     /**
@@ -103,12 +104,24 @@ public interface SysAdminResourceMapper {
      */
     int updateByPrimaryKey(SysAdminResource record);
 
-    //根据手机号查看资源
+    /**根据手机号查看资源
+     * @param phone
+     * @return
+     */
     List<SysAdminResource> findResource(String phone);
 
 
-    // 删除父节点，子节点变成顶级节点（根据实际业务调整）
+    /** 删除父节点，子节点变成顶级节点（根据实际业务调整）
+     * @param resourceIds
+     */
     void changeToTop(List<Long> resourceIds);
 
+    /**
+     * 查询User Permissions
+     * @param userName
+     * @return
+     */
     List<SysAdminResource> findUserPermissions(String userName);
+
+    List<SysAdminResource> selectUrl();
 }

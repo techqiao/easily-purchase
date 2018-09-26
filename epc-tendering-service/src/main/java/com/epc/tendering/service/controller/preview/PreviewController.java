@@ -1,16 +1,19 @@
 package com.epc.tendering.service.controller.preview;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
+import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.tendering.service.service.preview.BiddingPreviewService;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.terdering.preview.PreviewService;
-import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
 import com.epc.web.facade.terdering.preview.handle.PreviewHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 
 /**
  * <p>Description : easily-purchase
@@ -18,6 +21,7 @@ import java.util.Date;
  * <p>@Author : luozhixin
  * <p>PreviewController
  */
+@RestController
 public class PreviewController  implements PreviewService {
 
     @Autowired
@@ -29,8 +33,8 @@ public class PreviewController  implements PreviewService {
     }
 
     @Override
-    public Result selectPreview(@RequestBody QueryPreviewDTO queryPreviewDTO) {
-        return biddingPreviewService.selectPreview(queryPreviewDTO);
+    public Result selectPreview(@RequestBody PagerParam pagerParam) {
+        return biddingPreviewService.selectPreview(pagerParam);
     }
 
     @Override
@@ -39,9 +43,12 @@ public class PreviewController  implements PreviewService {
     }
 
     @Override
-    public Result queryByDate(@RequestBody QueryPreviewDTO queryPreviewDTO,
-                              @RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate) {
-        return biddingPreviewService.queryByDate(queryPreviewDTO, startDate, endDate);
+    public Result queryByDate(@RequestBody  PagerParam pagerParam,
+                              @RequestParam("startDate") String startDate,
+                              @RequestParam("endDate") String endDate) {
+        return biddingPreviewService.queryByDate(pagerParam, startDate, endDate);
 
     }
+
+
 }

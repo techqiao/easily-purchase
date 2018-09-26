@@ -18,7 +18,6 @@ import com.epc.web.facade.terdering.preview.handle.ProJectPermissionHandle;
 import com.epc.web.facade.terdering.preview.vo.ProJectPermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ import java.util.List;
  */
 @Service
 public class ProJectByPermissionServiceImpl implements ProJectByPermissionService {
-
     @Autowired
     private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
     @Autowired
@@ -39,7 +37,6 @@ public class ProJectByPermissionServiceImpl implements ProJectByPermissionServic
     private TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
     @Autowired
     private BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
-
     /**
      * 根据登入者 审核 批复权限查询对应项目的详情
      * @param proJectPermissionHandle
@@ -56,7 +53,7 @@ public class ProJectByPermissionServiceImpl implements ProJectByPermissionServic
         TPurchaseProjectParticipantPermissionCriteria permissionCriteria = new TPurchaseProjectParticipantPermissionCriteria();
         TPurchaseProjectParticipantPermissionCriteria.Criteria subpermissionCriteria = permissionCriteria.createCriteria();
         for (int i = 0; i < tPurchaseProjectParticipants.size(); i++) {
-            subpermissionCriteria.andParticipantIdEqualTo(Long.valueOf(tPurchaseProjectParticipants.get(i).getPurchaseProjectId()));
+            subpermissionCriteria.andParticipantIdEqualTo(proJectPermissionHandle.getUserId());
         }
         List<TPurchaseProjectParticipantPermission> tPurchaseProjectParticipantPermissions =
                 tPurchaseProjectParticipantPermissionMapper.selectByExample(permissionCriteria);
@@ -64,7 +61,7 @@ public class ProJectByPermissionServiceImpl implements ProJectByPermissionServic
         TPurchaseProjectBasicInfoCriteria basicInfoCriteria = new TPurchaseProjectBasicInfoCriteria();
         TPurchaseProjectBasicInfoCriteria.Criteria subBasicInfoCriteria = basicInfoCriteria.createCriteria();
         for (int i = 0; i < tPurchaseProjectParticipants.size(); i++) {
-            subBasicInfoCriteria.andPurchaseProjectCodeEqualTo(tPurchaseProjectParticipantPermissions.get(i).toString());
+            subBasicInfoCriteria.andPurchaseProjectCodeEqualTo(tPurchaseProjectParticipants.get(i).getPurchaseProjectId().toString());
         }
         List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos = tPurchaseProjectBasicInfoMapper.selectByExample(basicInfoCriteria);
         //查询对应的公告信息 招标流程:发布招标公告
@@ -107,7 +104,6 @@ public class ProJectByPermissionServiceImpl implements ProJectByPermissionServic
             proJectPermissionVO.setIsOtherAgency(tPurchaseProjectBasicInfos.get(i).getIsOtherAgency());
             proJectPermissionVOS.add(proJectPermissionVO);
         }
-
         return Result.success(proJectPermissionVOS);
     }
 }

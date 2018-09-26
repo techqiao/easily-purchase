@@ -27,6 +27,11 @@ public class Const {
         int NOT_DELETED = 0;
     }
 
+    public interface IS_OK {
+        int IS_OK = 1;
+        int NOT_OK = 0;
+    }
+
     public interface STATE {
         int REGISTERED = 0;
         int PERFECTING = 1;
@@ -80,5 +85,13 @@ public class Const {
         //开标记录状态
         int ABNORMA=0;
         int NORMA=1;
+    }
+
+    public interface PERSON_PERMISSION {
+        //开标记录状态
+        String REPLY="reply"; //批复
+        String AGENT="agent"; //经办
+        String AUDITOR="auditor"; //审核
+        String PERSON_LIABLE="person_liable"; //负责人
     }
 }

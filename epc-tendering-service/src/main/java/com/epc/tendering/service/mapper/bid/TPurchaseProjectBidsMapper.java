@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.TPurchaseProjectBids;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBidsCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TPurchaseProjectBidsMapper {
@@ -38,4 +39,7 @@ public interface TPurchaseProjectBidsMapper {
     int updateByPrimaryKeyWithBLOBs(TPurchaseProjectBids record);
 
     int updateByPrimaryKey(TPurchaseProjectBids record);
+
+    @Select("SELECT t.id FROM t_purchase_project_bids t WHERE t.purchase_project_id = #{purchaseProjectId}")
+    List<Long> getBidsIdList(Long purchaseProjectId);
 }

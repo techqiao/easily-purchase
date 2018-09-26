@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "文件上传服务",tags = "上传预审信息")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-
 public class BiddingFileUploadController{
     @Autowired
     BiddingClient biddingClient;

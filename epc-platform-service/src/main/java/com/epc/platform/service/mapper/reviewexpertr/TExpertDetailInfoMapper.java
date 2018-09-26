@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.reviewexpertr;
 
 import com.epc.platform.service.domain.reviewexpertr.TExpertDetailInfo;
 import com.epc.platform.service.domain.reviewexpertr.TExpertDetailInfoCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TExpertDetailInfoMapper {
     /**
@@ -101,5 +102,24 @@ public interface TExpertDetailInfoMapper {
      *
      * @mbggenerated Fri Sep 14 16:35:24 CST 2018
      */
+    /**
+     * 根据id修改
+     * @param record
+     * @return
+     */
     int updateByPrimaryKey(TExpertDetailInfo record);
+
+    /**
+     * 根据id删除
+     * @param record
+     * @return
+     */
+    int deleteByKey(TExpertDetailInfo record);
+
+    /**
+     * 根据名称查询
+     * @param companyName
+     * @return
+     */
+    List<TExpertDetailInfo> selectByName(String companyName);
 }

@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.supplier;
 
 import com.epc.platform.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TSupplierDetailInfoMapper {
     /**
@@ -102,4 +103,11 @@ public interface TSupplierDetailInfoMapper {
      * @mbggenerated Fri Sep 14 15:15:25 CST 2018
      */
     int updateByPrimaryKey(TSupplierDetailInfo record);
+
+    /**
+     * 根据名称查询
+     * @param companyName
+     * @return
+     */
+    List<TSupplierDetailInfo> selectByName(String companyName);
 }

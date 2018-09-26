@@ -23,15 +23,10 @@
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://127.0.0.1:3306/test"
                         userId="root"
-                        password="root">
-        </jdbcConnection>-->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/easily_purchase"
-                        userId="root"
-                        password="root">
+                        password="123456">
         </jdbcConnection>
 
         <!-- 生成model模型，对应的包，存放位置可以指定具体的路径-->
@@ -49,18 +44,9 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.epc.tendering.service.mapper.bid" targetProject="src/main/java" >
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-
-        <table schema="test" tableName="t_tender_message" domainObjectName="TTenderMessage">
+        <table schema="test" tableName="`t_tender_message`" domainObjectName="TTenderMessage">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table schema="test" tableName="t_expert_basic_info" domainObjectName="TExpertBasicInfo">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-        <!--<table schema="test" tableName="t_expert_detail_info" domainObjectName="TExpertDetailInfo">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
-
     </context>
 
 

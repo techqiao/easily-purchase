@@ -57,6 +57,7 @@ public class TBidAnnouncementServiceImpl implements TBidAnnouncementService {
     }
 
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement) {
         TOpeningRecordCriteria criteria=new TOpeningRecordCriteria();
@@ -82,7 +83,7 @@ public class TBidAnnouncementServiceImpl implements TBidAnnouncementService {
             }
             TTenderMessageCriteria tcriteria1=new TTenderMessageCriteria();
             TTenderMessageCriteria.Criteria cubTcriteria1=tcriteria1.createCriteria();
-            cubTcriteria1.andBidIdEqualTo(queryBidAnnouncement.getBidId());
+            cubTcriteria1.andBidsIdEqualTo(queryBidAnnouncement.getBidId());
             cubTcriteria1.andCompanyIdEqualTo(entity.getSupplierCompanyId());
             List<TTenderMessage> tenderList=tTenderMessageMapper.selectByExample(tcriteria1);
             if(tenderList.size()==0){

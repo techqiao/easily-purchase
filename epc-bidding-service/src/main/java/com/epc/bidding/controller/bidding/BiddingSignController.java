@@ -7,6 +7,7 @@ import com.epc.web.facade.bidding.FacadeSignService;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.BasePersonInfo;
 import com.epc.web.facade.bidding.handle.HandleSign;
+import com.epc.web.facade.bidding.query.sign.QuerySignerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,18 +24,19 @@ public class BiddingSignController implements FacadeSignService {
      * @author linzhixiang
      */
     @Override
-    public Result<Boolean> insertSullierSign(@RequestBody  HandleSign handleSign){
+    public Result<Boolean> insertSupplierSign(@RequestBody  HandleSign handleSign){
        return signService.insertSupplierSign(handleSign);
     }
 
+
     /**
      * 获取签到人员信息
-     * @param basePersonInfo
+     * @param dto
      * @return
      */
     @Override
-    public Result<SignBaseDTO> getSignBase(@RequestBody BasePersonInfo basePersonInfo) {
-        return signService.getSignBase(basePersonInfo.getName(),basePersonInfo.getCellPhone());
+    public Result<SignBaseDTO> getSignerInfo(@RequestBody QuerySignerDTO dto) {
+        return signService.getSignerInfo(dto);
     }
 
 }

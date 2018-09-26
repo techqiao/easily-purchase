@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.tagency;
 
 import com.epc.platform.service.domain.tagency.TAgencyAttachment;
 import com.epc.platform.service.domain.tagency.TAgencyAttachmentCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TAgencyAttachmentMapper {
     /**

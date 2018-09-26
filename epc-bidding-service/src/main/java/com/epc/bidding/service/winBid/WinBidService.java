@@ -2,6 +2,7 @@ package com.epc.bidding.service.winBid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
+import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
 
 import java.util.List;
@@ -13,4 +14,7 @@ public interface WinBidService {
      * @return
      */
     Result<List<WinBidLetterVO>> getWinBidLetter(QueryWinBidLetterDTO dto);
-}
+
+     Result<TWinBidNominateVO> getTWinBidNominate(Long bidId);
+
+    }

@@ -1,5 +1,6 @@
 package com.epc.common.util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,13 @@ public class TreeUtils {
 		root.setChildren(true);
 		root.setChecked(true);
 		root.setChildren(topNodes);
-		root.setText("根节点");
+		String text ="根节点";
+		try {
+			text = new String(text.getBytes("UTF-8"),"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		root.setText(text);
 		Map<String, Object> state = new HashMap<>(16);
 		state.put("opened", true);
 		root.setState(state);

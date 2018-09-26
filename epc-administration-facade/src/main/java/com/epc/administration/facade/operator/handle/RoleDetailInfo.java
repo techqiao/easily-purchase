@@ -4,13 +4,16 @@ package com.epc.administration.facade.operator.handle;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
+
 /**
  * <p>Description : 角色完善资料
  * <p>Date : 2018-09-11 16:07
  * <p>@Author : wjq
  */
-public class RoleDetailInfo {
+public class RoleDetailInfo implements Serializable {
 
+    private static final long serialVersionUID = -7643606947621478973L;
     private String systemRole;
     private Long userId;
     private String companyName;

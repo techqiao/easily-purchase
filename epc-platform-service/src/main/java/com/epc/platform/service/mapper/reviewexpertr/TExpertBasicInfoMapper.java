@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.reviewexpertr;
 
 import com.epc.platform.service.domain.reviewexpertr.TExpertBasicInfo;
 import com.epc.platform.service.domain.reviewexpertr.TExpertBasicInfoCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TExpertBasicInfoMapper {
     /**
@@ -102,4 +103,6 @@ public interface TExpertBasicInfoMapper {
      * @mbggenerated Fri Sep 14 16:35:24 CST 2018
      */
     int updateByPrimaryKey(TExpertBasicInfo record);
+
+
 }

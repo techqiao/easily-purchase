@@ -1,5 +1,7 @@
 package com.epc.platform.service.service.admin.impl;
 
+import com.epc.administration.facade.admin.handle.DeptHandle;
+import com.epc.common.constants.Const;
 import com.epc.common.util.Tree;
 import com.epc.common.util.TreeUtils;
 import com.epc.platform.service.domain.admin.SysAdminDept;
@@ -36,7 +38,7 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     @Override
     public Tree<SysAdminDept> getDeptTree() {
         List<Tree<SysAdminDept>> trees = new ArrayList<>();
-        List<SysAdminDept> depts = this.findAllDepts(new SysAdminDept());
+        List<SysAdminDept> depts = this.findAllDepts(new DeptHandle());
         depts.forEach(dept -> {
             Tree<SysAdminDept> tree = new Tree<>();
             tree.setId(dept.getId().toString());
@@ -48,12 +50,14 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     }
 
     @Override
-    public List<SysAdminDept> findAllDepts(SysAdminDept dept) {
+    public List<SysAdminDept> findAllDepts(DeptHandle dept) {
+        SysAdminDept sysAdminDept = new SysAdminDept();
+        sysAdminDept.setDeptName(dept.getDeptName());
         try {
             final SysAdminDeptCriteria criteria = new SysAdminDeptCriteria();
             final SysAdminDeptCriteria.Criteria subCriteria = criteria.createCriteria();
 
-            if (StringUtils.isNotBlank(dept.getDeptName())) {
+            if (StringUtils.isNotBlank(sysAdminDept.getDeptName())) {
                 subCriteria.andDeptNameEqualTo(dept.getDeptName());
             }
             criteria.setOrderByClause("id");
@@ -79,12 +83,19 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     }
 
     @Override
-    public void addDept(SysAdminDept dept) {
-        Long parentId = dept.getParentId();
-        if (parentId == null)
-            dept.setParentId(0L);
-        dept.setCreateAt(new Date());
-        this.sysAdminDeptMapper.insertSelective(dept);
+    public void addDept(DeptHandle dept) {
+        Date date = new Date();
+        SysAdminDept sysAdminDept = new SysAdminDept();
+        sysAdminDept.setDeptName(dept.getDeptName());
+        sysAdminDept.setParentId(dept.getParentId());
+        sysAdminDept.setParentId(dept.getParentId());
+        sysAdminDept.setUpdateAt(date);
+        sysAdminDept.setCreateAt(date);
+        sysAdminDept.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        Long parentId = sysAdminDept.getParentId();
+        if (parentId == null){
+            sysAdminDept.setParentId(0L);}
+        this.sysAdminDeptMapper.insertSelective(sysAdminDept);
     }
 
     @Override
@@ -97,8 +108,11 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     }
 
     @Override
-    public void updateDept(SysAdminDept dept) {
-        this.sysAdminDeptMapper.updateByPrimaryKeySelective(dept);
+    public void updateDept(DeptHandle dept) {
+        SysAdminDept sysAdminDept = new SysAdminDept();
+        sysAdminDept.setParentId(dept.getParentId());
+        sysAdminDept.setDeptName(dept.getDeptName());
+        this.sysAdminDeptMapper.updateByPrimaryKeySelective(sysAdminDept);
     }
 
 

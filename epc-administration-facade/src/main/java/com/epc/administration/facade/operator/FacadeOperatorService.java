@@ -3,6 +3,7 @@ package com.epc.administration.facade.operator;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public interface FacadeOperatorService {
 
     /**
      * 删除运营商资料
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "deleteOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
@@ -40,7 +41,7 @@ public interface FacadeOperatorService {
 
     /**
      * 根据id查询运营商详情
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "queryOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
@@ -48,13 +49,19 @@ public interface FacadeOperatorService {
 
     /**
      * 根据模糊name查询运营商详情
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
     Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
-
+    /**
+     * 查询所有运营商 分页展示
+     * @param queryRequest
+     * @return
+     */
+    @PostMapping(value = "selectAllOperatorByPage" ,consumes = "application/json; charset=UTF-8")
+    Result  selectAllOperatorByPage(@RequestBody QueryRequest queryRequest);
 
 
 }

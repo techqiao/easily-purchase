@@ -2,17 +2,15 @@ package com.epc.web.client.controller.bidding;
 
 
 import com.epc.common.Result;
-import com.epc.web.client.controller.bidding.handle.sign.ClientPersonInfo;
-import com.epc.web.client.controller.bidding.handle.sign.ClientSign;
+import com.epc.web.client.controller.bidding.handle.sign.ClientSignerDTO;
 import com.epc.web.client.remoteApi.bidding.sign.SignClient;
 import com.epc.web.client.remoteApi.bidding.sign.SupplierBaseClient;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.BasePersonInfo;
 import com.epc.web.facade.bidding.handle.HandleSign;
+import com.epc.web.facade.bidding.query.sign.QuerySignerDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,19 +30,18 @@ public class BiddingSignController {
 
     @ApiOperation(value = "签到")
     @PostMapping(value="/supplierSign")
-    public Result<Boolean> supplierSign(@RequestBody ClientSign clientSign){
-        BasePersonInfo basePersonInfo =new BasePersonInfo();
-        BeanUtils.copyProperties(clientSign,basePersonInfo);
-        SignBaseDTO signBaseDTO=signClient.getSignBase(basePersonInfo).getData();
+    public Result<Boolean> supplierSign(@RequestBody ClientSignerDTO clientSign){
+        QuerySignerDTO querySignerDTO=new QuerySignerDTO();
+        BeanUtils.copyProperties(clientSign,querySignerDTO);
+        SignBaseDTO signBaseDTO=signClient.getSignerInfo(querySignerDTO).getData();
 
         if(signBaseDTO==null){
-            return Result.error("数据库查询不到该用户的信息");
+            return Result.error("签到人不在邀请范围内");
         }
 
         HandleSign handleSign=new HandleSign();
         BeanUtils.copyProperties(clientSign,handleSign);
         BeanUtils.copyProperties(signBaseDTO,handleSign);
-        return signClient.insertSullierSign(handleSign);
+        return signClient.insertSupplierSign(handleSign);
     }
-
 }

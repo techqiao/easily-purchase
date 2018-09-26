@@ -367,4 +367,9 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria" id="selectByName" >
+   SELECT tp.company_name ,tp.public_bank_name ,tp.create_at,tp.public_ban_account_number,tp.uniform_credit_code
+FROM t_operator_detail_info tp WHERE tp.is_deleted=0 AND tp.company_name like #{companyName,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -31,15 +31,14 @@ public interface OperatorService {
 
     /**
      * 删除运营商资料
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
 
-    /**
-     * 根据传入运营商ID查询
+    /**根据传入运营商ID查询
      * 查询运营商资料
-     * @param
+     * @param queryDetailIfo
      * @return
      */
     Result<TOperatorDetailInfo> queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
@@ -53,4 +52,10 @@ public interface OperatorService {
     Result<List<TOperatorDetailInfo>> selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
 
 
+    /**
+     * 查询所有运营商 分页展示
+     * @param
+     * @return
+     */
+    List<TOperatorDetailInfo> selectAllOperatorByPage();
 }

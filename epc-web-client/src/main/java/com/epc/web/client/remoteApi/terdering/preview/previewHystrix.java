@@ -1,5 +1,6 @@
 package com.epc.web.client.remoteApi.terdering.preview;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.preview.PreviewService;
 import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
@@ -23,7 +24,7 @@ public class previewHystrix  implements PreviewService {
     }
 
     @Override
-    public Result selectPreview(QueryPreviewDTO queryPreviewDTO) {
+    public Result selectPreview(PagerParam PagerParam) {
         return Result.hystrixError();
     }
 
@@ -33,7 +34,7 @@ public class previewHystrix  implements PreviewService {
     }
 
     @Override
-    public Result queryByDate(QueryPreviewDTO queryPreviewDTO, Date startDate, Date endDate) {
+    public Result queryByDate(PagerParam pagerParam, String startDate, String endDate) {
         return Result.hystrixError();
     }
 }

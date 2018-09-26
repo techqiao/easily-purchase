@@ -8,10 +8,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>Description : collection.platform
+ * <p>Description : TaskExecutor
  * <p>Date : 2018-03-28 10:45
  * <p>@Author : wjq
- * <P>Email : wujiangqiao@difengshanguo.com
  */
 @Component("taskExecutor")
 public class TaskExecutor {

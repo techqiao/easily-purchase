@@ -43,7 +43,7 @@ public class TreeUtils {
 		root.setChildren(topNodes);
 		String text ="根节点";
 		try {
-			text = new String(text.getBytes("ISO8859-1"),"UTF-8");
+			text = new String(text.getBytes("UTF-8"),"UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

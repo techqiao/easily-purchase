@@ -144,7 +144,6 @@ DROP TABLE IF EXISTS `t_operator_purchaser`;
 CREATE TABLE `t_operator_purchaser` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`purchaser_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`purchaser_name` VARCHAR(16) NOT NULL COMMENT '采购人姓名',
@@ -157,12 +156,12 @@ CREATE TABLE `t_operator_purchaser` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商-采购人:私库';
 
+
 -- 私库 运营商添加供应商
 DROP TABLE IF EXISTS `t_operator_supplier`;
 CREATE TABLE `t_operator_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商姓名',
@@ -271,7 +270,6 @@ DROP TABLE IF EXISTS `t_purchaser_supplier`;
 CREATE TABLE `t_purchaser_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
@@ -293,7 +291,6 @@ DROP TABLE IF EXISTS `t_purchaser_agency`;
 CREATE TABLE `t_purchaser_agency` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '招标代理机构名称',
@@ -314,7 +311,6 @@ DROP TABLE IF EXISTS `t_purchaser_expert`;
 CREATE TABLE `t_purchaser_expert` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`expert_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`expert_name` VARCHAR(16) NOT NULL COMMENT '专家姓名',
@@ -384,7 +380,6 @@ DROP TABLE IF EXISTS `t_agency_supplier`;
 CREATE TABLE `t_agency_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
@@ -405,7 +400,6 @@ DROP TABLE IF EXISTS `t_agency_expert`;
 CREATE TABLE `t_agency_expert` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`expert_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`expert_name` VARCHAR(16) NOT NULL COMMENT '专家姓名',

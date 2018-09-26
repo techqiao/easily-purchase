@@ -285,6 +285,66 @@ public class TPretrialMessageCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBidIdIsNull() {
+            addCriterion("bid_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdIsNotNull() {
+            addCriterion("bid_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdEqualTo(Long value) {
+            addCriterion("bid_id =", value, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdNotEqualTo(Long value) {
+            addCriterion("bid_id <>", value, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdGreaterThan(Long value) {
+            addCriterion("bid_id >", value, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("bid_id >=", value, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdLessThan(Long value) {
+            addCriterion("bid_id <", value, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdLessThanOrEqualTo(Long value) {
+            addCriterion("bid_id <=", value, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdIn(List<Long> values) {
+            addCriterion("bid_id in", values, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdNotIn(List<Long> values) {
+            addCriterion("bid_id not in", values, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdBetween(Long value1, Long value2) {
+            addCriterion("bid_id between", value1, value2, "bidId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidIdNotBetween(Long value1, Long value2) {
+            addCriterion("bid_id not between", value1, value2, "bidId");
+            return (Criteria) this;
+        }
+
         public Criteria andCompanyIdIsNull() {
             addCriterion("company_id is null");
             return (Criteria) this;
@@ -482,6 +542,146 @@ public class TPretrialMessageCriteria {
 
         public Criteria andContentNotBetween(String value1, String value2) {
             addCriterion("content not between", value1, value2, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorIsNull() {
+            addCriterion("delegator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorIsNotNull() {
+            addCriterion("delegator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorEqualTo(String value) {
+            addCriterion("delegator =", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorNotEqualTo(String value) {
+            addCriterion("delegator <>", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorGreaterThan(String value) {
+            addCriterion("delegator >", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorGreaterThanOrEqualTo(String value) {
+            addCriterion("delegator >=", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorLessThan(String value) {
+            addCriterion("delegator <", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorLessThanOrEqualTo(String value) {
+            addCriterion("delegator <=", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorLike(String value) {
+            addCriterion("delegator like", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorNotLike(String value) {
+            addCriterion("delegator not like", value, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorIn(List<String> values) {
+            addCriterion("delegator in", values, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorNotIn(List<String> values) {
+            addCriterion("delegator not in", values, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorBetween(String value1, String value2) {
+            addCriterion("delegator between", value1, value2, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andDelegatorNotBetween(String value1, String value2) {
+            addCriterion("delegator not between", value1, value2, "delegator");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardIsNull() {
+            addCriterion("identit_card is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardIsNotNull() {
+            addCriterion("identit_card is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardEqualTo(String value) {
+            addCriterion("identit_card =", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotEqualTo(String value) {
+            addCriterion("identit_card <>", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardGreaterThan(String value) {
+            addCriterion("identit_card >", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardGreaterThanOrEqualTo(String value) {
+            addCriterion("identit_card >=", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardLessThan(String value) {
+            addCriterion("identit_card <", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardLessThanOrEqualTo(String value) {
+            addCriterion("identit_card <=", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardLike(String value) {
+            addCriterion("identit_card like", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotLike(String value) {
+            addCriterion("identit_card not like", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardIn(List<String> values) {
+            addCriterion("identit_card in", values, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotIn(List<String> values) {
+            addCriterion("identit_card not in", values, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardBetween(String value1, String value2) {
+            addCriterion("identit_card between", value1, value2, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotBetween(String value1, String value2) {
+            addCriterion("identit_card not between", value1, value2, "identitCard");
             return (Criteria) this;
         }
 

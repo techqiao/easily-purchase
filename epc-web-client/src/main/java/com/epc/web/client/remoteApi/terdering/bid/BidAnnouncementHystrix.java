@@ -1,0 +1,21 @@
+package com.epc.web.client.remoteApi.terdering.bid;
+
+import com.epc.common.Result;
+import com.epc.web.facade.terdering.bid.FacadeBidAnnouncementService;
+import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
+import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
+
+import java.util.List;
+
+public class BidAnnouncementHystrix implements FacadeBidAnnouncementService {
+    @Override
+    public Result<Boolean> insertBidAnnouncement(HandleBidAnnouncement handleBidAnnouncement) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement) {
+        return Result.hystrixError();
+    }
+}

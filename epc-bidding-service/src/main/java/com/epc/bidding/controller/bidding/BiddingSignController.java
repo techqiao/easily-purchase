@@ -28,7 +28,7 @@ public class BiddingSignController implements FacadeSignService {
     }
 
     /**
-     * 获取人员信息
+     * 获取签到人员信息
      * @param basePersonInfo
      * @return
      */

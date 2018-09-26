@@ -87,17 +87,13 @@ public class BiddingServiceimpl implements BiddingService {
         }
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<NoticeDetailVO> resultList=new ArrayList<>();
-        try{
-            List<BReleaseAnnouncement> list= bReleaseAnnouncementMapper.selectByExampleWithBLOBsWithRowbounds(criteria,queryNoticeDTO.getRowBounds());
+        List<BReleaseAnnouncement> list= bReleaseAnnouncementMapper.selectByExampleWithBLOBsWithRowbounds(criteria,queryNoticeDTO.getRowBounds());
             for(BReleaseAnnouncement entity:list){
                 NoticeDetailVO clientNoticeDetailVO = new NoticeDetailVO();
                 BeanUtils.copyProperties(entity,clientNoticeDetailVO);
                 resultList.add(clientNoticeDetailVO);
             }
-        }catch (Exception e){
-            LOGGER.error("供应商Id不能为null", e);
-            return Result.error();
-        }
+
         return  Result.success(resultList);
 
     }
@@ -159,19 +155,14 @@ public class BiddingServiceimpl implements BiddingService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion){
         BAnswerQuestion entity= new BAnswerQuestion();
-        entity.setProcurementProjectId(handleQuestion.getProcurementProjectId());
-        entity.setQuestionerId(handleQuestion.getQuestionerId());
-        entity.setQuestionerName(handleQuestion.getQuestionerName());
-        entity.setProblem(handleQuestion.getProblem());
+        BeanUtils.copyProperties(handleQuestion,entity);
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        entity.setOperateId(handleQuestion.getQuestionerId());
         entity.setCreateAt(new Date());
         entity.setUpdateAt(new Date());
         try{
             bAnswerQuestionMapper.insertSelective(entity);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-
         }
         return  Result.success(true);
     }
@@ -195,6 +186,7 @@ public class BiddingServiceimpl implements BiddingService {
             //新增审查信息记录
             tPretrialMessageMapper.insertSelective(attachment);
         }catch (Exception e){
+            LOGGER.error("insertPretrialFile Error");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
@@ -215,6 +207,8 @@ public class BiddingServiceimpl implements BiddingService {
                 //文件id为空则新增记录
                 try{
                     tPretrialFileMapper.insertSelective(tPretrialFile);
+                    LOGGER.error("insertPretrialFile Error");
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 }catch(Exception e){
                     return  Result.error();
                 }
@@ -239,6 +233,7 @@ public class BiddingServiceimpl implements BiddingService {
             //更新 审查信息记录
             tPretrialMessageMapper.updateByPrimaryKey(attachment);
         }catch (Exception e){
+            LOGGER.error("updatePretrialFile 失败");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
@@ -261,14 +256,17 @@ public class BiddingServiceimpl implements BiddingService {
                 try{
                     tPretrialFileMapper.updateByPrimaryKey(tPretrialFile);
                 }catch(Exception e){
-                    return  Result.error();
+                    LOGGER.error("updatePretrialFile 失败");
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
                 }
             }else{
                 //文件id为空则新增记录
                 try{
                     tPretrialFileMapper.insertSelective(tPretrialFile);
                 }catch(Exception e){
-                    return  Result.error();
+                    LOGGER.error("updatePretrialFile 失败");
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 }
             }
         }
@@ -337,7 +335,6 @@ public class BiddingServiceimpl implements BiddingService {
         //根据招标文件ID 和 下载机构id 查询是否付费
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
-
         subPay.andCompanyIdEqualTo(dto.getCompanyId());
         subPay.andPurchasProjectFileIdEqualTo(fileId);
 

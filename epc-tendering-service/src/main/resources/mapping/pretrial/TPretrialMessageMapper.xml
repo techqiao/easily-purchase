@@ -5,9 +5,12 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="purchase_project_id" jdbcType="BIGINT" property="purchaseProjectId" />
     <result column="release_announcement_id" jdbcType="BIGINT" property="releaseAnnouncementId" />
+    <result column="bid_id" jdbcType="BIGINT" property="bidId" />
     <result column="company_id" jdbcType="BIGINT" property="companyId" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="delegator" jdbcType="VARCHAR" property="delegator" />
+    <result column="identit_card" jdbcType="VARCHAR" property="identitCard" />
     <result column="operate_id" jdbcType="BIGINT" property="operateId" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
@@ -73,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, purchase_project_id, release_announcement_id, company_id, status, content, operate_id, 
-    creator, create_at, update_at, is_deleted
+    id, purchase_project_id, release_announcement_id, bid_id, company_id, status, content, 
+    delegator, identit_card, operate_id, creator, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" parameterType="com.epc.tendering.service.domain.pretrial.TPretrialMessageCriteria" resultMap="BaseResultMap">
     select
@@ -111,11 +114,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_pretrial_message (purchase_project_id, release_announcement_id, 
-      company_id, status, content, 
+      bid_id, company_id, status, 
+      content, delegator, identit_card, 
       operate_id, creator, create_at, 
       update_at, is_deleted)
     values (#{purchaseProjectId,jdbcType=BIGINT}, #{releaseAnnouncementId,jdbcType=BIGINT}, 
-      #{companyId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{bidId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{delegator,jdbcType=VARCHAR}, #{identitCard,jdbcType=VARCHAR}, 
       #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
@@ -131,6 +136,9 @@
       <if test="releaseAnnouncementId != null">
         release_announcement_id,
       </if>
+      <if test="bidId != null">
+        bid_id,
+      </if>
       <if test="companyId != null">
         company_id,
       </if>
@@ -139,6 +147,12 @@
       </if>
       <if test="content != null">
         content,
+      </if>
+      <if test="delegator != null">
+        delegator,
+      </if>
+      <if test="identitCard != null">
+        identit_card,
       </if>
       <if test="operateId != null">
         operate_id,
@@ -163,6 +177,9 @@
       <if test="releaseAnnouncementId != null">
         #{releaseAnnouncementId,jdbcType=BIGINT},
       </if>
+      <if test="bidId != null">
+        #{bidId,jdbcType=BIGINT},
+      </if>
       <if test="companyId != null">
         #{companyId,jdbcType=BIGINT},
       </if>
@@ -171,6 +188,12 @@
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="delegator != null">
+        #{delegator,jdbcType=VARCHAR},
+      </if>
+      <if test="identitCard != null">
+        #{identitCard,jdbcType=VARCHAR},
       </if>
       <if test="operateId != null">
         #{operateId,jdbcType=BIGINT},
@@ -207,6 +230,9 @@
       <if test="record.releaseAnnouncementId != null">
         release_announcement_id = #{record.releaseAnnouncementId,jdbcType=BIGINT},
       </if>
+      <if test="record.bidId != null">
+        bid_id = #{record.bidId,jdbcType=BIGINT},
+      </if>
       <if test="record.companyId != null">
         company_id = #{record.companyId,jdbcType=BIGINT},
       </if>
@@ -215,6 +241,12 @@
       </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delegator != null">
+        delegator = #{record.delegator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identitCard != null">
+        identit_card = #{record.identitCard,jdbcType=VARCHAR},
       </if>
       <if test="record.operateId != null">
         operate_id = #{record.operateId,jdbcType=BIGINT},
@@ -241,9 +273,12 @@
     set id = #{record.id,jdbcType=BIGINT},
       purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       release_announcement_id = #{record.releaseAnnouncementId,jdbcType=BIGINT},
+      bid_id = #{record.bidId,jdbcType=BIGINT},
       company_id = #{record.companyId,jdbcType=BIGINT},
       status = #{record.status,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
+      delegator = #{record.delegator,jdbcType=VARCHAR},
+      identit_card = #{record.identitCard,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -262,6 +297,9 @@
       <if test="releaseAnnouncementId != null">
         release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
       </if>
+      <if test="bidId != null">
+        bid_id = #{bidId,jdbcType=BIGINT},
+      </if>
       <if test="companyId != null">
         company_id = #{companyId,jdbcType=BIGINT},
       </if>
@@ -270,6 +308,12 @@
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="delegator != null">
+        delegator = #{delegator,jdbcType=VARCHAR},
+      </if>
+      <if test="identitCard != null">
+        identit_card = #{identitCard,jdbcType=VARCHAR},
       </if>
       <if test="operateId != null">
         operate_id = #{operateId,jdbcType=BIGINT},
@@ -293,9 +337,12 @@
     update t_pretrial_message
     set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
+      bid_id = #{bidId,jdbcType=BIGINT},
       company_id = #{companyId,jdbcType=BIGINT},
       status = #{status,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
+      delegator = #{delegator,jdbcType=VARCHAR},
+      identit_card = #{identitCard,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},

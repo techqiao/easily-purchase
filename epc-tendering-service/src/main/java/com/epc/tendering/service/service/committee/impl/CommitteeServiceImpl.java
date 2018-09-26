@@ -40,14 +40,16 @@ public class CommitteeServiceImpl implements CommitteeService {
     BAssessmentCommitteeExpertMapper bAssessmentCommitteeExpertMapper;
     @Autowired
     TExpertBasicInfoMapper tExpertBasicInfoMapper;
+
     /**
      * 组建委员会
      * @return
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto){
 
-        /** 组建评委员会*/
+        /** 组建评委员会信息*/
         BAssessmentCommittee committee=new BAssessmentCommittee();
         BeanUtils.copyProperties(dto,committee);
         committee.setProcessState(Const.PROCESS_STATE.CHECK);
@@ -83,7 +85,6 @@ public class CommitteeServiceImpl implements CommitteeService {
                 }
 
                 //组建评委员会专家
-                TExpertBasicInfo tExpertBaseInfo=new TExpertBasicInfo();
                 TExpertBasicInfoCriteria criteria=new TExpertBasicInfoCriteria();
                 TExpertBasicInfoCriteria.Criteria cubCriteria=criteria.createCriteria();
                 cubCriteria.andProfessionEqualTo(expert.getProfessionalName());
@@ -93,17 +94,18 @@ public class CommitteeServiceImpl implements CommitteeService {
                 List<TExpertBasicInfo> padomList = getSubStringByRadom(resultList,expert.getProfessionalNumber());
                 for(TExpertBasicInfo entity:padomList){
                     BAssessmentCommitteeExpert bAssessmentCommitteeExpert=new BAssessmentCommitteeExpert();
-                    bAssessmentCommitteeExpert.setCommitteeBidId(0L);
-                    bAssessmentCommitteeExpert.setExpertId(0L);
-                    bAssessmentCommitteeExpert.setExpertName("");
-                    bAssessmentCommitteeExpert.setOperateId(0L);
+                    bAssessmentCommitteeExpert.setCommitteeBidId(committeeBid.getId());
+                    bAssessmentCommitteeExpert.setExpertId(entity.getId());
+                    bAssessmentCommitteeExpert.setExpertName(entity.getName());
+                    bAssessmentCommitteeExpert.setOperateId(dto.getOperateId());
                     bAssessmentCommitteeExpert.setCreateAt(new Date());
                     bAssessmentCommitteeExpert.setUpdateAt(new Date());
-                    bAssessmentCommitteeExpert.setIsDeleted(0);
+                    bAssessmentCommitteeExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                     try{
                         bAssessmentCommitteeExpertMapper.insertSelective(bAssessmentCommitteeExpert);
                     }catch (Exception e){
                         LOGGER.error("bAssessmentCommitteeExpert 插入失败");
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     }
                 }
 

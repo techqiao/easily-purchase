@@ -75,4 +75,10 @@ public class Const {
         int SUPPLIER=2;
         int PROXY=3;
     }
+
+    public interface OPEN_STATUS {
+        //开标记录状态
+        int ABNORMA=0;
+        int NORMA=1;
+    }
 }

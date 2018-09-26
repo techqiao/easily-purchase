@@ -105,11 +105,11 @@ public class WinBidServiceImpl implements WinBidService {
         return Result.success(vo);
     }
 
-    /**
+  /*  *//**
      * 插入中标公示表
      * @param handleWinBid
      * @return
-     */
+     *//*
     public Result<Boolean> insertTWinBidNominate(HandleWinBid handleWinBid) {
             TWinBidNominate entity=new TWinBidNominate();
             //查询项目记录
@@ -138,5 +138,5 @@ public class WinBidServiceImpl implements WinBidService {
             TPurchaseProjectBids purchaseProjectBids = tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
 
 
-    }
+    }*/
 }

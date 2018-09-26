@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBidCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface BAssessmentCommitteeBidMapper {
@@ -30,4 +31,7 @@ public interface BAssessmentCommitteeBidMapper {
     int updateByPrimaryKeySelective(BAssessmentCommitteeBid record);
 
     int updateByPrimaryKey(BAssessmentCommitteeBid record);
+
+    @Select("SELECT t.id FROM b_assessment_committee_bid t WHERE t.bids_id = #{bidsId}")
+    List<Long> getCommitteeBidIdList(Long bidsId);
 }

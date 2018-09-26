@@ -4,6 +4,7 @@ import com.epc.bidding.service.winBid.WinBidService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeWinBidService;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
+import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,12 @@ public class BiddingWinBidController implements FacadeWinBidService {
     public Result<List<WinBidLetterVO>> getWinBidLetter(@RequestBody  QueryWinBidLetterDTO dto){
 
         return winBidService.getWinBidLetter(dto);
+    }
+
+
+    @Override
+    public Result<TWinBidNominateVO> getTWinBidNominate(Long bidId){
+        return winBidService.getTWinBidNominate(bidId);
     }
 
 }

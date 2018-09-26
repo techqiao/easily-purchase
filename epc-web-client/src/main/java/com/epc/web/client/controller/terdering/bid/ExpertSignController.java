@@ -5,12 +5,15 @@ import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleExpertSign;
 import com.epc.web.client.remoteApi.terdering.bid.ExpertSignClient;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
+import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>Description : easily-purchase
@@ -34,9 +37,15 @@ public class ExpertSignController extends BaseController {
     }
 
     @ApiOperation(value = "设为组长")
-    @PostMapping(value = "handleExpert", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "handleExpert", consumes = "application/json; charset=UTF-8")
     public Result<Boolean> handleExpert(@RequestParam(value = "id") Long id){
         return expertSignClient.handleExpert(id);
+    }
+
+    @ApiOperation(value = "获取开始评标前置条件")
+    @GetMapping(value = "getExpertList", consumes = "application/json; charset=UTF-8")
+    public Result<List<ExpertSignVO>> getExpertList(Long procurementProjectId){
+        return expertSignClient.getExpertList(procurementProjectId);
     }
 
 }

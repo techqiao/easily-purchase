@@ -24,7 +24,8 @@ public class Swagger2 {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("admin client center").description("后台 openApi").termsOfServiceUrl(
-                "http://127.0.0.1:4101/swagger-ui.html").version("1.0").build();
+        return new ApiInfoBuilder().title("admin client center").description("后台 openApi")
+                .termsOfServiceUrl("www.epc1688.com")//设置文档的License信息->1.3 License information
+                .build();
     }
 }

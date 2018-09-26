@@ -12,7 +12,7 @@
     <!-- 按日期滚动日志 -->
     <appender name="ERROR-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 日志存放位置 -->
-        <file>logs/error.log</file>
+        <file>logs/epc-administration-client/error.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -32,7 +32,7 @@
     <!-- 按文件大小滚动日志 -->
     <appender name="INFO-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/info.log</file>
+        <file>logs/epc-administration-client/info.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -56,7 +56,7 @@
     <!-- 按日期和大小滚动日志 -->
     <appender name="DEBUG-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/debug.log</file>
+        <file>logs/epc-administration-client/debug.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -76,9 +76,13 @@
 
     <!-- 配置好前面对应的appender -->
     <root level="debug">
-        <appender-ref ref="STDOUT" />
+
         <appender-ref ref="ERROR-OUT" />
         <appender-ref ref="INFO-OUT" />
-        <appender-ref ref="DEBUG-OUT" />
-    </root>
+        <!--
+
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="DEBUG-OUT" />
+       -->
+  </root>
 </configuration>

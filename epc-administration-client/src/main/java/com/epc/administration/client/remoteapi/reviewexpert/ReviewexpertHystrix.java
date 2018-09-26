@@ -9,11 +9,12 @@ import com.epc.common.Result;
 
 /**
  * <p>Description : easilys
- * <p>Date : 2018-09-26 16:48
+ * <p>Date : 2018-09-26 17:10
  * <p>@Author : luozhixin
- * <p>ReviewExpertHystrix
+ * <p>ReviewexpertHystrix
  */
-public class ReviewexpertHystrix  implements ReviewExpertService {
+public class ReviewexpertHystrix implements ReviewExpertService {
+
     @Override
     public Result<Boolean> insertReviewExpertBasicInfo(UserBasicInfo userBasicInfo) {
         return Result.hystrixError();

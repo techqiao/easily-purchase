@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "供应商签到服务",description = "供应商签到")
+@Api(value = "供应商签到服务",tags = "供应商签到")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BiddingSignController {

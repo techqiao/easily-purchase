@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 * @Author: linzhixiang
 * @Date: 2018/9/20
 */
-@Api(value = "文件上传服务",description = "上传预审信息")
+@Api(value = "文件上传服务",tags = "上传预审信息")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 

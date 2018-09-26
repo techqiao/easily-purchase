@@ -69,7 +69,7 @@ public  class PurchaserController implements FacadePurchaserService {
      * @return
      */
     @Override
-    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
+    public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
         return purchaserService.updatePurchaserDetail(handlePurchaser);
     }
 

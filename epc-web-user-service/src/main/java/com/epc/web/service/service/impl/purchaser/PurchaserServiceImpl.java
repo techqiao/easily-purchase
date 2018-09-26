@@ -57,8 +57,6 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Autowired
     TPurchaserBasicInfoMapper tPurchaserBasicInfoMapper;
     @Autowired
-    TPurchaserUserMapper tPurchaserUserMapper;
-    @Autowired
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
     @Autowired
     TOperatorPurchaserMapper tOperatorPurchaserMapper;

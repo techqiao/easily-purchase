@@ -3,7 +3,7 @@ package com.epc.administration.client.controller.reviewexpert;
 import com.epc.administration.client.controller.operator.handle.ClientUserBasicInfo;
 import com.epc.administration.client.controller.reviewexpert.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientRoleDetailInfo;
-import com.epc.administration.client.remoteapi.reviewexpert.ReviewExpertClient;
+import com.epc.administration.client.remoteapi.reviewexpert.ReviewexpertClient;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 class ReviewExpertController {
 
     @Autowired
-    private ReviewExpertClient reviewExpertClient;
+    private ReviewexpertClient reviewExpertClient;
 
     @ApiOperation(value = "添加评审专家",notes = "添加评审专家")
     @PostMapping(value = "createReviewExpert", consumes = "application/json;charset=UTF-8")

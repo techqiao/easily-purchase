@@ -27,6 +27,11 @@ public class Const {
         int NOT_DELETED = 0;
     }
 
+    public interface IS_OK {
+        int IS_OK = 1;
+        int NOT_OK = 0;
+    }
+
     public interface STATE {
         int REGISTERED = 0;
         int PERFECTING = 1;

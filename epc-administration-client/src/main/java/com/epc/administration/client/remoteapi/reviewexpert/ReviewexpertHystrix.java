@@ -13,7 +13,7 @@ import com.epc.common.Result;
  * <p>@Author : luozhixin
  * <p>ReviewExpertHystrix
  */
-public class ReviewExpertHystrix  implements ReviewExpertService {
+public class ReviewexpertHystrix  implements ReviewExpertService {
     @Override
     public Result<Boolean> insertReviewExpertBasicInfo(UserBasicInfo userBasicInfo) {
         return Result.hystrixError();

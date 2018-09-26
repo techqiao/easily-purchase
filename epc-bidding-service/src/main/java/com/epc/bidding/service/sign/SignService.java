@@ -3,6 +3,7 @@ package com.epc.bidding.service.sign;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.HandleSign;
+import com.epc.web.facade.bidding.query.sign.QuerySignerDTO;
 
 
 public interface SignService {
@@ -17,4 +18,6 @@ public interface SignService {
 
     Result<SignBaseDTO> getSignBase(String name, String cellPhone) ;
 
-}
+     Result<SignBaseDTO> getSignerInfo(QuerySignerDTO dto);
+
+    }

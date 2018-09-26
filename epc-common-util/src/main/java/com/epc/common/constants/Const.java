@@ -76,4 +76,12 @@ public class Const {
         int ABNORMA=0;
         int NORMA=1;
     }
+
+    public interface PERSON_PERMISSION {
+        //开标记录状态
+        String REPLY="reply"; //批复
+        String AGENT="agent"; //经办
+        String AUDITOR="auditor"; //审核
+        String PERSON_LIABLE="person_liable"; //负责人
+    }
 }

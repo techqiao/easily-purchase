@@ -15,6 +15,7 @@ import com.epc.tendering.service.mapper.pretrial.TPretrialMessageMapper;
 import com.epc.tendering.service.service.bid.EvaluationService;
 import com.epc.web.facade.bidding.handle.ClauseHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.handle.StandardTypeHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
@@ -57,35 +58,33 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result insertEvaluation(EvaluationHandle evaluationHandle) {
-        BEvaluationTenderStandard bEvaluationTenderStandard = new BEvaluationTenderStandard();
-        bEvaluationTenderStandard.setProcurementProjectId(evaluationHandle.getProcurementProjectId());
-        bEvaluationTenderStandard.setBidsId(evaluationHandle.getBidsId());
-        bEvaluationTenderStandard.setFilePath(evaluationHandle.getFilePath());
-        bEvaluationTenderStandard.setProcessStatus(AnnouncementProcessStatusEnum.RELEASED.getCode());
-        bEvaluationTenderStandard.setOperateId(evaluationHandle.getOperateId());
-        bEvaluationTenderStandard.setCreateAt(new Date());
-        bEvaluationTenderStandard.setUpdateAt(new Date());
-        bEvaluationTenderStandard.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        List<StandardTypeHandle> standardType = evaluationHandle.getStandardType();
+        List<Long> evaluationIds= new ArrayList<>();
         try {
-            bEvaluationTenderStandardMapper.insertSelective(bEvaluationTenderStandard);
-            if(null!=evaluationHandle ||!evaluationHandle.getTenderAbolishClauseList().isEmpty()){
-                Long evaluationId = bEvaluationTenderStandard.getId();
-                for (ClauseHandle clauseHandle : evaluationHandle.getTenderAbolishClauseList()) {
-                    BTenderAbolishClause bTenderAbolishClause = new BTenderAbolishClause();
-                    bTenderAbolishClause.setEvaluationTenderStandardId(evaluationId);
-                    bTenderAbolishClause.setTemplateId(clauseHandle.getTemplateId());
-                    bTenderAbolishClause.setOperateId(evaluationHandle.getOperateId());
-                    bTenderAbolishClause.setCreateAt(new Date());
-                    bTenderAbolishClause.setUpdateAt(new Date());
-                    bTenderAbolishClause.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                    return Result.success(bTenderAbolishClauseMapper.insertSelective(bTenderAbolishClause)>0);
-                }
+            for (StandardTypeHandle standardTypeHandle : standardType) {
+                BEvaluationTenderStandard bEvaluationTenderStandard = new BEvaluationTenderStandard();
+                bEvaluationTenderStandard.setStandardType(standardTypeHandle.getStandardType());
+                bEvaluationTenderStandard.setTypeScore(standardTypeHandle.getTechTypeScore());
+                bEvaluationTenderStandard.setMemo(standardTypeHandle.getMemo());
+                bEvaluationTenderStandard.setFilePath(standardTypeHandle.getFilePath());
+                bEvaluationTenderStandard.setProcurementProjectId(evaluationHandle.getProcurementProjectId());
+                bEvaluationTenderStandard.setBidsId(evaluationHandle.getBidsId());
+                bEvaluationTenderStandard.setProcessStatus(AnnouncementProcessStatusEnum.RELEASED.getCode());
+                bEvaluationTenderStandard.setOperateId(evaluationHandle.getOperateId());
+                bEvaluationTenderStandard.setCreateAt(new Date());
+                bEvaluationTenderStandard.setUpdateAt(new Date());
+                bEvaluationTenderStandard.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+                    bEvaluationTenderStandardMapper.insertSelective(bEvaluationTenderStandard);
+                    if(!evaluationHandle.getTenderAbolishClauseList().isEmpty()){
+                        Long evaluationId = bEvaluationTenderStandard.getId();
+                        evaluationIds.add(evaluationId);
+                    }
             }
+            return  Result.success(insertClause(evaluationHandle,evaluationIds)>0);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error();
         }
-        return Result.success();
     }
 
     @Override
@@ -178,6 +177,18 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
 
-
+    public int insertClause(EvaluationHandle evaluationHandle ,List<Long> evaluationIds){
+        for (int i = 0; i < evaluationHandle.getTenderAbolishClauseList().size(); i++) {
+            BTenderAbolishClause bTenderAbolishClause = new BTenderAbolishClause();
+            bTenderAbolishClause.setEvaluationTenderStandardId(evaluationIds.get(i));
+            bTenderAbolishClause.setTemplateId(evaluationHandle.getTenderAbolishClauseList().get(i).getTemplateId());
+            bTenderAbolishClause.setOperateId(evaluationHandle.getOperateId());
+            bTenderAbolishClause.setCreateAt(new Date());
+            bTenderAbolishClause.setUpdateAt(new Date());
+            bTenderAbolishClause.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            return bTenderAbolishClauseMapper.insertSelective(bTenderAbolishClause);
+        }
+        return 0;
+    }
 
 }

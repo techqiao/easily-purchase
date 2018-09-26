@@ -17,6 +17,10 @@ public interface BEvaluationTenderStandardMapper {
 
     int insertSelective(BEvaluationTenderStandard record);
 
+    List<BEvaluationTenderStandard> selectByExampleWithBLOBsWithRowbounds(BEvaluationTenderStandardCriteria example, RowBounds rowBounds);
+
+    List<BEvaluationTenderStandard> selectByExampleWithBLOBs(BEvaluationTenderStandardCriteria example);
+
     List<BEvaluationTenderStandard> selectByExampleWithRowbounds(BEvaluationTenderStandardCriteria example, RowBounds rowBounds);
 
     List<BEvaluationTenderStandard> selectByExample(BEvaluationTenderStandardCriteria example);
@@ -25,9 +29,13 @@ public interface BEvaluationTenderStandardMapper {
 
     int updateByExampleSelective(@Param("record") BEvaluationTenderStandard record, @Param("example") BEvaluationTenderStandardCriteria example);
 
+    int updateByExampleWithBLOBs(@Param("record") BEvaluationTenderStandard record, @Param("example") BEvaluationTenderStandardCriteria example);
+
     int updateByExample(@Param("record") BEvaluationTenderStandard record, @Param("example") BEvaluationTenderStandardCriteria example);
 
     int updateByPrimaryKeySelective(BEvaluationTenderStandard record);
+
+    int updateByPrimaryKeyWithBLOBs(BEvaluationTenderStandard record);
 
     int updateByPrimaryKey(BEvaluationTenderStandard record);
 }

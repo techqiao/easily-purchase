@@ -6,6 +6,8 @@
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
     <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="standard_type" property="standardType" jdbcType="VARCHAR" />
+    <result column="type_score" property="typeScore" jdbcType="INTEGER" />
     <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
     <result column="auditor_id" property="auditorId" jdbcType="BIGINT" />
     <result column="replies_id" property="repliesId" jdbcType="BIGINT" />
@@ -13,6 +15,9 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" extends="BaseResultMap" >
+    <result column="memo" property="memo" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,9 +78,28 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, procurement_project_id, bids_id, file_path, process_status, auditor_id, replies_id, 
-    operate_id, create_at, update_at, is_deleted
+    id, procurement_project_id, bids_id, file_path, standard_type, type_score, process_status, 
+    auditor_id, replies_id, operate_id, create_at, update_at, is_deleted
   </sql>
+  <sql id="Blob_Column_List" >
+    memo
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" >
     select
     <if test="distinct" >
@@ -90,9 +114,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from b_evaluation_tender_standard
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -111,13 +137,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into b_evaluation_tender_standard (procurement_project_id, bids_id, file_path, 
-      process_status, auditor_id, replies_id, 
-      operate_id, create_at, update_at, 
-      is_deleted)
+      standard_type, type_score, process_status, 
+      auditor_id, replies_id, operate_id, 
+      create_at, update_at, is_deleted, 
+      memo)
     values (#{procurementProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, #{filePath,jdbcType=VARCHAR}, 
-      #{processStatus,jdbcType=VARCHAR}, #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT}, 
-      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+      #{standardType,jdbcType=VARCHAR}, #{typeScore,jdbcType=INTEGER}, #{processStatus,jdbcType=VARCHAR}, 
+      #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
+      #{memo,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -133,6 +161,12 @@
       </if>
       <if test="filePath != null" >
         file_path,
+      </if>
+      <if test="standardType != null" >
+        standard_type,
+      </if>
+      <if test="typeScore != null" >
+        type_score,
       </if>
       <if test="processStatus != null" >
         process_status,
@@ -155,6 +189,9 @@
       <if test="isDeleted != null" >
         is_deleted,
       </if>
+      <if test="memo != null" >
+        memo,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="procurementProjectId != null" >
@@ -165,6 +202,12 @@
       </if>
       <if test="filePath != null" >
         #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="standardType != null" >
+        #{standardType,jdbcType=VARCHAR},
+      </if>
+      <if test="typeScore != null" >
+        #{typeScore,jdbcType=INTEGER},
       </if>
       <if test="processStatus != null" >
         #{processStatus,jdbcType=VARCHAR},
@@ -186,6 +229,9 @@
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -210,6 +256,12 @@
       <if test="record.filePath != null" >
         file_path = #{record.filePath,jdbcType=VARCHAR},
       </if>
+      <if test="record.standardType != null" >
+        standard_type = #{record.standardType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeScore != null" >
+        type_score = #{record.typeScore,jdbcType=INTEGER},
+      </if>
       <if test="record.processStatus != null" >
         process_status = #{record.processStatus,jdbcType=VARCHAR},
       </if>
@@ -231,7 +283,30 @@
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update b_evaluation_tender_standard
+    set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      standard_type = #{record.standardType,jdbcType=VARCHAR},
+      type_score = #{record.typeScore,jdbcType=INTEGER},
+      process_status = #{record.processStatus,jdbcType=VARCHAR},
+      auditor_id = #{record.auditorId,jdbcType=BIGINT},
+      replies_id = #{record.repliesId,jdbcType=BIGINT},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      memo = #{record.memo,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -242,6 +317,8 @@
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       file_path = #{record.filePath,jdbcType=VARCHAR},
+      standard_type = #{record.standardType,jdbcType=VARCHAR},
+      type_score = #{record.typeScore,jdbcType=INTEGER},
       process_status = #{record.processStatus,jdbcType=VARCHAR},
       auditor_id = #{record.auditorId,jdbcType=BIGINT},
       replies_id = #{record.repliesId,jdbcType=BIGINT},
@@ -265,6 +342,12 @@
       <if test="filePath != null" >
         file_path = #{filePath,jdbcType=VARCHAR},
       </if>
+      <if test="standardType != null" >
+        standard_type = #{standardType,jdbcType=VARCHAR},
+      </if>
+      <if test="typeScore != null" >
+        type_score = #{typeScore,jdbcType=INTEGER},
+      </if>
       <if test="processStatus != null" >
         process_status = #{processStatus,jdbcType=VARCHAR},
       </if>
@@ -286,7 +369,27 @@
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    update b_evaluation_tender_standard
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{bidsId,jdbcType=BIGINT},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      standard_type = #{standardType,jdbcType=VARCHAR},
+      type_score = #{typeScore,jdbcType=INTEGER},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      auditor_id = #{auditorId,jdbcType=BIGINT},
+      replies_id = #{repliesId,jdbcType=BIGINT},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
@@ -294,6 +397,8 @@
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       bids_id = #{bidsId,jdbcType=BIGINT},
       file_path = #{filePath,jdbcType=VARCHAR},
+      standard_type = #{standardType,jdbcType=VARCHAR},
+      type_score = #{typeScore,jdbcType=INTEGER},
       process_status = #{processStatus,jdbcType=VARCHAR},
       auditor_id = #{auditorId,jdbcType=BIGINT},
       replies_id = #{repliesId,jdbcType=BIGINT},
@@ -303,6 +408,22 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >

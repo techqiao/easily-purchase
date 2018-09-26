@@ -12,6 +12,10 @@ public class BEvaluationTenderStandard implements Serializable {
 
     private String filePath;
 
+    private String standardType;
+
+    private Integer typeScore;
+
     private String processStatus;
 
     private Long auditorId;
@@ -25,6 +29,8 @@ public class BEvaluationTenderStandard implements Serializable {
     private Date updateAt;
 
     private Integer isDeleted;
+
+    private String memo;
 
     private static final long serialVersionUID = 1L;
 
@@ -58,6 +64,22 @@ public class BEvaluationTenderStandard implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath == null ? null : filePath.trim();
+    }
+
+    public String getStandardType() {
+        return standardType;
+    }
+
+    public void setStandardType(String standardType) {
+        this.standardType = standardType == null ? null : standardType.trim();
+    }
+
+    public Integer getTypeScore() {
+        return typeScore;
+    }
+
+    public void setTypeScore(Integer typeScore) {
+        this.typeScore = typeScore;
     }
 
     public String getProcessStatus() {
@@ -116,6 +138,14 @@ public class BEvaluationTenderStandard implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo == null ? null : memo.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -126,6 +156,8 @@ public class BEvaluationTenderStandard implements Serializable {
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", bidsId=").append(bidsId);
         sb.append(", filePath=").append(filePath);
+        sb.append(", standardType=").append(standardType);
+        sb.append(", typeScore=").append(typeScore);
         sb.append(", processStatus=").append(processStatus);
         sb.append(", auditorId=").append(auditorId);
         sb.append(", repliesId=").append(repliesId);
@@ -133,6 +165,7 @@ public class BEvaluationTenderStandard implements Serializable {
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
+        sb.append(", memo=").append(memo);
         sb.append("]");
         return sb.toString();
     }

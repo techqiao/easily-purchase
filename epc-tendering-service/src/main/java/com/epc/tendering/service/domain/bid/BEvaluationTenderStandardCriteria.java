@@ -355,6 +355,136 @@ public class BEvaluationTenderStandardCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andStandardTypeIsNull() {
+            addCriterion("standard_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeIsNotNull() {
+            addCriterion("standard_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeEqualTo(String value) {
+            addCriterion("standard_type =", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeNotEqualTo(String value) {
+            addCriterion("standard_type <>", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeGreaterThan(String value) {
+            addCriterion("standard_type >", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("standard_type >=", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeLessThan(String value) {
+            addCriterion("standard_type <", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeLessThanOrEqualTo(String value) {
+            addCriterion("standard_type <=", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeLike(String value) {
+            addCriterion("standard_type like", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeNotLike(String value) {
+            addCriterion("standard_type not like", value, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeIn(List<String> values) {
+            addCriterion("standard_type in", values, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeNotIn(List<String> values) {
+            addCriterion("standard_type not in", values, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeBetween(String value1, String value2) {
+            addCriterion("standard_type between", value1, value2, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardTypeNotBetween(String value1, String value2) {
+            addCriterion("standard_type not between", value1, value2, "standardType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreIsNull() {
+            addCriterion("type_score is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreIsNotNull() {
+            addCriterion("type_score is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreEqualTo(Integer value) {
+            addCriterion("type_score =", value, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreNotEqualTo(Integer value) {
+            addCriterion("type_score <>", value, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreGreaterThan(Integer value) {
+            addCriterion("type_score >", value, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreGreaterThanOrEqualTo(Integer value) {
+            addCriterion("type_score >=", value, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreLessThan(Integer value) {
+            addCriterion("type_score <", value, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreLessThanOrEqualTo(Integer value) {
+            addCriterion("type_score <=", value, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreIn(List<Integer> values) {
+            addCriterion("type_score in", values, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreNotIn(List<Integer> values) {
+            addCriterion("type_score not in", values, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreBetween(Integer value1, Integer value2) {
+            addCriterion("type_score between", value1, value2, "typeScore");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeScoreNotBetween(Integer value1, Integer value2) {
+            addCriterion("type_score not between", value1, value2, "typeScore");
+            return (Criteria) this;
+        }
+
         public Criteria andProcessStatusIsNull() {
             addCriterion("process_status is null");
             return (Criteria) this;

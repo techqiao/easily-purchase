@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api(value = "中标通知书服务",description = "获取中标通知书列表")
+@Api(value = "中标通知书服务",tags = "获取中标通知书列表")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 

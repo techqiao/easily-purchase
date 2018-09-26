@@ -8,11 +8,12 @@ import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
-
+@Mapper
 public interface TPurchaserBasicInfoMapper {
 
     int countByExample(TPurchaserBasicInfoCriteria example);

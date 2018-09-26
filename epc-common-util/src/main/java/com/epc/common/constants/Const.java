@@ -65,4 +65,10 @@ public class Const {
         int PASS = 2;//通过
         int SAVE=3 ;//保存等待
     }
+
+    public interface OPEN_STATUS {
+        //开标记录状态
+        int ABNORMA=0;
+        int NORMA=1;
+    }
 }

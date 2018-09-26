@@ -38,6 +38,7 @@ import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -110,8 +111,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         TOperatorPurchaserCriteria.Criteria criteria1 = criteria.createCriteria();
         criteria1.andPurchaserNameEqualTo(handleOperator.getName());
         criteria1.andCellphoneEqualTo(handleOperator.getCellPhone());
-        List<TOperatorPurchaser> list = tOperatorPurchaserMapper.selectByExample(criteria);
-        if (list.size() > 0) {
+        List<TOperatorPurchaser> list = new ArrayList<>();
+        list = tOperatorPurchaserMapper.selectByExample(criteria);
+        if (!list.isEmpty()) {
             return Result.error("采购人员" + handleOperator.getName() + "已存在,勿重复添加");
         }
         TOperatorPurchaser pojo = new TOperatorPurchaser();
@@ -135,8 +137,6 @@ public class PurchaserServiceImpl implements PurchaserService {
     }
 
 
-
-
     /**
      * @Description: 采购人新增 供应商信息
      * @Author: linzhixiang
@@ -156,8 +156,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         criteria1.andCellphoneEqualTo(handleSupplierDetail.getCellphone());
         criteria1.andNameEqualTo(handleSupplierDetail.getCompanyName());
         criteria1.andInviterIdEqualTo(handleSupplierDetail.getSupplierId());
-        List<TSupplierBasicInfo> list = tSupplierBasicInfoMapper.selectByExample(criteria);
-        if (list.size() > 0) {
+        List<TSupplierBasicInfo> list = new ArrayList<>();
+        list = tSupplierBasicInfoMapper.selectByExample(criteria);
+        if (!list.isEmpty()) {
             return Result.error("供应商" + handleSupplierDetail.getCompanyName() + "已存在,勿重复添加");
         }
 
@@ -203,8 +204,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         TExpertBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
         criteria1.andNameEqualTo(handleExpert.getName());
         criteria1.andCellphoneEqualTo(handleExpert.getCellPhone());
-        List<TExpertBasicInfo> list = tExpertBasicInfoMapper.selectByExample(criteria);
-        if (list.size() > 0) {
+        List<TExpertBasicInfo> list = new ArrayList<>();
+        list = tExpertBasicInfoMapper.selectByExample(criteria);
+        if (!list.isEmpty()) {
             TExpertBasicInfo basicInfo = list.get(0);
             int state = basicInfo.getState(); //状态由数据库负责更新
             //同步到私库中,增加之前先查询私库是否存在
@@ -212,8 +214,9 @@ public class PurchaserServiceImpl implements PurchaserService {
             TPurchaserExpertCriteria.Criteria criteria2 = expertCriteria.createCriteria();
             criteria2.andCellphoneEqualTo(handleExpert.getCellPhone());
             criteria2.andExpertNameEqualTo(handleExpert.getName());
-            List<TPurchaserExpert> purchaserBasicInfos = tPurchaserExpertMapper.selectByExample(expertCriteria);
-            if (purchaserBasicInfos.size() > 0) {
+            List<TPurchaserExpert> purchaserBasicInfos = new ArrayList<>();
+            purchaserBasicInfos = tPurchaserExpertMapper.selectByExample(expertCriteria);
+            if (!purchaserBasicInfos.isEmpty()) {
                 return Result.error("专家:" + handleExpert.getName() + "已存在");
             } else {
                 TPurchaserExpert tPurchaserExpert = new TPurchaserExpert();
@@ -339,8 +342,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserBasicInfoCriteria.Criteria criteria = infoCriteria.createCriteria();
         criteria.andNameEqualTo(handleOperator.getName());
         criteria.andCellphoneEqualTo(handleOperator.getCellPhone());
-        List<TPurchaserBasicInfo> list = tPurchaserBasicInfoMapper.selectByExample(infoCriteria);
-        if (list.size() > 0) {
+        List<TPurchaserBasicInfo> list = new ArrayList<>();
+        list = tPurchaserBasicInfoMapper.selectByExample(infoCriteria);
+        if (!list.isEmpty()) {
             return Result.error("员工:" + handleOperator.getName() + "已存在");
         }
         TPurchaserBasicInfo pojo = new TPurchaserBasicInfo();
@@ -475,7 +479,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserSupplierCriteria supplierCriteria = new TPurchaserSupplierCriteria();
         TPurchaserSupplierCriteria.Criteria criteria = supplierCriteria.createCriteria();
         criteria.andCellphoneEqualTo(dto.getCellphone());
-        TPurchaserSupplier supplier = tPurchaserSupplierMapper.selectByExample(supplierCriteria).get(0);
+        List<TPurchaserSupplier> suppliers = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
+        if (suppliers == null) {
+            return Result.error("没有此供应商信息");
+        }
+        TPurchaserSupplier supplier = suppliers.get(0);
         supplier.setSupplierId(supplierId);
 
         //封装供应商详细对象
@@ -569,7 +577,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserAgencyCriteria agencyCriteria = new TPurchaserAgencyCriteria();
         TPurchaserAgencyCriteria.Criteria criteria = agencyCriteria.createCriteria();
         criteria.andCellphoneEqualTo(dto.getCellphone());
-        TPurchaserAgency agency = tPurchaserAgencyMapper.selectByExample(agencyCriteria).get(0);
+        List<TPurchaserAgency> agencies = tPurchaserAgencyMapper.selectByExample(agencyCriteria);
+        if (agencies == null) {
+            return Result.error("没有注册信息");
+        }
+        TPurchaserAgency agency = agencies.get(0);
         //接受页面穿过来的信息,录入数据库,受影响的表,之前
         //t_agency_attachment,t_agency_basic_info,t_agency_detail_info,t_purchaser_agency
         //实例化插入对象接受数据
@@ -733,8 +745,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserDetailInfoCriteria detailCriteria = new TPurchaserDetailInfoCriteria();
         TPurchaserDetailInfoCriteria.Criteria criteria2 = detailCriteria.createCriteria();
         criteria.andPurchaserIdEqualTo(purchaserId);
-        TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetailInfoMapper.selectByExample(detailCriteria).get(0);
-
+        List<TPurchaserDetailInfo> tPurchaserDetails = tPurchaserDetailInfoMapper.selectByExample(detailCriteria);
+        if (tPurchaserDetails == null) {
+            return Result.error("没有此员工的信息");
+        }
+        TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetails.get(0);
         //获得老板name和公司name
         String companyName = tPurchaserDetail.getCompanyName();
         String bossName = "";
@@ -784,7 +799,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserDetailInfoCriteria detailCriteria = new TPurchaserDetailInfoCriteria();
         TPurchaserDetailInfoCriteria.Criteria criteria2 = detailCriteria.createCriteria();
         criteria.andPurchaserIdEqualTo(purchaseId);
-        TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetailInfoMapper.selectByExample(detailCriteria).get(0);
+        List<TPurchaserDetailInfo> tPurchaserDetails = tPurchaserDetailInfoMapper.selectByExample(detailCriteria);
+        if (tPurchaserDetails == null) {
+            return Result.error("没有此员工的信息");
+        }
+        TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetails.get(0);
 
         //获得老板name和公司name
         String companyName = tPurchaserDetail.getCompanyName();
@@ -824,17 +843,15 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateEmployeeState(String cellphone, Integer state) {
-        int sucess = 0;
+
         try {
-            sucess = tPurchaserBasicInfoMapper.updateEmployeeStateByCellphone(cellphone, state);
+            tPurchaserBasicInfoMapper.updateEmployeeStateByCellphone(cellphone, state);
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
         }
-        if (sucess == 0) {
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }
+
         return Result.success("更新成功", true);
     }
 
@@ -848,17 +865,15 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateEmployeeState(Long id, Integer state) {
-        int sucess = 0;
+
         try {
-            sucess = tPurchaserBasicInfoMapper.updateEmployeeStateById(id, state);
+            tPurchaserBasicInfoMapper.updateEmployeeStateById(id, state);
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
         }
-        if (sucess == 0) {
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }
+
         return Result.success("更新成功", true);
     }
 
@@ -876,14 +891,22 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserBasicInfoCriteria infoCriteria = new TPurchaserBasicInfoCriteria();
         TPurchaserBasicInfoCriteria.Criteria criteria = infoCriteria.createCriteria();
         criteria.andCellphoneEqualTo(cellphone);
-        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByExample(infoCriteria).get(0);
+        List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(infoCriteria);
+        if (tPurchaserBasicInfos == null) {
+            return Result.error("没有员工信息");
+        }
+        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfos.get(0);
         //获得自己机构的id
         Long purchaseId = tPurchaserBasicInfo.getPurchaserId();
         //依据id查询所有的对应的信息t_purchaser_detail_info
         TPurchaserDetailInfoCriteria detailCriteria = new TPurchaserDetailInfoCriteria();
         TPurchaserDetailInfoCriteria.Criteria criteria2 = detailCriteria.createCriteria();
         criteria2.andPurchaserIdEqualTo(purchaseId);
-        TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetailInfoMapper.selectByExample(detailCriteria).get(0);
+        List<TPurchaserDetailInfo> tPurchaserDetails = tPurchaserDetailInfoMapper.selectByExample(detailCriteria);
+        if (tPurchaserDetails == null) {
+            return Result.error("没有此员工的信息");
+        }
+        TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetails.get(0);
 
         //获得老板name和公司name
         TPurchaserBasicInfoCriteria infoCriteria2 = new TPurchaserBasicInfoCriteria();
@@ -903,10 +926,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         vo.setBossName(bossName);
         vo.setCompanyName(companyName);
 
-
-        if (vo == null) {
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
-        }
         return Result.success("查询成功", vo);
 
     }
@@ -925,7 +944,10 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserBasicInfoCriteria infoCriteria = new TPurchaserBasicInfoCriteria();
         TPurchaserBasicInfoCriteria.Criteria criteria = infoCriteria.createCriteria();
         criteria.andIdEqualTo(id);
-        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByExample(infoCriteria).get(0);
+        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(id);
+        if (tPurchaserBasicInfo == null) {
+            return Result.error("没有此id的员工");
+        }
         //获得自己机构的id
         Long purchaseId = tPurchaserBasicInfo.getPurchaserId();
         //依据id查询所有的对应的信息t_purchaser_detail_info
@@ -952,10 +974,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         vo.setBossName(bossName);
         vo.setCompanyName(companyName);
 
-
-        if (vo == null) {
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
-        }
         return Result.success("查询成功", vo);
     }
 
@@ -979,8 +997,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         criteria.andNameLike(employeeDto.getName());
         criteria.andStateEqualTo(employeeDto.getState());
         List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(infoCriteria);
+        if (tPurchaserBasicInfos == null) {
+            return Result.error("没有符合此条件的员工");
+        }
         //获得自己机构的id
-        Long purchaseId = tPurchaserBasicInfos.get(0).getPurchaserId();
+        Long purchaseId = employeeDto.getPurchaseId();
         //依据id查询所有的对应的信息t_purchaser_detail_info
         TPurchaserDetailInfoCriteria detailCriteria = new TPurchaserDetailInfoCriteria();
         TPurchaserDetailInfoCriteria.Criteria criteria2 = detailCriteria.createCriteria();
@@ -1011,7 +1032,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
 
 
-        if (list == null) {
+        if (list.isEmpty()) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
         return Result.success("查询成功", list);
@@ -1027,16 +1048,12 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateRole(Long id, Integer role) {
-        int sucess = 0;
         try {
-            sucess = tPurchaserBasicInfoMapper.updateEmployeeRoleById(id, role);
+            tPurchaserBasicInfoMapper.updateEmployeeRoleById(id, role);
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
-        }
-        if (sucess == 0) {
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
         return Result.success("更新成功", true);
     }
@@ -1065,7 +1082,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         //查询结果
         List<TSupplierDetailInfo> supplierVos = tSupplierDetailInfoMapper.selectByExample(detailInfoCriteria);
-        if (supplierVos.isEmpty()) {
+        if (supplierVos == null) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
         List<TPurchaserSupplier> basicInfos = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
@@ -1133,7 +1150,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         //查询结果
         List<TPurchaserSupplier> supplierVos = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
-        if (supplierVos.isEmpty()) {
+        if (supplierVos == null) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
         //封装附件查询的条件list
@@ -1207,7 +1224,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         //查询结果
         List<TSupplierDetailInfo> supplierVos = tSupplierDetailInfoMapper.selectByExample(detailInfoCriteria);
-        if (supplierVos.isEmpty()) {
+        if (supplierVos == null) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
         List<TPurchaserSupplier> basicInfos = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
@@ -1254,7 +1271,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
     /**
      * @author :winlin
-     * @Description :根据id查询供应商信息
+     * @Description :根据供货商id查询供应商信息不是自增主键id
      * @param:
      * @return:
      * @date:2018/9/21
@@ -1275,7 +1292,12 @@ public class PurchaserServiceImpl implements PurchaserService {
         TSupplierAttachmentCriteria.Criteria criteria2 = attachmentCriteria.createCriteria();
         criteria2.andSupplierIdEqualTo(id);
 
-        TPurchaserSupplier supplier = tPurchaserSupplierMapper.selectByExample(supplierCriteria).get(0);
+        List<TPurchaserSupplier> purchaserSuppliers = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
+
+        if (purchaserSuppliers == null) {
+            return Result.error("没有此供货商信息");
+        }
+        TPurchaserSupplier supplier = purchaserSuppliers.get(0);
         TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectByExample(detailInfoCriteria).get(0);
         List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectByExample(attachmentCriteria);
 
@@ -1309,6 +1331,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateSuppliers(HandPurchaserAttachment dto) {
         //t_purchaser_Supplier t_SUPPLIER _attachment t_SUPPLIER _basic_info ,t_SUPPLIER_detail_info查询信息封装
         //供货商id
@@ -1337,14 +1360,12 @@ public class PurchaserServiceImpl implements PurchaserService {
         basicInfo.setCellphone(dto.getCellphone());
         basicInfo.setState(dto.getState());
         basicInfo.setUpdateAt(new Date());
-        int sucess = tSupplierBasicInfoMapper.updateByExample(basicInfo, tSupplierBasicInfoCriteria);
 
         TPurchaserSupplier supplier = new TPurchaserSupplier();
         supplier.setCellphone(dto.getCellphone());
         supplier.setState(dto.getState());
         supplier.setSupplierName(dto.getCompanyName());
         supplier.setUpdateAt(new Date());
-        tPurchaserSupplierMapper.updateByExample(supplier, supplierCriteria);
 
         TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
         detailInfo.setCompanyName(dto.getCompanyName());
@@ -1352,18 +1373,23 @@ public class PurchaserServiceImpl implements PurchaserService {
         detailInfo.setPublicBankName(dto.getPublicBankName());
         detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
         detailInfo.setUpdateAt(new Date());
-        tSupplierDetailInfoMapper.updateByExample(detailInfo, tSupplierDetailInfoCriteria);
-
-        for (Attachement attachement : dto.getAtts()) {
-            TSupplierAttachment att = new TSupplierAttachment();
-            BeanUtils.copyProperties(attachement, att);
-            att.setSupplierId(supplierId);
-            tSupplierAttachmentMapper.updateByExample(att, tSupplierAttachmentCriteria);
+        try {
+            tSupplierBasicInfoMapper.updateByExample(basicInfo, tSupplierBasicInfoCriteria);
+            tPurchaserSupplierMapper.updateByExample(supplier, supplierCriteria);
+            tSupplierDetailInfoMapper.updateByExample(detailInfo, tSupplierDetailInfoCriteria);
+            for (Attachement attachement : dto.getAtts()) {
+                TSupplierAttachment att = new TSupplierAttachment();
+                BeanUtils.copyProperties(attachement, att);
+                att.setSupplierId(supplierId);
+                tSupplierAttachmentMapper.updateByExample(att, tSupplierAttachmentCriteria);
+            }
+        } catch (Exception e) {
+            //捕获异常回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            e.printStackTrace();
         }
 
-        if (sucess == 0) {
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "更新失败");
-        }
+
         return Result.success("更新成功", true);
     }
 
@@ -1392,6 +1418,9 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         //查询结果返回
         List<TPurchaserExpert> expertList = tPurchaserExpertMapper.selectByExample(expertCriteria);
+        if (expertList==null) {
+            return Result.error("没有符合条件的专家");
+        }
         List<TExpertBasicInfo> infoList = tExpertBasicInfoMapper.selectByExample(basicInfoCriteria);
         //对结果进行返回
         List<PurchaserExpertVo> voList = new ArrayList<>();
@@ -1427,18 +1456,15 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateExpertState(Long id, Integer state) {
-        int sucess = 0;
+
         try {
-            sucess = tPurchaserBasicInfoMapper.updateExpertStateById(id, state);
+            tPurchaserBasicInfoMapper.updateExpertStateById(id, state);
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
         }
 
-        if (sucess == 0) {
-            return Result.error(ErrorMessagesEnum.DELETE_FAILURE);
-        }
         return Result.success("删除成功", true);
     }
 
@@ -1465,8 +1491,8 @@ public class PurchaserServiceImpl implements PurchaserService {
         TAgencyAttachmentCriteria.Criteria criteria2 = attachmentCriteria.createCriteria();
 
         //查询结果
-        List<TAgencyDetailInfo> agencyVos = tAgencyDetailInfoMapper.selectByExample(detailInfoCriteria);
-        if (agencyVos.isEmpty()) {
+        List<TAgencyDetailInfo>  agencyVos = tAgencyDetailInfoMapper.selectByExample(detailInfoCriteria);
+        if (agencyVos==null) {
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
         List<TPurchaserAgency> basicInfos = tPurchaserAgencyMapper.selectByExample(agencyCriteria);
@@ -1527,7 +1553,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserExpertCriteria expertCriteria = new TPurchaserExpertCriteria();
         TPurchaserExpertCriteria.Criteria criteria = expertCriteria.createCriteria();
         criteria.andCellphoneEqualTo(dto.getCellphone());
-        TPurchaserExpert expert = tPurchaserExpertMapper.selectByExample(expertCriteria).get(0);
+        List<TPurchaserExpert> tPurchaserExperts  = tPurchaserExpertMapper.selectByExample(expertCriteria);
+        if (tPurchaserExperts==null) {
+            return Result.error("没有此手机号的员工");
+        }
+        TPurchaserExpert expert = tPurchaserExperts.get(0);
         //接受页面穿过来的信息,录入数据库,受影响的表,之前
         //t_purchaser_expert t_expert_attachment t_expert_basic_info
         //实例化插入对象接受数据

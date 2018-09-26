@@ -4,9 +4,10 @@ import com.epc.web.service.domain.purchaser.TPurchaserAttachment;
 import com.epc.web.service.domain.purchaser.TPurchaserAttachmentCriteria;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
-
+@Mapper
 public interface TPurchaserAttachmentMapper {
 
     int countByExample(TPurchaserAttachmentCriteria example);

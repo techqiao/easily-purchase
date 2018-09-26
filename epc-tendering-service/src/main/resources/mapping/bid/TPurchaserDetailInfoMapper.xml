@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TSupplierSignMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TSupplierSign" >
+<mapper namespace="com.epc.tendering.service.mapper.bid.TPurchaserDetailInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.TPurchaserDetailInfo" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
-    <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
-    <result column="bids_name" property="bidsName" jdbcType="VARCHAR" />
-    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
-    <result column="person_name" property="personName" jdbcType="VARCHAR" />
-    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR" />
+    <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR" />
+    <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR" />
+    <result column="extended_field" property="extendedField" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -73,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, procurement_project_id, bids_id, bids_name, company_id, company_name, person_name, 
-    cellphone, create_at, update_at, is_deleted
+    id, purchaser_id, company_name, uniform_credit_code, public_bank_name, public_ban_account_number, 
+    extended_field, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TSupplierSignCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfoCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_supplier_sign
+    from t_purchaser_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,58 +92,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from t_supplier_sign
+    from t_purchaser_detail_info
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from t_supplier_sign
+    delete from t_purchaser_detail_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TSupplierSignCriteria" >
-    delete from t_supplier_sign
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfoCriteria" >
+    delete from t_purchaser_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TSupplierSign" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_supplier_sign (procurement_project_id, bids_id, bids_name, 
-      company_id, company_name, person_name, 
-      cellphone, create_at, update_at, 
+    insert into t_purchaser_detail_info (purchaser_id, company_name, uniform_credit_code, 
+      public_bank_name, public_ban_account_number, 
+      extended_field, create_at, update_at, 
       is_deleted)
-    values (#{procurementProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, #{bidsName,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, 
-      #{cellphone,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+    values (#{purchaserId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{uniformCreditCode,jdbcType=VARCHAR}, 
+      #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR}, 
+      #{extendedField,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TSupplierSign" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_supplier_sign
+    insert into t_purchaser_detail_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="procurementProjectId != null" >
-        procurement_project_id,
-      </if>
-      <if test="bidsId != null" >
-        bids_id,
-      </if>
-      <if test="bidsName != null" >
-        bids_name,
-      </if>
-      <if test="companyId != null" >
-        company_id,
+      <if test="purchaserId != null" >
+        purchaser_id,
       </if>
       <if test="companyName != null" >
         company_name,
       </if>
-      <if test="personName != null" >
-        person_name,
+      <if test="uniformCreditCode != null" >
+        uniform_credit_code,
       </if>
-      <if test="cellphone != null" >
-        cellphone,
+      <if test="publicBankName != null" >
+        public_bank_name,
+      </if>
+      <if test="publicBanAccountNumber != null" >
+        public_ban_account_number,
+      </if>
+      <if test="extendedField != null" >
+        extended_field,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -157,26 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="procurementProjectId != null" >
-        #{procurementProjectId,jdbcType=BIGINT},
-      </if>
-      <if test="bidsId != null" >
-        #{bidsId,jdbcType=BIGINT},
-      </if>
-      <if test="bidsName != null" >
-        #{bidsName,jdbcType=VARCHAR},
-      </if>
-      <if test="companyId != null" >
-        #{companyId,jdbcType=BIGINT},
+      <if test="purchaserId != null" >
+        #{purchaserId,jdbcType=BIGINT},
       </if>
       <if test="companyName != null" >
         #{companyName,jdbcType=VARCHAR},
       </if>
-      <if test="personName != null" >
-        #{personName,jdbcType=VARCHAR},
+      <if test="uniformCreditCode != null" >
+        #{uniformCreditCode,jdbcType=VARCHAR},
       </if>
-      <if test="cellphone != null" >
-        #{cellphone,jdbcType=VARCHAR},
+      <if test="publicBankName != null" >
+        #{publicBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="publicBanAccountNumber != null" >
+        #{publicBanAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="extendedField != null" >
+        #{extendedField,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -189,38 +182,35 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TSupplierSignCriteria" resultType="java.lang.Integer" >
-    select count(*) from t_supplier_sign
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfoCriteria" resultType="java.lang.Integer" >
+    select count(*) from t_purchaser_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_supplier_sign
+    update t_purchaser_detail_info
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.procurementProjectId != null" >
-        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
-      </if>
-      <if test="record.bidsId != null" >
-        bids_id = #{record.bidsId,jdbcType=BIGINT},
-      </if>
-      <if test="record.bidsName != null" >
-        bids_name = #{record.bidsName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.companyId != null" >
-        company_id = #{record.companyId,jdbcType=BIGINT},
+      <if test="record.purchaserId != null" >
+        purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       </if>
       <if test="record.companyName != null" >
         company_name = #{record.companyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.personName != null" >
-        person_name = #{record.personName,jdbcType=VARCHAR},
+      <if test="record.uniformCreditCode != null" >
+        uniform_credit_code = #{record.uniformCreditCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.cellphone != null" >
-        cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      <if test="record.publicBankName != null" >
+        public_bank_name = #{record.publicBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publicBanAccountNumber != null" >
+        public_ban_account_number = #{record.publicBanAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extendedField != null" >
+        extended_field = #{record.extendedField,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -237,15 +227,14 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_supplier_sign
+    update t_purchaser_detail_info
     set id = #{record.id,jdbcType=BIGINT},
-      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
-      bids_id = #{record.bidsId,jdbcType=BIGINT},
-      bids_name = #{record.bidsName,jdbcType=VARCHAR},
-      company_id = #{record.companyId,jdbcType=BIGINT},
+      purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       company_name = #{record.companyName,jdbcType=VARCHAR},
-      person_name = #{record.personName,jdbcType=VARCHAR},
-      cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      uniform_credit_code = #{record.uniformCreditCode,jdbcType=VARCHAR},
+      public_bank_name = #{record.publicBankName,jdbcType=VARCHAR},
+      public_ban_account_number = #{record.publicBanAccountNumber,jdbcType=VARCHAR},
+      extended_field = #{record.extendedField,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -253,29 +242,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TSupplierSign" >
-    update t_supplier_sign
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfo" >
+    update t_purchaser_detail_info
     <set >
-      <if test="procurementProjectId != null" >
-        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
-      </if>
-      <if test="bidsId != null" >
-        bids_id = #{bidsId,jdbcType=BIGINT},
-      </if>
-      <if test="bidsName != null" >
-        bids_name = #{bidsName,jdbcType=VARCHAR},
-      </if>
-      <if test="companyId != null" >
-        company_id = #{companyId,jdbcType=BIGINT},
+      <if test="purchaserId != null" >
+        purchaser_id = #{purchaserId,jdbcType=BIGINT},
       </if>
       <if test="companyName != null" >
         company_name = #{companyName,jdbcType=VARCHAR},
       </if>
-      <if test="personName != null" >
-        person_name = #{personName,jdbcType=VARCHAR},
+      <if test="uniformCreditCode != null" >
+        uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
       </if>
-      <if test="cellphone != null" >
-        cellphone = #{cellphone,jdbcType=VARCHAR},
+      <if test="publicBankName != null" >
+        public_bank_name = #{publicBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="publicBanAccountNumber != null" >
+        public_ban_account_number = #{publicBanAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="extendedField != null" >
+        extended_field = #{extendedField,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -289,45 +275,31 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TSupplierSign" >
-    update t_supplier_sign
-    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
-      bids_id = #{bidsId,jdbcType=BIGINT},
-      bids_name = #{bidsName,jdbcType=VARCHAR},
-      company_id = #{companyId,jdbcType=BIGINT},
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfo" >
+    update t_purchaser_detail_info
+    set purchaser_id = #{purchaserId,jdbcType=BIGINT},
       company_name = #{companyName,jdbcType=VARCHAR},
-      person_name = #{personName,jdbcType=VARCHAR},
-      cellphone = #{cellphone,jdbcType=VARCHAR},
+      uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
+      public_bank_name = #{publicBankName,jdbcType=VARCHAR},
+      public_ban_account_number = #{publicBanAccountNumber,jdbcType=VARCHAR},
+      extended_field = #{extendedField,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TSupplierSignCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TPurchaserDetailInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_supplier_sign
+    from t_purchaser_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-  </select>
-
-  <select id="getSignPeronInfo"  resultType="com.epc.web.facade.bidding.dto.SignBaseDTO">
-    SELECT
-	sbf.supplier_id as supplierId,sbf.`name`,sbf.cellphone,sdi.company_name as companyName
-FROM
-	t_supplier_basic_info sbf
-LEFT JOIN t_supplier_detail_info sdi on sdi.id=sbf.supplier_id and sdi.is_deleted=0
-WHERE 1=1
-and sbf.is_deleted= 0
-and sbf.`name`=#{name}
-and sbf.cellphone=#{cellphone}
-
   </select>
 </mapper>

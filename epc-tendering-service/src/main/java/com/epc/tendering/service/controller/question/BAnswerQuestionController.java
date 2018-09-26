@@ -7,6 +7,7 @@ import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,12 +24,12 @@ public class BAnswerQuestionController implements FacadeAnswerQuestionService {
     private BAnswerQuestionService bAnswerQuestionService;
 
     @Override
-    public Result<List<FacadeAnswerQuestionVO>> getQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
+    public Result<List<FacadeAnswerQuestionVO>> getQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
         return bAnswerQuestionService.getQuestionList(queryAnswerQuestionDTO);
     }
 
     @Override
-    public Result<Boolean> replyQuestion(HandleReplyQuestion handleReplyQuestion) {
+    public Result<Boolean> replyQuestion(@RequestBody HandleReplyQuestion handleReplyQuestion) {
         return bAnswerQuestionService.replyQuestion(handleReplyQuestion);
     }
 }

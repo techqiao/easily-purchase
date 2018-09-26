@@ -1,0 +1,29 @@
+package com.epc.web.client.remoteApi.bidding.evaluation;
+
+import com.epc.common.Result;
+import com.epc.web.facade.bidding.FacadeEvaluationService;
+import com.epc.web.facade.bidding.handle.EvaluationHandle;
+
+/**
+ * <p>Description : easilys
+ * <p>Date : 2018-09-25 13:30
+ * <p>@Author : luozhixin
+ * <p>EvaluationHystrix
+ */
+public class EvaluationHystrix implements FacadeEvaluationService {
+
+    @Override
+    public Result insertEvaluation(EvaluationHandle evaluationHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result selectGuarantee(Long procurementProjectId) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result getFilesByCompanyId(Long BIssueDocumentsId) {
+        return Result.hystrixError();
+    }
+}

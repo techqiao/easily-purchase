@@ -22,7 +22,7 @@ public interface FacadeAnswerQuestionService {
      * @param queryAnswerQuestionDTO  采购项目ID
      * @return
      */
-    @GetMapping(value = "getQuestionList", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "getQuestionList", consumes = "application/json; charset=UTF-8")
     Result<List<FacadeAnswerQuestionVO>> getQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 
     /**

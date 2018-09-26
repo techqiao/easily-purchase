@@ -1,6 +1,12 @@
 package com.epc.administration.facade.reviewexpert.handle;
 
-public class ReviewExpertHandle {
+import java.io.Serializable;
+
+/**
+ * @author 01
+ */
+public class ReviewExpertHandle implements Serializable {
+    private static final long serialVersionUID = -2265620201281709989L;
     private String systemRole;
     private Long userId;
     private String companyName;

@@ -5,138 +5,146 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
+
 /**
  * <p>Description : 角色完善资料
  * <p>Date : 2018-09-11 16:07
  * <p>@Author : wjq
  */
-@ApiModel(value = "ClientRoleDetailInfo",description = "招标代理机构")
-public class ClientRoleDetailInfo {
-
+@ApiModel(value = "ClientRoleDetailInfo", description = "运营商完善信息")
+public class ClientRoleDetailInfo  implements Serializable {
+    private static final long serialVersionUID = 4115083942872587425L;
     @ApiModelProperty(value = "角色")
-    @NotEmpty(message = "ClientRoleDetailInfo.systemRole.null")
+    @NotEmpty(message = "ClientRoleDetailIfo.systemRole.null")
     private String systemRole;
     @ApiModelProperty(value = "注册人Id")
-    @NotEmpty(message = "ClientRoleDetailInfo.userId.null")
-    private Long id;
+    @NotEmpty(message = "ClientRoleDetailIfo.userId.null")
+    private Long userId;
     @ApiModelProperty(value = "公司名称")
-    @NotEmpty(message = "ClientRoleDetailInfo.companyName.null")
+    @NotEmpty(message = "ClientRoleDetailIfo.companyName.null")
     private String companyName;
     @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "ClientRoleDetailInfo.publicBankName.null")
+    @NotEmpty(message = "ClientRoleDetailIfo.publicBankName.null")
     private String publicBankName;
     @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "ClientRoleDetailInfo.publicBanAccountNumber.null")
+    @NotEmpty(message = "ClientRoleDetailIfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
-    @ApiModelProperty(value = "招标(采购)代理机构 ID")
-    @NotEmpty(message = "ClientRoleDetailInfo.agencyID.null")
-    private String agencyID;
-    @ApiModelProperty(value = "附件类型")
-    @NotEmpty(message = "ClientRoleDetailInfo.certificateType.null")
-    private String certificateType;
-    @ApiModelProperty(value = "附件url")
-    @NotEmpty(message = "ClientRoleDetailInfo.certificateFilePath.null")
-    private String certificateFilePath;
-    @ApiModelProperty(value = "附件号码")
-    @NotEmpty(message = "ClientRoleDetailInfo.certificateNumber.null")
-    private String certificateNumber;
-    @ApiModelProperty(value = "附件对应证书名称")
-    @NotEmpty(message = "ClientRoleDetailInfo.certificateName.null")
-    private String certificateName;
+    @ApiModelProperty(value = "资质证书url")
+    @NotEmpty(message = "ClientRoleDetailIfo.qualificationCertificate.null")
+    private String qualificationCertificate;
+    @ApiModelProperty(value = "营业执照照片url")
+    @NotEmpty(message = "ClientRoleDetailIfo.businessLicense.null")
+    private String businessLicense;
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    @NotEmpty(message = "ClientRoleDetailIfo.legalIdCardPositive.null")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    @NotEmpty(message = "ClientRoleDetailIfo.legalIdCardOther.null")
+    private String legalIdCardOther;
+    @ApiModelProperty(value = "带公章的授权书照片url")
+    @NotEmpty(message = "ClientRoleDetailIfo.certificateOfAuthorization.null")
+    private String certificateOfAuthorization;
+    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
+    @NotEmpty(message = "ClientRoleDetailIfo.operatorIdCardFront.null")
+    private String operatorIdCardFront;
 
     public String getSystemRole() {
         return systemRole;
     }
 
-    public void setSystemRole(String systemRole) {
+    public ClientRoleDetailInfo setSystemRole(String systemRole) {
         this.systemRole = systemRole;
+        return this;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public ClientRoleDetailInfo setUserId(Long userId) {
+        this.userId = userId;
+        return this;
     }
 
     public String getCompanyName() {
         return companyName;
     }
 
-    public void setCompanyName(String companyName) {
+    public ClientRoleDetailInfo setCompanyName(String companyName) {
         this.companyName = companyName;
+        return this;
     }
 
     public String getPublicBankName() {
         return publicBankName;
     }
 
-    public void setPublicBankName(String publicBankName) {
+    public ClientRoleDetailInfo setPublicBankName(String publicBankName) {
         this.publicBankName = publicBankName;
+        return this;
     }
 
     public String getPublicBanAccountNumber() {
         return publicBanAccountNumber;
     }
 
-    public void setPublicBanAccountNumber(String publicBanAccountNumber) {
+    public ClientRoleDetailInfo setPublicBanAccountNumber(String publicBanAccountNumber) {
         this.publicBanAccountNumber = publicBanAccountNumber;
+        return this;
     }
 
-    public String getAgencyID() {
-        return agencyID;
+    public String getQualificationCertificate() {
+        return qualificationCertificate;
     }
 
-    public void setAgencyID(String agencyID) {
-        this.agencyID = agencyID;
+    public ClientRoleDetailInfo setQualificationCertificate(String qualificationCertificate) {
+        this.qualificationCertificate = qualificationCertificate;
+        return this;
     }
 
-    public String getCertificateType() {
-        return certificateType;
+    public String getBusinessLicense() {
+        return businessLicense;
     }
 
-    public void setCertificateType(String certificateType) {
-        this.certificateType = certificateType;
+    public ClientRoleDetailInfo setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+        return this;
     }
 
-    public String getCertificateFilePath() {
-        return certificateFilePath;
+    public String getLegalIdCardPositive() {
+        return legalIdCardPositive;
     }
 
-    public void setCertificateFilePath(String certificateFilePath) {
-        this.certificateFilePath = certificateFilePath;
+    public ClientRoleDetailInfo setLegalIdCardPositive(String legalIdCardPositive) {
+        this.legalIdCardPositive = legalIdCardPositive;
+        return this;
     }
 
-    public String getCertificateNumber() {
-        return certificateNumber;
+    public String getLegalIdCardOther() {
+        return legalIdCardOther;
     }
 
-    public void setCertificateNumber(String certificateNumber) {
-        this.certificateNumber = certificateNumber;
+    public ClientRoleDetailInfo setLegalIdCardOther(String legalIdCardOther) {
+        this.legalIdCardOther = legalIdCardOther;
+        return this;
     }
 
-    public String getCertificateName() {
-        return certificateName;
+    public String getCertificateOfAuthorization() {
+        return certificateOfAuthorization;
     }
 
-    public void setCertificateName(String certificateName) {
-        this.certificateName = certificateName;
+    public ClientRoleDetailInfo setCertificateOfAuthorization(String certificateOfAuthorization) {
+        this.certificateOfAuthorization = certificateOfAuthorization;
+        return this;
     }
 
-    @Override
-    public String toString() {
-        return "ClientRoleDetailInfo{" +
-                "systemRole='" + systemRole + '\'' +
-                ", id=" + id +
-                ", companyName='" + companyName + '\'' +
-                ", publicBankName='" + publicBankName + '\'' +
-                ", publicBanAccountNumber='" + publicBanAccountNumber + '\'' +
-                ", agencyID='" + agencyID + '\'' +
-                ", certificateType='" + certificateType + '\'' +
-                ", certificateFilePath='" + certificateFilePath + '\'' +
-                ", certificateNumber='" + certificateNumber + '\'' +
-                ", certificateName='" + certificateName + '\'' +
-                '}';
+    public String getOperatorIdCardFront() {
+        return operatorIdCardFront;
+    }
+
+    public ClientRoleDetailInfo setOperatorIdCardFront(String operatorIdCardFront) {
+        this.operatorIdCardFront = operatorIdCardFront;
+        return this;
     }
 }

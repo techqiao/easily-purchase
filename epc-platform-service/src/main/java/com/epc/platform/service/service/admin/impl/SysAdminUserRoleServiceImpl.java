@@ -3,6 +3,7 @@ package com.epc.platform.service.service.admin.impl;
 import com.epc.platform.service.domain.admin.SysAdminUserRoleCriteria;
 import com.epc.platform.service.mapper.admin.SysAdminUserRoleMapper;
 import com.epc.platform.service.service.admin.SysAdminUserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class SysAdminUserRoleServiceImpl implements SysAdminUserRoleService {
 
+    @Autowired
     private SysAdminUserRoleMapper sysAdminUserRoleMapper;
 
     @Override

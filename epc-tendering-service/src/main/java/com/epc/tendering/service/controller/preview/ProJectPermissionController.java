@@ -6,6 +6,8 @@ import com.epc.web.facade.terdering.preview.ProJectPermissionService;
 import com.epc.web.facade.terdering.preview.handle.ProJectPermissionHandle;
 import com.epc.web.facade.terdering.preview.vo.ProJectPermissionVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -16,13 +18,14 @@ import java.util.List;
  * <p>p
  * ClientProJectPermissionController
  */
+@RestController
 public class ProJectPermissionController  implements ProJectPermissionService {
 
     @Autowired
     private ProJectByPermissionService proJectByPermissionService;
 
     @Override
-    public Result<List<ProJectPermissionVO>> getProJectListByPermission(ProJectPermissionHandle proJectPermissionHandle) {
+    public Result<List<ProJectPermissionVO>> getProJectListByPermission(@RequestBody ProJectPermissionHandle proJectPermissionHandle) {
         return proJectByPermissionService.getProJectListByPermission(proJectPermissionHandle);
     }
 

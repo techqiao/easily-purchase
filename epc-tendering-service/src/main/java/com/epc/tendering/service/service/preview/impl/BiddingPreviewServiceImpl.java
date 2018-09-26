@@ -1,5 +1,6 @@
 package com.epc.tendering.service.service.preview.impl;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.common.constants.BiddingPreviewStatusEnum;
 import com.epc.common.constants.Const;
@@ -7,7 +8,6 @@ import com.epc.tendering.service.domain.preview.TBiddingPreview;
 import com.epc.tendering.service.domain.preview.TBiddingPreviewCriteria;
 import com.epc.tendering.service.mapper.preview.TBiddingPreviewMapper;
 import com.epc.tendering.service.service.preview.BiddingPreviewService;
-import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
 import com.epc.web.facade.terdering.preview.handle.PreviewHandle;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -67,15 +66,15 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
 
     /**
      * 查询所有预告 分页展示
-     * @param queryPreviewDTO
+     * @param pagerParam
      * @return
      */
     @Override
-    public Result selectPreview(QueryPreviewDTO queryPreviewDTO) {
+    public Result selectPreview(PagerParam pagerParam) {
         final TBiddingPreviewCriteria criteria = new TBiddingPreviewCriteria();
          criteria.createCriteria().andIdIsNotNull();
         try {
-            List<TBiddingPreview>  tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, queryPreviewDTO.getRowBounds());
+            List<TBiddingPreview>  tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, pagerParam.getRowBounds());
             List<TBiddingPreview> returnList = new ArrayList<>();
             tBiddingPreviews.forEach(item -> {
                 TBiddingPreview pojo = new TBiddingPreview();
@@ -98,7 +97,7 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
     @Override
     public Result queryPreview(QueryWhere queryWhere) {
         try {
-           return Result.success( tBiddingPreviewMapper.selectByPrimaryKey(queryWhere.getPrID()));
+           return Result.success( tBiddingPreviewMapper.selectByPrimaryKey(queryWhere.getPreviewId()));
         } catch (Exception e) {
             LOGGER.error("BusinessException tBiddingPreviewMapperQueryPreview : {}", e);
             return Result.error();
@@ -107,18 +106,20 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
 
     /**
      * 在时间段来的分页展示
-     * @param queryPreviewDTO
+     * @param pagerParam
      * @param startDate
      * @param endDate
      * @return
      */
     @Override
-    public Result queryByDate(QueryPreviewDTO queryPreviewDTO, Date startDate, Date endDate ) {
+    public Result queryByDate(PagerParam pagerParam, String startDate, String endDate ) {
+        Date startDateAs = new Date(startDate);
+        Date endDateAs = new Date(startDate);
         TBiddingPreviewCriteria criteria = new TBiddingPreviewCriteria();
         TBiddingPreviewCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andCreateAtBetween(startDate,endDate);
+        subCriteria.andCreateAtBetween(startDateAs,endDateAs);
         try {
-            List<TBiddingPreview> tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, queryPreviewDTO.getRowBounds());
+            List<TBiddingPreview> tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, pagerParam.getRowBounds());
             List<TBiddingPreview> returnList = new ArrayList<>();
             tBiddingPreviews.forEach(item -> {
                 TBiddingPreview pojo = new TBiddingPreview();

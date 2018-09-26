@@ -2,9 +2,10 @@ package com.epc.platform.service.mapper.admin;
 
 import com.epc.platform.service.domain.admin.SysAdminUserRole;
 import com.epc.platform.service.domain.admin.SysAdminUserRoleCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface SysAdminUserRoleMapper {
     /**
@@ -102,4 +103,6 @@ public interface SysAdminUserRoleMapper {
      * @mbggenerated Mon Sep 10 16:52:59 CST 2018
      */
     int updateByPrimaryKey(SysAdminUserRole record);
+
+
 }

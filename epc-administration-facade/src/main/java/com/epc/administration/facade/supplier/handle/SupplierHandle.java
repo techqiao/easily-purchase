@@ -1,6 +1,12 @@
 package com.epc.administration.facade.supplier.handle;
 
-public class SupplierHandle {
+import java.io.Serializable;
+
+/**
+ * @author 01
+ */
+public class SupplierHandle implements Serializable {
+    private static final long serialVersionUID = 1528368763872630879L;
     private String systemRole;
     private Long userId;
     private String companyName;
@@ -11,7 +17,7 @@ public class SupplierHandle {
     private String legalIdCardPositive;
     private String legalIdCardOther;
     private String certificateOfAuthorization;
-    private String operatorIdCardFront;
+    private String supplierIdCardFront;
 
     @Override
     public String toString() {
@@ -26,7 +32,7 @@ public class SupplierHandle {
                 ", legalIdCardPositive='" + legalIdCardPositive + '\'' +
                 ", legalIdCardOther='" + legalIdCardOther + '\'' +
                 ", certificateOfAuthorization='" + certificateOfAuthorization + '\'' +
-                ", operatorIdCardFront='" + operatorIdCardFront + '\'' +
+                ", supplierIdCardFront='" + supplierIdCardFront + '\'' +
                 '}';
     }
 
@@ -103,11 +109,11 @@ public class SupplierHandle {
     }
 
     public String getOperatorIdCardFront() {
-        return operatorIdCardFront;
+        return supplierIdCardFront;
     }
 
     public void setOperatorIdCardFront(String operatorIdCardFront) {
-        this.operatorIdCardFront = operatorIdCardFront;
+        this.supplierIdCardFront = operatorIdCardFront;
     }
 
     public String getSystemRole() {

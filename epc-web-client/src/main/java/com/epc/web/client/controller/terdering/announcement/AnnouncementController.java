@@ -35,7 +35,13 @@ public class AnnouncementController extends BaseController {
     public Result<Boolean> insertAnnouncement(@RequestBody ClientHandleAnnouncement clientHandleAnnouncement){
         HandleAnnouncement handleBidsBasicInfo = new HandleAnnouncement();
         BeanUtils.copyProperties(clientHandleAnnouncement, handleBidsBasicInfo);
+        if(getLoginUser().getUserId()==null){
+            return Result.error();
+        }
         handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
+        if(getLoginUser().getName()==null){
+            return Result.error();
+        }
         handleBidsBasicInfo.setCreator(getLoginUser().getName());
         return announcementClient.insertAnnouncement(handleBidsBasicInfo);
     }

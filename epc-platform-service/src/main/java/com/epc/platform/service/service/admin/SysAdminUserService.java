@@ -1,5 +1,7 @@
 package com.epc.platform.service.service.admin;
 
+import com.epc.administration.facade.admin.handle.LoginHandle;
+import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.admin.SysAdminUser;
 import com.epc.platform.service.domain.admin.UserWithRole;
@@ -14,12 +16,11 @@ import java.util.List;
 public interface SysAdminUserService {
 
     /**
-     * 登录
-     * @param phone
-     * @param password
+     * 系统后台登录
+     * @param loginHandle
      * @return
      */
-    Result<SysAdminUser> login(String phone, String password);
+    Result<SysAdminUser> login(LoginHandle loginHandle);
 
     /**
      * 查询用户信息
@@ -38,31 +39,31 @@ public interface SysAdminUserService {
 
 
     /**
-     * 获取用户信息
-     * @param user
+     * 获取所有用户信息
+     * @param userHandle
      * @return
      */
-    List<SysAdminUser> findUserWithDept(SysAdminUser user);
+    List<SysAdminUser> findUserWithDept(UserHandle userHandle);
 
     /**
      * 注册用户
-     * @param user
+     * @param userHandle
      */
-    void registUser(SysAdminUser user);
+    void registUser(UserHandle userHandle);
 
     /**
      * 新增用户
-     * @param user
+     * @param userHandle
      * @param roles
      */
-    void addUser(SysAdminUser user, Long[] roles);
+    void addUser(UserHandle userHandle, Long[] roles);
 
     /**
      * 修改用户
-     * @param user
+     * @param userHandle
      * @param roles
      */
-    void updateUser(SysAdminUser user, Long[] roles);
+    void updateUser(UserHandle userHandle, Long[] roles);
 
     /**
      * 删除用户
@@ -72,22 +73,23 @@ public interface SysAdminUserService {
 
     /**
      * 修改密码
+     * @param userHandle
      * @param password
      */
-    void updatePassword(SysAdminUser sysAdminUser,String password);
+    void updatePassword(UserHandle userHandle, String password);
 
 
     /**
      * 获取用户信息
-     * @param user
+     * @param userHandle
      * @return
      */
-    SysAdminUser findUserDetail(SysAdminUser user);
+    SysAdminUser findUserDetail(UserHandle userHandle);
 
 
     /**
      * 修改用户信息
-     * @param user
+     * @param userHandle
      */
-    void updateUserDetail(SysAdminUser user);
+    void updateUserDetail(UserHandle userHandle);
 }

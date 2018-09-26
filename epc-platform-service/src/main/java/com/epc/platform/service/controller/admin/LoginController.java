@@ -1,14 +1,20 @@
 package com.epc.platform.service.controller.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.epc.administration.facade.admin.AdminLoginService;
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.platform.service.domain.admin.SysAdminUser;
 import com.epc.platform.service.service.admin.SysAdminUserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,25 +25,39 @@ import javax.servlet.http.HttpSession;
  * <p>Date : 2018-09-12 20:06
  * <p>@Author : wjq
  */
+@Api(value = "用户登录", description = "用户登录")
 @RestController
-public class LoginController extends BaseController{
+@SessionAttributes("session")
+public class LoginController extends BaseController implements AdminLoginService {
 
     @Autowired
     private SysAdminUserService sysAdminUserService;
 
-    //用户登录
-    public Result<SysAdminUser> login(String phone, String password, HttpSession session, HttpServletResponse httpServletResponse){
-        Result<SysAdminUser> result  = sysAdminUserService.login(phone, password);
+    /**用户登录
+     * @param session
+     * @param httpServletResponse
+     * @param loginHandle
+     * @return
+     */
+    @Override
+    public Result login(HttpSession session,
+                        HttpServletResponse httpServletResponse,
+                        @RequestBody LoginHandle loginHandle ){
+        Result<SysAdminUser> result  = sysAdminUserService.login(loginHandle);
         if(result.isSuccess()) {
-            CookieUtil.writeLoginToken(httpServletResponse,session.getId());
+                CookieUtil.writeLoginToken(httpServletResponse,session.getId());
             RedisShardedPoolUtil.setEx(session.getId(), JSONObject.toJSONString(result.getData()), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         }
+
         return result;
     }
 
-
-    //用户登出
-    public Result<Boolean> loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    /**用户登出
+     * @return
+     */
+    @Override
+    @ResponseBody
+    public Result loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
         RedisShardedPoolUtil.del(loginToken);

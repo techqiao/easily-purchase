@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.tendering.service.mapper.bid.BEvaluationTenderStandardMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
+    <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
+    <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
+    <result column="auditor_id" property="auditorId" jdbcType="BIGINT" />
+    <result column="replies_id" property="repliesId" jdbcType="BIGINT" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" extends="BaseResultMap" >
+    <result column="price_bid_evaluation_method" property="priceBidEvaluationMethod" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, procurement_project_id, bids_id, process_status, auditor_id, replies_id, operate_id, 
+    create_at, update_at, is_deleted
+  </sql>
+  <sql id="Blob_Column_List" >
+    price_bid_evaluation_method
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_evaluation_tender_standard
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_evaluation_tender_standard
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" >
+    delete from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_evaluation_tender_standard (procurement_project_id, bids_id, process_status, 
+      auditor_id, replies_id, operate_id, 
+      create_at, update_at, is_deleted, 
+      price_bid_evaluation_method)
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, #{processStatus,jdbcType=VARCHAR}, 
+      #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
+      #{priceBidEvaluationMethod,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_evaluation_tender_standard
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="procurementProjectId != null" >
+        procurement_project_id,
+      </if>
+      <if test="bidsId != null" >
+        bids_id,
+      </if>
+      <if test="processStatus != null" >
+        process_status,
+      </if>
+      <if test="auditorId != null" >
+        auditor_id,
+      </if>
+      <if test="repliesId != null" >
+        replies_id,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="priceBidEvaluationMethod != null" >
+        price_bid_evaluation_method,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="procurementProjectId != null" >
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsId != null" >
+        #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorId != null" >
+        #{auditorId,jdbcType=BIGINT},
+      </if>
+      <if test="repliesId != null" >
+        #{repliesId,jdbcType=BIGINT},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="priceBidEvaluationMethod != null" >
+        #{priceBidEvaluationMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" resultType="java.lang.Integer" >
+    select count(*) from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_evaluation_tender_standard
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.procurementProjectId != null" >
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidsId != null" >
+        bids_id = #{record.bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.processStatus != null" >
+        process_status = #{record.processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditorId != null" >
+        auditor_id = #{record.auditorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.repliesId != null" >
+        replies_id = #{record.repliesId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null" >
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.priceBidEvaluationMethod != null" >
+        price_bid_evaluation_method = #{record.priceBidEvaluationMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update b_evaluation_tender_standard
+    set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
+      process_status = #{record.processStatus,jdbcType=VARCHAR},
+      auditor_id = #{record.auditorId,jdbcType=BIGINT},
+      replies_id = #{record.repliesId,jdbcType=BIGINT},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      price_bid_evaluation_method = #{record.priceBidEvaluationMethod,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_evaluation_tender_standard
+    set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
+      process_status = #{record.processStatus,jdbcType=VARCHAR},
+      auditor_id = #{record.auditorId,jdbcType=BIGINT},
+      replies_id = #{record.repliesId,jdbcType=BIGINT},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    update b_evaluation_tender_standard
+    <set >
+      <if test="procurementProjectId != null" >
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsId != null" >
+        bids_id = #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="processStatus != null" >
+        process_status = #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorId != null" >
+        auditor_id = #{auditorId,jdbcType=BIGINT},
+      </if>
+      <if test="repliesId != null" >
+        replies_id = #{repliesId,jdbcType=BIGINT},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="priceBidEvaluationMethod != null" >
+        price_bid_evaluation_method = #{priceBidEvaluationMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    update b_evaluation_tender_standard
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{bidsId,jdbcType=BIGINT},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      auditor_id = #{auditorId,jdbcType=BIGINT},
+      replies_id = #{repliesId,jdbcType=BIGINT},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      price_bid_evaluation_method = #{priceBidEvaluationMethod,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandard" >
+    update b_evaluation_tender_standard
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{bidsId,jdbcType=BIGINT},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      auditor_id = #{auditorId,jdbcType=BIGINT},
+      replies_id = #{repliesId,jdbcType=BIGINT},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_evaluation_tender_standard
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

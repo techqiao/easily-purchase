@@ -1,35 +1,21 @@
 package com.epc.administration.facade.supplier.handle;
 
-import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.validator.constraints.NotEmpty;
 
-public class BaseDetailIfo {
-    @ApiModelProperty(value = "公司名称")
-    @NotEmpty(message = "RoleDetailInfo.companyName.null")
+import java.io.Serializable;
+
+/**
+ * @author 01
+ */
+public class BaseDetailIfo implements Serializable {
+    private static final long serialVersionUID = -7173505398731442529L;
     private String companyName;
-    @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "RoleDetailInfo.publicBankName.null")
     private String publicBankName;
-    @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "RoleDetailInfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
-    @ApiModelProperty(value = "资质证书url")
-    @NotEmpty(message = "RoleDetailInfo.qualificationCertificate.null")
     private String qualificationCertificate;
-    @ApiModelProperty(value = "营业执照照片url")
-    @NotEmpty(message = "RoleDetailInfo.businessLicense.null")
     private String businessLicense;
-    @ApiModelProperty(value = "法人身份证正面照片url")
-    @NotEmpty(message = "RoleDetailInfo.legalIdCardPositive.null")
     private String legalIdCardPositive;
-    @ApiModelProperty(value = "法人身份证反面照片url")
-    @NotEmpty(message = "RoleDetailInfo.legalIdCardOther.null")
     private String legalIdCardOther;
-    @ApiModelProperty(value = "带公章的授权书照片url")
-    @NotEmpty(message = "RoleDetailInfo.certificateOfAuthorization.null")
     private String certificateOfAuthorization;
-    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
-    @NotEmpty(message = "RoleDetailInfo.operatorIdCardFront.null")
     private String operatorIdCardFront;
 
     public String getCompanyName() {

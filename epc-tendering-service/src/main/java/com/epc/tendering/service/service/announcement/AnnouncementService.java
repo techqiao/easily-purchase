@@ -16,14 +16,14 @@ public interface AnnouncementService {
      * @param handleAnnouncement
      * @return
      */
-    Result<Boolean> insertAnnouncement(@RequestBody HandleAnnouncement handleAnnouncement);
+    Result<Boolean> insertAnnouncement( HandleAnnouncement handleAnnouncement);
 
     /**
      * 公告状态 审核审批发布
      * @param handleAnnouncementStatus
      * @return
      */
-    Result<Boolean> updateAnnouncementStatus(@RequestBody HandleAnnouncementStatus handleAnnouncementStatus);
+    Result<Boolean> updateAnnouncementStatus(HandleAnnouncementStatus handleAnnouncementStatus);
 
     /**
      * 公告失效

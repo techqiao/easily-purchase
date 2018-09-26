@@ -5,6 +5,7 @@ import com.epc.web.facade.bidding.FacadeSignService;
 import com.epc.web.facade.bidding.dto.SignBaseDTO;
 import com.epc.web.facade.bidding.handle.BasePersonInfo;
 import com.epc.web.facade.bidding.handle.HandleSign;
+import org.springframework.cloud.netflix.feign.FeignClient;
 
 public class SignHystrix  implements FacadeSignService {
 

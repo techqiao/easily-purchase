@@ -8,6 +8,7 @@ import com.epc.web.facade.terdering.bid.query.QueryBidsDTO;
 import com.epc.web.facade.terdering.bid.vo.BidsBasicInfoSubVO;
 import com.epc.web.facade.terdering.bid.vo.BidsBasicInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class TPurchaseProjectBidsController implements FacadePurchaseProjectBidS
 
 
     @Override
-    public Result<List<BidsBasicInfoSubVO>> getBidsList(QueryBidsDTO queryBidsDTO) {
+    public Result<List<BidsBasicInfoVO>> getBidsList(@RequestBody QueryBidsDTO queryBidsDTO) {
         return tPurchaseProjectBidsService.getBidsList(queryBidsDTO);
     }
 }

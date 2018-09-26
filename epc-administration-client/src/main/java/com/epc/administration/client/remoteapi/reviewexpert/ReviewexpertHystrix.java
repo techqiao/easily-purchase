@@ -8,15 +8,18 @@ import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 
 /**
- * <p>Description : easilys
+ * <p>Description : ReviewExpertHystrix
  * <p>Date : 2018-09-26 16:03
  * <p>@Author : luozhixin
- * <p>ReviewExpertHystrix
  */
 public class ReviewExpertHystrix implements ReviewExpertService {
+
+
     @Override
     public Result<Boolean> insertReviewExpertBasicInfo(UserBasicInfo userBasicInfo) {
         return Result.hystrixError();
+
+
     }
 
     @Override

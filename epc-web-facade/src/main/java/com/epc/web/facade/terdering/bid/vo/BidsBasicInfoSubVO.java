@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.bid.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -10,7 +11,8 @@ import java.math.BigDecimal;
  * <p>@Author : wjq
  */
 @Data
-public class BidsBasicInfoSubVO extends BidsBasicInfoVO{
+public class BidsBasicInfoSubVO extends BidsBasicInfoVO implements Serializable {
+    private static final long serialVersionUID = 4350117270881291030L;
     /**
      * 采购项目名称
      */

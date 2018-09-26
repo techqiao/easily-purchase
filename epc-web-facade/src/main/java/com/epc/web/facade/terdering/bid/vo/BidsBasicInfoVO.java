@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.bid.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,8 @@ import java.util.Date;
  * <p>@Author : wjq
  */
 @Data
-public class BidsBasicInfoVO {
+public class BidsBasicInfoVO implements Serializable {
+    private static final long serialVersionUID = -8709235267947743537L;
     /**
      * 序号
      */

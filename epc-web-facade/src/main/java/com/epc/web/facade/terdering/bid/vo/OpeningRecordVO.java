@@ -2,13 +2,16 @@ package com.epc.web.facade.terdering.bid.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-26 10:22
  * <p>@Author : wjq
  */
 @Data
-public class OpeningRecordVO {
+public class OpeningRecordVO implements Serializable {
+    private static final long serialVersionUID = -2518310527114485915L;
     /**
      * 标段ID
      */
@@ -57,4 +60,17 @@ public class OpeningRecordVO {
      * 操作人ID
      */
     private Long operateId;
+    /**
+     * 授权委托人姓名
+     */
+    private String delegator;
+    /**
+     * 授权委托人身份证
+     */
+    private String identitCard;
+
+    /**
+     * 委托书url
+     */
+    private String bailmentPath;
 }

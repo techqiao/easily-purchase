@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.pretrial.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,8 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @Data
-public class PretrialMessageVO {
+public class PretrialMessageVO implements Serializable {
+    private static final long serialVersionUID = -3859386139226644319L;
     /**
      * id
      */

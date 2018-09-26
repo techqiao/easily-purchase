@@ -44,8 +44,8 @@ public class OperatorController implements FacadeOperatorService {
      * @author donghuan
      */
     @Override
-    public  Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperator handleOperator) {
-        return operatorService.findByName(handleOperator);
+    public  Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperatorId handleOperatorId) {
+        return operatorService.findByName(handleOperatorId);
     }
 
     /**
@@ -107,14 +107,19 @@ public class OperatorController implements FacadeOperatorService {
         return operatorService.createPurchaseByOperator(handlePurchaser);
     }
 
-
-    /**
-     * 完善 供应商信息
-     * @param handleSupplierDetail
-     * @return
-     */
     @Override
-    public Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto handleSupplierDetail) {
-        return purchaserService.updateSupplierDetail(handleSupplierDetail);
+    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto handlePurchaser) {
+        return null;
     }
+
+
+//    /**
+//     * 完善 供应商信息
+//     * @param handleSupplierDetail
+//     * @return
+//     */
+//    @Override
+//    public Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto handleSupplierDetail) {
+//        return purchaserService.updateSupplierDetail(handleSupplierDetail);
+//    }
 }

@@ -6,7 +6,6 @@ import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<OperatorBasicInfoVO> findByName(HandleOperator handleOperator) {
+    public Result<OperatorBasicInfoVO> findByName(HandleOperatorId handleOperatorId) {
         return Result.hystrixError();
     }
 

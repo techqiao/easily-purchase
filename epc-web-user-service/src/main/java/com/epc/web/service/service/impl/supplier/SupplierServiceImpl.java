@@ -316,7 +316,7 @@ public class SupplierServiceImpl implements SupplierService {
                 List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
                 TSupplierBasicInfo single = tSupplierBasicInfos.get(0);
                 SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
-                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd E HH:mm:ss a");
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
                 vo.setCreateAt(format.format(single.getCreateAt()));
                 vo.setUpdateAt(format.format(single.getUpdateAt()));
                 BeanUtils.copyProperties(single,vo);

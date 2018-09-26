@@ -21,19 +21,4 @@ public class HandleOperatorFindAllByName implements Serializable {
      */
     private String name;
 
-    public Long getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

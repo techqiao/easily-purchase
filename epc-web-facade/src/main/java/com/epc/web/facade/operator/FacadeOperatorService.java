@@ -40,11 +40,11 @@ public interface FacadeOperatorService {
     Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword);
 
     /**
-     * 查询用户信息
+     * 依据用户id查询用户基本信息
      * @author donghuan
      */
     @PostMapping(value = "findByNameOperator", consumes = "application/json; charset=UTF-8")
-    Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperator handleOperator);
+    Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperatorId handleOperatorId);
 
     /**
      * 运营商新增自己的员工

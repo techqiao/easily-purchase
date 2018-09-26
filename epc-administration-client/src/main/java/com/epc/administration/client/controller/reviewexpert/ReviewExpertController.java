@@ -38,6 +38,8 @@ class ReviewExpertController {
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
         return reviewExpertClient.insertReviewExpertBasicInfo(userBasicInfo);
+
+
     }
     @ApiOperation(value = "评审专家完善资料",notes = "评审专家完善资料")
     @PostMapping(value = "registryReviewExpertDetail")

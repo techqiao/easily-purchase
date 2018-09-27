@@ -10,7 +10,7 @@ public class TBiddingPreview implements Serializable {
 
     private String projectName;
 
-    private String projectId;
+    private Long projectId;
 
     private String previewTitle;
 
@@ -56,12 +56,12 @@ public class TBiddingPreview implements Serializable {
         this.projectName = projectName == null ? null : projectName.trim();
     }
 
-    public String getProjectId() {
+    public Long getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId == null ? null : projectId.trim();
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public String getPreviewTitle() {

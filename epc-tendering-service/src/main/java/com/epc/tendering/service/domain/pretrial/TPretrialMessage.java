@@ -18,10 +18,6 @@ public class TPretrialMessage implements Serializable {
 
     private String content;
 
-    private String delegator;
-
-    private String identitCard;
-
     private Long operateId;
 
     private String creator;
@@ -90,22 +86,6 @@ public class TPretrialMessage implements Serializable {
         this.content = content == null ? null : content.trim();
     }
 
-    public String getDelegator() {
-        return delegator;
-    }
-
-    public void setDelegator(String delegator) {
-        this.delegator = delegator == null ? null : delegator.trim();
-    }
-
-    public String getIdentitCard() {
-        return identitCard;
-    }
-
-    public void setIdentitCard(String identitCard) {
-        this.identitCard = identitCard == null ? null : identitCard.trim();
-    }
-
     public Long getOperateId() {
         return operateId;
     }
@@ -159,8 +139,6 @@ public class TPretrialMessage implements Serializable {
         sb.append(", companyId=").append(companyId);
         sb.append(", status=").append(status);
         sb.append(", content=").append(content);
-        sb.append(", delegator=").append(delegator);
-        sb.append(", identitCard=").append(identitCard);
         sb.append(", operateId=").append(operateId);
         sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);

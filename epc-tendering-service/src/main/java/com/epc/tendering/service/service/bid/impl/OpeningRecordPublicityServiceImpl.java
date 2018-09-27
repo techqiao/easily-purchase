@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /**
  * <p>Description : easily-purchase
@@ -30,7 +31,12 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
         if(handOpeningRecordPublicity.getId() == null){
             TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
             BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
-            return Result.success(tOpeningRecordPublicityMapper.insertSelective(tOpeningRecordPublicity) > 0);
+            try {
+                return Result.success(tOpeningRecordPublicityMapper.insertSelective(tOpeningRecordPublicity) > 0);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
+            return Result.error();
         }
         if(handOpeningRecordPublicity.getId()!=null){
             String processStatus = tOpeningRecordPublicityMapper.getProcessStatus(handOpeningRecordPublicity.getId());
@@ -39,7 +45,11 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
                     || handOpeningRecordPublicity.getProcessStatus().equals(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode())){
                 TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
                 BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
-                return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+                try {
+                    return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+                } catch (Exception e) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
             }
             //审核
             if(processStatus.equals(AnnouncementProcessStatusEnum.AUDITING.getCode())
@@ -48,7 +58,11 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
                 BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
                 //审核人
                 tOpeningRecordPublicity.setAuditorId(handOpeningRecordPublicity.getAuditorId());
-                return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+                try {
+                    return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+                } catch (Exception e) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
             }
             //批复
             if(processStatus.equals(AnnouncementProcessStatusEnum.REPLY.getCode())
@@ -57,10 +71,14 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
                 BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
                 //批复人
                 tOpeningRecordPublicity.setRepliesId(handOpeningRecordPublicity.getAuditorId());
-                return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+                try {
+                    return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+                } catch (Exception e) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
             }
 
         }
-        return Result.success();
+        return Result.error();
     }
 }

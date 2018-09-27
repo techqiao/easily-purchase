@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.tendering.service.mapper.bid.BExpertScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.BExpertScore" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
+    <result column="bids_code" property="bidsCode" jdbcType="BIGINT" />
+    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
+    <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+    <result column="supplier_company_name" property="supplierCompanyName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="standard_type" property="standardType" jdbcType="VARCHAR" />
+    <result column="tech_type_score" property="techTypeScore" jdbcType="INTEGER" />
+    <result column="commerce_type_score" property="commerceTypeScore" jdbcType="INTEGER" />
+    <result column="final_score" property="finalScore" jdbcType="INTEGER" />
+    <result column="expert_id" property="expertId" jdbcType="BIGINT" />
+    <result column="expert_name" property="expertName" jdbcType="VARCHAR" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bids_id, bids_code, procurement_project_id, supplier_id, supplier_company_name, 
+    status, standard_type, tech_type_score, commerce_type_score, final_score, expert_id, 
+    expert_name, operate_id, create_at, update_at, is_deleted
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BExpertScoreCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_expert_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_expert_score
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_expert_score
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.BExpertScoreCriteria" >
+    delete from b_expert_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.BExpertScore" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_expert_score (bids_id, bids_code, procurement_project_id, 
+      supplier_id, supplier_company_name, status, 
+      standard_type, tech_type_score, commerce_type_score, 
+      final_score, expert_id, expert_name, 
+      operate_id, create_at, update_at, 
+      is_deleted)
+    values (#{bidsId,jdbcType=BIGINT}, #{bidsCode,jdbcType=BIGINT}, #{procurementProjectId,jdbcType=BIGINT}, 
+      #{supplierId,jdbcType=BIGINT}, #{supplierCompanyName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{standardType,jdbcType=VARCHAR}, #{techTypeScore,jdbcType=INTEGER}, #{commerceTypeScore,jdbcType=INTEGER}, 
+      #{finalScore,jdbcType=INTEGER}, #{expertId,jdbcType=BIGINT}, #{expertName,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BExpertScore" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_expert_score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bidsId != null" >
+        bids_id,
+      </if>
+      <if test="bidsCode != null" >
+        bids_code,
+      </if>
+      <if test="procurementProjectId != null" >
+        procurement_project_id,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="supplierCompanyName != null" >
+        supplier_company_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="standardType != null" >
+        standard_type,
+      </if>
+      <if test="techTypeScore != null" >
+        tech_type_score,
+      </if>
+      <if test="commerceTypeScore != null" >
+        commerce_type_score,
+      </if>
+      <if test="finalScore != null" >
+        final_score,
+      </if>
+      <if test="expertId != null" >
+        expert_id,
+      </if>
+      <if test="expertName != null" >
+        expert_name,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bidsId != null" >
+        #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsCode != null" >
+        #{bidsCode,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectId != null" >
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierCompanyName != null" >
+        #{supplierCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="standardType != null" >
+        #{standardType,jdbcType=VARCHAR},
+      </if>
+      <if test="techTypeScore != null" >
+        #{techTypeScore,jdbcType=INTEGER},
+      </if>
+      <if test="commerceTypeScore != null" >
+        #{commerceTypeScore,jdbcType=INTEGER},
+      </if>
+      <if test="finalScore != null" >
+        #{finalScore,jdbcType=INTEGER},
+      </if>
+      <if test="expertId != null" >
+        #{expertId,jdbcType=BIGINT},
+      </if>
+      <if test="expertName != null" >
+        #{expertName,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.BExpertScoreCriteria" resultType="java.lang.Integer" >
+    select count(*) from b_expert_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update b_expert_score
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidsId != null" >
+        bids_id = #{record.bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidsCode != null" >
+        bids_code = #{record.bidsCode,jdbcType=BIGINT},
+      </if>
+      <if test="record.procurementProjectId != null" >
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.supplierId != null" >
+        supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="record.supplierCompanyName != null" >
+        supplier_company_name = #{record.supplierCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standardType != null" >
+        standard_type = #{record.standardType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.techTypeScore != null" >
+        tech_type_score = #{record.techTypeScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.commerceTypeScore != null" >
+        commerce_type_score = #{record.commerceTypeScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.finalScore != null" >
+        final_score = #{record.finalScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.expertId != null" >
+        expert_id = #{record.expertId,jdbcType=BIGINT},
+      </if>
+      <if test="record.expertName != null" >
+        expert_name = #{record.expertName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null" >
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update b_expert_score
+    set id = #{record.id,jdbcType=BIGINT},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
+      bids_code = #{record.bidsCode,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      supplier_company_name = #{record.supplierCompanyName,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      standard_type = #{record.standardType,jdbcType=VARCHAR},
+      tech_type_score = #{record.techTypeScore,jdbcType=INTEGER},
+      commerce_type_score = #{record.commerceTypeScore,jdbcType=INTEGER},
+      final_score = #{record.finalScore,jdbcType=INTEGER},
+      expert_id = #{record.expertId,jdbcType=BIGINT},
+      expert_name = #{record.expertName,jdbcType=VARCHAR},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.BExpertScore" >
+    update b_expert_score
+    <set >
+      <if test="bidsId != null" >
+        bids_id = #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsCode != null" >
+        bids_code = #{bidsCode,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectId != null" >
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierCompanyName != null" >
+        supplier_company_name = #{supplierCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="standardType != null" >
+        standard_type = #{standardType,jdbcType=VARCHAR},
+      </if>
+      <if test="techTypeScore != null" >
+        tech_type_score = #{techTypeScore,jdbcType=INTEGER},
+      </if>
+      <if test="commerceTypeScore != null" >
+        commerce_type_score = #{commerceTypeScore,jdbcType=INTEGER},
+      </if>
+      <if test="finalScore != null" >
+        final_score = #{finalScore,jdbcType=INTEGER},
+      </if>
+      <if test="expertId != null" >
+        expert_id = #{expertId,jdbcType=BIGINT},
+      </if>
+      <if test="expertName != null" >
+        expert_name = #{expertName,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.BExpertScore" >
+    update b_expert_score
+    set bids_id = #{bidsId,jdbcType=BIGINT},
+      bids_code = #{bidsCode,jdbcType=BIGINT},
+      procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      supplier_company_name = #{supplierCompanyName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      standard_type = #{standardType,jdbcType=VARCHAR},
+      tech_type_score = #{techTypeScore,jdbcType=INTEGER},
+      commerce_type_score = #{commerceTypeScore,jdbcType=INTEGER},
+      final_score = #{finalScore,jdbcType=INTEGER},
+      expert_id = #{expertId,jdbcType=BIGINT},
+      expert_name = #{expertName,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BExpertScoreCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_expert_score
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

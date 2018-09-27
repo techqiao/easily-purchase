@@ -46,5 +46,8 @@ public class QueryPurchaseBasicInfoVO extends PagerParam implements Serializable
      * 采购类型
      */
     private String purchaseType;
-
+    /**
+     * 项目ID
+     */
+    private Long projectId;
 }

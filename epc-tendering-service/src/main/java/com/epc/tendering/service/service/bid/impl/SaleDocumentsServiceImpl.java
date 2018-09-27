@@ -7,7 +7,7 @@ import com.epc.tendering.service.mapper.bid.BBidsGuaranteeAmountMapper;
 import com.epc.tendering.service.mapper.bid.BSaleDocumentsMapper;
 import com.epc.tendering.service.mapper.bid.BTenderDocumentsPlaceSaleMapper;
 import com.epc.tendering.service.service.bid.SaleDocumentsService;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.handle.HandleUnderLine;
 import com.epc.web.facade.terdering.bid.vo.BidsGuaranteeAmountVO;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
@@ -41,11 +41,11 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
 
 
     @Override
-    public Result<Boolean> handleSaleDocuments(HandDocuments handDocuments) {
+    public Result<Boolean> handleSaleDocuments(HandleDocuments handleDocuments) {
         BSaleDocuments bSaleDocuments = new BSaleDocuments();
         //招标文件
-        BeanUtils.copyProperties(handDocuments.getHandleSaleDocuments(), bSaleDocuments);
-        HandleUnderLine handleUnderLine = handDocuments.getHandleUnderLine();
+        BeanUtils.copyProperties(handleDocuments.getHandleSaleDocuments(), bSaleDocuments);
+        HandleUnderLine handleUnderLine = handleDocuments.getHandleUnderLine();
         BTenderDocumentsPlaceSale bTenderDocumentsPlaceSale = new BTenderDocumentsPlaceSale();
         //线下招标文件
         BeanUtils.copyProperties(handleUnderLine, bTenderDocumentsPlaceSale);
@@ -59,26 +59,26 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
         bTenderDocumentsPlaceSale.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         //新增招标文件
         if (bSaleDocuments.getId() == null && bTenderDocumentsPlaceSale.getId() == null
-                && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
+                && !handleDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
             try {
                 bSaleDocumentsMapper.insertSelective(bSaleDocuments);
                 if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSaleMapper.insertSelective(bTenderDocumentsPlaceSale);
                 }
-                bBidsGuaranteeAmountMapper.insertGuaranteeAmountList(handDocuments.getHandleBidsGuaranteeAmount());
+                bBidsGuaranteeAmountMapper.insertGuaranteeAmountList(handleDocuments.getHandleBidsGuaranteeAmount());
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
         }
         //处理招标文件
         else if (bSaleDocuments.getId() != null && bTenderDocumentsPlaceSale.getId() != null
-                && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
+                && !handleDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
             try {
                 bSaleDocumentsMapper.updateByPrimaryKeySelective(bSaleDocuments);
                 if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSaleMapper.updateByPrimaryKeySelective(bTenderDocumentsPlaceSale);
                 }
-                bBidsGuaranteeAmountMapper.updateGuaranteeAmountList(handDocuments.getHandleBidsGuaranteeAmount());
+                bBidsGuaranteeAmountMapper.updateGuaranteeAmountList(handleDocuments.getHandleBidsGuaranteeAmount());
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }

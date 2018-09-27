@@ -10,7 +10,7 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @Data
-public class HandDocuments {
+public class HandleDocuments {
     /**
      * 标段保证金集合
      */

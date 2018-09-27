@@ -2,6 +2,8 @@ package com.epc.administration.client.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -17,12 +19,12 @@ public class Swagger2 {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(
-                RequestHandlerSelectors.basePackage("com.epc.administration.client.controller")).paths(
+                RequestHandlerSelectors.basePackage("com.epc.administration.client")).paths(
                 PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("admin client center").description("后台 openApi").termsOfServiceUrl(
-                "http://127.0.0.1:6000/swagger-ui.html").version("1.0").build();
+                "http://127.0.0.1:4101/swagger-ui.html").version("1.0").build();
     }
 }

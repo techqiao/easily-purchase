@@ -78,4 +78,10 @@ public class BiddingAgencyController {
     public Result selectAllAgencyByPage(@RequestBody QueryRequest queryRequest){
         return biddingAgencyClient.selectAllAgencyByPage(queryRequest);
     }
+
+   /* @ApiOperation(value = "审核招标代理机构",notes = "审核招标代理机构")
+    @PostMapping(value = "examineAgency")
+    public Result examineAgency(@RequestBody ExamineAgencyHandle examineAgencyHandle){
+return Result.success();
+    }*/
 }

@@ -57,9 +57,11 @@
     <appender name="DEBUG-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/epc-administration-client/debug.log</file>
+
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
+
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
             <onMatch>ACCEPT</onMatch>
@@ -67,21 +69,19 @@
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
     <!-- 配置好前面对应的appender -->
-    <root level="debug">
+    <root level="DEBUG-OUT">
 
         <appender-ref ref="ERROR-OUT" />
-        <appender-ref ref="INFO-OUT" />
+        <appender-ref ref="STDOUT" />
         <!--
-
-      <appender-ref ref="STDOUT" />
+       <appender-ref ref="INFO-OUT" />
       <appender-ref ref="DEBUG-OUT" />
        -->
   </root>

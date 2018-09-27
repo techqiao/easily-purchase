@@ -31,5 +31,7 @@ public class ClientQueryPurchaseBasicInfoVO extends PagerParam {
     private String purchaseCategory;
     @ApiModelProperty(value = "采购类型")
     private String purchaseType;
+    @ApiModelProperty(value = "项目ID")
+    private Long projectId;
 
 }

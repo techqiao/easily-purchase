@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,18 @@ public class ExpertSignServiceImpl implements ExpertSignService {
     private BAssessmentCommitteeBidMapper bAssessmentCommitteeBidMapper;
     @Autowired
     private BAssessmentCommitteeExpertMapper bAssessmentCommitteeExpertMapper;
+
     @Override
     public Result<Boolean> insertExpertSign(HandleExpertSign handleExpertSign) {
         //通过评标专家电话号 去判断是否是该标段的专家号 过滤
         BExpertSign bExpertSign = new BExpertSign();
         BeanUtils.copyProperties(handleExpertSign, bExpertSign);
-        return Result.success(bExpertSignMapper.insertSelective(bExpertSign) > 0);
+        try {
+            return Result.success(bExpertSignMapper.insertSelective(bExpertSign) > 0);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return Result.error();
     }
 
     @Override
@@ -54,7 +61,13 @@ public class ExpertSignServiceImpl implements ExpertSignService {
         BExpertSign bExpertSign = new BExpertSign();
         bExpertSign.setId(id);
         bExpertSign.setIsLeader(Const.IS_OK.IS_OK);
-        return Result.success(bExpertSignMapper.updateByPrimaryKeySelective(bExpertSign) > 0);
+        try {
+            return Result.success(bExpertSignMapper.updateByPrimaryKeySelective(bExpertSign) > 0);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return Result.error();
+
     }
 
     @Override
@@ -75,7 +88,7 @@ public class ExpertSignServiceImpl implements ExpertSignService {
                     pojo.setProcurementProjectId(procurementProjectId);
                     BExpertSignCriteria signCriteria = new BExpertSignCriteria();
                     signCriteria.createCriteria().andBidsIdEqualTo(bidsId).andExpertIdEqualTo(item.getExpertId());
-                    if(bExpertSignMapper.countByExample(signCriteria) > 0){
+                    if (bExpertSignMapper.countByExample(signCriteria) > 0) {
                         pojo.setIsSign(Const.IS_OK.IS_OK);
                     }
                     returnList.add(pojo);

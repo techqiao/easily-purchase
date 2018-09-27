@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,13 @@ public class OpeningRecordServiceImpl implements OpeningRecordService {
     public Result<Boolean> insertOpeningRecord(HandleOpeningRecord handleOpeningRecord) {
         TOpeningRecord tOpeningRecord = new TOpeningRecord();
         BeanUtils.copyProperties(handleOpeningRecord, tOpeningRecord);
-        return Result.success(tOpeningRecordMapper.insertSelective(tOpeningRecord) > 0);
+        try {
+            return Result.success(tOpeningRecordMapper.insertSelective(tOpeningRecord) > 0);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return Result.error();
+
     }
 
     @Override

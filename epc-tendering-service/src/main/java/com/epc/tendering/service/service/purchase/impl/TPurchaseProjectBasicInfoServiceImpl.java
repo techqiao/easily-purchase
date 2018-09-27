@@ -263,6 +263,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
      */
     private void criteriaBuild(QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO, TPurchaseProjectBasicInfoCriteria criteria, TPurchaseProjectBasicInfoCriteria.Criteria subCriteria) {
         criteria.setOrderByClause("id desc");
+        subCriteria.andProjectIdEqualTo(queryPurchaseBasicInfoVO.getProjectId());
         //采购分类
         if (StringUtils.isNotBlank(queryPurchaseBasicInfoVO.getPurchaseCategory())) {
             subCriteria.andPurchaseCategoryEqualTo(queryPurchaseBasicInfoVO.getPurchaseCategory());

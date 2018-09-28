@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api
+@Api(value = "委员会",tags = "组建委员会")
 @RestController
 @RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 

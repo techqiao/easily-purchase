@@ -394,4 +394,9 @@
         left join sys_admin_resource m on(m.id = rm.admin_resource_id )
         where u.name = #{userName} and m.url is not null and m.url &lt;&gt; ''
   </select>
+  <select id="selectUrl" resultMap="BaseResultMap">
+  	SELECT s.url ,s.name
+FROM sys_admin_resource s
+  </select>
+
 </mapper>

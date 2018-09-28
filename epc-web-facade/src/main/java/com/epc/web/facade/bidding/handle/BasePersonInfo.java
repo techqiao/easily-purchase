@@ -12,4 +12,6 @@ public class BasePersonInfo {
     private String cellPhone;
     @ApiModelProperty(value = "姓名")
     private String name;
+
+
 }

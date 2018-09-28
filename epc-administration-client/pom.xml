@@ -24,7 +24,11 @@
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>com.epc</groupId>
+			<artifactId>epc-common-util</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.epc</groupId>
 			<artifactId>epc-administration-facade</artifactId>

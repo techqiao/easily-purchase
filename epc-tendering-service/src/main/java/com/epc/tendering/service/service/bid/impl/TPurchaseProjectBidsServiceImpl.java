@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +34,6 @@ public class TPurchaseProjectBidsServiceImpl implements TPurchaseProjectBidsServ
     @Autowired
     private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
 
-
     @Override
     public Result<Boolean> handleBidsBasicInfo(HandleBidsBasicInfo handleBidsBasicInfo) {
         TPurchaseProjectBids pojo = new TPurchaseProjectBids();
@@ -43,15 +43,25 @@ public class TPurchaseProjectBidsServiceImpl implements TPurchaseProjectBidsServ
                 pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 pojo.setCreateAt(new Date());
                 pojo.setUpdateAt(new Date());
-                return Result.success(tPurchaseProjectBidsMapper.insertSelective(pojo) > 0);
+                try {
+                    return Result.success(tPurchaseProjectBidsMapper.insertSelective(pojo) > 0);
+                } catch (Exception e) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
             }else {
-                return Result.success(tPurchaseProjectBidsMapper.updateByPrimaryKeySelective(pojo) > 0);
+                try {
+                    return Result.success(tPurchaseProjectBidsMapper.updateByPrimaryKeySelective(pojo) > 0);
+                } catch (Exception e) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
+
             }
         }catch (BusinessException e){
             return Result.error(ErrorMessagesEnum.FAILURE);
         }catch (Exception e){
             return Result.error(e.getMessage());
         }
+        return Result.error();
     }
 
     @Override

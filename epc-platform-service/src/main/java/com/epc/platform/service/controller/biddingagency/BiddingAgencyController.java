@@ -1,14 +1,17 @@
 package com.epc.platform.service.controller.biddingagency;
 
 import com.epc.administration.facade.biddingagency.BiddingAgencyService;
+import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
+import com.epc.platform.service.controller.admin.BaseController;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
-import com.epc.platform.service.service.operator.OperatorService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
+import com.epc.platform.service.service.biddingagency.AgencyService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,42 +24,60 @@ import java.util.List;
  * <p>Date : 2018-09-14 10:31:14
  * <p>@author : lzx
  */
-@Api(value = "招标代理机构服务", description = "招标代理机构服务")
 @RestController
-public class BiddingAgencyController implements BiddingAgencyService {
+public class BiddingAgencyController extends BaseController implements BiddingAgencyService {
     @Autowired
-    private OperatorService operatorService;
+    private AgencyService agencyService;
 
-    @ApiOperation(value = "招标代理机构注册", notes = "招标代理机构注册")
+    /**
+     * 招标代理机构注册
+     */
     @Override
-    public Result<Boolean> insertBiddingAgencyBasicInfo(@RequestBody UserBasicInfo handleOperator) {
-        return operatorService.insertOperatorBasicInfo(handleOperator);
+    public Result<Boolean> insertBiddingAgencyBasicInfo(@RequestBody UserBasicInfo userBasicInfo) {
+        return agencyService.insertBiddingAgencyBasicInfo(userBasicInfo);
     }
-    @ApiOperation(value = "招标代理机构资料补全", notes = "招标代理机构资料补全")
+    /**
+     * 招标代理机构资料补全
+     */
     @Override
-    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo) {
-        return operatorService.insertOperatorDetailInfo(roleDetailIfo);
+    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody BiddingHandle biddingHandle) {
+        return agencyService.insertBiddingAgencyDetailInfo(biddingHandle);
     }
-
-
-    @ApiOperation(value = "招标代理机构资料删除", notes = "招标代理机构资料删除")
+    /**
+     * 招标代理机构资料删除
+     */
     @Override
     public Result<Boolean> deleteBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return operatorService.deleteOperatorDetailInfo(queryDetailIfo);
+        return agencyService.deleteBiddingAgencyDetailInfo(queryDetailIfo);
     }
-
-    @ApiOperation(value = "招标代理机构资料查询", notes = "招标代理机构资料查询")
+    /**
+     * 招标代理机构资料查询
+     */
     @Override
     public Result<TOperatorDetailInfo> queryBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return operatorService.queryOperatorDetailInfo(queryDetailIfo);
+        return agencyService.queryBiddingAgencyDetailInfo(queryDetailIfo);
     }
-
-    @ApiOperation(value = "招标代理机构资料模糊查询", notes = "招标代理机构资料模糊查询")
+    /**
+     * 招标代理机构资料模糊查询
+     * @param queryDetailIfo
+     * @return
+     */
     @Override
     public Result<List<TOperatorDetailInfo>> selectBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return operatorService.selectOperatorDetailInfo(queryDetailIfo);
+        return agencyService.selectBiddingAgencyDetailInfo(queryDetailIfo);
     }
 
-
+    /**
+     * 查询所有招标代理机构分页展示
+     * @param queryRequest
+     * @return
+     */
+    @Override
+    public Result selectAllAgencyByPage(@RequestBody QueryRequest queryRequest) {
+        PageHelper.startPage(queryRequest.getPageNum(),queryRequest.getPageSize());
+        List<TAgencyDetailInfo> tAgencyDetailInfos = agencyService.selectAllAgencyByPage(queryRequest);
+        PageInfo<TAgencyDetailInfo> pageInfo = new PageInfo<>(tAgencyDetailInfos);
+        return Result.success(getDataTable(pageInfo)) ;
+    }
 
 }

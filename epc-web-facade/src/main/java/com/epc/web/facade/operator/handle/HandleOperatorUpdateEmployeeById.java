@@ -1,11 +1,9 @@
 package com.epc.web.facade.operator.handle;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 运营商修改员工信息
@@ -34,36 +32,15 @@ public class HandleOperatorUpdateEmployeeById implements Serializable {
      */
     private  Integer isDeleted;
 
+    /**
+     * 修改自己的密码
+     */
+    private String password;
 
-    public Long getId() {
-        return id;
-    }
+    /**
+     * 更新修改的时间
+     */
+    private Date updateAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCellphone() {
-        return cellphone;
-    }
-
-    public void setCellphone(String cellphone) {
-        this.cellphone = cellphone;
-    }
-
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
 }

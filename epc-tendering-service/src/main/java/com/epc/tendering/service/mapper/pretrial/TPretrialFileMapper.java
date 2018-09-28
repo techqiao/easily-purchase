@@ -33,7 +33,6 @@ public interface TPretrialFileMapper {
 
     int updateByPrimaryKey(TPretrialFile record);
 
-
     @Select("select file_path from t_pretrial_file where pretrial_message_id=#{id}")
     List<String> getFilePathById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.epc.platform.service.service.admin;
 
+import com.epc.administration.facade.admin.handle.ResourceHandle;
 import com.epc.common.util.Tree;
 import com.epc.platform.service.domain.admin.SysAdminResource;
 import org.springframework.cache.annotation.Cacheable;
@@ -50,10 +51,10 @@ public interface SysAdminResourceService {
 
     /**
      * 获取菜单集合
-     * @param sysAdminResource
+     * @param
      * @return
      */
-    List<SysAdminResource> findAllResources(SysAdminResource sysAdminResource);
+    List<SysAdminResource> findAllResources(ResourceHandle resourceHandle);
 
     /**
      * 根据类型和资源名称获取资源
@@ -66,9 +67,9 @@ public interface SysAdminResourceService {
 
     /**
      * 新增资源
-     * @param sysAdminResource
+     * @param resourceHandle
      */
-    void addResource(SysAdminResource sysAdminResource);
+    void addResource(ResourceHandle resourceHandle);
 
     /**
      * 删除资源
@@ -78,9 +79,9 @@ public interface SysAdminResourceService {
 
     /**
      * 修改资源
-     * @param resource
+     * @param resourceHandle
      */
-    void updateResource(SysAdminResource resource);
+    void updateResource(ResourceHandle resourceHandle);
 
     /**
      * 获取所有资源
@@ -88,6 +89,6 @@ public interface SysAdminResourceService {
      * @return
      */
     @Cacheable(key = "'url_'+ #p0")
-    List<Map<String, String>> getAllUrl(String p1);
+    Map<Object, Object> getAllUrl(String p1);
 
 }

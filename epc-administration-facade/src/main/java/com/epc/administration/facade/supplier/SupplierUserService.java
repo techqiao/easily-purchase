@@ -2,8 +2,9 @@ package com.epc.administration.facade.supplier;
 
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.handle.SupplierHandle;
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,40 +23,46 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "createSupplierUserInfo", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> createSupplierUserInfo(UserBasicInfo userBasicInfo);
+     Result<Boolean> createSupplierUserInfo(@RequestBody UserBasicInfo userBasicInfo);
 
     /**
      * 供应商完善资料
-     * @param roleDetailIfo 附件信息
+     * @param supplierHandle 附件信息
      * @return
      */
     @PostMapping(value = "insertSupplierDetailInfo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailIfo);
-
+    Result<Boolean> insertSupplierDetailInfo(@RequestBody SupplierHandle supplierHandle);
 
     /**
-     * 删除运营商资料
-     * @param
+     * 删除供应商资料
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "deleteSupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result<Boolean> deleteOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<Boolean> deleteSupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
-     * 根据id查询运营商详情
-     * @param
+     * 根据id查询供应商详情
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "querySupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result queryOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result querySupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
-     * 根据模糊name查询运营商详情
-     * @param
+     * 根据模糊name查询供应商详情
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectSupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result selectSupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
+    /**
+     * 查询所有供应商 ，分页展示
+     * @param queryRequest
+     * @return
+     */
+    @PostMapping(value = "selectAllSupplierByPage" ,consumes = "application/json; charset=UTF-8")
+    Result selectAllSupplierByPage(@RequestBody QueryRequest queryRequest);
 
 }

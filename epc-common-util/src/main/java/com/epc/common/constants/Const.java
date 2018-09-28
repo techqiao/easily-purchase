@@ -27,6 +27,11 @@ public class Const {
         int NOT_DELETED = 0;
     }
 
+    public interface IS_OK {
+        int IS_OK = 1;
+        int NOT_OK = 0;
+    }
+
     public interface STATE {
         int REGISTERED = 0;
         int PERFECTING = 1;
@@ -52,7 +57,7 @@ public class Const {
         String THREE = "three";
     }
 
-    public interface IS_UNDER_LINE {
+    public interface IS_UNDER_LINE{
         int DOWN = 0;//线下
         int UP = 1;//线上
         int UP_DOWN = 3;//线上线下
@@ -63,33 +68,30 @@ public class Const {
         int CHECK = 0;//审核
         int REPLY = 1;//批复
         int PASS = 2;//通过
-        int SAVE = 3;//保存等待
+        int SAVE=3 ;//保存等待
+    }
+
+    /**
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     */
+    public interface INVITER_TYPE{
+        int PURCHASER=0;
+        int OPERATOR=1;
+        int SUPPLIER=2;
+        int PROXY=3;
     }
 
     public interface OPEN_STATUS {
         //开标记录状态
-        int ABNORMA = 0;
-        int NORMA = 1;
+        int ABNORMA=0;
+        int NORMA=1;
     }
 
-    /**
-     * @author :winlin
-     * @Description :机构类型
-     * @param:
-     * @return:
-     * @date:2018/9/27
-     */
-    public interface INVITER_TYPE {
-        //采购人
-        int PURCHASER = 0;
-        //运营商
-        int OPERATOE = 1;
-        //供货商
-        int SUPPLIER = 2;
-        //代理机构
-        int AGENCY = 3;
-        //平台
-        int PLATFORM = 4;
+    public interface PERSON_PERMISSION {
+        //开标记录状态
+        String REPLY="reply"; //批复
+        String AGENT="agent"; //经办
+        String AUDITOR="auditor"; //审核
+        String PERSON_LIABLE="person_liable"; //负责人
     }
-
 }

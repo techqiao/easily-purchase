@@ -3,6 +3,7 @@ package com.epc.platform.service.service.admin.impl;
 import com.epc.platform.service.domain.admin.SysAdminRoleResourceCriteria;
 import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.service.admin.SysAdminRoleResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class SysAdminRoleResourceServiceImpl implements SysAdminRoleResourceService {
 
+    @Autowired
     private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
 
     @Override

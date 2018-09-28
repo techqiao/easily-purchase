@@ -1,5 +1,6 @@
 package com.epc.tendering.service.service.preview;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
@@ -24,10 +25,10 @@ public interface BiddingPreviewService {
 
     /**
      * 查询所有分页展示
-     * @param queryPreviewDTO
+     * @param pagerParam
      * @return
      */
-    Result selectPreview(QueryPreviewDTO queryPreviewDTO);
+    Result selectPreview(PagerParam pagerParam);
 
     /**
      * 详情
@@ -43,5 +44,5 @@ public interface BiddingPreviewService {
      * @param endDate
      * @return
      */
-    Result queryByDate(QueryPreviewDTO queryPreviewDTO, Date startDate, Date endDate);
+    Result queryByDate(PagerParam pagerParam, String startDate, String endDate);
 }

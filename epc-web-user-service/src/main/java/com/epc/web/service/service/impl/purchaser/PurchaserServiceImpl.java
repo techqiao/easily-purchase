@@ -209,8 +209,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
 
         }
-        return Result.success("添加成功");
-
     }
 
 

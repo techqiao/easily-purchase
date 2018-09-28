@@ -8,7 +8,7 @@ import com.epc.web.client.remoteApi.operator.OperatorClient;
 import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -140,11 +140,11 @@ public class OperatorController {
     * @UpdateRemark:   修改内容
     * @Version:        1.0
     */
-//    @ApiOperation(value = "完善供应商信息",notes = "完善供应商信息")
-//    @PostMapping(value = "/updateSupplierDetail")
-//    public Result<Boolean> updateSupplierDetail(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail) {
-//        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
-//        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
-//        return operatorClient.updateSupplierDetail(handleSupplierDetail);
-//    }
+    @ApiOperation(value = "完善供应商信息",notes = "完善供应商信息")
+    @PostMapping(value = "/updateSupplierDetail")
+    public Result<Boolean> updateSupplierDetail(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail) {
+        PurchaserHandleSupplierDto handleSupplierDetail=new PurchaserHandleSupplierDto();
+        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
+        return operatorClient.updateSupplierDetail(handleSupplierDetail);
+    }
 }

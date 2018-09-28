@@ -4,20 +4,23 @@ import com.epc.administration.facade.biddingagency.handle.BaseDetailIfo;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class QueryDetailIfo  extends BaseDetailIfo {
-    @ApiModelProperty(value = "ID")
-    @NotEmpty(message = "QueryDetailIfo.userId.null")
-    private Long Id;
-    @ApiModelProperty(value = "模糊名称")
-    @NotEmpty(message = "QueryDetailIfo.where.null")
+import java.io.Serializable;
+
+/**
+ * @author 01
+ */
+public class QueryDetailIfo  extends BaseDetailIfo implements Serializable {
+
+    private static final long serialVersionUID = 5533344554793829363L;
+    private Long whereid;
     private String where;
 
-    public Long getId() {
-        return Id;
+    public Long getWhereid() {
+        return whereid;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public void setWhereid(Long whereid) {
+        this.whereid = whereid;
     }
 
     public String getWhere() {
@@ -30,8 +33,8 @@ public class QueryDetailIfo  extends BaseDetailIfo {
 
     @Override
     public String toString() {
-        return "QueryDetailIfo{" +
-                "Id=" + Id +
+        return "ClientQueryDetailIfo{" +
+                "whereid=" + whereid +
                 ", where='" + where + '\'' +
                 '}';
     }

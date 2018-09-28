@@ -11,7 +11,7 @@ import java.io.Serializable;
  * <p>@Author : luozhixin
  * <p>ClientQueryPreviewOneDTO
  */
-public class ClientQueryPreviewOneDTO implements Serializable {
+public class ClientQueryPreviewOneDTO {
     @ApiModelProperty("项目编号")
     @NotEmpty(message = "ClientQueryPreviewOneDTO.previewId.null")
     private Long previewId;

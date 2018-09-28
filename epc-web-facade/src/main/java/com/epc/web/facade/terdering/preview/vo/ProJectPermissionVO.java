@@ -1,5 +1,7 @@
 package com.epc.web.facade.terdering.preview.vo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Date;
  * <p>@Author : luozhixin
  * <p>ProJectPermissionVO
  */
+@Data
 public class ProJectPermissionVO implements Serializable {
     private static final long serialVersionUID = -7778981543301533239L;
     /**
@@ -159,205 +162,7 @@ public class ProJectPermissionVO implements Serializable {
     private String participantPermission;
 
 
-    public String getBiddingDocumentsUrl() {
-        return biddingDocumentsUrl;
-    }
 
-    public void setBiddingDocumentsUrl(String biddingDocumentsUrl) {
-        this.biddingDocumentsUrl = biddingDocumentsUrl;
-    }
-
-    public Date getBiddingStart() {
-        return biddingStart;
-    }
-
-    public void setBiddingStart(Date biddingStart) {
-        this.biddingStart = biddingStart;
-    }
-
-    public Date getBiddingEnd() {
-        return biddingEnd;
-    }
-
-    public void setBiddingEnd(Date biddingEnd) {
-        this.biddingEnd = biddingEnd;
-    }
-
-    public String getAnnouncementContent() {
-        return announcementContent;
-    }
-
-    public void setAnnouncementContent(String announcementContent) {
-        this.announcementContent = announcementContent;
-    }
-
-    public String getProcessStatus() {
-        return processStatus;
-    }
-
-    public void setProcessStatus(String processStatus) {
-        this.processStatus = processStatus;
-    }
-
-    public Long getOperateId() {
-        return operateId;
-    }
-
-    public void setOperateId(Long operateId) {
-        this.operateId = operateId;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getPurchaseProjectName() {
-        return purchaseProjectName;
-    }
-
-    public void setPurchaseProjectName(String purchaseProjectName) {
-        this.purchaseProjectName = purchaseProjectName;
-    }
-
-    public String getPurchaseProjectCode() {
-        return purchaseProjectCode;
-    }
-
-    public void setPurchaseProjectCode(String purchaseProjectCode) {
-        this.purchaseProjectCode = purchaseProjectCode;
-    }
-
-    public Date getPurchaseStartTime() {
-        return purchaseStartTime;
-    }
-
-    public void setPurchaseStartTime(Date purchaseStartTime) {
-        this.purchaseStartTime = purchaseStartTime;
-    }
-
-    public Date getPurchaseEndTime() {
-        return purchaseEndTime;
-    }
-
-    public void setPurchaseEndTime(Date purchaseEndTime) {
-        this.purchaseEndTime = purchaseEndTime;
-    }
-
-    public BigDecimal getPurchaseProjectBudgetaryAmount() {
-        return purchaseProjectBudgetaryAmount;
-    }
-
-    public void setPurchaseProjectBudgetaryAmount(BigDecimal purchaseProjectBudgetaryAmount) {
-        this.purchaseProjectBudgetaryAmount = purchaseProjectBudgetaryAmount;
-    }
-
-    public String getPurchaseMode() {
-        return purchaseMode;
-    }
-
-    public void setPurchaseMode(String purchaseMode) {
-        this.purchaseMode = purchaseMode;
-    }
-
-    public String getPurchaseCategory() {
-        return purchaseCategory;
-    }
-
-    public void setPurchaseCategory(String purchaseCategory) {
-        this.purchaseCategory = purchaseCategory;
-    }
-
-    public String getPurchaseType() {
-        return purchaseType;
-    }
-
-    public void setPurchaseType(String purchaseType) {
-        this.purchaseType = purchaseType;
-    }
-
-    public int getPurchaseRange() {
-        return purchaseRange;
-    }
-
-    public void setPurchaseRange(int purchaseRange) {
-        this.purchaseRange = purchaseRange;
-    }
-
-    public String getPurchaseProjectStatus() {
-        return purchaseProjectStatus;
-    }
-
-    public void setPurchaseProjectStatus(String purchaseProjectStatus) {
-        this.purchaseProjectStatus = purchaseProjectStatus;
-    }
-
-    public Integer getIsAdjust() {
-        return isAdjust;
-    }
-
-    public void setIsAdjust(Integer isAdjust) {
-        this.isAdjust = isAdjust;
-    }
-
-    public Integer getIsOtherAgency() {
-        return isOtherAgency;
-    }
-
-    public void setIsOtherAgency(Integer isOtherAgency) {
-        this.isOtherAgency = isOtherAgency;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPhone() {
-        return userPhone;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public String getAgencyName() {
-        return agencyName;
-    }
-
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
-    }
-
-    public String getParticipantPermission() {
-        return participantPermission;
-    }
-
-    public void setParticipantPermission(String participantPermission) {
-        this.participantPermission = participantPermission;
-    }
 
     @Override
     public String toString() {

@@ -142,7 +142,7 @@ public class AgencyController {
         AgencySupplierDto supplierDto1 = new AgencySupplierDto();
         BeanUtils.copyProperties(supplierDto,supplierDto1);
         return agencyClient.querySupplierCriteria(supplierDto1);
-    };
+    }
 
 
     /**

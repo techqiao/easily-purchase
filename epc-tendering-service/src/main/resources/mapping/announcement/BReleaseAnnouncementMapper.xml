@@ -428,4 +428,8 @@
       update b_release_announcement b set b.process_status ='invalid'  where 1=1 and b.id = ${item.id}
     </foreach>
   </update>
+
+  <select id="getProcessStatusById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+    select t.process_status from b_release_announcement where id=#{id}
+  </select>
 </mapper>

@@ -5,47 +5,49 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.io.Serializable;
+
 /**
  * <p>Description : 角色完善资料
  * <p>Date : 2018-09-11 16:07
  * <p>@Author : wjq
  */
 @ApiModel(value = "ClientRoleDetailInfo", description = "运营商完善信息")
-public class ClientRoleDetailInfo {
+public class ClientRoleDetailInfo implements Serializable {
 
-
+    private static final long serialVersionUID = 1357220411904844711L;
     @ApiModelProperty(value = "角色")
-    @NotEmpty(message = "RoleDetailIfo.systemRole.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.systemRole.null")
     private String systemRole;
     @ApiModelProperty(value = "注册人Id")
-    @NotEmpty(message = "RoleDetailIfo.userId.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.userId.null")
     private Long userId;
     @ApiModelProperty(value = "公司名称")
-    @NotEmpty(message = "RoleDetailIfo.companyName.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.companyName.null")
     private String companyName;
     @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "RoleDetailIfo.publicBankName.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.publicBankName.null")
     private String publicBankName;
     @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "RoleDetailIfo.publicBanAccountNumber.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
     @ApiModelProperty(value = "资质证书url")
-    @NotEmpty(message = "RoleDetailIfo.qualificationCertificate.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.qualificationCertificate.null")
     private String qualificationCertificate;
     @ApiModelProperty(value = "营业执照照片url")
-    @NotEmpty(message = "RoleDetailIfo.businessLicense.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.businessLicense.null")
     private String businessLicense;
     @ApiModelProperty(value = "法人身份证正面照片url")
-    @NotEmpty(message = "RoleDetailIfo.legalIdCardPositive.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.legalIdCardPositive.null")
     private String legalIdCardPositive;
     @ApiModelProperty(value = "法人身份证反面照片url")
-    @NotEmpty(message = "RoleDetailIfo.legalIdCardOther.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.legalIdCardOther.null")
     private String legalIdCardOther;
     @ApiModelProperty(value = "带公章的授权书照片url")
-    @NotEmpty(message = "RoleDetailIfo.certificateOfAuthorization.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.certificateOfAuthorization.null")
     private String certificateOfAuthorization;
     @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
-    @NotEmpty(message = "RoleDetailIfo.operatorIdCardFront.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.operatorIdCardFront.null")
     private String operatorIdCardFront;
 
     public String getSystemRole() {

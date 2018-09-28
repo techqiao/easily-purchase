@@ -3,9 +3,11 @@ package com.epc.tendering.service.controller.bid;
 import com.epc.common.Result;
 import com.epc.tendering.service.service.bid.SaleDocumentsService;
 import com.epc.web.facade.terdering.bid.FacadeSaleDocumentsService;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,12 +22,12 @@ public class BSaleDocumentsController implements FacadeSaleDocumentsService {
     private SaleDocumentsService saleDocumentsService;
 
     @Override
-    public Result<Boolean> handleSaleDocuments(HandDocuments handDocuments) {
-        return saleDocumentsService.handleSaleDocuments(handDocuments);
+    public Result<Boolean> handleSaleDocuments(@RequestBody HandleDocuments handleDocuments) {
+        return saleDocumentsService.handleSaleDocuments(handleDocuments);
     }
 
     @Override
-    public Result<DocumentsVO> getSaleDocuments(Long id) {
+    public Result<DocumentsVO> getSaleDocuments(@RequestParam(value = "id") Long id) {
         return saleDocumentsService.getSaleDocuments(id);
     }
 }

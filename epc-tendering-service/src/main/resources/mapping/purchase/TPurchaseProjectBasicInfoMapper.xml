@@ -3,7 +3,7 @@
 <mapper namespace="com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper">
   <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_id" jdbcType="BIGINT" property="projectId" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="purchase_project_name" jdbcType="VARCHAR" property="purchaseProjectName" />
     <result column="purchase_project_code" jdbcType="VARCHAR" property="purchaseProjectCode" />
@@ -130,7 +130,7 @@
       purchase_project_status, is_adjust, is_other_agency, 
       operate_id, creator, create_at, 
       update_at, is_deleted)
-    values (#{projectId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{purchaseProjectName,jdbcType=VARCHAR}, 
+    values (#{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{purchaseProjectName,jdbcType=VARCHAR}, 
       #{purchaseProjectCode,jdbcType=VARCHAR}, #{purchaseStartTime,jdbcType=TIMESTAMP}, 
       #{purchaseEndTime,jdbcType=TIMESTAMP}, #{isStateDesignation,jdbcType=INTEGER}, 
       #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL}, #{purchaseMode,jdbcType=VARCHAR}, 
@@ -208,7 +208,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="projectId != null">
-        #{projectId,jdbcType=VARCHAR},
+        #{projectId,jdbcType=BIGINT},
       </if>
       <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
@@ -282,7 +282,7 @@
         id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.projectId != null">
-        project_id = #{record.projectId,jdbcType=VARCHAR},
+        project_id = #{record.projectId,jdbcType=BIGINT},
       </if>
       <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
@@ -349,7 +349,7 @@
   <update id="updateByExample" parameterType="map">
     update t_purchase_project_basic_info
     set id = #{record.id,jdbcType=BIGINT},
-      project_id = #{record.projectId,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=BIGINT},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
       purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
@@ -377,7 +377,7 @@
     update t_purchase_project_basic_info
     <set>
       <if test="projectId != null">
-        project_id = #{projectId,jdbcType=VARCHAR},
+        project_id = #{projectId,jdbcType=BIGINT},
       </if>
       <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
@@ -441,7 +441,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo">
     update t_purchase_project_basic_info
-    set project_id = #{projectId,jdbcType=VARCHAR},
+    set project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
       purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
       purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
@@ -477,5 +477,7 @@
       order by ${orderByClause}
     </if>
   </select>
+
+
 
 </mapper>

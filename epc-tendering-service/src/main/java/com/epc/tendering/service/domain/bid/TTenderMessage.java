@@ -10,13 +10,11 @@ public class TTenderMessage implements Serializable {
 
     private Long releaseAnnouncementId;
 
-    private Long bidId;
+    private Long bidsId;
 
     private Long companyId;
 
-    private Long operateId;
-
-    private String operateName;
+    private String companyName;
 
     private String delegator;
 
@@ -26,7 +24,7 @@ public class TTenderMessage implements Serializable {
 
     private String bidAppendix;
 
-    private String status;
+    private Long operateId;
 
     private Date createAt;
 
@@ -60,12 +58,12 @@ public class TTenderMessage implements Serializable {
         this.releaseAnnouncementId = releaseAnnouncementId;
     }
 
-    public Long getBidId() {
-        return bidId;
+    public Long getBidsId() {
+        return bidsId;
     }
 
-    public void setBidId(Long bidId) {
-        this.bidId = bidId;
+    public void setBidsId(Long bidsId) {
+        this.bidsId = bidsId;
     }
 
     public Long getCompanyId() {
@@ -76,20 +74,12 @@ public class TTenderMessage implements Serializable {
         this.companyId = companyId;
     }
 
-    public Long getOperateId() {
-        return operateId;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setOperateId(Long operateId) {
-        this.operateId = operateId;
-    }
-
-    public String getOperateName() {
-        return operateName;
-    }
-
-    public void setOperateName(String operateName) {
-        this.operateName = operateName == null ? null : operateName.trim();
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName == null ? null : companyName.trim();
     }
 
     public String getDelegator() {
@@ -124,12 +114,12 @@ public class TTenderMessage implements Serializable {
         this.bidAppendix = bidAppendix == null ? null : bidAppendix.trim();
     }
 
-    public String getStatus() {
-        return status;
+    public Long getOperateId() {
+        return operateId;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setOperateId(Long operateId) {
+        this.operateId = operateId;
     }
 
     public Date getCreateAt() {
@@ -165,15 +155,14 @@ public class TTenderMessage implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", releaseAnnouncementId=").append(releaseAnnouncementId);
-        sb.append(", bidId=").append(bidId);
+        sb.append(", bidsId=").append(bidsId);
         sb.append(", companyId=").append(companyId);
-        sb.append(", operateId=").append(operateId);
-        sb.append(", operateName=").append(operateName);
+        sb.append(", companyName=").append(companyName);
         sb.append(", delegator=").append(delegator);
         sb.append(", identitCard=").append(identitCard);
         sb.append(", bailmentPath=").append(bailmentPath);
         sb.append(", bidAppendix=").append(bidAppendix);
-        sb.append(", status=").append(status);
+        sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

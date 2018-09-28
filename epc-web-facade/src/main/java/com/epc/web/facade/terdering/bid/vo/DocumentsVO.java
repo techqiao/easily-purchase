@@ -1,9 +1,8 @@
 package com.epc.web.facade.terdering.bid.vo;
 
-import com.epc.web.facade.terdering.bid.handle.HandleSaleDocuments;
-import com.epc.web.facade.terdering.bid.handle.HandleUnderLine;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +11,8 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @Data
-public class DocumentsVO {
+public class DocumentsVO implements Serializable {
+    private static final long serialVersionUID = -4330973702789468823L;
     /**
      * 标段保证金集合
      */

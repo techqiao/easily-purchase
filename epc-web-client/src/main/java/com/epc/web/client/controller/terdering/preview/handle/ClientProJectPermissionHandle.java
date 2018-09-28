@@ -1,5 +1,6 @@
 package com.epc.web.client.controller.terdering.preview.handle;
 
+import com.epc.common.PagerParam;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * <p>@Author : luozhixin
  * <p>ClientProJectPermissionHandle
  */
-public class ClientProJectPermissionHandle implements Serializable {
+public class ClientProJectPermissionHandle extends PagerParam implements Serializable {
     private static final long serialVersionUID = -1442447248833368290L;
     @ApiModelProperty("当前用户id")
     @NotEmpty(message = "ClientProJectPermissionHandle.userId.null")

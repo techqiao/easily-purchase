@@ -1,13 +1,18 @@
 package com.epc.platform.service.service.admin.impl;
 
+import com.epc.administration.facade.admin.handle.LoginHandle;
+import com.epc.administration.facade.admin.handle.ResourceHandle;
+import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
 import com.epc.common.util.MD5Util;
-import com.epc.platform.service.domain.admin.SysAdminUser;
-import com.epc.platform.service.domain.admin.SysAdminUserCriteria;
-import com.epc.platform.service.domain.admin.SysAdminUserRole;
-import com.epc.platform.service.domain.admin.UserWithRole;
+import com.epc.common.util.Tree;
+import com.epc.common.util.TreeUtils;
+import com.epc.platform.service.domain.admin.*;
+import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserRoleMapper;
+import com.epc.platform.service.service.admin.SysAdminResourceService;
 import com.epc.platform.service.service.admin.SysAdminUserRoleService;
 import com.epc.platform.service.service.admin.SysAdminUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -19,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,20 +44,33 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     private SysAdminUserRoleMapper sysAdminUserRoleMapper;
     @Autowired
     private SysAdminUserRoleService sysAdminUserRoleService;
-
+    @Autowired
+    private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
+    @Autowired
+    private SysAdminResourceService sysAdminResourceService;
+    /**
+     * 登录
+     * @param loginHandle
+     * @return
+     */
     @Override
-    public Result<SysAdminUser> login(String phone, String password) {
-        Validate.notNull(phone);
-        Validate.notNull(password);
+    public Result login(LoginHandle loginHandle) {
+        Validate.notNull(loginHandle.getPhone());
+        Validate.notNull(loginHandle.getPassword());
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
         final SysAdminUserCriteria.Criteria subCriteria= criteria.createCriteria();
-        subCriteria.andPhoneEqualTo(password);
-        subCriteria.andPasswordEqualTo(MD5Util.MD5EncodeUtf8(password));
+        subCriteria.andPhoneEqualTo(loginHandle.getPassword());
+        subCriteria.andPasswordEqualTo(MD5Util.MD5EncodeUtf8(loginHandle.getPassword()));
         List<SysAdminUser> list = sysAdminUserMapper.selectByExample(criteria);
         if(list.isEmpty()){
             return Result.error("登录失败");
         }
-        return Result.success(list.get(0));
+        Tree<SysAdminResource> resource = getResource();
+        Map<String,Object>  resultMap = new HashMap<String, Object>();
+        list.get(0).setPassword(null);
+        resultMap.put("user",list.get(0));
+        resultMap.put("resourceList",resource);
+        return Result.success(resultMap);
     }
 
     @Override
@@ -85,9 +100,12 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     }
 
     @Override
-    public List<SysAdminUser> findUserWithDept(SysAdminUser user) {
+    public List<SysAdminUser> findUserWithDept(UserHandle user) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setPhone(user.getPhone());
+        sysAdminUser.setPassword(user.getPassword());
         try {
-            return this.sysAdminUserMapper.findUserWithDept(user);
+            return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);
         } catch (Exception e) {
             LOGGER.error("error", e);
             return new ArrayList<>();
@@ -95,30 +113,43 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     }
 
     @Override
-    public void registUser(SysAdminUser user) {
-        user.setCreateAt(new Date());
-        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
-        sysAdminUserMapper.insert(user);
+    public void registUser(UserHandle user) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+
+        sysAdminUser.setCreateAt(new Date());
+        sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
+        sysAdminUserMapper.insert(sysAdminUser);
         SysAdminUserRole ur = new SysAdminUserRole();
-        ur.setAdminUserId(user.getId());
+        ur.setAdminUserId(sysAdminUser.getId());
         //注册账号角色控制，只允许查看
         ur.setAdminRoleId(2L);
         sysAdminUserRoleMapper.insertSelective(ur);
     }
 
     @Override
-    public void addUser(SysAdminUser user, Long[] roles) {
-        user.setCreateAt(new Date());
-        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
-        sysAdminUserMapper.insertSelective(user);
-        setUserRoles(user, roles);
+    public void addUser(UserHandle userHandle, Long[] roles) {
+        Date date =  new Date();
+        SysAdminUser sysAdminUser = new SysAdminUser();
+         sysAdminUser.setName(userHandle.getName());
+         sysAdminUser.setPhone(userHandle.getPhone());
+        sysAdminUser.setCreateAt(date);
+        sysAdminUser.setUpdateAt(date);
+        sysAdminUser.setDeptId(userHandle.getDepetid());
+        sysAdminUser.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
+        sysAdminUserMapper.insertSelective(sysAdminUser);
+        setUserRoles(userHandle, roles);
     }
 
     @Override
-    public void updateUser(SysAdminUser user, Long[] roles) {
-        user.setCreateAt(new Date());
-        sysAdminUserMapper.updateByPrimaryKeySelective(user);
-        setUserRoles(user, roles);
+    public void updateUser(UserHandle userHandle, Long[] roles) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setName(userHandle.getName());
+        sysAdminUser.setPhone(userHandle.getPhone());
+        sysAdminUser.setPassword(userHandle.getPassword());
+        sysAdminUser.setCreateAt(new Date());
+        sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
+        setUserRoles(userHandle, roles);
     }
 
     @Override
@@ -130,24 +161,33 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     }
 
     @Override
-    public void updatePassword(SysAdminUser user,String password) {
+    public void updatePassword(UserHandle user, String password) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setPhone(user.getPhone());
+        sysAdminUser.setPassword(user.getPassword());
         String newPassword = MD5Util.MD5EncodeUtf8(user.getPassword());
         user.setPassword(newPassword);
-        this.sysAdminUserMapper.updateByPrimaryKeySelective(user);
+        this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 
     @Override
-    public SysAdminUser findUserDetail(SysAdminUser user) {
-        return this.sysAdminUserMapper.selectByPrimaryKey(user.getId());
+    public SysAdminUser findUserDetail(UserHandle userHandle) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setId(userHandle.getId());
+        return this.sysAdminUserMapper.selectByPrimaryKey(userHandle.getId());
     }
 
     @Override
-    public void updateUserDetail(SysAdminUser user) {
-        if(StringUtils.isNotBlank(user.getPassword())){
-            String newPassword = MD5Util.MD5EncodeUtf8(user.getPassword());
-            user.setPassword(newPassword);
+    public void updateUserDetail(UserHandle userHandle) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setPhone(userHandle.getPhone());
+        sysAdminUser.setId(userHandle.getId());
+        sysAdminUser.setPassword(userHandle.getPassword());
+        if(StringUtils.isNotBlank(sysAdminUser.getPassword())){
+            String newPassword = MD5Util.MD5EncodeUtf8(sysAdminUser.getPassword());
+            sysAdminUser.setPassword(newPassword);
         }
-        this.sysAdminUserMapper.updateByPrimaryKeySelective(user);
+        this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 
     public int batchDelete(List<Long> longList) {
@@ -156,16 +196,31 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return this.sysAdminUserMapper.deleteByExample(criteria);
     }
 
-    private void setUserRoles(SysAdminUser user, Long[] roles) {
+    private void setUserRoles(UserHandle userHandle, Long[] roles) {
+        SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setId(userHandle.getId());
+        sysAdminUser.setPhone(userHandle.getPhone());
+        sysAdminUser.setPassword(userHandle.getPassword());
+        sysAdminUser.setName(userHandle.getName());
         Arrays.stream(roles).forEach(roleId -> {
             SysAdminUserRole ur = new SysAdminUserRole();
-            ur.setAdminUserId(user.getId());
+            ur.setAdminUserId(sysAdminUser.getId());
             ur.setAdminRoleId(roleId);
             this.sysAdminUserRoleMapper.insert(ur);
         });
     }
 
-
-
+    public Tree<SysAdminResource> getResource(){
+        List<Tree<SysAdminResource>> trees = new ArrayList<>();
+        List<SysAdminResource> sysAdminResources = sysAdminResourceService.findAllResources(new ResourceHandle());
+        sysAdminResources.forEach(sysAdminResource -> {
+            Tree<SysAdminResource> tree = new Tree<>();
+            tree.setId(sysAdminResource.getId() .toString());
+            tree.setParentId(sysAdminResource.getParentId() .toString());
+            tree.setText(sysAdminResource.getName());
+            trees.add(tree);
+        });
+        return TreeUtils.build(trees);
+    }
 
 }

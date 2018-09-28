@@ -1,5 +1,6 @@
 package com.epc.web.facade.terdering.preview;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
@@ -30,11 +31,11 @@ public interface PreviewService {
 
     /**
      * 查询预告列表
-     * @param queryPreviewDTO
+     * @param pagerParam
      * @return
      */
     @PostMapping("selectPreview")
-    Result selectPreview(@RequestBody QueryPreviewDTO queryPreviewDTO);
+    Result selectPreview(@RequestBody PagerParam pagerParam);
 
     /**
      * 详情
@@ -44,16 +45,16 @@ public interface PreviewService {
     @PostMapping("queryPreview")
     Result queryPreview(@RequestBody QueryWhere queryWhere);
 
-
     /**
      * 根据时间段查询
+     * @param pagerParam
      * @param startDate
      * @param endDate
      * @return
      */
     @PostMapping("queryByDate")
-    Result queryByDate(@RequestBody QueryPreviewDTO queryPreviewDTO,
-                       @RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate);
+    Result queryByDate(@RequestBody PagerParam pagerParam,
+                       @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate);
 
 
 

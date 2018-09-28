@@ -22,12 +22,10 @@ public class ClientHandleProjectBasicInfo {
     private String projectDescription;
     @ApiModelProperty(value = "项目总投资")
     private String totalProjectInvestment;
-    @ApiModelProperty(value = "投资来源")
-    private String sourceOfInvestment;
+    @ApiModelProperty(value = "投资来源 0：国有投资 1：私有投资 2：国有占主体投资")
+    private Integer sourceOfInvestment;
     @ApiModelProperty(value = "项目地址")
     private String projectAddress;
     @ApiModelProperty(value = "项目备注")
     private String projectMemo;
-    @ApiModelProperty(value = "采购人ID")
-    private String purchaserId;
 }

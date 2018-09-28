@@ -1,5 +1,6 @@
 package com.epc.platform.service.service.admin.impl;
 
+import com.epc.administration.facade.admin.handle.ResourceHandle;
 import com.epc.common.constants.Const;
 import com.epc.common.util.Tree;
 import com.epc.common.util.TreeUtils;
@@ -76,7 +77,10 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
     }
 
     @Override
-    public List<SysAdminResource> findAllResources(SysAdminResource sysAdminResource) {
+    public List<SysAdminResource> findAllResources(ResourceHandle resourceHandle) {
+        SysAdminResource sysAdminResource = new SysAdminResource();
+        sysAdminResource.setName(resourceHandle.getName());
+        sysAdminResource.setType(resourceHandle.getType());
         try {
             final SysAdminResourceCriteria criteria = new SysAdminResourceCriteria();
             final SysAdminResourceCriteria.Criteria subCriteria = criteria.createCriteria();
@@ -104,12 +108,23 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
         return sysAdminResourceList.isEmpty() ? null : sysAdminResourceList.get(0);
     }
 
+    /**
+     * 新增資源
+     * @param resourceHandle
+     */
     @Override
-    public void addResource(SysAdminResource sysAdminResource) {
+    public void addResource(ResourceHandle resourceHandle) {
+        SysAdminResource sysAdminResource = new SysAdminResource();
+        sysAdminResource.setParentId(resourceHandle.getParentId());
+        sysAdminResource.setUrl(resourceHandle.getUrl());
+        sysAdminResource.setTitle(resourceHandle.getTitle());
+        sysAdminResource.setName(resourceHandle.getName());
+        sysAdminResource.setType(resourceHandle.getType());
         sysAdminResource.setCreateAt(new Date());
         sysAdminResource.setUpdateAt(new Date());
-        if (sysAdminResource.getParentId() == null)
+        if (sysAdminResource.getParentId() == null) {
             sysAdminResource.setParentId(0L);
+        }
         if (Const.RESOURCE_TYPE.ACTION.equals(sysAdminResource.getType())) {
             sysAdminResource.setUrl(null);
         }
@@ -129,20 +144,27 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
     }
 
     @Override
-    public void updateResource(SysAdminResource resource) {
-        resource.setUpdateAt(new Date());
-        if(resource.getParentId() == null) {
-            resource.setParentId(0L);
+    public void updateResource(ResourceHandle resourceHandle) {
+        SysAdminResource sysAdminResource = new SysAdminResource();
+
+        sysAdminResource.setUpdateAt(new Date());
+        if(sysAdminResource.getParentId() == null) {
+            sysAdminResource.setParentId(0L);
         }
-        if(Const.RESOURCE_TYPE.PAGE.equals(resource.getType())) {
-            resource.setUrl(null);
+        if(Const.RESOURCE_TYPE.PAGE.equals(resourceHandle.getType())) {
+            sysAdminResource.setUrl(null);
         }
-        sysAdminResourceMapper.updateByPrimaryKeySelective(resource);
+        sysAdminResourceMapper.updateByPrimaryKeySelective(sysAdminResource);
     }
 
     @Override
-    public List<Map<String, String>> getAllUrl(String p1) {
-        return null;
+    public Map<Object, Object> getAllUrl(String p1) {
+        List<SysAdminResource> sysAdminResources = sysAdminResourceMapper.selectUrl();
+        Map<Object, Object> resultMap = new HashMap<>();
+        for (int i = 0; i < sysAdminResources.size(); i++) {
+            resultMap.put(sysAdminResources.get(i).getName(),sysAdminResources.get(i).getUrl());
+        }
+        return resultMap;
     }
 
     public int batchDeleteResource(List<Long> list) {
@@ -158,6 +180,11 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
     }
 
 
+    /**
+     *
+     * @param trees
+     * @param sysAdminResourceList
+     */
     private void buildTrees(List<Tree<SysAdminResource>> trees, List<SysAdminResource> sysAdminResourceList) {
         sysAdminResourceList.forEach(resource -> {
             Tree<SysAdminResource> tree = new Tree<>();

@@ -1,5 +1,7 @@
 package com.epc.platform.service.controller.admin;
 
+import com.epc.administration.facade.admin.AdminDeptService;
+import com.epc.administration.facade.admin.handle.DeptHandle;
 import com.epc.common.Result;
 import com.epc.common.util.Tree;
 import com.epc.platform.service.domain.admin.SysAdminDept;
@@ -8,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,13 +22,16 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @RestController
-public class DeptController extends BaseController {
+public class DeptController extends BaseController implements AdminDeptService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeptController.class);
 
     @Autowired
     private SysAdminDeptService sysAdminDeptService;
 
-    //获取部门树
+    /**获取部门树
+     * @return
+     */
+    @Override
     public Result getDeptTree() {
         try {
             Tree<SysAdminDept> tree = this.sysAdminDeptService.getDeptTree();
@@ -35,8 +42,12 @@ public class DeptController extends BaseController {
         }
     }
 
-    //获取部门列表
-    public Result deptList(SysAdminDept dept) {
+    /**获取部门列表
+     * @param dept
+     * @return
+     */
+    @Override
+    public Result deptList(DeptHandle dept) {
         try {
             List<SysAdminDept> deptList = this.sysAdminDeptService.findAllDepts(dept);
             return Result.success(deptList);
@@ -46,8 +57,12 @@ public class DeptController extends BaseController {
         }
     }
 
-    //获取部门信息
-    public Result getDept(Long deptId) {
+    /**获取部门信息
+     * @param deptId
+     * @return
+     */
+    @Override
+    public Result getDept(@RequestParam Long deptId) {
         try {
             SysAdminDept dept = this.sysAdminDeptService.findById(deptId);
             return Result.success(dept);
@@ -57,20 +72,29 @@ public class DeptController extends BaseController {
         }
     }
 
-    //校验
-    public boolean checkDeptName(String deptName, String oldDeptName) {
+    /**校验
+     * @param deptName
+     * @param oldDeptName
+     * @return
+     */
+    @Override
+    public Result checkDeptName(String deptName, String oldDeptName) {
         if (StringUtils.isNotBlank(oldDeptName) && deptName.equalsIgnoreCase(oldDeptName)) {
-            return true;
+            return Result.success();
         }
         SysAdminDept result = this.sysAdminDeptService.findByName(deptName);
-        return result == null;
+        return Result.success(result);
     }
 
 
-    //新增部门
-    public Result addRole(SysAdminDept dept) {
+    /**新增部门
+     * @param deptHandle
+     * @return
+     */
+    @Override
+    public Result addDept(@RequestBody DeptHandle deptHandle) {
         try {
-            this.sysAdminDeptService.addDept(dept);
+            this.sysAdminDeptService.addDept(deptHandle);
             return Result.success("新增部门成功！");
         } catch (Exception e) {
             LOGGER.error("新增部门失败", e);
@@ -78,8 +102,12 @@ public class DeptController extends BaseController {
         }
     }
 
-    //删除部门
-    public Result deleteDepts(String ids) {
+    /**删除部门
+     * @param ids
+     * @return
+     */
+    @Override
+    public Result deleteDepts(@RequestBody String ids) {
         try {
             this.sysAdminDeptService.deleteDepts(ids);
             return Result.success("删除部门成功！");
@@ -89,8 +117,12 @@ public class DeptController extends BaseController {
         }
     }
 
-    //修改部门
-    public Result updateRole(SysAdminDept dept) {
+    /**修改部门
+     * @param dept
+     * @return
+     */
+    @Override
+    public Result updateDepts(@RequestBody DeptHandle dept) {
         try {
             this.sysAdminDeptService.updateDept(dept);
             return Result.success("修改部门成功！");

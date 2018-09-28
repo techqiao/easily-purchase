@@ -30,8 +30,6 @@ public class RedisShardedPool {
     private static Boolean testOnReturn = Boolean.TRUE;
     private static String redis1Ip = "127.0.0.1";
     private static Integer redis1Port = 6379;
-    private static String redis2Ip = "127.0.0.1";
-    private static Integer redis2Port = 6380;
 
 
     private static void initPool(){
@@ -48,12 +46,10 @@ public class RedisShardedPool {
 
         JedisShardInfo info1 = new JedisShardInfo(redis1Ip,redis1Port,1000*2);
 
-        JedisShardInfo info2 = new JedisShardInfo(redis2Ip,redis2Port,1000*2);
 
         List<JedisShardInfo> jedisShardInfoList = new ArrayList<JedisShardInfo>(2);
 
         jedisShardInfoList.add(info1);
-        jedisShardInfoList.add(info2);
 
         pool = new ShardedJedisPool(config,jedisShardInfoList, Hashing.MURMUR_HASH, Sharded.DEFAULT_KEY_TAG_PATTERN);
     }

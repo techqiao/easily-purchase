@@ -14,6 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Swagger2 {
 
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(
@@ -22,7 +23,7 @@ public class Swagger2 {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("admin web center").description("后台 openApi").termsOfServiceUrl(
-                "http://127.0.0.1:3105/swagger-ui.html").version("1.0").build();
+        return new ApiInfoBuilder().title("web center").description("官网 openApi").termsOfServiceUrl(
+                "http://127.0.0.1:6006/swagger-ui.html").version("1.0").build();
     }
 }

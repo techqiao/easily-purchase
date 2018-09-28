@@ -123,6 +123,7 @@
     <include refid="Base_Column_List" />
     from t_supplier_detail_info
     where id = #{id,jdbcType=BIGINT}
+    and is_deleted=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     <!--
@@ -367,4 +368,9 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria" id="selectByName" >
+    SELECT ts.company_name ,ts.public_bank_name ,ts.create_at,ts.public_ban_account_number,ts.supplier_id,ts.uniform_credit_code
+FROM t_supplier_detail_info ts WHERE ts.is_deleted=0 AND ts.company_name like #{companyName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

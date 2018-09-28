@@ -48,12 +48,12 @@ public class OperatorBasicInfoVO implements Serializable {
     /**
      * 创建时间
      */
-    private Date createAt;
+    private String createAt;
 
     /**
      * 最后修改时间
      */
-    private Date updateAt;
+    private String updateAt;
 
     /**
      * 是否删除: 0-存在,1-删除

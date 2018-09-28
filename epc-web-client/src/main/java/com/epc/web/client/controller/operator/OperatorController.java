@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "运营商服务"/*,tags = "运营商服务"*/)
+@Api(value = "运营商服务",tags = "运营商服务")
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController {

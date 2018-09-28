@@ -27,13 +27,6 @@ public interface PurchaserService {
      */
     Result<Boolean> createPurchaserUserInfo(HandlePurchaser handleOperator, int roleType);
 
-    /**
-     * 添加运营商-采购人关系
-     *
-     * @param handleOperator
-     * @return
-     */
-    Result<Boolean> createOperatePurchaser(HandlePurchaser handleOperator);
 
     /**
      * 添加供应商(私库)
@@ -41,7 +34,7 @@ public interface PurchaserService {
      * @param handleOperator
      * @return
      */
-    Result<Boolean> createSupplierByPurchaser(HandleSupplierDetail handleOperator);
+    Result<Boolean> createSupplierByPurchaser(HandleSupplierDto handleOperator);
 
     /**
      * 添加专家(私库)
@@ -198,7 +191,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result<Boolean> updateSuppliers(HandPurchaserAttachment attachment);
+    public Result<Boolean> updateSuppliers(HandleSupplierDto attachment);
 
     /**
      * @author :winlin
@@ -259,4 +252,5 @@ public interface PurchaserService {
      *@date:2018/9/21
      */
     public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
+
 }

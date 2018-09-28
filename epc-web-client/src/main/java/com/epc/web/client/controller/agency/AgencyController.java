@@ -18,8 +18,7 @@ import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -97,7 +96,7 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构注册代理的所有项目" , notes = "代理机构注册代理的所有项目")
     @PostMapping(value = "/proxySubjects")
-    public Result proxySubjects(ClientAgencySubjectDto clientAgencySubjectDto) {
+    public Result proxySubjects(@RequestBody ClientAgencySubjectDto clientAgencySubjectDto) {
         AgencySubjectDto subjectDto = new AgencySubjectDto();
         BeanUtils.copyProperties(clientAgencySubjectDto,subjectDto);
         return agencyClient.proxySubjects(subjectDto);
@@ -113,12 +112,12 @@ public class AgencyController {
 
     @ApiOperation(value = "代理机构按手机查询员工" , notes = "代理机构按手机查询员工")
     @PostMapping(value = "/queryEmployeeByCellphone")
-    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map) {
+    public Result queryEmployeeByCellphone(@RequestBody@ApiParam(value = "map是的key为cellphone的json格式") HashMap<String,String> map) {
         return agencyClient.queryEmployeeByCellphone(map);
     }
     @ApiOperation(value = "代理机构按id查询员工" , notes = "代理机id查询员工")
     @PostMapping(value = "/queryEmployeeById")
-    public Result queryEmployeeById(@RequestBody HashMap<String,Long> map) {
+    public Result queryEmployeeById(@RequestBody @ApiParam(value = "map是的key为id的json格式")HashMap<String,Long> map) {
         return agencyClient.queryEmployeeById(map);
     }
 

@@ -352,11 +352,11 @@
 
 
 
-  <select id="findUserWithRole" parameterType="java.lang.Long" resultType="com.epc.platform.service.domain.admin.SysAdminUser">
-		select u.id ,u.name,u.phone,
+  <select id="findUserWithRole" parameterType="java.lang.Long" resultType="com.epc.platform.service.domain.admin.UserWithRole">
+		select u.id ,u.name,u.phone,u.dept_id,u.create_at,u.update_at,
 		u.is_deleted isDeleted,ur.admin_role_id roleId from sys_admin_user u
 		left join sys_admin_user_role ur on (u.id = ur.admin_user_id)
-		where u.user_id = #{userId}
+		where u.id = #{userId}
   </select>
 
   <select id="findUserWithDept" parameterType="com.epc.platform.service.domain.admin.SysAdminUser"

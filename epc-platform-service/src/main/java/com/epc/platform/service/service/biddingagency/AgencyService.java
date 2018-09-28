@@ -1,9 +1,9 @@
 package com.epc.platform.service.service.biddingagency;
 
+import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
+import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 
@@ -30,30 +30,28 @@ public interface AgencyService {
 
     /**
      * 删除运营商资料
-     * @param queryDetailIfo
+     * @param whereid
      * @return
      */
-    Result deleteBiddingAgencyDetailInfo(QueryDetailIfo queryDetailIfo);
+    Result deleteBiddingAgencyDetailInfo(Long  whereid);
 
     /**根据传入运营商ID查询
      * 查询运营商资料
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    Result queryBiddingAgencyDetailInfo(QueryDetailIfo queryDetailIfo);
-
-
-    /**
-     * 根据传入运营商公司名称模糊查询
-     * @param queryDetailIfo
-     * @return
-     */
-    Result selectBiddingAgencyDetailInfo(QueryDetailIfo queryDetailIfo);
-
+    Result queryBiddingAgencyDetailInfo(Long whereId);
     /**
      * 查询所有
-     * @param queryRequest
+     * @param queryDetailIfo
      * @return
      */
-    List<TAgencyDetailInfo> selectAllAgencyByPage(QueryRequest queryRequest);
+    List<TAgencyDetailInfo> selectAllAgencyByPage(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 审核招标代理机构
+     * @param examineAgencyHandle
+     * @return
+     */
+    Result<Boolean> examineAgency(ExamineAgencyHandle examineAgencyHandle);
 }

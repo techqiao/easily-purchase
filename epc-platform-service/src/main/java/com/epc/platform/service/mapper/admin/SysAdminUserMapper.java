@@ -105,7 +105,7 @@ public interface SysAdminUserMapper {
      */
     int updateByPrimaryKey(SysAdminUser record);
 
-    List<UserWithRole> findUserWithRole(Long userId);
+    UserWithRole findUserWithRole(Long userId);
 
     List<SysAdminUser> findUserWithDept(SysAdminUser user);
 }

@@ -3,148 +3,80 @@ package com.epc.administration.client.controller.supplier.handle;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>Description : 角色完善资料
  * <p>Date : 2018-09-11 16:07
  * <p>@Author : wjq
  */
+
+@Data
 @ApiModel(value = "ClientRoleDetailInfo", description = "运营商完善信息")
 public class ClientRoleDetailInfo implements Serializable {
     private static final long serialVersionUID = -2115939608760335030L;
-    @ApiModelProperty(value = "角色")
-    @NotEmpty(message = "ClientRoleDetailIfo.systemRole.null")
-    private String systemRole;
-    @ApiModelProperty(value = "注册人Id")
-    @NotEmpty(message = "ClientRoleDetailIfo.userId.null")
-    private Long userId;
+    /**
+     * 主键id
+     */
+    @ApiModelProperty(value = "主键ID")
+    @NotEmpty(message = "ClientRoleDetailInfo.id.null")
+    private Long id;
+
+    /**
+     * 公司名称
+     */
     @ApiModelProperty(value = "公司名称")
-    @NotEmpty(message = "ClientRoleDetailIfo.companyName.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.companyName.null")
     private String companyName;
+
+    /**
+     *统一信用代码
+     */
+    @ApiModelProperty(value = "统一信用代码")
+    @NotEmpty(message = "ClientRoleDetailInfo.uniformCreditCode.null")
+    private String uniformCreditCode;
+
+    /**
+     *对公银行名称
+     */
     @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "ClientRoleDetailIfo.publicBankName.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.publicBankName.null")
     private String publicBankName;
+
+    /**
+     *对公银行账号
+     */
     @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "ClientRoleDetailIfo.publicBanAccountNumber.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
-    @ApiModelProperty(value = "资质证书url")
-    @NotEmpty(message = "ClientRoleDetailIfo.qualificationCertificate.null")
-    private String qualificationCertificate;
+
+    /**
+     * 营业执照照片url
+     */
     @ApiModelProperty(value = "营业执照照片url")
-    @NotEmpty(message = "ClientRoleDetailIfo.businessLicense.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.businessLicense.null")
     private String businessLicense;
+    /**
+     * 法人身份证正面照片url
+     */
     @ApiModelProperty(value = "法人身份证正面照片url")
-    @NotEmpty(message = "ClientRoleDetailIfo.legalIdCardPositive.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.legalIdCardPositive.null")
     private String legalIdCardPositive;
+    /**
+     * 法人身份证反面照片url
+     */
     @ApiModelProperty(value = "法人身份证反面照片url")
-    @NotEmpty(message = "ClientRoleDetailIfo.legalIdCardOther.null")
+    @NotEmpty(message = "ClientRoleDetailInfo.legalIdCardOther.null")
     private String legalIdCardOther;
-    @ApiModelProperty(value = "带公章的授权书照片url")
-    @NotEmpty(message = "ClientRoleDetailIfo.certificateOfAuthorization.null")
-    private String certificateOfAuthorization;
-    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
-    @NotEmpty(message = "ClientRoleDetailIfo.operatorIdCardFront.null")
-    private String supplierIdCardFront;
 
-    public String getSystemRole() {
-        return systemRole;
-    }
-
-    public ClientRoleDetailInfo setSystemRole(String systemRole) {
-        this.systemRole = systemRole;
-        return this;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public ClientRoleDetailInfo setUserId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public ClientRoleDetailInfo setCompanyName(String companyName) {
-        this.companyName = companyName;
-        return this;
-    }
-
-    public String getPublicBankName() {
-        return publicBankName;
-    }
-
-    public ClientRoleDetailInfo setPublicBankName(String publicBankName) {
-        this.publicBankName = publicBankName;
-        return this;
-    }
-
-    public String getPublicBanAccountNumber() {
-        return publicBanAccountNumber;
-    }
-
-    public ClientRoleDetailInfo setPublicBanAccountNumber(String publicBanAccountNumber) {
-        this.publicBanAccountNumber = publicBanAccountNumber;
-        return this;
-    }
-
-    public String getQualificationCertificate() {
-        return qualificationCertificate;
-    }
-
-    public ClientRoleDetailInfo setQualificationCertificate(String qualificationCertificate) {
-        this.qualificationCertificate = qualificationCertificate;
-        return this;
-    }
-
-    public String getBusinessLicense() {
-        return businessLicense;
-    }
-
-    public ClientRoleDetailInfo setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
-        return this;
-    }
-
-    public String getLegalIdCardPositive() {
-        return legalIdCardPositive;
-    }
-
-    public ClientRoleDetailInfo setLegalIdCardPositive(String legalIdCardPositive) {
-        this.legalIdCardPositive = legalIdCardPositive;
-        return this;
-    }
-
-    public String getLegalIdCardOther() {
-        return legalIdCardOther;
-    }
-
-    public ClientRoleDetailInfo setLegalIdCardOther(String legalIdCardOther) {
-        this.legalIdCardOther = legalIdCardOther;
-        return this;
-    }
-
-    public String getCertificateOfAuthorization() {
-        return certificateOfAuthorization;
-    }
-
-    public ClientRoleDetailInfo setCertificateOfAuthorization(String certificateOfAuthorization) {
-        this.certificateOfAuthorization = certificateOfAuthorization;
-        return this;
-    }
-
-    public String getSupplierIdCardFront() {
-        return supplierIdCardFront;
-    }
-
-    public ClientRoleDetailInfo setSupplierIdCardFront(String supplierIdCardFront) {
-        this.supplierIdCardFront = supplierIdCardFront;
-        return this;
-    }
+    /**
+     * 附件集合
+     */
+    @ApiModelProperty(value = "资质证书附件集合")
+    @NotEmpty(message = "ClientRoleDetailInfo.attachmentVOS.null")
+    private List<ClientAttachmentHandle> attachmentHandleList;
 }

@@ -53,20 +53,18 @@ public interface AdminUserService {
     /**
      * 新增用户
      * @param user
-     * @param roles
      * @return
      */
     @PostMapping(value = "addUser" ,consumes = "application/json; charset=UTF-8")
-    Result addUser(@RequestBody UserHandle user, @RequestParam("roles") Long[] roles);
+    Result addUser(@RequestBody UserHandle user);
 
     /**
      * 修改用户角色
      * @param user
-     * @param rolesSelect
      * @return
      */
    @PostMapping(value = "updateUser" ,consumes = "application/json; charset=UTF-8")
-    Result updateUser(@RequestBody UserHandle user, @RequestParam("rolesSelect") Long[] rolesSelect);
+    Result updateUser(@RequestBody UserHandle user);
 
     /**
      * 删除用户

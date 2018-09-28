@@ -1,126 +1,58 @@
 package com.epc.administration.facade.supplier.handle;
 
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author 01
  */
+@Data
 public class SupplierHandle implements Serializable {
     private static final long serialVersionUID = 1528368763872630879L;
-    private String systemRole;
-    private Long userId;
+    /**
+     * 主键id
+     */
+    private Long id;
+
+    /**
+     * 公司名称
+     */
     private String companyName;
+
+    /**
+     *统一信用代码
+     */
+    private String uniformCreditCode;
+
+    /**
+     *对公银行名称
+     */
     private String publicBankName;
+
+    /**
+     *对公银行账号
+     */
     private String publicBanAccountNumber;
-    private String qualificationCertificate;
+
+    /**
+     * 营业执照照片url
+     */
     private String businessLicense;
+    /**
+     * 法人身份证正面照片url
+     */
     private String legalIdCardPositive;
+    /**
+     * 法人身份证反面照片url
+     */
     private String legalIdCardOther;
-    private String certificateOfAuthorization;
-    private String supplierIdCardFront;
 
-    @Override
-    public String toString() {
-        return "SupplierHandle{" +
-                "systemRole='" + systemRole + '\'' +
-                ", userId=" + userId +
-                ", companyName='" + companyName + '\'' +
-                ", publicBankName='" + publicBankName + '\'' +
-                ", publicBanAccountNumber='" + publicBanAccountNumber + '\'' +
-                ", qualificationCertificate='" + qualificationCertificate + '\'' +
-                ", businessLicense='" + businessLicense + '\'' +
-                ", legalIdCardPositive='" + legalIdCardPositive + '\'' +
-                ", legalIdCardOther='" + legalIdCardOther + '\'' +
-                ", certificateOfAuthorization='" + certificateOfAuthorization + '\'' +
-                ", supplierIdCardFront='" + supplierIdCardFront + '\'' +
-                '}';
-    }
+    /**
+     * 附件集合
+     */
+    private List<AttachmentHandle> attachmentHandleList;
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getPublicBankName() {
-        return publicBankName;
-    }
-
-    public void setPublicBankName(String publicBankName) {
-        this.publicBankName = publicBankName;
-    }
-
-    public String getPublicBanAccountNumber() {
-        return publicBanAccountNumber;
-    }
-
-    public void setPublicBanAccountNumber(String publicBanAccountNumber) {
-        this.publicBanAccountNumber = publicBanAccountNumber;
-    }
-
-    public String getQualificationCertificate() {
-        return qualificationCertificate;
-    }
-
-    public void setQualificationCertificate(String qualificationCertificate) {
-        this.qualificationCertificate = qualificationCertificate;
-    }
-
-    public String getBusinessLicense() {
-        return businessLicense;
-    }
-
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
-    }
-
-    public String getLegalIdCardPositive() {
-        return legalIdCardPositive;
-    }
-
-    public void setLegalIdCardPositive(String legalIdCardPositive) {
-        this.legalIdCardPositive = legalIdCardPositive;
-    }
-
-    public String getLegalIdCardOther() {
-        return legalIdCardOther;
-    }
-
-    public void setLegalIdCardOther(String legalIdCardOther) {
-        this.legalIdCardOther = legalIdCardOther;
-    }
-
-    public String getCertificateOfAuthorization() {
-        return certificateOfAuthorization;
-    }
-
-    public void setCertificateOfAuthorization(String certificateOfAuthorization) {
-        this.certificateOfAuthorization = certificateOfAuthorization;
-    }
-
-    public String getOperatorIdCardFront() {
-        return supplierIdCardFront;
-    }
-
-    public void setOperatorIdCardFront(String operatorIdCardFront) {
-        this.supplierIdCardFront = operatorIdCardFront;
-    }
-
-    public String getSystemRole() {
-        return systemRole;
-    }
-
-    public void setSystemRole(String systemRole) {
-        this.systemRole = systemRole;
-    }
 }

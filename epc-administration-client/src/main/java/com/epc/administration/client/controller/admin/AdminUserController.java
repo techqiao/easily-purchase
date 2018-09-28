@@ -1,6 +1,7 @@
 package com.epc.administration.client.controller.admin;
 
 import com.epc.administration.client.controller.admin.handle.ClientUserHandle;
+import com.epc.administration.client.controller.admin.handle.InsertUserHandle;
 import com.epc.administration.client.remoteapi.admin.SysAdminUserClient;
 import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.QueryRequest;
@@ -71,29 +72,27 @@ public class AdminUserController {
     }
 
     /**新增用户
-     * @param clientUserHandle
-     * @param roles
+     * @param insertUserHandle
      * @return
      */
     @ApiOperation(value = "新增用户", notes = "新增用户")
     @PostMapping(value = "addUser")
-    public Result addUser(@RequestBody ClientUserHandle clientUserHandle, @RequestParam("roles") Long[] roles) {
+    public Result addUser(@RequestBody InsertUserHandle insertUserHandle ) {
         UserHandle userHandle = new UserHandle();
-        BeanUtils.copyProperties(clientUserHandle,userHandle);
-        return sysAdminUserClient.addUser(userHandle, roles);
+        BeanUtils.copyProperties(insertUserHandle,userHandle);
+        return sysAdminUserClient.addUser(userHandle);
     }
 
     /**修改用户角色
      * @param clientUserHandle
-     * @param rolesSelect
      * @return
      */
     @ApiOperation(value = "修改用户角色", notes = "修改用户角色")
     @PostMapping(value = "updateUser")
-    public Result updateUser(@RequestBody ClientUserHandle clientUserHandle, @RequestParam("rolesSelect") Long[] rolesSelect) {
+    public Result updateUser(@RequestBody ClientUserHandle clientUserHandle) {
         UserHandle userHandle = new UserHandle();
         BeanUtils.copyProperties(clientUserHandle,userHandle);
-        return sysAdminUserClient.updateUser(userHandle, rolesSelect);
+        return sysAdminUserClient.updateUser(userHandle);
     }
 
     /**删除用户

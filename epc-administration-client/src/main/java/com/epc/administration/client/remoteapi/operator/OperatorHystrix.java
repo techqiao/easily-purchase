@@ -2,10 +2,12 @@ package com.epc.administration.client.remoteapi.operator;
 
 import com.epc.administration.facade.operator.FacadeOperatorService;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>Description : easily-purchase
@@ -24,22 +26,22 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result<Boolean> deleteOperatorDetailInfo( Long whereId) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result queryOperatorDetailInfo( Long whereId) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result selectAllOperatorByPage(QueryDetailIfo queryDetailIfo) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result selectAllOperatorByPage(QueryRequest queryRequest) {
+    public Result<Boolean> examineOperator(ExamineOperatorHandle examineOperatorHandle) {
         return Result.hystrixError();
     }
 }

@@ -54,16 +54,14 @@ public interface SysAdminUserService {
     /**
      * 新增用户
      * @param userHandle
-     * @param roles
      */
-    void addUser(UserHandle userHandle, Long[] roles);
+    void addUser(UserHandle userHandle);
 
     /**
      * 修改用户
      * @param userHandle
-     * @param roles
      */
-    void updateUser(UserHandle userHandle, Long[] roles);
+    void updateUser(UserHandle userHandle);
 
     /**
      * 删除用户

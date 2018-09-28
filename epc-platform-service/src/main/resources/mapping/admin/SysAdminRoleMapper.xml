@@ -345,9 +345,9 @@
 
 
   <select id="findUserRole" resultMap="BaseResultMap">
-  	select r.* from sys_admin_role r
-  	left join sys_admin_user_role ur on(r.id = ur.admin_role_id)
-	left join sys_admin_user u on(u.id = ur.admin_user_id)
-	where u.username = #{userName}
+  	select r.id roleId,r.name roleName,r.memo, r.is_deleted,r.dept_id,
+  	rr.admin_resource_id menuId from sys_admin_role r
+	left join sys_admin_role_resource rr on(r.id = rr.amdin_role_id)
+	where r.id = #{userName}
   </select>
 </mapper>

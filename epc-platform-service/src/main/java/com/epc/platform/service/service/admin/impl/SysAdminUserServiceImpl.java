@@ -1,4 +1,6 @@
 package com.epc.platform.service.service.admin.impl;
+import com.google.common.collect.Lists;
+import java.util.Date;
 
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.ResourceHandle;
@@ -89,13 +91,23 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
 
     @Override
     public UserWithRole findById(Long userId) {
-        List<UserWithRole> list = this.sysAdminUserMapper.findUserWithRole(userId);
-        List<Long> roleList = list.stream().map(UserWithRole::getRoleId).collect(Collectors.toList());
-        if (roleList.isEmpty()) {
-            return null;
+        SysAdminUser sysAdminUser = sysAdminUserMapper.selectByPrimaryKey(userId);
+        SysAdminUserRoleCriteria criteria = new SysAdminUserRoleCriteria();
+        criteria.createCriteria().andAdminUserIdEqualTo(sysAdminUser.getId());
+        List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
+        UserWithRole userWithRole = new UserWithRole();
+        userWithRole.setUserId(sysAdminUser.getId());
+        userWithRole.setName(sysAdminUser.getName());
+        userWithRole.setPhone(sysAdminUser.getPhone());
+        userWithRole.setDeptId(sysAdminUser.getDeptId());
+        userWithRole.setCreateAt(sysAdminUser.getCreateAt());
+        userWithRole.setUpdateAt(sysAdminUser.getUpdateAt());
+        userWithRole.setIsDeleted(sysAdminUser.getIsDeleted());
+        List<Long> roleIds = new LinkedList<>();
+        for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
+            roleIds.add(sysAdminUserRole.getId()) ;
         }
-        UserWithRole userWithRole = list.get(0);
-        userWithRole.setRoleIds(roleList);
+        userWithRole.setRoleIds(roleIds);
         return userWithRole;
     }
 
@@ -127,7 +139,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     }
 
     @Override
-    public void addUser(UserHandle userHandle, Long[] roles) {
+    public void addUser(UserHandle userHandle) {
         Date date =  new Date();
         SysAdminUser sysAdminUser = new SysAdminUser();
          sysAdminUser.setName(userHandle.getName());
@@ -138,18 +150,32 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         sysAdminUser.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
         sysAdminUserMapper.insertSelective(sysAdminUser);
-        setUserRoles(userHandle, roles);
+        setUserRoles(userHandle);
     }
 
     @Override
-    public void updateUser(UserHandle userHandle, Long[] roles) {
+    public void updateUser(UserHandle userHandle) {
         SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setId(userHandle.getId());
         sysAdminUser.setName(userHandle.getName());
         sysAdminUser.setPhone(userHandle.getPhone());
-        sysAdminUser.setPassword(userHandle.getPassword());
-        sysAdminUser.setCreateAt(new Date());
+        sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
+        sysAdminUser.setDeptId(userHandle.getDepetid());
+        sysAdminUser.setUpdateAt(new Date());
+        sysAdminUser.setIsDeleted(userHandle.getIsDeleted());
         sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
-        setUserRoles(userHandle, roles);
+
+        SysAdminUserRoleCriteria criteria = new SysAdminUserRoleCriteria();
+        criteria.createCriteria().andAdminUserIdEqualTo(sysAdminUser.getId());
+
+        List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
+
+        for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
+            SysAdminRoleResourceCriteria roReCriteria = new SysAdminRoleResourceCriteria();
+            roReCriteria.createCriteria().andAdminResourceIdEqualTo(sysAdminUserRole.getAdminRoleId());
+            sysAdminRoleResourceMapper.deleteByExample(roReCriteria);
+        }
+        setUserRoles(userHandle);
     }
 
     @Override
@@ -180,10 +206,13 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     @Override
     public void updateUserDetail(UserHandle userHandle) {
         SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setUpdateAt(new Date());
+        sysAdminUser.setIsDeleted(userHandle.getIsDeleted());
         sysAdminUser.setPhone(userHandle.getPhone());
         sysAdminUser.setId(userHandle.getId());
-        sysAdminUser.setPassword(userHandle.getPassword());
-        if(StringUtils.isNotBlank(sysAdminUser.getPassword())){
+        sysAdminUser.setName(userHandle.getName());
+        sysAdminUser.setDeptId(userHandle.getDepetid());
+        if(sysAdminUser.getPassword()!=null){
             String newPassword = MD5Util.MD5EncodeUtf8(sysAdminUser.getPassword());
             sysAdminUser.setPassword(newPassword);
         }
@@ -196,30 +225,28 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return this.sysAdminUserMapper.deleteByExample(criteria);
     }
 
-    private void setUserRoles(UserHandle userHandle, Long[] roles) {
-        SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setId(userHandle.getId());
-        sysAdminUser.setPhone(userHandle.getPhone());
-        sysAdminUser.setPassword(userHandle.getPassword());
-        sysAdminUser.setName(userHandle.getName());
-        Arrays.stream(roles).forEach(roleId -> {
+    private void setUserRoles(UserHandle userHandle) {
+        Long[] roles = userHandle.getRoles();
+        for (Long role : roles) {
             SysAdminUserRole ur = new SysAdminUserRole();
-            ur.setAdminUserId(sysAdminUser.getId());
-            ur.setAdminRoleId(roleId);
-            this.sysAdminUserRoleMapper.insert(ur);
-        });
+            ur.setAdminUserId(userHandle.getId());
+            ur.setAdminRoleId(role);
+            ur.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            this.sysAdminUserRoleMapper.insertSelective(ur);
+        }
     }
 
     public Tree<SysAdminResource> getResource(){
         List<Tree<SysAdminResource>> trees = new ArrayList<>();
         List<SysAdminResource> sysAdminResources = sysAdminResourceService.findAllResources(new ResourceHandle());
-        sysAdminResources.forEach(sysAdminResource -> {
+        for (SysAdminResource sysAdminResource : sysAdminResources) {
             Tree<SysAdminResource> tree = new Tree<>();
-            tree.setId(sysAdminResource.getId() .toString());
-            tree.setParentId(sysAdminResource.getParentId() .toString());
+            tree.setId(sysAdminResource.getId().toString());
+            tree.setParentId(sysAdminResource.getParentId().toString());
             tree.setText(sysAdminResource.getName());
+            tree.setUrl(sysAdminResource.getUrl());
             trees.add(tree);
-        });
+        }
         return TreeUtils.build(trees);
     }
 

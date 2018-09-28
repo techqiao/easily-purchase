@@ -6,6 +6,7 @@ import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.common.util.MD5Util;
 import com.epc.platform.service.domain.admin.SysAdminUser;
+import com.epc.platform.service.domain.admin.UserWithRole;
 import com.epc.platform.service.service.admin.SysAdminUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -52,10 +53,10 @@ public class UserController extends BaseController implements AdminUserService {
      * @return
      */
     @Override
-    public Result getUser(Long userId) {
+    public Result getUser(@RequestBody Long userId) {
         try {
-            SysAdminUser user = this.sysAdminUserService.findById(userId);
-            return Result.success(user);
+            UserWithRole userWithRole = sysAdminUserService.findById(userId);
+            return Result.success(userWithRole);
         } catch (Exception e) {
             LOGGER.error("获取用户失败", e);
             return Result.error("获取用户失败，请联系网站管理员！");
@@ -96,13 +97,12 @@ public class UserController extends BaseController implements AdminUserService {
 
     /**新增用户
      * @param user
-     * @param roles
      * @return
      */
     @Override
-    public Result addUser(@RequestBody UserHandle user, @RequestParam("roles") Long[] roles) {
+    public Result addUser(@RequestBody UserHandle user) {
         try {
-            this.sysAdminUserService.addUser(user, roles);
+            this.sysAdminUserService.addUser(user);
             return Result.success("新增用户成功！");
         } catch (Exception e) {
             LOGGER.error("新增用户失败", e);
@@ -112,13 +112,12 @@ public class UserController extends BaseController implements AdminUserService {
 
     /**修改用户角色
      * @param user
-     * @param rolesSelect
      * @return
      */
     @Override
-    public Result updateUser(@RequestBody UserHandle user, Long[] rolesSelect) {
+    public Result updateUser(@RequestBody UserHandle user) {
         try {
-            this.sysAdminUserService.updateUser(user, rolesSelect);
+            this.sysAdminUserService.updateUser(user);
             return Result.success("修改用户成功！");
         } catch (Exception e) {
             LOGGER.error("修改用户失败", e);
@@ -180,7 +179,7 @@ public class UserController extends BaseController implements AdminUserService {
      * @return
      */
     @Override
-    public Result getUserDetail(Long userId) {
+    public Result getUserDetail(@RequestBody Long userId) {
         try {
             UserHandle user = new UserHandle();
             user.setId(userId);
@@ -196,7 +195,7 @@ public class UserController extends BaseController implements AdminUserService {
      * @return
      */
     @Override
-    public Result updateUserProfile(UserHandle user){
+    public Result updateUserProfile(@RequestBody UserHandle user){
         try {
             this.sysAdminUserService.updateUserDetail(user);
             return Result.success("更新个人信息成功！");

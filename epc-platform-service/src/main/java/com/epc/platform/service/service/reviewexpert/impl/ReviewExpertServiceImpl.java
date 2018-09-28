@@ -1,7 +1,9 @@
 package com.epc.platform.service.service.reviewexpert.impl;
 
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
+import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
+import com.epc.platform.service.domain.reviewexpertr.*;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
 
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
@@ -10,10 +12,6 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.domain.reviewexpertr.TExpertAttachment;
-import com.epc.platform.service.domain.reviewexpertr.TExpertBasicInfo;
-import com.epc.platform.service.domain.reviewexpertr.TExpertDetailInfo;
-import com.epc.platform.service.domain.reviewexpertr.TExpertDetailInfoCriteria;
 import com.epc.platform.service.mapper.reviewexpertr.TExpertAttachmentMapper;
 import com.epc.platform.service.mapper.reviewexpertr.TExpertBasicInfoMapper;
 import com.epc.platform.service.mapper.reviewexpertr.TExpertDetailInfoMapper;
@@ -25,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,10 +53,10 @@ public class ReviewExpertServiceImpl implements ExpertService {
         TExpertBasicInfo pojo = new TExpertBasicInfo();
         Date date = new Date();
         pojo.setCellphone(userBasicInfo.getCellphone());
-        pojo.setPassword(userBasicInfo.getPassword());
         pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
+        pojo.setPassword("123456");
         pojo.setName(userBasicInfo.getUsername());
         pojo.setState(Const.STATE.REGISTERED);
         try {
@@ -104,28 +103,33 @@ public class ReviewExpertServiceImpl implements ExpertService {
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
             attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardPositive());
             tExpertAttachmentMapper.insertSelective(attachment);
+
+            //资质证书url
+            for (String qualificationCertificate : reviewExpertHandle.getQualificationCertificateList()) {
+                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                attachment.setCertificateFilePath(qualificationCertificate);
+                tExpertAttachmentMapper.insertSelective(attachment);
+            }
             //营业执照照片url
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(reviewExpertHandle.getBusinessLicense());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            //资质证书url
-            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            attachment.setCertificateFilePath(reviewExpertHandle.getQualificationCertificate());
             return Result.success(tExpertAttachmentMapper.insertSelective(attachment)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertExpertDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
             LOGGER.error("BusinessException insertExpertDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
 
     @Override
-    public Result<Boolean> deleteExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result<Boolean> deleteExpertDetailInfo(Long whereId) {
         TExpertDetailInfo tExpertDetailInfo =new TExpertDetailInfo();
-        tExpertDetailInfo.setId(queryDetailIfo.getWhereid());
-        tExpertDetailInfo.setIsDeleted(1);
+        tExpertDetailInfo.setId(whereId);
+        tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         try{
             return Result.success(tExpertDetailInfoMapper.deleteByKey(tExpertDetailInfo)>0);
         }catch (BusinessException e){
@@ -135,9 +139,9 @@ public class ReviewExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Result<TExpertDetailInfo> queryExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result<TExpertDetailInfo> queryExpertDetailInfo( Long whereId) {
         try {
-            TExpertDetailInfo tExpertDetailInfo = tExpertDetailInfoMapper.selectByPrimaryKey(queryDetailIfo.getWhereid());
+            TExpertDetailInfo tExpertDetailInfo = tExpertDetailInfoMapper.selectByPrimaryKey(whereId);
             return Result.success(tExpertDetailInfo);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException queryExpertDetailInfo : {}", e);
@@ -145,25 +149,33 @@ public class ReviewExpertServiceImpl implements ExpertService {
         }
     }
 
-    @Override
-    public Result<List<TExpertDetailInfo>> selectExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
-        String where = queryDetailIfo.getWhere();
-        if(StringUtils.isNotBlank(queryDetailIfo.getWhere())){
-            where = "%" + where + "%";
-        }
-        return Result.success(tExpertDetailInfoMapper.selectByName(where)) ;
-    }
 
     @Override
-    public List<TExpertDetailInfo> selectAllExpertByPage() {
+    public List<TExpertDetailInfo> selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
         try {
             TExpertDetailInfoCriteria criteria = new TExpertDetailInfoCriteria();
             criteria.setOrderByClause("id desc");
-            return tExpertDetailInfoMapper.selectByExample(criteria);
+            if(queryDetailIfo.getWhereName()!=null){
+                criteria.createCriteria().andCompanyNameEqualTo(queryDetailIfo.getWhereName());
+            }            return tExpertDetailInfoMapper.selectByExample(criteria);
         } catch (Exception e) {
             LOGGER.error("BusinessException selectByExample : {}", e);
             e.printStackTrace();
             return  new ArrayList<>();
         }
+    }
+
+    /**
+     * 审核评审专家
+     * @param examineExpertHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> examineExpert(ExamineExpertHandle examineExpertHandle) {
+        TExpertBasicInfo tExpertBasicInfo = new TExpertBasicInfo();
+        tExpertBasicInfo.setState(examineExpertHandle.getState());
+        TExpertBasicInfoCriteria criteria = new TExpertBasicInfoCriteria();
+        criteria.createCriteria().andIdEqualTo(examineExpertHandle.getExpertId());
+        return Result.success(tExpertBasicInfoMapper.updateByExampleSelective(tExpertBasicInfo,criteria)>0);
     }
 }

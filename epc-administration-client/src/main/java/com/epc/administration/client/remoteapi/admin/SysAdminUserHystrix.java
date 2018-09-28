@@ -34,12 +34,12 @@ public class SysAdminUserHystrix implements AdminUserService {
     }
 
     @Override
-    public Result addUser(UserHandle user, Long[] roles) {
+    public Result addUser(UserHandle user) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result updateUser(UserHandle user, Long[] rolesSelect) {
+    public Result updateUser(UserHandle user) {
         return Result.hystrixError();
     }
 

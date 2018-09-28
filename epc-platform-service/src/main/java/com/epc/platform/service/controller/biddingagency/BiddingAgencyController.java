@@ -1,10 +1,10 @@
 package com.epc.platform.service.controller.biddingagency;
 
 import com.epc.administration.facade.biddingagency.BiddingAgencyService;
+import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
+import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
@@ -14,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,37 +48,37 @@ public class BiddingAgencyController extends BaseController implements BiddingAg
      * 招标代理机构资料删除
      */
     @Override
-    public Result<Boolean> deleteBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return agencyService.deleteBiddingAgencyDetailInfo(queryDetailIfo);
+    public Result<Boolean> deleteBiddingAgencyDetailInfo(@RequestParam("whereId") Long whereId) {
+        return agencyService.deleteBiddingAgencyDetailInfo(whereId);
     }
     /**
      * 招标代理机构资料查询
      */
     @Override
-    public Result<TOperatorDetailInfo> queryBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return agencyService.queryBiddingAgencyDetailInfo(queryDetailIfo);
-    }
-    /**
-     * 招标代理机构资料模糊查询
-     * @param queryDetailIfo
-     * @return
-     */
-    @Override
-    public Result<List<TOperatorDetailInfo>> selectBiddingAgencyDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return agencyService.selectBiddingAgencyDetailInfo(queryDetailIfo);
+    public Result<TOperatorDetailInfo> queryBiddingAgencyDetailInfo(@RequestParam("whereId") Long whereId) {
+        return agencyService.queryBiddingAgencyDetailInfo(whereId);
     }
 
     /**
      * 查询所有招标代理机构分页展示
-     * @param queryRequest
+     * @param queryDetailIfo
      * @return
      */
     @Override
-    public Result selectAllAgencyByPage(@RequestBody QueryRequest queryRequest) {
-        PageHelper.startPage(queryRequest.getPageNum(),queryRequest.getPageSize());
-        List<TAgencyDetailInfo> tAgencyDetailInfos = agencyService.selectAllAgencyByPage(queryRequest);
+    public Result selectAllAgencyByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+        PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
+        List<TAgencyDetailInfo> tAgencyDetailInfos = agencyService.selectAllAgencyByPage(queryDetailIfo);
         PageInfo<TAgencyDetailInfo> pageInfo = new PageInfo<>(tAgencyDetailInfos);
         return Result.success(getDataTable(pageInfo)) ;
     }
 
+    /**
+     * 审核招标代理结构
+     * @param examineAgencyHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> examineAgency(@RequestBody ExamineAgencyHandle examineAgencyHandle) {
+        return agencyService.examineAgency( examineAgencyHandle);
+    }
 }

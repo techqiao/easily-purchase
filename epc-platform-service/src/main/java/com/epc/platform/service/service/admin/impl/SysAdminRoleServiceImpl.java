@@ -1,4 +1,5 @@
 package com.epc.platform.service.service.admin.impl;
+import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.admin.dto.UpdateRoleDTO;
 import com.epc.administration.facade.admin.handle.RoleHandle;

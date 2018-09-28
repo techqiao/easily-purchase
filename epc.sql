@@ -148,6 +148,9 @@ CREATE TABLE `t_operator_purchaser` (
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`purchaser_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`purchaser_name` VARCHAR(16) NOT NULL COMMENT '采购人姓名',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`operator_id` BIGINT(11) NOT NULL COMMENT '运营商ID',
 	`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
@@ -1072,7 +1075,7 @@ CREATE TABLE `t_supplier_sign` (
 
 
 -- 招标流程:中标   表
-DROP TABLE IF EXISTS `t_win_bid` ;
+DROP TABLE `t_win_bid` ;
 CREATE TABLE `t_win_bid` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(11) NOT NULL COMMENT '项目id',
@@ -1096,7 +1099,8 @@ CREATE TABLE `t_win_bid` (
 
 
 -- 招标流程:服务费    表
-DROP TABLE IF EXISTS `t_service_money_pay_record` ;
+DROP TABLE `t_service_money_pay_record` ;
+
 CREATE TABLE `t_service_money_pay_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `money_pay_id` bigint(11) NOT NULL COMMENT '中标服务费表ID',
@@ -1112,7 +1116,7 @@ CREATE TABLE `t_service_money_pay_record` (
 
 
 -- 投标流程:服务费支付    表
-DROP TABLE IF EXISTS `t_service_money_pay` ;
+DROP TABLE `t_service_money_pay` ;
 CREATE TABLE `t_service_money_pay` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
@@ -1187,7 +1191,7 @@ CREATE TABLE `b_technology_tender_standard` (
 
 
 -- 招标流程:下载招标文件    表
-DROP TABLE IF EXISTS `t_purchase_project_file_download` ;
+DROP TABLE `t_purchase_project_file_download` ;
 CREATE TABLE `t_purchase_project_file_download` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
@@ -1204,7 +1208,7 @@ CREATE TABLE `t_purchase_project_file_download` (
 
 
 -- 招标流程:下载招标文件付费    表
-DROP TABLE IF EXISTS `t_purchase_project_file_pay` ;
+DROP TABLE `t_purchase_project_file_pay` ;
 CREATE TABLE `t_purchase_project_file_pay` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `purchase_project_file_id` bigint(11) NOT NULL COMMENT '下载招标文件ID',
@@ -1220,26 +1224,7 @@ CREATE TABLE `t_purchase_project_file_pay` (
 
 
 
--- 招标流程:采购人供应商黑名单   表
-DROP TABLE IF EXISTS `t_purchaser_supplier` ;
-CREATE TABLE `t_purchaser_supplier` (
-	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
-	`status` INT(1) DEFAULT '0'  COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
-	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
-	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
-	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
-	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
-	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
-    `supplier_type` varchar(32) DEFAULT NULL COMMENT '白名单，white_list,黑名单：blank_list',
-	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
-	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
-	`create_at` DATETIME NOT NULL COMMENT '创建时间',
-	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
-	PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人-供应商:私库';
+
 
 
 

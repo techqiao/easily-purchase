@@ -29,7 +29,7 @@ public class RoleDetailInfo {
     //角色
     private String systemRole;
 
-    //供应商id
+    //员工（供应商id）
     private Long supplierId;
 
     //法人姓名

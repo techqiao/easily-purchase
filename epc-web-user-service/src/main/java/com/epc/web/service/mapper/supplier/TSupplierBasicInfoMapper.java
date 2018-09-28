@@ -69,6 +69,9 @@ public interface TSupplierBasicInfoMapper {
      *
      * @mbggenerated Sun Sep 23 10:58:51 CST 2018
      */
+
+    List<TSupplierBasicInfo> selectByRoleAndisDeletedAndSupplierId(@Param("role")Integer role);
+
     TSupplierBasicInfo selectByPrimaryKey(Long id);
 
     /**

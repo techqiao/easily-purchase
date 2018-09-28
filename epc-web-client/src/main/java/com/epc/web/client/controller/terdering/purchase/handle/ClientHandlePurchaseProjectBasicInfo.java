@@ -29,27 +29,27 @@ public class ClientHandlePurchaseProjectBasicInfo {
     @ApiModelProperty(value = "采购项目ID")
     @NotEmpty(message = "ClientHandlePurchaseProjectBasicInfo.purchaseProjectId.null")
     private Long purchaseProjectId;
-    @ApiModelProperty(value = "是否国家指定必须招标项目")
-    private String isStateDesignation;
+    @ApiModelProperty(value = "是否国家指定必须招标项目 是否国家指定必须招标:0是，1不是")
+    private Integer isStateDesignation;
     @ApiModelProperty(value = "采购项目开始时间")
     private Date purchaseStartTime;
     @ApiModelProperty(value = "采购项目结束时间")
     private Date purchaseEndTime;
     @ApiModelProperty(value = "采购项目预算金额")
     private BigDecimal purchaseProjectBudgetaryAmount;
-    @ApiModelProperty(value = "采购方式")
-    private Integer purchaseMode;
-    @ApiModelProperty(value = "采购分类")
-    private Integer purchaseCategory;
+    @ApiModelProperty(value = "采购方式 招标采购:selective_tendering 询比采购:  竞价采购: 谈判采购: 直接采购: 框架协议采购")
+    private String purchaseMode;
+    @ApiModelProperty(value = "采购分类 劳务分包labor_subcontract 专业分包professional_subcontracting 设备租赁 货物采购 服务采购 工程采购")
+    private String purchaseCategory;
     @ApiModelProperty(value = "采购类型")
     private String purchaseType;
-    @ApiModelProperty(value = "可见范围")
+    @ApiModelProperty(value = "可见范围 0:全平台 1:供应商私库")
     private Integer purchaseRange;
-    @ApiModelProperty(value = "是否允许调价")
+    @ApiModelProperty(value = "是否允许调价 0:不允许 1:允许")
     private Integer isAdjust;
-    @ApiModelProperty(value = "是否全权委托招标代理机构")
+    @ApiModelProperty(value = "是否全权委托招标代理机构  0:不全权委托 1:全权委托")
     private Integer isOtherAgency;
-    @ApiModelProperty(value = "招标代理机构ID")
+    @ApiModelProperty(value = "招标代理机构ID 全权委托招标代理机构情况下 选择招标代理机构")
     private Long purchaserAgencyId;
     @ApiModelProperty(value = "经办人ID")
     private Long agentId;

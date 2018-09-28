@@ -12,6 +12,7 @@ import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class PurchaserHystrix implements FacadePurchaserService {
@@ -21,7 +22,7 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
     @Override
-    public Result<Boolean> createSupplierByPurchaser(HandleSupplierDetail handleSupplierDetail) {
+    public Result<Boolean> createSupplierByPurchaser(HandleSupplierDto handleSupplierDetail) {
         return Result.hystrixError();
     }
 
@@ -61,33 +62,32 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
     @Override
-    public Result allEmployee(Long purchaserId) {
+    public Result allEmployee(HashMap<String,Long> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result findEmployeeByName(String fuzzyName, Long purchaseId) {
-        return Result.hystrixError();
-    }
-
-
-    @Override
-    public Result updateEmployeeState(String cellphone, Integer state) {
+    public Result findEmployeeByName(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result updateEmployeeStateById(Long id, Integer state) {
+    public Result updateEmployeeState(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryEmployee(String cellphone) {
+    public Result updateEmployeeStateById(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryEmployee(Long id) {
+    public Result queryEmployeeByCellphone(HashMap<String, Object> map) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryEmployeeById(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
@@ -97,27 +97,27 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
     @Override
-    public Result updateRole(Long id, Integer role) {
+    public Result updateRole(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryAllSuppliers(Long purchaseId) {
+    public Result queryAllSuppliers(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result querySuppliers(String fuzzyName, Long purchaseId) {
+    public Result querySuppliersByName(HashMap<String, Object> map) {
+        return null;
+    }
+
+    @Override
+    public Result querySuppliersById(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result querySuppliers(Long id) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result updateSuppliers(HandPurchaserAttachment attachment) {
+    public Result updateSuppliers(HandleSupplierDto attachment) {
         return Result.hystrixError();
     }
 
@@ -127,7 +127,7 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
     @Override
-    public Result updateExpertState(Long id, Integer state) {
+    public Result updateExpertState(HashMap<String, Object> map) {
         return Result.hystrixError();
     }
 
@@ -148,6 +148,11 @@ public class PurchaserHystrix implements FacadePurchaserService {
 
     @Override
     public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result queryEmployee(Long userId) {
         return Result.hystrixError();
     }
 }

@@ -23,23 +23,13 @@ public class ClientHandleOperatorAddEmployee {
     @NotEmpty(message = "ClientHandleOperatorAddEmployee.password.null")
     private String password;
 
-    @ApiModelProperty(value = "创建的时间")
-    @NotEmpty(message = "ClientHandleOperatorAddEmployee.createAt.null")
-    private Date createAt;
+    @ApiModelProperty(value = "员工id(运营商id)")
+    @NotEmpty(message = "ClientHandleOperatorAddEmployee.id.null")
+    private Long id;
 
-    @ApiModelProperty(value = "修改的时间")
-    private Date updateAt;
-
-    @ApiModelProperty(value = "用户的角色，0-法人,1-管理员,2-普通员工")
+    @ApiModelProperty(value = "员工角色role")
+    @NotEmpty(message = "ClientHandleOperatorAddEmployee.role.null")
     private Integer role;
 
-    @ApiModelProperty(value = "是否删除")
-    private Integer isDeleted;
-
-    @ApiModelProperty(value = "运营商id")
-    private Long operatorId;
-
-    @ApiModelProperty(value = "员工的审核状态，0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败")
-    private Integer state;
 
 }

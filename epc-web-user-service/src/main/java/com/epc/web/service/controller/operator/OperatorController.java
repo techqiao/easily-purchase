@@ -5,9 +5,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.operator.FacadeOperatorService;
 import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
 import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import com.epc.web.service.service.operator.OperatorService;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +24,23 @@ public class OperatorController implements FacadeOperatorService {
 
     @Autowired
     private OperatorService operatorService;
-    @Autowired
-    private PurchaserService purchaserService;
-
 
     /**
-     * 注册运营商
+     * 运营商注册(没有通过任何人拉取的，自己找到平台来注册的)
      * @author donghuan
      */
     @Override
     public Result<Boolean> registerOperator(@RequestBody  HandleOperator handleOperator) {
         return operatorService.registerOperator(handleOperator);
+    }
+
+    /**
+     * 运营商注册,(有人拉的，手机与名字都有,只需要设置密码就可以登陆)
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> addPasswordOperator(@RequestBody  HandleOperator handleOperator) {
+        return operatorService.addPasswordOperator(handleOperator);
     }
 
     /**
@@ -67,6 +71,60 @@ public class OperatorController implements FacadeOperatorService {
     }
 
     /**
+     * 依据id来删除一个员工
+     */
+    @Override
+    public Result<Boolean> deleteOperatorEmployeeById(@RequestBody HandleOperatorId handleOperatorId){
+        return operatorService.deleteOperatorEmployeeById(handleOperatorId);
+    }
+
+    /**
+     *  通过id来改变员工的状态,是否禁用
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> updateOperatorEmployeeByisDeleted(@RequestBody HandleOperatorId handleOperatorId){
+        return operatorService.updateOperatorEmployeeByisDeleted(handleOperatorId);
+    }
+
+    /**
+     * 通过id来修改对应的state  0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> updateOperatorEmployeeStateById(@RequestBody HandleOperatorState handleOperatorState){
+        return operatorService.updateOperatorEmployeeStateById(handleOperatorState);
+    }
+
+    /**
+     * 根据用户id来修改他的role 用户角色:0-法人,1-管理员,2-普通员工'
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> updateOperatorEmployeeRoleById(@RequestBody HandleOperatorRole handleOperatorRole) {
+        return operatorService.updateOperatorEmployeeRoleById(handleOperatorRole);
+    }
+
+    /**
+     * 依据电话来删除一个员工
+     *  @author donghuan
+     */
+    @Override
+    public Result<Boolean> deleteOperatorEmployeeByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone){
+        return operatorService.deleteOperatorEmployeeByCellphone(handleOperatorCellphone);
+    }
+
+    /**
+     * 根据电话来查找一条记录,返回一个真假值
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> findOperatorRecordByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone){
+        return operatorService.findOperatorRecordByCellphone(handleOperatorCellphone);
+    }
+
+
+    /**
      *  根据员工的id来更新该员工的个人信息
      *  @author donghuan
      */
@@ -95,31 +153,13 @@ public class OperatorController implements FacadeOperatorService {
         return operatorService.createSupplierByOperator(handleCreateSupplerByOperator);
     }
 
-
-
-
     /**
      * @Description:    运营商新增采购人
      */
 
     @Override
-    public Result<Boolean> createPurchaseByOperator(@RequestBody HandlePurchaser handlePurchaser) {
-        return operatorService.createPurchaseByOperator(handlePurchaser);
+    public Result<Boolean> createPurchaseByOperator(@RequestBody HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
+        return operatorService.createPurchaseByOperator(handleCreatePurchaserByOperator);
     }
 
-    @Override
-    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto handlePurchaser) {
-        return null;
-    }
-
-
-//    /**
-//     * 完善 供应商信息
-//     * @param handleSupplierDetail
-//     * @return
-//     */
-//    @Override
-//    public Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto handleSupplierDetail) {
-//        return purchaserService.updateSupplierDetail(handleSupplierDetail);
-//    }
 }

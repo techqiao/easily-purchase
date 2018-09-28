@@ -355,6 +355,136 @@ public class BAnswerQuestionCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andQuestionTypeIsNull() {
+            addCriterion("question_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeIsNotNull() {
+            addCriterion("question_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeEqualTo(String value) {
+            addCriterion("question_type =", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeNotEqualTo(String value) {
+            addCriterion("question_type <>", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeGreaterThan(String value) {
+            addCriterion("question_type >", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("question_type >=", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeLessThan(String value) {
+            addCriterion("question_type <", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeLessThanOrEqualTo(String value) {
+            addCriterion("question_type <=", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeLike(String value) {
+            addCriterion("question_type like", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeNotLike(String value) {
+            addCriterion("question_type not like", value, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeIn(List<String> values) {
+            addCriterion("question_type in", values, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeNotIn(List<String> values) {
+            addCriterion("question_type not in", values, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeBetween(String value1, String value2) {
+            addCriterion("question_type between", value1, value2, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionTypeNotBetween(String value1, String value2) {
+            addCriterion("question_type not between", value1, value2, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdIsNull() {
+            addCriterion("type_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdIsNotNull() {
+            addCriterion("type_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdEqualTo(Long value) {
+            addCriterion("type_id =", value, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdNotEqualTo(Long value) {
+            addCriterion("type_id <>", value, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdGreaterThan(Long value) {
+            addCriterion("type_id >", value, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("type_id >=", value, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdLessThan(Long value) {
+            addCriterion("type_id <", value, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdLessThanOrEqualTo(Long value) {
+            addCriterion("type_id <=", value, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdIn(List<Long> values) {
+            addCriterion("type_id in", values, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdNotIn(List<Long> values) {
+            addCriterion("type_id not in", values, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdBetween(Long value1, Long value2) {
+            addCriterion("type_id between", value1, value2, "typeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeIdNotBetween(Long value1, Long value2) {
+            addCriterion("type_id not between", value1, value2, "typeId");
+            return (Criteria) this;
+        }
+
         public Criteria andAnswerIdIsNull() {
             addCriterion("answer_id is null");
             return (Criteria) this;

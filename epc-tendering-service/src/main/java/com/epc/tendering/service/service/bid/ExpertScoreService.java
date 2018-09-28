@@ -1,6 +1,7 @@
 package com.epc.tendering.service.service.bid;
 
 import com.epc.common.Result;
+import com.epc.web.facade.terdering.bid.handle.HandleExpertScore;
 import com.epc.web.facade.terdering.bid.vo.BidderListVO;
 
 import java.util.List;
@@ -18,4 +19,12 @@ public interface ExpertScoreService {
      * @return
      */
     Result<List<BidderListVO>> getBidderList(Long procurementProjectId);
+
+    /**
+     * 专家评分
+     *
+     * @param handleExpertScore
+     * @return
+     */
+    Result<Boolean> handleExpertScore(HandleExpertScore handleExpertScore);
 }

@@ -5,6 +5,7 @@ import com.epc.tendering.service.service.bid.OpeningRecordPublicityService;
 import com.epc.web.facade.terdering.bid.FacadeOpeningRecordPublicityService;
 import com.epc.web.facade.terdering.bid.handle.HandOpeningRecordPublicity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,7 +19,7 @@ public class OpeningRecordPublicityController implements FacadeOpeningRecordPubl
     private OpeningRecordPublicityService openingRecordPublicityService;
 
     @Override
-    public Result<Boolean> insertOpeningRecordPublicity(HandOpeningRecordPublicity handOpeningRecordPublicity) {
+    public Result<Boolean> insertOpeningRecordPublicity(@RequestBody HandOpeningRecordPublicity handOpeningRecordPublicity) {
         return openingRecordPublicityService.insertOpeningRecordPublicity(handOpeningRecordPublicity);
     }
 }

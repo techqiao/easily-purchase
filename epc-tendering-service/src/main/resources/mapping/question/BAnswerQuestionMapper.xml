@@ -6,6 +6,8 @@
     <result column="procurement_project_id" jdbcType="BIGINT" property="procurementProjectId" />
     <result column="questioner_id" jdbcType="BIGINT" property="questionerId" />
     <result column="questioner_name" jdbcType="VARCHAR" property="questionerName" />
+    <result column="question_type" jdbcType="VARCHAR" property="questionType" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId" />
     <result column="answer_id" jdbcType="BIGINT" property="answerId" />
     <result column="answer_name" jdbcType="VARCHAR" property="answerName" />
     <result column="status" jdbcType="VARCHAR" property="status" />
@@ -77,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, procurement_project_id, questioner_id, questioner_name, answer_id, answer_name, 
-    status, operate_id, create_at, update_at, is_deleted
+    id, procurement_project_id, questioner_id, questioner_name, question_type, type_id, 
+    answer_id, answer_name, status, operate_id, create_at, update_at, is_deleted
   </sql>
   <sql id="Blob_Column_List">
     problem, answer
@@ -136,15 +138,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into b_answer_question (procurement_project_id, questioner_id, 
-      questioner_name, answer_id, answer_name, 
-      status, operate_id, create_at, 
-      update_at, is_deleted, problem, 
-      answer)
+      questioner_name, question_type, type_id, 
+      answer_id, answer_name, status, 
+      operate_id, create_at, update_at, 
+      is_deleted, problem, answer
+      )
     values (#{procurementProjectId,jdbcType=BIGINT}, #{questionerId,jdbcType=BIGINT}, 
-      #{questionerName,jdbcType=VARCHAR}, #{answerId,jdbcType=BIGINT}, #{answerName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{problem,jdbcType=LONGVARCHAR}, 
-      #{answer,jdbcType=LONGVARCHAR})
+      #{questionerName,jdbcType=VARCHAR}, #{questionType,jdbcType=VARCHAR}, #{typeId,jdbcType=BIGINT}, 
+      #{answerId,jdbcType=BIGINT}, #{answerName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER}, #{problem,jdbcType=LONGVARCHAR}, #{answer,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -160,6 +164,12 @@
       </if>
       <if test="questionerName != null">
         questioner_name,
+      </if>
+      <if test="questionType != null">
+        question_type,
+      </if>
+      <if test="typeId != null">
+        type_id,
       </if>
       <if test="answerId != null">
         answer_id,
@@ -198,6 +208,12 @@
       </if>
       <if test="questionerName != null">
         #{questionerName,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=BIGINT},
       </if>
       <if test="answerId != null">
         #{answerId,jdbcType=BIGINT},
@@ -249,6 +265,12 @@
       <if test="record.questionerName != null">
         questioner_name = #{record.questionerName,jdbcType=VARCHAR},
       </if>
+      <if test="record.questionType != null">
+        question_type = #{record.questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeId != null">
+        type_id = #{record.typeId,jdbcType=BIGINT},
+      </if>
       <if test="record.answerId != null">
         answer_id = #{record.answerId,jdbcType=BIGINT},
       </if>
@@ -287,6 +309,8 @@
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{record.questionerId,jdbcType=BIGINT},
       questioner_name = #{record.questionerName,jdbcType=VARCHAR},
+      question_type = #{record.questionType,jdbcType=VARCHAR},
+      type_id = #{record.typeId,jdbcType=BIGINT},
       answer_id = #{record.answerId,jdbcType=BIGINT},
       answer_name = #{record.answerName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
@@ -306,6 +330,8 @@
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{record.questionerId,jdbcType=BIGINT},
       questioner_name = #{record.questionerName,jdbcType=VARCHAR},
+      question_type = #{record.questionType,jdbcType=VARCHAR},
+      type_id = #{record.typeId,jdbcType=BIGINT},
       answer_id = #{record.answerId,jdbcType=BIGINT},
       answer_name = #{record.answerName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
@@ -328,6 +354,12 @@
       </if>
       <if test="questionerName != null">
         questioner_name = #{questionerName,jdbcType=VARCHAR},
+      </if>
+      <if test="questionType != null">
+        question_type = #{questionType,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=BIGINT},
       </if>
       <if test="answerId != null">
         answer_id = #{answerId,jdbcType=BIGINT},
@@ -364,6 +396,8 @@
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{questionerId,jdbcType=BIGINT},
       questioner_name = #{questionerName,jdbcType=VARCHAR},
+      question_type = #{questionType,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=BIGINT},
       answer_id = #{answerId,jdbcType=BIGINT},
       answer_name = #{answerName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
@@ -380,6 +414,8 @@
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{questionerId,jdbcType=BIGINT},
       questioner_name = #{questionerName,jdbcType=VARCHAR},
+      question_type = #{questionType,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=BIGINT},
       answer_id = #{answerId,jdbcType=BIGINT},
       answer_name = #{answerName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
@@ -419,5 +455,6 @@
       order by ${orderByClause}
     </if>
   </select>
+
 
 </mapper>

@@ -1,6 +1,9 @@
 package com.epc.web.service.controller.supplier;
 
 import com.epc.common.Result;
+import com.epc.web.facade.operator.handle.HandleOperatorCellphone;
+import com.epc.web.facade.operator.handle.HandleOperatorRole;
+import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
@@ -31,6 +34,11 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
         return supplierService.registerSupplier(handleSupplierDetail);
     }
 
+    @Override
+    public Result<Boolean> addPasswordSupplier(@RequestBody HandleSupplierDetail handleSupplierDetail) {
+        return supplierService.addPasswordSupplier(handleSupplierDetail);
+    }
+
     /**
      *  根据员工id来删除一个员工
      */
@@ -38,6 +46,11 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     public Result<Boolean> deleteSupplierEmployeeById(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return supplierService.deleteSupplierEmployeeById(handleFindSupplierByInfo);
     }
+
+//    @Override
+//    public Result<Boolean> deleteOperatorEmployeeByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone) {
+//        return supplierService.deleteOperatorEmployeeByCellphone();
+//    }
 
     /**
      * 根据员工的id来查询基本信息
@@ -48,6 +61,24 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     }
 
     /**
+     * 通过员工id 只 修改员工的状态
+     */
+    @Override
+    public Result<Boolean> updateSupplierEmployeeByisDeleted(@RequestBody HandleSupplierEmployeeByisDeleted handleSupplierEmployeeByisDeleted) {
+        return supplierService.updateSupplierEmployeeByisDeleted(handleSupplierEmployeeByisDeleted);
+    }
+
+    /**
+     * 通过id来修改对应的state  0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> updateSupplierEmployeeStateById(@RequestBody HandleOperatorState handleOperatorState){
+        return  supplierService.updateSupplierEmployeeStateById(handleOperatorState);
+    }
+
+
+    /**
      * 员工来查询 公司详情
      */
     @Override
@@ -55,6 +86,22 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
         return supplierService.findSupplierDetailByEmployee(handleFindSupplierByInfo);
     }
 
+    /**
+     * 根据用户id来修改他的role 用户角色:0-法人,1-管理员,2-普通员工'
+     * @author donghuan
+     */
+    @Override
+    public Result<Boolean> updateSupplierEmployeeRoleById(@RequestBody HandleOperatorRole handleOperatorRole){
+        return supplierService.updateSupplierEmployeeRoleById(handleOperatorRole);
+    }
+
+    /**
+     * 根据电话来查找一条记录,返回一个真假值
+     */
+    @Override
+    public Result<Boolean> findSupplierRecordByCellphone(@RequestBody HandleSupplierRecordByCellphone handleSupplierByCellphone){
+        return supplierService.findSupplierRecordByCellphone(handleSupplierByCellphone);
+    }
 
     /**
      * 根据电话来查找一条记录,返回一个记录
@@ -64,13 +111,6 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
         return supplierService.findSupplierByCellphone(handleFindSupplierByInfo);
     }
 
-    /**
-     * 根据名字或者电话来得到这个人的信息
-     */
-//    @Override
-//    public Result<SupplierBasicInfoVO> findByName(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
-//        return supplierService.findByName(handleFindSupplierByInfo);
-//    }
 
     /**
      *  忘记密码
@@ -102,6 +142,11 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     @Override
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return supplierService.querySupplierEmployeeAll(handleFindSupplierByInfo);
+    }
+
+    @Override
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeByisDeleted(@RequestBody HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return supplierService.querySupplierEmployeeByisDeleted(handleFindSupplierByInfo);
     }
 
     /**

@@ -21,16 +21,16 @@ import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.xml.crypto.Data;
+import java.util.HashMap;
 import java.util.List;
 
 @Api(value = "采购人服务",tags = {"采购人服务"})
@@ -50,8 +50,8 @@ public class PurchaserController  {
 
     @ApiOperation(value = "注册供应商",notes = "注册供应商")
     @PostMapping(value = "/registerSupplierBasicInfo")
-    public Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDetail handleSupplierDetail) {
-        HandleSupplierDetail supplierDetail = new HandleSupplierDetail();
+    public Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleSupplierDetail) {
+        HandleSupplierDto supplierDetail = new HandleSupplierDto();
         BeanUtils.copyProperties(handleSupplierDetail,supplierDetail);
         return purchaserClient.createSupplierByPurchaser(supplierDetail);
     }
@@ -96,41 +96,41 @@ public class PurchaserController  {
         return purchaserClient.registerPurchaser(handleRegisterPurchaser);
     }
 
-    @ApiOperation(value = "查找采购商所有员工",notes = "查找采购商所有员工")
+    @ApiOperation(value = "查找采购商所有员工",notes = "查找采购商所有员工,map中key为\"purchaserId\"")
     @PostMapping(value = "/allEmployee")
-    public Result allEmployee(Long purchaserId) {
-        return purchaserClient.allEmployee(purchaserId);
+    public Result allEmployee(@RequestBody @ApiParam(value = "map是的key为purchaserId的json格式")HashMap<String,Long> map) {
+        return purchaserClient.allEmployee(map);
     }
 
     @ApiOperation(value = "根据name查找员工",notes = "根据name查找员工")
     @PostMapping(value = "/findEmployeeByName")
-    public Result findEmployeeByName(String fuzzyName,Long purchaseId) {
-        return purchaserClient.findEmployeeByName(fuzzyName,purchaseId);
+    public Result findEmployeeByName(@RequestBody @ApiParam(value = "map是的key为fuzzyName和purchaseId的json格式")HashMap<String,Object> map) {
+        return purchaserClient.findEmployeeByName(map);
     }
 
     @ApiOperation(value = "根据手机修改员工状态",notes = "根据手机修改员工状态")
     @PostMapping(value = "/updateEmployeeState")
-    public Result updateEmployeeState(String cellphone, Integer state) {
-        return purchaserClient.updateEmployeeState(cellphone,state);
+    public Result updateEmployeeState(@RequestBody @ApiParam(value = "map是的key为cellphone和state的json格式")HashMap<String,Object> map) {
+        return purchaserClient.updateEmployeeState(map);
 
     }
 
     @ApiOperation(value = "根据id修改员工状态",notes = "根据id修改员工状态")
     @PostMapping(value = "/updateEmployeeStateById")
-    public Result updateEmployeeStateById(Long id, Integer state) {
-        return purchaserClient.updateEmployeeStateById(id,state);
+    public Result updateEmployeeStateById(@RequestBody @ApiParam(value = "map是的key为id和state的json格式")HashMap<String,Object> map) {
+        return purchaserClient.updateEmployeeStateById(map);
     }
 
     @ApiOperation(value = "依据手机查员工",notes = "依据手机查员工")
     @PostMapping(value = "/queryEmployeeByCell")
-    public Result queryEmployee(String cellphone) {
-        return purchaserClient.queryEmployee(cellphone);
+    public Result queryEmployeeByCellphone(@RequestBody @ApiParam(value = "map是的key为cellphone的json格式")HashMap<String,Object> map) {
+        return purchaserClient.queryEmployeeByCellphone(map);
     }
 
     @ApiOperation(value = "依据id查员工",notes = "依据id查员工")
     @PostMapping(value = "/queryEmployeeById")
-    public Result queryEmployee(Long id) {
-        return purchaserClient.queryEmployee(id);
+    public Result queryEmployeeById(@RequestBody @ApiParam(value = "map是的key为idjson格式")HashMap<String,Object> map) {
+        return purchaserClient.queryEmployeeById(map);
     }
     @ApiOperation(value = "依据综合条件查员工",notes = "依据综合条件查员工")
     @PostMapping(value = "/queryEmplyees")
@@ -142,32 +142,32 @@ public class PurchaserController  {
 
     @ApiOperation(value = "依据id改权限",notes = "依据id改权限")
     @PostMapping(value = "/updateRole")
-    public Result updateRole(Long id, Integer role) {
-        return purchaserClient.updateRole(id, role);
+    public Result updateRole(@RequestBody @ApiParam(value = "map是的key为id和role的json格式")HashMap<String,Object> map) {
+        return purchaserClient.updateRole(map);
     }
 
     @ApiOperation(value = "查询机构下所有的供货商",notes = "查询机构下所有的供货商")
     @PostMapping(value = "/queryAllSuppliers")
-    public Result queryAllSuppliers(Long purchaseId) {
-        return purchaserClient.queryAllSuppliers(purchaseId);
+    public Result queryAllSuppliers(@RequestBody HashMap<String,Object> map) {
+        return purchaserClient.queryAllSuppliers(map);
     }
 
     @ApiOperation(value = "模糊查询机构下的供货商",notes = "查询机构下所有的供货商")
     @PostMapping(value = "/querySuppliersByName")
-    public Result querySuppliers(String fuzzyName,Long purchaseId) {
-        return purchaserClient.querySuppliers(fuzzyName,purchaseId);
+    public Result querySuppliersByName(@RequestBody @ApiParam(value = "map是的key为fuzzyName和purchaseId的json格式")HashMap<String,Object> map) {
+        return purchaserClient.querySuppliersByName(map);
     }
 
     @ApiOperation(value = "依据id查询供货商",notes = "依据id查询供货商")
     @PostMapping(value = "/querySuppliers")
-    public Result querySuppliers(Long id) {
-        return purchaserClient.querySuppliers(id);
+    public Result querySuppliersById(@RequestBody @ApiParam(value = "map是的key为id的json格式")HashMap<String,Object> map) {
+        return purchaserClient.querySuppliersById(map);
     }
 
     @ApiOperation(value = "修改供货商信息",notes = "修改供货商信息")
     @PostMapping(value = "/updateSuppliers")
-    public Result updateSuppliers(@RequestBody ClientHandPurchaserAttachment attachment) {
-        HandPurchaserAttachment purchaserAttachment = new HandPurchaserAttachment();
+    public Result updateSuppliers(@RequestBody ClientHandleSupplierDto attachment) {
+        HandleSupplierDto purchaserAttachment = new HandleSupplierDto();
         BeanUtils.copyProperties(attachment,purchaserAttachment);
         return purchaserClient.updateSuppliers(purchaserAttachment);
     }
@@ -182,8 +182,8 @@ public class PurchaserController  {
 
     @ApiOperation(value = "根据id修专家状态",notes = "根据id修专家状态")
     @PostMapping(value = "/updateExpertState")
-    public Result updateExpertState(Long id, Integer state) {
-        return purchaserClient.updateExpertState(id,state);
+    public Result updateExpertState(@RequestBody @ApiParam(value = "map是的key为id和state的json格式")HashMap<String,Object> map) {
+        return purchaserClient.updateExpertState(map);
     }
 
     /**
@@ -259,4 +259,9 @@ public class PurchaserController  {
         BeanUtils.copyProperties(expertDto,dto);
         return purchaserClient.updatePurchaserExpert(dto);
     };
+
+    public Result queryEmployee(@RequestParam Long userId){
+        return purchaserClient.queryEmployee(userId);
+    }
+
 }

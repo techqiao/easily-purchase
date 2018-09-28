@@ -74,7 +74,7 @@ public class AgencyController implements FacadeAgencyService {
     }
 
     @Override
-    public Result proxySubjects(AgencySubjectDto subjectDto) {
+    public Result proxySubjects(@RequestBody AgencySubjectDto subjectDto) {
         return agencyService.proxySubjects( subjectDto);
     }
 

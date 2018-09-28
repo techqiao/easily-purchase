@@ -26,11 +26,18 @@ public interface FacadeOperatorService {
 
 
     /**
-     * 注册运营商
+     * 运营商注册(没有通过任何人拉取的，自己找到平台来注册的)
      * @author donghuan
      */
     @PostMapping(value = "registerOperator",consumes = "application/json; charset=UTF-8")
     Result<Boolean> registerOperator(@RequestBody HandleOperator handleOperator);
+
+    /**
+     * 运营商注册,(有人拉的，手机与名字都有,只需要设置密码就可以登陆)
+     * @author donghuan
+     */
+    @PostMapping(value = "addPasswordOperator",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> addPasswordOperator(@RequestBody  HandleOperator handleOperator);
 
     /**
      * 忘记密码
@@ -45,6 +52,49 @@ public interface FacadeOperatorService {
      */
     @PostMapping(value = "findByNameOperator", consumes = "application/json; charset=UTF-8")
     Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperatorId handleOperatorId);
+
+    /**
+     * 依据id来删除一个员工
+     * @author donghuan
+     */
+    @PostMapping(value = "deleteOperatorEmployeeById", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> deleteOperatorEmployeeById(@RequestBody HandleOperatorId handleOperatorId);
+
+    /**
+     *  通过id来改变员工的状态,是否禁用
+     * @author donghuan
+     */
+    @PostMapping(value = "updateOperatorEmployeeByisDeleted",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateOperatorEmployeeByisDeleted(@RequestBody HandleOperatorId handleOperatorId);
+
+    /**
+     * 通过id来修改对应的state  0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * @author donghuan
+     */
+    @PostMapping(value = "updateOperatorEmployeeStateById",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateOperatorEmployeeStateById(@RequestBody HandleOperatorState handleOperatorState);
+
+    /**
+     * 根据用户id来修改他的role 用户角色:0-法人,1-管理员,2-普通员工'
+     * @author donghuan
+     */
+    @PostMapping(value = "updateOperatorEmployeeRoleById",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateOperatorEmployeeRoleById(@RequestBody HandleOperatorRole handleOperatorRole);
+
+
+    /**
+     * 依据电话来删除一个员工
+     *  @author donghuan
+     */
+    @PostMapping(value = "deleteOperatorEmployeeByCellphone",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> deleteOperatorEmployeeByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone);
+
+    /**
+     * 根据电话来查找一条记录,返回一个真假值
+     * @author donghuan
+     */
+    @PostMapping(value = "findOperatorRecordByCellphone",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> findOperatorRecordByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone);
 
     /**
      * 运营商新增自己的员工
@@ -74,22 +124,12 @@ public interface FacadeOperatorService {
     @PostMapping(value = "createSupplierByOperator",consumes = "application/json;charset=UTF-8")
     Result<Boolean> createSupplierByOperator(@RequestBody HandleCreateSupplerByOperator handleCreateSupplerByOperator);
 
-
-
     /**
      * 运营商 注册采购人
-     * @param handleOperator
      * @return
      */
     @PostMapping(value = "createPurchaseByOperator", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> createPurchaseByOperator(@RequestBody HandlePurchaser handleOperator);
+    Result<Boolean> createPurchaseByOperator(@RequestBody HandleCreatePurchaserByOperator handleCreatePurchaserByOperator);
 
-    /**
-     * 完善信息
-     * @param handlePurchaser
-     * @return
-     */
-    @PostMapping(value = "updateSupplierDetail", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto handlePurchaser) ;
 
 }

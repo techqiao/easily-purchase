@@ -34,6 +34,11 @@ public class HandleFindSupplierByInfo implements Serializable {
      */
     private Integer role;
 
+    /**
+     * 是否禁用
+     */
+    private Integer isDeleted;
+
 
 
 }

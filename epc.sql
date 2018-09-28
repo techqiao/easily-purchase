@@ -1072,7 +1072,7 @@ CREATE TABLE `t_supplier_sign` (
 
 
 -- 招标流程:中标   表
-DROP TABLE `t_win_bid` ;
+DROP TABLE IF EXISTS `t_win_bid` ;
 CREATE TABLE `t_win_bid` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(11) NOT NULL COMMENT '项目id',
@@ -1096,8 +1096,7 @@ CREATE TABLE `t_win_bid` (
 
 
 -- 招标流程:服务费    表
-DROP TABLE `t_service_money_pay_record` ;
-
+DROP TABLE IF EXISTS `t_service_money_pay_record` ;
 CREATE TABLE `t_service_money_pay_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `money_pay_id` bigint(11) NOT NULL COMMENT '中标服务费表ID',
@@ -1113,7 +1112,7 @@ CREATE TABLE `t_service_money_pay_record` (
 
 
 -- 投标流程:服务费支付    表
-DROP TABLE `t_service_money_pay` ;
+DROP TABLE IF EXISTS `t_service_money_pay` ;
 CREATE TABLE `t_service_money_pay` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
@@ -1188,7 +1187,7 @@ CREATE TABLE `b_technology_tender_standard` (
 
 
 -- 招标流程:下载招标文件    表
-DROP TABLE `t_purchase_project_file_download` ;
+DROP TABLE IF EXISTS `t_purchase_project_file_download` ;
 CREATE TABLE `t_purchase_project_file_download` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
@@ -1205,7 +1204,7 @@ CREATE TABLE `t_purchase_project_file_download` (
 
 
 -- 招标流程:下载招标文件付费    表
-DROP TABLE `t_purchase_project_file_pay` ;
+DROP TABLE IF EXISTS `t_purchase_project_file_pay` ;
 CREATE TABLE `t_purchase_project_file_pay` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `purchase_project_file_id` bigint(11) NOT NULL COMMENT '下载招标文件ID',
@@ -1222,7 +1221,7 @@ CREATE TABLE `t_purchase_project_file_pay` (
 
 
 -- 招标流程:采购人供应商黑名单   表
-DROP TABLE `t_purchaser_supplier` ;
+DROP TABLE IF EXISTS `t_purchaser_supplier` ;
 CREATE TABLE `t_purchaser_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',

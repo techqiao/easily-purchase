@@ -99,7 +99,7 @@ public interface FacadeAgencyService{
      *@date:2018/9/18
      */
     @PostMapping(value = "proxySubjects", consumes = "application/json; charset=UTF-8")
-    public Result proxySubjects(AgencySubjectDto subjectDto);
+    public Result proxySubjects(@RequestBody AgencySubjectDto subjectDto);
 
     /**
      *@author :winlin
@@ -190,5 +190,5 @@ public interface FacadeAgencyService{
      * @date:2018/9/21
      */
     @PostMapping(value = "completeAgencyExpertInfo", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> completeAgencyExpertInfo(AgencyExpertDto expertDto);
+    public Result<Boolean> completeAgencyExpertInfo(@RequestBody AgencyExpertDto expertDto);
 }

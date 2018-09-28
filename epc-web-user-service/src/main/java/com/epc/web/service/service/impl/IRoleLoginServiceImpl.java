@@ -8,14 +8,21 @@ import com.epc.common.util.CookieUtil;
 import com.epc.common.util.MD5Util;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.service.domain.operator.TOperatorBasicInfo;
+import com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria;
+import com.epc.web.service.domain.operator.TOperatorDetailInfo;
+import com.epc.web.service.domain.operator.TOperatorDetailInfoCriteria;
 import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
+import com.epc.web.service.mapper.agency.TAgencyDetailInfoMapper;
 import com.epc.web.service.mapper.operator.TOperatorBasicInfoMapper;
+import com.epc.web.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
 import com.netflix.ribbon.proxy.annotation.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -23,6 +30,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author :winlin
@@ -42,7 +50,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     TSupplierBasicInfoMapper tSupplierBasicInfoMapper;
     @Autowired
     TPurchaserBasicInfoMapper tPurchaserBasicInfoMapper;
-
+    @Autowired
+    TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Override
     public Result login(@RequestBody LoginUser user) {
         //用户类型
@@ -72,12 +81,12 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 }
                 break;
             case IRoleLoginService.SUPPLIER:
-//                LoginUser loginUser2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
-//                if (loginUser2 != null) {
-//                    loginUser2.setType(type);
-//                    //this.cacheInredis(request,response,loginUser2);
-//                    return Result.success( loginUser2);
-//                }
+                LoginUser loginUser2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
+                if (loginUser2 != null) {
+                    loginUser2.setType(type);
+                    //this.cacheInredis(request,response,loginUser2);
+                    return Result.success( loginUser2);
+                }
                 break;
             case IRoleLoginService.PURCHASER:
                 LoginUser loginUser3 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
@@ -88,9 +97,9 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 }
                 break;
             default:
-                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR);
+                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(),"登录失败");
         }
-        return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR);
+        return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(),"登录失败");
     }
 
     public void  cacheInredis(HttpServletRequest request,HttpServletResponse response,LoginUser user ){
@@ -98,4 +107,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         CookieUtil.writeLoginToken(response,session);
         RedisShardedPoolUtil.setEx(session, JSONObject.toJSONString(user), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
     }
+
+
 }

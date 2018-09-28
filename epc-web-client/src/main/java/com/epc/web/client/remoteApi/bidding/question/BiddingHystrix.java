@@ -4,7 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeQuestionService;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
-import com.epc.web.facade.bidding.vo.QueryAnswerQustionListVO;
+import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class BiddingHystrix implements FacadeQuestionService {
 
 
     @Override
-    public Result<List<QueryAnswerQustionListVO>> getAnswerQuestionFindById(QueryAnswerQuestionDTO dto) {
+    public Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(QueryAnswerQuestionDTO dto) {
         return Result.hystrixError();
     }
 

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 /**
-* @Description:  查看招标公告
+* @Description:  招标公告
 * @Author: linzhixiang
 * @Date: 2018/9/18
 */

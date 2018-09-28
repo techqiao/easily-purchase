@@ -64,6 +64,7 @@ public class BReleaseAnnouncement implements Serializable {
         this.auditorId = auditorId;
     }
 
+
     public Long getRepliesId() {
         return repliesId;
     }

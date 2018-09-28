@@ -1576,6 +1576,76 @@ public class TWinBidNominateCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andLetterPathIsNull() {
+            addCriterion("letter_path is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathIsNotNull() {
+            addCriterion("letter_path is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathEqualTo(String value) {
+            addCriterion("letter_path =", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathNotEqualTo(String value) {
+            addCriterion("letter_path <>", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathGreaterThan(String value) {
+            addCriterion("letter_path >", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathGreaterThanOrEqualTo(String value) {
+            addCriterion("letter_path >=", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathLessThan(String value) {
+            addCriterion("letter_path <", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathLessThanOrEqualTo(String value) {
+            addCriterion("letter_path <=", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathLike(String value) {
+            addCriterion("letter_path like", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathNotLike(String value) {
+            addCriterion("letter_path not like", value, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathIn(List<String> values) {
+            addCriterion("letter_path in", values, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathNotIn(List<String> values) {
+            addCriterion("letter_path not in", values, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathBetween(String value1, String value2) {
+            addCriterion("letter_path between", value1, value2, "letterPath");
+            return (Criteria) this;
+        }
+
+        public Criteria andLetterPathNotBetween(String value1, String value2) {
+            addCriterion("letter_path not between", value1, value2, "letterPath");
+            return (Criteria) this;
+        }
+
         public Criteria andProcessStatusIsNull() {
             addCriterion("process_status is null");
             return (Criteria) this;

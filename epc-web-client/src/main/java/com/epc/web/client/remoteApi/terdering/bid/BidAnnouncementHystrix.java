@@ -18,4 +18,9 @@ public class BidAnnouncementHystrix implements FacadeBidAnnouncementService {
     public Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result<String> bidAnnouncementDetail(Long bidId) {
+        return Result.hystrixError();
+    }
 }

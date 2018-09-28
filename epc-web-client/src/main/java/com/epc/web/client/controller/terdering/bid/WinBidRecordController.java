@@ -1,0 +1,62 @@
+package com.epc.web.client.controller.terdering.bid;
+import com.epc.common.Result;
+import com.epc.web.client.controller.terdering.bid.handle.ClientWinBidding;
+import com.epc.web.client.remoteApi.terdering.bid.WinBidClient;
+import com.epc.web.facade.bidding.handle.HandleWinBidding;
+import com.epc.web.facade.bidding.vo.NominateVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+* @Description:中标记录
+* @Author: linzhixiang
+* @Date: 2018/9/27
+*/
+@Api(value = "中标记录",tags = "中标记录")
+@RestController
+@RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+
+public class WinBidRecordController {
+    @Autowired
+    WinBidClient winBidClient;
+
+    /**
+     * 获取中标通知列表
+     * @param procurementProjectId
+     * @return
+     */
+    @ApiOperation(value = "获取中标通知列表")
+    @PostMapping(value = "getTWinBidNominated", consumes = "application/json; charset=UTF-8")
+    Result<List<NominateVO>> getTWinBidNominated(@RequestBody Long procurementProjectId) {
+        return  winBidClient.getTWinBidNominated(procurementProjectId);
+    }
+
+
+    /**
+     * 确认中标人和中标通知书
+     * @param dtoList
+     * @return
+     */
+    @ApiOperation(value = "确认中标人和中标通知书")
+    @PostMapping(value = "updateTWinBidNominated", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateTWinBidNominated(@RequestBody List<ClientWinBidding> dtoList){
+        List<HandleWinBidding> newList=new ArrayList<>();
+        for(ClientWinBidding dto:dtoList){
+            HandleWinBidding HandleWinBidding=new HandleWinBidding();
+            BeanUtils.copyProperties(dto,HandleWinBidding);
+            newList.add(HandleWinBidding);
+        }
+        return  winBidClient.updateTWinBidNominated(newList);
+    }
+
+}

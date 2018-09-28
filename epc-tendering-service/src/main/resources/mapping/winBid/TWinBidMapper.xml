@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TWinBidMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TWinBid" >
+<mapper namespace="com.epc.tendering.service.mapper.winBid.TWinBidMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.winBid.TWinBid" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
@@ -16,6 +16,7 @@
     <result column="file_path" property="filePath" jdbcType="VARCHAR" />
     <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
@@ -80,9 +81,9 @@
   <sql id="Base_Column_List" >
     id, project_id, project_name, project_code, procurement_project_id, procurement_project_name, 
     bid_id, bid_name, bid_code, purchaser_id, purchaser_monety, file_path, supplier_id, 
-    operate_id, create_at, is_deleted
+    operate_id, process_status, create_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -106,13 +107,13 @@
     delete from t_win_bid
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" >
     delete from t_win_bid
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -120,16 +121,16 @@
       procurement_project_id, procurement_project_name, 
       bid_id, bid_name, bid_code, 
       purchaser_id, purchaser_monety, file_path, 
-      supplier_id, operate_id, create_at, 
-      is_deleted)
+      supplier_id, operate_id, process_status, 
+      create_at, is_deleted)
     values (#{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
       #{procurementProjectId,jdbcType=BIGINT}, #{procurementProjectName,jdbcType=VARCHAR}, 
       #{bidId,jdbcType=BIGINT}, #{bidName,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, 
       #{purchaserId,jdbcType=BIGINT}, #{purchaserMonety,jdbcType=DECIMAL}, #{filePath,jdbcType=VARCHAR}, 
-      #{supplierId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+      #{supplierId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{processStatus,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -173,6 +174,9 @@
       </if>
       <if test="operateId != null" >
         operate_id,
+      </if>
+      <if test="processStatus != null" >
+        process_status,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -221,6 +225,9 @@
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
       </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=VARCHAR},
+      </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
       </if>
@@ -229,7 +236,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" resultType="java.lang.Integer" >
     select count(*) from t_win_bid
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -280,6 +287,9 @@
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
+      <if test="record.processStatus != null" >
+        process_status = #{record.processStatus,jdbcType=VARCHAR},
+      </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
       </if>
@@ -307,13 +317,14 @@
       file_path = #{record.filePath,jdbcType=VARCHAR},
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
       operate_id = #{record.operateId,jdbcType=BIGINT},
+      process_status = #{record.processStatus,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
     update t_win_bid
     <set >
       <if test="projectId != null" >
@@ -355,6 +366,9 @@
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
+      <if test="processStatus != null" >
+        process_status = #{processStatus,jdbcType=VARCHAR},
+      </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
       </if>
@@ -364,7 +378,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
     update t_win_bid
     set project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
@@ -379,11 +393,12 @@
       file_path = #{filePath,jdbcType=VARCHAR},
       supplier_id = #{supplierId,jdbcType=BIGINT},
       operate_id = #{operateId,jdbcType=BIGINT},
+      process_status = #{processStatus,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

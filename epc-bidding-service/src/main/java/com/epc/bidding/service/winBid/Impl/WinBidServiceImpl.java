@@ -1,6 +1,5 @@
 package com.epc.bidding.service.winBid.Impl;
 
-
 import com.epc.bidding.domain.bidding.*;
 import com.epc.bidding.mapper.bidding.*;
 import com.epc.bidding.service.winBid.WinBidService;
@@ -15,10 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,20 +105,30 @@ public class WinBidServiceImpl implements WinBidService {
         return Result.success(vo);
     }
 
-  /*  *//**
+    /**
      * 插入中标公示表
      * @param handleWinBid
      * @return
-     *//*
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertTWinBidNominate(HandleWinBid handleWinBid) {
             TWinBidNominate entity=new TWinBidNominate();
             //查询项目记录
             TProjectBasicInfo tProjectBasicInfo = tProjectBasicInfoMapper.selectByPrimaryKey(handleWinBid.getProjectId());
-            entity.(tPurchaserDetailInfoMapper.selectName(tProjectBasicInfo.getPurchaserId()));
+            entity.setPurchaserName(tPurchaserDetailInfoMapper.selectName(tProjectBasicInfo.getPurchaserId()));
+            BeanUtils.copyProperties(handleWinBid,entity);
+            entity.setCreateAt(new Date());
+            entity.setUpdateAt(new Date());
+            entity.setProcessStatus(Const.PROCESS_STATE.NOT_SUBMIT);
+            entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            //获取标段记录
+            TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
+            entity.setBidCode(purchaseProjectBids.getBidCode());
             //查询采购项目记录
             TPurchaseProjectBasicInfo purchaseProjectBasicInfo = tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(handleWinBid.getProcurementProjectId());
             //判断是否委托代理机构(0否，1是)
-            vo.setIsPowerAgency(purchaseProjectBasicInfo.getIsOtherAgency());
+            entity.setIsPowerAgency(purchaseProjectBasicInfo.getIsOtherAgency());
             //采购项目人员参与人
             List<TPurchaseProjectParticipant> participantList = tPurchaseProjectParticipantMapper.selectPersonList(handleWinBid.getProcurementProjectId());
             if (!CollectionUtils.isEmpty(participantList)) {
@@ -126,17 +136,17 @@ public class WinBidServiceImpl implements WinBidService {
                 for (TPurchaseProjectParticipant pantEntity : participantList) {
                     List<TPurchaseProjectParticipantPermission> permissions = tPurchaseProjectParticipantPermissionMapper.getAgencyInfo(pantEntity.getId());
                     if (!CollectionUtils.isEmpty(permissions)) {
-                        vo.setAgencyCellPhone(pantEntity.getUserPhone());
-                        vo.setAgencyName(pantEntity.getUserName());
-                        vo.setAgencyCompanyname(pantEntity.getAgencyName());
+                        entity.setAgencyName(pantEntity.getUserName());
+                        entity.setAgencyPhone(pantEntity.getUserPhone());
                         break;
                     }
                 }
             }
-
-            //查询标段
-            TPurchaseProjectBids purchaseProjectBids = tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
-
-
-    }*/
+            try {
+                tWinBidNominateMapper.insertSelective(entity);
+            }catch (Exception e){
+                LOGGER.error("insertTWinBidNominate Error");
+            }
+            return Result.success(true);
+    }
 }

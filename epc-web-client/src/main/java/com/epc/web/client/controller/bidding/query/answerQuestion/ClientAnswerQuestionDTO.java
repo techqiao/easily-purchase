@@ -9,13 +9,19 @@ import lombok.Data;
  * @author linzhixiang
  */
 @Data
-@ApiModel(value = "ClientAnswerQuestionDTO",description = "根据公告Id查看问答情况")
+@ApiModel(value = "ClientAnswerQuestionDTO",description = "根据 类型+id 查看问答列表")
 public class ClientAnswerQuestionDTO extends PagerParam {
 
-    @ApiModelProperty(value = "公告Id")
-    private Long id;
-
-    @ApiModelProperty(value = "公告名称")
-    private String noticeName;
-
+    @ApiModelProperty(value = "采购项目ID")
+    private Long procurementProjectId;
+    @ApiModelProperty(value = "回答人姓名")
+    private String answerName;
+    @ApiModelProperty(value = "问题类型")
+    private String questionType;
+    @ApiModelProperty(value = "问题Id")
+    private Long typeId;
+    @ApiModelProperty(value = "提问人Id")
+    private Long questionerId;
+    @ApiModelProperty(value = "提问人姓名")
+    private String questionerName;
 }

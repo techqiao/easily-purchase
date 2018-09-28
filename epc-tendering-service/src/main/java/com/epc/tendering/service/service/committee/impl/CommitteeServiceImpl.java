@@ -14,6 +14,7 @@ import com.epc.tendering.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.tendering.service.service.committee.CommitteeService;
 import com.epc.web.facade.terdering.committee.dto.BidDTO;
 import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
+import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,49 +43,59 @@ public class CommitteeServiceImpl implements CommitteeService {
     TExpertBasicInfoMapper tExpertBasicInfoMapper;
 
     /**
-     * 组建委员会
+     * 组建评委员会信息
+     * @param dto
      * @return
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto){
-
-        /** 组建评委员会信息*/
+    public Result<Long> createCommittee(HandleCommittee dto){
         BAssessmentCommittee committee=new BAssessmentCommittee();
         BeanUtils.copyProperties(dto,committee);
-        committee.setProcessState(Const.PROCESS_STATE.CHECK);
+        committee.setProcessStatus(Const.PROCESS_STATE.SAVE);
         committee.setCreateAt(new Date());
         committee.setUpdateAt(new Date());
         committee.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         try{
             bAssessmentCommitteeMapper.insertSelective(committee);
         }catch (Exception e){
-            LOGGER.error("bAssessmentCommittee 插入失败");
+            LOGGER.error("createCommittee"+committee.toString()+e.getMessage(),e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error();
         }
+        return Result.success(committee.getId());
+    }
 
-        /** 组建评委员会标段对应专家 */
+
+    /**
+     * 根据委员会信息Id组建专家
+     * @param dto
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto){
+
+        /** 组建评委员--标段对应专专业人数 */
         List<BidDTO> bidList=dto.getBidDTOList();
         List<ExpertDTO> expertList=dto.getExpertDTOList();
-
         //获取要抽取的标段列表
         for(BidDTO bid:bidList){
             for(ExpertDTO expert:expertList){
                 BAssessmentCommitteeBid committeeBid =new BAssessmentCommitteeBid();
                 BeanUtils.copyProperties(bid,committeeBid);
                 BeanUtils.copyProperties(expert,committeeBid);
-                committeeBid.setCommitteeId(committee.getId());
+                committeeBid.setCommitteeId(dto.getCommitteeId());
                 committeeBid.setCreateAt(new Date());
                 committeeBid.setUpdateAt(new Date());
                 committeeBid.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 try{
                     bAssessmentCommitteeBidMapper.insertSelective(committeeBid) ;
                 }catch (Exception e){
-                    LOGGER.error("bAssessmentCommitteeBid 插入失败");
+                    LOGGER.error("bAssessmentCommitteeBid_"+committeeBid.toString()+e.getMessage(),e);
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 }
 
-                //组建评委员会专家
+                //专业人数--专家列表
                 TExpertBasicInfoCriteria criteria=new TExpertBasicInfoCriteria();
                 TExpertBasicInfoCriteria.Criteria cubCriteria=criteria.createCriteria();
                 cubCriteria.andProfessionEqualTo(expert.getProfessionalName());

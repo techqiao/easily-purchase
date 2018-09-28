@@ -14,13 +14,7 @@ public class QueryExtractExpertList implements Serializable {
 /**
  * BAssessmentCommittee
  */
-    private Long procurementProjectId;
-
-    private Integer totalNumber;
-
-    private Integer platformExpertsNumber;
-
-    private Integer ownerSpecialistsNumber;
+    private Long committeeId;
 
 /**
  *     BAssessmentCommitteeBid
@@ -33,8 +27,5 @@ public class QueryExtractExpertList implements Serializable {
     List<BidDTO> bidDTOList;
 
     private Long OperateId;
-
-    private Long purchaserId;
-
 
 }

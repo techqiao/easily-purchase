@@ -11,4 +11,6 @@ public class HandleOperatorId implements Serializable {
 
     private Long id;
 
+    private Integer isDeleted;
+
 }

@@ -97,7 +97,7 @@ DROP TABLE IF EXISTS `t_operator_basic_info`;
 CREATE TABLE `t_operator_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '运营商员工姓名',
 	`operator_id` BIGINT(11) UNSIGNED COMMENT '运营商(法人)ID',
 	`state` INT(2) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
@@ -188,7 +188,7 @@ CREATE TABLE `t_supplier_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '员工姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`supplier_id` BIGINT(11) UNSIGNED COMMENT '供应商(法人)ID',
 	`inviter_type` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构',
 	`inviter_id` BIGINT(11) NOT NULL COMMENT '邀请人Id',
@@ -241,7 +241,7 @@ CREATE TABLE `t_purchaser_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '采购人员工姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`purchaser_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
 	`inviter_type` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构',
 	`inviter_id` BIGINT(11) NOT NULL COMMENT '邀请人Id',
@@ -271,19 +271,21 @@ CREATE TABLE `t_purchaser_detail_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人:审核所需详细信息';
 
+
 -- 私库：采购人--供应商
-DROP TABLE IF EXISTS `t_purchaser_supplier`;
+DROP TABLE IF EXISTS `t_purchaser_supplier` ;
 CREATE TABLE `t_purchaser_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
+	`status` INT(1) DEFAULT '0'  COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商名称',
 	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
 	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
 	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
-	`purchaser_id` BIGINT(11) NOT NULL COMMENT '采购机构ID',
-	`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
+    `supplier_type` varchar(32) DEFAULT NULL COMMENT '白名单，white_list,黑名单：blank_list',
+	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
@@ -321,7 +323,7 @@ CREATE TABLE `t_purchaser_expert` (
 	`expert_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
 	`expert_name` VARCHAR(16) NOT NULL COMMENT '专家姓名',
 	`purchaser_id` CHAR(32) NOT NULL COMMENT '采购机构ID',
-		`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
+	`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
@@ -353,7 +355,7 @@ CREATE TABLE `t_agency_basic_info` (
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '招标代理机构员工姓名',
 	`agency_id` BIGINT(11) UNSIGNED COMMENT '招标(采购)代理机构 ID',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
+	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`inviter_type` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,',
 	`inviter_id` BIGINT(11) NOT NULL COMMENT '邀请人Id',
 	`inviter_company_id` INT(2) NOT NULL COMMENT '邀请人机构ID',
@@ -441,13 +443,13 @@ CREATE TABLE `t_expert_basic_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`name` VARCHAR(16) NOT NULL COMMENT '评标专家姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`profession` CHAR(11) NOT NULL COMMENT '专业',
 	`positional` CHAR(11) NOT NULL COMMENT '职称',
 	`level` CHAR(11) NOT NULL COMMENT '级别',
 	`circular_dt` DATETIME NOT NULL COMMENT '通知时间',
 	`circular_method` CHAR(11) NOT NULL COMMENT '通知方式',
 	`other_information` VARCHAR(8000) NOT NULL COMMENT '其他信息',
-	`password` CHAR(32) NOT NULL COMMENT '登录密码',
 	`inviter_type` INT(2) NOT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构',
 	`inviter_id` BIGINT(11) NOT NULL COMMENT '邀请人Id',
 	`inviter_company_id` INT(2) NOT NULL COMMENT '邀请人机构ID',
@@ -827,14 +829,15 @@ CREATE TABLE `b_tender_abolish_clause_template` (
 
 
 
--- #发售招标文件-问题答复    表 update
+
+-- #发售招标文件-问题答复表 update
 DROP TABLE IF EXISTS `b_answer_question`;
 CREATE TABLE `b_answer_question` (
 	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
 	`procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
 	`questioner_id` BIGINT(11) UNSIGNED COMMENT '提问人ID',
+	`question_type`VARCHAR(64) NOT NULL COMMENT '问题类型（公告-announcement,招标文件-bidFile,评标-bidEvaluation）',
 	`questioner_name`VARCHAR(64) NOT NULL COMMENT '提问人姓名',
-	`question_type`VARCHAR(64) NOT NULL COMMENT '类型  公告 招标文件 评标',
 	`type_id` BIGINT(11) UNSIGNED COMMENT '类型ID',
 	`problem` TEXT COMMENT  '问题',
 	`answer_id` BIGINT(11) UNSIGNED COMMENT '回答问题人Id',
@@ -1075,7 +1078,7 @@ CREATE TABLE `t_supplier_sign` (
 
 
 -- 招标流程:中标   表
-DROP TABLE `t_win_bid` ;
+DROP TABLE IF EXISTS `t_win_bid` ;
 CREATE TABLE `t_win_bid` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(11) NOT NULL COMMENT '项目id',
@@ -1099,7 +1102,7 @@ CREATE TABLE `t_win_bid` (
 
 
 -- 招标流程:服务费    表
-DROP TABLE `t_service_money_pay_record` ;
+DROP TABLE IF EXISTS `t_service_money_pay_record` ;
 
 CREATE TABLE `t_service_money_pay_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -1116,7 +1119,7 @@ CREATE TABLE `t_service_money_pay_record` (
 
 
 -- 投标流程:服务费支付    表
-DROP TABLE `t_service_money_pay` ;
+DROP TABLE IF EXISTS `t_service_money_pay` ;
 CREATE TABLE `t_service_money_pay` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
@@ -1191,7 +1194,7 @@ CREATE TABLE `b_technology_tender_standard` (
 
 
 -- 招标流程:下载招标文件    表
-DROP TABLE `t_purchase_project_file_download` ;
+DROP TABLE IF EXISTS `t_purchase_project_file_download` ;
 CREATE TABLE `t_purchase_project_file_download` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
@@ -1208,7 +1211,7 @@ CREATE TABLE `t_purchase_project_file_download` (
 
 
 -- 招标流程:下载招标文件付费    表
-DROP TABLE `t_purchase_project_file_pay` ;
+DROP TABLE IF EXISTS `t_purchase_project_file_pay` ;
 CREATE TABLE `t_purchase_project_file_pay` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `purchase_project_file_id` bigint(11) NOT NULL COMMENT '下载招标文件ID',

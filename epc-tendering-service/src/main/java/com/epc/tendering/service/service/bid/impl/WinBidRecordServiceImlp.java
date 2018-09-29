@@ -1,6 +1,7 @@
 package com.epc.tendering.service.service.bid.impl;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBids;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBidsCriteria;
@@ -82,7 +83,7 @@ public class WinBidRecordServiceImlp implements WinBidRecordService {
             TWinBidNominate nominate= tWinBidNominateMapper.selectByPrimaryKey(dto.getId());
             entity.setSupplierId(dto.getSupplierId());
             entity.setFilePath(dto.getFilePath());
-            entity.setProcessStatus(Const.PROCESS_STATE.SAVE);
+            entity.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
             entity.setProjectName(nominate.getProjectName());
             entity.setProjectCode(nominate.getProjectCode());
             entity.setBidName(nominate.getBidName());

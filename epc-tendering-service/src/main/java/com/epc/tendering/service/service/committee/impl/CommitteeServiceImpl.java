@@ -1,6 +1,7 @@
 package com.epc.tendering.service.service.committee.impl;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.committee.BAssessmentCommittee;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
@@ -51,7 +52,7 @@ public class CommitteeServiceImpl implements CommitteeService {
     public Result<Long> createCommittee(HandleCommittee dto){
         BAssessmentCommittee committee=new BAssessmentCommittee();
         BeanUtils.copyProperties(dto,committee);
-        committee.setProcessStatus(Const.PROCESS_STATE.SAVE);
+        committee.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
         committee.setCreateAt(new Date());
         committee.setUpdateAt(new Date());
         committee.setIsDeleted(Const.IS_DELETED.NOT_DELETED);

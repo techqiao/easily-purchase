@@ -496,8 +496,8 @@ CREATE TABLE `t_project_basic_info` (
 	`purchaser_id` BIGINT(11) NOT NULL COMMENT '采购商(法人)ID',
     `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
-    `create_at` datetime  COMMENT '创建时间',
-    `update_at` datetime  COMMENT '最后修改时间',
+    `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
     `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:项目信息表';
@@ -516,8 +516,8 @@ CREATE TABLE `t_bidding_preview` (
 	`status` VARCHAR(64) DEFAULT 'created' COMMENT '状态  创建 created 发布release  失效invalid',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
-    `create_at` datetime NOT NULL  COMMENT '创建时间',
-    `update_at` datetime NOT NULL  COMMENT '最后修改时间',
+    `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程：预告表';
@@ -544,8 +544,8 @@ CREATE TABLE `t_purchase_project_basic_info` (
 	`is_other_agency` INT(1) DEFAULT '0' COMMENT '是否全权委托招标代理机构(0:不全权委托,1:全权委托)',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
-	`create_at` DATETIME NOT NULL COMMENT '创建时间',
-	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+    `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:采购项目表';

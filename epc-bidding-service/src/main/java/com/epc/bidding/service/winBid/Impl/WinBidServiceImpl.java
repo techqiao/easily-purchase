@@ -4,6 +4,7 @@ import com.epc.bidding.domain.bidding.*;
 import com.epc.bidding.mapper.bidding.*;
 import com.epc.bidding.service.winBid.WinBidService;
 import com.epc.common.Result;
+import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.bidding.handle.HandleWinBid;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
@@ -120,7 +121,7 @@ public class WinBidServiceImpl implements WinBidService {
             BeanUtils.copyProperties(handleWinBid,entity);
             entity.setCreateAt(new Date());
             entity.setUpdateAt(new Date());
-            entity.setProcessStatus(Const.PROCESS_STATE.NOT_SUBMIT);
+            entity.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
             entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             //获取标段记录
             TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());

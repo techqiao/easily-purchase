@@ -72,9 +72,9 @@
 				<excludes>
 					<exclude>filters/*</exclude>
 					<exclude>filters/*</exclude>
-					<exclude>application-dev.properties</exclude>
-					<exclude>application-test.properties</exclude>
-					<exclude>application-prod.properties</exclude>
+					<exclude>application-peer1.properties</exclude>
+					<exclude>application-peer2.properties</exclude>
+					<exclude>application-peer3.properties</exclude>
 				</excludes>
 			</resource>
 			<resource>
@@ -90,24 +90,24 @@
 
 	<profiles>
 		<profile>
-			<id>dev</id>
+			<id>peer1</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<filter-resource-name>dev</filter-resource-name>
+				<filter-resource-name>peer1</filter-resource-name>
 			</properties>
 		</profile>
 		<profile>
-			<id>test</id>
+			<id>peer2</id>
 			<properties>
-				<filter-resource-name>test</filter-resource-name>
+				<filter-resource-name>peer2</filter-resource-name>
 			</properties>
 		</profile>
 		<profile>
-			<id>prod</id>
+			<id>peer3</id>
 			<properties>
-				<filter-resource-name>prod</filter-resource-name>
+				<filter-resource-name>peer3</filter-resource-name>
 			</properties>
 		</profile>
 	</profiles>

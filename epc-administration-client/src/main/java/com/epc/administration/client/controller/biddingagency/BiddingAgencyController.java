@@ -2,11 +2,13 @@ package com.epc.administration.client.controller.biddingagency;
 
 
 import com.epc.administration.client.controller.biddingagency.dto.ClientQueryDetailIfo;
+import com.epc.administration.client.controller.biddingagency.handle.ClientAgencyForbiddenHandle;
 import com.epc.administration.client.controller.biddingagency.handle.ClientBiddingAgencyDetailInfo;
 import com.epc.administration.client.controller.biddingagency.handle.ClientExamineAgencyHandle;
 import com.epc.administration.client.controller.biddingagency.handle.ClientUserBasicInfo;
 import com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyClient;
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
@@ -75,5 +77,13 @@ public class BiddingAgencyController {
         ExamineAgencyHandle examineAgencyHandle= new ExamineAgencyHandle();
         BeanUtils.copyProperties(clientExamineAgencyHandle,examineAgencyHandle);
         return biddingAgencyClient.examineAgency(examineAgencyHandle);
+    }
+
+    @ApiOperation(value = "禁用解禁招标代理机构",notes = "禁用解禁招标代理机构")
+    @PostMapping("forbiddenAgencyUser")
+    public Result<Boolean> forbiddenAgencyUser(@RequestBody ClientAgencyForbiddenHandle clientAgencyForbiddenHandle){
+        AgencyForbiddenHandle agencyForbiddenHandle = new AgencyForbiddenHandle();
+        BeanUtils.copyProperties(clientAgencyForbiddenHandle,agencyForbiddenHandle);
+        return biddingAgencyClient.forbiddenAgencyUser(agencyForbiddenHandle);
     }
 }

@@ -2,10 +2,12 @@ package com.epc.platform.service.service.purchaser;
 
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
+import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
+import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public interface PurchaserService {
      * @param id
      * @return
      */
-    Result queryPurchaserDetailInfo(Long id);
+    Result<TPurchaserDetailInfo> queryPurchaserDetailInfo(Long id);
 
     /**
      * 查询所有采购人 ，分页展示
@@ -56,4 +58,10 @@ public interface PurchaserService {
      * @return
      */
     Result<Boolean> examinePurchaser(ExaminePurchaserHandle examinePurchaserHandle);
+
+    /**
+     * 启用锁定供应商
+     * @return
+     */
+    Result<Boolean> forbiddenPurchaserUser(PurchaserForbiddenHandle purchaserForbiddenHandle);
 }

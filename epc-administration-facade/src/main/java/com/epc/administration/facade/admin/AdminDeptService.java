@@ -2,6 +2,7 @@ package com.epc.administration.facade.admin;
 
 import com.epc.administration.facade.admin.handle.DeptHandle;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,16 +32,15 @@ public interface AdminDeptService {
      * @param deptId
      * @return
      */
-    @PostMapping(value ="getDept" , consumes = "application/json; charset=UTF-8")
+    @GetMapping(value ="getDept" , consumes = "application/json; charset=UTF-8")
      Result getDept(@RequestParam(value = "deptId") Long deptId) ;
 
     /**校验
      * @param deptName
-     * @param oldDeptName
      * @return
      */
     @PostMapping(value ="checkDeptName" , consumes = "application/json; charset=UTF-8")
-     Result checkDeptName(@RequestParam("deptName") String deptName, @RequestParam("oldDeptName") String oldDeptName);
+     Result<Boolean> checkDeptName(@RequestParam("deptName") String deptName);
 
     /**新增部门
      * @param deptHandle

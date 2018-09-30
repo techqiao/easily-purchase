@@ -1,6 +1,7 @@
 package com.epc.platform.service.service.biddingagency;
 
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
@@ -55,4 +56,11 @@ public interface AgencyService {
      * @return
      */
     Result<Boolean> examineAgency(ExamineAgencyHandle examineAgencyHandle);
+
+    /**
+     * 锁定招标代理机构
+     * @param agencyForbiddenHandle
+     * @return
+     */
+    Result<Boolean> forbiddenAgencyUser(AgencyForbiddenHandle agencyForbiddenHandle);
 }

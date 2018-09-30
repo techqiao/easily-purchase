@@ -30,10 +30,4 @@ public interface TSupplierBasicInfoMapper {
     int updateByPrimaryKeySelective(TSupplierBasicInfo record);
 
     int updateByPrimaryKey(TSupplierBasicInfo record);
-    /**
-     *
-     * @param supplierId
-     * @return
-     */
-    TSupplierBasicInfo selectBySupplierId(Long supplierId);
 }

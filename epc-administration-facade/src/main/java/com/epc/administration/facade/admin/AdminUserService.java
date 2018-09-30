@@ -3,6 +3,7 @@ package com.epc.administration.facade.admin;
 import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,18 +21,17 @@ public interface AdminUserService {
     /**
      * 检查用户是否存在
      * @param username
-     * @param oldusername
      * @return
      */
-    @PostMapping(value = "checkUserName", consumes = "application/json; charset=UTF-8")
-     Result checkUserName(@RequestParam("username") String username, @RequestParam("oldusername") String oldusername);
+    @GetMapping(value = "checkUserName")
+     Result<Boolean> checkUserName(@RequestParam("username") String username);
 
     /**
      * 获取用户详情
      * @param userId
      * @return
      */
-    @PostMapping(value = "getUser" ,consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "getUser")
      Result getUser(@RequestBody Long userId);
 
     /**
@@ -97,7 +97,7 @@ public interface AdminUserService {
      * @param userId
      * @return
      */
-    @PostMapping(value = "getUserDetail" ,consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "getUserDetail")
     Result getUserDetail(@RequestBody Long userId);
 
     /**

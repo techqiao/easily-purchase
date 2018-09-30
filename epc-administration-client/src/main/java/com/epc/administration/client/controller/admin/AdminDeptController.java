@@ -51,20 +51,19 @@ public class AdminDeptController {
      * @return
      */
     @ApiOperation(value = "获取部门信息", notes = "获取部门信息")
-    @PostMapping(value = "getDept")
-    public Result getDept(@RequestParam Long deptId) {
+    @GetMapping(value = "getDept")
+    public Result getDept(@RequestParam("deptId") Long deptId) {
        return  deptClient.getDept(deptId);
     }
 
     /**校验
      * @param deptName
-     * @param oldDeptName
      * @return
      */
-    @ApiOperation(value = "校验", notes = "校验")
-    @PostMapping(value = "checkDeptName")
-    public Result checkDeptName(@RequestParam("deptName") String deptName, @RequestParam("oldDeptName")String oldDeptName) {
-      return  deptClient.checkDeptName(deptName, oldDeptName);
+    @ApiOperation(value = "校验部门名是否重复 true不重复可以用", notes = "校验部门名是否以有")
+    @GetMapping(value = "checkDeptName")
+    public Result checkDeptName(@RequestParam("deptName") String deptName) {
+      return  deptClient.checkDeptName(deptName);
     }
 
     /**新增部门

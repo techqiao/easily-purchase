@@ -74,7 +74,7 @@ public class TPurchaserBasicInfoCriteria {
     }
 
     /**
-     * t_purchaser_basic_info 2018-09-28
+     * t_purchaser_basic_info 2018-09-30
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -577,52 +577,52 @@ public class TPurchaserBasicInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdEqualTo(Long value) {
             addCriterion("inviter_company_id =", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdNotEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdNotEqualTo(Long value) {
             addCriterion("inviter_company_id <>", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdGreaterThan(Integer value) {
+        public Criteria andInviterCompanyIdGreaterThan(Long value) {
             addCriterion("inviter_company_id >", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdGreaterThanOrEqualTo(Long value) {
             addCriterion("inviter_company_id >=", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdLessThan(Integer value) {
+        public Criteria andInviterCompanyIdLessThan(Long value) {
             addCriterion("inviter_company_id <", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdLessThanOrEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdLessThanOrEqualTo(Long value) {
             addCriterion("inviter_company_id <=", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdIn(List<Integer> values) {
+        public Criteria andInviterCompanyIdIn(List<Long> values) {
             addCriterion("inviter_company_id in", values, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdNotIn(List<Integer> values) {
+        public Criteria andInviterCompanyIdNotIn(List<Long> values) {
             addCriterion("inviter_company_id not in", values, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdBetween(Integer value1, Integer value2) {
+        public Criteria andInviterCompanyIdBetween(Long value1, Long value2) {
             addCriterion("inviter_company_id between", value1, value2, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andInviterCompanyIdNotBetween(Long value1, Long value2) {
             addCriterion("inviter_company_id not between", value1, value2, "inviterCompanyId");
             return (Criteria) this;
         }
@@ -867,6 +867,66 @@ public class TPurchaserBasicInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andIsForbiddenIsNull() {
+            addCriterion("is_forbidden is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenIsNotNull() {
+            addCriterion("is_forbidden is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenEqualTo(Integer value) {
+            addCriterion("is_forbidden =", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenNotEqualTo(Integer value) {
+            addCriterion("is_forbidden <>", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenGreaterThan(Integer value) {
+            addCriterion("is_forbidden >", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_forbidden >=", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenLessThan(Integer value) {
+            addCriterion("is_forbidden <", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenLessThanOrEqualTo(Integer value) {
+            addCriterion("is_forbidden <=", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenIn(List<Integer> values) {
+            addCriterion("is_forbidden in", values, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenNotIn(List<Integer> values) {
+            addCriterion("is_forbidden not in", values, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenBetween(Integer value1, Integer value2) {
+            addCriterion("is_forbidden between", value1, value2, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_forbidden not between", value1, value2, "isForbidden");
+            return (Criteria) this;
+        }
+
         public Criteria andIsDeletedIsNull() {
             addCriterion("is_deleted is null");
             return (Criteria) this;
@@ -932,7 +992,7 @@ public class TPurchaserBasicInfoCriteria {
      * 描述:t_purchaser_basic_info表的实体类
      * @version
      * @author:  01
-     * @创建时间: 2018-09-28
+     * @创建时间: 2018-09-30
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -942,7 +1002,7 @@ public class TPurchaserBasicInfoCriteria {
     }
 
     /**
-     * t_purchaser_basic_info 2018-09-28
+     * t_purchaser_basic_info 2018-09-30
      */
     public static class Criterion {
         private String condition;

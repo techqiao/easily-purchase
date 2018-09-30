@@ -2,6 +2,7 @@ package com.epc.platform.service.service.operator;
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
@@ -62,4 +63,11 @@ public interface OperatorService {
      * @return
      */
     Result<Boolean> examineOperator(ExamineOperatorHandle examineOperatorHandle);
+
+    /**
+     * 启用锁定运营商
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    Result<Boolean> forbiddenOperatorUser(OperatorForbiddenHandle operatorForbiddenHandle);
 }

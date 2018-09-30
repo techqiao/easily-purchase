@@ -27,7 +27,7 @@ public class AdminDeptHystrix implements AdminDeptService {
     }
 
     @Override
-    public Result checkDeptName(String deptName, String oldDeptName) {
+    public Result checkDeptName(String deptName) {
         return Result.hystrixError();
     }
 

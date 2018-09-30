@@ -1,12 +1,8 @@
 package com.epc.platform.service.service.operator.impl;
+import com.epc.administration.facade.operator.handle.*;
 import com.epc.administration.facade.operator.vo.OperatorAttachmentVO;
-import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
-import com.epc.administration.facade.operator.handle.OperatorAttachmentHandle;
-import com.epc.administration.facade.operator.handle.RoleDetailInfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
 import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
@@ -15,6 +11,7 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.platform.service.domain.operator.*;
+import com.epc.platform.service.domain.tagency.TAgencyBasicInfo;
 import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.platform.service.mapper.operator.TOperatorDetailInfoMapper;
@@ -241,6 +238,19 @@ public class OperatorServiceImpl implements OperatorService {
         TOperatorBasicInfo tOperatorBasicInfo= new TOperatorBasicInfo();
         tOperatorBasicInfo.setState(examineOperatorHandle.getState());
         tOperatorBasicInfo.setId(examineOperatorHandle.getAgencyId());
+        return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo)>0);
+    }
+
+    /**
+     *启动锁定运营商
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenOperatorUser(OperatorForbiddenHandle operatorForbiddenHandle) {
+        TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+        tOperatorBasicInfo.setIsForbidden(operatorForbiddenHandle.getIsForbidden());
+        tOperatorBasicInfo.setId(operatorForbiddenHandle.getId());
         return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo)>0);
     }
 }

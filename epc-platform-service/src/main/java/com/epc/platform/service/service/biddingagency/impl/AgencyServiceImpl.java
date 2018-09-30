@@ -1,12 +1,8 @@
 package com.epc.platform.service.service.biddingagency.impl;
+import com.epc.administration.facade.biddingagency.handle.*;
 import com.epc.administration.facade.biddingagency.vo.AgencyAttachmentVO;
-import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
-import com.epc.administration.facade.biddingagency.handle.AttachmentHandle;
-import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
-import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
-import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
 import com.epc.administration.facade.biddingagency.vo.AgencyUserAttachmentVO;
 import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.common.Result;
@@ -14,16 +10,13 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.domain.expert.TExpertBasicInfo;
 import com.epc.platform.service.domain.tagency.*;
-import com.epc.platform.service.mapper.reviewexpert.TExpertBasicInfoMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyAttachmentMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyBasicInfoMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyDetailInfoMapper;
 import com.epc.platform.service.service.biddingagency.AgencyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -229,5 +222,18 @@ public class AgencyServiceImpl implements AgencyService {
         tAgencyBasicInfo.setState(examineAgencyHandle.getState());
         tAgencyBasicInfo.setUpdateAt(new Date());
         return Result.success(tAgencyBasicInfoMapper.updateByExampleSelective(tAgencyBasicInfo,criteria)>0);
+    }
+
+    /**
+     * 锁定招标代理机构
+     * @param agencyForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenAgencyUser(AgencyForbiddenHandle agencyForbiddenHandle) {
+        TAgencyBasicInfo tAgencyBasicInfo= new TAgencyBasicInfo();
+        tAgencyBasicInfo.setId(agencyForbiddenHandle.getId());
+        tAgencyBasicInfo.setIsForbidden(agencyForbiddenHandle.getIsForbidden());
+        return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
     }
 }

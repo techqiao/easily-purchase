@@ -3,14 +3,17 @@ package com.epc.administration.client.controller.supplier;
 
 import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.controller.supplier.handle.ClientSupplierDetailInfo;
+import com.epc.administration.client.controller.supplier.handle.ClientSupplierForbiddenHandle;
 import com.epc.administration.client.controller.supplier.handle.ClientUserBasicInfo;
 import com.epc.administration.client.controller.supplier.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.supplier.handle.ClientExamineSupplierHandle;
 import com.epc.administration.client.remoteapi.supplier.SupplierClient;
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +21,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -58,7 +63,7 @@ public class SupplierUserController extends BaseController {
 
     @ApiOperation(value = "查询所有供应商资料分页展示",notes = "查询所有供应商资料分页展示")
     @PostMapping(value = "selectAllSupplierByPage",consumes = "application/json;charset=UTF-8")
-    public Result selectAllSupplierByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+    public Result<List<SupplierUserVO>> selectAllSupplierByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
         QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
         BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
         return supplierClient.selectAllSupplierByPage(queryDetailIfo);
@@ -70,6 +75,14 @@ public class SupplierUserController extends BaseController {
         ExamineSupplierHandle examineSupplierHandle = new ExamineSupplierHandle();
         BeanUtils.copyProperties(clientExamineSupplierHandle, examineSupplierHandle);
         return supplierClient.examineSupplier(examineSupplierHandle);
+    }
+
+    @ApiOperation(value = "启用锁定供应商",notes = "启用锁定供应商")
+    @PostMapping(value = "forbiddenSupplierUser" ,consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> forbiddenSupplierUser(@RequestBody ClientSupplierForbiddenHandle clientSupplierForbiddenHandle){
+        SupplierForbiddenHandle supplierForbiddenHandle = new SupplierForbiddenHandle();
+        BeanUtils.copyProperties(clientSupplierForbiddenHandle,supplierForbiddenHandle);
+        return supplierClient.forbiddenSupplierUser(supplierForbiddenHandle);
     }
 
 }

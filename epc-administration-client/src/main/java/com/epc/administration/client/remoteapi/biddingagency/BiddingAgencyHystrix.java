@@ -2,6 +2,7 @@ package com.epc.administration.client.remoteapi.biddingagency;
 
 import com.epc.administration.facade.biddingagency.BiddingAgencyService;
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.common.Result;
@@ -40,6 +41,10 @@ public class BiddingAgencyHystrix  implements BiddingAgencyService {
 
     @Override
     public Result<Boolean> examineAgency(ExamineAgencyHandle examineAgencyHandle) {
+        return Result.hystrixError();
+    }
+    @Override
+    public Result<Boolean> forbiddenAgencyUser(AgencyForbiddenHandle agencyForbiddenHandle) {
         return Result.hystrixError();
     }
 }

@@ -2,6 +2,7 @@ package com.epc.platform.service.service.purchaser.impl;
 
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
+import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
@@ -65,7 +66,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserBasicInfo.setInviterType(Const.Role.ROLE_CORPORATION);
         tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
         tPurchaserBasicInfo.setInviterId(Long.valueOf(Const.Role.ROLE_ADMIN));
-        tPurchaserBasicInfo.setInviterCompanyId(Const.Role.ROLE_ADMIN);
         try {
             return Result.success(tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo) > 0);
         } catch (BusinessException e) {
@@ -170,7 +170,7 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @return
      */
     @Override
-    public Result queryPurchaserDetailInfo(Long id) {
+    public Result<TPurchaserDetailInfo> queryPurchaserDetailInfo(Long id) {
         try {
             TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectByPrimaryKey(id);
             return Result.success(tPurchaserDetailInfo);
@@ -201,5 +201,18 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserBasicInfoCriteria criteria = new TPurchaserBasicInfoCriteria() ;
         criteria.createCriteria().andIdEqualTo(examinePurchaserHandle.getPurchaserId());
         return Result.success(tPurchaserBasicInfoMapper.updateByExampleSelective(tPurchaserBasicInfo,criteria)>0);
+    }
+
+    /**
+     * 启用锁定采购人
+     * @param purchaserForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenPurchaserUser(PurchaserForbiddenHandle purchaserForbiddenHandle) {
+        TPurchaserBasicInfo tPurchaserBasicInfo = new TPurchaserBasicInfo();
+        tPurchaserBasicInfo.setId(purchaserForbiddenHandle.getId());
+        tPurchaserBasicInfo.setIsForbidden(purchaserForbiddenHandle.getIsForbidden());
+        return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo)>0);
     }
 }

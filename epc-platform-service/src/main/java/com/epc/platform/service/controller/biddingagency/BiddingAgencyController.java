@@ -2,6 +2,7 @@ package com.epc.platform.service.controller.biddingagency;
 
 import com.epc.administration.facade.biddingagency.BiddingAgencyService;
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
@@ -81,5 +82,15 @@ public class BiddingAgencyController extends BaseController implements BiddingAg
     @Override
     public Result<Boolean> examineAgency(@RequestBody ExamineAgencyHandle examineAgencyHandle) {
         return agencyService.examineAgency( examineAgencyHandle);
+    }
+
+    /**
+     * 启用禁用招标代理机构
+     * @param agencyForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenAgencyUser(@RequestBody AgencyForbiddenHandle agencyForbiddenHandle) {
+        return agencyService.forbiddenAgencyUser(agencyForbiddenHandle);
     }
 }

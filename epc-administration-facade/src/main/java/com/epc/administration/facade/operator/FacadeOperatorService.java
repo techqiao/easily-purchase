@@ -2,10 +2,15 @@ package com.epc.administration.facade.operator;
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -45,7 +50,7 @@ public interface FacadeOperatorService {
      * @return
      */
     @GetMapping(value = "queryOperatorDetailInfo")
-    Result queryOperatorDetailInfo(@RequestParam("whereId") Long whereId);
+    Result<OperatorUserVO> queryOperatorDetailInfo(@RequestParam("whereId") Long whereId);
 
 
     /**
@@ -54,7 +59,7 @@ public interface FacadeOperatorService {
      * @return
      */
     @PostMapping(value = "selectAllOperatorByPage" ,consumes = "application/json; charset=UTF-8")
-    Result  selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<List<OperatorVO>>  selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
 
     /**
@@ -64,4 +69,12 @@ public interface FacadeOperatorService {
      */
     @PostMapping(value = "examineOperator" ,consumes = "application/json; charset=UTF-8")
     Result<Boolean> examineOperator(@RequestBody ExamineOperatorHandle examineOperatorHandle);
+
+    /**
+     * 锁定启动运营商
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    @PostMapping(value = "forbiddenOperatorUser" ,consumes = "application/json; charset=UTF-8")
+    Result<Boolean> forbiddenOperatorUser(@RequestBody OperatorForbiddenHandle operatorForbiddenHandle);
 }

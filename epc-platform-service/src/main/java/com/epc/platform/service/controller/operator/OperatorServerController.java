@@ -3,6 +3,7 @@ package com.epc.platform.service.controller.operator;
 import com.epc.administration.facade.operator.FacadeOperatorService;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
@@ -97,5 +98,13 @@ public class OperatorServerController extends BaseController implements FacadeOp
         return operatorService.examineOperator(examineOperatorHandle);
     }
 
-
+    /**
+     * 启动锁定运营商 0启用 1锁定
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenOperatorUser(OperatorForbiddenHandle operatorForbiddenHandle) {
+        return operatorService.forbiddenOperatorUser(operatorForbiddenHandle);
+    }
 }

@@ -3,12 +3,14 @@ package com.epc.platform.service.controller.purchaser;
 import com.epc.administration.facade.purchaser.PurchaserUserService;
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
+import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
 import com.epc.common.util.MD5Util;
 import com.epc.platform.service.controller.admin.BaseController;
+import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.platform.service.service.purchaser.PurchaserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -67,7 +69,7 @@ public class PurchaserController extends BaseController implements PurchaserUser
      * @return
      */
     @Override
-    public Result queryPurchaserDetailInfo(Long whereId) {
+    public Result<TPurchaserDetailInfo> queryPurchaserDetailInfo(Long whereId) {
         return purchaserService.queryPurchaserDetailInfo(whereId);
     }
 
@@ -95,4 +97,13 @@ public class PurchaserController extends BaseController implements PurchaserUser
     }
 
 
+    /**
+     * 启用锁定采购人
+     * @param purchaserForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenPurchaserUser(@RequestBody PurchaserForbiddenHandle purchaserForbiddenHandle) {
+        return purchaserService.forbiddenPurchaserUser(purchaserForbiddenHandle);
+    }
 }

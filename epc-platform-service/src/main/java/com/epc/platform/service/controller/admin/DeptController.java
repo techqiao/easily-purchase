@@ -32,7 +32,7 @@ public class DeptController extends BaseController implements AdminDeptService {
      * @return
      */
     @Override
-    public Result getDeptTree() {
+    public Result<Tree<SysAdminDept>> getDeptTree() {
         try {
             Tree<SysAdminDept> tree = this.sysAdminDeptService.getDeptTree();
             return Result.success(tree);
@@ -47,7 +47,7 @@ public class DeptController extends BaseController implements AdminDeptService {
      * @return
      */
     @Override
-    public Result deptList(DeptHandle dept) {
+    public Result deptList(@RequestBody DeptHandle dept) {
         try {
             List<SysAdminDept> deptList = this.sysAdminDeptService.findAllDepts(dept);
             return Result.success(deptList);
@@ -62,7 +62,7 @@ public class DeptController extends BaseController implements AdminDeptService {
      * @return
      */
     @Override
-    public Result getDept(@RequestParam Long deptId) {
+    public Result getDept(@RequestParam("deptId") Long deptId) {
         try {
             SysAdminDept dept = this.sysAdminDeptService.findById(deptId);
             return Result.success(dept);
@@ -72,18 +72,14 @@ public class DeptController extends BaseController implements AdminDeptService {
         }
     }
 
-    /**校验
+    /**校验部门名是否存在
      * @param deptName
-     * @param oldDeptName
      * @return
      */
     @Override
-    public Result checkDeptName(String deptName, String oldDeptName) {
-        if (StringUtils.isNotBlank(oldDeptName) && deptName.equalsIgnoreCase(oldDeptName)) {
-            return Result.success();
-        }
+    public Result<Boolean> checkDeptName(@RequestParam("deptName") String deptName) {
         SysAdminDept result = this.sysAdminDeptService.findByName(deptName);
-        return Result.success(result);
+        return Result.success(result==null?true:false);
     }
 
 

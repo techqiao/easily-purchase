@@ -1079,6 +1079,7 @@ CREATE TABLE `t_win_bid_nominate` (
 	`three_companyName` VARCHAR(20) NOT NULL COMMENT '第三中标人公司名称',
 	`open_start` DATETIME NOT NULL COMMENT '公开开始时间',
 	`open_end` DATETIME NOT NULL COMMENT '公开结束时间',
+	`file_path` VARCHAR(256) DEFAULT NULL COMMENT '中标公示附件',
 	`process_status` VARCHAR(64)  DEFAULT 'not_submit' COMMENT '审核 auditing, 批复 reply, 待发布wait_release,已发布 released, 未提交not_submit, 失效invalid',
 	`operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
 	`create_at` datetime NOT NULL COMMENT '创建时间',

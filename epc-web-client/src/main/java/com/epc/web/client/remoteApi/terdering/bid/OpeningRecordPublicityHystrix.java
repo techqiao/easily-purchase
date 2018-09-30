@@ -3,6 +3,8 @@ package com.epc.web.client.remoteApi.terdering.bid;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.FacadeOpeningRecordPublicityService;
 import com.epc.web.facade.terdering.bid.handle.HandOpeningRecordPublicity;
+import com.epc.web.facade.terdering.bid.handle.HandlePurchaseProjectBegin;
+import com.epc.web.facade.terdering.bid.vo.PurchaseProjectBeginVO;
 
 /**
  * <p>Description : easily-purchase
@@ -12,6 +14,16 @@ import com.epc.web.facade.terdering.bid.handle.HandOpeningRecordPublicity;
 public class OpeningRecordPublicityHystrix implements FacadeOpeningRecordPublicityService {
     @Override
     public Result<Boolean> insertOpeningRecordPublicity(HandOpeningRecordPublicity handOpeningRecordPublicity) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> insertPurchaseProjectBegin(HandlePurchaseProjectBegin handlePurchaseProjectBegin) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<PurchaseProjectBeginVO> getPurchaseProjectBegin(Long purchaseProjectId) {
         return Result.hystrixError();
     }
 }

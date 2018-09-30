@@ -990,6 +990,26 @@ CREATE TABLE `t_supplier_sign` (
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投标流程:供应商签到表';
 
+-- 发起招标表
+DROP TABLE IF EXISTS `t_purchase_project_begin`;
+CREATE TABLE `t_purchase_project_begin` (
+	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+	`packet_mode` VARCHAR(64)  COMMENT '发包方式 open公开 invite邀请',
+	`is_prequalification` INT(1) DEFAULT '0' COMMENT '是否资格预审 0否 1是',
+	`purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+	`purchase_project_name` varchar(32) NOT NULL COMMENT '采购项目名称',
+	`purchase_project_code` varchar(32) NOT NULL COMMENT '采购项目编号',
+	`project_id` BIGINT(11) NOT NULL COMMENT '项目ID',
+	`project_name` varchar(64) NOT NULL COMMENT '项目名称',
+	`project_code` varchar(64) NOT NULL COMMENT '项目编码',
+	`purchase_place` varchar(64) NOT NULL COMMENT '采购地点',
+	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
+	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
+    `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+ 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购项目：发起招标表 ';
 
 -- 招标流程:中标   表
 DROP TABLE IF EXISTS `t_win_bid` ;

@@ -28,7 +28,7 @@ import java.util.List;
 
 public class WinBidRecordController {
     @Autowired
-    WinBidClient winBidClient;
+    private WinBidClient winBidClient;
 
     /**
      * 获取中标通知列表
@@ -37,7 +37,7 @@ public class WinBidRecordController {
      */
     @ApiOperation(value = "获取中标通知列表")
     @PostMapping(value = "getTWinBidNominated", consumes = "application/json; charset=UTF-8")
-    Result<List<NominateVO>> getTWinBidNominated(@RequestBody Long procurementProjectId) {
+    public Result<List<NominateVO>> getTWinBidNominated(@RequestBody Long procurementProjectId) {
         return  winBidClient.getTWinBidNominated(procurementProjectId);
     }
 
@@ -49,7 +49,7 @@ public class WinBidRecordController {
      */
     @ApiOperation(value = "确认中标人和中标通知书")
     @PostMapping(value = "updateTWinBidNominated", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> updateTWinBidNominated(@RequestBody List<ClientWinBidding> dtoList){
+    public Result<Boolean> updateTWinBidNominated(@RequestBody List<ClientWinBidding> dtoList){
         List<HandleWinBidding> newList=new ArrayList<>();
         for(ClientWinBidding dto:dtoList){
             HandleWinBidding HandleWinBidding=new HandleWinBidding();

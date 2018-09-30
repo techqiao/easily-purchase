@@ -117,6 +117,7 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
         Date endDateAs = new Date(startDate);
         TBiddingPreviewCriteria criteria = new TBiddingPreviewCriteria();
         TBiddingPreviewCriteria.Criteria subCriteria = criteria.createCriteria();
+        criteria.setOrderByClause("id desc");
         subCriteria.andCreateAtBetween(startDateAs,endDateAs);
         try {
             List<TBiddingPreview> tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, pagerParam.getRowBounds());

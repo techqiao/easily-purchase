@@ -9,11 +9,12 @@
     <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
     <result column="inviter_type" property="inviterType" jdbcType="INTEGER" />
     <result column="inviter_id" property="inviterId" jdbcType="BIGINT" />
-    <result column="inviter_company_id" property="inviterCompanyId" jdbcType="INTEGER" />
+    <result column="inviter_company_id" property="inviterCompanyId" jdbcType="BIGINT" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="role" property="role" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_forbidden" property="isForbidden" jdbcType="INTEGER" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, name, cellphone, password, supplier_id, inviter_type, inviter_id, inviter_company_id, 
-    state, role, create_at, update_at, is_deleted
+    state, role, create_at, update_at, is_forbidden, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.supplier.TSupplierBasicInfoCriteria" >
     select
@@ -97,7 +98,6 @@
     <include refid="Base_Column_List" />
     from t_supplier_basic_info
     where id = #{id,jdbcType=BIGINT}
-    and is_deleted = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_supplier_basic_info
@@ -116,13 +116,13 @@
     insert into t_supplier_basic_info (name, cellphone, password, 
       supplier_id, inviter_type, inviter_id, 
       inviter_company_id, state, role, 
-      create_at, update_at, is_deleted
-      )
+      create_at, update_at, is_forbidden, 
+      is_deleted)
     values (#{name,jdbcType=VARCHAR}, #{cellphone,jdbcType=CHAR}, #{password,jdbcType=CHAR}, 
       #{supplierId,jdbcType=BIGINT}, #{inviterType,jdbcType=INTEGER}, #{inviterId,jdbcType=BIGINT}, 
-      #{inviterCompanyId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+      #{inviterCompanyId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isForbidden,jdbcType=INTEGER}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.platform.service.domain.supplier.TSupplierBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -163,6 +163,9 @@
       <if test="updateAt != null" >
         update_at,
       </if>
+      <if test="isForbidden != null" >
+        is_forbidden,
+      </if>
       <if test="isDeleted != null" >
         is_deleted,
       </if>
@@ -187,7 +190,7 @@
         #{inviterId,jdbcType=BIGINT},
       </if>
       <if test="inviterCompanyId != null" >
-        #{inviterCompanyId,jdbcType=INTEGER},
+        #{inviterCompanyId,jdbcType=BIGINT},
       </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
@@ -200,6 +203,9 @@
       </if>
       <if test="updateAt != null" >
         #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isForbidden != null" >
+        #{isForbidden,jdbcType=INTEGER},
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
@@ -237,7 +243,7 @@
         inviter_id = #{record.inviterId,jdbcType=BIGINT},
       </if>
       <if test="record.inviterCompanyId != null" >
-        inviter_company_id = #{record.inviterCompanyId,jdbcType=INTEGER},
+        inviter_company_id = #{record.inviterCompanyId,jdbcType=BIGINT},
       </if>
       <if test="record.state != null" >
         state = #{record.state,jdbcType=INTEGER},
@@ -250,6 +256,9 @@
       </if>
       <if test="record.updateAt != null" >
         update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isForbidden != null" >
+        is_forbidden = #{record.isForbidden,jdbcType=INTEGER},
       </if>
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
@@ -268,11 +277,12 @@
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
       inviter_type = #{record.inviterType,jdbcType=INTEGER},
       inviter_id = #{record.inviterId,jdbcType=BIGINT},
-      inviter_company_id = #{record.inviterCompanyId,jdbcType=INTEGER},
+      inviter_company_id = #{record.inviterCompanyId,jdbcType=BIGINT},
       state = #{record.state,jdbcType=INTEGER},
       role = #{record.role,jdbcType=INTEGER},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_forbidden = #{record.isForbidden,jdbcType=INTEGER},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -300,7 +310,7 @@
         inviter_id = #{inviterId,jdbcType=BIGINT},
       </if>
       <if test="inviterCompanyId != null" >
-        inviter_company_id = #{inviterCompanyId,jdbcType=INTEGER},
+        inviter_company_id = #{inviterCompanyId,jdbcType=BIGINT},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
@@ -313,6 +323,9 @@
       </if>
       <if test="updateAt != null" >
         update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isForbidden != null" >
+        is_forbidden = #{isForbidden,jdbcType=INTEGER},
       </if>
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
@@ -328,11 +341,12 @@
       supplier_id = #{supplierId,jdbcType=BIGINT},
       inviter_type = #{inviterType,jdbcType=INTEGER},
       inviter_id = #{inviterId,jdbcType=BIGINT},
-      inviter_company_id = #{inviterCompanyId,jdbcType=INTEGER},
+      inviter_company_id = #{inviterCompanyId,jdbcType=BIGINT},
       state = #{state,jdbcType=INTEGER},
       role = #{role,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_forbidden = #{isForbidden,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -349,16 +363,5 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-  </select>
-  <select id="selectBySupplierId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    <!--
-      WARNING - @mbggenerated
-      This element is automatically generated by MyBatis Generator, do not modify.
-      This element was generated on Fri Sep 14 15:15:25 CST 2018.
-    -->
-    select
-    <include refid="Base_Column_List" />
-    from t_supplier_basic_info
-    where supplier_id = #{supplierId,jdbcType=BIGINT}
   </select>
 </mapper>

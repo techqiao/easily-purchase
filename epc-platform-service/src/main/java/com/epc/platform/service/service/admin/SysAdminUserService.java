@@ -79,10 +79,10 @@ public interface SysAdminUserService {
 
     /**
      * 获取用户信息
-     * @param userHandle
+     * @param userId
      * @return
      */
-    SysAdminUser findUserDetail(UserHandle userHandle);
+    SysAdminUser findUserDetail(Long userId);
 
 
     /**

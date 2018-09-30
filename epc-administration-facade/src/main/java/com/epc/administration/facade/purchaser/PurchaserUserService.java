@@ -3,13 +3,17 @@ package com.epc.administration.facade.purchaser;
 
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
+import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
+import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 采购人接口
@@ -58,7 +62,7 @@ public interface PurchaserUserService {
      * @return
      */
     @PostMapping(value = "selectAllPurchaserByPage" ,consumes = "application/json; charset=UTF-8")
-    Result selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<List<PurchaserVO>> selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
 
     /**
@@ -68,4 +72,12 @@ public interface PurchaserUserService {
      */
     @PostMapping(value = "examinePurchaser",consumes ="application/json; charset=UTF-8" )
     Result examinePurchaser(ExaminePurchaserHandle examinePurchaserHandle);
+
+    /**
+     * 启用锁定采购人
+     * @param purchaserForbiddenHandle
+     * @return
+     */
+    @PostMapping(value = "forbiddenPurchaserUser" ,consumes ="application/json; charset=UTF-8"  )
+    Result<Boolean> forbiddenPurchaserUser(PurchaserForbiddenHandle purchaserForbiddenHandle);
 }

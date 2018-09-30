@@ -29,15 +29,14 @@ public class AdminUserController {
     @Autowired
     private SysAdminUserClient sysAdminUserClient;
 
-    /**检查用户是否存在
+    /**检查用户是否可用
      * @param username
-     * @param oldusername
      * @return
      */
-    @ApiOperation(value = "检查用户是否存在", notes = "检查用户是否存在")
-    @PostMapping(value = "checkUserName")
-    public Result checkUserName(@RequestParam("username") String username, @RequestParam("oldusername") String oldusername) {
-        return sysAdminUserClient.checkUserName(username, oldusername);
+    @ApiOperation(value = "检查用户是否可用", notes = "检查用户是否可用")
+    @GetMapping(value = "checkUserName")
+    public Result<Boolean> checkUserName(@RequestParam("username") String username) {
+        return sysAdminUserClient.checkUserName(username);
     }
 
     /**获取用户详情
@@ -45,8 +44,8 @@ public class AdminUserController {
      * @return
      */
     @ApiOperation(value = "获取用户详情", notes = "获取用户详情")
-    @PostMapping(value = "getUser")
-    public Result getUser(@RequestBody Long userId) {
+    @GetMapping(value = "getUser")
+    public Result getUser(@RequestParam("userId") Long userId) {
         return sysAdminUserClient.getUser(userId);
     }
 
@@ -135,8 +134,8 @@ public class AdminUserController {
      * @return
      */
     @ApiOperation(value = "获取用户基本信息", notes = "获取用户基本信息")
-    @PostMapping(value = "getUserDetail")
-    public Result getUserDetail(@RequestBody Long userId) {
+    @GetMapping(value = "getUserDetail")
+    public Result getUserDetail(@RequestParam("userId") Long userId) {
         return sysAdminUserClient.getUserDetail(userId);
     }
 

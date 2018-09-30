@@ -3,6 +3,7 @@ package com.epc.administration.client.remoteapi.reviewexpert;
 import com.epc.administration.facade.reviewexpert.ReviewExpertService;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
+import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.common.QueryRequest;
@@ -45,6 +46,11 @@ public class ReviewexpertHystrix implements ReviewExpertService {
 
     @Override
     public Result<Boolean> examineExpert(ExamineExpertHandle examineExpertHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> forbiddenExpertUser(ExpertForbiddenHandle expertForbiddenHandle) {
         return Result.hystrixError();
     }
 }

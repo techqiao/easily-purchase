@@ -53,12 +53,16 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     public List<SysAdminDept> findAllDepts(DeptHandle dept) {
         SysAdminDept sysAdminDept = new SysAdminDept();
         sysAdminDept.setDeptName(dept.getDeptName());
+        sysAdminDept.setParentId(dept.getParentId());
         try {
             final SysAdminDeptCriteria criteria = new SysAdminDeptCriteria();
             final SysAdminDeptCriteria.Criteria subCriteria = criteria.createCriteria();
 
             if (StringUtils.isNotBlank(sysAdminDept.getDeptName())) {
                 subCriteria.andDeptNameEqualTo(dept.getDeptName());
+            }
+            if(null!=dept.getParentId() ){
+                subCriteria.andParentIdEqualTo(dept.getParentId());
             }
             criteria.setOrderByClause("id");
             return this.sysAdminDeptMapper.selectByExample(criteria);

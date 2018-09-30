@@ -30,6 +30,4 @@ public interface TPurchaserBasicInfoMapper {
     int updateByPrimaryKeySelective(TPurchaserBasicInfo record);
 
     int updateByPrimaryKey(TPurchaserBasicInfo record);
-
-    TPurchaserBasicInfo selectByPurchaserId(Long purchaserId);
 }

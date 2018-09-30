@@ -3,13 +3,17 @@ package com.epc.administration.facade.supplier;
 
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 供应商接口
@@ -58,7 +62,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "selectAllSupplierByPage" ,consumes = "application/json; charset=UTF-8")
-    Result selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<List<SupplierUserVO>> selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
 
     /**
@@ -68,4 +72,12 @@ public interface SupplierUserService {
      */
     @PostMapping(value = "examineSupplier",consumes ="application/json; charset=UTF-8" )
     Result examineSupplier(ExamineSupplierHandle examineSupplierHandle);
+
+    /**
+     * 启用禁用供应商
+     * @param supplierForbiddenHandle
+     * @return
+     */
+    @PostMapping(value = "clientSupplierForbiddenHandle",consumes ="application/json; charset=UTF-8")
+    Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle);
 }

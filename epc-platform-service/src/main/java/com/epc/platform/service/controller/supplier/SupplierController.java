@@ -3,6 +3,7 @@ package com.epc.platform.service.controller.supplier;
 import com.epc.administration.facade.supplier.SupplierUserService;
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
@@ -95,5 +96,15 @@ public class SupplierController extends BaseController implements SupplierUserSe
     @Override
     public Result examineSupplier(@RequestBody ExamineSupplierHandle examineSupplierHandle) {
         return supplierService.examineSupplier(examineSupplierHandle);
+    }
+
+    /**
+     * 禁用启用供应商
+     * @param supplierForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
+        return supplierService.forbiddenSupplierUser(supplierForbiddenHandle);
     }
 }

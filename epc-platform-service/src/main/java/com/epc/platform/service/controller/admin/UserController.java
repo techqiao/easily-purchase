@@ -36,16 +36,12 @@ public class UserController extends BaseController implements AdminUserService {
 
     /**检查用户是否存在
      * @param username
-     * @param oldusername
      * @return
      */
     @Override
-    public Result checkUserName(String username, String oldusername) {
-        if (StringUtils.isNotBlank(oldusername) && username.equalsIgnoreCase(oldusername)) {
-            return Result.success();
-        }
+    public Result<Boolean> checkUserName(String username) {
         SysAdminUser result = this.sysAdminUserService.findByName(username,null);
-        return Result.success(result);
+        return Result.success(result==null?true:false);
     }
 
     /**获取用户详情
@@ -53,7 +49,7 @@ public class UserController extends BaseController implements AdminUserService {
      * @return
      */
     @Override
-    public Result getUser(@RequestBody Long userId) {
+    public Result<UserWithRole> getUser(@RequestParam("userId") Long userId) {
         try {
             UserWithRole userWithRole = sysAdminUserService.findById(userId);
             return Result.success(userWithRole);
@@ -178,11 +174,9 @@ public class UserController extends BaseController implements AdminUserService {
      * @return
      */
     @Override
-    public Result getUserDetail(@RequestBody Long userId) {
+    public Result getUserDetail(@RequestParam("userId") Long userId) {
         try {
-            UserHandle user = new UserHandle();
-            user.setId(userId);
-            return Result.success(this.sysAdminUserService.findUserDetail(user));
+            return Result.success(this.sysAdminUserService.findUserDetail(userId));
         } catch (Exception e) {
             LOGGER.error("获取用户信息失败", e);
             return Result.error("获取用户信息失败，请联系网站管理员！");

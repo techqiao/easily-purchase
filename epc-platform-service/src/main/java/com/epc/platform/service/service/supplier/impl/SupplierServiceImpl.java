@@ -1,10 +1,7 @@
 package com.epc.platform.service.service.supplier.impl;
 
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
-import com.epc.administration.facade.supplier.handle.AttachmentHandle;
-import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
-import com.epc.administration.facade.supplier.handle.SupplierHandle;
-import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.handle.*;
 import com.epc.administration.facade.supplier.vo.AttachmentVO;
 import com.epc.administration.facade.supplier.vo.SupplierAttachmentVO;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
@@ -21,7 +18,6 @@ import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.supplier.SupplierService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,17 +52,12 @@ public class SupplierServiceImpl  implements SupplierService {
     public Result insertSupplierUserInfo(UserBasicInfo userBasicInfo) {
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         pojo.setName(userBasicInfo.getName());
-        pojo.setInviterType(0);
-        pojo.setInviterId(0L);
-        pojo.setInviterCompanyId(0);
-        pojo.setSupplierId(0L);
         Date date = new Date();
         pojo.setCellphone(userBasicInfo.getCellphone());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        pojo.setPassword("123456");
         pojo.setName(userBasicInfo.getUsername());
         pojo.setState(Const.STATE.REGISTERED);
         try {
@@ -217,7 +208,7 @@ public class SupplierServiceImpl  implements SupplierService {
         return  tSupplierDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**
-     * 审核运营商
+     * 审核供应商
      * @param examineSupplierHandle
      * @return
      */
@@ -225,10 +216,20 @@ public class SupplierServiceImpl  implements SupplierService {
     public Result<Boolean> examineSupplier(ExamineSupplierHandle examineSupplierHandle) {
         TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
         tSupplierBasicInfo.setState(examineSupplierHandle.getState());
-        TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria() ;
-        criteria.createCriteria().andIdEqualTo(examineSupplierHandle.getSupplierId());
-        return Result.success(tSupplierBasicInfoMapper.updateByExampleSelective(tSupplierBasicInfo,criteria)>0);
+        tSupplierBasicInfo.setId(examineSupplierHandle.getSupplierId());
+        return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
     }
 
-
+    /**
+     * 启用禁用供应商
+     * @param supplierForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
+        TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
+        tSupplierBasicInfo.setId(supplierForbiddenHandle.getId());
+        tSupplierBasicInfo.setIsForbidden(supplierForbiddenHandle.getIsForbidden());
+        return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
+    }
 }

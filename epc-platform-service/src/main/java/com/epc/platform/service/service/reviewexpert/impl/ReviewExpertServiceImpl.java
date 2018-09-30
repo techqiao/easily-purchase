@@ -1,9 +1,7 @@
 package com.epc.platform.service.service.reviewexpert.impl;
 
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
-import com.epc.administration.facade.reviewexpert.handle.AttachmentHandle;
-import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
-import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
+import com.epc.administration.facade.reviewexpert.handle.*;
 import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.platform.service.domain.expert.*;
 import com.epc.platform.service.mapper.reviewexpert.TExpertAttachmentMapper;
@@ -11,7 +9,6 @@ import com.epc.platform.service.mapper.reviewexpert.TExpertBasicInfoMapper;
 import com.epc.platform.service.mapper.reviewexpert.TExpertDetailInfoMapper;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
 
-import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
@@ -20,13 +17,11 @@ import com.epc.common.exception.BusinessException;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +57,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
         pojo.setCellphone(userBasicInfo.getCellphone());
         pojo.setInviterType(Const.Role.ROLE_ADMIN);
         pojo.setInviterId(Long.valueOf(Const.Role.ROLE_ADMIN));
-        pojo.setInviterCompanyId(Const.Role.ROLE_ADMIN);
         pojo.setState(Const.STATE.REGISTERED);
         pojo.setCreateAt(new Date());
         pojo.setUpdateAt(new Date());
@@ -202,5 +196,18 @@ public class ReviewExpertServiceImpl implements ExpertService {
         TExpertBasicInfoCriteria criteria = new TExpertBasicInfoCriteria();
         criteria.createCriteria().andIdEqualTo(examineExpertHandle.getExpertId());
         return Result.success(tExpertBasicInfoMapper.updateByExampleSelective(tExpertBasicInfo,criteria)>0);
+    }
+
+    /**
+     * 启用锁定评审专家
+     * @param expertForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenExpertUser(ExpertForbiddenHandle expertForbiddenHandle) {
+        TExpertBasicInfo tExpertBasicInfo = new TExpertBasicInfo();
+        tExpertBasicInfo.setId(expertForbiddenHandle.getId());
+        tExpertBasicInfo.setIsForbidden(expertForbiddenHandle.getIsForbidden());
+        return Result.success(tExpertBasicInfoMapper.updateByPrimaryKeySelective(tExpertBasicInfo)>0);
     }
 }

@@ -3,6 +3,7 @@ package com.epc.platform.service.controller.reviewexpert;
 import com.epc.administration.facade.reviewexpert.ReviewExpertService;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
+import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
@@ -92,5 +93,15 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
     @Override
     public Result<Boolean> examineExpert(@RequestBody ExamineExpertHandle examineExpertHandle) {
         return expertService.examineExpert(examineExpertHandle);
+    }
+
+    /**
+     * 启用 锁定评审专家
+     * @param expertForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenExpertUser(@RequestBody ExpertForbiddenHandle expertForbiddenHandle) {
+        return expertService.forbiddenExpertUser(expertForbiddenHandle);
     }
 }

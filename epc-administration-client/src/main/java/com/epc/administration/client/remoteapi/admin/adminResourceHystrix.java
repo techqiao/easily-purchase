@@ -36,7 +36,7 @@ public class adminResourceHystrix implements AdminResourceService {
     }
 
     @Override
-    public Result checkResourceName(String resourceName, String type, String oldResourceName) {
+    public Result checkResourceName(String resourceName, String type) {
         return Result.hystrixError();
     }
 

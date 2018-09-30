@@ -1,6 +1,7 @@
 package com.epc.tendering.service.service.announcement.impl;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AnnouncementEnum;
 import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
@@ -10,12 +11,15 @@ import com.epc.tendering.service.mapper.announcement.BReleaseAnnouncementMapper;
 import com.epc.tendering.service.service.announcement.AnnouncementService;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
+import com.epc.web.facade.terdering.announcement.query.QueryAnnouncementVO;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +33,6 @@ import java.util.List;
 public class AnnouncementServiceImpl implements AnnouncementService {
     @Autowired
     private BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
-
     @Override
     public Result<Boolean> insertAnnouncement(HandleAnnouncement handleAnnouncement) {
         BReleaseAnnouncement bReleaseAnnouncement = new BReleaseAnnouncement();
@@ -86,5 +89,27 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         bReleaseAnnouncementMapper.batchUpdateStatus(list);
         return Boolean.TRUE;
     }
+
+
+    @Override
+    public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(QueryAnnouncementVO queryAnnouncementVO) {
+        List<PurchaseProjectAnnouncement> returnList = new ArrayList<>();
+        //资格预审公告 招标公告release 中标候选人公示 中标结果公示
+        BReleaseAnnouncementCriteria criteria = new BReleaseAnnouncementCriteria();
+        BReleaseAnnouncementCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andProcurementProjectIdEqualTo(queryAnnouncementVO.getProcurementProjectId());
+        subCriteria.andProcessStatusNotEqualTo(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
+        List<BReleaseAnnouncement> bReleaseAnnouncementList = bReleaseAnnouncementMapper.selectByExample(criteria);
+        for (BReleaseAnnouncement item : bReleaseAnnouncementList) {
+            PurchaseProjectAnnouncement pojo = new PurchaseProjectAnnouncement();
+            pojo.setFilePath(item.getBiddingDocumentsUrl());
+            pojo.setName(item.getTitle());
+            pojo.setType(AnnouncementEnum.RELEASE.getCode());
+            returnList.add(pojo);
+        }
+
+        return null;
+    }
+
 
 }

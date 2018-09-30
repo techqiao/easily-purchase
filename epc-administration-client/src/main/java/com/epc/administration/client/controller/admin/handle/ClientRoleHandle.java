@@ -20,12 +20,10 @@ public class ClientRoleHandle implements Serializable {
     @ApiModelProperty(value = "姓名")
     @NotEmpty(message = "ClientRoleHandle.name.null")
     private String name;
-    @ApiModelProperty(value = "部门ID")
-    @NotEmpty(message = "ClientRoleHandle.deptId.null")
-    private Long deptId;
-    @ApiModelProperty(value = "角色ID")
-    @NotEmpty(message = "ClientRoleHandle.userId.null")
-    private Long userId;
+    @ApiModelProperty(value = "资源列表id")
+    @NotEmpty(message = "ClientRoleHandle.resourceIds.null")
+    private Long[] resourceIds;
+
 
 
 }

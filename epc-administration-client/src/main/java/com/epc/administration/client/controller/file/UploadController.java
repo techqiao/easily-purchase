@@ -6,6 +6,8 @@ import com.epc.common.util.DateTimeUtil;
 import com.epc.common.util.FTPUtil;
 import com.epc.common.util.RandomNumberGenerator;
 import com.google.common.collect.Lists;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +27,7 @@ import java.util.Date;
  * <p>Date : 2018-09-11  22:50
  * <p>@author : wjq
  */
-@ApiIgnore
+@Api(value = "文件上传" ,tags = "文件上传")
 @RestController
 @RequestMapping("/upload")
 public class UploadController {
@@ -34,6 +36,7 @@ public class UploadController {
 
     public static final String ROOT = "E:\\HttpFiles\\";
 
+    @ApiOperation(value = "文件上传",tags = "文件上传")
     @PostMapping("/files")
     public String fileUpload(@RequestParam("file") MultipartFile multipartFile,
                              @RequestParam("dirName") String dirName,

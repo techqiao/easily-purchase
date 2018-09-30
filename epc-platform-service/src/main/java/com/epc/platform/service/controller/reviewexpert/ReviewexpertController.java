@@ -2,18 +2,20 @@ package com.epc.platform.service.controller.reviewexpert;
 
 import com.epc.administration.facade.reviewexpert.ReviewExpertService;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
+import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
-import com.epc.platform.service.domain.reviewexpertr.TExpertDetailInfo;
+import com.epc.platform.service.domain.expert.TExpertDetailInfo;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,39 +52,45 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
 
     /**
      * 评审专家资料删除
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
     @Override
-    public Result<Boolean> deleteReviewExpertDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return expertService.deleteExpertDetailInfo(queryDetailIfo);
+    public Result<Boolean> deleteReviewExpertDetailInfo(@RequestParam("whereId") Long whereId) {
+        return expertService.deleteExpertDetailInfo(whereId);
     }
 
     /**
      * 评审专家资料查询
+     * @param whereId
+     * @return
+     */
+    @Override
+    public Result<TExpertDetailInfo> queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId) {
+        return expertService.queryExpertDetailInfo(whereId);
+    }
+
+
+    /**
+     * 查询所有评审专家 分页展示
      * @param queryDetailIfo
      * @return
      */
     @Override
-    public Result<TExpertDetailInfo> queryReviewExpertDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return expertService.queryExpertDetailInfo(queryDetailIfo);
+    public Result selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+        PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
+        List<ReviewExpertVO> reviewExpertVOS = expertService.selectAllExpertByPage(queryDetailIfo);
+        PageInfo<ReviewExpertVO> pageInfo = new PageInfo<>(reviewExpertVOS);
+        return Result.success(getDataTable(pageInfo));
     }
 
     /**
-     * 评审专家资料模糊查询
-     * @param queryDetailIfo
+     * 审核评审专家
+     * @param examineExpertHandle
      * @return
      */
     @Override
-    public Result<List<TExpertDetailInfo>> selectReviewExpertDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return expertService.selectExpertDetailInfo(queryDetailIfo);
-    }
-
-    @Override
-    public Result selectAllExpertByPage(@RequestBody QueryRequest queryRequest) {
-        PageHelper.startPage(queryRequest.getPageNum(),queryRequest.getPageSize());
-        List<TExpertDetailInfo> tExpertDetailInfos = expertService.selectAllExpertByPage();
-        PageInfo<TExpertDetailInfo> pageInfo = new PageInfo<>(tExpertDetailInfos);
-        return Result.success(getDataTable(pageInfo));
+    public Result<Boolean> examineExpert(@RequestBody ExamineExpertHandle examineExpertHandle) {
+        return expertService.examineExpert(examineExpertHandle);
     }
 }

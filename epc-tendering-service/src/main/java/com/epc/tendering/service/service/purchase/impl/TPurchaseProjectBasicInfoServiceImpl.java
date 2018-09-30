@@ -51,7 +51,6 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
         TPurchaseProjectBasicInfo pojo = new TPurchaseProjectBasicInfo();
         BeanUtils.copyProperties(handlePurchaseProjectBasicInfoSub, pojo);
-        pojo.setCreateAt(new Date());
         //操作人ID
         Long operateId = handlePurchaseProjectBasicInfoSub.getOperateId();
         //操作人姓名
@@ -72,11 +71,12 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setPurchaseProjectStatus(PurchaseProjectStatusEnum.CREATED.getCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    //指定采购项目参与者 经办人 审核人 批复人 负责人
                     addUserRole(basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
                 } else if (pojo.getId() != null &&
                         tPurchaseProjectBasicInfoMapper.getPurchaseProjectStatusById(pojo.getId())
                                 .equals(PurchaseProjectStatusEnum.CREATED.getCode())) {
-                    //修改|刪除采购项目
+                    //修改|刪除采购项目 isDeleted 前端控制，修改删除
                     deleteAndUpdatePurchaseProject(pojo, operateId, creator, agentId, auditorId, purchaseProjectId, basicInfoList);
                 }
                 return Result.success();
@@ -118,7 +118,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     }
 
     /**
-     * 修改|刪除采购项目
+     * 修改|刪除采购项目  采购项目参与者
      *
      * @param pojo
      * @param operateId
@@ -128,7 +128,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
      * @param purchaseProjectId
      * @param basicInfoList
      */
-    private void deleteAndUpdatePurchaseProject(TPurchaseProjectBasicInfo pojo, Long operateId, String creator, Long agentId, Long auditorId, Long purchaseProjectId, List<HandleParticipantBasicInfo> basicInfoList) {
+    private void  deleteAndUpdatePurchaseProject(TPurchaseProjectBasicInfo pojo, Long operateId, String creator, Long agentId, Long auditorId, Long purchaseProjectId, List<HandleParticipantBasicInfo> basicInfoList) {
         tPurchaseProjectBasicInfoMapper.updateByPrimaryKeySelective(pojo);
         final TPurchaseProjectParticipantCriteria criteria = new TPurchaseProjectParticipantCriteria();
         criteria.createCriteria().andPurchaseProjectIdEqualTo(pojo.getId());

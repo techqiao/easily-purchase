@@ -1,5 +1,7 @@
 package com.epc.platform.service.mapper.tagency;
 
+import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 import com.epc.platform.service.domain.tagency.TAgencyDetailInfoCriteria;
 import org.apache.ibatis.annotations.Param;
@@ -110,4 +112,15 @@ public interface TAgencyDetailInfoMapper {
      * @return
      */
     List<TAgencyDetailInfo> selectByName(String companyName);
+
+
+    /**
+     * 分页查询
+     * @return
+     */
+    List<BiddingAgencyVO> selectByPage(QueryDetailIfo queryDetailIfo);
+
+
+
+
 }

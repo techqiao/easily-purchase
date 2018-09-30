@@ -1,7 +1,9 @@
 package com.epc.platform.service.service.admin.impl;
 
+import com.epc.administration.facade.admin.dto.QueryRoleInfo;
 import com.epc.administration.facade.admin.dto.UpdateRoleDTO;
 import com.epc.administration.facade.admin.handle.RoleHandle;
+import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.platform.service.domain.admin.*;
 import com.epc.platform.service.mapper.admin.SysAdminRoleMapper;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +51,12 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     }
 
     @Override
-    public List<SysAdminRole> findAllRole() {
+    public List<SysAdminRole> findAllRole(QueryRoleInfo queryRoleInfo) {
+        if (queryRoleInfo.getName() !=null){
+            String name = queryRoleInfo.getName();
+            name = "%"+name+"%";
+            return sysAdminRoleMapper.selectLikeName(name);
+        }
         try {
             final SysAdminRoleCriteria criteria = new SysAdminRoleCriteria();
             criteria.setOrderByClause("id desc");
@@ -83,15 +91,15 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     }
 
     @Override
-    public void addRole(RoleHandle role, Long[] resourceIds) {
+    public void addRole(RoleHandle role) {
         SysAdminRole sysAdminRole = new SysAdminRole();
         sysAdminRole.setMemo(role.getMemo());
         sysAdminRole.setName(role.getName());
-        sysAdminRole.setDeptId(role.getDepId());
         sysAdminRole.setCreateAt(new Date());
         sysAdminRole.setUpdateAt(new Date());
         sysAdminRole.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         sysAdminRoleMapper.insertSelective(sysAdminRole);
+        Long[] resourceIds = role.getResourceIds();
         setRoleResources(sysAdminRole, resourceIds);
     }
 
@@ -107,23 +115,35 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
         List<String> list = Arrays.asList(roleIds.split(","));
         List<Long> longList = list.stream().map(Long::parseLong).collect(Collectors.toList());
         this.batchDelete(longList);
+        for (Long aLong : longList) {
+            SysAdminRoleResourceCriteria criteria = new SysAdminRoleResourceCriteria();
+            criteria.createCriteria().andAmdinRoleIdEqualTo(aLong);
+            sysAdminRoleResourceMapper.deleteByExample(criteria);
+        }
         this.sysAdminRoleResourceService.deleteRoleResourceByRoleId(roleIds);
         this.sysAdminUserRoleService.deleteUserRolesByRoleId(roleIds);
     }
 
     @Override
-    public void updateRole(UpdateRoleDTO updateRoleDTO, Long[] resourceIds) {
+    public Result updateRole(UpdateRoleDTO updateRoleDTO) {
         SysAdminRole sysAdminRole = new SysAdminRole();
-        sysAdminRole.setDeptId(updateRoleDTO.getDepId());
         sysAdminRole.setName(updateRoleDTO.getName());
         sysAdminRole.setMemo(updateRoleDTO.getMemo());
         sysAdminRole.setId(updateRoleDTO.getRoleId());
         sysAdminRole.setUpdateAt(new Date());
         this.sysAdminRoleMapper.updateByPrimaryKeySelective(sysAdminRole);
         final SysAdminRoleResourceCriteria criteria = new SysAdminRoleResourceCriteria();
-        criteria.createCriteria().andAmdinRoleIdEqualTo(updateRoleDTO.getDepId());
-        this.sysAdminRoleResourceMapper.deleteByExample(criteria);
-        setRoleResources(sysAdminRole, resourceIds);
+        try {
+            criteria.createCriteria().andAmdinRoleIdEqualTo(updateRoleDTO.getRoleId());
+            sysAdminRoleResourceMapper.deleteByExample(criteria);
+            Long[] resourceIds = updateRoleDTO.getResourceIds();
+            setRoleResources(sysAdminRole, resourceIds);
+            return Result.success("修改成功");
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error();
+        }
+
     }
 
 
@@ -132,10 +152,16 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
      * @param longList
      * @return
      */
-    public int batchDelete(List<Long> longList) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> batchDelete(List<Long> longList) {
         final SysAdminRoleCriteria criteria = new SysAdminRoleCriteria();
         criteria.createCriteria().andIdIn(longList);
-        return this.sysAdminRoleMapper.deleteByExample(criteria);
+        try {
+            return Result.success(sysAdminRoleMapper.deleteByExample(criteria)>0);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+           return Result.error() ;
+        }
     }
 
     /**

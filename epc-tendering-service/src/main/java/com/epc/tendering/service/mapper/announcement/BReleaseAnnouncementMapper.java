@@ -43,7 +43,7 @@ public interface BReleaseAnnouncementMapper {
 
     int batchUpdateStatus(List<BReleaseAnnouncement> list);
 
-   /* @Select("select t.process_status from b_release_announcement where id=#{id}")
-    @ResultType(String.class)*/
+    @Select("select t.process_status from b_release_announcement where id=#{id}")
+    @ResultType(String.class)
     String getProcessStatusById(Long id);
 }

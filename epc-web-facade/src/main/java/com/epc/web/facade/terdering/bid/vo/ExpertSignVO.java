@@ -1,5 +1,7 @@
 package com.epc.web.facade.terdering.bid.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -7,30 +9,19 @@ import lombok.Data;
  * <p>Date : 2018-09-26 20:00
  * <p>@Author : wjq
  */
+@ApiModel(value = "评标专家签到")
 @Data
 public class ExpertSignVO {
-    /**
-     * 采购项目ID
-     */
+    @ApiModelProperty(value = "采购项目ID")
     private Long procurementProjectId;
-    /**
-     * 标段ID
-     */
+    @ApiModelProperty(value = "标段ID")
     private Long bidsId;
-    /**
-     * 评标专家ID
-     */
+    @ApiModelProperty(value = "评标专家ID")
     private Long expertId;
-    /**
-     * 评标专家姓名
-     */
+    @ApiModelProperty(value = "评标专家姓名")
     private String expertName;
-    /**
-     * 评标专家电话
-     */
+    @ApiModelProperty(value = "评标专家电话")
     private String expertPhone;
-    /**
-     * 是否已签到
-     */
+    @ApiModelProperty(value = "是否已签到")
     private Integer isSign;
 }

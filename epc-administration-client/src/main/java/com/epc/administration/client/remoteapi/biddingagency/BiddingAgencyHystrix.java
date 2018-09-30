@@ -1,10 +1,9 @@
 package com.epc.administration.client.remoteapi.biddingagency;
 
 import com.epc.administration.facade.biddingagency.BiddingAgencyService;
+import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.common.Result;
 
 /**
@@ -15,32 +14,32 @@ import com.epc.common.Result;
 public class BiddingAgencyHystrix  implements BiddingAgencyService {
 
     @Override
-    public Result<Boolean> insertBiddingAgencyBasicInfo(UserBasicInfo userBasicInfo) {
+    public Result<Boolean> insertBiddingAgencyBasicInfo(com.epc.administration.facade.biddingagency.handle.UserBasicInfo userBasicInfo) {
         return Result.hystrixError();
     }
 
     @Override
     public Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
-       return Result.hystrixError();
+        return  Result.hystrixError();
     }
 
     @Override
-    public Result<Boolean> deleteBiddingAgencyDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result<Boolean> deleteBiddingAgencyDetailInfo(Long whereId) {
+        return  Result.hystrixError();
+    }
+
+    @Override
+    public Result queryBiddingAgencyDetailInfo(Long whereId) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryBiddingAgencyDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result selectAllAgencyByPage(QueryDetailIfo queryDetailIfo) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result selectBiddingAgencyDetailInfo(QueryDetailIfo queryDetailIfo) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result selectAllAgencyByPage(QueryRequest queryRequest) {
+    public Result<Boolean> examineAgency(ExamineAgencyHandle examineAgencyHandle) {
         return Result.hystrixError();
     }
 }

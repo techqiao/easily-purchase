@@ -18,6 +18,12 @@ public class BReleaseAnnouncement implements Serializable {
 
     private Date biddingEnd;
 
+    private Date defecationStart;
+
+    private Date defecationEnd;
+
+    private String title;
+
     private String processStatus;
 
     private Long operateId;
@@ -88,6 +94,30 @@ public class BReleaseAnnouncement implements Serializable {
         this.biddingEnd = biddingEnd;
     }
 
+    public Date getDefecationStart() {
+        return defecationStart;
+    }
+
+    public void setDefecationStart(Date defecationStart) {
+        this.defecationStart = defecationStart;
+    }
+
+    public Date getDefecationEnd() {
+        return defecationEnd;
+    }
+
+    public void setDefecationEnd(Date defecationEnd) {
+        this.defecationEnd = defecationEnd;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
+    }
+
     public String getProcessStatus() {
         return processStatus;
     }
@@ -149,6 +179,9 @@ public class BReleaseAnnouncement implements Serializable {
         sb.append(", biddingDocumentsUrl=").append(biddingDocumentsUrl);
         sb.append(", biddingStart=").append(biddingStart);
         sb.append(", biddingEnd=").append(biddingEnd);
+        sb.append(", defecationStart=").append(defecationStart);
+        sb.append(", defecationEnd=").append(defecationEnd);
+        sb.append(", title=").append(title);
         sb.append(", processStatus=").append(processStatus);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);

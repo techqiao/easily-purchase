@@ -4,8 +4,11 @@ import com.epc.common.Result;
 import com.epc.tendering.service.service.bid.OpeningRecordPublicityService;
 import com.epc.web.facade.terdering.bid.FacadeOpeningRecordPublicityService;
 import com.epc.web.facade.terdering.bid.handle.HandOpeningRecordPublicity;
+import com.epc.web.facade.terdering.bid.handle.HandlePurchaseProjectBegin;
+import com.epc.web.facade.terdering.bid.vo.PurchaseProjectBeginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -21,5 +24,15 @@ public class OpeningRecordPublicityController implements FacadeOpeningRecordPubl
     @Override
     public Result<Boolean> insertOpeningRecordPublicity(@RequestBody HandOpeningRecordPublicity handOpeningRecordPublicity) {
         return openingRecordPublicityService.insertOpeningRecordPublicity(handOpeningRecordPublicity);
+    }
+
+    @Override
+    public Result<Boolean> insertPurchaseProjectBegin(@RequestBody HandlePurchaseProjectBegin handlePurchaseProjectBegin) {
+        return openingRecordPublicityService.insertPurchaseProjectBegin(handlePurchaseProjectBegin);
+    }
+
+    @Override
+    public Result<PurchaseProjectBeginVO> getPurchaseProjectBegin(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId) {
+        return openingRecordPublicityService.getPurchaseProjectBegin(purchaseProjectId);
     }
 }

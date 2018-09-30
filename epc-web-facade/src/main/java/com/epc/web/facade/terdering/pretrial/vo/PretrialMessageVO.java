@@ -1,5 +1,7 @@
 package com.epc.web.facade.terdering.pretrial.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,44 +13,28 @@ import java.util.List;
  * <p>Date : 2018-09-25 10:32
  * <p>@Author : wjq
  */
+@ApiModel(value = "资格审查详情")
 @Data
 public class PretrialMessageVO implements Serializable {
     private static final long serialVersionUID = -3859386139226644319L;
-    /**
-     * id
-     */
+
+    @ApiModelProperty(value = "id")
     private Long id;
-    /**
-     * 采购项目ID
-     */
+    @ApiModelProperty(value = "采购项目ID")
     private Long purchaseProjectId;
-    /**
-     * 公告ID
-     */
+    @ApiModelProperty(value = "公告ID")
     private Long releaseAnnouncementId;
-    /**
-     * 公司ID
-     */
+    @ApiModelProperty(value = "公司ID")
     private Long companyId;
-    /**
-     * 是否通过: review-审核中,noPass-未通过,pass-通过
-     */
+    @ApiModelProperty(value = "是否通过: review-审核中,noPass-未通过,pass-通过")
     private String status;
-    /**
-     * 信息
-     */
+    @ApiModelProperty(value = "信息")
     private String content;
-    /**
-     * 操作人ID
-     */
+    @ApiModelProperty(value = "操作人ID")
     private Long operateId;
-    /**
-     * 创建者
-     */
+    @ApiModelProperty(value = "创建者")
     private String creator;
-    /**
-     * 文件
-     */
+    @ApiModelProperty(value = "文件")
     private List<String> url;
 
 }

@@ -1,6 +1,7 @@
 package com.epc.administration.client.controller.admin.handle;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -26,6 +27,9 @@ public class ClientUserHandle extends ClientUserLoginHandle implements Serializa
     @ApiModelProperty(value = "用户id")
     @NotEmpty(message = "ClientUserHandle.id.null")
     private Long id;
+    @ApiModelProperty(value = "资源id")
+    @NotEmpty(message = "ClientUserHandle.roles.null")
+    private Long[] roles;
 
 
 }

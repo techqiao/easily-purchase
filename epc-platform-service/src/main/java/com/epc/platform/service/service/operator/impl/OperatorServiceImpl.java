@@ -1,28 +1,30 @@
 package com.epc.platform.service.service.operator.impl;
+import com.epc.administration.facade.operator.vo.OperatorAttachmentVO;
+import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorAttachmentHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.domain.operator.TOperatorAttachment;
-import com.epc.platform.service.domain.operator.TOperatorBasicInfo;
-import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
-import com.epc.platform.service.domain.operator.TOperatorDetailInfoCriteria;
+import com.epc.platform.service.domain.operator.*;
 import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.platform.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.platform.service.service.operator.OperatorService;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +48,7 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 新增运营商基本信息
+     *
      * @param handleOperator
      * @return
      */
@@ -55,10 +58,9 @@ public class OperatorServiceImpl implements OperatorService {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date = new Date();
         pojo.setCellphone(handleOperator.getCellphone());
-        pojo.setPassword(handleOperator.getPassword());
         pojo.setName(handleOperator.getUsername());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
-        pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setName(handleOperator.getUsername());
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
@@ -76,6 +78,7 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 新增运营商补全信息
+     *
      * @param roleDetailInfo
      * @return
      */
@@ -83,47 +86,65 @@ public class OperatorServiceImpl implements OperatorService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
-        BeanUtils.copyProperties(roleDetailInfo, detailInfo);
         Date date = new Date();
-        detailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        detailInfo.setOperatorId(roleDetailInfo.getId());
+        detailInfo.setCompanyName(roleDetailInfo.getCompanyName());
+        detailInfo.setUniformCreditCode(roleDetailInfo.getUniformCreditCode());
+        detailInfo.setPublicBankName(roleDetailInfo.getPublicBankName());
+        detailInfo.setPublicBanAccountNumber(roleDetailInfo.getPublicBanAccountNumber());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
+        detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         TOperatorAttachment attachment = new TOperatorAttachment();
-        attachment.setOperatorId(roleDetailInfo.getUserId());
+        attachment.setOperatorId(roleDetailInfo.getId());
+        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
-        attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         try {
-            System.out.println();
+            //新增详细信息
             tOperatorDetailInfoMapper.insertSelective(detailInfo);
+            //新增带公章的授权书
             attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
             attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
             tOperatorAttachmentMapper.insertSelective(attachment);
-            //经办人(运营商员工)手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getOperatorIdCardFront());
-            tOperatorAttachmentMapper.insertSelective(attachment);
-            //法人身份证反面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
-            tOperatorAttachmentMapper.insertSelective(attachment);
-            //法人身份证正面照片url
+            //法人手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
             attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
             tOperatorAttachmentMapper.insertSelective(attachment);
-            //营业执照照片url
+            //法人手持身份证反面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+            //营业执照
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
-            tOperatorAttachmentMapper.insertSelective(attachment);
+
             //资质证书url
-            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getQualificationCertificate());
-            return Result.success(tOperatorAttachmentMapper.insertSelective(attachment)>0);
-        }catch (BusinessException e) {
+            List<OperatorAttachmentHandle> qualificationCertificateList = roleDetailInfo.getQualificationCertificateList();
+
+            if (qualificationCertificateList != null) {
+                for (OperatorAttachmentHandle operatorAttachmentHandle : qualificationCertificateList) {
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    attachment.setCertificateFilePath(operatorAttachmentHandle.getCertificateFilePath());
+                    attachment.setCertificateName(operatorAttachmentHandle.getCertificateName());
+                    tOperatorAttachmentMapper.insertSelective(attachment);
+                }
+            }
+            //执行成功更新提交状态
+            TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+            tOperatorBasicInfo.setId(roleDetailInfo.getId());
+            tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
+            tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+            tOperatorBasicInfo.setUpdateAt(new Date());
+            return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
+        } catch (BusinessException e) {
             LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("BusinessException insertOperatorDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
@@ -131,17 +152,18 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 删除运营商
+     *
      * @param
      * @return
      */
     @Override
-    public Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
-        TOperatorDetailInfo tOperatorDetailInfo = new TOperatorDetailInfo();
-        tOperatorDetailInfo.setId(queryDetailIfo.getWhereid());
-        tOperatorDetailInfo.setIsDeleted(1);
-        try{
-            return Result.success(tOperatorDetailInfoMapper.updateByPrimaryKeySelective(tOperatorDetailInfo)>0);
-        }catch (BusinessException e){
+    public Result<Boolean> deleteOperatorDetailInfo(Long whereId) {
+        TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+        tOperatorBasicInfo.setId(whereId);
+        tOperatorBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        try {
+            return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
+        } catch (BusinessException e) {
             LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
@@ -149,47 +171,76 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 查询运营商基本信息
+     *
      * @param
      * @return
      */
     @Override
-    public Result<TOperatorDetailInfo> queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
-            try {
-                TOperatorDetailInfo tOperatorDetailInfo = tOperatorDetailInfoMapper.selectByPrimaryKey(queryDetailIfo.getWhereid());
-                return Result.success(tOperatorDetailInfo);
-            } catch (BusinessException e) {
-                LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
-                return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+    public Result<OperatorUserVO> queryOperatorDetailInfo(Long whereId) {
+
+        TOperatorBasicInfo tOperatorBasicInfo;
+        TOperatorDetailInfo tOperatorDetailInfo;
+        List<TOperatorAttachment> tOperatorAttachments;
+        try {
+            tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(whereId);
+            if(tOperatorBasicInfo.getIsDeleted()!=0){
+                return Result.error();
             }
+            TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
+            tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(whereId);
+            tOperatorDetailInfo = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria).get(0);
+            TOperatorAttachmentCriteria tOperatorAttachmentCriteria = new TOperatorAttachmentCriteria();
+            tOperatorAttachmentCriteria.createCriteria().andOperatorIdEqualTo(whereId);
+            tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(tOperatorAttachmentCriteria);
+        } catch (Exception e1) {
+            LOGGER.error("BusinessException selectOperatorUserVO : {}", e1);
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+        }
+        List<OperatorAttachmentVO> operatorAttachmentVOS = new ArrayList<>();
+        for (TOperatorAttachment tOperatorAttachment : tOperatorAttachments) {
+            OperatorAttachmentVO operatorAttachmentVO = new OperatorAttachmentVO();
+            operatorAttachmentVO.setCertificateFilePath(tOperatorAttachment.getCertificateFilePath());
+            operatorAttachmentVO.setCertificateName(tOperatorAttachment.getCertificateName());
+            operatorAttachmentVO.setCertificateType(tOperatorAttachment.getCertificateType());
+            operatorAttachmentVOS.add(operatorAttachmentVO);
+        }
+        OperatorUserVO operatorUserVO = new OperatorUserVO();
+        operatorUserVO.setOperatorAttachmentVOList(operatorAttachmentVOS);
+        operatorUserVO.setId(tOperatorBasicInfo.getId());
+        operatorUserVO.setCompanyName(tOperatorDetailInfo.getCompanyName());
+        operatorUserVO.setUniformCreditCode(tOperatorDetailInfo.getUniformCreditCode());
+        operatorUserVO.setPublicBankName(tOperatorDetailInfo.getPublicBankName());
+        operatorUserVO.setPublicBanAccountNumber(tOperatorDetailInfo.getPublicBanAccountNumber());
+        operatorUserVO.setCreateAt(new Date());
+        operatorUserVO.setIsDeleted(tOperatorBasicInfo.getIsDeleted());
+        operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
+        operatorUserVO.setState(tOperatorBasicInfo.getState());
+        operatorUserVO.setName(tOperatorBasicInfo.getName());
+        return Result.success(operatorUserVO);
     }
 
-    /**
-     * 根据公司名模糊查询运营商
-     * @param queryDetailIfo
-     * @return
-     */
-    @Override
-    public Result<List<TOperatorDetailInfo>> selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo) {
-        String where = queryDetailIfo.getWhere();
-        if(StringUtils.isNotBlank(queryDetailIfo.getWhere())){
-            where = "%" + where + "%";
-        }
-        return Result.success(tOperatorDetailInfoMapper.selectByName(where)) ;
-    }
+
+
 
     /**
      * 查询运营商 分页展示
      * @return
      */
     @Override
-    public List<TOperatorDetailInfo> selectAllOperatorByPage() {
-        try {
-        TOperatorDetailInfoCriteria criteria = new TOperatorDetailInfoCriteria();
-        criteria.setOrderByClause("id desc");
-        return  tOperatorDetailInfoMapper.selectByExample(criteria);
-        } catch (Exception e) {
-            LOGGER.error("获取运营商失败", e);
-            return new ArrayList<>();
-        }
+    public List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo) {
+        return  tOperatorDetailInfoMapper.selectByPage(queryDetailIfo);
+    }
+
+    /**
+     * 审核运营商
+     * @param examineOperatorHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> examineOperator(ExamineOperatorHandle examineOperatorHandle) {
+        TOperatorBasicInfo tOperatorBasicInfo= new TOperatorBasicInfo();
+        tOperatorBasicInfo.setState(examineOperatorHandle.getState());
+        tOperatorBasicInfo.setId(examineOperatorHandle.getAgencyId());
+        return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo)>0);
     }
 }

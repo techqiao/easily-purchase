@@ -1,20 +1,18 @@
 package com.epc.platform.service.controller.admin;
 
 import com.epc.administration.facade.admin.AdminRoleService;
+import com.epc.administration.facade.admin.dto.QueryRoleInfo;
 import com.epc.administration.facade.admin.dto.UpdateRoleDTO;
 import com.epc.administration.facade.admin.handle.RoleHandle;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.admin.SysAdminRole;
 import com.epc.platform.service.service.admin.SysAdminRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,13 +30,12 @@ public class RoleController extends BaseController implements AdminRoleService {
     private SysAdminRoleService sysAdminRoleService;
 
     /**获取所有角色信息
-     * @param request
      * @return
      */
     @Override
-    public Result roleList(@RequestBody QueryRequest request) {
-        PageHelper.startPage(request.getPageNum(), request.getPageSize());
-        List<SysAdminRole> list = this.sysAdminRoleService.findAllRole();
+    public Result roleList(@RequestBody QueryRoleInfo queryRoleInfo) {
+        PageHelper.startPage(queryRoleInfo.getPageNum(), queryRoleInfo.getPageSize());
+        List<SysAdminRole> list = this.sysAdminRoleService.findAllRole(queryRoleInfo);
         PageInfo<SysAdminRole> pageInfo = new PageInfo<>(list);
         return Result.success(getDataTable(pageInfo)) ;
     }
@@ -56,28 +53,23 @@ public class RoleController extends BaseController implements AdminRoleService {
             return Result.error("获取角色信息失败，请联系网站管理员！");
         }
     }
-    /**根据角色名查询角色信息
+    /**校验角色是否存在
      * @param roleName
-     * @param oldRoleName
      * @return
      */
     @Override
-    public Result checkRoleName(String roleName, String oldRoleName) {
-        if (StringUtils.isNotBlank(oldRoleName) && roleName.equalsIgnoreCase(oldRoleName)) {
-            return Result.success();
-        }
-        SysAdminRole result = this.sysAdminRoleService.findByName(roleName);
-        return Result.success(result);
+    public Result checkRoleName(String roleName) {
+        SysAdminRole byName = sysAdminRoleService.findByName(roleName);
+        return Result.success(byName==null?true:false);
     }
     /**新增角色
      * @param role
-     * @param resourceIds
      * @return
      */
     @Override
-    public Result addRole(@RequestBody RoleHandle role, @RequestParam("resourceIds") Long[] resourceIds) {
+    public Result addRole(@RequestBody RoleHandle role) {
         try {
-            sysAdminRoleService.addRole(role, resourceIds);
+            sysAdminRoleService.addRole(role);
             return Result.success("新增角色成功！");
         } catch (Exception e) {
             LOGGER.error("新增角色失败", e);
@@ -100,13 +92,12 @@ public class RoleController extends BaseController implements AdminRoleService {
     }
     /**修改角色
      * @param updateRoleDTO
-     * @param resourceIds
      * @return
      */
     @Override
-    public Result updateRole(@RequestBody UpdateRoleDTO updateRoleDTO, Long[] resourceIds) {
+    public Result updateRole(@RequestBody UpdateRoleDTO updateRoleDTO) {
         try {
-            this.sysAdminRoleService.updateRole(updateRoleDTO, resourceIds);
+            this.sysAdminRoleService.updateRole(updateRoleDTO);
             return Result.success("修改角色成功！");
         } catch (Exception e) {
             LOGGER.error("修改角色失败", e);

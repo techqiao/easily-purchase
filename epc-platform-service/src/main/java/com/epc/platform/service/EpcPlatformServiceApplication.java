@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+/**
+ * @author 01
+ */
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan("com.epc.platform.service.mapper")

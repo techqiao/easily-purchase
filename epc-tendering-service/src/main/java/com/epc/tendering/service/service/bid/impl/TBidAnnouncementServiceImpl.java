@@ -109,16 +109,16 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
                 vo.setCompanyId(entity.getSupplierCompanyId());
                 vo.setCompanyName(detailList.get(0).getCompanyName());
             }
-            TTenderMessageCriteria tcriteria1=new TTenderMessageCriteria();
-            TTenderMessageCriteria.Criteria cubTcriteria1=tcriteria1.createCriteria();
-            cubTcriteria1.andBidsIdEqualTo(queryBidAnnouncement.getBidId());
-            cubTcriteria1.andCompanyIdEqualTo(entity.getSupplierCompanyId());
-            List<TTenderMessage> tenderList=tTenderMessageMapper.selectByExample(tcriteria1);
+            TTenderMessageCriteria tcriteria=new TTenderMessageCriteria();
+            TTenderMessageCriteria.Criteria cubTcriteria=tcriteria.createCriteria();
+            cubTcriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidId());
+            cubTcriteria.andCompanyIdEqualTo(entity.getSupplierCompanyId());
+            List<TTenderMessage> tenderList=tTenderMessageMapper.selectByExample(tcriteria);
             if(tenderList.size()==0){
                 LOGGER.error("queryBidAnnouncement 无招标附件");
                 return Result.error("queryBidAnnouncement_"+detailList.get(0).toString()+"_无招标附件");
             }else{
-                vo.setBid_appendix(tenderList.get(0).getBidAppendix());
+                vo.setBidAppendix(tenderList.get(0).getBidAppendix());
             }
             voList.add(vo);
         }

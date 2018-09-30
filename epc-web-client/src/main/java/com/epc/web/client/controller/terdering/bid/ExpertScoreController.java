@@ -56,7 +56,7 @@ public class ExpertScoreController extends BaseController {
 
     @ApiOperation(value = "撰写评审报告")
     @PostMapping(value = "createExpertScoreReport", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> createExpertScoreReport(@RequestBody ClientScoreReport dto) {
+    public Result<Boolean> createExpertScoreReport(@RequestBody ClientScoreReport dto) {
         HandleScoreReport HandleScoreReport=new HandleScoreReport();
         BeanUtils.copyProperties(dto,HandleScoreReport);
         return expertScoreClient.createExpertScoreReport(HandleScoreReport);

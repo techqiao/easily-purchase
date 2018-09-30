@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.common.util.GeneratorCodeUtil;
 import com.epc.tendering.service.domain.project.TProjectBasicInfo;
 import com.epc.tendering.service.domain.project.TProjectBasicInfoCriteria;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
@@ -40,6 +41,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         BeanUtils.copyProperties(handleProjectBasicInfo, pojo);
         try {
             if(pojo.getId() == null){
+                pojo.setProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                 return Result.success(tProjectBasicInfoMapper.insertSelective(pojo) > 0);
             }else {
                 return Result.success(tProjectBasicInfoMapper.updateByPrimaryKeySelective(pojo) > 0);

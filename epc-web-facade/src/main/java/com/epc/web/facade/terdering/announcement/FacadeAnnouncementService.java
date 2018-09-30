@@ -3,7 +3,7 @@ package com.epc.web.facade.terdering.announcement;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
-import com.epc.web.facade.terdering.announcement.query.QueryAnnouncementVO;
+import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +35,11 @@ public interface FacadeAnnouncementService {
 
     /**
      * 项目经理查询相关公告
-     * @param queryAnnouncementVO
+     * @param queryAnnouncement
      * @return
      */
     @PostMapping(value = "getPurchaseProjectAnnouncementList", consumes = "application/json; charset=UTF-8")
-    Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody QueryAnnouncementVO queryAnnouncementVO);
+    Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody QueryAnnouncement queryAnnouncement);
+
+
 }

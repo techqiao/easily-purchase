@@ -7,11 +7,14 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.tendering.service.domain.announcement.BReleaseAnnouncement;
 import com.epc.tendering.service.domain.announcement.BReleaseAnnouncementCriteria;
+import com.epc.tendering.service.domain.bid.TWinBidNominate;
+import com.epc.tendering.service.domain.bid.TWinBidNominateCriteria;
 import com.epc.tendering.service.mapper.announcement.BReleaseAnnouncementMapper;
+import com.epc.tendering.service.mapper.bid.TWinBidNominateMapper;
 import com.epc.tendering.service.service.announcement.AnnouncementService;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
-import com.epc.web.facade.terdering.announcement.query.QueryAnnouncementVO;
+import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,8 @@ import java.util.List;
 public class AnnouncementServiceImpl implements AnnouncementService {
     @Autowired
     private BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
+    @Autowired
+    private TWinBidNominateMapper tWinBidNominateMapper;
     @Override
     public Result<Boolean> insertAnnouncement(HandleAnnouncement handleAnnouncement) {
         BReleaseAnnouncement bReleaseAnnouncement = new BReleaseAnnouncement();
@@ -92,12 +97,12 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
 
     @Override
-    public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(QueryAnnouncementVO queryAnnouncementVO) {
+    public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(QueryAnnouncement queryAnnouncement) {
         List<PurchaseProjectAnnouncement> returnList = new ArrayList<>();
         //资格预审公告 招标公告release 中标候选人公示 中标结果公示
         BReleaseAnnouncementCriteria criteria = new BReleaseAnnouncementCriteria();
         BReleaseAnnouncementCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andProcurementProjectIdEqualTo(queryAnnouncementVO.getProcurementProjectId());
+        subCriteria.andProcurementProjectIdEqualTo(queryAnnouncement.getProcurementProjectId());
         subCriteria.andProcessStatusNotEqualTo(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
         List<BReleaseAnnouncement> bReleaseAnnouncementList = bReleaseAnnouncementMapper.selectByExample(criteria);
         for (BReleaseAnnouncement item : bReleaseAnnouncementList) {
@@ -108,7 +113,18 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             returnList.add(pojo);
         }
 
-        return null;
+        TWinBidNominateCriteria nominateCriteria = new TWinBidNominateCriteria();
+        TWinBidNominateCriteria.Criteria subNominateCriteria = nominateCriteria.createCriteria();
+        subNominateCriteria.andPurchaseProjectIdEqualTo(queryAnnouncement.getProcurementProjectId());
+        subNominateCriteria.andProcessStatusNotEqualTo(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
+        List<TWinBidNominate> winBidNominateList = tWinBidNominateMapper.selectByExample(nominateCriteria);
+        for (TWinBidNominate item : winBidNominateList) {
+            PurchaseProjectAnnouncement pojo = new PurchaseProjectAnnouncement();
+            pojo.setFilePath(item.getFilePath());
+            pojo.setType(AnnouncementEnum.BID_CANDIDATE_PUBLICITY.getCode());
+            returnList.add(pojo);
+        }
+        return Result.success(returnList);
     }
 
 

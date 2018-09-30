@@ -1,14 +1,17 @@
 package com.epc.administration.client.controller.reviewexpert;
 
 import com.epc.administration.client.controller.reviewexpert.handle.ClientExpertDetailIfo;
+import com.epc.administration.client.controller.reviewexpert.handle.ClientExpertForbiddenHandle;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientUserBasicInfo;
 import com.epc.administration.client.controller.reviewexpert.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientExamineExpertHandle;
 import com.epc.administration.client.remoteapi.reviewexpert.ReviewexpertClient;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
+import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
+import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +19,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @date 2018-9-13 09:44:58
@@ -56,7 +61,7 @@ class ReviewExpertController {
     }
     @ApiOperation(value = "查询所有评审专家分页展示",notes = "查询所有评审专家分页展示")
     @PostMapping(value ="selectAllExpertByPage" ,consumes = "application/json;charset=UTF-8")
-    public Result selectAllExpertByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+    public Result<List<ReviewExpertVO>> selectAllExpertByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
         QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
         BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
         return  reviewExpertClient.selectAllExpertByPage(queryDetailIfo);
@@ -67,5 +72,13 @@ class ReviewExpertController {
         ExamineExpertHandle examineExpertHandle = new ExamineExpertHandle();
         BeanUtils.copyProperties(clientExamineExpertHandle, examineExpertHandle);
         return reviewExpertClient.examineExpert(examineExpertHandle);
+    }
+
+    @ApiOperation(value = "启用锁定评审专家",notes = "启用锁定评审专家")
+    @PostMapping(value = "forbiddenExpertUser",consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> forbiddenExpertUser(@RequestBody ClientExpertForbiddenHandle clientExpertForbiddenHandle){
+        ExpertForbiddenHandle expertForbiddenHandle = new ExpertForbiddenHandle();
+        BeanUtils.copyProperties(clientExpertForbiddenHandle,expertForbiddenHandle);
+        return reviewExpertClient.forbiddenExpertUser(expertForbiddenHandle);
     }
 }

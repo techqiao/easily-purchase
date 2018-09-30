@@ -7,7 +7,7 @@ import java.util.Date;
  * 描述:t_supplier_basic_info表的实体类
  * @version
  * @author:  01
- * @创建时间: 2018-09-28
+ * @创建时间: 2018-09-30
  */
 public class TSupplierBasicInfo implements Serializable {
     /**
@@ -36,7 +36,7 @@ public class TSupplierBasicInfo implements Serializable {
     private Long supplierId;
 
     /**
-     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台
      */
     private Integer inviterType;
 
@@ -48,7 +48,7 @@ public class TSupplierBasicInfo implements Serializable {
     /**
      * 邀请人机构ID
      */
-    private Integer inviterCompanyId;
+    private Long inviterCompanyId;
 
     /**
      * 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
@@ -69,6 +69,11 @@ public class TSupplierBasicInfo implements Serializable {
      * 最后修改时间
      */
     private Date updateAt;
+
+    /**
+     * 是否禁用: 0-启用,1-禁用
+     */
+    private Integer isForbidden;
 
     /**
      * 是否删除: 0-存在,1-删除
@@ -161,16 +166,16 @@ public class TSupplierBasicInfo implements Serializable {
     }
 
     /**
-     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
-     * @return inviter_type 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台
+     * @return inviter_type 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台
      */
     public Integer getInviterType() {
         return inviterType;
     }
 
     /**
-     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
-     * @param inviterType 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台
+     * @param inviterType 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台
      */
     public void setInviterType(Integer inviterType) {
         this.inviterType = inviterType;
@@ -196,7 +201,7 @@ public class TSupplierBasicInfo implements Serializable {
      * 邀请人机构ID
      * @return inviter_company_id 邀请人机构ID
      */
-    public Integer getInviterCompanyId() {
+    public Long getInviterCompanyId() {
         return inviterCompanyId;
     }
 
@@ -204,7 +209,7 @@ public class TSupplierBasicInfo implements Serializable {
      * 邀请人机构ID
      * @param inviterCompanyId 邀请人机构ID
      */
-    public void setInviterCompanyId(Integer inviterCompanyId) {
+    public void setInviterCompanyId(Long inviterCompanyId) {
         this.inviterCompanyId = inviterCompanyId;
     }
 
@@ -273,6 +278,22 @@ public class TSupplierBasicInfo implements Serializable {
     }
 
     /**
+     * 是否禁用: 0-启用,1-禁用
+     * @return is_forbidden 是否禁用: 0-启用,1-禁用
+     */
+    public Integer getIsForbidden() {
+        return isForbidden;
+    }
+
+    /**
+     * 是否禁用: 0-启用,1-禁用
+     * @param isForbidden 是否禁用: 0-启用,1-禁用
+     */
+    public void setIsForbidden(Integer isForbidden) {
+        this.isForbidden = isForbidden;
+    }
+
+    /**
      * 是否删除: 0-存在,1-删除
      * @return is_deleted 是否删除: 0-存在,1-删除
      */
@@ -306,6 +327,7 @@ public class TSupplierBasicInfo implements Serializable {
         sb.append(", role=").append(role);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
+        sb.append(", isForbidden=").append(isForbidden);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append("]");
         return sb.toString();

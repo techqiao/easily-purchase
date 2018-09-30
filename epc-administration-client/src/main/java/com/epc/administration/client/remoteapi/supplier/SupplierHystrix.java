@@ -3,6 +3,7 @@ package com.epc.administration.client.remoteapi.supplier;
 import com.epc.administration.facade.supplier.SupplierUserService;
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
 import com.epc.common.Result;
@@ -35,6 +36,11 @@ public class SupplierHystrix implements SupplierUserService {
 
     @Override
     public Result examineSupplier(ExamineSupplierHandle examineSupplierHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
         return Result.hystrixError();
     }
 }

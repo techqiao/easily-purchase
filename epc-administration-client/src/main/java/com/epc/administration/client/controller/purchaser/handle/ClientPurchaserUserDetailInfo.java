@@ -1,7 +1,6 @@
 package com.epc.administration.client.controller.purchaser.handle;
 
 
-import com.epc.administration.client.controller.supplier.handle.ClientAttachmentHandle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -78,5 +77,5 @@ public class ClientPurchaserUserDetailInfo implements Serializable {
      */
     @ApiModelProperty(value = "资质证书附件集合")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.attachmentHandleList.null")
-    private List<ClientAttachmentHandle> attachmentHandleList;
+    private List<ClientPurchaserAttachmentHandle> attachmentHandleList;
 }

@@ -1,55 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.tendering.service.mapper.bid.TWinBidNominateMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.TWinBidNominate" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
-    <result column="purchaser_name" property="purchaserName" jdbcType="VARCHAR" />
-    <result column="agency_name" property="agencyName" jdbcType="VARCHAR" />
-    <result column="agency_phone" property="agencyPhone" jdbcType="VARCHAR" />
-    <result column="is_power_Agency" property="isPowerAgency" jdbcType="INTEGER" />
-    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
-    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
-    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
-    <result column="bid_id" property="bidId" jdbcType="BIGINT" />
-    <result column="bid_name" property="bidName" jdbcType="VARCHAR" />
-    <result column="bid_code" property="bidCode" jdbcType="VARCHAR" />
-    <result column="first_supplierId" property="firstSupplierid" jdbcType="BIGINT" />
-    <result column="first_companyName" property="firstCompanyname" jdbcType="VARCHAR" />
-    <result column="first_price" property="firstPrice" jdbcType="DECIMAL" />
-    <result column="two_supplierId" property="twoSupplierid" jdbcType="BIGINT" />
-    <result column="two_price" property="twoPrice" jdbcType="DECIMAL" />
-    <result column="two_companyName" property="twoCompanyname" jdbcType="VARCHAR" />
-    <result column="three_supplierId" property="threeSupplierid" jdbcType="BIGINT" />
-    <result column="three_price" property="threePrice" jdbcType="DECIMAL" />
-    <result column="three_companyName" property="threeCompanyname" jdbcType="VARCHAR" />
-    <result column="open_start" property="openStart" jdbcType="TIMESTAMP" />
-    <result column="open_end" property="openEnd" jdbcType="TIMESTAMP" />
-    <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
-    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.epc.tendering.service.mapper.bid.TWinBidNominateMapper">
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="purchaser_id" jdbcType="BIGINT" property="purchaserId" />
+    <result column="purchaser_name" jdbcType="VARCHAR" property="purchaserName" />
+    <result column="agency_name" jdbcType="VARCHAR" property="agencyName" />
+    <result column="agency_phone" jdbcType="VARCHAR" property="agencyPhone" />
+    <result column="is_power_Agency" jdbcType="INTEGER" property="isPowerAgency" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
+    <result column="purchase_project_id" jdbcType="BIGINT" property="purchaseProjectId" />
+    <result column="bid_id" jdbcType="BIGINT" property="bidId" />
+    <result column="bid_name" jdbcType="VARCHAR" property="bidName" />
+    <result column="bid_code" jdbcType="VARCHAR" property="bidCode" />
+    <result column="first_supplierId" jdbcType="BIGINT" property="firstSupplierid" />
+    <result column="first_companyName" jdbcType="VARCHAR" property="firstCompanyname" />
+    <result column="first_price" jdbcType="DECIMAL" property="firstPrice" />
+    <result column="two_supplierId" jdbcType="BIGINT" property="twoSupplierid" />
+    <result column="two_price" jdbcType="DECIMAL" property="twoPrice" />
+    <result column="two_companyName" jdbcType="VARCHAR" property="twoCompanyname" />
+    <result column="three_supplierId" jdbcType="BIGINT" property="threeSupplierid" />
+    <result column="three_price" jdbcType="DECIMAL" property="threePrice" />
+    <result column="three_companyName" jdbcType="VARCHAR" property="threeCompanyname" />
+    <result column="open_start" jdbcType="TIMESTAMP" property="openStart" />
+    <result column="open_end" jdbcType="TIMESTAMP" property="openEnd" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="process_status" jdbcType="VARCHAR" property="processStatus" />
+    <result column="operate_id" jdbcType="BIGINT" property="operateId" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -60,25 +61,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -89,45 +90,645 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
+    id, purchaser_id, purchaser_name, agency_name, agency_phone, is_power_Agency, project_name, 
+    project_code, purchase_project_id, bid_id, bid_name, bid_code, first_supplierId, 
+    first_companyName, first_price, two_supplierId, two_price, two_companyName, three_supplierId, 
+    three_price, three_companyName, open_start, open_end, file_path, process_status, 
+    operate_id, create_at, update_at, is_deleted
+  </sql>
+  <select id="selectByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_win_bid_nominate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_win_bid_nominate
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_win_bid_nominate
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria">
+    delete from t_win_bid_nominate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_win_bid_nominate (purchaser_id, purchaser_name, agency_name, 
+      agency_phone, is_power_Agency, project_name, 
+      project_code, purchase_project_id, bid_id, 
+      bid_name, bid_code, first_supplierId, 
+      first_companyName, first_price, two_supplierId, 
+      two_price, two_companyName, three_supplierId, 
+      three_price, three_companyName, open_start, 
+      open_end, file_path, process_status, 
+      operate_id, create_at, update_at, 
+      is_deleted)
+    values (#{purchaserId,jdbcType=BIGINT}, #{purchaserName,jdbcType=VARCHAR}, #{agencyName,jdbcType=VARCHAR}, 
+      #{agencyPhone,jdbcType=VARCHAR}, #{isPowerAgency,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+      #{projectCode,jdbcType=VARCHAR}, #{purchaseProjectId,jdbcType=BIGINT}, #{bidId,jdbcType=BIGINT}, 
+      #{bidName,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, #{firstSupplierid,jdbcType=BIGINT}, 
+      #{firstCompanyname,jdbcType=VARCHAR}, #{firstPrice,jdbcType=DECIMAL}, #{twoSupplierid,jdbcType=BIGINT}, 
+      #{twoPrice,jdbcType=DECIMAL}, #{twoCompanyname,jdbcType=VARCHAR}, #{threeSupplierid,jdbcType=BIGINT}, 
+      #{threePrice,jdbcType=DECIMAL}, #{threeCompanyname,jdbcType=VARCHAR}, #{openStart,jdbcType=TIMESTAMP}, 
+      #{openEnd,jdbcType=TIMESTAMP}, #{filePath,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_win_bid_nominate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="purchaserId != null">
+        purchaser_id,
+      </if>
+      <if test="purchaserName != null">
+        purchaser_name,
+      </if>
+      <if test="agencyName != null">
+        agency_name,
+      </if>
+      <if test="agencyPhone != null">
+        agency_phone,
+      </if>
+      <if test="isPowerAgency != null">
+        is_power_Agency,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="projectCode != null">
+        project_code,
+      </if>
+      <if test="purchaseProjectId != null">
+        purchase_project_id,
+      </if>
+      <if test="bidId != null">
+        bid_id,
+      </if>
+      <if test="bidName != null">
+        bid_name,
+      </if>
+      <if test="bidCode != null">
+        bid_code,
+      </if>
+      <if test="firstSupplierid != null">
+        first_supplierId,
+      </if>
+      <if test="firstCompanyname != null">
+        first_companyName,
+      </if>
+      <if test="firstPrice != null">
+        first_price,
+      </if>
+      <if test="twoSupplierid != null">
+        two_supplierId,
+      </if>
+      <if test="twoPrice != null">
+        two_price,
+      </if>
+      <if test="twoCompanyname != null">
+        two_companyName,
+      </if>
+      <if test="threeSupplierid != null">
+        three_supplierId,
+      </if>
+      <if test="threePrice != null">
+        three_price,
+      </if>
+      <if test="threeCompanyname != null">
+        three_companyName,
+      </if>
+      <if test="openStart != null">
+        open_start,
+      </if>
+      <if test="openEnd != null">
+        open_end,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="processStatus != null">
+        process_status,
+      </if>
+      <if test="operateId != null">
+        operate_id,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="purchaserId != null">
+        #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="purchaserName != null">
+        #{purchaserName,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyName != null">
+        #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyPhone != null">
+        #{agencyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="isPowerAgency != null">
+        #{isPowerAgency,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null">
+        #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseProjectId != null">
+        #{purchaseProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidId != null">
+        #{bidId,jdbcType=BIGINT},
+      </if>
+      <if test="bidName != null">
+        #{bidName,jdbcType=VARCHAR},
+      </if>
+      <if test="bidCode != null">
+        #{bidCode,jdbcType=VARCHAR},
+      </if>
+      <if test="firstSupplierid != null">
+        #{firstSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="firstCompanyname != null">
+        #{firstCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="firstPrice != null">
+        #{firstPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="twoSupplierid != null">
+        #{twoSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="twoPrice != null">
+        #{twoPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="twoCompanyname != null">
+        #{twoCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="threeSupplierid != null">
+        #{threeSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="threePrice != null">
+        #{threePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="threeCompanyname != null">
+        #{threeCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="openStart != null">
+        #{openStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openEnd != null">
+        #{openEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null">
+        #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null">
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultType="java.lang.Integer">
+    select count(*) from t_win_bid_nominate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_win_bid_nominate
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.purchaserId != null">
+        purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.purchaserName != null">
+        purchaser_name = #{record.purchaserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyName != null">
+        agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyPhone != null">
+        agency_phone = #{record.agencyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isPowerAgency != null">
+        is_power_Agency = #{record.isPowerAgency,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null">
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCode != null">
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaseProjectId != null">
+        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidId != null">
+        bid_id = #{record.bidId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidName != null">
+        bid_name = #{record.bidName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bidCode != null">
+        bid_code = #{record.bidCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstSupplierid != null">
+        first_supplierId = #{record.firstSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="record.firstCompanyname != null">
+        first_companyName = #{record.firstCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstPrice != null">
+        first_price = #{record.firstPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.twoSupplierid != null">
+        two_supplierId = #{record.twoSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="record.twoPrice != null">
+        two_price = #{record.twoPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.twoCompanyname != null">
+        two_companyName = #{record.twoCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.threeSupplierid != null">
+        three_supplierId = #{record.threeSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="record.threePrice != null">
+        three_price = #{record.threePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.threeCompanyname != null">
+        three_companyName = #{record.threeCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openStart != null">
+        open_start = #{record.openStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.openEnd != null">
+        open_end = #{record.openEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.filePath != null">
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processStatus != null">
+        process_status = #{record.processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateId != null">
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null">
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null">
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_win_bid_nominate
+    set id = #{record.id,jdbcType=BIGINT},
+      purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      purchaser_name = #{record.purchaserName,jdbcType=VARCHAR},
+      agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      agency_phone = #{record.agencyPhone,jdbcType=VARCHAR},
+      is_power_Agency = #{record.isPowerAgency,jdbcType=INTEGER},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_code = #{record.projectCode,jdbcType=VARCHAR},
+      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+      bid_id = #{record.bidId,jdbcType=BIGINT},
+      bid_name = #{record.bidName,jdbcType=VARCHAR},
+      bid_code = #{record.bidCode,jdbcType=VARCHAR},
+      first_supplierId = #{record.firstSupplierid,jdbcType=BIGINT},
+      first_companyName = #{record.firstCompanyname,jdbcType=VARCHAR},
+      first_price = #{record.firstPrice,jdbcType=DECIMAL},
+      two_supplierId = #{record.twoSupplierid,jdbcType=BIGINT},
+      two_price = #{record.twoPrice,jdbcType=DECIMAL},
+      two_companyName = #{record.twoCompanyname,jdbcType=VARCHAR},
+      three_supplierId = #{record.threeSupplierid,jdbcType=BIGINT},
+      three_price = #{record.threePrice,jdbcType=DECIMAL},
+      three_companyName = #{record.threeCompanyname,jdbcType=VARCHAR},
+      open_start = #{record.openStart,jdbcType=TIMESTAMP},
+      open_end = #{record.openEnd,jdbcType=TIMESTAMP},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      process_status = #{record.processStatus,jdbcType=VARCHAR},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    update t_win_bid_nominate
+    <set>
+      <if test="purchaserId != null">
+        purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="purchaserName != null">
+        purchaser_name = #{purchaserName,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyName != null">
+        agency_name = #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyPhone != null">
+        agency_phone = #{agencyPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="isPowerAgency != null">
+        is_power_Agency = #{isPowerAgency,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null">
+        project_code = #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseProjectId != null">
+        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidId != null">
+        bid_id = #{bidId,jdbcType=BIGINT},
+      </if>
+      <if test="bidName != null">
+        bid_name = #{bidName,jdbcType=VARCHAR},
+      </if>
+      <if test="bidCode != null">
+        bid_code = #{bidCode,jdbcType=VARCHAR},
+      </if>
+      <if test="firstSupplierid != null">
+        first_supplierId = #{firstSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="firstCompanyname != null">
+        first_companyName = #{firstCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="firstPrice != null">
+        first_price = #{firstPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="twoSupplierid != null">
+        two_supplierId = #{twoSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="twoPrice != null">
+        two_price = #{twoPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="twoCompanyname != null">
+        two_companyName = #{twoCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="threeSupplierid != null">
+        three_supplierId = #{threeSupplierid,jdbcType=BIGINT},
+      </if>
+      <if test="threePrice != null">
+        three_price = #{threePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="threeCompanyname != null">
+        three_companyName = #{threeCompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="openStart != null">
+        open_start = #{openStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openEnd != null">
+        open_end = #{openEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null">
+        process_status = #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null">
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    update t_win_bid_nominate
+    set purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      purchaser_name = #{purchaserName,jdbcType=VARCHAR},
+      agency_name = #{agencyName,jdbcType=VARCHAR},
+      agency_phone = #{agencyPhone,jdbcType=VARCHAR},
+      is_power_Agency = #{isPowerAgency,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
+      bid_id = #{bidId,jdbcType=BIGINT},
+      bid_name = #{bidName,jdbcType=VARCHAR},
+      bid_code = #{bidCode,jdbcType=VARCHAR},
+      first_supplierId = #{firstSupplierid,jdbcType=BIGINT},
+      first_companyName = #{firstCompanyname,jdbcType=VARCHAR},
+      first_price = #{firstPrice,jdbcType=DECIMAL},
+      two_supplierId = #{twoSupplierid,jdbcType=BIGINT},
+      two_price = #{twoPrice,jdbcType=DECIMAL},
+      two_companyName = #{twoCompanyname,jdbcType=VARCHAR},
+      three_supplierId = #{threeSupplierid,jdbcType=BIGINT},
+      three_price = #{threePrice,jdbcType=DECIMAL},
+      three_companyName = #{threeCompanyname,jdbcType=VARCHAR},
+      open_start = #{openStart,jdbcType=TIMESTAMP},
+      open_end = #{openEnd,jdbcType=TIMESTAMP},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_win_bid_nominate
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="purchaser_id" jdbcType="BIGINT" property="purchaserId" />
+    <result column="purchaser_name" jdbcType="VARCHAR" property="purchaserName" />
+    <result column="agency_name" jdbcType="VARCHAR" property="agencyName" />
+    <result column="agency_phone" jdbcType="VARCHAR" property="agencyPhone" />
+    <result column="is_power_Agency" jdbcType="INTEGER" property="isPowerAgency" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
+    <result column="purchase_project_id" jdbcType="BIGINT" property="purchaseProjectId" />
+    <result column="bid_id" jdbcType="BIGINT" property="bidId" />
+    <result column="bid_name" jdbcType="VARCHAR" property="bidName" />
+    <result column="bid_code" jdbcType="VARCHAR" property="bidCode" />
+    <result column="first_supplierId" jdbcType="BIGINT" property="firstSupplierid" />
+    <result column="first_companyName" jdbcType="VARCHAR" property="firstCompanyname" />
+    <result column="first_price" jdbcType="DECIMAL" property="firstPrice" />
+    <result column="two_supplierId" jdbcType="BIGINT" property="twoSupplierid" />
+    <result column="two_price" jdbcType="DECIMAL" property="twoPrice" />
+    <result column="two_companyName" jdbcType="VARCHAR" property="twoCompanyname" />
+    <result column="three_supplierId" jdbcType="BIGINT" property="threeSupplierid" />
+    <result column="three_price" jdbcType="DECIMAL" property="threePrice" />
+    <result column="three_companyName" jdbcType="VARCHAR" property="threeCompanyname" />
+    <result column="open_start" jdbcType="TIMESTAMP" property="openStart" />
+    <result column="open_end" jdbcType="TIMESTAMP" property="openEnd" />
+    <result column="process_status" jdbcType="VARCHAR" property="processStatus" />
+    <result column="operate_id" jdbcType="BIGINT" property="operateId" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
     id, purchaser_id, purchaser_name, agency_name, agency_phone, is_power_Agency, project_name, 
     project_code, purchase_project_id, bid_id, bid_name, bid_code, first_supplierId, 
     first_companyName, first_price, two_supplierId, two_price, two_companyName, three_supplierId, 
     three_price, three_companyName, open_start, open_end, process_status, operate_id, 
     create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" >
+  <select id="selectByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from t_win_bid_nominate
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_win_bid_nominate
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_win_bid_nominate
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria">
     delete from t_win_bid_nominate
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_win_bid_nominate (purchaser_id, purchaser_name, agency_name, 
@@ -151,277 +752,277 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_win_bid_nominate
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="purchaserId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="purchaserId != null">
         purchaser_id,
       </if>
-      <if test="purchaserName != null" >
+      <if test="purchaserName != null">
         purchaser_name,
       </if>
-      <if test="agencyName != null" >
+      <if test="agencyName != null">
         agency_name,
       </if>
-      <if test="agencyPhone != null" >
+      <if test="agencyPhone != null">
         agency_phone,
       </if>
-      <if test="isPowerAgency != null" >
+      <if test="isPowerAgency != null">
         is_power_Agency,
       </if>
-      <if test="projectName != null" >
+      <if test="projectName != null">
         project_name,
       </if>
-      <if test="projectCode != null" >
+      <if test="projectCode != null">
         project_code,
       </if>
-      <if test="purchaseProjectId != null" >
+      <if test="purchaseProjectId != null">
         purchase_project_id,
       </if>
-      <if test="bidId != null" >
+      <if test="bidId != null">
         bid_id,
       </if>
-      <if test="bidName != null" >
+      <if test="bidName != null">
         bid_name,
       </if>
-      <if test="bidCode != null" >
+      <if test="bidCode != null">
         bid_code,
       </if>
-      <if test="firstSupplierid != null" >
+      <if test="firstSupplierid != null">
         first_supplierId,
       </if>
-      <if test="firstCompanyname != null" >
+      <if test="firstCompanyname != null">
         first_companyName,
       </if>
-      <if test="firstPrice != null" >
+      <if test="firstPrice != null">
         first_price,
       </if>
-      <if test="twoSupplierid != null" >
+      <if test="twoSupplierid != null">
         two_supplierId,
       </if>
-      <if test="twoPrice != null" >
+      <if test="twoPrice != null">
         two_price,
       </if>
-      <if test="twoCompanyname != null" >
+      <if test="twoCompanyname != null">
         two_companyName,
       </if>
-      <if test="threeSupplierid != null" >
+      <if test="threeSupplierid != null">
         three_supplierId,
       </if>
-      <if test="threePrice != null" >
+      <if test="threePrice != null">
         three_price,
       </if>
-      <if test="threeCompanyname != null" >
+      <if test="threeCompanyname != null">
         three_companyName,
       </if>
-      <if test="openStart != null" >
+      <if test="openStart != null">
         open_start,
       </if>
-      <if test="openEnd != null" >
+      <if test="openEnd != null">
         open_end,
       </if>
-      <if test="processStatus != null" >
+      <if test="processStatus != null">
         process_status,
       </if>
-      <if test="operateId != null" >
+      <if test="operateId != null">
         operate_id,
       </if>
-      <if test="createAt != null" >
+      <if test="createAt != null">
         create_at,
       </if>
-      <if test="updateAt != null" >
+      <if test="updateAt != null">
         update_at,
       </if>
-      <if test="isDeleted != null" >
+      <if test="isDeleted != null">
         is_deleted,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="purchaserId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="purchaserId != null">
         #{purchaserId,jdbcType=BIGINT},
       </if>
-      <if test="purchaserName != null" >
+      <if test="purchaserName != null">
         #{purchaserName,jdbcType=VARCHAR},
       </if>
-      <if test="agencyName != null" >
+      <if test="agencyName != null">
         #{agencyName,jdbcType=VARCHAR},
       </if>
-      <if test="agencyPhone != null" >
+      <if test="agencyPhone != null">
         #{agencyPhone,jdbcType=VARCHAR},
       </if>
-      <if test="isPowerAgency != null" >
+      <if test="isPowerAgency != null">
         #{isPowerAgency,jdbcType=INTEGER},
       </if>
-      <if test="projectName != null" >
+      <if test="projectName != null">
         #{projectName,jdbcType=VARCHAR},
       </if>
-      <if test="projectCode != null" >
+      <if test="projectCode != null">
         #{projectCode,jdbcType=VARCHAR},
       </if>
-      <if test="purchaseProjectId != null" >
+      <if test="purchaseProjectId != null">
         #{purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="bidId != null" >
+      <if test="bidId != null">
         #{bidId,jdbcType=BIGINT},
       </if>
-      <if test="bidName != null" >
+      <if test="bidName != null">
         #{bidName,jdbcType=VARCHAR},
       </if>
-      <if test="bidCode != null" >
+      <if test="bidCode != null">
         #{bidCode,jdbcType=VARCHAR},
       </if>
-      <if test="firstSupplierid != null" >
+      <if test="firstSupplierid != null">
         #{firstSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="firstCompanyname != null" >
+      <if test="firstCompanyname != null">
         #{firstCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="firstPrice != null" >
+      <if test="firstPrice != null">
         #{firstPrice,jdbcType=DECIMAL},
       </if>
-      <if test="twoSupplierid != null" >
+      <if test="twoSupplierid != null">
         #{twoSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="twoPrice != null" >
+      <if test="twoPrice != null">
         #{twoPrice,jdbcType=DECIMAL},
       </if>
-      <if test="twoCompanyname != null" >
+      <if test="twoCompanyname != null">
         #{twoCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="threeSupplierid != null" >
+      <if test="threeSupplierid != null">
         #{threeSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="threePrice != null" >
+      <if test="threePrice != null">
         #{threePrice,jdbcType=DECIMAL},
       </if>
-      <if test="threeCompanyname != null" >
+      <if test="threeCompanyname != null">
         #{threeCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="openStart != null" >
+      <if test="openStart != null">
         #{openStart,jdbcType=TIMESTAMP},
       </if>
-      <if test="openEnd != null" >
+      <if test="openEnd != null">
         #{openEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="processStatus != null" >
+      <if test="processStatus != null">
         #{processStatus,jdbcType=VARCHAR},
       </if>
-      <if test="operateId != null" >
+      <if test="operateId != null">
         #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="createAt != null" >
+      <if test="createAt != null">
         #{createAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateAt != null" >
+      <if test="updateAt != null">
         #{updateAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDeleted != null" >
+      <if test="isDeleted != null">
         #{isDeleted,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultType="java.lang.Integer">
     select count(*) from t_win_bid_nominate
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update t_win_bid_nominate
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.purchaserId != null" >
+      <if test="record.purchaserId != null">
         purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       </if>
-      <if test="record.purchaserName != null" >
+      <if test="record.purchaserName != null">
         purchaser_name = #{record.purchaserName,jdbcType=VARCHAR},
       </if>
-      <if test="record.agencyName != null" >
+      <if test="record.agencyName != null">
         agency_name = #{record.agencyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.agencyPhone != null" >
+      <if test="record.agencyPhone != null">
         agency_phone = #{record.agencyPhone,jdbcType=VARCHAR},
       </if>
-      <if test="record.isPowerAgency != null" >
+      <if test="record.isPowerAgency != null">
         is_power_Agency = #{record.isPowerAgency,jdbcType=INTEGER},
       </if>
-      <if test="record.projectName != null" >
+      <if test="record.projectName != null">
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
-      <if test="record.projectCode != null" >
+      <if test="record.projectCode != null">
         project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.purchaseProjectId != null" >
+      <if test="record.purchaseProjectId != null">
         purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="record.bidId != null" >
+      <if test="record.bidId != null">
         bid_id = #{record.bidId,jdbcType=BIGINT},
       </if>
-      <if test="record.bidName != null" >
+      <if test="record.bidName != null">
         bid_name = #{record.bidName,jdbcType=VARCHAR},
       </if>
-      <if test="record.bidCode != null" >
+      <if test="record.bidCode != null">
         bid_code = #{record.bidCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.firstSupplierid != null" >
+      <if test="record.firstSupplierid != null">
         first_supplierId = #{record.firstSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="record.firstCompanyname != null" >
+      <if test="record.firstCompanyname != null">
         first_companyName = #{record.firstCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="record.firstPrice != null" >
+      <if test="record.firstPrice != null">
         first_price = #{record.firstPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.twoSupplierid != null" >
+      <if test="record.twoSupplierid != null">
         two_supplierId = #{record.twoSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="record.twoPrice != null" >
+      <if test="record.twoPrice != null">
         two_price = #{record.twoPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.twoCompanyname != null" >
+      <if test="record.twoCompanyname != null">
         two_companyName = #{record.twoCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="record.threeSupplierid != null" >
+      <if test="record.threeSupplierid != null">
         three_supplierId = #{record.threeSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="record.threePrice != null" >
+      <if test="record.threePrice != null">
         three_price = #{record.threePrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.threeCompanyname != null" >
+      <if test="record.threeCompanyname != null">
         three_companyName = #{record.threeCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="record.openStart != null" >
+      <if test="record.openStart != null">
         open_start = #{record.openStart,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.openEnd != null" >
+      <if test="record.openEnd != null">
         open_end = #{record.openEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.processStatus != null" >
+      <if test="record.processStatus != null">
         process_status = #{record.processStatus,jdbcType=VARCHAR},
       </if>
-      <if test="record.operateId != null" >
+      <if test="record.operateId != null">
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
-      <if test="record.createAt != null" >
+      <if test="record.createAt != null">
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateAt != null" >
+      <if test="record.updateAt != null">
         update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.isDeleted != null" >
+      <if test="record.isDeleted != null">
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update t_win_bid_nominate
     set id = #{record.id,jdbcType=BIGINT},
       purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
@@ -451,98 +1052,98 @@
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
     update t_win_bid_nominate
-    <set >
-      <if test="purchaserId != null" >
+    <set>
+      <if test="purchaserId != null">
         purchaser_id = #{purchaserId,jdbcType=BIGINT},
       </if>
-      <if test="purchaserName != null" >
+      <if test="purchaserName != null">
         purchaser_name = #{purchaserName,jdbcType=VARCHAR},
       </if>
-      <if test="agencyName != null" >
+      <if test="agencyName != null">
         agency_name = #{agencyName,jdbcType=VARCHAR},
       </if>
-      <if test="agencyPhone != null" >
+      <if test="agencyPhone != null">
         agency_phone = #{agencyPhone,jdbcType=VARCHAR},
       </if>
-      <if test="isPowerAgency != null" >
+      <if test="isPowerAgency != null">
         is_power_Agency = #{isPowerAgency,jdbcType=INTEGER},
       </if>
-      <if test="projectName != null" >
+      <if test="projectName != null">
         project_name = #{projectName,jdbcType=VARCHAR},
       </if>
-      <if test="projectCode != null" >
+      <if test="projectCode != null">
         project_code = #{projectCode,jdbcType=VARCHAR},
       </if>
-      <if test="purchaseProjectId != null" >
+      <if test="purchaseProjectId != null">
         purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="bidId != null" >
+      <if test="bidId != null">
         bid_id = #{bidId,jdbcType=BIGINT},
       </if>
-      <if test="bidName != null" >
+      <if test="bidName != null">
         bid_name = #{bidName,jdbcType=VARCHAR},
       </if>
-      <if test="bidCode != null" >
+      <if test="bidCode != null">
         bid_code = #{bidCode,jdbcType=VARCHAR},
       </if>
-      <if test="firstSupplierid != null" >
+      <if test="firstSupplierid != null">
         first_supplierId = #{firstSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="firstCompanyname != null" >
+      <if test="firstCompanyname != null">
         first_companyName = #{firstCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="firstPrice != null" >
+      <if test="firstPrice != null">
         first_price = #{firstPrice,jdbcType=DECIMAL},
       </if>
-      <if test="twoSupplierid != null" >
+      <if test="twoSupplierid != null">
         two_supplierId = #{twoSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="twoPrice != null" >
+      <if test="twoPrice != null">
         two_price = #{twoPrice,jdbcType=DECIMAL},
       </if>
-      <if test="twoCompanyname != null" >
+      <if test="twoCompanyname != null">
         two_companyName = #{twoCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="threeSupplierid != null" >
+      <if test="threeSupplierid != null">
         three_supplierId = #{threeSupplierid,jdbcType=BIGINT},
       </if>
-      <if test="threePrice != null" >
+      <if test="threePrice != null">
         three_price = #{threePrice,jdbcType=DECIMAL},
       </if>
-      <if test="threeCompanyname != null" >
+      <if test="threeCompanyname != null">
         three_companyName = #{threeCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="openStart != null" >
+      <if test="openStart != null">
         open_start = #{openStart,jdbcType=TIMESTAMP},
       </if>
-      <if test="openEnd != null" >
+      <if test="openEnd != null">
         open_end = #{openEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="processStatus != null" >
+      <if test="processStatus != null">
         process_status = #{processStatus,jdbcType=VARCHAR},
       </if>
-      <if test="operateId != null" >
+      <if test="operateId != null">
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="createAt != null" >
+      <if test="createAt != null">
         create_at = #{createAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateAt != null" >
+      <if test="updateAt != null">
         update_at = #{updateAt,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDeleted != null" >
+      <if test="isDeleted != null">
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominate">
     update t_win_bid_nominate
     set purchaser_id = #{purchaserId,jdbcType=BIGINT},
       purchaser_name = #{purchaserName,jdbcType=VARCHAR},
@@ -573,17 +1174,17 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" id="selectByExampleWithRowbounds" >
+  <select id="selectByExampleWithRowbounds" parameterType="com.epc.tendering.service.domain.bid.TWinBidNominateCriteria" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from t_win_bid_nominate
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>

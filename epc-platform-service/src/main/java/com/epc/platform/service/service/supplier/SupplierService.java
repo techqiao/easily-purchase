@@ -2,6 +2,7 @@ package com.epc.platform.service.service.supplier;
 
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
@@ -55,4 +56,10 @@ public interface SupplierService {
      * @return
      */
     Result<Boolean> examineSupplier(ExamineSupplierHandle examineSupplierHandle);
+
+    /**
+     * 启用禁用供应商
+     * @return
+     */
+    Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle);
 }

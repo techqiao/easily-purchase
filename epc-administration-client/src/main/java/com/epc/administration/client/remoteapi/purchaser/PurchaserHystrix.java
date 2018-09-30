@@ -2,6 +2,7 @@ package com.epc.administration.client.remoteapi.purchaser;
 
 import com.epc.administration.facade.purchaser.PurchaserUserService;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
+import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.common.Result;
 
@@ -33,6 +34,11 @@ public class PurchaserHystrix implements PurchaserUserService {
 
     @Override
     public Result examinePurchaser(ExaminePurchaserHandle examinePurchaserHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> forbiddenPurchaserUser(PurchaserForbiddenHandle purchaserForbiddenHandle) {
         return Result.hystrixError();
     }
 }

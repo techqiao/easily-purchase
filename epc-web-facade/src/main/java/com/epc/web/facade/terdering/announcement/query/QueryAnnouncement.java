@@ -11,7 +11,7 @@ import java.io.Serializable;
  * <p>@Author : wjq
  */
 @Data
-public class QueryAnnouncementVO extends PagerParam implements Serializable {
+public class QueryAnnouncement extends PagerParam implements Serializable {
     /**
      * 采购人ID
      */

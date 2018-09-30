@@ -11,6 +11,7 @@ import com.epc.common.util.MD5Util;
 import com.epc.common.util.Tree;
 import com.epc.common.util.TreeUtils;
 import com.epc.platform.service.domain.admin.*;
+import com.epc.platform.service.mapper.admin.SysAdminResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserRoleMapper;
@@ -49,7 +50,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     @Autowired
     private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
     @Autowired
-    private SysAdminResourceService sysAdminResourceService;
+    private SysAdminResourceMapper sysAdminResourceMapper;
     /**
      * 登录
      * @param loginHandle
@@ -63,14 +64,15 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         final SysAdminUserCriteria.Criteria subCriteria= criteria.createCriteria();
         subCriteria.andPhoneEqualTo(loginHandle.getPassword());
         subCriteria.andPasswordEqualTo(MD5Util.MD5EncodeUtf8(loginHandle.getPassword()));
-        List<SysAdminUser> list = sysAdminUserMapper.selectByExample(criteria);
-        if(list.isEmpty()){
+        List<SysAdminUser> sysAdminUsers = sysAdminUserMapper.selectByExample(criteria);
+        if(sysAdminUsers.isEmpty()){
             return Result.error("登录失败");
         }
-        Tree<SysAdminResource> resource = getResource();
+        SysAdminUser sysAdminUser = sysAdminUsers.get(0);
         Map<String,Object>  resultMap = new HashMap<String, Object>();
-        list.get(0).setPassword(null);
-        resultMap.put("user",list.get(0));
+        sysAdminUser.setPassword(null);
+        resultMap.put("user",sysAdminUser);
+        Tree<SysAdminResource> resource = getResource(sysAdminUser.getId());
         resultMap.put("resourceList",resource);
         return Result.success(resultMap);
     }
@@ -96,7 +98,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         criteria.createCriteria().andAdminUserIdEqualTo(sysAdminUser.getId());
         List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
         UserWithRole userWithRole = new UserWithRole();
-        userWithRole.setUserId(sysAdminUser.getId());
+        userWithRole.setId(sysAdminUser.getId());
         userWithRole.setName(sysAdminUser.getName());
         userWithRole.setPhone(sysAdminUser.getPhone());
         userWithRole.setDeptId(sysAdminUser.getDeptId());
@@ -105,7 +107,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         userWithRole.setIsDeleted(sysAdminUser.getIsDeleted());
         List<Long> roleIds = new LinkedList<>();
         for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
-            roleIds.add(sysAdminUserRole.getId()) ;
+            roleIds.add(sysAdminUserRole.getAdminRoleId()) ;
         }
         userWithRole.setRoleIds(roleIds);
         return userWithRole;
@@ -196,16 +198,17 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         SysAdminUser sysAdminUser = new SysAdminUser();
         sysAdminUser.setPhone(user.getPhone());
         sysAdminUser.setPassword(user.getPassword());
+        sysAdminUser.setId(user.getId());
         String newPassword = MD5Util.MD5EncodeUtf8(user.getPassword());
         user.setPassword(newPassword);
         this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 
     @Override
-    public SysAdminUser findUserDetail(UserHandle userHandle) {
-        SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setId(userHandle.getId());
-        return this.sysAdminUserMapper.selectByPrimaryKey(userHandle.getId());
+    public SysAdminUser findUserDetail(Long userId) {
+        SysAdminUser sysAdminUser = sysAdminUserMapper.selectByPrimaryKey(userId);
+        sysAdminUser.setPassword(null);
+        return sysAdminUser;
     }
 
     @Override
@@ -241,10 +244,39 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         }
     }
 
-    public Tree<SysAdminResource> getResource(){
+    /**
+     * 获取登录用户对应的角色和资源
+     * @param id
+     * @return
+     */
+    public Tree<SysAdminResource> getResource(Long id){
         List<Tree<SysAdminResource>> trees = new ArrayList<>();
-        List<SysAdminResource> sysAdminResources = sysAdminResourceService.findAllResources(new ResourceHandle());
-        for (SysAdminResource sysAdminResource : sysAdminResources) {
+        //取出用户对应角色
+        SysAdminUserRoleCriteria criteria = new SysAdminUserRoleCriteria();
+        criteria.createCriteria().andAdminUserIdEqualTo(id);
+        List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
+        if(sysAdminUserRoles==null){
+            return null;
+        }
+        List<Long> roleIds =  new ArrayList<>();
+        for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
+            roleIds.add(sysAdminUserRole.getAdminRoleId());
+        }
+        //取出角色对应资源
+        Set<Long> resourceIds  = new HashSet<>();
+        for (Long roleId : roleIds) {
+            SysAdminRoleResourceCriteria sysAdminRoleResourceCriteria = new SysAdminRoleResourceCriteria();
+            sysAdminRoleResourceCriteria.createCriteria().andAmdinRoleIdEqualTo(roleId);
+            List<SysAdminRoleResource> sysAdminRoleResources = sysAdminRoleResourceMapper.selectByExample(sysAdminRoleResourceCriteria);
+            if(sysAdminRoleResources==null){
+                return null;
+            }
+            for (SysAdminRoleResource sysAdminRoleResource : sysAdminRoleResources) {
+                resourceIds.add(sysAdminRoleResource.getAdminResourceId());
+            }
+        }
+        for (Long toGetResourceId : resourceIds) {
+            SysAdminResource sysAdminResource = sysAdminResourceMapper.selectByPrimaryKey(toGetResourceId);
             Tree<SysAdminResource> tree = new Tree<>();
             tree.setId(sysAdminResource.getId().toString());
             tree.setParentId(sysAdminResource.getParentId().toString());

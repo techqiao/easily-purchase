@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SysAdminUserHystrix implements AdminUserService {
     @Override
-    public Result checkUserName(String username, String oldusername) {
+    public Result checkUserName(String username) {
         return Result.hystrixError();
     }
 

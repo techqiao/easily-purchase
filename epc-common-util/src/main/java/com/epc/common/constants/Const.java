@@ -51,36 +51,23 @@ public class Const {
         int IS_OTHER_AGENCY = 1;
     }
 
-    public interface WIN_SORT {
-        String FIRST = "first";
-        String SECOND = "second";
-        String THREE = "three";
-    }
 
     public interface IS_UNDER_LINE{
         int DOWN = 0;//线下
         int UP = 1;//线上
         int UP_DOWN = 3;//线上线下
     }
-    public interface PROCESS_STATE {
-        //项目进程
-        String AUDITING = "auditing"; //审核
-        String REPLY = "reply";//批复
-        String WAIT_RELEASE="wait_release" ;//待发布
-        String RELEASED="released" ;//已发布
-        String NOT_SUBMIT = "not_submit";//未提交
-        String INVALID="invalid" ;//失效
-    }
 
 
     /**
-     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,4-平台
      */
     public interface INVITER_TYPE{
         int PURCHASER=0;
         int OPERATOR=1;
         int SUPPLIER=2;
         int PROXY=3;
+        int PLATFORM=4;
     }
 
     public interface OPEN_STATUS {
@@ -89,20 +76,4 @@ public class Const {
         int NORMA=1;
     }
 
-    public interface PERSON_PERMISSION {
-        //开标记录状态
-        String REPLY="reply"; //批复
-        String AGENT="agent"; //经办
-        String AUDITOR="auditor"; //审核
-        String PERSON_LIABLE="person_liable"; //负责人
-    }
-
-    /**
-     * 问题类型
-     */
-    public interface  QUESTION_TYPE{
-        String ANNOUCEMENT="announcement";//公告
-        String BIDFILE="bidFile";//招标文件
-        String BID_EVALUATION="bidEvaluation";//评标
-    }
 }

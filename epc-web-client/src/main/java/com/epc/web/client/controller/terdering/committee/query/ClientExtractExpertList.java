@@ -8,7 +8,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
-
+/**
+ * @Description: 组建委员会
+ * @Author: linzhixiang
+ * @Date: 2018/9/30
+ */ 
 @Data
 @ApiModel(value = "组建委员会")
 public class ClientExtractExpertList implements Serializable {

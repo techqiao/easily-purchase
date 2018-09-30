@@ -3,6 +3,7 @@ package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.file.ClientHandleFileUpload;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.pretrialFile.BiddingClient;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import io.swagger.annotations.Api;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "文件上传服务",tags = "上传预审信息")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class BiddingFileUploadController{
+public class BiddingFileUploadController extends BaseController {
     @Autowired
     BiddingClient biddingClient;
 
@@ -31,6 +32,8 @@ public class BiddingFileUploadController{
     public Result<Boolean> updatePretrialFile(ClientHandleFileUpload clientHandleFileUpload) {
         HandlePretriaFile handlePretriaFile=new HandlePretriaFile();
         BeanUtils.copyProperties(clientHandleFileUpload,handlePretriaFile);
+        handlePretriaFile.setOperateId(getLoginUser().getUserId());
+        handlePretriaFile.setOperateName(getLoginUser().getName());
         return biddingClient.updatePretrialFile(handlePretriaFile);
     }
 

@@ -376,66 +376,6 @@ public class TProjectBasicInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andIsStateDesignationIsNull() {
-            addCriterion("is_state_designation is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationIsNotNull() {
-            addCriterion("is_state_designation is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationEqualTo(Integer value) {
-            addCriterion("is_state_designation =", value, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationNotEqualTo(Integer value) {
-            addCriterion("is_state_designation <>", value, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationGreaterThan(Integer value) {
-            addCriterion("is_state_designation >", value, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("is_state_designation >=", value, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationLessThan(Integer value) {
-            addCriterion("is_state_designation <", value, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationLessThanOrEqualTo(Integer value) {
-            addCriterion("is_state_designation <=", value, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationIn(List<Integer> values) {
-            addCriterion("is_state_designation in", values, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationNotIn(List<Integer> values) {
-            addCriterion("is_state_designation not in", values, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationBetween(Integer value1, Integer value2) {
-            addCriterion("is_state_designation between", value1, value2, "isStateDesignation");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsStateDesignationNotBetween(Integer value1, Integer value2) {
-            addCriterion("is_state_designation not between", value1, value2, "isStateDesignation");
-            return (Criteria) this;
-        }
-
         public Criteria andTotalProjectInvestmentIsNull() {
             addCriterion("total_project_investment is null");
             return (Criteria) this;

@@ -13,10 +13,8 @@ public class ClientHandleQuestion {
 
     @ApiModelProperty(value = "采购项目ID")
     private Long procurementProjectId;
-    @ApiModelProperty(value = "提问人ID")
-    private Long questionerId;
-    @ApiModelProperty("提问人姓名")
-    private String questionerName;
+    @ApiModelProperty("问题类别")
+    private String questionerType;
     @ApiModelProperty("问题标题")
     private String title;
     @ApiModelProperty("问题内容")

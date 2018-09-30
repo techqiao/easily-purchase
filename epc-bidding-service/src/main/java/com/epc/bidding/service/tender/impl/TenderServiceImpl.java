@@ -100,7 +100,7 @@ public class TenderServiceImpl implements TenderService {
         //获取供应商 标段保证金支付列表
         List<BBidOpeningPay> result=bBidOpeningPayMapper.selectByExample(criteria);
         if(result.size()==0){
-            return Result.error();
+            return Result.success("未找到支付记录");
         }
         List<IsBackTenderMoneyRecordVO> voList=new ArrayList<>();
         for(BBidOpeningPay entity:result){

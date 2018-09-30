@@ -3,6 +3,7 @@ package com.epc.web.client.controller.bidding;
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.question.ClientHandleQuestion;
 import com.epc.web.client.controller.bidding.query.answerQuestion.ClientAnswerQuestionDTO;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.question.BiddingClient;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
@@ -27,7 +28,7 @@ import java.util.List;
 @Api(value = "问题答复服务",tags = "问题业务")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class BiddingQuestionController {
+public class BiddingQuestionController extends BaseController {
 
     @Autowired
     BiddingClient biddingClient;
@@ -45,6 +46,8 @@ public class BiddingQuestionController {
     public Result<Boolean> insertQuestion(@RequestBody ClientHandleQuestion dto){
         HandleQuestion handleQuestion=new HandleQuestion();
         BeanUtils.copyProperties(dto,handleQuestion);
+        handleQuestion.setQuestionerId(getLoginUser().getUserId());
+        handleQuestion.setQuestionerName(getLoginUser().getName());
         return  biddingClient.insertQuestion(handleQuestion);
     }
 

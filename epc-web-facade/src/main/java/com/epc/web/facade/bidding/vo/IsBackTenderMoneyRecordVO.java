@@ -1,5 +1,7 @@
 package com.epc.web.facade.bidding.vo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,26 +13,22 @@ import java.math.BigDecimal;
  * @Date: 2018/9/28
  */ 
 @Data
+@Api(value ="查看保证金返还" )
 public class IsBackTenderMoneyRecordVO implements Serializable {
     private static final long serialVersionUID = -966103363414203576L;
-    /**
-     * 项目编号
-     */
+
+    @ApiModelProperty(value = "项目编号")
     private String projectCode;
-    /**
-     * 项目名称
-     */
+
+    @ApiModelProperty(value = "项目名称")
     private String projectName;
-    /**
-     * 标段名称
-     */
+
+    @ApiModelProperty(value = "标段名称")
     private String bidsName;
-    /**
-     * 标段编号
-     */
+
+    @ApiModelProperty(value = "标段编号")
     private String bidsCode;
-    /**
-     * 是否返还
-     */
+
+    @ApiModelProperty(value = "是否返还")
     private Boolean isBack;
 }

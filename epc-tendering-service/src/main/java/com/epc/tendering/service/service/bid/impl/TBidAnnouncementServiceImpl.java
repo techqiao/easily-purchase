@@ -90,7 +90,7 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
     public Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement) {
         TOpeningRecordCriteria criteria=new TOpeningRecordCriteria();
         TOpeningRecordCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidId());
+        cubCriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidsId());
         cubCriteria.andStatusEqualTo(Const.OPEN_STATUS.NORMA);
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TOpeningRecord> resultList=tOpeningRecordMapper.selectByExample(criteria);
@@ -111,7 +111,7 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
             }
             TTenderMessageCriteria tcriteria=new TTenderMessageCriteria();
             TTenderMessageCriteria.Criteria cubTcriteria=tcriteria.createCriteria();
-            cubTcriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidId());
+            cubTcriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidsId());
             cubTcriteria.andCompanyIdEqualTo(entity.getSupplierCompanyId());
             List<TTenderMessage> tenderList=tTenderMessageMapper.selectByExample(tcriteria);
             if(tenderList.size()==0){

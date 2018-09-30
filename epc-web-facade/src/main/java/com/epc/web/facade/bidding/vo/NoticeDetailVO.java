@@ -1,49 +1,37 @@
 package com.epc.web.facade.bidding.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 公告详情
+ *
  * @author linzhixiang
  */
 @Data
+@ApiModel("公告详情")
 public class NoticeDetailVO implements Serializable {
 
     private static  long serialVersionUID = -8445436128833921499L;
-    /**
-     * 公告Id
-     */
+
+    @ApiModelProperty("公告Id")
     private Long id;
-    /**
-     * 开始时间
-     */
+    @ApiModelProperty("开始时间")
     private Date biddingStart;
-    /**
-     * 结束时间
-     */
+    @ApiModelProperty("结束时间")
     private Date biddingEnd;
-    /**
-     * 采购项目名称
-     */
+    @ApiModelProperty("采购项目名称")
     private String procurementProjectName;
-    /**
-     * 招标方式
-     */
+    @ApiModelProperty("招标方式")
     private String biddingType;
-    /**
-     * 标题
-     */
+    @ApiModelProperty("标题")
     private String title;
-    /**
-     * 公告内容
-     */
+    @ApiModelProperty("公告内容")
     private String announcementContent;
-    /**
-     * 文件路径
-     */
+    @ApiModelProperty("文件路径")
     private String biddingDocumentsUrl;
 
 }

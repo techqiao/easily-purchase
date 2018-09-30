@@ -5,6 +5,7 @@ import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
+import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
@@ -67,8 +68,8 @@ public class BiddingAgencyController extends BaseController implements BiddingAg
     @Override
     public Result selectAllAgencyByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
-        List<TAgencyDetailInfo> tAgencyDetailInfos = agencyService.selectAllAgencyByPage(queryDetailIfo);
-        PageInfo<TAgencyDetailInfo> pageInfo = new PageInfo<>(tAgencyDetailInfos);
+        List<BiddingAgencyVO> biddingAgencyVOS = agencyService.selectAllAgencyByPage(queryDetailIfo);
+        PageInfo<BiddingAgencyVO> pageInfo = new PageInfo<>(biddingAgencyVOS);
         return Result.success(getDataTable(pageInfo)) ;
     }
 

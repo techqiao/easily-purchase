@@ -326,6 +326,12 @@
   FROM t_purchaser_basic_info tp
  LEFT  JOIN t_purchaser_detail_info td ON td.purchaser_id=tp.id
   WHERE tp.is_deleted=0
+  <if  test="whereName != null">
+    and td.company_name like #{whereName}
+  </if>
+    <if test="status != null">
+      and  tp.state = #{status}
+    </if>
   ORDER BY id DESC
   </select>
   <select resultMap="selectMap" parameterType="com.epc.administration.facade.purchaser.vo.PurchaserVO" id="selectByPageWithStatus" >

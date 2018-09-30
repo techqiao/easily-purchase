@@ -1,10 +1,11 @@
 package com.epc.administration.client.controller.admin;
 
+import com.epc.administration.client.controller.admin.dto.ClientQueryUserDTO;
 import com.epc.administration.client.controller.admin.handle.ClientUserHandle;
 import com.epc.administration.client.controller.admin.handle.InsertUserHandle;
 import com.epc.administration.client.remoteapi.admin.SysAdminUserClient;
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.UserHandle;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,13 +51,15 @@ public class AdminUserController {
     }
 
     /**获取用户信息 分页
-     * @param request
+     * @param clientQueryUserDTO
      * @return
      */
     @ApiOperation(value = "获取用户信息 分页", notes = "获取用户信息 分页")
     @PostMapping(value = "userList")
-    public Result userList(@RequestBody QueryRequest request) {
-        return sysAdminUserClient.userList(request);
+    public Result userList(@RequestBody ClientQueryUserDTO clientQueryUserDTO) {
+        QueryUserDTO queryUserDTO = new QueryUserDTO();
+        BeanUtils.copyProperties(clientQueryUserDTO,queryUserDTO);
+        return sysAdminUserClient.userList(queryUserDTO);
     }
 
     /**注冊

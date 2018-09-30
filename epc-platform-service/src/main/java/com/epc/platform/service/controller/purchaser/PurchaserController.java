@@ -37,7 +37,7 @@ public class PurchaserController extends BaseController implements PurchaserUser
      * @return
      */
     @Override
-    public Result<Boolean> createPurchaserUserInfo(UserBasicInfo userBasicInfo) {
+    public Result<Boolean> createPurchaserUserInfo(@RequestBody UserBasicInfo userBasicInfo) {
         return purchaserService.insertPurchaserUserInfo(userBasicInfo);
     }
 
@@ -77,7 +77,7 @@ public class PurchaserController extends BaseController implements PurchaserUser
      * @return
      */
     @Override
-    public Result selectAllPurchaserByPage(QueryDetailIfo queryDetailIfo) {
+    public Result selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
         List<PurchaserVO> purchaserVOS = purchaserService.selectAllPurchaserByPage(queryDetailIfo);
         PageInfo<PurchaserVO> pageInfo = new PageInfo<>(purchaserVOS);
@@ -90,7 +90,7 @@ public class PurchaserController extends BaseController implements PurchaserUser
      * @return
      */
     @Override
-    public Result examinePurchaser(ExaminePurchaserHandle examinePurchaserHandle) {
+    public Result examinePurchaser(@RequestBody ExaminePurchaserHandle examinePurchaserHandle) {
         return purchaserService.examinePurchaser(examinePurchaserHandle);
     }
 

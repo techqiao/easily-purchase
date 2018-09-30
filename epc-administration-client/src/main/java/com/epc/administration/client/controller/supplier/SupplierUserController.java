@@ -2,7 +2,7 @@ package com.epc.administration.client.controller.supplier;
 
 
 import com.epc.administration.client.controller.common.BaseController;
-import com.epc.administration.client.controller.supplier.handle.ClientRoleDetailInfo;
+import com.epc.administration.client.controller.supplier.handle.ClientSupplierDetailInfo;
 import com.epc.administration.client.controller.supplier.handle.ClientUserBasicInfo;
 import com.epc.administration.client.controller.supplier.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.supplier.handle.ClientExamineSupplierHandle;
@@ -40,9 +40,9 @@ public class SupplierUserController extends BaseController {
     }
     @ApiOperation(value = "供应商完善资料",notes = "供应商完善资料")
     @PostMapping(value = "registrySupplierDetail" ,consumes = "application/json;charset=UTF-8" )
-    public Result<Boolean> insertSupplierDetailInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo ) {
+    public Result<Boolean> insertSupplierDetailInfo(@RequestBody ClientSupplierDetailInfo clientSupplierDetailInfo) {
         SupplierHandle pojo = new SupplierHandle();
-        BeanUtils.copyProperties(clientRoleDetailInfo,pojo);
+        BeanUtils.copyProperties(clientSupplierDetailInfo,pojo);
         return supplierClient.insertSupplierDetailInfo(pojo);
     }
     @ApiOperation(value = "供应商删除资料",notes = "供应商删除资料")

@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class ExamineOperatorHandle {
 
-    private Long operatorId;
+    private Long agencyId;
 
     private int state;
 }

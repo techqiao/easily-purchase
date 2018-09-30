@@ -36,6 +36,21 @@ public class TPurchaserBasicInfo implements Serializable {
     private Long purchaserId;
 
     /**
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     */
+    private Integer inviterType;
+
+    /**
+     * 邀请人Id
+     */
+    private Long inviterId;
+
+    /**
+     * 邀请人机构ID
+     */
+    private Integer inviterCompanyId;
+
+    /**
      * 审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败
      */
     private Integer state;
@@ -146,6 +161,54 @@ public class TPurchaserBasicInfo implements Serializable {
     }
 
     /**
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * @return inviter_type 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     */
+    public Integer getInviterType() {
+        return inviterType;
+    }
+
+    /**
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * @param inviterType 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     */
+    public void setInviterType(Integer inviterType) {
+        this.inviterType = inviterType;
+    }
+
+    /**
+     * 邀请人Id
+     * @return inviter_id 邀请人Id
+     */
+    public Long getInviterId() {
+        return inviterId;
+    }
+
+    /**
+     * 邀请人Id
+     * @param inviterId 邀请人Id
+     */
+    public void setInviterId(Long inviterId) {
+        this.inviterId = inviterId;
+    }
+
+    /**
+     * 邀请人机构ID
+     * @return inviter_company_id 邀请人机构ID
+     */
+    public Integer getInviterCompanyId() {
+        return inviterCompanyId;
+    }
+
+    /**
+     * 邀请人机构ID
+     * @param inviterCompanyId 邀请人机构ID
+     */
+    public void setInviterCompanyId(Integer inviterCompanyId) {
+        this.inviterCompanyId = inviterCompanyId;
+    }
+
+    /**
      * 审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败
      * @return state 审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败
      */
@@ -236,6 +299,9 @@ public class TPurchaserBasicInfo implements Serializable {
         sb.append(", cellphone=").append(cellphone);
         sb.append(", password=").append(password);
         sb.append(", purchaserId=").append(purchaserId);
+        sb.append(", inviterType=").append(inviterType);
+        sb.append(", inviterId=").append(inviterId);
+        sb.append(", inviterCompanyId=").append(inviterCompanyId);
         sb.append(", state=").append(state);
         sb.append(", role=").append(role);
         sb.append(", createAt=").append(createAt);

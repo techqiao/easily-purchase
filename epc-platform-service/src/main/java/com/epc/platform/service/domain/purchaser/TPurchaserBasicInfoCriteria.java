@@ -447,6 +447,186 @@ public class TPurchaserBasicInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andInviterTypeIsNull() {
+            addCriterion("inviter_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeIsNotNull() {
+            addCriterion("inviter_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeEqualTo(Integer value) {
+            addCriterion("inviter_type =", value, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeNotEqualTo(Integer value) {
+            addCriterion("inviter_type <>", value, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeGreaterThan(Integer value) {
+            addCriterion("inviter_type >", value, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("inviter_type >=", value, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeLessThan(Integer value) {
+            addCriterion("inviter_type <", value, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("inviter_type <=", value, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeIn(List<Integer> values) {
+            addCriterion("inviter_type in", values, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeNotIn(List<Integer> values) {
+            addCriterion("inviter_type not in", values, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeBetween(Integer value1, Integer value2) {
+            addCriterion("inviter_type between", value1, value2, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("inviter_type not between", value1, value2, "inviterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdIsNull() {
+            addCriterion("inviter_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdIsNotNull() {
+            addCriterion("inviter_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdEqualTo(Long value) {
+            addCriterion("inviter_id =", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdNotEqualTo(Long value) {
+            addCriterion("inviter_id <>", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdGreaterThan(Long value) {
+            addCriterion("inviter_id >", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("inviter_id >=", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdLessThan(Long value) {
+            addCriterion("inviter_id <", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdLessThanOrEqualTo(Long value) {
+            addCriterion("inviter_id <=", value, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdIn(List<Long> values) {
+            addCriterion("inviter_id in", values, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdNotIn(List<Long> values) {
+            addCriterion("inviter_id not in", values, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdBetween(Long value1, Long value2) {
+            addCriterion("inviter_id between", value1, value2, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterIdNotBetween(Long value1, Long value2) {
+            addCriterion("inviter_id not between", value1, value2, "inviterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdIsNull() {
+            addCriterion("inviter_company_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdIsNotNull() {
+            addCriterion("inviter_company_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdEqualTo(Integer value) {
+            addCriterion("inviter_company_id =", value, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdNotEqualTo(Integer value) {
+            addCriterion("inviter_company_id <>", value, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdGreaterThan(Integer value) {
+            addCriterion("inviter_company_id >", value, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("inviter_company_id >=", value, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdLessThan(Integer value) {
+            addCriterion("inviter_company_id <", value, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("inviter_company_id <=", value, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdIn(List<Integer> values) {
+            addCriterion("inviter_company_id in", values, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdNotIn(List<Integer> values) {
+            addCriterion("inviter_company_id not in", values, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdBetween(Integer value1, Integer value2) {
+            addCriterion("inviter_company_id between", value1, value2, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInviterCompanyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("inviter_company_id not between", value1, value2, "inviterCompanyId");
+            return (Criteria) this;
+        }
+
         public Criteria andStateIsNull() {
             addCriterion("state is null");
             return (Criteria) this;

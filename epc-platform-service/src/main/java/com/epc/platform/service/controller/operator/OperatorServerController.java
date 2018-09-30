@@ -5,6 +5,8 @@ import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
@@ -53,7 +55,7 @@ public class OperatorServerController extends BaseController implements FacadeOp
 
     /**
      * 运营商资料删除
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
     @Override
@@ -67,7 +69,7 @@ public class OperatorServerController extends BaseController implements FacadeOp
      * @return
      */
     @Override
-    public Result<TOperatorDetailInfo> queryOperatorDetailInfo(@RequestParam("whereId") Long whereId) {
+    public Result<OperatorUserVO> queryOperatorDetailInfo(@RequestParam("whereId") Long whereId) {
         return operatorService.queryOperatorDetailInfo(whereId);
     }
 
@@ -80,8 +82,8 @@ public class OperatorServerController extends BaseController implements FacadeOp
     @Override
     public Result selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
-        List<TOperatorDetailInfo> tOperatorDetailInfos = operatorService.selectAllOperatorByPage(queryDetailIfo);
-        PageInfo<TOperatorDetailInfo> page = new PageInfo<>(tOperatorDetailInfos);
+        List<OperatorVO> operatorVOS = operatorService.selectAllOperatorByPage(queryDetailIfo);
+        PageInfo<OperatorVO> page = new PageInfo<>(operatorVOS);
         return Result.success(getDataTable(page));
     }
 

@@ -14,6 +14,6 @@ import java.io.Serializable;
 @Data
 public class QueryDetailIfo  extends QueryRequest implements Serializable {
     private static final long serialVersionUID = 5533344554793829363L;
-    private String whereName;
+    private String where;
     private Integer status;
 }

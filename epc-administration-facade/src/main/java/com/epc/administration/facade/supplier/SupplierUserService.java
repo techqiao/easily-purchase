@@ -25,7 +25,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "createSupplierUserInfo", consumes = "application/json; charset=UTF-8")
-     Result<Boolean> createSupplierUserInfo(@RequestBody UserBasicInfo userBasicInfo);
+     Result<Boolean> createSupplierUserInfo(UserBasicInfo userBasicInfo);
 
     /**
      * 供应商完善资料

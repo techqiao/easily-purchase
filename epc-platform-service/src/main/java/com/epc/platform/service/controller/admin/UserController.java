@@ -1,8 +1,8 @@
 package com.epc.platform.service.controller.admin;
 
 import com.epc.administration.facade.admin.AdminUserService;
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.UserHandle;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.common.util.MD5Util;
 import com.epc.platform.service.domain.admin.SysAdminUser;
@@ -64,14 +64,13 @@ public class UserController extends BaseController implements AdminUserService {
     }
 
     /**获取用户信息 分页
-     * @param request
+     * @param queryUserDTO
      * @return
      */
     @Override
-    public Result userList(@RequestBody QueryRequest request) {
-        UserHandle userHandle = new UserHandle();
-        PageHelper.startPage(request.getPageNum(), request.getPageSize());
-        List<SysAdminUser> list = this.sysAdminUserService.findUserWithDept(userHandle);
+    public Result userList(@RequestBody QueryUserDTO queryUserDTO) {
+        PageHelper.startPage(queryUserDTO.getPageNum(), queryUserDTO.getPageSize());
+        List<SysAdminUser> list = this.sysAdminUserService.findUserWithDept(queryUserDTO);
         PageInfo<SysAdminUser> pageInfo = new PageInfo<>(list);
         return Result.success(getDataTable(pageInfo));
     }
@@ -103,7 +102,7 @@ public class UserController extends BaseController implements AdminUserService {
     public Result addUser(@RequestBody UserHandle user) {
         try {
             this.sysAdminUserService.addUser(user);
-            return Result.success("新增用户成功！");
+            return Result.success("新增用户成功");
         } catch (Exception e) {
             LOGGER.error("新增用户失败", e);
             return Result.error("新增用户失败，请联系网站管理员！");

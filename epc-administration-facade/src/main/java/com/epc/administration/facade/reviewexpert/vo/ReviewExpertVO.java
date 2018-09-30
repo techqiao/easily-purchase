@@ -19,39 +19,33 @@ public class ReviewExpertVO implements Serializable {
      */
     private Long id;
     /**
-     *公司名称
+     *专家姓名
      */
-    private String companyName;
-    /**
-     * 统一信用代码
-     */
-    private String uniformCreditCode;
-    /**
-     * 对公银行名称
-     */
-    private String publicBankName;
-    /**
-     * 对公银行账号
-     */
-    private String publicBanAccountNumber;
+    private String name;
+
     /**
      * 创建时间
      */
     private Date createAt;
-    /**
-     * 是否删除: 0-存在,1-删除
-     */
-    private Integer isDeleted;
-    /**
-     * 手机号
-     */
-    private String cellphone;
+
     /**
      * 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
      */
     private Integer state;
+
     /**
-     * 用户名
+     * 专业
      */
-    private String name;
+    private String profession;
+
+    /**
+     * 职称
+     */
+    private String positional;
+
+    /**
+     * 级别
+     */
+    private String level;
+
 }

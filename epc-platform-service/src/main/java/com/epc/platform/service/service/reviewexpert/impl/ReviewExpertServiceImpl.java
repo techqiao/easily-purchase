@@ -1,9 +1,14 @@
 package com.epc.platform.service.service.reviewexpert.impl;
 
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
+import com.epc.administration.facade.reviewexpert.handle.AttachmentHandle;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
-import com.epc.platform.service.domain.reviewexpertr.*;
+import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
+import com.epc.platform.service.domain.expert.*;
+import com.epc.platform.service.mapper.reviewexpert.TExpertAttachmentMapper;
+import com.epc.platform.service.mapper.reviewexpert.TExpertBasicInfoMapper;
+import com.epc.platform.service.mapper.reviewexpert.TExpertDetailInfoMapper;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
 
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
@@ -12,11 +17,7 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.mapper.reviewexpertr.TExpertAttachmentMapper;
-import com.epc.platform.service.mapper.reviewexpertr.TExpertBasicInfoMapper;
-import com.epc.platform.service.mapper.reviewexpertr.TExpertDetailInfoMapper;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -47,18 +48,25 @@ public class ReviewExpertServiceImpl implements ExpertService {
     @Autowired
     private TExpertAttachmentMapper tExpertAttachmentMapper;
 
+    /**
+     * 注册专家
+     *
+     * @param userBasicInfo
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertExpertBasicInfo(UserBasicInfo userBasicInfo) {
         TExpertBasicInfo pojo = new TExpertBasicInfo();
-        Date date = new Date();
-        pojo.setCellphone(userBasicInfo.getCellphone());
-        pojo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        pojo.setCreateAt(date);
-        pojo.setUpdateAt(date);
-        pojo.setPassword("123456");
         pojo.setName(userBasicInfo.getUsername());
+        pojo.setCellphone(userBasicInfo.getCellphone());
+        pojo.setInviterType(Const.Role.ROLE_ADMIN);
+        pojo.setInviterId(Long.valueOf(Const.Role.ROLE_ADMIN));
+        pojo.setInviterCompanyId(Const.Role.ROLE_ADMIN);
         pojo.setState(Const.STATE.REGISTERED);
+        pojo.setCreateAt(new Date());
+        pojo.setUpdateAt(new Date());
+        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         try {
             return Result.success(tExpertBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {
@@ -70,74 +78,94 @@ public class ReviewExpertServiceImpl implements ExpertService {
         }
     }
 
+    /**
+     * 完善专家信息
+     *
+     * @param reviewExpertHandle
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
         TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
-        BeanUtils.copyProperties(reviewExpertHandle, tExpertDetailInfo);
-        Date date = new Date();
-        tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        tExpertDetailInfo.setCreateAt(date);
-        tExpertDetailInfo.setUpdateAt(date);
-        TExpertAttachment attachment = new TExpertAttachment();
-        attachment.setExpertId(reviewExpertHandle.getUserId());
-        attachment.setCreateAt(date);
-        attachment.setUpdateAt(date);
-        attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        try {
-            //公司名称
-            tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
-            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(reviewExpertHandle.getCertificateOfAuthorization());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            //经办人(运营商员工)手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(reviewExpertHandle.getOperatorIdCardFront());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            //法人身份证反面照片url
-            System.out.println();
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardOther());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            //法人身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardPositive());
-            tExpertAttachmentMapper.insertSelective(attachment);
+        tExpertDetailInfo.setExpertId(reviewExpertHandle.getId());
+        tExpertDetailInfo.setCompanyName(reviewExpertHandle.getName());
+        tExpertDetailInfo.setUniformCreditCode(reviewExpertHandle.getUniformCreditCode());
+        tExpertDetailInfo.setPublicBankName(reviewExpertHandle.getPublicBankName());
+        tExpertDetailInfo.setPublicBanAccountNumber(reviewExpertHandle.getPublicBanAccountNumber());
+        tExpertDetailInfo.setCreateAt(new Date());
+        tExpertDetailInfo.setUpdateAt(new Date());
+        tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
-            //资质证书url
-            for (String qualificationCertificate : reviewExpertHandle.getQualificationCertificateList()) {
+        TExpertAttachment attachment = new TExpertAttachment();
+        attachment.setExpertId(reviewExpertHandle.getId());
+        attachment.setCreateAt(new Date());
+        attachment.setUpdateAt(new Date());
+        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        try {
+            //完善补全信息
+            tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
+            //上传身份证正面
+            attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardPositive());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            tExpertAttachmentMapper.insertSelective(attachment);
+            //上传身份证反面
+            attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardOther());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            for (AttachmentHandle attachmentHandle : reviewExpertHandle.getAttachmentHandleList()) {
                 attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                attachment.setCertificateFilePath(qualificationCertificate);
+                attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                attachment.setCertificateName(attachmentHandle.getCertificateName());
                 tExpertAttachmentMapper.insertSelective(attachment);
             }
-            //营业执照照片url
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateFilePath(reviewExpertHandle.getBusinessLicense());
-            return Result.success(tExpertAttachmentMapper.insertSelective(attachment)>0);
-        }catch (BusinessException e) {
+            //完善基本信息
+            TExpertBasicInfo tExpertBasicInfo = new TExpertBasicInfo();
+            tExpertBasicInfo.setId(reviewExpertHandle.getId());
+            tExpertBasicInfo.setName(reviewExpertHandle.getName());
+            tExpertBasicInfo.setProfession(reviewExpertHandle.getProfession());
+            tExpertBasicInfo.setLevel(reviewExpertHandle.getLevel());
+            tExpertBasicInfo.setCircularDt(reviewExpertHandle.getCircularDt());
+            tExpertBasicInfo.setCircularMethod(reviewExpertHandle.getCircularMethod());
+            tExpertBasicInfo.setOtherInformation(reviewExpertHandle.getOtherInformation());
+            tExpertBasicInfo.setState(Const.STATE.COMMITTED);
+            tExpertBasicInfo.setUpdateAt(new Date());
+            tExpertBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            return Result.success(tExpertBasicInfoMapper.updateByPrimaryKeySelective(tExpertBasicInfo)>0);
+        } catch (BusinessException e) {
             LOGGER.error("BusinessException insertExpertDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("BusinessException insertExpertDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
 
+
+    /**
+     * 删除评审专家
+     * @param whereId
+     * @return
+     */
     @Override
     public Result<Boolean> deleteExpertDetailInfo(Long whereId) {
-        TExpertDetailInfo tExpertDetailInfo =new TExpertDetailInfo();
-        tExpertDetailInfo.setId(whereId);
-        tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        TExpertBasicInfo tExpertBasicInfo =new TExpertBasicInfo();
+        tExpertBasicInfo.setId(whereId);
+        tExpertBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         try{
-            return Result.success(tExpertDetailInfoMapper.deleteByKey(tExpertDetailInfo)>0);
+            return Result.success(tExpertBasicInfoMapper.updateByPrimaryKeySelective(tExpertBasicInfo)>0);
         }catch (BusinessException e){
             LOGGER.error("BusinessException deleteExpertDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
 
+    /**
+     * 查询专家基本信息
+     * @param whereId
+     * @return
+     */
     @Override
     public Result<TExpertDetailInfo> queryExpertDetailInfo( Long whereId) {
         try {
@@ -150,19 +178,16 @@ public class ReviewExpertServiceImpl implements ExpertService {
     }
 
 
+    /**
+     *分页查询
+     * @param queryDetailIfo
+     * @return
+     */
     @Override
-    public List<TExpertDetailInfo> selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
-        try {
-            TExpertDetailInfoCriteria criteria = new TExpertDetailInfoCriteria();
-            criteria.setOrderByClause("id desc");
-            if(queryDetailIfo.getWhereName()!=null){
-                criteria.createCriteria().andCompanyNameEqualTo(queryDetailIfo.getWhereName());
-            }            return tExpertDetailInfoMapper.selectByExample(criteria);
-        } catch (Exception e) {
-            LOGGER.error("BusinessException selectByExample : {}", e);
-            e.printStackTrace();
-            return  new ArrayList<>();
-        }
+    public List<ReviewExpertVO> selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
+
+        return  tExpertDetailInfoMapper.selectByPage(queryDetailIfo);
+
     }
 
     /**

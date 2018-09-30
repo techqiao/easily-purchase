@@ -1,5 +1,6 @@
 package com.epc.platform.service.mapper.supplier;
 
+import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.platform.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria;
@@ -43,7 +44,7 @@ public interface TSupplierDetailInfoMapper {
      * 分页查询
      * @return
      */
-    List<SupplierUserVO> selectByPage();
+    List<SupplierUserVO> selectByPage(QueryDetailIfo queryDetailIfo);
 
     /**
      * 根据状态

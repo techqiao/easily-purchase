@@ -2,7 +2,7 @@ package com.epc.administration.client.controller.operator;
 
 import com.epc.administration.client.controller.operator.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.operator.handle.ClientExamineOperatorHandle;
-import com.epc.administration.client.controller.operator.handle.ClientRoleDetailInfo;
+import com.epc.administration.client.controller.operator.handle.ClientOperatorDetailInfo;
 import com.epc.administration.client.controller.operator.handle.ClientUserBasicInfo;
 import com.epc.administration.client.remoteapi.operator.OperatorClient;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
@@ -40,9 +40,9 @@ public class OperatorController {
 
     @ApiOperation(value = "运营商完善资料", notes = "运营商完善资料")
     @PostMapping(value = "registryDetail",consumes = "application/json;charset=UTF-8")
-    public Result<Boolean> insertOperatorDetailInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo) {
+    public Result<Boolean> insertOperatorDetailInfo(@RequestBody ClientOperatorDetailInfo clientOperatorDetailInfo) {
         RoleDetailInfo pojo = new RoleDetailInfo();
-        BeanUtils.copyProperties(clientRoleDetailInfo, pojo);
+        BeanUtils.copyProperties(clientOperatorDetailInfo, pojo);
         return operatorClient.insertOperatorDetailInfo(pojo);
     }
 

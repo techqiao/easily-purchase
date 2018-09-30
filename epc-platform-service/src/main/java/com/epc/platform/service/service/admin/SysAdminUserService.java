@@ -1,5 +1,6 @@
 package com.epc.platform.service.service.admin;
 
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.Result;
@@ -40,10 +41,9 @@ public interface SysAdminUserService {
 
     /**
      * 获取所有用户信息
-     * @param userHandle
      * @return
      */
-    List<SysAdminUser> findUserWithDept(UserHandle userHandle);
+    List<SysAdminUser> findUserWithDept(QueryUserDTO queryUserDTO);
 
     /**
      * 注册用户

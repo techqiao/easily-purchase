@@ -22,12 +22,10 @@ import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.purchaser.PurchaserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
@@ -64,8 +62,10 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tPurchaserBasicInfo.setCreateAt(date);
         tPurchaserBasicInfo.setUpdateAt(date);
-        tPurchaserBasicInfo.setPassword("123456");
+        tPurchaserBasicInfo.setInviterType(Const.Role.ROLE_CORPORATION);
         tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
+        tPurchaserBasicInfo.setInviterId(Long.valueOf(Const.Role.ROLE_ADMIN));
+        tPurchaserBasicInfo.setInviterCompanyId(Const.Role.ROLE_ADMIN);
         try {
             return Result.success(tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo) > 0);
         } catch (BusinessException e) {
@@ -103,7 +103,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         try {
             //公司名称
             tPurchaserDetailInfoMapper.insertSelective(tPurchaserDetailInfo);
-            //经办人(运营商员工)手持身份证正面照片url
+            //经办人(采购人员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
             tPurchaserAttachmentMapper.insertSelective(attachment);
@@ -129,7 +129,12 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tPurchaserAttachmentMapper.insertSelective(tPurchaserAttachment);
             }
             //完善信息完成后 更新信息状态至已提交
-            TPurchaserBasicInfo tSupplierBasicInfo = tPurchaserBasicInfoMapper.selectByPurchaserId(tPurchaserDetailInfo.getId());
+            TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
+            tSupplierBasicInfo.setId(purchaserHandle.getId());
+            tSupplierBasicInfo.setName("");
+            tSupplierBasicInfo.setCellphone("");
+            tSupplierBasicInfo.setPassword("");
+            tSupplierBasicInfo.setPurchaserId(0L);
             tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
@@ -137,7 +142,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
-            LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
             return Result.error(e.getMessage());
         }
     }
@@ -160,7 +165,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
     }
     /**
-     * 供应商资料查询
+     * 采购人资料查询
      * @param id
      * @return
      */
@@ -181,18 +186,10 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public List<PurchaserVO> selectAllPurchaserByPage(QueryDetailIfo queryDetailIfo) {
-        //如果有公司名称 模糊查询
-        if(queryDetailIfo.getWhereName()!=null){
-            return tPurchaserDetailInfoMapper.selectByPageWhereName(queryDetailIfo.getWhereName());
-        }
-        //如果有状态值 分状态查询
-        if(queryDetailIfo.getStatus()!=null){
-            return tPurchaserDetailInfoMapper.selectByPageWithStatus(queryDetailIfo.getStatus());
-        }
-        return  tPurchaserDetailInfoMapper.selectByPage();
+        return  tPurchaserDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**
-     * 审核供应商
+     * 审核采购人
      * @param examinePurchaserHandle
      * @return
      */
@@ -200,9 +197,9 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<Boolean> examinePurchaser(ExaminePurchaserHandle examinePurchaserHandle) {
         TPurchaserBasicInfo tPurchaserBasicInfo = new TPurchaserBasicInfo();
         tPurchaserBasicInfo.setState(examinePurchaserHandle.getState());
+        tPurchaserBasicInfo.setId(examinePurchaserHandle.getPurchaserId());
         TPurchaserBasicInfoCriteria criteria = new TPurchaserBasicInfoCriteria() ;
         criteria.createCriteria().andIdEqualTo(examinePurchaserHandle.getPurchaserId());
         return Result.success(tPurchaserBasicInfoMapper.updateByExampleSelective(tPurchaserBasicInfo,criteria)>0);
-
     }
 }

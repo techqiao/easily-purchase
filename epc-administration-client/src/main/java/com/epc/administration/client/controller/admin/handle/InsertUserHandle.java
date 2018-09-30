@@ -18,12 +18,12 @@ public class InsertUserHandle extends LoginHandle {
     @NotEmpty(message = "InsertUserHandle.name.null")
     private  String name;
     @ApiModelProperty(value = "用户部门id")
-    @NotEmpty(message = "InsertUserHandle.depetid.null")
-    private  Long depetid;
+    @NotEmpty(message = "InsertUserHandle.deptId.null")
+    private  Long deptId;
     @ApiModelProperty(value = "是否展示")
     @NotEmpty(message = "InsertUserHandle.isDeleted.null")
     private int isDeleted;
-    @ApiModelProperty(value = "用户资源列表")
+    @ApiModelProperty(value = "用户角色")
     @NotEmpty(message = "InsertUserHandle.roles.null")
     private Long[] roles;
 

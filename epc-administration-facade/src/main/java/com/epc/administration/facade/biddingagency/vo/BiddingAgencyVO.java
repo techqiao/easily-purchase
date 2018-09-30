@@ -17,7 +17,7 @@ public class BiddingAgencyVO implements Serializable {
     /**
      * 法人id
      */
-    private Long supplierId;
+    private Long id;
     /**
      *公司名称
      */

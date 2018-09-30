@@ -16,49 +16,57 @@ import java.util.List;
  * <p>@Author : luozhixin
  */
 @Data
-@ApiModel(value = "ClientRoleDetailInfo", description = "运营商完善信息")
-public class ClientRoleDetailInfo  implements Serializable {
+@ApiModel(value = "ClientBiddingAgencyDetailInfo", description = "运营商完善信息")
+public class ClientBiddingAgencyDetailInfo implements Serializable {
     private static final long serialVersionUID = 4115083942872587425L;
     /**
      * 主键id
      */
     @ApiModelProperty(value = "主键ID")
-    @NotEmpty(message = "ClientRoleDetailInfo.id.null")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.id.null")
     private Long id;
 
     /**
      * 公司名称
      */
     @ApiModelProperty(value = "公司名称")
-    @NotEmpty(message = "ClientRoleDetailInfo.companyName.null")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyName.null")
     private String companyName;
 
     /**
      *统一信用代码
      */
     @ApiModelProperty(value = "统一信用代码")
-    @NotEmpty(message = "ClientRoleDetailInfo.uniformCreditCode.null")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.uniformCreditCode.null")
     private String uniformCreditCode;
-
+    @ApiModelProperty(value = "营业执照照片url")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.businessLicense.null")
+    private String businessLicense;
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.legalIdCardPositive.null")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.legalIdCardOther.null")
+    private String legalIdCardOther;
     /**
      *对公银行名称
      */
     @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "ClientRoleDetailInfo.publicBankName.null")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.publicBankName.null")
     private String publicBankName;
 
     /**
      *对公银行账号
      */
     @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "ClientRoleDetailInfo.publicBanAccountNumber.null")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
 
     /**
      * 附件集合
      */
     @ApiModelProperty(value = "附件集合")
-    @NotEmpty(message = "ClientRoleDetailInfo.attachmentVOS.null")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.clientAttachmentHandles.null")
     private List<ClientAttachmentHandle> clientAttachmentHandles;
 
 

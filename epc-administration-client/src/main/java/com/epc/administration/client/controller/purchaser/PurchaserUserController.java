@@ -3,14 +3,13 @@ package com.epc.administration.client.controller.purchaser;
 
 import com.epc.administration.client.controller.purchaser.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.purchaser.handle.ClientExaminePurchaserHandle;
-import com.epc.administration.client.controller.purchaser.handle.ClientRoleDetailInfo;
+import com.epc.administration.client.controller.purchaser.handle.ClientPurchaserUserDetailInfo;
 import com.epc.administration.client.controller.purchaser.handle.ClientUserBasicInfo;
 import com.epc.administration.client.remoteapi.purchaser.PurchaserClient;
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
-import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,9 +39,9 @@ public class PurchaserUserController {
     }
     @ApiOperation(value = "采购人完善资料",notes = "采购人完善资料")
     @PostMapping(value = "registryPurchaserDetail" ,consumes = "application/json;charset=UTF-8" )
-    public Result<Boolean> insertPurchaserDetailInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo ) {
+    public Result<Boolean> insertPurchaserDetailInfo(@RequestBody ClientPurchaserUserDetailInfo clientPurchaserUserDetailInfo ) {
         PurchaserHandle pojo = new PurchaserHandle();
-        BeanUtils.copyProperties(clientRoleDetailInfo,pojo);
+        BeanUtils.copyProperties(clientPurchaserUserDetailInfo,pojo);
         return purchaserClient.insertPurchaserDetailInfo(pojo);
     }
     @ApiOperation(value = "采购人删除资料",notes = "采购人删除资料")

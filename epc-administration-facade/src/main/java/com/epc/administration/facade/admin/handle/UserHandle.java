@@ -1,8 +1,6 @@
 package com.epc.administration.facade.admin.handle;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -17,7 +15,7 @@ public class UserHandle implements Serializable {
     private  String name;
     private  String phone;
     private String  password;
-    private  Long depetid;
+    private  Long deptId;
     private int isDeleted;
     private Long id;
     private Long[] roles;

@@ -14,9 +14,9 @@ import java.util.Date;
 public class OperatorVO  implements Serializable {
     private static final long serialVersionUID = -1889166691865910335L;
     /**
-     * 法人id
+     * 用户id
      */
-    private Long supplierId;
+    private Long id;
     /**
      *公司名称
      */

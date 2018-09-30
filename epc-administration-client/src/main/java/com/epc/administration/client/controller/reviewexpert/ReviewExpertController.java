@@ -1,9 +1,9 @@
 package com.epc.administration.client.controller.reviewexpert;
 
+import com.epc.administration.client.controller.reviewexpert.handle.ClientExpertDetailIfo;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientUserBasicInfo;
 import com.epc.administration.client.controller.reviewexpert.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientExamineExpertHandle;
-import com.epc.administration.client.controller.reviewexpert.handle.ClientRoleDetailInfo;
 import com.epc.administration.client.remoteapi.reviewexpert.ReviewexpertClient;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
@@ -39,9 +39,9 @@ class ReviewExpertController {
     }
     @ApiOperation(value = "评审专家完善资料",notes = "评审专家完善资料")
     @PostMapping(value = "registryReviewExpertDetail",consumes = "application/json;charset=UTF-8")
-    public Result<Boolean> insertReviewExpertDetailInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo ) {
+    public Result<Boolean> insertReviewExpertDetailInfo(@RequestBody ClientExpertDetailIfo clientExpertDetailIfo) {
         ReviewExpertHandle reviewExpertHandle = new ReviewExpertHandle();
-        BeanUtils.copyProperties(clientRoleDetailInfo,reviewExpertHandle);
+        BeanUtils.copyProperties(clientExpertDetailIfo,reviewExpertHandle);
         return reviewExpertClient.insertReviewExpertDetailInfo(reviewExpertHandle);
     }
     @ApiOperation(value = "评审专家删除资料",notes = "评审专家删除资料")

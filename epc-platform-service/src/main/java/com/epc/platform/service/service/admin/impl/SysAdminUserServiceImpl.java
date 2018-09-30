@@ -1,7 +1,7 @@
 package com.epc.platform.service.service.admin.impl;
-import com.google.common.collect.Lists;
 import java.util.Date;
 
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.ResourceHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
@@ -111,11 +111,16 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return userWithRole;
     }
 
+    /**
+     * 分页查询所有用户
+     * @return
+     */
     @Override
-    public List<SysAdminUser> findUserWithDept(UserHandle user) {
+    public List<SysAdminUser> findUserWithDept(QueryUserDTO queryUserDTO) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setPhone(user.getPhone());
-        sysAdminUser.setPassword(user.getPassword());
+        sysAdminUser.setName(queryUserDTO.getUserName());
+        sysAdminUser.setPhone(queryUserDTO.getPhone());
+        sysAdminUser.setDeptId(queryUserDTO.getDeptId());
         try {
             return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);
         } catch (Exception e) {
@@ -146,8 +151,8 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
          sysAdminUser.setPhone(userHandle.getPhone());
         sysAdminUser.setCreateAt(date);
         sysAdminUser.setUpdateAt(date);
-        sysAdminUser.setDeptId(userHandle.getDepetid());
-        sysAdminUser.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        sysAdminUser.setDeptId(userHandle.getDeptId());
+        sysAdminUser.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
         sysAdminUserMapper.insertSelective(sysAdminUser);
         setUserRoles(userHandle);
@@ -160,7 +165,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         sysAdminUser.setName(userHandle.getName());
         sysAdminUser.setPhone(userHandle.getPhone());
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
-        sysAdminUser.setDeptId(userHandle.getDepetid());
+        sysAdminUser.setDeptId(userHandle.getDeptId());
         sysAdminUser.setUpdateAt(new Date());
         sysAdminUser.setIsDeleted(userHandle.getIsDeleted());
         sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
@@ -211,7 +216,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         sysAdminUser.setPhone(userHandle.getPhone());
         sysAdminUser.setId(userHandle.getId());
         sysAdminUser.setName(userHandle.getName());
-        sysAdminUser.setDeptId(userHandle.getDepetid());
+        sysAdminUser.setDeptId(userHandle.getDeptId());
         if(sysAdminUser.getPassword()!=null){
             String newPassword = MD5Util.MD5EncodeUtf8(sysAdminUser.getPassword());
             sysAdminUser.setPassword(newPassword);

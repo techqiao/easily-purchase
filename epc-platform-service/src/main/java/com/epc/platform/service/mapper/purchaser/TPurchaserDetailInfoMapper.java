@@ -1,5 +1,6 @@
 package com.epc.platform.service.mapper.purchaser;
 
+import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfoCriteria;
@@ -38,7 +39,7 @@ public interface TPurchaserDetailInfoMapper {
      * 分页查询
      * @return
      */
-    List<PurchaserVO> selectByPage();
+    List<PurchaserVO> selectByPage(QueryDetailIfo queryDetailIfo);
 
     /**
      * 根据状态

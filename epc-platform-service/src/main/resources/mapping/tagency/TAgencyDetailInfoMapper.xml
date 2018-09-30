@@ -17,6 +17,18 @@
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="selectMap" type="com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR" />
+    <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR" />
+    <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <!--
       WARNING - @mbggenerated
@@ -371,6 +383,21 @@
   <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria" id="selectByName" >
     SELECT ts.company_name ,ts.public_bank_name ,ts.create_at,ts.public_ban_account_number,ts.uniform_credit_code
 FROM t_agency_detail_info ts WHERE ts.is_deleted=0 AND ts.company_name like #{companyName,jdbcType=VARCHAR}
+  </select>
+
+
+  <select resultMap="selectMap" parameterType="com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO" id="selectByPage" >
+  SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.agency_id,td.uniform_credit_code
+  FROM t_agency_basic_info tb
+ LEFT  JOIN t_agency_detail_info td ON td.agency_id=tb.id
+  WHERE tb.is_deleted=0
+  <if test="status != null">
+    tb.state = #{status,jdbcType=INTEGER}
+  </if>
+    <if test="where != null">
+      td.company_name LIKE #{where,jdbcType=VARCHAR}
+    </if>
+  ORDER BY id DESC
   </select>
 
 </mapper>

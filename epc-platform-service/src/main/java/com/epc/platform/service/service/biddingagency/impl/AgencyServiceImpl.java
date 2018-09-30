@@ -1,15 +1,22 @@
 package com.epc.platform.service.service.biddingagency.impl;
+import com.epc.administration.facade.biddingagency.vo.AgencyAttachmentVO;
+import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.handle.AttachmentHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
+import com.epc.administration.facade.biddingagency.vo.AgencyUserAttachmentVO;
+import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.platform.service.domain.expert.TExpertBasicInfo;
 import com.epc.platform.service.domain.tagency.*;
+import com.epc.platform.service.mapper.reviewexpert.TExpertBasicInfoMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyAttachmentMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyBasicInfoMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyDetailInfoMapper;
@@ -54,13 +61,11 @@ public class AgencyServiceImpl implements AgencyService {
         Date date = new Date();
         tAgencyBasicInfo.setCellphone(userBasicInfo.getCellphone());
         tAgencyBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
-        tAgencyBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-        tAgencyBasicInfo.setPassword("123456");
+        tAgencyBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tAgencyBasicInfo.setCreateAt(date);
+        tAgencyBasicInfo.setName(userBasicInfo.getUsername());
         tAgencyBasicInfo.setUpdateAt(date);
         tAgencyBasicInfo.setState(Const.STATE.PERFECTING);
-        int i = tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo);
-
         try {
             return Result.success(tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo) > 0);
         } catch (BusinessException e) {
@@ -80,26 +85,22 @@ public class AgencyServiceImpl implements AgencyService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
         TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
-        BeanUtils.copyProperties(biddingHandle, detailInfo);
         Date date = new Date();
-        detailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        detailInfo.setAgencyId(biddingHandle.getId());
+        detailInfo.setCompanyName(biddingHandle.getCompanyName());
+        detailInfo.setUniformCreditCode(biddingHandle.getUniformCreditCode());
+        detailInfo.setPublicBankName(biddingHandle.getPublicBankName());
+        detailInfo.setPublicBanAccountNumber(biddingHandle.getPublicBanAccountNumber());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
+        detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         TAgencyAttachment attachment = new TAgencyAttachment();
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
-        TAgencyBasicInfo tAgencyBasicInfo= new TAgencyBasicInfo();
-        tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
-        tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo);
+        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        attachment.setAgencyId(biddingHandle.getId());
         try {
             tAgencyDetailInfoMapper.insertSelective(detailInfo);
-            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(biddingHandle.getCertificateOfAuthorization());
-            tAgencyAttachmentMapper.insertSelective(attachment);
-            //经办人(运营商员工)手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(biddingHandle.getOperatorIdCardFront());
-            tAgencyAttachmentMapper.insertSelective(attachment);
             //法人身份证反面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
             attachment.setCertificateFilePath(biddingHandle.getLegalIdCardOther());
@@ -108,16 +109,24 @@ public class AgencyServiceImpl implements AgencyService {
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
             attachment.setCertificateFilePath(biddingHandle.getLegalIdCardPositive());
             tAgencyAttachmentMapper.insertSelective(attachment);
-            //资质证书url
-            for (String qualificationCertificate : biddingHandle.getQualificationCertificateList()) {
-                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                attachment.setCertificateFilePath(qualificationCertificate);
-                 Result.success(tAgencyAttachmentMapper.insertSelective(attachment)>0);
-            }
             //营业执照照片url
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(biddingHandle.getBusinessLicense());
-            return Result.success(tAgencyAttachmentMapper.insertSelective(attachment)>0);
+            tAgencyAttachmentMapper.insertSelective(attachment);
+            //资质证书url
+            List<AttachmentHandle> clientAttachmentHandles = biddingHandle.getClientAttachmentHandles();
+            if(clientAttachmentHandles!=null){
+                for (AttachmentHandle attachmentHandle : clientAttachmentHandles) {
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                    attachment.setCertificateName(attachmentHandle.getCertificateName());
+                    tAgencyAttachmentMapper.insertSelective(attachment);
+                }
+            }
+            TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
+            tAgencyBasicInfo.setId(biddingHandle.getId());
+            tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
+            return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException inserttAgencyDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -135,11 +144,11 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     public Result<Boolean> deleteBiddingAgencyDetailInfo(Long  whereId) {
-        TAgencyDetailInfo tAgencyDetailInfo = new TAgencyDetailInfo();
-        tAgencyDetailInfo.setId(whereId);
-        tAgencyDetailInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
+        tAgencyBasicInfo.setId(whereId);
+        tAgencyBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         try{
-            return Result.success(tAgencyDetailInfoMapper.updateByPrimaryKeySelective(tAgencyDetailInfo)>0);
+            return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e){
             LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
@@ -151,10 +160,47 @@ public class AgencyServiceImpl implements AgencyService {
      * @return
      */
     @Override
-    public Result queryBiddingAgencyDetailInfo(Long whereId) {
+    public Result<AgencyUserAttachmentVO> queryBiddingAgencyDetailInfo(Long whereId) {
+
             try {
-                TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfoMapper.selectByPrimaryKey(whereId);
-                return Result.success(tAgencyDetailInfo);
+                TAgencyBasicInfo tAgencyBasicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(whereId);
+
+                TAgencyDetailInfoCriteria criteria = new TAgencyDetailInfoCriteria();
+                criteria.createCriteria().andAgencyIdEqualTo(whereId);
+
+
+
+                TAgencyAttachmentCriteria tAgencyAttachmentCriteria = new TAgencyAttachmentCriteria();
+                tAgencyAttachmentCriteria.createCriteria().andAgencyIdEqualTo(whereId);
+
+                List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectByExample(tAgencyAttachmentCriteria);
+
+                AgencyUserAttachmentVO agencyUserAttachmentVO = new AgencyUserAttachmentVO();
+                agencyUserAttachmentVO.setId(whereId);
+                TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfoMapper.selectByExample(criteria).get(0);
+                if(tAgencyDetailInfo!=null){
+                    agencyUserAttachmentVO.setCompanyName(tAgencyDetailInfo.getCompanyName());
+                    agencyUserAttachmentVO.setUniformCreditCode(tAgencyDetailInfo.getUniformCreditCode());
+                    agencyUserAttachmentVO.setPublicBankName(tAgencyDetailInfo.getPublicBankName());
+                    agencyUserAttachmentVO.setPublicBanAccountNumber(tAgencyDetailInfo.getPublicBanAccountNumber());
+
+                }
+                agencyUserAttachmentVO.setCreateAt(new Date());
+                agencyUserAttachmentVO.setIsDeleted(tAgencyBasicInfo.getIsDeleted());
+                agencyUserAttachmentVO.setCellphone(tAgencyBasicInfo.getCellphone());
+                agencyUserAttachmentVO.setState(tAgencyBasicInfo.getState());
+                agencyUserAttachmentVO.setName(tAgencyBasicInfo.getName());
+                List<AgencyAttachmentVO> agencyAttachmentVOS = new ArrayList<>();
+
+                for (TAgencyAttachment tAgencyAttachment : tAgencyAttachments) {
+                    AgencyAttachmentVO agencyAttachmentVO = new AgencyAttachmentVO();
+                    agencyAttachmentVO.setCertificateFilePath(tAgencyAttachment.getCertificateFilePath());
+                    agencyAttachmentVO.setCertificateName(tAgencyAttachment.getCertificateName());
+                    agencyAttachmentVO.setCertificateType(tAgencyAttachment.getCertificateType());
+                    agencyAttachmentVOS.add(agencyAttachmentVO);
+                }
+                agencyUserAttachmentVO.setAgencyAttachmentVOS(agencyAttachmentVOS);
+                return Result.success(agencyUserAttachmentVO);
             } catch (BusinessException e) {
                 LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
                 return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
@@ -166,19 +212,8 @@ public class AgencyServiceImpl implements AgencyService {
      * @return
      */
     @Override
-    public List<TAgencyDetailInfo> selectAllAgencyByPage(QueryDetailIfo queryDetailIfo) {
-        try {
-            final TAgencyDetailInfoCriteria criteria = new TAgencyDetailInfoCriteria();
-            criteria.setOrderByClause("id desc");
-            if(queryDetailIfo.getWhereName()!=null){
-                TAgencyDetailInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-                subCriteria.andCompanyNameEqualTo(queryDetailIfo.getWhereName());
-            }
-            return tAgencyDetailInfoMapper.selectByExample(criteria);
-        } catch (Exception e) {
-            LOGGER.error("获取招标代理机构信息失败", e);
-            return new ArrayList<>();
-        }
+    public List<BiddingAgencyVO> selectAllAgencyByPage(QueryDetailIfo queryDetailIfo) {
+        return  tAgencyDetailInfoMapper.selectByPage(queryDetailIfo);
     }
 
     /**
@@ -188,7 +223,6 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     public Result<Boolean> examineAgency(ExamineAgencyHandle examineAgencyHandle) {
-
         TAgencyBasicInfo tAgencyBasicInfo= new TAgencyBasicInfo();
         TAgencyBasicInfoCriteria criteria = new TAgencyBasicInfoCriteria();
          criteria.createCriteria().andIdEqualTo(examineAgencyHandle.getAgencyId());

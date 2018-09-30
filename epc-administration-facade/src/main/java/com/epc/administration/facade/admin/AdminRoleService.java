@@ -1,9 +1,10 @@
 package com.epc.administration.facade.admin;
 
+import com.epc.administration.facade.admin.dto.QueryRoleInfo;
 import com.epc.administration.facade.admin.dto.UpdateRoleDTO;
 import com.epc.administration.facade.admin.handle.RoleHandle;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface AdminRoleService {
     /**获取角色信息
-     * @param request
      * @return
      */
     @RequestMapping("role/list")
-    Result roleList(@RequestBody QueryRequest request);
+    Result roleList(@RequestBody QueryRoleInfo queryRoleInfo);
 
     /**获取角色信息
      * @param roleId
@@ -31,19 +31,17 @@ public interface AdminRoleService {
 
     /**根据角色名查询角色信息
      * @param roleName
-     * @param oldRoleName
      * @return
      */
-    @RequestMapping("role/checkRoleName")
-    Result checkRoleName(@RequestParam("roleName") String roleName, @RequestParam("oldRoleName") String oldRoleName);
+    @GetMapping("role/checkRoleName")
+    Result checkRoleName(@RequestParam("roleName") String roleName);
 
     /**新增角色
      * @param role
-     * @param resourceIds
      * @return
      */
     @RequestMapping("role/addRole")
-    Result addRole(@RequestBody RoleHandle role, @RequestParam("resourceIds") Long[] resourceIds);
+    Result addRole(@RequestBody RoleHandle role);
 
     /**删除角色
      * @param ids
@@ -54,10 +52,9 @@ public interface AdminRoleService {
 
     /**修改角色
      * @param updateRoleDTO
-     * @param resourceIds
      * @return
      */
     @RequestMapping("role/updateRole")
-    Result updateRole(@RequestBody UpdateRoleDTO updateRoleDTO, @RequestParam("menuId") Long[] resourceIds);
+    Result updateRole(@RequestBody UpdateRoleDTO updateRoleDTO);
 
 }

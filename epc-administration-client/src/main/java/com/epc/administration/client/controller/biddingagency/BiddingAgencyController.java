@@ -2,7 +2,7 @@ package com.epc.administration.client.controller.biddingagency;
 
 
 import com.epc.administration.client.controller.biddingagency.dto.ClientQueryDetailIfo;
-import com.epc.administration.client.controller.biddingagency.handle.ClientBaseDetailIfo;
+import com.epc.administration.client.controller.biddingagency.handle.ClientBiddingAgencyDetailInfo;
 import com.epc.administration.client.controller.biddingagency.handle.ClientExamineAgencyHandle;
 import com.epc.administration.client.controller.biddingagency.handle.ClientUserBasicInfo;
 import com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyClient;
@@ -41,9 +41,9 @@ public class BiddingAgencyController {
 
     @ApiOperation(value = "招标代理机构完善资料",notes = "招标代理机构完善资料")
     @PostMapping(value = "registryBiddingAgencyDetail",consumes = "application/json;charset=UTF-8")
-    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody ClientBaseDetailIfo clientBaseDetailIfo) {
+    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody ClientBiddingAgencyDetailInfo clientBiddingAgencyDetailInfo) {
         BiddingHandle biddingHandle = new BiddingHandle();
-        BeanUtils.copyProperties(clientBaseDetailIfo,biddingHandle);
+        BeanUtils.copyProperties(clientBiddingAgencyDetailInfo,biddingHandle);
         return biddingAgencyClient.insertBiddingAgencyDetailInfo(biddingHandle);
     }
 

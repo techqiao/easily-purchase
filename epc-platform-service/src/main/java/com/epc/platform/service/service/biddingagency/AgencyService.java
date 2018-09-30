@@ -4,6 +4,7 @@ import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
+import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 
@@ -46,7 +47,7 @@ public interface AgencyService {
      * @param queryDetailIfo
      * @return
      */
-    List<TAgencyDetailInfo> selectAllAgencyByPage(QueryDetailIfo queryDetailIfo);
+    List<BiddingAgencyVO> selectAllAgencyByPage(QueryDetailIfo queryDetailIfo);
 
     /**
      * 审核招标代理机构

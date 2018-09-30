@@ -4,6 +4,8 @@ import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +45,7 @@ public interface OperatorService {
      * @param whereId
      * @return
      */
-    Result<TOperatorDetailInfo> queryOperatorDetailInfo(Long whereId);
+    Result<OperatorUserVO> queryOperatorDetailInfo(Long whereId);
 
 
     /**
@@ -51,7 +53,7 @@ public interface OperatorService {
      * @param queryDetailIfo
      * @return
      */
-    List<TOperatorDetailInfo> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo);
+    List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo);
 
 
     /**

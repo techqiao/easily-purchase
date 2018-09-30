@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class ClientExaminePurchaserHandle implements Serializable {
     private static final long serialVersionUID = 6553879638578216080L;
     @ApiModelProperty(value = "主键ID")
-    @NotEmpty(message = "ClientExaminePurchaserHandle.supplierId.null")
-    private Long supplierId;
+    @NotEmpty(message = "ClientExaminePurchaserHandle.purchaserId.null")
+    private Long purchaserId;
 
     @ApiModelProperty(value = "审核状态:3-审核通过,4-审核失败")
     @NotEmpty(message = "ClientExaminePurchaserHandle.state.null")

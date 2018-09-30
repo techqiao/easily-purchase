@@ -1,7 +1,7 @@
 package com.epc.administration.facade.admin;
 
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.UserHandle;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,11 +36,11 @@ public interface AdminUserService {
 
     /**
      * 获取用户信息 分页
-     * @param request
+     * @param queryUserDTO
      * @return
      */
     @PostMapping(value = "userList",consumes = "application/json; charset=UTF-8" )
-     Result userList(@RequestBody QueryRequest request);
+     Result userList(@RequestBody QueryUserDTO queryUserDTO);
 
     /**
      * 注册

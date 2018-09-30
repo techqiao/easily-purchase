@@ -1,5 +1,7 @@
 package com.epc.platform.service.mapper.operator;
 
+import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfoCriteria;
 import org.apache.ibatis.annotations.Param;
@@ -110,4 +112,13 @@ public interface TOperatorDetailInfoMapper {
      * @return
      */
     List<TOperatorDetailInfo> selectByName(String companyName);
+
+    /**
+     * 可以传入状态值 和公司名
+     * 分页查询
+     * @return
+     */
+    List<OperatorVO> selectByPage(QueryDetailIfo queryDetailIfo);
+
+
 }

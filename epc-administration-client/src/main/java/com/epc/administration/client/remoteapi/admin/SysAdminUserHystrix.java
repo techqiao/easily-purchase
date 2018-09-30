@@ -1,8 +1,8 @@
 package com.epc.administration.client.remoteapi.admin;
 
 import com.epc.administration.facade.admin.AdminUserService;
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.UserHandle;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class SysAdminUserHystrix implements AdminUserService {
     }
 
     @Override
-    public Result userList(QueryRequest request) {
+    public Result userList(QueryUserDTO queryUserDTO) {
         return Result.hystrixError();
     }
 

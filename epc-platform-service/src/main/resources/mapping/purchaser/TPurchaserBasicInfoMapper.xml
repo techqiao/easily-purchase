@@ -7,6 +7,9 @@
     <result column="cellphone" property="cellphone" jdbcType="CHAR" />
     <result column="password" property="password" jdbcType="CHAR" />
     <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
+    <result column="inviter_type" property="inviterType" jdbcType="INTEGER" />
+    <result column="inviter_id" property="inviterId" jdbcType="BIGINT" />
+    <result column="inviter_company_id" property="inviterCompanyId" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="role" property="role" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -72,7 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, cellphone, password, purchaser_id, state, role, create_at, update_at, is_deleted
+    id, name, cellphone, password, purchaser_id, inviter_type, inviter_id, inviter_company_id, 
+    state, role, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.purchaser.TPurchaserBasicInfoCriteria" >
     select
@@ -109,11 +113,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_purchaser_basic_info (name, cellphone, password, 
-      purchaser_id, state, role, 
+      purchaser_id, inviter_type, inviter_id, 
+      inviter_company_id, state, role, 
       create_at, update_at, is_deleted
       )
     values (#{name,jdbcType=VARCHAR}, #{cellphone,jdbcType=CHAR}, #{password,jdbcType=CHAR}, 
-      #{purchaserId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, 
+      #{purchaserId,jdbcType=BIGINT}, #{inviterType,jdbcType=INTEGER}, #{inviterId,jdbcType=BIGINT}, 
+      #{inviterCompanyId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, 
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
@@ -134,6 +140,15 @@
       </if>
       <if test="purchaserId != null" >
         purchaser_id,
+      </if>
+      <if test="inviterType != null" >
+        inviter_type,
+      </if>
+      <if test="inviterId != null" >
+        inviter_id,
+      </if>
+      <if test="inviterCompanyId != null" >
+        inviter_company_id,
       </if>
       <if test="state != null" >
         state,
@@ -163,6 +178,15 @@
       </if>
       <if test="purchaserId != null" >
         #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="inviterType != null" >
+        #{inviterType,jdbcType=INTEGER},
+      </if>
+      <if test="inviterId != null" >
+        #{inviterId,jdbcType=BIGINT},
+      </if>
+      <if test="inviterCompanyId != null" >
+        #{inviterCompanyId,jdbcType=INTEGER},
       </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
@@ -205,6 +229,15 @@
       <if test="record.purchaserId != null" >
         purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       </if>
+      <if test="record.inviterType != null" >
+        inviter_type = #{record.inviterType,jdbcType=INTEGER},
+      </if>
+      <if test="record.inviterId != null" >
+        inviter_id = #{record.inviterId,jdbcType=BIGINT},
+      </if>
+      <if test="record.inviterCompanyId != null" >
+        inviter_company_id = #{record.inviterCompanyId,jdbcType=INTEGER},
+      </if>
       <if test="record.state != null" >
         state = #{record.state,jdbcType=INTEGER},
       </if>
@@ -232,6 +265,9 @@
       cellphone = #{record.cellphone,jdbcType=CHAR},
       password = #{record.password,jdbcType=CHAR},
       purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      inviter_type = #{record.inviterType,jdbcType=INTEGER},
+      inviter_id = #{record.inviterId,jdbcType=BIGINT},
+      inviter_company_id = #{record.inviterCompanyId,jdbcType=INTEGER},
       state = #{record.state,jdbcType=INTEGER},
       role = #{record.role,jdbcType=INTEGER},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -255,6 +291,15 @@
       </if>
       <if test="purchaserId != null" >
         purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="inviterType != null" >
+        inviter_type = #{inviterType,jdbcType=INTEGER},
+      </if>
+      <if test="inviterId != null" >
+        inviter_id = #{inviterId,jdbcType=BIGINT},
+      </if>
+      <if test="inviterCompanyId != null" >
+        inviter_company_id = #{inviterCompanyId,jdbcType=INTEGER},
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
@@ -280,6 +325,9 @@
       cellphone = #{cellphone,jdbcType=CHAR},
       password = #{password,jdbcType=CHAR},
       purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      inviter_type = #{inviterType,jdbcType=INTEGER},
+      inviter_id = #{inviterId,jdbcType=BIGINT},
+      inviter_company_id = #{inviterCompanyId,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
       role = #{role,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},

@@ -18,5 +18,5 @@ public class ClientExamineOperatorHandle {
 
     @ApiModelProperty(value = "审核状态:3-审核通过,4-审核失败")
     @NotEmpty(message = "ClientExamineOperatorHandle.state.null")
-    private int state;
+    private Integer state;
 }

@@ -17,6 +17,19 @@
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
   </resultMap>
+  <resultMap id="selectMap" type="com.epc.administration.facade.operator.vo.OperatorVO">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR" />
+    <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR" />
+    <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR"/>
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <!--
       WARNING - @mbggenerated
@@ -368,8 +381,24 @@
     </if>
   </select>
 
-  <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria" id="selectByName" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.operator.TOperatorDetailInfo" id="selectByName" >
    SELECT tp.company_name ,tp.public_bank_name ,tp.create_at,tp.public_ban_account_number,tp.uniform_credit_code
 FROM t_operator_detail_info tp WHERE tp.is_deleted=0 AND tp.company_name like #{companyName,jdbcType=VARCHAR}
   </select>
+
+
+  <select resultMap="selectMap" parameterType="com.epc.administration.facade.operator.vo.OperatorVO" id="selectByPage" >
+SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.uniform_credit_code
+  FROM t_operator_basic_info tb
+ LEFT  JOIN t_operator_detail_info td ON td.operator_id=tb.id
+  WHERE tb.is_deleted=0
+  <if test="where != null">
+    and  td.company_name=#{whereName}
+  </if>
+    <if test="status != null">
+      and tb.state=#{status}
+    </if>
+  ORDER BY id DESC
+  </select>
+
 </mapper>

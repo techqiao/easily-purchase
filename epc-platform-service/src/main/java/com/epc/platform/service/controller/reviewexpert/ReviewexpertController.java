@@ -5,9 +5,10 @@ import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
+import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
-import com.epc.platform.service.domain.reviewexpertr.TExpertDetailInfo;
+import com.epc.platform.service.domain.expert.TExpertDetailInfo;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -78,8 +79,8 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
     @Override
     public Result selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
-        List<TExpertDetailInfo> tExpertDetailInfos = expertService.selectAllExpertByPage(queryDetailIfo);
-        PageInfo<TExpertDetailInfo> pageInfo = new PageInfo<>(tExpertDetailInfos);
+        List<ReviewExpertVO> reviewExpertVOS = expertService.selectAllExpertByPage(queryDetailIfo);
+        PageInfo<ReviewExpertVO> pageInfo = new PageInfo<>(reviewExpertVOS);
         return Result.success(getDataTable(pageInfo));
     }
 

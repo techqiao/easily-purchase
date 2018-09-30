@@ -213,17 +213,8 @@ public class SupplierServiceImpl  implements SupplierService {
      */
     @Override
     public List<SupplierUserVO> selectAllSupplierByPage(QueryDetailIfo queryDetailIfo) {
-        //如果有公司名称 模糊查询
-        if(queryDetailIfo.getWhere()!=null){
-            String where = queryDetailIfo.getWhere();
-            where="%"+where+"%";
-            return tSupplierDetailInfoMapper.selectByPageWhereName(where);
-        }
-        //如果有状态值 分状态查询
-        if(queryDetailIfo.getStatus()!=null){
-            return tSupplierDetailInfoMapper.selectByPageWithStatus(queryDetailIfo.getStatus());
-        }
-        return  tSupplierDetailInfoMapper.selectByPage();
+
+        return  tSupplierDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**
      * 审核运营商

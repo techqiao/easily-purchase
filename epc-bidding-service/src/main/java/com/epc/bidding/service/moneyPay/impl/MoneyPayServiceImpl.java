@@ -75,8 +75,9 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         try{
             tPurchaseProjectFilePayMapper.insertSelective(entity);
         }catch (Exception e){
-            LOGGER.error("支付记录插入失败");
+            LOGGER.error("insertPurchaseProjectFilePay"+entity.toString()+"_"+e.getMessage(),e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return  Result.error("插入失败");
         }
         return Result.success(true);
     }
@@ -97,9 +98,9 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         try{
             bBidsGuaranteeAmountMapper.insertSelective(entity);
         }catch (Exception e){
-            LOGGER.error("支付记录插入失败");
+            LOGGER.error("insertGuaranteeAmountPay_"+entity.toString()+"_"+e.getMessage(),e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-
+            Result.error("插入失败");
         }
         return Result.success(true);
 

@@ -11,8 +11,6 @@ import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
 import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import com.netflix.hystrix.strategy.eventnotifier.HystrixEventNotifierDefault;
 
 import java.util.List;
 
@@ -252,5 +250,45 @@ public interface PurchaserService {
      *@date:2018/9/21
      */
     public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
+
+   /**
+    *@author :winlin
+    *@Description :Supplier平台审核通过后,数据库更新同步
+    *@param:
+    *@return:
+    *@date:2018/9/28
+    */
+
+   /**
+    *@author :winlin
+    *@Description :Agency平台审核通过后,数据库更新同步
+    *@param:
+    *@return:
+    *@date:2018/9/28
+    */
+   /**
+    *@author :winlin
+    *@Description :Expert平台审核通过后,数据库更新同步
+    *@param:
+    *@return:
+    *@date:2018/9/28
+    */
+
+   /**
+    *@author :winlin
+    *@Description :添加黑名单-supplier
+    *@param:
+    *@return:
+    *@date:2018/9/28
+    */
+   public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList);
+   /**
+    *@author :winlin
+    *@Description :添加黑名单-agency
+    *@param:
+    *@return:
+    *@date:2018/9/28
+    */
+   public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList);
 
 }

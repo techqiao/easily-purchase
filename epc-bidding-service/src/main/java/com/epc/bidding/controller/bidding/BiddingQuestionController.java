@@ -5,8 +5,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeQuestionService;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
-import com.epc.web.facade.bidding.vo.QueryAnswerQustionListVO;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,15 +19,20 @@ public class BiddingQuestionController implements FacadeQuestionService {
     BiddingService biddingService;
 
     /**
-     * 根据采购项目ID获取答疑列表
+     * 根据 类型+id 获取答疑列表
      * @param dto
      * @return
      */
     @Override
-    public Result<List<QueryAnswerQustionListVO>> getAnswerQuestionFindById(@RequestBody QueryAnswerQuestionDTO dto){
-        return biddingService.getAnswerQuestionfindByNoticeId(dto);
+    public Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(@RequestBody QueryAnswerQuestionDTO dto){
+        return biddingService.getAnswerQuestionList(dto);
     }
 
+    /**
+     * 插入一条问题记录
+     * @param handleQuestion
+     * @return
+     */
     @Override
     public  Result<Boolean> insertQuestion(@RequestBody HandleQuestion handleQuestion){
         return biddingService.insertBAnswerQuestion(handleQuestion);

@@ -1,6 +1,8 @@
 package com.epc.web.client.remoteApi.bidding.sign;
 
 import com.epc.common.Result;
+import com.epc.web.facade.operator.handle.HandleOperatorRole;
+import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
@@ -16,6 +18,11 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
+    public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
@@ -26,7 +33,27 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
+    public Result<Boolean> updateSupplierEmployeeByisDeleted(HandleSupplierEmployeeByisDeleted handleSupplierEmployeeByisDeleted) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateSupplierEmployeeRoleById(HandleOperatorRole handleOperatorRole) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> updateSupplierEmployeeStateById(HandleOperatorState handleOperatorState) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> findSupplierRecordByCellphone(HandleSupplierRecordByCellphone handleSupplierByCellphone) {
         return Result.hystrixError();
     }
 
@@ -35,10 +62,6 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-//    @Override
-//    public Result<SupplierBasicInfoVO> findByName(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-//        return Result.hystrixError();
-//    }
 
     @Override
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
@@ -54,6 +77,11 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
 
     @Override
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeByisDeleted(HandleFindSupplierByInfo handleFindSupplierByInfo) {
         return Result.hystrixError();
     }
 

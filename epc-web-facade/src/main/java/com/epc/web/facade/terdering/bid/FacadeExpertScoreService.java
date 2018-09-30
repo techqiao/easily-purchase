@@ -1,8 +1,11 @@
 package com.epc.web.facade.terdering.bid;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.HandleScoreReport;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertScore;
 import com.epc.web.facade.terdering.bid.vo.BidderListVO;
+import com.epc.web.facade.terdering.bid.vo.ExpertScoreVO;
+import com.epc.web.facade.terdering.bid.vo.ScoreAndPathVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,4 +34,22 @@ public interface FacadeExpertScoreService {
      */
     @PostMapping(value = "handleExpertScore", consumes = "application/json; charset=UTF-8")
     Result<Boolean> handleExpertScore(@RequestBody HandleExpertScore handleExpertScore);
-}
+
+    /**
+     * 查看评审记录
+     * @param bidId
+     * @return
+     */
+    @PostMapping(value = "queryExpertScore", consumes = "application/json; charset=UTF-8")
+     Result<ScoreAndPathVO> queryExpertScore (@RequestParam(value = "bidId") Long bidId) ;
+
+
+    /**
+     * 撰写评审报告
+     * @param handleScore
+     * @return
+     */
+    @PostMapping(value = "createExpertScoreReport", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> createExpertScoreReport(@RequestBody HandleScoreReport handleScore) ;
+
+    }

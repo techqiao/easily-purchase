@@ -525,63 +525,73 @@ public class BAssessmentCommitteeCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateIsNull() {
-            addCriterion("process_state is null");
+        public Criteria andProcessStatusIsNull() {
+            addCriterion("process_status is null");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateIsNotNull() {
-            addCriterion("process_state is not null");
+        public Criteria andProcessStatusIsNotNull() {
+            addCriterion("process_status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateEqualTo(Integer value) {
-            addCriterion("process_state =", value, "processState");
+        public Criteria andProcessStatusEqualTo(String value) {
+            addCriterion("process_status =", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateNotEqualTo(Integer value) {
-            addCriterion("process_state <>", value, "processState");
+        public Criteria andProcessStatusNotEqualTo(String value) {
+            addCriterion("process_status <>", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateGreaterThan(Integer value) {
-            addCriterion("process_state >", value, "processState");
+        public Criteria andProcessStatusGreaterThan(String value) {
+            addCriterion("process_status >", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateGreaterThanOrEqualTo(Integer value) {
-            addCriterion("process_state >=", value, "processState");
+        public Criteria andProcessStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("process_status >=", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateLessThan(Integer value) {
-            addCriterion("process_state <", value, "processState");
+        public Criteria andProcessStatusLessThan(String value) {
+            addCriterion("process_status <", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateLessThanOrEqualTo(Integer value) {
-            addCriterion("process_state <=", value, "processState");
+        public Criteria andProcessStatusLessThanOrEqualTo(String value) {
+            addCriterion("process_status <=", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateIn(List<Integer> values) {
-            addCriterion("process_state in", values, "processState");
+        public Criteria andProcessStatusLike(String value) {
+            addCriterion("process_status like", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateNotIn(List<Integer> values) {
-            addCriterion("process_state not in", values, "processState");
+        public Criteria andProcessStatusNotLike(String value) {
+            addCriterion("process_status not like", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateBetween(Integer value1, Integer value2) {
-            addCriterion("process_state between", value1, value2, "processState");
+        public Criteria andProcessStatusIn(List<String> values) {
+            addCriterion("process_status in", values, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStateNotBetween(Integer value1, Integer value2) {
-            addCriterion("process_state not between", value1, value2, "processState");
+        public Criteria andProcessStatusNotIn(List<String> values) {
+            addCriterion("process_status not in", values, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusBetween(String value1, String value2) {
+            addCriterion("process_status between", value1, value2, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusNotBetween(String value1, String value2) {
+            addCriterion("process_status not between", value1, value2, "processStatus");
             return (Criteria) this;
         }
 

@@ -12,9 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class BidAnnouncementController {
      */
     @ApiOperation(value = "创建唱标记录")
     @PostMapping(value = "insertBidAnnouncement")
-    public  Result<Boolean> insertBidAnnouncement(ClientBidAnnouncement dto){
+    public  Result<Boolean> insertBidAnnouncement(@RequestBody  ClientBidAnnouncement dto){
         HandleBidAnnouncement handleBidAnnouncement=new HandleBidAnnouncement();
         BeanUtils.copyProperties(dto,handleBidAnnouncement);
         return bidAnnouncementClient.insertBidAnnouncement(handleBidAnnouncement);
@@ -47,9 +45,17 @@ public class BidAnnouncementController {
      */
     @ApiOperation(value = "根据标段查询供应商投标报告")
     @PostMapping(value = "queryBidAnnouncement")
-    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(ClientBidAnnouncement dto) {
+    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {
         QueryBidAnnouncement queryBidAnnouncement=new QueryBidAnnouncement();
         BeanUtils.copyProperties(dto,queryBidAnnouncement);
         return bidAnnouncementClient.queryBidAnnouncement(queryBidAnnouncement);
     }
+
+
+    @ApiOperation(value = "根据标段查询供应商投标报告")
+    @PostMapping(value = "getBidAnnouncementDetail")
+    Result<String> getBidAnnouncementDetail(@RequestParam("bidId") Long bidId){
+        return bidAnnouncementClient.bidAnnouncementDetail(bidId);
+    }
+
 }

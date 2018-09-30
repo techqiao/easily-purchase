@@ -25,6 +25,7 @@
     <result column="win_bid_supplierId" property="winBidSupplierid" jdbcType="BIGINT" />
     <result column="open_start" property="openStart" jdbcType="TIMESTAMP" />
     <result column="open_end" property="openEnd" jdbcType="TIMESTAMP" />
+    <result column="letter_path" property="letterPath" jdbcType="VARCHAR" />
     <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -93,8 +94,8 @@
     id, purchaser_id, purchaser_name, agency_name, agency_phone, is_power_Agency, project_name, 
     project_code, purchase_project_id, bid_id, bid_code, first_supplierId, first_companyName, 
     first_price, two_supplierId, two_price, two_companyName, three_supplierId, three_price, 
-    three_companyName, win_bid_supplierId, open_start, open_end, process_status, operate_id, 
-    create_at, update_at, is_deleted
+    three_companyName, win_bid_supplierId, open_start, open_end, letter_path, process_status, 
+    operate_id, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidNominateCriteria" >
     select
@@ -137,9 +138,9 @@
       first_price, two_supplierId, two_price, 
       two_companyName, three_supplierId, three_price, 
       three_companyName, win_bid_supplierId, open_start, 
-      open_end, process_status, operate_id, 
-      create_at, update_at, is_deleted
-      )
+      open_end, letter_path, process_status, 
+      operate_id, create_at, update_at, 
+      is_deleted)
     values (#{purchaserId,jdbcType=BIGINT}, #{purchaserName,jdbcType=VARCHAR}, #{agencyName,jdbcType=VARCHAR}, 
       #{agencyPhone,jdbcType=VARCHAR}, #{isPowerAgency,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
       #{projectCode,jdbcType=VARCHAR}, #{purchaseProjectId,jdbcType=BIGINT}, #{bidId,jdbcType=BIGINT}, 
@@ -147,9 +148,9 @@
       #{firstPrice,jdbcType=DECIMAL}, #{twoSupplierid,jdbcType=BIGINT}, #{twoPrice,jdbcType=DECIMAL}, 
       #{twoCompanyname,jdbcType=VARCHAR}, #{threeSupplierid,jdbcType=BIGINT}, #{threePrice,jdbcType=DECIMAL}, 
       #{threeCompanyname,jdbcType=VARCHAR}, #{winBidSupplierid,jdbcType=BIGINT}, #{openStart,jdbcType=TIMESTAMP}, 
-      #{openEnd,jdbcType=TIMESTAMP}, #{processStatus,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+      #{openEnd,jdbcType=TIMESTAMP}, #{letterPath,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TWinBidNominate" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -222,6 +223,9 @@
       </if>
       <if test="openEnd != null" >
         open_end,
+      </if>
+      <if test="letterPath != null" >
+        letter_path,
       </if>
       <if test="processStatus != null" >
         process_status,
@@ -305,6 +309,9 @@
       </if>
       <if test="openEnd != null" >
         #{openEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="letterPath != null" >
+        #{letterPath,jdbcType=VARCHAR},
       </if>
       <if test="processStatus != null" >
         #{processStatus,jdbcType=VARCHAR},
@@ -401,6 +408,9 @@
       <if test="record.openEnd != null" >
         open_end = #{record.openEnd,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.letterPath != null" >
+        letter_path = #{record.letterPath,jdbcType=VARCHAR},
+      </if>
       <if test="record.processStatus != null" >
         process_status = #{record.processStatus,jdbcType=VARCHAR},
       </if>
@@ -446,6 +456,7 @@
       win_bid_supplierId = #{record.winBidSupplierid,jdbcType=BIGINT},
       open_start = #{record.openStart,jdbcType=TIMESTAMP},
       open_end = #{record.openEnd,jdbcType=TIMESTAMP},
+      letter_path = #{record.letterPath,jdbcType=VARCHAR},
       process_status = #{record.processStatus,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -524,6 +535,9 @@
       <if test="openEnd != null" >
         open_end = #{openEnd,jdbcType=TIMESTAMP},
       </if>
+      <if test="letterPath != null" >
+        letter_path = #{letterPath,jdbcType=VARCHAR},
+      </if>
       <if test="processStatus != null" >
         process_status = #{processStatus,jdbcType=VARCHAR},
       </if>
@@ -566,6 +580,7 @@
       win_bid_supplierId = #{winBidSupplierid,jdbcType=BIGINT},
       open_start = #{openStart,jdbcType=TIMESTAMP},
       open_end = #{openEnd,jdbcType=TIMESTAMP},
+      letter_path = #{letterPath,jdbcType=VARCHAR},
       process_status = #{processStatus,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},

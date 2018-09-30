@@ -2,7 +2,6 @@ package com.epc.bidding.service.tender.impl;
 
 import com.epc.bidding.domain.bidding.*;
 import com.epc.bidding.mapper.bidding.*;
-import com.epc.bidding.service.bidding.impl.BiddingServiceimpl;
 import com.epc.bidding.service.tender.TenderService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -14,8 +13,6 @@ import com.epc.web.facade.bidding.query.tender.QueryTenderDTO;
 import com.epc.web.facade.bidding.vo.IsBackTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO;
 import com.epc.web.facade.bidding.vo.TenderVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

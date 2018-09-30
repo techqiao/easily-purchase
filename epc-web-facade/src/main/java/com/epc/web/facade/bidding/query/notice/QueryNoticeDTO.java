@@ -19,45 +19,4 @@ public class QueryNoticeDTO extends PagerParam implements Serializable {
     private String title;
     private Date biddingStart;
     private Date biddingEnd;
-    private String biddingType;
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getBiddingStart() {
-        return biddingStart;
-    }
-
-    public void setBiddingStart(Date biddingStart) {
-        this.biddingStart = biddingStart;
-    }
-
-    public Date getBiddingEnd() {
-        return biddingEnd;
-    }
-
-    public void setBiddingEnd(Date biddingEnd) {
-        this.biddingEnd = biddingEnd;
-    }
-
-    public String getBiddingType() {
-        return biddingType;
-    }
-
-    public void setBiddingType(String biddingType) {
-        this.biddingType = biddingType;
-    }
 }

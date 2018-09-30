@@ -5,6 +5,8 @@ import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
 import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,4 +35,11 @@ public interface FacadeBidAnnouncementService {
     Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement);
 
 
-}
+    /**
+     * 获取公告一览表路径
+     * @param bidId
+     * @return
+     */
+    @PostMapping(value = "bidAnnouncementDetail")
+    Result<String> bidAnnouncementDetail(@RequestParam("bidId") Long bidId);
+    }

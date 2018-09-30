@@ -11,10 +11,7 @@ import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
 import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
-import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
+import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
 import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
@@ -209,6 +206,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
 
         }
+        return Result.success("采购人新增供应商信息成功");
     }
 
 
@@ -1786,5 +1784,30 @@ public class PurchaserServiceImpl implements PurchaserService {
 
         return Result.success("更新成功", true);
     }
+
+    @Override
+    public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList) {
+        try{
+            tPurchaserSupplierMapper.updateTrustList(trustList);
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            LOGGER.error("修改状态失败",e);
+            return Result.error("修改状态失败");
+        }
+        return Result.success("修改状态成功");
+    }
+
+    @Override
+    public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList) {
+        try{
+            tPurchaserAgencyMapper.updateTrustList(trustList);
+        }catch(Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            LOGGER.error("修改状态失败",e);
+            return Result.error("修改状态失败");
+        }
+        return Result.success("修改状态成功");
+    }
+
 
 }

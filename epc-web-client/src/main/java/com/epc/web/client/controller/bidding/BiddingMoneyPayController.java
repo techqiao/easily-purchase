@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 /**
- * @Author linzhixiang
- * @Date 2018/9/23
- * @return
- */
+ * @Description: 支付业务
+ * @Author: linzhixiang
+ * @Date: 2018/9/28
+ */ 
 @Api(value = "支付业务",tags = "支付业务")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -21,4 +21,6 @@ public class ClientHandleQuestion {
     private String title;
     @ApiModelProperty("问题内容")
     private String problem;
+    @ApiModelProperty("公告ID")
+    private Long noticeId;
 }

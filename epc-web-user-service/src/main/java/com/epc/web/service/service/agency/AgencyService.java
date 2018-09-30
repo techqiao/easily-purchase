@@ -147,7 +147,8 @@ public interface AgencyService {
     public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto);
 
     /**
-    /**
+     * /**
+     *
      * @author :winlin
      * @Description :封装条件查询专家
      * @param:
@@ -174,6 +175,19 @@ public interface AgencyService {
      * @date:2018/9/21
      */
     public Result<Boolean> completeAgencyExpertInfo(AgencyExpertDto expertDto);
-    
 
+/**
+ *@author :winlin
+ *@Description :SuPPLIER 平台审核通过后 数据库同步
+ *@param:
+ *@return:
+ *@date:2018/9/28
+ */
+/**
+ *@author :winlin
+ *@Description :Expert 平台审核通过后 数据库同步
+ *@param:
+ *@return:
+ *@date:2018/9/28
+ */
 }

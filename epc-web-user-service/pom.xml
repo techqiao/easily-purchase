@@ -112,55 +112,5 @@
                 </dependencies>
             </plugin>
         </plugins>
-
-        <filters>
-            <filter>src/main/resources/application-${filter-resource-name}.properties</filter>
-        </filters>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>filters/*</exclude>
-                    <exclude>application-prod.properties</exclude>
-                    <exclude>application-dev.properties</exclude>
-                    <exclude>application-test.properties</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>application-${filter-resource-name}.properties</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
-
-
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <filter-resource-name>dev</filter-resource-name>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <filter-resource-name>test</filter-resource-name>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <filter-resource-name>prod</filter-resource-name>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>

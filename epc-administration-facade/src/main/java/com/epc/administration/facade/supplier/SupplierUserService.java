@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 供应商接口
@@ -21,8 +22,6 @@ import java.util.List;
  * @author lzx
  */
 public interface SupplierUserService {
-
-
     /**
      * 供应商注册注册
      * @param userBasicInfo 基本信息
@@ -40,6 +39,14 @@ public interface SupplierUserService {
     Result<Boolean> insertSupplierDetailInfo(@RequestBody SupplierHandle supplierHandle);
 
     /**
+     * 修改供应商资料
+     * @param supplierHandle 附件信息
+     * @return
+     */
+    @PostMapping(value = "updateSupplierDetailInfo", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateSupplierDetailInfo(@RequestBody SupplierHandle supplierHandle);
+
+    /**
      * 删除供应商资料
      * @param whereId
      * @return
@@ -55,15 +62,13 @@ public interface SupplierUserService {
     @GetMapping(value = "querySupplierDetailInfo" )
     Result querySupplierDetailInfo(@RequestParam("whereId") Long whereId);
 
-
     /**
      * 查询所有供应商 ，分页展示
      * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectAllSupplierByPage" ,consumes = "application/json; charset=UTF-8")
-    Result<List<SupplierUserVO>> selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo);
-
+    Result<Map<String, Object>> selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 审核供应商

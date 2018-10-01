@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 /**
  * <p>Description : 用户登录
@@ -40,14 +41,15 @@ public class LoginController extends BaseController implements AdminLoginService
      * @return
      */
     @Override
-    public Result login(HttpSession session,
-                        HttpServletResponse httpServletResponse,
-                        @RequestBody LoginHandle loginHandle ){
-        Result<SysAdminUser> result  = sysAdminUserService.login(loginHandle,session.getId());
+    public Result<SysAdminUser> login(HttpSession session,
+                                 HttpServletResponse httpServletResponse,
+                                 @RequestBody LoginHandle loginHandle ){
+        String  token = UUID.randomUUID().toString().replaceAll("-", "");
+       String epcToken = "EPC_PRIVATE_"+token;
+        Result<SysAdminUser> result = sysAdminUserService.login(loginHandle ,token);
         if(result.isSuccess()) {
-            RedisShardedPoolUtil.setEx(session.getId(), JSONObject.toJSONString(result.getData()), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+            RedisShardedPoolUtil.setEx(epcToken, JSONObject.toJSONString(result.getData()), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         }
-
         return result;
     }
 

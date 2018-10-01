@@ -133,6 +133,68 @@ public class AgencyServiceImpl implements AgencyService {
         }
     }
     /**
+     * 修改招标代理机构补全信息
+     * @param
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> updateBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
+        TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
+        TAgencyDetailInfoCriteria tAgencyDetailInfoCriteria = new TAgencyDetailInfoCriteria();
+        tAgencyDetailInfoCriteria.createCriteria().andAgencyIdEqualTo(biddingHandle.getId());
+        Date date = new Date();
+        detailInfo.setAgencyId(biddingHandle.getId());
+        detailInfo.setCompanyName(biddingHandle.getCompanyName());
+        detailInfo.setUniformCreditCode(biddingHandle.getUniformCreditCode());
+        detailInfo.setPublicBankName(biddingHandle.getPublicBankName());
+        detailInfo.setPublicBanAccountNumber(biddingHandle.getPublicBanAccountNumber());
+        detailInfo.setUpdateAt(date);
+        TAgencyAttachment attachment = new TAgencyAttachment();
+        attachment.setUpdateAt(date);
+        try {
+            TAgencyAttachmentCriteria criteria = new TAgencyAttachmentCriteria();
+            criteria.createCriteria().andAgencyIdEqualTo(biddingHandle.getId());
+            tAgencyDetailInfoMapper.deleteByExample(tAgencyDetailInfoCriteria);
+            tAgencyAttachmentMapper.deleteByExample(criteria);
+            tAgencyDetailInfoMapper.insertSelective(detailInfo);
+            //法人身份证反面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateFilePath(biddingHandle.getLegalIdCardOther());
+            tAgencyAttachmentMapper.insertSelective(attachment);
+            //法人身份证正面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateFilePath(biddingHandle.getLegalIdCardPositive());
+            tAgencyAttachmentMapper.insertSelective(attachment);
+            //营业执照照片url
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateFilePath(biddingHandle.getBusinessLicense());
+            tAgencyAttachmentMapper.insertSelective(attachment);
+            //资质证书url
+            List<AttachmentHandle> clientAttachmentHandles = biddingHandle.getClientAttachmentHandles();
+            if(clientAttachmentHandles!=null){
+                for (AttachmentHandle attachmentHandle : clientAttachmentHandles) {
+                    attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    attachment.setCertificateName(attachmentHandle.getCertificateName());
+                    tAgencyAttachmentMapper.insertSelective(attachment);
+                }
+            }
+            TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
+            tAgencyBasicInfo.setId(biddingHandle.getId());
+            tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
+            return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
+        }catch (BusinessException e) {
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+    }
+    /**
      * 删除招标代理机构
      * @param
      * @return
@@ -208,6 +270,11 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     public List<BiddingAgencyVO> selectAllAgencyByPage(QueryDetailIfo queryDetailIfo) {
+        String where = queryDetailIfo.getWhere();
+        if(where!=null){
+            where="%"+where+"%";
+            queryDetailIfo.setWhere(where);
+        }
         return  tAgencyDetailInfoMapper.selectByPage(queryDetailIfo);
     }
 

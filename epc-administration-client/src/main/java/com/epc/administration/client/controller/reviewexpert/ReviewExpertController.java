@@ -7,6 +7,7 @@ import com.epc.administration.client.controller.reviewexpert.handle.ClientUserBa
 import com.epc.administration.client.controller.reviewexpert.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientExamineExpertHandle;
 import com.epc.administration.client.remoteapi.reviewexpert.ReviewexpertClient;
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
@@ -22,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @date 2018-9-13 09:44:58
@@ -41,7 +43,11 @@ class ReviewExpertController extends BaseController {
     public Result<Boolean> createReviewExpert(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
-        userBasicInfo.setId(getLoginUser().getId());
+        LoginHandle loginUser = getLoginUser();
+        if(loginUser==null){
+            return Result.error("请先登录");
+        }
+        userBasicInfo.setId(loginUser.getId());
         return reviewExpertClient.insertReviewExpertBasicInfo(userBasicInfo);
     }
     @ApiOperation(value = "评审专家完善资料",notes = "评审专家完善资料")
@@ -50,6 +56,13 @@ class ReviewExpertController extends BaseController {
         ReviewExpertHandle reviewExpertHandle = new ReviewExpertHandle();
         BeanUtils.copyProperties(clientExpertDetailIfo,reviewExpertHandle);
         return reviewExpertClient.insertReviewExpertDetailInfo(reviewExpertHandle);
+    }
+    @ApiOperation(value = "修改评审专家资料",notes = "修改评审专家资料")
+    @PostMapping(value = "updateReviewExpertDetailInfo",consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> updateReviewExpertDetailInfo(@RequestBody ClientExpertDetailIfo clientExpertDetailIfo) {
+        ReviewExpertHandle reviewExpertHandle = new ReviewExpertHandle();
+        BeanUtils.copyProperties(clientExpertDetailIfo,reviewExpertHandle);
+        return reviewExpertClient.updateReviewExpertDetailInfo(reviewExpertHandle);
     }
     @ApiOperation(value = "评审专家删除资料",notes = "评审专家删除资料")
     @GetMapping(value = "deleteReviewExpertDetailInfo")
@@ -63,7 +76,7 @@ class ReviewExpertController extends BaseController {
     }
     @ApiOperation(value = "查询所有评审专家分页展示",notes = "查询所有评审专家分页展示")
     @PostMapping(value ="selectAllExpertByPage" ,consumes = "application/json;charset=UTF-8")
-    public Result<List<ReviewExpertVO>> selectAllExpertByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+    public Result<Map<String, Object>> selectAllExpertByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
         QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
         BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
         return  reviewExpertClient.selectAllExpertByPage(queryDetailIfo);

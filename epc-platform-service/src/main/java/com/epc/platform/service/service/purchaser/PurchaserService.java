@@ -30,6 +30,12 @@ public interface PurchaserService {
      * @return
      */
     Result<Boolean> insertPurchaserDetailInfo(PurchaserHandle purchaserHandle);
+    /**
+     * 采购人完善资料
+     * @param purchaserHandle
+     * @return
+     */
+    Result<Boolean> updatePurchaserDetailInfo(PurchaserHandle purchaserHandle);
 
     /**
      *  删除采购人资料

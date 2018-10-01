@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 采购人接口
@@ -40,6 +41,14 @@ public interface PurchaserUserService {
     Result<Boolean> insertPurchaserDetailInfo(@RequestBody PurchaserHandle purchaserHandle);
 
     /**
+     * 修改采购人资料
+     * @param purchaserHandle 附件信息
+     * @return
+     */
+    @PostMapping(value = "updatePurchaserDetailInfo", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updatePurchaserDetailInfo(@RequestBody PurchaserHandle purchaserHandle);
+
+    /**
      * 删除采购人资料
      * @param whereId
      * @return
@@ -62,7 +71,7 @@ public interface PurchaserUserService {
      * @return
      */
     @PostMapping(value = "selectAllPurchaserByPage" ,consumes = "application/json; charset=UTF-8")
-    Result<List<PurchaserVO>> selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<Map<String, Object>> selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
 
     /**

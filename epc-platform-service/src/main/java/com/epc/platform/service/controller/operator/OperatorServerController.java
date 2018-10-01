@@ -8,10 +8,8 @@ import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
 import com.epc.administration.facade.operator.vo.OperatorVO;
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
-import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import com.epc.platform.service.service.operator.OperatorService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -53,6 +52,15 @@ public class OperatorServerController extends BaseController implements FacadeOp
         return operatorService.insertOperatorDetailInfo(roleDetailInfo);
     }
 
+    /**
+     * 运营商修改资料
+     * @param roleDetailInfo 所有信息
+     * @return
+     */
+    @Override
+    public Result<Boolean> updateOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
+        return operatorService.updateOperatorDetailInfo(roleDetailInfo);
+    }
 
     /**
      * 运营商资料删除
@@ -81,7 +89,7 @@ public class OperatorServerController extends BaseController implements FacadeOp
      * @return
      */
     @Override
-    public Result selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+    public Result<Map<String, Object>> selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
         List<OperatorVO> operatorVOS = operatorService.selectAllOperatorByPage(queryDetailIfo);
         PageInfo<OperatorVO> page = new PageInfo<>(operatorVOS);

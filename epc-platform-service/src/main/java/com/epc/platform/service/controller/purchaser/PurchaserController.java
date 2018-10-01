@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sun.security.provider.MD5;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easilys
@@ -52,6 +53,15 @@ public class PurchaserController extends BaseController implements PurchaserUser
     public Result<Boolean> insertPurchaserDetailInfo(@RequestBody PurchaserHandle purchaserHandle) {
         return purchaserService.insertPurchaserDetailInfo(purchaserHandle);
     }
+    /**
+     * 采购人完善资料
+     * @param purchaserHandle 附件信息
+     * @return
+     */
+    @Override
+    public Result<Boolean> updatePurchaserDetailInfo(@RequestBody PurchaserHandle purchaserHandle) {
+        return purchaserService.updatePurchaserDetailInfo(purchaserHandle);
+    }
 
     /**
      * 删除采购人资料
@@ -79,11 +89,12 @@ public class PurchaserController extends BaseController implements PurchaserUser
      * @return
      */
     @Override
-    public Result selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+    public Result<Map<String, Object>> selectAllPurchaserByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
         List<PurchaserVO> purchaserVOS = purchaserService.selectAllPurchaserByPage(queryDetailIfo);
         PageInfo<PurchaserVO> pageInfo = new PageInfo<>(purchaserVOS);
-        return Result.success(getDataTable(pageInfo));
+        Map<String, Object> dataTable = getDataTable(pageInfo);
+        return Result.success(dataTable);
     }
 
     /**

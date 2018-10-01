@@ -8,6 +8,7 @@ import com.epc.administration.client.controller.supplier.handle.ClientUserBasicI
 import com.epc.administration.client.controller.supplier.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.supplier.handle.ClientExamineSupplierHandle;
 import com.epc.administration.client.remoteapi.supplier.SupplierClient;
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
 import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -41,7 +43,11 @@ public class SupplierUserController extends BaseController {
     public Result<Boolean> createSupplierUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
-        userBasicInfo.setUsername(getLoginUser().getName());
+        LoginHandle loginUser = getLoginUser();
+        if(loginUser==null){
+            return  Result.error("请先登录");
+        }
+        userBasicInfo.setId(loginUser.getId());
         return supplierClient.createSupplierUserInfo(userBasicInfo);
     }
     @ApiOperation(value = "供应商完善资料",notes = "供应商完善资料")
@@ -50,6 +56,13 @@ public class SupplierUserController extends BaseController {
         SupplierHandle pojo = new SupplierHandle();
         BeanUtils.copyProperties(clientSupplierDetailInfo,pojo);
         return supplierClient.insertSupplierDetailInfo(pojo);
+    }
+    @ApiOperation(value = "修改供应商资料",notes = "修改供应商资料")
+    @PostMapping(value = "updateSupplierDetailInfo" ,consumes = "application/json;charset=UTF-8" )
+    public Result<Boolean> updateSupplierDetailInfo(@RequestBody ClientSupplierDetailInfo clientSupplierDetailInfo) {
+        SupplierHandle pojo = new SupplierHandle();
+        BeanUtils.copyProperties(clientSupplierDetailInfo,pojo);
+        return supplierClient.updateSupplierDetailInfo(pojo);
     }
     @ApiOperation(value = "供应商删除资料",notes = "供应商删除资料")
     @GetMapping(value = "deleteSupplierDetailInfo")
@@ -64,7 +77,7 @@ public class SupplierUserController extends BaseController {
 
     @ApiOperation(value = "查询所有供应商资料分页展示",notes = "查询所有供应商资料分页展示")
     @PostMapping(value = "selectAllSupplierByPage",consumes = "application/json;charset=UTF-8")
-    public Result<List<SupplierUserVO>> selectAllSupplierByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+    public Result<Map<String, Object>> selectAllSupplierByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
         QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
         BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
         return supplierClient.selectAllSupplierByPage(queryDetailIfo);

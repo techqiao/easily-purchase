@@ -18,6 +18,11 @@ public class PurchaserHystrix implements PurchaserUserService {
     }
 
     @Override
+    public Result<Boolean> updatePurchaserDetailInfo(PurchaserHandle purchaserHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> deletePurchaserDetailInfo(Long whereId) {
         return Result.hystrixError();
     }

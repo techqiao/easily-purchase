@@ -1,5 +1,8 @@
 package com.epc.web.service.mapper.expert;
 
+import com.epc.web.facade.agency.dto.AgencyExpertDto;
+import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
 import com.epc.web.service.domain.expert.TExpertBasicInfoCriteria;
 import java.util.List;
@@ -103,4 +106,13 @@ public interface TExpertBasicInfoMapper {
      * @mbggenerated Fri Sep 14 11:18:37 CST 2018
      */
     int updateByPrimaryKey(TExpertBasicInfo record);
+
+
+    TExpertBasicInfo selectExpertByNameAndCellPhone(@Param("expertName") String expertName, @Param("cellPhone") String cellPhone);
+
+
+    List<AgencyExpertVo> selectExpertByCriteria(AgencyExpertDto expertDto);
+
+    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+
 }

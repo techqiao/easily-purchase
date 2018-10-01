@@ -1,4 +1,4 @@
-package com.epc.web.facade.operator.handle;
+package com.epc.web.facade.operator.query;
 
 import lombok.Data;
 
@@ -17,5 +17,11 @@ public class HandleOperatorFindAllByName implements Serializable {
      * 输入查询的员工名字
      */
     private String name;
+
+    //role 角色
+    private Integer role;
+
+    //是否禁用
+    private Integer isForbidden;
 
 }

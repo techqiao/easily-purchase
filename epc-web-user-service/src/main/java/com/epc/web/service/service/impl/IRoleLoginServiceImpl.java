@@ -19,11 +19,13 @@ import com.epc.web.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.netflix.ribbon.proxy.annotation.Http;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -54,6 +56,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     @Autowired
     TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Override
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+
     public Result login(@RequestBody LoginUser user) {
         //用户类型
         Integer type = user.getType();
@@ -65,14 +69,14 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
         HttpServletResponse response = ((ServletRequestAttributes)requestAttributes).getResponse();
         switch (type) {
-            case IRoleLoginService.OPERRATOR:
-                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
-                if (loginUser != null) {
-                    loginUser.setType(type);
-                    //this.cacheInredis(request,response,loginUser);
-                    return Result.success( loginUser);
-                }
-                break;
+//            case IRoleLoginService.OPERRATOR:
+//                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
+//                if (loginUser != null) {
+//                    loginUser.setType(type);
+//                    //this.cacheInredis(request,response,loginUser);
+//                    return Result.success( loginUser);
+//                }
+//                break;
             case IRoleLoginService.AGENCY:
                 LoginUser loginUser1 = tAgencyBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser1 != null) {

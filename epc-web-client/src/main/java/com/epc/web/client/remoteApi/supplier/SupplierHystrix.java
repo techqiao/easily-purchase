@@ -1,12 +1,14 @@
 package com.epc.web.client.remoteApi.supplier;
 
 import com.epc.common.Result;
-import com.epc.web.facade.operator.handle.HandleOperatorCellphone;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
+import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
+import com.epc.web.facade.supplier.query.HandleSupplierId;
+import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
@@ -20,6 +22,7 @@ import java.util.List;
  */
 public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
 
+
     @Override
     public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
         return Result.hystrixError();
@@ -30,29 +33,48 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-    /**
-     * 根据员工的id来删除员工
-     */
     @Override
-    public Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
-
-//    @Override
-//    public Result<Boolean> deleteOperatorEmployeeByCellphone(HandleOperatorCellphone handleOperatorCellphone) {
-//        return Result.hystrixError();
-//    }
-
-    /**
-     * 根据员工的id来查询基本信息
-     */
-    @Override
-    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
+    public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result<Boolean> updateSupplierEmployeeByisDeleted(HandleSupplierEmployeeByisDeleted handleSupplierEmployeeByisDeleted) {
+    public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleSupplierId handleSupplierId) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleSupplierId handleSupplierId) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> findSupplierRecordByCellphone(HandleSupplierCellphone handleSupplierCellphone) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleSupplierCellphone handleSupplierCellphone) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateSupplierEmployeeByisDeleted(HandleSupplierIdAndIsForbidden handleSupplierIdAndIsForbidden) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> deleteSupplierEmployeeById(HandleSupplieIsDeleted handleSupplieIsDeleted) {
         return Result.hystrixError();
     }
 
@@ -66,55 +88,13 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-    /**
-     * 员工查询 公司详情
-     */
-    @Override
-    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
-
-    /**
-     * 依据电话来返回一个真假值
-     */
-    @Override
-    public Result<Boolean> findSupplierRecordByCellphone(HandleSupplierRecordByCellphone handleSupplierByCellphone) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
-
     @Override
     public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {
+    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
         return Result.hystrixError();
     }
-
-    @Override
-    public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeByisDeleted(HandleFindSupplierByInfo handleFindSupplierByInfo) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
-        return Result.hystrixError();
-    }
-
 }

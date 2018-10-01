@@ -5,13 +5,13 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class HandleSupplierEmployeeByisDeleted implements Serializable {
+public class HandleSupplierIdAndIsForbidden implements Serializable {
     private static final long serialVersionUID = 8414946572797980644L;
 
     //员工id
     private Long id;
 
     //是否禁用
-    private Integer isDeleted;
+    private Integer isForbidden;
 
 }

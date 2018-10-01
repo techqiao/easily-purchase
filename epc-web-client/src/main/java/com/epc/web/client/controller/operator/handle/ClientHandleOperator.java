@@ -23,8 +23,6 @@ import java.io.Serializable;
 @Data
 public class ClientHandleOperator  {
 
-    @ApiModelProperty(value = "员工id")
-    private Long id;
 
     @ApiModelProperty(value = "员工姓名")
     private String name;

@@ -28,19 +28,21 @@ public class HandleOperatorUpdateEmployeeById implements Serializable {
     private String cellphone;
 
     /**
-     * 要修改员工的状态
+     * role 角色
      */
-    private  Integer isDeleted;
+    private Integer role;
+
+    /**
+     * 是否禁用
+     */
+    private Integer isForbidden;
+
 
     /**
      * 修改自己的密码
      */
     private String password;
 
-    /**
-     * 更新修改的时间
-     */
-    private Date updateAt;
 
 
 }

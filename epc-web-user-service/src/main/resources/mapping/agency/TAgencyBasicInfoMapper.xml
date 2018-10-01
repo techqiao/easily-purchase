@@ -12,6 +12,7 @@
     <result column="inviter_company_id" property="inviterCompanyId" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="role" property="role" jdbcType="INTEGER" />
+    <result column="is_forbidden" property="isForbidden" javaType="INTEGER"/>
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -119,6 +120,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+
   <insert id="insert" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
@@ -346,6 +348,47 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <update id="updateAgencyForbbiden">
+      UPDATE t_agency_basic_info
+      <set>
+        <if test="forbidden!=null">
+          is_forbidden=#{forbidden}
+        </if>
+      </set>
+    WHERE id=#{id}
+    </update>
+  <update id="updateAgencyEmployeeRoleById">
+    UPDATE t_agency_basic_info
+    <set>
+      <if test="role!=null">
+        role=#{role}
+      </if>
+    </set>
+    WHERE id=#{id}
+  </update>
+  <update id="deleteAgencyExpertById">
+    UPDATE t_agency_expert
+    SET is_delete=#{delete}
+    WHERE id =#{id}
+  </update>
+  <update id="updateAgencyEmployeeDetail" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+    UPDATE t_agency_basic_info
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        cellphone = #{cellphone,jdbcType=CHAR},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    WHERE id=#{id}
+  </update>
   <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
@@ -359,5 +402,50 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="selectEmployee" resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo" parameterType="com.epc.web.facade.agency.dto.AgencyEmployeeDto">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    t_agency_basic_info
+    <where>
+      agency_id = #{agencyId,jdbcType=BIGINT}
+      <if test="name != null" >
+       AND `name` = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="cellphone != null" >
+        AND cellphone = #{cellphone,jdbcType=CHAR}
+      </if>
+      <if test="role != null" >
+        AND role = #{role,jdbcType=INTEGER}
+      </if>
+      <if test="createAt != null" >
+        AND create_at = #{createAt,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isDeleted != null" >
+        AND is_deleted = #{isDeleted,jdbcType=INTEGER}
+      </if>
+      <if test="isForbbiden !=null">
+        AND is_forbbiden = #{isForbbiden,jdbcType=INTEGER}
+      </if>
+      <if test="employeeId!=null">
+        AND id = #{employeeId}
+      </if>
+    </where>
+  </select>
+  <select id="selectAgencyBasicByCellphoneAndName"
+          resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    <where>
+      <if test="name!=null">
+        AND `name` = #{name}
+      </if>
+      <if test="cellphone!=null">
+        AND cellphone = #{cellphone}
+      </if>
+    </where>
+
   </select>
 </mapper>

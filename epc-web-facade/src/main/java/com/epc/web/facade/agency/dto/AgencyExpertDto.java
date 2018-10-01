@@ -13,7 +13,7 @@ import java.util.List;
 public class AgencyExpertDto implements Serializable {
     private static final long serialVersionUID = 5164901785641108018L;
     /**
-     *专家姓名
+     * 专家姓名
      */
     private String expertName;
     /**
@@ -38,6 +38,10 @@ public class AgencyExpertDto implements Serializable {
      * 手机
      */
     private String cellphone;
+    /**
+     * 从业年限
+     */
+    private Integer workingYears;
 
     /**
      * 通知时间

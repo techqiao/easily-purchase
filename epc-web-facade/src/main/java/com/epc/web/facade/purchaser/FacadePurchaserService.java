@@ -26,6 +26,23 @@ public interface FacadePurchaserService {
      */
     @PostMapping(value = "registerPurchaseBasicInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> createPurchaseBasicInfo(@RequestBody HandlePurchaser handleOperator);
+
+    /**
+     * 启用或禁用员工
+     * @param trustList
+     * @return
+     */
+    @PostMapping(value = "enableOrDisablePurchaserEmployee", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> enableOrDisablePurchaserEmployee(@RequestBody HandleTrustList trustList);
+    /**
+     *@author :winlin
+     *@Description :修改员工权限
+     *@param:
+     *@return:
+     *@date:2018/9/30
+     */
+    @PostMapping(value = "updatePurchaserEmployeeRole", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> updatePurchaserEmployeeRole(HandleTrustList trustList);
     /**
      * 采购人员注册供应商
      * @param handleSupplierDetail

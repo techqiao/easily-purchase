@@ -13,17 +13,11 @@ import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
 import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
-import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
+import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -47,6 +41,20 @@ public class PurchaserController  {
         BeanUtils.copyProperties(handlePurchaser,purchaser);
         return purchaserClient.createPurchaseBasicInfo(purchaser);
     }
+
+    /**
+     *@author :winlin
+     *@Description :启用或禁用员工
+     *@param:
+     *@return:
+     *@date:2018/9/29
+     */
+    @ApiModelProperty(value = "采购人启用或禁用员工")
+    public Result<Boolean> enableOrDisablePurchaserEmployee(ClientHandleTrustList trustList){
+            HandleTrustList handleTrustList = new HandleTrustList();
+            BeanUtils.copyProperties(trustList,handleTrustList);
+            return purchaserClient.enableOrDisablePurchaserEmployee(handleTrustList);
+    };
 
     @ApiOperation(value = "注册供应商",notes = "注册供应商")
     @PostMapping(value = "/registerSupplierBasicInfo")

@@ -31,7 +31,7 @@ public class LoginController {
     @Autowired
     ILoginUserClient iLoginUserClient;
 
-    @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4")
+    @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4,专家5")
     @PostMapping(value = "/roleLogin",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<LoginUser> login(@RequestBody ClientLoginUser user){
         LoginUser loginUser = new LoginUser();
@@ -40,7 +40,7 @@ public class LoginController {
     }
 
 
-    @ApiOperation(value = "角色登出" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4")
+    @ApiOperation(value = "角色登出" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4专家5")
     @PostMapping(value = "/roleLoginOut",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Boolean> loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);

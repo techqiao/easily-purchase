@@ -11,6 +11,7 @@ import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,15 @@ public class PurchaserHystrix implements FacadePurchaserService {
     public Result<Boolean> createPurchaseBasicInfo(HandlePurchaser handleOperator) {
         return Result.hystrixError();
     }
+    @Override
+    public Result<Boolean> enableOrDisablePurchaserEmployee(HandleTrustList trustList){
+        return Result.hystrixError();
+    }
 
+    @Override
+    public Result<Boolean> updatePurchaserEmployeeRole(HandleTrustList trustList) {
+        return Result.hystrixError();
+    }
     @Override
     public Result<Boolean> createSupplierByPurchaser(HandleSupplierDto handleSupplierDetail) {
         return Result.hystrixError();
@@ -41,10 +50,16 @@ public class PurchaserHystrix implements FacadePurchaserService {
         return null;
     }
 
+//    @Override
+//    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
+//        return null;
+//    }
+
     @Override
     public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
-        return Result.hystrixError();
+        return null;
     }
+
 
     @Override
     public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {

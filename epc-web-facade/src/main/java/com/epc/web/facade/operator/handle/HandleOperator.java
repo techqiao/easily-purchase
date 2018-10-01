@@ -1,10 +1,7 @@
 package com.epc.web.facade.operator.handle;
 
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -23,10 +20,6 @@ import java.io.Serializable;
 public class HandleOperator implements Serializable {
     private static final long serialVersionUID = -1601501922746938L;
 
-    /**
-     * 员工id
-     */
-    private Long id;
     /**
      * 员工姓名
      */

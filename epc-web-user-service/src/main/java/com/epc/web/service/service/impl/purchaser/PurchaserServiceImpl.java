@@ -1,5 +1,6 @@
 package com.epc.web.service.service.impl.purchaser;
 
+
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
@@ -28,7 +29,6 @@ import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
 import com.epc.web.service.mapper.agency.TAgencyDetailInfoMapper;
 import com.epc.web.service.mapper.expert.TExpertAttachmentMapper;
 import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
-import com.epc.web.service.mapper.operator.TOperatorPurchaserMapper;
 import com.epc.web.service.mapper.purchaser.*;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
@@ -43,8 +43,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import javax.print.attribute.standard.MediaSizeName;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,8 +57,6 @@ public class PurchaserServiceImpl implements PurchaserService {
 
     @Autowired
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
-    @Autowired
-    TOperatorPurchaserMapper tOperatorPurchaserMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired
@@ -103,6 +101,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> createSupplierByPurchaser(HandleSupplierDto handleSupplier) {
+
         //根据页面传入的信息查询依据手机号和姓名来查询
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria criteria1 = criteria.createCriteria();
@@ -128,6 +127,15 @@ public class PurchaserServiceImpl implements PurchaserService {
                 //设置私库存储对象
                 //从页面传入
                 TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
+
+                purchaserSupplier.setUniformCreditCode(handleSupplier.getUniformCreditCode());
+                purchaserSupplier.setPublicBankName(handleSupplier.getPublicBankName());
+                purchaserSupplier.setPublicBanAccountNumber(handleSupplier.getPublicBankCount());
+                purchaserSupplier.setCreateAt(basicInfo.getCreateAt());
+                purchaserSupplier.setUpdateAt(basicInfo.getUpdateAt());
+                purchaserSupplier.setIsDeleted(basicInfo.getIsDeleted());
+                purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
+
                 //从公库basicinfo中获得
                 purchaserSupplier.setCellphone(basicInfo.getCellphone());
                 purchaserSupplier.setPassword(basicInfo.getPassword());
@@ -136,8 +144,6 @@ public class PurchaserServiceImpl implements PurchaserService {
                 purchaserSupplier.setSupplierName(basicInfo.getName());
                 purchaserSupplier.setPurchaserId(handleSupplier.getPurcharseId() + "");
                 purchaserSupplier.setSource(handleSupplier.getSource());
-                purchaserSupplier.setCreateAt(new Date());
-                purchaserSupplier.setUpdateAt(new Date());
                 try {
                     //添加到私库
                     tPurchaserSupplierMapper.insertSelective(purchaserSupplier);
@@ -153,39 +159,50 @@ public class PurchaserServiceImpl implements PurchaserService {
         } else {
             //供应商不存在的时候抽取handleSupplier的字段添加
             TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
-            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
-
-            basicInfo = new TSupplierBasicInfo();
-
-            //添加姓名,手机号,代理id,来源
+            //purchaserSupplier.setSupplierId(0L);
             purchaserSupplier.setCellphone(handleSupplier.getCellphone());
-            purchaserSupplier.setState(Const.STATE.COMMITTED);
             purchaserSupplier.setSupplierName(handleSupplier.getCompanyName());
-            purchaserSupplier.setPurchaserId(handleSupplier.getPurcharseId() + "");
+            purchaserSupplier.setUniformCreditCode(handleSupplier.getUniformCreditCode());
+            purchaserSupplier.setPublicBankName(handleSupplier.getPublicBankName());
+            purchaserSupplier.setPublicBanAccountNumber(handleSupplier.getPublicBankCount());
+            purchaserSupplier.setPurchaserId(handleSupplier.getPurcharseId()+"");
             purchaserSupplier.setSource(handleSupplier.getSource());
             purchaserSupplier.setCreateAt(new Date());
             purchaserSupplier.setUpdateAt(new Date());
-
-            //第一次新增basicinfo中的法人supplierid 代码生成
-            basicInfo.setName(handleSupplier.getName());
-            basicInfo.setCellphone(handleSupplier.getCellphone());
-            basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
-            basicInfo.setInviterId(handleSupplier.getOperatorId());
-            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId());
-            basicInfo.setState(Const.STATE.COMMITTED);
-            basicInfo.setRole(Const.Role.ROLE_CORPORATION);
-            basicInfo.setCreateAt(new Date());
-            basicInfo.setUpdateAt(new Date());
-
-
-            //供应商详情
+            purchaserSupplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
+            purchaserSupplier.setState(Const.STATE.COMMITTED);
+            //详细信息
+            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
+            //detailInfo.setId(0L);
+            //detailInfo.setSupplierId(0);
             detailInfo.setCompanyName(handleSupplier.getCompanyName());
             detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
             detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleSupplier.getPublicBankCount());
             detailInfo.setCreateAt(new Date());
             detailInfo.setUpdateAt(new Date());
+            detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
+
+            basicInfo = new TSupplierBasicInfo();
+            //basicInfo.setId(0L);
+            basicInfo.setName(handleSupplier.getName());
+            basicInfo.setCellphone(handleSupplier.getCellphone());
+            //basicInfo.setPassword();
+            //basicInfo.setSupplierId(0L);
+            basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
+            basicInfo.setInviterId(handleSupplier.getOperatorId());
+            basicInfo.setInviterCompanyId((int)handleSupplier.getCompanyId());
+            basicInfo.setState(Const.STATE.COMMITTED);
+            basicInfo.setRole(Const.Role.ROLE_CORPORATION);
+            basicInfo.setCreateAt(new Date());
+            basicInfo.setUpdateAt(new Date());
+            basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            basicInfo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
+
+            //附件信息
+            List<Attachement> atts = handleSupplier.getAtts();
             //添加到数据库
             try {
                 //添加到私库
@@ -198,6 +215,14 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tPurchaserSupplierMapper.insertSelective(purchaserSupplier);
                 detailInfo.setSupplierId(supplierId);
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
+                if(!CollectionUtils.isEmpty(atts)){
+                    for (Attachement att: atts) {
+                        TSupplierAttachment attachment = new TSupplierAttachment();
+                        BeanUtils.copyProperties(att,attachment);
+                        attachment.setSupplierId(supplierId);
+                        tSupplierAttachmentMapper.insertSelective(attachment);
+                    }
+                }
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -1641,11 +1666,30 @@ public class PurchaserServiceImpl implements PurchaserService {
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-           LOGGER.error("更新专家信息失败");
+            LOGGER.error("更新专家信息失败");
             return Result.error(e.getCause().getMessage());
         }
 
         return Result.success("更新成功", true);
+    }
+    /**
+     *@author :winlin
+     *@Description :删除采购人专家
+     *@date:2018/9/30
+     */
+    @Override
+    public Result<Boolean> deletePurchaserExpert(HandleTrustList trustList) {
+        Long id = trustList.getId();
+        Integer del = Const.IS_DELETED.IS_DELETED;
+        try {
+            tPurchaserExpertMapper.deleteExpertById(id, del);
+        } catch (Exception e) {
+            //捕获异常回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            LOGGER.error("deletePurchaserExpert删除采购人专家失败", e);
+            return Result.error(ErrorMessagesEnum.DELETE_FAILURE.getErrCode(),"删除专家失败");
+        }
+        return Result.success("删除采购人专家成功", true);
     }
 
     /**
@@ -1703,7 +1747,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             tPurchaserAgencyMapper.updateByExample(agency, agencyCriteria);
             tAgencyDetailInfoMapper.updateByExample(detailInfo, tAgencyDetailInfoCriteria);
             List<Attachement> list = dto.getAtts();
-            if(!CollectionUtils.isEmpty(list)) {
+            if (!CollectionUtils.isEmpty(list)) {
                 for (Attachement attachement : dto.getAtts()) {
                     TAgencyAttachment att = new TAgencyAttachment();
                     BeanUtils.copyProperties(attachement, att);
@@ -1767,7 +1811,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             tExpertBasicInfoMapper.updateByExample(basicInfo, tExpertBasicInfoCriteria);
             tPurchaserExpertMapper.updateByExample(expert, expertCriteria);
             List<Attachement> list = dto.getAtts();
-            if(!CollectionUtils.isEmpty(list)) {
+            if (!CollectionUtils.isEmpty(list)) {
                 for (Attachement attachement : list) {
                     TExpertAttachment att = new TExpertAttachment();
                     BeanUtils.copyProperties(attachement, att);
@@ -1778,32 +1822,129 @@ public class PurchaserServiceImpl implements PurchaserService {
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            LOGGER.error("修改专家信息失败",e);
+            LOGGER.error("修改专家信息失败", e);
             return Result.error(e.getMessage());
         }
 
         return Result.success("更新成功", true);
     }
 
+    /**
+     * @author :winlin
+     * @Description :机构员工启用或禁用
+     * @param:
+     * @return:
+     * @date:2018/9/29
+     */
     @Override
-    public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList) {
-        try{
-            tPurchaserSupplierMapper.updateTrustList(trustList);
-        }catch(Exception e){
+    @Transactional(rollbackFor = {Exception.class})
+    public Result<Boolean> enableOrDisablePurchaserEmployee(HandleTrustList trustList) {
+        Integer forbidden = trustList.getEnableOrDisable();
+        Long id =trustList.getId();
+        if (forbidden==null){
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(),"员工启用或禁用失败");
+        }
+        try {
+            tPurchaserBasicInfoMapper.enableOrDisablePurchaserEmployee(id,forbidden);
+        } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            LOGGER.error("修改状态失败",e);
+            if (forbidden.equals(Const.ENABLE_OR_DISABLE.DISABLE)) {
+
+            }
+            LOGGER.error("修改状态失败", e);
             return Result.error("修改状态失败");
         }
         return Result.success("修改状态成功");
     }
 
     @Override
-    public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList) {
-        try{
-            tPurchaserAgencyMapper.updateTrustList(trustList);
-        }catch(Exception e){
+    public Result<Boolean> updatePurchaserEmployeeRole(HandleTrustList trustList) {
+        Integer role = trustList.getRole();
+        Long id = trustList.getId();
+        if (role == null) {
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "修改采购人员工角色失败失败");
+        }
+        try {
+            tPurchaserBasicInfoMapper.updatePurchaserEmployeeRole(id, role);
+        } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            LOGGER.error("修改状态失败",e);
+            LOGGER.error("修改采购人员工角色失败失败", e);
+            return Result.error("修改采购人员工角色失败失败");
+        }
+        return Result.success("修改采购人员工角色失败成功");
+
+
+    }
+
+    /**
+     * @author :winlin
+     * @Description :修改员工信息
+     * @date:2018/9/30
+     */
+    @Override
+    public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaser handlePurchaser) {
+        //依据id查询员工是存在
+        Long id = handlePurchaser.getUserId();
+        TPurchaserBasicInfo info =tPurchaserBasicInfoMapper.selectByPrimaryKey(id);
+        if(info==null){
+            return  Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(),"没有员工信息");
+        }
+        //封装修改信息
+        info.setName(handlePurchaser.getName());
+        info.setCellphone(handlePurchaser.getCellPhone());
+        info.setRole(handlePurchaser.getRole());
+        info.setUpdateAt(new Date());
+        try{
+            tPurchaserBasicInfoMapper.updatePurchaserEmployeeDetail(info);
+        }catch(Exception e){
+            LOGGER.error("updatePurchaserEmployeeInfo修改员工信息失败",e);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(),"修改员工信息失败");
+        }
+        return Result.success("修改员工信息成功",true);
+
+    }
+
+    /**
+     * @author :winlin
+     * @Description :添加Supplier到白名单"white_list"或"black_list"
+     * @param:
+     * @return:
+     * @date:2018/9/29
+     */
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList) {
+        if (StringUtils.isEmpty(trustList.getTrustOrNot())) {
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "修改供货商信任状态失败");
+        }
+        try {
+            tPurchaserSupplierMapper.updateTrustList(trustList);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            LOGGER.error("修改状态失败", e);
+            return Result.error("修改状态失败");
+        }
+        return Result.success("修改状态成功");
+    }
+
+    /**
+     * @author :winlin
+     * @Description :添加Agency到白名单"white_list"或"black_list"
+     * @param:
+     * @return:
+     * @date:2018/9/29
+     */
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList) {
+        if (StringUtils.isEmpty(trustList.getTrustOrNot())) {
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "修改代理机构信任状态失败");
+        }
+        try {
+            tPurchaserAgencyMapper.updateTrustList(trustList);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            LOGGER.error("修改状态失败", e);
             return Result.error("修改状态失败");
         }
         return Result.success("修改状态成功");

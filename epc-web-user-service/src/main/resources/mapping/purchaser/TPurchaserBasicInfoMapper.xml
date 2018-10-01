@@ -188,7 +188,7 @@
     UPDATE t_purchaser_expert
     <set>
       <if test="state!=null">
-        state=#{state}
+        is_delete=#{state}
       </if>
     </set>
     WHERE id=#{id}

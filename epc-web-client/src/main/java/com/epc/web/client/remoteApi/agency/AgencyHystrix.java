@@ -3,7 +3,7 @@ package com.epc.web.client.remoteApi.agency;
 import com.epc.common.Result;
 import com.epc.web.facade.agency.FacadeAgencyService;
 import com.epc.web.facade.agency.dto.AgencyExpertDto;
-import com.epc.web.facade.agency.dto.AgencySubjectDto;
+import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
 import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
@@ -12,7 +12,7 @@ import com.epc.web.facade.agency.handle.HandleSupplier;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.epc.web.facade.loginuser.dto.RegisterDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,15 +60,9 @@ public class AgencyHystrix implements FacadeAgencyService{
         return Result.hystrixError();
     }
 
-    @Override
-    public Result proxySubjects(AgencySubjectDto subjectDto) {
-        return null;
-    }
-
-
 
     @Override
-    public Result queryEmployee(HandleEmployee employee) {
+    public Result queryEmployee(AgencyEmployeeDto employee) {
         return Result.hystrixError();
     }
 

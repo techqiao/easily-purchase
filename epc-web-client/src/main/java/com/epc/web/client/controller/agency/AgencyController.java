@@ -1,16 +1,14 @@
 package com.epc.web.client.controller.agency;
 
 import com.epc.common.Result;
-import com.epc.web.client.controller.agency.dto.ClientAgencyExpertDto;
-import com.epc.web.client.controller.agency.dto.ClientAgencySubjectDto;
-import com.epc.web.client.controller.agency.dto.ClientAgencySupplierDto;
+import com.epc.web.client.controller.agency.dto.*;
 import com.epc.web.client.controller.agency.handle.ClientHandleAgency;
 import com.epc.web.client.controller.agency.handle.ClientHandleEmployee;
 import com.epc.web.client.controller.agency.handle.ClientHandleExpert;
 import com.epc.web.client.controller.agency.handle.ClientHandleSupplier;
 import com.epc.web.client.remoteApi.agency.AgencyClient;
+import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
 import com.epc.web.facade.agency.dto.AgencyExpertDto;
-import com.epc.web.facade.agency.dto.AgencySubjectDto;
 import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
@@ -18,6 +16,7 @@ import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
+import com.epc.web.facade.loginuser.dto.RegisterDto;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,18 +93,11 @@ public class AgencyController {
         return agencyClient.completeInfo(handleAgency);
     }
 
-    @ApiOperation(value = "代理机构注册代理的所有项目" , notes = "代理机构注册代理的所有项目")
-    @PostMapping(value = "/proxySubjects")
-    public Result proxySubjects(@RequestBody ClientAgencySubjectDto clientAgencySubjectDto) {
-        AgencySubjectDto subjectDto = new AgencySubjectDto();
-        BeanUtils.copyProperties(clientAgencySubjectDto,subjectDto);
-        return agencyClient.proxySubjects(subjectDto);
-    }
 
     @ApiOperation(value = "代理机构按条件查询员工" , notes = "代理机构按条件查询员工")
     @PostMapping(value = "/queryEmployee")
-    public Result queryEmployee(@RequestBody ClientHandleEmployee employee) {
-        HandleEmployee handleEmployee =new HandleEmployee();
+    public Result queryEmployee(@RequestBody ClientAgencyEmployeeDto employee) {
+        AgencyEmployeeDto handleEmployee =new AgencyEmployeeDto();
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.queryEmployee(handleEmployee);
     }

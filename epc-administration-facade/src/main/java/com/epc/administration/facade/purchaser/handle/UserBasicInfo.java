@@ -1,6 +1,7 @@
 package com.epc.administration.facade.purchaser.handle;
 
 
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(value = "UserBasicInfo", description = "注册运营商")
-public class UserBasicInfo implements Serializable {
+public class UserBasicInfo extends LoginHandle implements Serializable {
     private static final long serialVersionUID = -3430729044791432992L;
     @ApiModelProperty(value = "电话号")
     @NotEmpty(message = "UserBasicInfo.cellphone.null")

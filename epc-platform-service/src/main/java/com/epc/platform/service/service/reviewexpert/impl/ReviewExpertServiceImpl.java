@@ -55,12 +55,12 @@ public class ReviewExpertServiceImpl implements ExpertService {
         TExpertBasicInfo pojo = new TExpertBasicInfo();
         pojo.setName(userBasicInfo.getUsername());
         pojo.setCellphone(userBasicInfo.getCellphone());
-        pojo.setInviterType(Const.Role.ROLE_ADMIN);
-        pojo.setInviterId(Long.valueOf(Const.Role.ROLE_ADMIN));
         pojo.setState(Const.STATE.REGISTERED);
         pojo.setCreateAt(new Date());
         pojo.setUpdateAt(new Date());
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        pojo.setInviterId(userBasicInfo.getId());
+        pojo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         try {
             return Result.success(tExpertBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {

@@ -41,6 +41,7 @@ public class SupplierUserController extends BaseController {
     public Result<Boolean> createSupplierUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
+        userBasicInfo.setUsername(getLoginUser().getName());
         return supplierClient.createSupplierUserInfo(userBasicInfo);
     }
     @ApiOperation(value = "供应商完善资料",notes = "供应商完善资料")

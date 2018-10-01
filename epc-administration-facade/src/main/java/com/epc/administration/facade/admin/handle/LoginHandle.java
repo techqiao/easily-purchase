@@ -16,5 +16,7 @@ public class LoginHandle implements Serializable {
     private  String phone;
     private String  password;
     private String name;
+    private Long id;
+
 
 }

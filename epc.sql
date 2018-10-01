@@ -359,6 +359,7 @@ CREATE TABLE `t_expert_basic_info` (
 	`profession` CHAR(11) NOT NULL COMMENT '专业',
 	`positional` CHAR(11) NOT NULL COMMENT '职称',
 	`level` CHAR(11) NOT NULL COMMENT '级别',
+	`working_years` INT(2) DEFAULT NULL COMMENT '从业年限',
 	`is_idle` INT(1) DEFAULT '1' COMMENT '0-繁忙, 1-空闲',
 	`circular_dt` DATETIME NOT NULL COMMENT '通知时间',
 	`circular_method` CHAR(11) NOT NULL COMMENT '通知方式',

@@ -39,7 +39,7 @@ public class BiddingTenderController {
     TenderClient tenderClient;
 
     @ApiOperation(value = "获取标段列表及保证金支付情况")
-    @PostMapping(value = "/queryTenderMoneyRecordVO", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "/queryTenderMoneyRecord", consumes = "application/json; charset=UTF-8")
     public Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(@RequestBody ClientBidPay dto) {
         QueryBidPayDTO queryBidPayDTO = new QueryBidPayDTO();
         BeanUtils.copyProperties(dto, queryBidPayDTO);

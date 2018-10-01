@@ -1,14 +1,15 @@
 package com.epc.web.client.controller.terdering.committee.handle;
 
-import com.epc.web.facade.terdering.committee.dto.BidDTO;
-import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
-
+/**
+ * @Description: 组建委员会信息
+ * @Author: linzhixiang
+ * @Date: 2018/9/30
+ */ 
 @Data
 @ApiModel(value = "组建委员会信息")
 public class ClientCommittee implements Serializable {

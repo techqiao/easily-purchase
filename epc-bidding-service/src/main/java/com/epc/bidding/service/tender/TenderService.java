@@ -35,7 +35,11 @@ public interface TenderService {
          Result<List<QueryTenderMoneyRecordVO>> queryTenderMoneyRecordVO(QueryBidPayDTO dto);
 
 
-         Result<List<IsBackTenderMoneyRecordVO>>
-         isBackTenderMoneyRecordList(QueryBackTenderMoneyRecordDTO dto);
+    /**
+     *  查看保证金归还情况列表
+     * @param dto
+     * @return
+     */
+    Result<List<IsBackTenderMoneyRecordVO>> isBackTenderMoneyRecordList(QueryBackTenderMoneyRecordDTO dto);
 
 }

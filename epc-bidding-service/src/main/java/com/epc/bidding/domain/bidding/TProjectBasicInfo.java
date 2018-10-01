@@ -13,8 +13,6 @@ public class TProjectBasicInfo implements Serializable {
 
     private String projectDescription;
 
-    private Integer isStateDesignation;
-
     private BigDecimal totalProjectInvestment;
 
     private Integer sourceOfInvestment;
@@ -67,14 +65,6 @@ public class TProjectBasicInfo implements Serializable {
 
     public void setProjectDescription(String projectDescription) {
         this.projectDescription = projectDescription == null ? null : projectDescription.trim();
-    }
-
-    public Integer getIsStateDesignation() {
-        return isStateDesignation;
-    }
-
-    public void setIsStateDesignation(Integer isStateDesignation) {
-        this.isStateDesignation = isStateDesignation;
     }
 
     public BigDecimal getTotalProjectInvestment() {
@@ -167,7 +157,6 @@ public class TProjectBasicInfo implements Serializable {
         sb.append(", projectCode=").append(projectCode);
         sb.append(", projectName=").append(projectName);
         sb.append(", projectDescription=").append(projectDescription);
-        sb.append(", isStateDesignation=").append(isStateDesignation);
         sb.append(", totalProjectInvestment=").append(totalProjectInvestment);
         sb.append(", sourceOfInvestment=").append(sourceOfInvestment);
         sb.append(", projectAddress=").append(projectAddress);

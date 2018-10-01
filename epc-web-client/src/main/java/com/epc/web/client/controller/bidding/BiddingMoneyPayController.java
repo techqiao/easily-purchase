@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.moneyPay.ClientFilePay;
 import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayDTO;
 import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayRecordDTO;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.moneyPay.MoneyPayClient;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
@@ -29,7 +30,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
-public class BiddingMoneyPayController {
+public class BiddingMoneyPayController extends BaseController {
+
     @Autowired
     MoneyPayClient moneyPayClient;
 
@@ -56,6 +58,8 @@ public class BiddingMoneyPayController {
     public Result<Boolean> insertPurchaseProjectFilePay(@RequestBody ClientFilePay handle){
         HandleFilePay handleFilePay=new HandleFilePay();
         BeanUtils.copyProperties(handle,handleFilePay);
+        handleFilePay.setCreator(getLoginUser().getName());
+        handle.setOperateId(getLoginUser().getUserId());
         return moneyPayClient.insertPurchaseProjectFilePay(handleFilePay);
     }
 

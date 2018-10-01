@@ -76,4 +76,19 @@ public class Const {
         int NORMA=1;
     }
 
+    /**
+     * loginUser,
+     * 运营商1,
+     * 代理商2,
+     * 供货商3,
+     * 采购商4
+     */
+    public interface LOGIN_USER_TYPE{
+        int OPERATOR=1;
+        int PROXY=2;
+        int SUPPLIER=3;
+        int PURCHASER=4;
+
+    }
+
 }

@@ -428,7 +428,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectBidPayRecord" parameterType="com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO">
+  <select id="selectBidPayRecord" resultType="com.epc.web.facade.bidding.vo.QueryTenderMoneyRecordVO">
     SELECT DISTINCT
 	bsd.procurement_project_id,
 	bsd.id,

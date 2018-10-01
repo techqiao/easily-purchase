@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+/**
+ * @Description: 组建委员会
+ * @Author: linzhixiang
+ * @Date: 2018/9/30
+ */ 
 @Api(value = "委员会",tags = "组建专家")
 @RestController
 @RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

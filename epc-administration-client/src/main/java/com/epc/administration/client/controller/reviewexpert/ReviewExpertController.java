@@ -1,5 +1,6 @@
 package com.epc.administration.client.controller.reviewexpert;
 
+import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientExpertDetailIfo;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientExpertForbiddenHandle;
 import com.epc.administration.client.controller.reviewexpert.handle.ClientUserBasicInfo;
@@ -30,7 +31,7 @@ import java.util.List;
 @Api(value = "评审专家服务 @罗志鑫",tags = {"评审专家服务"})
 @RestController
 @RequestMapping(value = "/reviewexpert", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-class ReviewExpertController {
+class ReviewExpertController extends BaseController {
 
     @Autowired
     private ReviewexpertClient reviewExpertClient;
@@ -40,6 +41,7 @@ class ReviewExpertController {
     public Result<Boolean> createReviewExpert(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
+        userBasicInfo.setId(getLoginUser().getId());
         return reviewExpertClient.insertReviewExpertBasicInfo(userBasicInfo);
     }
     @ApiOperation(value = "评审专家完善资料",notes = "评审专家完善资料")

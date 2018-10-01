@@ -6,6 +6,7 @@ import com.epc.administration.client.controller.biddingagency.handle.ClientAgenc
 import com.epc.administration.client.controller.biddingagency.handle.ClientBiddingAgencyDetailInfo;
 import com.epc.administration.client.controller.biddingagency.handle.ClientExamineAgencyHandle;
 import com.epc.administration.client.controller.biddingagency.handle.ClientUserBasicInfo;
+import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyClient;
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "招标代理机构服务 @罗志鑫",tags = {"招标代理机构服务"})
 @RestController
 @RequestMapping(value = "/biddingagency", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class BiddingAgencyController {
+public class BiddingAgencyController extends BaseController {
 
     @Autowired
     private BiddingAgencyClient biddingAgencyClient;
@@ -38,6 +39,7 @@ public class BiddingAgencyController {
     public Result<Boolean> createBiddingAgencyUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,pojo);
+        pojo.setId(getLoginUser().getId());
         return biddingAgencyClient.insertBiddingAgencyBasicInfo(pojo);
     }
 

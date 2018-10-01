@@ -1,7 +1,6 @@
 package com.epc.platform.service.service.operator.impl;
 import com.epc.administration.facade.operator.handle.*;
 import com.epc.administration.facade.operator.vo.OperatorAttachmentVO;
-
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
 import com.epc.administration.facade.operator.vo.OperatorVO;
@@ -10,8 +9,9 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.platform.service.domain.admin.SysAdminUserOperator;
 import com.epc.platform.service.domain.operator.*;
-import com.epc.platform.service.domain.tagency.TAgencyBasicInfo;
+import com.epc.platform.service.mapper.admin.SysAdminUserOperatorMapper;
 import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.platform.service.mapper.operator.TOperatorDetailInfoMapper;
@@ -42,32 +42,42 @@ public class OperatorServiceImpl implements OperatorService {
     private TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Autowired
     private TOperatorAttachmentMapper tOperatorAttachmentMapper;
+    @Autowired
+    private SysAdminUserOperatorMapper sysAdminUserOperatorMapper;
 
     /**
      * 新增运营商基本信息
-     *
-     * @param handleOperator
+     * 附带新增此运营商拉取记录
+     * @param userBasicInfo
      * @return
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> insertOperatorBasicInfo(UserBasicInfo handleOperator) {
+    public Result<Boolean> insertOperatorBasicInfo(UserBasicInfo userBasicInfo) {
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date = new Date();
-        pojo.setCellphone(handleOperator.getCellphone());
-        pojo.setName(handleOperator.getUsername());
+        pojo.setCellphone(userBasicInfo.getCellphone());
+        pojo.setName(userBasicInfo.getUsername());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        pojo.setName(handleOperator.getUsername());
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
         pojo.setState(Const.STATE.REGISTERED);
+        SysAdminUserOperator sysAdminUserOperator = new SysAdminUserOperator();
+        sysAdminUserOperator.setAdminUserId(pojo.getId());
+        sysAdminUserOperator.setAdminUserName(pojo.getName());
+        sysAdminUserOperator.setCreateAt(date);
+        sysAdminUserOperator.setUpdateAt(date);
+        sysAdminUserOperator.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         try {
+            sysAdminUserOperatorMapper.insertSelective(sysAdminUserOperator);
             return Result.success(tOperatorBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException insertOperatorBasicInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             LOGGER.error("BusinessException insertOperatorBasicInfo : {}", e);
             return Result.error(e.getMessage());
         }
@@ -215,10 +225,6 @@ public class OperatorServiceImpl implements OperatorService {
         operatorUserVO.setName(tOperatorBasicInfo.getName());
         return Result.success(operatorUserVO);
     }
-
-
-
-
     /**
      * 查询运营商 分页展示
      * @return
@@ -227,7 +233,6 @@ public class OperatorServiceImpl implements OperatorService {
     public List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo) {
         return  tOperatorDetailInfoMapper.selectByPage(queryDetailIfo);
     }
-
     /**
      * 审核运营商
      * @param examineOperatorHandle
@@ -240,7 +245,6 @@ public class OperatorServiceImpl implements OperatorService {
         tOperatorBasicInfo.setId(examineOperatorHandle.getAgencyId());
         return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo)>0);
     }
-
     /**
      *启动锁定运营商
      * @param operatorForbiddenHandle

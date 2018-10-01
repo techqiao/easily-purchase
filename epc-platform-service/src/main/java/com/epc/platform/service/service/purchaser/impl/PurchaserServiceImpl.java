@@ -63,9 +63,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tPurchaserBasicInfo.setCreateAt(date);
         tPurchaserBasicInfo.setUpdateAt(date);
-        tPurchaserBasicInfo.setInviterType(Const.Role.ROLE_CORPORATION);
+        tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
-        tPurchaserBasicInfo.setInviterId(Long.valueOf(Const.Role.ROLE_ADMIN));
+        tPurchaserBasicInfo.setInviterId(userBasicInfo.getId());
         try {
             return Result.success(tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo) > 0);
         } catch (BusinessException e) {

@@ -29,7 +29,6 @@ import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
 import com.epc.web.service.mapper.agency.TAgencyDetailInfoMapper;
 import com.epc.web.service.mapper.expert.TExpertAttachmentMapper;
 import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
-import com.epc.web.service.mapper.operator.TOperatorPurchaserMapper;
 import com.epc.web.service.mapper.purchaser.*;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
@@ -58,8 +57,6 @@ public class PurchaserServiceImpl implements PurchaserService {
 
     @Autowired
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
-    @Autowired
-    TOperatorPurchaserMapper tOperatorPurchaserMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired

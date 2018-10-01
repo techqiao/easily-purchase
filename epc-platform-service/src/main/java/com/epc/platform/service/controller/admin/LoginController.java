@@ -43,9 +43,8 @@ public class LoginController extends BaseController implements AdminLoginService
     public Result login(HttpSession session,
                         HttpServletResponse httpServletResponse,
                         @RequestBody LoginHandle loginHandle ){
-        Result<SysAdminUser> result  = sysAdminUserService.login(loginHandle);
+        Result<SysAdminUser> result  = sysAdminUserService.login(loginHandle,session.getId());
         if(result.isSuccess()) {
-                CookieUtil.writeLoginToken(httpServletResponse,session.getId());
             RedisShardedPoolUtil.setEx(session.getId(), JSONObject.toJSONString(result.getData()), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         }
 

@@ -57,7 +57,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
      * @return
      */
     @Override
-    public Result login(LoginHandle loginHandle) {
+    public Result login(LoginHandle loginHandle,String token) {
         Validate.notNull(loginHandle.getPhone());
         Validate.notNull(loginHandle.getPassword());
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
@@ -74,6 +74,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         resultMap.put("user",sysAdminUser);
         Tree<SysAdminResource> resource = getResource(sysAdminUser.getId());
         resultMap.put("resourceList",resource);
+        resultMap.put("token", token);
         return Result.success(resultMap);
     }
 

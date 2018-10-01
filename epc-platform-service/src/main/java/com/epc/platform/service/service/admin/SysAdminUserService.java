@@ -21,7 +21,7 @@ public interface SysAdminUserService {
      * @param loginHandle
      * @return
      */
-    Result<SysAdminUser> login(LoginHandle loginHandle);
+    Result<SysAdminUser> login(LoginHandle loginHandle,String token);
 
     /**
      * 查询用户信息

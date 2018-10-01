@@ -46,6 +46,7 @@ public class CookieUtil {
         ck.setMaxAge(60 * 60 );//如果是-1，代表永久
         log.info("write cookieName:{},cookieValue:{}",ck.getName(),ck.getValue());
         response.addCookie(ck);
+        response.setHeader("TOKEN",token);
     }
 
 

@@ -11,12 +11,13 @@ import java.io.Serializable;
 @Data
 public class ClientHandleFindSupplierByInfo{
 
-    @ApiModelProperty(value = "根据电话来查询一条记录")
-    private String cellphone;
-
     @ApiModelProperty(value = "根据id来查询一条记录")
     @NotEmpty(message = "ClientHandleFindSupplierByInfo.id.null")
     private Long id;
+
+    @ApiModelProperty(value = "根据电话来查询一条记录")
+    private String cellphone;
+
 
     @ApiModelProperty(value = "根据姓名查询")
     private String name;
@@ -27,8 +28,8 @@ public class ClientHandleFindSupplierByInfo{
     @ApiModelProperty(value = "依据role来查找")
     private Integer role;
 
-    @ApiModelProperty(value = "是否禁用")
-    @NotEmpty(message = "ClientHandleFindSupplierByInfo.isDeleted.null")
+    @ApiModelProperty(value = "是否删除")
     private Integer isDeleted;
+
 
 }

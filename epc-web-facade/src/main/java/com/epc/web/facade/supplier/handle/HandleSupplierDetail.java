@@ -13,10 +13,6 @@ import java.io.Serializable;
 public class  HandleSupplierDetail implements Serializable {
 
     private static final long serialVersionUID = 8608242287921574415L;
-    /**
-     * 用户id
-     */
-    private Long userId;
 
     /**
      * 姓名

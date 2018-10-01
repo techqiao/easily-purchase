@@ -27,30 +27,6 @@ public class SupplierBasicInfoVO implements Serializable {
      */
     private String cellphone;
 
-    /**
-     * 供应商(法人)ID
-     */
-    private Long supplierId;
-
-    /**
-     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
-     */
-    private Integer inviterType;
-
-    /**
-     * 邀请人Id
-     */
-    private Long inviterId;
-
-    /**
-     * 邀请人机构ID
-     */
-    private Integer inviterCompanyId;
-
-    /**
-     * 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
-     */
-    private Integer state;
 
     /**
      * 用户角色:0-法人,1-管理员,2-普通员工
@@ -68,9 +44,9 @@ public class SupplierBasicInfoVO implements Serializable {
     private String updateAt;
 
     /**
-     * 是否删除: 0-存在,1-删除
+     * 是否禁用
      */
-    private Integer isDeleted;
+    private Integer isForbidden;
 
 
 }

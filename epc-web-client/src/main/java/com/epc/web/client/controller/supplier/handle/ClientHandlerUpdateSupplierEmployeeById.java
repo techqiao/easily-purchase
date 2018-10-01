@@ -24,20 +24,23 @@ public class ClientHandlerUpdateSupplierEmployeeById {
     private Long id;
 
     @ApiModelProperty(value = "员工名字")
-    @NotEmpty(message = "ClientHandlerUpdateSupplierEmployeeById.id.null")
     private String name;
 
     @ApiModelProperty(value = "员工电话")
-    @NotEmpty(message = "ClientHandlerUpdateSupplierEmployeeById.cellphone.null")
     private String cellphone;
 
-    @ApiModelProperty(value = "员工状态是否启用与禁用")
-    @NotEmpty(message = "ClientHandlerUpdateSupplierEmployeeById.cellphone.null")
-    private Integer isDeleted;
+    @ApiModelProperty(value = "密码")
+    private String password;
 
-    //
-    @ApiModelProperty(value = "最后更新的时间")
-    private Date updateAt;
+    @ApiModelProperty(value = "角色")
+    private Integer role;
+
+
+    @ApiModelProperty(value = "是否禁用")
+    private Integer isForbidden;
+
+
+
 
 
 }

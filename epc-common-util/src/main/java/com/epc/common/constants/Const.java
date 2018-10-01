@@ -102,7 +102,7 @@ public class Const {
         int PROXY=2;
         int SUPPLIER=3;
         int PURCHASER=4;
-
+        int Expert=5;
     }
 
 

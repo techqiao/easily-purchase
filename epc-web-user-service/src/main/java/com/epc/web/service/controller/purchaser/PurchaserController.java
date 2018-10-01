@@ -39,6 +39,15 @@ public  class PurchaserController implements FacadePurchaserService {
     public Result<Boolean> createPurchaseBasicInfo(@RequestBody HandlePurchaser handleOperator) {
         return purchaserService.createPurchaserUserInfo(handleOperator,Const.Role.ROLE_CUSTOMER);
     }
+    @Override
+    public Result<Boolean> enableOrDisablePurchaserEmployee(@RequestBody HandleTrustList trustList){
+        return purchaserService.enableOrDisablePurchaserEmployee(trustList);
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserEmployeeRole(@RequestBody HandleTrustList trustList) {
+        return purchaserService.updatePurchaserEmployeeRole(trustList);
+    }
 
     /**
      * 采购人 添加 供应商

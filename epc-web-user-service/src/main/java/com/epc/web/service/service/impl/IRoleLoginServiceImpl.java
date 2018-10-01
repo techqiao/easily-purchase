@@ -25,6 +25,7 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -56,6 +57,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Override
     @JsonInclude(JsonInclude.Include.NON_NULL)
+
     public Result login(@RequestBody LoginUser user) {
         //用户类型
         Integer type = user.getType();

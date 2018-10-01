@@ -555,6 +555,66 @@ public class TPurchaseProjectParticipantCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andParticipantTypeIsNull() {
+            addCriterion("participant_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeIsNotNull() {
+            addCriterion("participant_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeEqualTo(Integer value) {
+            addCriterion("participant_type =", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeNotEqualTo(Integer value) {
+            addCriterion("participant_type <>", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeGreaterThan(Integer value) {
+            addCriterion("participant_type >", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("participant_type >=", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeLessThan(Integer value) {
+            addCriterion("participant_type <", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("participant_type <=", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeIn(List<Integer> values) {
+            addCriterion("participant_type in", values, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeNotIn(List<Integer> values) {
+            addCriterion("participant_type not in", values, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeBetween(Integer value1, Integer value2) {
+            addCriterion("participant_type between", value1, value2, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("participant_type not between", value1, value2, "participantType");
+            return (Criteria) this;
+        }
+
         public Criteria andOperateIdIsNull() {
             addCriterion("operate_id is null");
             return (Criteria) this;

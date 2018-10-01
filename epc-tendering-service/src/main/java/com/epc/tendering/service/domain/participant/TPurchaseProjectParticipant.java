@@ -18,6 +18,8 @@ public class TPurchaseProjectParticipant implements Serializable {
 
     private String agencyName;
 
+    private Integer participantType;
+
     private Long operateId;
 
     private String creator;
@@ -86,6 +88,14 @@ public class TPurchaseProjectParticipant implements Serializable {
         this.agencyName = agencyName == null ? null : agencyName.trim();
     }
 
+    public Integer getParticipantType() {
+        return participantType;
+    }
+
+    public void setParticipantType(Integer participantType) {
+        this.participantType = participantType;
+    }
+
     public Long getOperateId() {
         return operateId;
     }
@@ -139,6 +149,7 @@ public class TPurchaseProjectParticipant implements Serializable {
         sb.append(", userPhone=").append(userPhone);
         sb.append(", userAgencyId=").append(userAgencyId);
         sb.append(", agencyName=").append(agencyName);
+        sb.append(", participantType=").append(participantType);
         sb.append(", operateId=").append(operateId);
         sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);

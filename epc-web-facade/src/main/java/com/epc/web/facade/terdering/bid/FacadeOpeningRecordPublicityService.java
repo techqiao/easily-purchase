@@ -2,8 +2,12 @@ package com.epc.web.facade.terdering.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandOpeningRecordPublicity;
+import com.epc.web.facade.terdering.bid.handle.HandlePurchaseProjectBegin;
+import com.epc.web.facade.terdering.bid.vo.PurchaseProjectBeginVO;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>Description : 公示开标记录
@@ -19,11 +23,20 @@ public interface FacadeOpeningRecordPublicityService {
     @PostMapping(value = "insertOpeningRecordPublicity", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertOpeningRecordPublicity(@RequestBody HandOpeningRecordPublicity handOpeningRecordPublicity);
 
-//    /**
-//     * 查询唱标记录
-//     * @param purchaseProjectId
-//     * @return
-//     */
-//    @GetMapping(value = "getOpeningRecordPublicity", consumes = "application/json; charset=UTF-8")
-//    Result<OpeningRecordPublicityVO> getOpeningRecordPublicity(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId);
+    /**
+     * 发起招标 确定发包方式 是否资格预审
+     * @param handlePurchaseProjectBegin
+     * @return
+     */
+    @PostMapping(value = "insertPurchaseProjectBegin", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> insertPurchaseProjectBegin(@RequestBody HandlePurchaseProjectBegin handlePurchaseProjectBegin);
+
+    /**
+     * 查看招标发包方式 是否资格预审
+     * @param purchaseProjectId
+     * @return
+     */
+    @GetMapping(value = "getPurchaseProjectBegin", consumes = "application/json; charset=UTF-8")
+    Result<PurchaseProjectBeginVO> getPurchaseProjectBegin(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId);
+
 }

@@ -1,26 +1,23 @@
 package com.epc.platform.service.service.supplier.impl;
 
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.administration.facade.supplier.handle.SupplierHandle;
+import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
+import com.epc.administration.facade.supplier.handle.*;
+import com.epc.administration.facade.supplier.vo.AttachmentVO;
+import com.epc.administration.facade.supplier.vo.SupplierAttachmentVO;
+import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.domain.supplier.TSupplierAttachment;
-import com.epc.platform.service.domain.supplier.TSupplierBasicInfo;
-import com.epc.platform.service.domain.supplier.TSupplierDetailInfo;
-import com.epc.platform.service.domain.supplier.TSupplierDetailInfoCriteria;
+import com.epc.platform.service.domain.supplier.*;
 import com.epc.platform.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.platform.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.platform.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.supplier.SupplierService;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,9 +51,9 @@ public class SupplierServiceImpl  implements SupplierService {
     @Transactional(rollbackFor = Exception.class)
     public Result insertSupplierUserInfo(UserBasicInfo userBasicInfo) {
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
+        pojo.setName(userBasicInfo.getName());
         Date date = new Date();
         pojo.setCellphone(userBasicInfo.getCellphone());
-        pojo.setPassword(userBasicInfo.getPassword());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(date);
@@ -83,43 +80,53 @@ public class SupplierServiceImpl  implements SupplierService {
     @Transactional(rollbackFor = Exception.class)
     public Result insertSupplierDetailInfo(SupplierHandle supplierHandle) {
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
-        BeanUtils.copyProperties(supplierHandle, tSupplierDetailInfo);
+        tSupplierDetailInfo.setSupplierId(supplierHandle.getId());
+        tSupplierDetailInfo.setCompanyName(supplierHandle.getCompanyName());
+        tSupplierDetailInfo.setUniformCreditCode(supplierHandle.getUniformCreditCode());
+        tSupplierDetailInfo.setPublicBankName(supplierHandle.getPublicBankName());
+        tSupplierDetailInfo.setPublicBanAccountNumber(supplierHandle.getPublicBanAccountNumber());
         Date date = new Date();
         tSupplierDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tSupplierDetailInfo.setCreateAt(date);
         tSupplierDetailInfo.setUpdateAt(date);
-        TSupplierAttachment attachment = new TSupplierAttachment();
-        attachment.setSupplierId(supplierHandle.getUserId());
-        attachment.setCreateAt(date);
-        attachment.setUpdateAt(date);
-        attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        List<AttachmentHandle> AttachmentHandles = supplierHandle.getAttachmentHandleList();
         try {
-            //公司名称
             tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
-            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(supplierHandle.getCertificateOfAuthorization());
-            tSupplierAttachmentMapper.insertSelective(attachment);
             //经办人(运营商员工)手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(supplierHandle.getOperatorIdCardFront());
+            TSupplierAttachment attachment = new TSupplierAttachment();
+            attachment.setSupplierId(supplierHandle.getId());
+            attachment.setCreateAt(date);
+            attachment.setUpdateAt(date);
+            attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+            attachment.setCertificateFilePath(supplierHandle.getLegalIdCardPositive());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
             tSupplierAttachmentMapper.insertSelective(attachment);
             //法人身份证反面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
             attachment.setCertificateFilePath(supplierHandle.getLegalIdCardOther());
-            tSupplierAttachmentMapper.insertSelective(attachment);
-            //法人身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateFilePath(supplierHandle.getLegalIdCardPositive());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
             tSupplierAttachmentMapper.insertSelective(attachment);
             //营业执照照片url
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(supplierHandle.getBusinessLicense());
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             tSupplierAttachmentMapper.insertSelective(attachment);
-            //资质证书url
-            System.out.println();
-            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            attachment.setCertificateFilePath(supplierHandle.getQualificationCertificate());
-            return Result.success( tSupplierAttachmentMapper.insertSelective(attachment)>0);
+            //新增完善资料的资质证书
+            for (AttachmentHandle attachmentHandle : AttachmentHandles) {
+                TSupplierAttachment attachments = new TSupplierAttachment();
+                attachments.setSupplierId(supplierHandle.getId());
+                attachments.setCreateAt(date);
+                attachments.setUpdateAt(date);
+                attachments.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+                attachments.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                attachments.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                attachments.setCertificateName(attachmentHandle.getCertificateName());
+                tSupplierAttachmentMapper.insertSelective(attachments);
+            }
+            //完善信息完成后 更新信息状态至已提交
+            TSupplierBasicInfo tSupplierBasicInfo =new TSupplierBasicInfo();
+            tSupplierBasicInfo.setId(supplierHandle.getId());
+            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setUpdateAt(new Date());
+            return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
@@ -128,20 +135,18 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.error(e.getMessage());
         }
     }
-
-
     /**
      * 删除供应商
      * @param
      * @return
      */
     @Override
-    public Result deleteSupplierDetailInfo(QueryDetailIfo queryDetailIfo) {
-        TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
-        tSupplierDetailInfo.setId(queryDetailIfo.getWhereid());
-        tSupplierDetailInfo.setIsDeleted(1);
+    public Result deleteSupplierDetailInfo( Long whereId) {
+        TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
+        tSupplierBasicInfo.setId(whereId);
+        tSupplierBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         try{
-            return Result.success(tSupplierDetailInfoMapper.updateByPrimaryKeySelective(tSupplierDetailInfo)>0);
+            return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e){
             LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
@@ -154,39 +159,77 @@ public class SupplierServiceImpl  implements SupplierService {
      * @return
      */
     @Override
-    public Result querySupplierDetailInfo(QueryDetailIfo queryDetailIfo) {
-        try {
-                TSupplierDetailInfo tSupplierDetailInfo = tSupplierDetailInfoMapper.selectByPrimaryKey(queryDetailIfo.getWhereid());
-            return Result.success(tSupplierDetailInfo);
-        } catch (BusinessException e) {
-            LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
+    public Result querySupplierDetailInfo(Long id) {
+        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
+        if(tSupplierBasicInfo==null){
+            return Result.error("未找到该用户");
         }
-    }
+        SupplierAttachmentVO supplierAttachmentVO = new SupplierAttachmentVO();
+        supplierAttachmentVO.setId(tSupplierBasicInfo.getId());
+        supplierAttachmentVO.setIsDeleted(tSupplierBasicInfo.getIsDeleted());
+        supplierAttachmentVO.setCellphone(tSupplierBasicInfo.getCellphone());
+        supplierAttachmentVO.setState(tSupplierBasicInfo.getState());
+        supplierAttachmentVO.setName(tSupplierBasicInfo.getName());
+        if(tSupplierBasicInfo.getState()!=0){
+            TSupplierDetailInfoCriteria criteria = new TSupplierDetailInfoCriteria();
+            criteria.createCriteria().andSupplierIdEqualTo(id);
+            List<TSupplierDetailInfo> tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(criteria);
+            TSupplierDetailInfo tSupplierDetailInfo = tSupplierDetailInfos.get(0);
+            supplierAttachmentVO.setCompanyName(tSupplierDetailInfo.getCompanyName());
+            supplierAttachmentVO.setUniformCreditCode(tSupplierDetailInfo.getUniformCreditCode());
+            supplierAttachmentVO.setPublicBankName(tSupplierDetailInfo.getPublicBankName());
+            supplierAttachmentVO.setPublicBanAccountNumber(tSupplierDetailInfo.getPublicBanAccountNumber());
+            TSupplierAttachmentCriteria attachment= new TSupplierAttachmentCriteria();
+            attachment.createCriteria().andSupplierIdEqualTo(tSupplierBasicInfo.getId());
+            List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(attachment);
 
+            List<AttachmentVO> attachmentVOS = new ArrayList<>();
+            for (TSupplierAttachment tSupplierAttachment : tSupplierAttachments) {
+                AttachmentVO attachmentVO = new AttachmentVO();
+                attachmentVO.setCertificateType(tSupplierAttachment.getCertificateType());
+                attachmentVO.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
+                attachmentVO.setCertificateName(tSupplierAttachment.getCertificateName());
+                attachmentVOS.add(attachmentVO);
+            }
+            supplierAttachmentVO.setAttachmentVOList(attachmentVOS);
+            return Result.success(supplierAttachmentVO);
+        }
+            return Result.success(supplierAttachmentVO);
+
+    }
     /**
-     * 根据公司名模糊查询运营商
+     * 查询所有供应商
      * @param queryDetailIfo
      * @return
      */
     @Override
-    public Result selectSupplierDetailInfo(QueryDetailIfo queryDetailIfo) {
-        String where = queryDetailIfo.getWhere();
-        if(StringUtils.isNotBlank(queryDetailIfo.getWhere())){
-            where = "%" + where + "%";
-        }
-        return Result.success(tSupplierDetailInfoMapper.selectByName(where));
+    public List<SupplierUserVO> selectAllSupplierByPage(QueryDetailIfo queryDetailIfo) {
+
+        return  tSupplierDetailInfoMapper.selectByPage(queryDetailIfo);
+    }
+    /**
+     * 审核供应商
+     * @param examineSupplierHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> examineSupplier(ExamineSupplierHandle examineSupplierHandle) {
+        TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
+        tSupplierBasicInfo.setState(examineSupplierHandle.getState());
+        tSupplierBasicInfo.setId(examineSupplierHandle.getSupplierId());
+        return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
     }
 
+    /**
+     * 启用禁用供应商
+     * @param supplierForbiddenHandle
+     * @return
+     */
     @Override
-    public List<TSupplierDetailInfo> selectAllSupplierByPage() {
-        try {
-            TSupplierDetailInfoCriteria criteria = new TSupplierDetailInfoCriteria();
-            criteria.setOrderByClause("id desc");
-            return tSupplierDetailInfoMapper.selectByExample(criteria);
-        } catch (Exception e) {
-            LOGGER.error("BusinessException deleteByPrimaryKey : {}",e);
-            return new ArrayList<>();
-        }
+    public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
+        TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
+        tSupplierBasicInfo.setId(supplierForbiddenHandle.getId());
+        tSupplierBasicInfo.setIsForbidden(supplierForbiddenHandle.getIsForbidden());
+        return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
     }
 }

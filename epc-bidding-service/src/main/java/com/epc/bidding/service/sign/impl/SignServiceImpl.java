@@ -52,6 +52,7 @@ public class SignServiceImpl implements SignService {
             return Result.success(true);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            LOGGER.error("insertSupplierSign_"+entity.toString()+"_"+e.getMessage(),e);
             return Result.error("插入失败");
         }
     }
@@ -65,10 +66,9 @@ public class SignServiceImpl implements SignService {
      */
     @Override
     public Result<SignBaseDTO> getSignBase(String name, String cellPhone) {
-        SignBaseDTO dto=new SignBaseDTO();
+        SignBaseDTO dto;
         try{
              dto= tSupplierSignMapper.getSignPeronInfo(name,cellPhone);
-
         }catch (Exception e){
             LOGGER.error("找不到该用户");
             return Result.error();

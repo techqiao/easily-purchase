@@ -1,10 +1,15 @@
 package com.epc.platform.service.service.operator;
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,31 +36,38 @@ public interface OperatorService {
 
     /**
      * 删除运营商资料
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    Result<Boolean> deleteOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
+    Result<Boolean> deleteOperatorDetailInfo( Long whereId);
 
     /**根据传入运营商ID查询
      * 查询运营商资料
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    Result<TOperatorDetailInfo> queryOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
+    Result<OperatorUserVO> queryOperatorDetailInfo(Long whereId);
 
 
     /**
-     * 根据传入运营商公司名称模糊查询
+     * 分页查询
      * @param queryDetailIfo
      * @return
      */
-    Result<List<TOperatorDetailInfo>> selectOperatorDetailInfo(QueryDetailIfo queryDetailIfo);
+    List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo);
 
 
     /**
-     * 查询所有运营商 分页展示
-     * @param
+     * 审核运营商
+     * @param examineOperatorHandle
      * @return
      */
-    List<TOperatorDetailInfo> selectAllOperatorByPage();
+    Result<Boolean> examineOperator(ExamineOperatorHandle examineOperatorHandle);
+
+    /**
+     * 启用锁定运营商
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    Result<Boolean> forbiddenOperatorUser(OperatorForbiddenHandle operatorForbiddenHandle);
 }

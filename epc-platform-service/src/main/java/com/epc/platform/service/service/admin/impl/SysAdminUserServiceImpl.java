@@ -1,5 +1,7 @@
 package com.epc.platform.service.service.admin.impl;
+import java.util.Date;
 
+import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.ResourceHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
@@ -9,6 +11,7 @@ import com.epc.common.util.MD5Util;
 import com.epc.common.util.Tree;
 import com.epc.common.util.TreeUtils;
 import com.epc.platform.service.domain.admin.*;
+import com.epc.platform.service.mapper.admin.SysAdminResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserRoleMapper;
@@ -47,7 +50,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     @Autowired
     private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
     @Autowired
-    private SysAdminResourceService sysAdminResourceService;
+    private SysAdminResourceMapper sysAdminResourceMapper;
     /**
      * 登录
      * @param loginHandle
@@ -61,14 +64,15 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         final SysAdminUserCriteria.Criteria subCriteria= criteria.createCriteria();
         subCriteria.andPhoneEqualTo(loginHandle.getPassword());
         subCriteria.andPasswordEqualTo(MD5Util.MD5EncodeUtf8(loginHandle.getPassword()));
-        List<SysAdminUser> list = sysAdminUserMapper.selectByExample(criteria);
-        if(list.isEmpty()){
+        List<SysAdminUser> sysAdminUsers = sysAdminUserMapper.selectByExample(criteria);
+        if(sysAdminUsers.isEmpty()){
             return Result.error("登录失败");
         }
-        Tree<SysAdminResource> resource = getResource();
+        SysAdminUser sysAdminUser = sysAdminUsers.get(0);
         Map<String,Object>  resultMap = new HashMap<String, Object>();
-        list.get(0).setPassword(null);
-        resultMap.put("user",list.get(0));
+        sysAdminUser.setPassword(null);
+        resultMap.put("user",sysAdminUser);
+        Tree<SysAdminResource> resource = getResource(sysAdminUser.getId());
         resultMap.put("resourceList",resource);
         return Result.success(resultMap);
     }
@@ -89,21 +93,36 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
 
     @Override
     public UserWithRole findById(Long userId) {
-        List<UserWithRole> list = this.sysAdminUserMapper.findUserWithRole(userId);
-        List<Long> roleList = list.stream().map(UserWithRole::getRoleId).collect(Collectors.toList());
-        if (roleList.isEmpty()) {
-            return null;
+        SysAdminUser sysAdminUser = sysAdminUserMapper.selectByPrimaryKey(userId);
+        SysAdminUserRoleCriteria criteria = new SysAdminUserRoleCriteria();
+        criteria.createCriteria().andAdminUserIdEqualTo(sysAdminUser.getId());
+        List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
+        UserWithRole userWithRole = new UserWithRole();
+        userWithRole.setId(sysAdminUser.getId());
+        userWithRole.setName(sysAdminUser.getName());
+        userWithRole.setPhone(sysAdminUser.getPhone());
+        userWithRole.setDeptId(sysAdminUser.getDeptId());
+        userWithRole.setCreateAt(sysAdminUser.getCreateAt());
+        userWithRole.setUpdateAt(sysAdminUser.getUpdateAt());
+        userWithRole.setIsDeleted(sysAdminUser.getIsDeleted());
+        List<Long> roleIds = new LinkedList<>();
+        for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
+            roleIds.add(sysAdminUserRole.getAdminRoleId()) ;
         }
-        UserWithRole userWithRole = list.get(0);
-        userWithRole.setRoleIds(roleList);
+        userWithRole.setRoleIds(roleIds);
         return userWithRole;
     }
 
+    /**
+     * 分页查询所有用户
+     * @return
+     */
     @Override
-    public List<SysAdminUser> findUserWithDept(UserHandle user) {
+    public List<SysAdminUser> findUserWithDept(QueryUserDTO queryUserDTO) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setPhone(user.getPhone());
-        sysAdminUser.setPassword(user.getPassword());
+        sysAdminUser.setName(queryUserDTO.getUserName());
+        sysAdminUser.setPhone(queryUserDTO.getPhone());
+        sysAdminUser.setDeptId(queryUserDTO.getDeptId());
         try {
             return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);
         } catch (Exception e) {
@@ -127,29 +146,43 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     }
 
     @Override
-    public void addUser(UserHandle userHandle, Long[] roles) {
+    public void addUser(UserHandle userHandle) {
         Date date =  new Date();
         SysAdminUser sysAdminUser = new SysAdminUser();
          sysAdminUser.setName(userHandle.getName());
          sysAdminUser.setPhone(userHandle.getPhone());
         sysAdminUser.setCreateAt(date);
         sysAdminUser.setUpdateAt(date);
-        sysAdminUser.setDeptId(userHandle.getDepetid());
-        sysAdminUser.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+        sysAdminUser.setDeptId(userHandle.getDeptId());
+        sysAdminUser.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
         sysAdminUserMapper.insertSelective(sysAdminUser);
-        setUserRoles(userHandle, roles);
+        setUserRoles(userHandle);
     }
 
     @Override
-    public void updateUser(UserHandle userHandle, Long[] roles) {
+    public void updateUser(UserHandle userHandle) {
         SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setId(userHandle.getId());
         sysAdminUser.setName(userHandle.getName());
         sysAdminUser.setPhone(userHandle.getPhone());
-        sysAdminUser.setPassword(userHandle.getPassword());
-        sysAdminUser.setCreateAt(new Date());
+        sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
+        sysAdminUser.setDeptId(userHandle.getDeptId());
+        sysAdminUser.setUpdateAt(new Date());
+        sysAdminUser.setIsDeleted(userHandle.getIsDeleted());
         sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
-        setUserRoles(userHandle, roles);
+
+        SysAdminUserRoleCriteria criteria = new SysAdminUserRoleCriteria();
+        criteria.createCriteria().andAdminUserIdEqualTo(sysAdminUser.getId());
+
+        List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
+
+        for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
+            SysAdminRoleResourceCriteria roReCriteria = new SysAdminRoleResourceCriteria();
+            roReCriteria.createCriteria().andAdminResourceIdEqualTo(sysAdminUserRole.getAdminRoleId());
+            sysAdminRoleResourceMapper.deleteByExample(roReCriteria);
+        }
+        setUserRoles(userHandle);
     }
 
     @Override
@@ -165,25 +198,29 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         SysAdminUser sysAdminUser = new SysAdminUser();
         sysAdminUser.setPhone(user.getPhone());
         sysAdminUser.setPassword(user.getPassword());
+        sysAdminUser.setId(user.getId());
         String newPassword = MD5Util.MD5EncodeUtf8(user.getPassword());
         user.setPassword(newPassword);
         this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 
     @Override
-    public SysAdminUser findUserDetail(UserHandle userHandle) {
-        SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setId(userHandle.getId());
-        return this.sysAdminUserMapper.selectByPrimaryKey(userHandle.getId());
+    public SysAdminUser findUserDetail(Long userId) {
+        SysAdminUser sysAdminUser = sysAdminUserMapper.selectByPrimaryKey(userId);
+        sysAdminUser.setPassword(null);
+        return sysAdminUser;
     }
 
     @Override
     public void updateUserDetail(UserHandle userHandle) {
         SysAdminUser sysAdminUser = new SysAdminUser();
+        sysAdminUser.setUpdateAt(new Date());
+        sysAdminUser.setIsDeleted(userHandle.getIsDeleted());
         sysAdminUser.setPhone(userHandle.getPhone());
         sysAdminUser.setId(userHandle.getId());
-        sysAdminUser.setPassword(userHandle.getPassword());
-        if(StringUtils.isNotBlank(sysAdminUser.getPassword())){
+        sysAdminUser.setName(userHandle.getName());
+        sysAdminUser.setDeptId(userHandle.getDeptId());
+        if(sysAdminUser.getPassword()!=null){
             String newPassword = MD5Util.MD5EncodeUtf8(sysAdminUser.getPassword());
             sysAdminUser.setPassword(newPassword);
         }
@@ -196,30 +233,57 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return this.sysAdminUserMapper.deleteByExample(criteria);
     }
 
-    private void setUserRoles(UserHandle userHandle, Long[] roles) {
-        SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setId(userHandle.getId());
-        sysAdminUser.setPhone(userHandle.getPhone());
-        sysAdminUser.setPassword(userHandle.getPassword());
-        sysAdminUser.setName(userHandle.getName());
-        Arrays.stream(roles).forEach(roleId -> {
+    private void setUserRoles(UserHandle userHandle) {
+        Long[] roles = userHandle.getRoles();
+        for (Long role : roles) {
             SysAdminUserRole ur = new SysAdminUserRole();
-            ur.setAdminUserId(sysAdminUser.getId());
-            ur.setAdminRoleId(roleId);
-            this.sysAdminUserRoleMapper.insert(ur);
-        });
+            ur.setAdminUserId(userHandle.getId());
+            ur.setAdminRoleId(role);
+            ur.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            this.sysAdminUserRoleMapper.insertSelective(ur);
+        }
     }
 
-    public Tree<SysAdminResource> getResource(){
+    /**
+     * 获取登录用户对应的角色和资源
+     * @param id
+     * @return
+     */
+    public Tree<SysAdminResource> getResource(Long id){
         List<Tree<SysAdminResource>> trees = new ArrayList<>();
-        List<SysAdminResource> sysAdminResources = sysAdminResourceService.findAllResources(new ResourceHandle());
-        sysAdminResources.forEach(sysAdminResource -> {
+        //取出用户对应角色
+        SysAdminUserRoleCriteria criteria = new SysAdminUserRoleCriteria();
+        criteria.createCriteria().andAdminUserIdEqualTo(id);
+        List<SysAdminUserRole> sysAdminUserRoles = sysAdminUserRoleMapper.selectByExample(criteria);
+        if(sysAdminUserRoles==null){
+            return null;
+        }
+        List<Long> roleIds =  new ArrayList<>();
+        for (SysAdminUserRole sysAdminUserRole : sysAdminUserRoles) {
+            roleIds.add(sysAdminUserRole.getAdminRoleId());
+        }
+        //取出角色对应资源
+        Set<Long> resourceIds  = new HashSet<>();
+        for (Long roleId : roleIds) {
+            SysAdminRoleResourceCriteria sysAdminRoleResourceCriteria = new SysAdminRoleResourceCriteria();
+            sysAdminRoleResourceCriteria.createCriteria().andAmdinRoleIdEqualTo(roleId);
+            List<SysAdminRoleResource> sysAdminRoleResources = sysAdminRoleResourceMapper.selectByExample(sysAdminRoleResourceCriteria);
+            if(sysAdminRoleResources==null){
+                return null;
+            }
+            for (SysAdminRoleResource sysAdminRoleResource : sysAdminRoleResources) {
+                resourceIds.add(sysAdminRoleResource.getAdminResourceId());
+            }
+        }
+        for (Long toGetResourceId : resourceIds) {
+            SysAdminResource sysAdminResource = sysAdminResourceMapper.selectByPrimaryKey(toGetResourceId);
             Tree<SysAdminResource> tree = new Tree<>();
-            tree.setId(sysAdminResource.getId() .toString());
-            tree.setParentId(sysAdminResource.getParentId() .toString());
+            tree.setId(sysAdminResource.getId().toString());
+            tree.setParentId(sysAdminResource.getParentId().toString());
             tree.setText(sysAdminResource.getName());
+            tree.setUrl(sysAdminResource.getUrl());
             trees.add(tree);
-        });
+        }
         return TreeUtils.build(trees);
     }
 

@@ -1,29 +1,26 @@
 package com.epc.platform.service.domain.admin;
 
-import java.util.List;
+import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+@Data
 public class UserWithRole extends SysAdminUser {
 	
 	private static final long serialVersionUID = -5680235862276163462L;
-	
-	private Long roleId;
+
+	private Long Id;
+	private String name;
+	private String phone;
+	private Long deptId;
+	private Date createAt;
+	private Date updateAt;
+	private Integer isDeleted;
 	//角色id
 	private List<Long> roleIds;
 
-	public Long getRoleId() {
-		return roleId;
-	}
 
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
 
-	public List<Long> getRoleIds() {
-		return roleIds;
-	}
 
-	public void setRoleIds(List<Long> roleIds) {
-		this.roleIds = roleIds;
-	}
-	
+
 }

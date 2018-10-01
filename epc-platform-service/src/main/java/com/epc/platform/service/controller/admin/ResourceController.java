@@ -1,4 +1,5 @@
 package com.epc.platform.service.controller.admin;
+import java.util.Date;
 
 import com.epc.administration.facade.admin.AdminResourceService;
 import com.epc.administration.facade.admin.handle.ResourceHandle;
@@ -6,16 +7,22 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.Tree;
 import com.epc.platform.service.domain.admin.SysAdminResource;
+import com.epc.platform.service.domain.admin.SysAdminRoleResource;
+import com.epc.platform.service.domain.admin.SysAdminRoleResourceCriteria;
+import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.service.admin.SysAdminResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +39,8 @@ public class ResourceController extends BaseController implements AdminResourceS
 
     @Autowired
     private SysAdminResourceService sysAdminResourceService;
+    @Autowired
+    private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
 
     /**获取菜单信息
      * @param phone
@@ -113,17 +122,14 @@ public class ResourceController extends BaseController implements AdminResourceS
     /**查看资源是否存在
      * @param resourceName
      * @param type
-     * @param oldResourceName
+     * @param
      * @return
      */
     @ApiOperation(value = "查看资源是否存在", notes = "查看资源是否存在")
     @Override
-    public Result checkResourceName(@RequestBody String resourceName, String type, String oldResourceName) {
-        if (StringUtils.isNotBlank(oldResourceName) && resourceName.equalsIgnoreCase(oldResourceName)) {
-            return Result.success();
-        }
-        SysAdminResource result = this.sysAdminResourceService.findByNameAndType(resourceName, type);
-        return Result.success(result);
+    public Result checkResourceName(@RequestParam("resourceName") String resourceName,
+                                    @RequestParam("type") String type) {
+        return sysAdminResourceService.findByNameAndType(resourceName, type);
     }
 
     /**新增页面或者按钮
@@ -140,7 +146,7 @@ public class ResourceController extends BaseController implements AdminResourceS
             name = "功能";
         }
         try {
-            this.sysAdminResourceService.addResource(resourceHandle);
+            sysAdminResourceService.addResource(resourceHandle);
             return Result.success("新增" + name + "成功！");
         } catch (Exception e) {
             LOGGER.error("新增{}失败", name, e);
@@ -154,7 +160,7 @@ public class ResourceController extends BaseController implements AdminResourceS
      */
     @ApiOperation(value = "删除页面", notes = "删除页面")
     @Override
-    public Result deleteMenus(@RequestBody String ids) {
+    public Result deleteMenus(@RequestParam("ids") String ids) {
         try {
             this.sysAdminResourceService.deleteResources(ids);
             return Result.success("删除成功！");

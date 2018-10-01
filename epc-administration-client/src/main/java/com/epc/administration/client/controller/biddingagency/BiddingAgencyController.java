@@ -2,33 +2,34 @@ package com.epc.administration.client.controller.biddingagency;
 
 
 import com.epc.administration.client.controller.biddingagency.dto.ClientQueryDetailIfo;
-import com.epc.administration.client.controller.biddingagency.handle.ClientBaseDetailIfo;
+import com.epc.administration.client.controller.biddingagency.handle.ClientAgencyForbiddenHandle;
+import com.epc.administration.client.controller.biddingagency.handle.ClientBiddingAgencyDetailInfo;
+import com.epc.administration.client.controller.biddingagency.handle.ClientExamineAgencyHandle;
 import com.epc.administration.client.controller.biddingagency.handle.ClientUserBasicInfo;
+import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyClient;
+import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
+import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
+import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 招标代理机构接口
  * @author luozhixin
  * @date 2018-9-19 19:26:15
  */
-@Api(value = "招标代理机构服务",tags = {"招标代理机构服务"})
+@Api(value = "招标代理机构服务 @罗志鑫",tags = {"招标代理机构服务"})
 @RestController
 @RequestMapping(value = "/biddingagency", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class BiddingAgencyController {
+public class BiddingAgencyController extends BaseController {
 
     @Autowired
     private BiddingAgencyClient biddingAgencyClient;
@@ -38,50 +39,53 @@ public class BiddingAgencyController {
     public Result<Boolean> createBiddingAgencyUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,pojo);
+        pojo.setId(getLoginUser().getId());
         return biddingAgencyClient.insertBiddingAgencyBasicInfo(pojo);
     }
 
     @ApiOperation(value = "招标代理机构完善资料",notes = "招标代理机构完善资料")
-    @PostMapping(value = "registryBiddingAgencyDetail")
-    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody ClientBaseDetailIfo clientBaseDetailIfo) {
+    @PostMapping(value = "registryBiddingAgencyDetail",consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody ClientBiddingAgencyDetailInfo clientBiddingAgencyDetailInfo) {
         BiddingHandle biddingHandle = new BiddingHandle();
-        BeanUtils.copyProperties(clientBaseDetailIfo,biddingHandle);
+        BeanUtils.copyProperties(clientBiddingAgencyDetailInfo,biddingHandle);
         return biddingAgencyClient.insertBiddingAgencyDetailInfo(biddingHandle);
     }
 
 
     @ApiOperation(value = "招标代理机构删除资料",notes = "招标代理机构删除资料")
-    @PostMapping(value = "deleteBiddingAgencyDetailInfo")
-    public Result deleteBiddingAgencyDetailInfo(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo) {
-        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
-        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
-        return biddingAgencyClient.deleteBiddingAgencyDetailInfo(queryDetailIfo);
+    @GetMapping(value = "deleteBiddingAgencyDetailInfo")
+    public Result deleteBiddingAgencyDetailInfo(@RequestParam("whereId") Long whereId) {
+        return biddingAgencyClient.deleteBiddingAgencyDetailInfo(whereId);
     }
 
     @ApiOperation(value = "招标代理机构查询资料",notes = "招标代理机构查询资料")
-    @PostMapping(value = "queryBiddingAgencyDetailInfo")
-    public Result queryBiddingAgencyDetailInfo(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo) {
-        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
-        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
-        return biddingAgencyClient.queryBiddingAgencyDetailInfo(queryDetailIfo);
+    @GetMapping(value = "queryBiddingAgencyDetailInfo")
+    public Result queryBiddingAgencyDetailInfo(@RequestParam("whereId") Long whereId) {
+        return biddingAgencyClient.queryBiddingAgencyDetailInfo(whereId);
     }
 
-    @ApiOperation(value = "招标代理机构模糊搜索查询资料",notes = "招标代理机构模糊搜索查询资料")
-    @PostMapping(value = "selectBiddingAgencyDetailInfo")
-    public Result selectBiddingAgencyDetailInfo(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo) {
-        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
-        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
-        return biddingAgencyClient.selectBiddingAgencyDetailInfo(queryDetailIfo);
-    }
+
     @ApiOperation(value = "分页查询所有招标代理机构" ,notes = "分页查询所有招标代理机构")
-    @PostMapping(value = "selectAllAgencyByPage")
-    public Result selectAllAgencyByPage(@RequestBody QueryRequest queryRequest){
-        return biddingAgencyClient.selectAllAgencyByPage(queryRequest);
+    @PostMapping(value = "selectAllAgencyByPage",consumes = "application/json;charset=UTF-8")
+    public Result selectAllAgencyByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
+        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
+        return biddingAgencyClient.selectAllAgencyByPage(queryDetailIfo);
     }
 
-   /* @ApiOperation(value = "审核招标代理机构",notes = "审核招标代理机构")
-    @PostMapping(value = "examineAgency")
-    public Result examineAgency(@RequestBody ExamineAgencyHandle examineAgencyHandle){
-return Result.success();
-    }*/
+    @ApiOperation(value = "审核招标代理机构",notes = "审核招标代理机构")
+    @PostMapping(value = "examineAgency",consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> examineAgency(@RequestBody ClientExamineAgencyHandle clientExamineAgencyHandle){
+        ExamineAgencyHandle examineAgencyHandle= new ExamineAgencyHandle();
+        BeanUtils.copyProperties(clientExamineAgencyHandle,examineAgencyHandle);
+        return biddingAgencyClient.examineAgency(examineAgencyHandle);
+    }
+
+    @ApiOperation(value = "禁用解禁招标代理机构",notes = "禁用解禁招标代理机构")
+    @PostMapping("forbiddenAgencyUser")
+    public Result<Boolean> forbiddenAgencyUser(@RequestBody ClientAgencyForbiddenHandle clientAgencyForbiddenHandle){
+        AgencyForbiddenHandle agencyForbiddenHandle = new AgencyForbiddenHandle();
+        BeanUtils.copyProperties(clientAgencyForbiddenHandle,agencyForbiddenHandle);
+        return biddingAgencyClient.forbiddenAgencyUser(agencyForbiddenHandle);
+    }
 }

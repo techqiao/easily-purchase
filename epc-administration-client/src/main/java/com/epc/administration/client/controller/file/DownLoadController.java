@@ -1,5 +1,7 @@
 package com.epc.administration.client.controller.file;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -17,13 +19,14 @@ import java.io.InputStream;
  * <p>Date : 2018-09-11  22:31
  * <p>@author : wjq
  */
-@ApiIgnore
+@Api(value = "文件下载" ,tags = "文件下载")
 @RestController
 @RequestMapping("/download")
 public class DownLoadController {
     public static final String ROOT = "D:\\HttpFiles\\";
 
-    @PostMapping
+    @ApiOperation(value = "文件下载",tags = "文件下载")
+    @PostMapping(value ="getDownload" )
     public void getDownload(@RequestParam("filePath") String filePath, HttpServletRequest request, HttpServletResponse response) {
 
         String fullPath = ROOT + filePath;

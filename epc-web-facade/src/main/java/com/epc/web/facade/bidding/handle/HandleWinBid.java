@@ -26,4 +26,10 @@ public class HandleWinBid implements Serializable {
 
     private BigDecimal threePrice;
 
+    private String firstCompanyname;
+
+    private String twoCompanyname;
+
+    private String threeCompanyname;
+
 }

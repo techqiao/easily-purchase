@@ -8,7 +8,6 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
-import com.epc.web.facade.bidding.handle.HandleFileUpload;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
@@ -17,7 +16,7 @@ import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.QueryAnswerQustionListVO;
+import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +67,6 @@ public class BiddingServiceimpl implements BiddingService {
     public Result<List<NoticeDetailVO>> findBySupplierId(QueryNoticeDTO queryNoticeDTO) {
         final BReleaseAnnouncementCriteria criteria = new BReleaseAnnouncementCriteria();
         final BReleaseAnnouncementCriteria.Criteria subCriteria=criteria.createCriteria();
-
         //根据名称模糊查询
         if(StringUtils.isNotBlank(queryNoticeDTO.getTitle())){
             subCriteria.andTitleLike("%"+queryNoticeDTO.getTitle()+"%");
@@ -80,10 +78,6 @@ public class BiddingServiceimpl implements BiddingService {
         //结束日期
         if(queryNoticeDTO.getBiddingEnd()!=null){
             subCriteria.andBiddingEndGreaterThanOrEqualTo(queryNoticeDTO.getBiddingEnd());
-        }
-        //招标类型
-        if(StringUtils.isNotBlank(queryNoticeDTO.getBiddingType())){
-            subCriteria.andBiddingTypeEqualTo(queryNoticeDTO.getBiddingType());
         }
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<NoticeDetailVO> resultList=new ArrayList<>();
@@ -112,34 +106,51 @@ public class BiddingServiceimpl implements BiddingService {
 
         //根据公告ID查看详情
         BReleaseAnnouncement bReleaseAnnouncement = bReleaseAnnouncementMapper.selectByPrimaryKey(queryNoticeDetail.getNoticeId());
-        NoticeDetailVO clientNoticeDetailVO = new NoticeDetailVO();
+        NoticeDetailVO noticeDetailVO = new NoticeDetailVO();
         if (bReleaseAnnouncement==null){
             return Result.success(null);
         }
-        BeanUtils.copyProperties(bReleaseAnnouncement, clientNoticeDetailVO);
+        BeanUtils.copyProperties(bReleaseAnnouncement, noticeDetailVO);
 
         //未支付招标文件下载金，则不能下载，路径为空
         if(isPay==false){
-            clientNoticeDetailVO.setBiddingDocumentsUrl(null);
+            noticeDetailVO.setBiddingDocumentsUrl(null);
         }
-        return Result.success(clientNoticeDetailVO);
+        return Result.success(noticeDetailVO);
     }
 
     /**
-     * 查看答疑列表
+     * 查看 答疑列表
      * @param dto
      * @return
      */
     @Override
-    public Result<List<QueryAnswerQustionListVO>> getAnswerQuestionfindByNoticeId(QueryAnswerQuestionDTO dto) {
+    public Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(QueryAnswerQuestionDTO dto) {
         final BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
         final BAnswerQuestionCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
+        if(StringUtils.isNotEmpty(dto.getAnswerName())){
+            subCriteria.andAnswerNameLike("%"+dto.getAnswerName()+"%");
+        }
+        if(StringUtils.isNotEmpty(dto.getQuestionType())){
+            subCriteria.andQuestionTypeEqualTo(dto.getQuestionType());
+        }
+        if(dto.getTypeId()>0){
+            subCriteria.andTypeIdEqualTo(dto.getTypeId());
+        }
+        if(dto.getQuestionerId()>0){
+            subCriteria.andQuestionerIdEqualTo(dto.getQuestionerId());
+        }
+        if(StringUtils.isNotEmpty(dto.getQuestionerName())){
+            subCriteria.andQuestionerNameLike("%"+dto.getQuestionerName()+"%");
+        }
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         criteria.setOrderByClause("create_at desc");
+
         List<BAnswerQuestion> list=bAnswerQuestionMapper.selectByExampleWithRowbounds(criteria,dto.getRowBounds());
-        List<QueryAnswerQustionListVO> returnList = new ArrayList<QueryAnswerQustionListVO>();
+        List<QueryAnswerQuestionListVO> returnList = new ArrayList<>();
         list.forEach(item -> {
-            QueryAnswerQustionListVO vo = new QueryAnswerQustionListVO();
+            QueryAnswerQuestionListVO vo = new QueryAnswerQuestionListVO();
             BeanUtils.copyProperties(item, vo);
             returnList.add(vo);
         });
@@ -147,14 +158,14 @@ public class BiddingServiceimpl implements BiddingService {
     }
 
     /**
-     * 供应商新增一条问题
+     * 新增一条问题 (公告,招标文件，评标)
      * @param handleQuestion
      * @return
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion){
-        BAnswerQuestion entity= new BAnswerQuestion();
+        BAnswerQuestionWithBLOBs entity= new BAnswerQuestionWithBLOBs();
         BeanUtils.copyProperties(handleQuestion,entity);
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         entity.setCreateAt(new Date());
@@ -162,7 +173,9 @@ public class BiddingServiceimpl implements BiddingService {
         try{
             bAnswerQuestionMapper.insertSelective(entity);
         }catch (Exception e){
+            LOGGER.error(entity.toString()+"_"+e.getMessage(),e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error();
         }
         return  Result.success(true);
     }
@@ -186,16 +199,15 @@ public class BiddingServiceimpl implements BiddingService {
             //新增审查信息记录
             tPretrialMessageMapper.insertSelective(attachment);
         }catch (Exception e){
-            LOGGER.error("insertPretrialFile Error");
+            LOGGER.error("insertPretrialFile_"+attachment.toString()+"_"+e.getMessage(),e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error();
         }
-
         //查看文件是否上传
         List<BasePretriaFile> list=handlePretriaFile.getFilePathList();
         if(list.size()==0){
             return  Result.success(true);
         }
-
         //新增 修改 审查文件（一条记录可以对应多个文件）
         for(BasePretriaFile entity:list){
             TPretrialFile tPretrialFile=new TPretrialFile();
@@ -228,13 +240,13 @@ public class BiddingServiceimpl implements BiddingService {
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
         attachment.setUpdateAt(new Date());
-
         try{
-            //更新 审查信息记录
+            //更新审查信息记录
             tPretrialMessageMapper.updateByPrimaryKey(attachment);
         }catch (Exception e){
-            LOGGER.error("updatePretrialFile 失败");
+            LOGGER.error("updatePretrialFile_"+attachment.toString()+e.getMessage(),e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error();
         }
 
         //查看是否存在文件
@@ -250,22 +262,20 @@ public class BiddingServiceimpl implements BiddingService {
             tPretrialFile.setFileName(entity.getFileName());
             tPretrialFile.setCreateAt(new Date());
             tPretrialFile.setUpdateAt(new Date());
-
             if(entity.getId()!=null && entity.getId()>0){
                 //文件id为空则修改原记录
                 try{
                     tPretrialFileMapper.updateByPrimaryKey(tPretrialFile);
                 }catch(Exception e){
-                    LOGGER.error("updatePretrialFile 失败");
+                    LOGGER.error("updatePretrialFile_"+tPretrialFile.toString()+e.getMessage(),e);
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-
                 }
             }else{
                 //文件id为空则新增记录
                 try{
                     tPretrialFileMapper.insertSelective(tPretrialFile);
                 }catch(Exception e){
-                    LOGGER.error("updatePretrialFile 失败");
+                    LOGGER.error("updatePretrialFile_"+tPretrialFile.toString()+e.getMessage(),e);
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 }
             }

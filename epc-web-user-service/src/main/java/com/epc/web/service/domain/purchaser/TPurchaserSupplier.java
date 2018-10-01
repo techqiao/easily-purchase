@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TPurchaserSupplier implements Serializable {
-
     private Long id;
 
     private String cellphone;
@@ -17,6 +16,12 @@ public class TPurchaserSupplier implements Serializable {
 
     private String supplierName;
 
+    private String uniformCreditCode;
+
+    private String publicBankName;
+
+    private String publicBanAccountNumber;
+
     private String purchaserId;
 
     private String source;
@@ -26,6 +31,8 @@ public class TPurchaserSupplier implements Serializable {
     private Date updateAt;
 
     private Integer isDeleted;
+
+    private String supplierType;
 
     private static final long serialVersionUID = 1L;
 
@@ -42,7 +49,7 @@ public class TPurchaserSupplier implements Serializable {
     }
 
     public void setCellphone(String cellphone) {
-        this.cellphone = cellphone == null ? null : cellphone.trim();
+        this.cellphone = cellphone;
     }
 
     public String getPassword() {
@@ -50,7 +57,7 @@ public class TPurchaserSupplier implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public Integer getState() {
@@ -74,7 +81,31 @@ public class TPurchaserSupplier implements Serializable {
     }
 
     public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName == null ? null : supplierName.trim();
+        this.supplierName = supplierName;
+    }
+
+    public String getUniformCreditCode() {
+        return uniformCreditCode;
+    }
+
+    public void setUniformCreditCode(String uniformCreditCode) {
+        this.uniformCreditCode = uniformCreditCode;
+    }
+
+    public String getPublicBankName() {
+        return publicBankName;
+    }
+
+    public void setPublicBankName(String publicBankName) {
+        this.publicBankName = publicBankName;
+    }
+
+    public String getPublicBanAccountNumber() {
+        return publicBanAccountNumber;
+    }
+
+    public void setPublicBanAccountNumber(String publicBanAccountNumber) {
+        this.publicBanAccountNumber = publicBanAccountNumber;
     }
 
     public String getPurchaserId() {
@@ -82,16 +113,15 @@ public class TPurchaserSupplier implements Serializable {
     }
 
     public void setPurchaserId(String purchaserId) {
-        this.purchaserId = purchaserId == null ? null : purchaserId.trim();
+        this.purchaserId = purchaserId;
     }
 
     public String getSource() {
         return source;
     }
 
-
     public void setSource(String source) {
-        this.source = source == null ? null : source.trim();
+        this.source = source;
     }
 
     public Date getCreateAt() {
@@ -118,24 +148,17 @@ public class TPurchaserSupplier implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", cellphone=").append(cellphone);
-        sb.append(", password=").append(password);
-        sb.append(", state=").append(state);
-        sb.append(", supplierId=").append(supplierId);
-        sb.append(", supplierName=").append(supplierName);
-        sb.append(", purchaserId=").append(purchaserId);
-        sb.append(", source=").append(source);
-        sb.append(", createAt=").append(createAt);
-        sb.append(", updateAt=").append(updateAt);
-        sb.append(", isDeleted=").append(isDeleted);
-        sb.append("]");
-        return sb.toString();
+    public String getSupplierType() {
+        return supplierType;
     }
+
+    public void setSupplierType(String supplierType) {
+        this.supplierType = supplierType;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.epc.bidding.controller.bidding;
 import com.epc.bidding.service.winBid.WinBidService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeWinBidService;
+import com.epc.web.facade.bidding.handle.HandleWinBid;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
@@ -35,9 +36,26 @@ public class BiddingWinBidController implements FacadeWinBidService {
     }
 
 
+    /**
+     * 获取中标通知列表
+     * @param bidId
+     * @return
+     */
     @Override
-    public Result<TWinBidNominateVO> getTWinBidNominate(Long bidId){
+    public Result<TWinBidNominateVO> getTWinBidNominate(@RequestBody Long bidId){
         return winBidService.getTWinBidNominate(bidId);
     }
+
+
+    /**
+     * 确认中标人和上传中标通知书
+     * @param handleWinBid
+     * @return
+     */
+    @Override
+    public Result<Boolean> insertTWinBidNominate(@RequestBody HandleWinBid handleWinBid) {
+        return winBidService.insertTWinBidNominate(handleWinBid);
+    }
+
 
 }

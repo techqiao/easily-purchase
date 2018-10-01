@@ -9,6 +9,7 @@
     <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
     <result column="user_agency_id" jdbcType="BIGINT" property="userAgencyId" />
     <result column="agency_name" jdbcType="VARCHAR" property="agencyName" />
+    <result column="participant_type" jdbcType="INTEGER" property="participantType" />
     <result column="operate_id" jdbcType="BIGINT" property="operateId" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, purchase_project_id, user_id, user_name, user_phone, user_agency_id, agency_name, 
-    operate_id, creator, create_at, update_at, is_deleted
+    participant_type, operate_id, creator, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantCriteria" resultMap="BaseResultMap">
     select
@@ -113,12 +114,14 @@
     </selectKey>
     insert into t_purchase_project_participant (purchase_project_id, user_id, user_name, 
       user_phone, user_agency_id, agency_name, 
-      operate_id, creator, create_at, 
-      update_at, is_deleted)
+      participant_type, operate_id, creator, 
+      create_at, update_at, is_deleted
+      )
     values (#{purchaseProjectId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
       #{userPhone,jdbcType=VARCHAR}, #{userAgencyId,jdbcType=BIGINT}, #{agencyName,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+      #{participantType,jdbcType=INTEGER}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipant">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -143,6 +146,9 @@
       </if>
       <if test="agencyName != null">
         agency_name,
+      </if>
+      <if test="participantType != null">
+        participant_type,
       </if>
       <if test="operateId != null">
         operate_id,
@@ -178,6 +184,9 @@
       </if>
       <if test="agencyName != null">
         #{agencyName,jdbcType=VARCHAR},
+      </if>
+      <if test="participantType != null">
+        #{participantType,jdbcType=INTEGER},
       </if>
       <if test="operateId != null">
         #{operateId,jdbcType=BIGINT},
@@ -226,6 +235,9 @@
       <if test="record.agencyName != null">
         agency_name = #{record.agencyName,jdbcType=VARCHAR},
       </if>
+      <if test="record.participantType != null">
+        participant_type = #{record.participantType,jdbcType=INTEGER},
+      </if>
       <if test="record.operateId != null">
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
@@ -255,6 +267,7 @@
       user_phone = #{record.userPhone,jdbcType=VARCHAR},
       user_agency_id = #{record.userAgencyId,jdbcType=BIGINT},
       agency_name = #{record.agencyName,jdbcType=VARCHAR},
+      participant_type = #{record.participantType,jdbcType=INTEGER},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -285,6 +298,9 @@
       <if test="agencyName != null">
         agency_name = #{agencyName,jdbcType=VARCHAR},
       </if>
+      <if test="participantType != null">
+        participant_type = #{participantType,jdbcType=INTEGER},
+      </if>
       <if test="operateId != null">
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
@@ -311,6 +327,7 @@
       user_phone = #{userPhone,jdbcType=VARCHAR},
       user_agency_id = #{userAgencyId,jdbcType=BIGINT},
       agency_name = #{agencyName,jdbcType=VARCHAR},
+      participant_type = #{participantType,jdbcType=INTEGER},
       operate_id = #{operateId,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -332,5 +349,6 @@
       order by ${orderByClause}
     </if>
   </select>
+
 
 </mapper>

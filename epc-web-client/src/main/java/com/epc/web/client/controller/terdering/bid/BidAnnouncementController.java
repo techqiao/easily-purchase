@@ -2,6 +2,7 @@ package com.epc.web.client.controller.terdering.bid;
 
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientBidAnnouncement;
 import com.epc.web.client.remoteApi.terdering.bid.BidAnnouncementClient;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
@@ -12,44 +13,58 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "唱标业务",tags="唱标业务")
+/**
+ * @Description: 唱标业务
+ * @Author: linzhixiang
+ * @Date: 2018/9/30
+ */ 
+@Api(value = "唱标业务", tags = "唱标业务")
 @RestController
 @RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+public class BidAnnouncementController extends BaseController {
 
-public class BidAnnouncementController {
     @Autowired
-    BidAnnouncementClient bidAnnouncementClient;
+    private BidAnnouncementClient bidAnnouncementClient;
 
     /**
      * 新增一条唱标记录
+     *
      * @param dto
      * @return
      */
     @ApiOperation(value = "创建唱标记录")
     @PostMapping(value = "insertBidAnnouncement")
-    public  Result<Boolean> insertBidAnnouncement(ClientBidAnnouncement dto){
-        HandleBidAnnouncement handleBidAnnouncement=new HandleBidAnnouncement();
-        BeanUtils.copyProperties(dto,handleBidAnnouncement);
+    public Result<Boolean> insertBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {
+        HandleBidAnnouncement handleBidAnnouncement = new HandleBidAnnouncement();
+        BeanUtils.copyProperties(dto, handleBidAnnouncement);
+        handleBidAnnouncement.setOperateId(getLoginUser().getUserId());
         return bidAnnouncementClient.insertBidAnnouncement(handleBidAnnouncement);
     }
 
 
     /**
      * 根据标段查询 供应商投标报告
+     *
      * @param dto
      * @return
      */
     @ApiOperation(value = "根据标段查询供应商投标报告")
     @PostMapping(value = "queryBidAnnouncement")
-    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(ClientBidAnnouncement dto) {
-        QueryBidAnnouncement queryBidAnnouncement=new QueryBidAnnouncement();
-        BeanUtils.copyProperties(dto,queryBidAnnouncement);
+    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {
+        QueryBidAnnouncement queryBidAnnouncement = new QueryBidAnnouncement();
+        BeanUtils.copyProperties(dto, queryBidAnnouncement);
         return bidAnnouncementClient.queryBidAnnouncement(queryBidAnnouncement);
     }
+
+
+    @ApiOperation(value = "根据标段查询供应商投标报告")
+    @PostMapping(value = "getBidAnnouncementDetail")
+    public Result<String> getBidAnnouncementDetail(@RequestParam("bidId") Long bidId) {
+        return bidAnnouncementClient.bidAnnouncementDetail(bidId);
+    }
+
 }

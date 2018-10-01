@@ -20,6 +20,7 @@ import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
 import com.netflix.ribbon.proxy.annotation.Http;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -94,6 +95,14 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                     loginUser3.setType(type);
                     //this.cacheInredis(request,response,loginUser3);
                     return Result.success( loginUser3);
+                }
+                break;
+            case IRoleLoginService.EXPERT:
+                LoginUser loginUser4 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
+                if (loginUser4 != null) {
+                    loginUser4.setType(type);
+                    //this.cacheInredis(request,response,loginUser3);
+                    return Result.success( loginUser4);
                 }
                 break;
             default:

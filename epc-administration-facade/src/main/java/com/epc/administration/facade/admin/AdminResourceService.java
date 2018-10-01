@@ -52,13 +52,11 @@ public interface AdminResourceService {
     /**查看资源是否存在
      * @param resourceName
      * @param type
-     * @param oldResourceName
      * @return
      */
-    @PostMapping(value = "checkResourceName", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "checkResourceName")
      Result checkResourceName(@RequestParam("resourceName") String resourceName,
-                              @RequestParam("type") String type,
-                              @RequestParam("oldResourceName") String oldResourceName);
+                              @RequestParam("type") String type);
 
     /**新增页面或者按钮
      * @param resourceHandle
@@ -71,8 +69,8 @@ public interface AdminResourceService {
      * @param ids
      * @return
      */
-    @PostMapping(value = "deleteMenus", consumes = "application/json; charset=UTF-8")
-     Result deleteMenus(@RequestBody String ids) ;
+    @GetMapping(value = "deleteMenus", consumes = "application/json; charset=UTF-8")
+     Result deleteMenus(@RequestParam("ids") String ids) ;
 
     /**修改页面
      * @param resourceHandle

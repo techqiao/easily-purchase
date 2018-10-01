@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TPurchaseProjectBasicInfoMapper {
@@ -32,7 +33,9 @@ public interface TPurchaseProjectBasicInfoMapper {
     int updateByPrimaryKeySelective(TPurchaseProjectBasicInfo record);
 
     int updateByPrimaryKey(TPurchaseProjectBasicInfo record);
+
     @Select("select t.purchase_project_status from t_purchase_project_basic_info where id=#{id}")
     @ResultType(String.class)
     String getPurchaseProjectStatusById(Long id);
+
 }

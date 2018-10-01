@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>Date : 2018-09-15 10:21
  * <p>@Author : luozhixin
  */
-@Api(value = "系统资源",tags = {"系统资源服务"})
+@Api(value = "系统资源 @罗志鑫",tags = {"系统资源服务"})
 @RestController
 @RequestMapping(value = "/resource", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminResourceController {
@@ -82,15 +82,14 @@ public class AdminResourceController {
     /**查看资源是否存在
      * @param resourceName
      * @param type
-     * @param oldResourceName
      * @return
      */
     @ApiOperation(value = "查看资源是否存在", notes = "查看资源是否存在")
-    @PostMapping(value = "checkResourceName")
+    @GetMapping(value = "checkResourceName")
     public Result checkResourceName(@RequestParam("resourceName") String resourceName,
-                                    @RequestParam("type") String type,
-                                    @RequestParam("oldResourceName") String oldResourceName) {
-        return  sysAdminResourceClient.checkResourceName(resourceName, type, oldResourceName);
+                                    @RequestParam("type") String type
+                                   ) {
+        return  sysAdminResourceClient.checkResourceName(resourceName, type);
     }
 
     /**新增页面或者按钮
@@ -110,8 +109,8 @@ public class AdminResourceController {
      * @return
      */
     @ApiOperation(value = "删除页面", notes = "删除页面")
-    @PostMapping(value = "deleteMenus")
-    public Result deleteMenus(String ids) {
+    @GetMapping(value = "deleteMenus")
+    public Result deleteMenus(@RequestParam("ids") String ids) {
        return  sysAdminResourceClient.deleteMenus(ids);
     }
 

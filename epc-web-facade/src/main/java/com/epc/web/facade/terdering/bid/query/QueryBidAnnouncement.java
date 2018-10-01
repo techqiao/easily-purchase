@@ -8,5 +8,5 @@ import java.io.Serializable;
 public class QueryBidAnnouncement implements Serializable {
 
     private static final long serialVersionUID = 4738209030466537879L;
-    private Long bidId;
+    private Long bidsId;
 }

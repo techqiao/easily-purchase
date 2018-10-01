@@ -1,7 +1,9 @@
 package com.epc.platform.service.service.admin;
 
+import com.epc.administration.facade.admin.dto.QueryRoleInfo;
 import com.epc.administration.facade.admin.dto.UpdateRoleDTO;
 import com.epc.administration.facade.admin.handle.RoleHandle;
+import com.epc.common.Result;
 import com.epc.platform.service.domain.admin.RoleWithSource;
 import com.epc.platform.service.domain.admin.SysAdminRole;
 
@@ -26,7 +28,7 @@ public interface SysAdminRoleService {
      * @param
      * @return
      */
-    List<SysAdminRole> findAllRole();
+    List<SysAdminRole> findAllRole(QueryRoleInfo queryRoleInfo);
 
 
     /**
@@ -46,9 +48,8 @@ public interface SysAdminRoleService {
     /**
      * 新增角色
      * @param role
-     * @param resourceIds
      */
-    void addRole(RoleHandle role, Long[] resourceIds);
+    void addRole(RoleHandle role);
 
 
     /**
@@ -60,8 +61,7 @@ public interface SysAdminRoleService {
     /**
      * 编辑角色
      * @param updateRoleDTO
-     * @param resourceIds
      */
-    void updateRole(UpdateRoleDTO updateRoleDTO, Long[] resourceIds);
+    Result updateRole(UpdateRoleDTO updateRoleDTO);
 
 }

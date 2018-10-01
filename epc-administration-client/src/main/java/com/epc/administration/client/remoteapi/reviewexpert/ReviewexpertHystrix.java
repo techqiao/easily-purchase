@@ -2,10 +2,13 @@ package com.epc.administration.client.remoteapi.reviewexpert;
 
 import com.epc.administration.facade.reviewexpert.ReviewExpertService;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
+import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
+import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>Description : easilys
@@ -26,22 +29,28 @@ public class ReviewexpertHystrix implements ReviewExpertService {
     }
 
     @Override
-    public Result<Boolean> deleteReviewExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result<Boolean> deleteReviewExpertDetailInfo(Long whereId) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result queryReviewExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result queryReviewExpertDetailInfo( Long whereId) {
+        return Result.hystrixError();
+    }
+
+
+    @Override
+    public Result selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result selectReviewExpertDetailInfo(QueryDetailIfo queryDetailIfo) {
+    public Result<Boolean> examineExpert(ExamineExpertHandle examineExpertHandle) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result selectAllExpertByPage(QueryRequest queryRequest) {
+    public Result<Boolean> forbiddenExpertUser(ExpertForbiddenHandle expertForbiddenHandle) {
         return Result.hystrixError();
     }
 }

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.tendering.service.mapper.winBid.TWinBidMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.winBid.TWinBid" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="project_id" property="projectId" jdbcType="BIGINT" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
+    <result column="procurement_project_name" property="procurementProjectName" jdbcType="VARCHAR" />
+    <result column="bid_id" property="bidId" jdbcType="BIGINT" />
+    <result column="bid_name" property="bidName" jdbcType="VARCHAR" />
+    <result column="bid_code" property="bidCode" jdbcType="VARCHAR" />
+    <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
+    <result column="purchaser_monety" property="purchaserMonety" jdbcType="DECIMAL" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, project_name, project_code, procurement_project_id, procurement_project_name, 
+    bid_id, bid_name, bid_code, purchaser_id, purchaser_monety, file_path, supplier_id, 
+    operate_id, process_status, create_at, is_deleted
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_win_bid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_win_bid
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_win_bid
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" >
+    delete from t_win_bid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_win_bid (project_id, project_name, project_code, 
+      procurement_project_id, procurement_project_name, 
+      bid_id, bid_name, bid_code, 
+      purchaser_id, purchaser_monety, file_path, 
+      supplier_id, operate_id, process_status, 
+      create_at, is_deleted)
+    values (#{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
+      #{procurementProjectId,jdbcType=BIGINT}, #{procurementProjectName,jdbcType=VARCHAR}, 
+      #{bidId,jdbcType=BIGINT}, #{bidName,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, 
+      #{purchaserId,jdbcType=BIGINT}, #{purchaserMonety,jdbcType=DECIMAL}, #{filePath,jdbcType=VARCHAR}, 
+      #{supplierId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{processStatus,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_win_bid
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectCode != null" >
+        project_code,
+      </if>
+      <if test="procurementProjectId != null" >
+        procurement_project_id,
+      </if>
+      <if test="procurementProjectName != null" >
+        procurement_project_name,
+      </if>
+      <if test="bidId != null" >
+        bid_id,
+      </if>
+      <if test="bidName != null" >
+        bid_name,
+      </if>
+      <if test="bidCode != null" >
+        bid_code,
+      </if>
+      <if test="purchaserId != null" >
+        purchaser_id,
+      </if>
+      <if test="purchaserMonety != null" >
+        purchaser_monety,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="operateId != null" >
+        operate_id,
+      </if>
+      <if test="processStatus != null" >
+        process_status,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null" >
+        #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="procurementProjectId != null" >
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectName != null" >
+        #{procurementProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="bidId != null" >
+        #{bidId,jdbcType=BIGINT},
+      </if>
+      <if test="bidName != null" >
+        #{bidName,jdbcType=VARCHAR},
+      </if>
+      <if test="bidCode != null" >
+        #{bidCode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaserId != null" >
+        #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="purchaserMonety != null" >
+        #{purchaserMonety,jdbcType=DECIMAL},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" resultType="java.lang.Integer" >
+    select count(*) from t_win_bid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_win_bid
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCode != null" >
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.procurementProjectId != null" >
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.procurementProjectName != null" >
+        procurement_project_name = #{record.procurementProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bidId != null" >
+        bid_id = #{record.bidId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidName != null" >
+        bid_name = #{record.bidName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bidCode != null" >
+        bid_code = #{record.bidCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaserId != null" >
+        purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.purchaserMonety != null" >
+        purchaser_monety = #{record.purchaserMonety,jdbcType=DECIMAL},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierId != null" >
+        supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.processStatus != null" >
+        process_status = #{record.processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_win_bid
+    set id = #{record.id,jdbcType=BIGINT},
+      project_id = #{record.projectId,jdbcType=BIGINT},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_code = #{record.projectCode,jdbcType=VARCHAR},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      procurement_project_name = #{record.procurementProjectName,jdbcType=VARCHAR},
+      bid_id = #{record.bidId,jdbcType=BIGINT},
+      bid_name = #{record.bidName,jdbcType=VARCHAR},
+      bid_code = #{record.bidCode,jdbcType=VARCHAR},
+      purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      purchaser_monety = #{record.purchaserMonety,jdbcType=DECIMAL},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      process_status = #{record.processStatus,jdbcType=VARCHAR},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
+    update t_win_bid
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null" >
+        project_code = #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="procurementProjectId != null" >
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectName != null" >
+        procurement_project_name = #{procurementProjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="bidId != null" >
+        bid_id = #{bidId,jdbcType=BIGINT},
+      </if>
+      <if test="bidName != null" >
+        bid_name = #{bidName,jdbcType=VARCHAR},
+      </if>
+      <if test="bidCode != null" >
+        bid_code = #{bidCode,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaserId != null" >
+        purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="purchaserMonety != null" >
+        purchaser_monety = #{purchaserMonety,jdbcType=DECIMAL},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="processStatus != null" >
+        process_status = #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.winBid.TWinBid" >
+    update t_win_bid
+    set project_id = #{projectId,jdbcType=BIGINT},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      procurement_project_name = #{procurementProjectName,jdbcType=VARCHAR},
+      bid_id = #{bidId,jdbcType=BIGINT},
+      bid_name = #{bidName,jdbcType=VARCHAR},
+      bid_code = #{bidCode,jdbcType=VARCHAR},
+      purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      purchaser_monety = #{purchaserMonety,jdbcType=DECIMAL},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.winBid.TWinBidCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_win_bid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

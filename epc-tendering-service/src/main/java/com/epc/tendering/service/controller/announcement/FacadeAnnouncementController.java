@@ -5,8 +5,13 @@ import com.epc.tendering.service.service.announcement.AnnouncementService;
 import com.epc.web.facade.terdering.announcement.FacadeAnnouncementService;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
+import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>Description : easily-purchase
@@ -18,12 +23,17 @@ public class FacadeAnnouncementController implements FacadeAnnouncementService {
     @Autowired
     private AnnouncementService announcementService;
     @Override
-    public Result<Boolean> insertAnnouncement(HandleAnnouncement handleAnnouncement) {
+    public Result<Boolean> insertAnnouncement(@RequestBody HandleAnnouncement handleAnnouncement) {
         return announcementService.insertAnnouncement(handleAnnouncement);
     }
 
     @Override
-    public Result<Boolean> updateAnnouncementStatus(HandleAnnouncementStatus handleAnnouncementStatus) {
+    public Result<Boolean> updateAnnouncementStatus(@RequestBody HandleAnnouncementStatus handleAnnouncementStatus) {
         return announcementService.updateAnnouncementStatus(handleAnnouncementStatus);
+    }
+
+    @Override
+    public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody QueryAnnouncement queryAnnouncement) {
+        return announcementService.getPurchaseProjectAnnouncementList(queryAnnouncement);
     }
 }

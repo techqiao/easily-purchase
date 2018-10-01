@@ -51,11 +51,6 @@ public class Const {
         int IS_OTHER_AGENCY = 1;
     }
 
-    public interface WIN_SORT {
-        String FIRST = "first";
-        String SECOND = "second";
-        String THREE = "three";
-    }
 
     public interface IS_UNDER_LINE{
         int DOWN = 0;//线下
@@ -63,22 +58,16 @@ public class Const {
         int UP_DOWN = 3;//线上线下
     }
 
-    public interface PROCESS_STATE {
-        //项目进程
-        int CHECK = 0;//审核
-        int REPLY = 1;//批复
-        int PASS = 2;//通过
-        int SAVE=3 ;//保存等待
-    }
 
     /**
-     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构
+     * 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,4-平台
      */
     public interface INVITER_TYPE{
         int PURCHASER=0;
         int OPERATOR=1;
         int SUPPLIER=2;
         int PROXY=3;
+        int PLATFORM=4;
     }
 
     public interface OPEN_STATUS {
@@ -87,11 +76,32 @@ public class Const {
         int NORMA=1;
     }
 
-    public interface PERSON_PERMISSION {
-        //开标记录状态
-        String REPLY="reply"; //批复
-        String AGENT="agent"; //经办
-        String AUDITOR="auditor"; //审核
-        String PERSON_LIABLE="person_liable"; //负责人
+    /**
+     * loginUser,
+     * 运营商1,
+     * 代理商2,
+     * 供货商3,
+     * 采购商4
+     */
+    public interface LOGIN_USER_TYPE{
+        int OPERATOR=1;
+        int PROXY=2;
+        int SUPPLIER=3;
+        int PURCHASER=4;
+
     }
+
+
+    public interface ACTION_STATE{
+        //暂未到达此步
+        int NOT_ARRIVING=0;
+        //待办
+        int NEED_DEAL=1;
+        //完成
+        int COMPLETE=2;
+        //打回到此步
+        int PURCHASER=-1;
+
+    }
+
 }

@@ -535,6 +535,196 @@ public class BReleaseAnnouncementCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andDefecationStartIsNull() {
+            addCriterion("defecation_start is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartIsNotNull() {
+            addCriterion("defecation_start is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartEqualTo(Date value) {
+            addCriterion("defecation_start =", value, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartNotEqualTo(Date value) {
+            addCriterion("defecation_start <>", value, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartGreaterThan(Date value) {
+            addCriterion("defecation_start >", value, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartGreaterThanOrEqualTo(Date value) {
+            addCriterion("defecation_start >=", value, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartLessThan(Date value) {
+            addCriterion("defecation_start <", value, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartLessThanOrEqualTo(Date value) {
+            addCriterion("defecation_start <=", value, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartIn(List<Date> values) {
+            addCriterion("defecation_start in", values, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartNotIn(List<Date> values) {
+            addCriterion("defecation_start not in", values, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartBetween(Date value1, Date value2) {
+            addCriterion("defecation_start between", value1, value2, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationStartNotBetween(Date value1, Date value2) {
+            addCriterion("defecation_start not between", value1, value2, "defecationStart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndIsNull() {
+            addCriterion("defecation_end is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndIsNotNull() {
+            addCriterion("defecation_end is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndEqualTo(Date value) {
+            addCriterion("defecation_end =", value, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndNotEqualTo(Date value) {
+            addCriterion("defecation_end <>", value, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndGreaterThan(Date value) {
+            addCriterion("defecation_end >", value, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndGreaterThanOrEqualTo(Date value) {
+            addCriterion("defecation_end >=", value, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndLessThan(Date value) {
+            addCriterion("defecation_end <", value, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndLessThanOrEqualTo(Date value) {
+            addCriterion("defecation_end <=", value, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndIn(List<Date> values) {
+            addCriterion("defecation_end in", values, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndNotIn(List<Date> values) {
+            addCriterion("defecation_end not in", values, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndBetween(Date value1, Date value2) {
+            addCriterion("defecation_end between", value1, value2, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefecationEndNotBetween(Date value1, Date value2) {
+            addCriterion("defecation_end not between", value1, value2, "defecationEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIsNull() {
+            addCriterion("title is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIsNotNull() {
+            addCriterion("title is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleEqualTo(String value) {
+            addCriterion("title =", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotEqualTo(String value) {
+            addCriterion("title <>", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleGreaterThan(String value) {
+            addCriterion("title >", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleGreaterThanOrEqualTo(String value) {
+            addCriterion("title >=", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLessThan(String value) {
+            addCriterion("title <", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLessThanOrEqualTo(String value) {
+            addCriterion("title <=", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleLike(String value) {
+            addCriterion("title like", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotLike(String value) {
+            addCriterion("title not like", value, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleIn(List<String> values) {
+            addCriterion("title in", values, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotIn(List<String> values) {
+            addCriterion("title not in", values, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleBetween(String value1, String value2) {
+            addCriterion("title between", value1, value2, "title");
+            return (Criteria) this;
+        }
+
+        public Criteria andTitleNotBetween(String value1, String value2) {
+            addCriterion("title not between", value1, value2, "title");
+            return (Criteria) this;
+        }
+
         public Criteria andProcessStatusIsNull() {
             addCriterion("process_status is null");
             return (Criteria) this;

@@ -6,7 +6,6 @@
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_description" property="projectDescription" jdbcType="VARCHAR" />
-    <result column="is_state_designation" property="isStateDesignation" jdbcType="INTEGER" />
     <result column="total_project_investment" property="totalProjectInvestment" jdbcType="DECIMAL" />
     <result column="source_of_investment" property="sourceOfInvestment" jdbcType="INTEGER" />
     <result column="project_address" property="projectAddress" jdbcType="VARCHAR" />
@@ -79,9 +78,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_code, project_name, project_description, is_state_designation, total_project_investment, 
-    source_of_investment, project_address, purchaser_id, operate_id, creator, create_at, 
-    update_at, is_deleted
+    id, project_code, project_name, project_description, total_project_investment, source_of_investment, 
+    project_address, purchaser_id, operate_id, creator, create_at, update_at, is_deleted
   </sql>
   <sql id="Blob_Column_List" >
     project_memo
@@ -139,17 +137,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_project_basic_info (project_code, project_name, project_description, 
-      is_state_designation, total_project_investment, 
-      source_of_investment, project_address, purchaser_id, 
-      operate_id, creator, create_at, 
-      update_at, is_deleted, project_memo
-      )
+      total_project_investment, source_of_investment, 
+      project_address, purchaser_id, operate_id, 
+      creator, create_at, update_at, 
+      is_deleted, project_memo)
     values (#{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{projectDescription,jdbcType=VARCHAR}, 
-      #{isStateDesignation,jdbcType=INTEGER}, #{totalProjectInvestment,jdbcType=DECIMAL}, 
-      #{sourceOfInvestment,jdbcType=INTEGER}, #{projectAddress,jdbcType=VARCHAR}, #{purchaserId,jdbcType=BIGINT}, 
-      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{projectMemo,jdbcType=LONGVARCHAR}
-      )
+      #{totalProjectInvestment,jdbcType=DECIMAL}, #{sourceOfInvestment,jdbcType=INTEGER}, 
+      #{projectAddress,jdbcType=VARCHAR}, #{purchaserId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
+      #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER}, #{projectMemo,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TProjectBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -165,9 +161,6 @@
       </if>
       <if test="projectDescription != null" >
         project_description,
-      </if>
-      <if test="isStateDesignation != null" >
-        is_state_designation,
       </if>
       <if test="totalProjectInvestment != null" >
         total_project_investment,
@@ -209,9 +202,6 @@
       </if>
       <if test="projectDescription != null" >
         #{projectDescription,jdbcType=VARCHAR},
-      </if>
-      <if test="isStateDesignation != null" >
-        #{isStateDesignation,jdbcType=INTEGER},
       </if>
       <if test="totalProjectInvestment != null" >
         #{totalProjectInvestment,jdbcType=DECIMAL},
@@ -266,9 +256,6 @@
       <if test="record.projectDescription != null" >
         project_description = #{record.projectDescription,jdbcType=VARCHAR},
       </if>
-      <if test="record.isStateDesignation != null" >
-        is_state_designation = #{record.isStateDesignation,jdbcType=INTEGER},
-      </if>
       <if test="record.totalProjectInvestment != null" >
         total_project_investment = #{record.totalProjectInvestment,jdbcType=DECIMAL},
       </if>
@@ -310,7 +297,6 @@
       project_code = #{record.projectCode,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_description = #{record.projectDescription,jdbcType=VARCHAR},
-      is_state_designation = #{record.isStateDesignation,jdbcType=INTEGER},
       total_project_investment = #{record.totalProjectInvestment,jdbcType=DECIMAL},
       source_of_investment = #{record.sourceOfInvestment,jdbcType=INTEGER},
       project_address = #{record.projectAddress,jdbcType=VARCHAR},
@@ -331,7 +317,6 @@
       project_code = #{record.projectCode,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_description = #{record.projectDescription,jdbcType=VARCHAR},
-      is_state_designation = #{record.isStateDesignation,jdbcType=INTEGER},
       total_project_investment = #{record.totalProjectInvestment,jdbcType=DECIMAL},
       source_of_investment = #{record.sourceOfInvestment,jdbcType=INTEGER},
       project_address = #{record.projectAddress,jdbcType=VARCHAR},
@@ -356,9 +341,6 @@
       </if>
       <if test="projectDescription != null" >
         project_description = #{projectDescription,jdbcType=VARCHAR},
-      </if>
-      <if test="isStateDesignation != null" >
-        is_state_designation = #{isStateDesignation,jdbcType=INTEGER},
       </if>
       <if test="totalProjectInvestment != null" >
         total_project_investment = #{totalProjectInvestment,jdbcType=DECIMAL},
@@ -398,7 +380,6 @@
     set project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_description = #{projectDescription,jdbcType=VARCHAR},
-      is_state_designation = #{isStateDesignation,jdbcType=INTEGER},
       total_project_investment = #{totalProjectInvestment,jdbcType=DECIMAL},
       source_of_investment = #{sourceOfInvestment,jdbcType=INTEGER},
       project_address = #{projectAddress,jdbcType=VARCHAR},
@@ -416,7 +397,6 @@
     set project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_description = #{projectDescription,jdbcType=VARCHAR},
-      is_state_designation = #{isStateDesignation,jdbcType=INTEGER},
       total_project_investment = #{totalProjectInvestment,jdbcType=DECIMAL},
       source_of_investment = #{sourceOfInvestment,jdbcType=INTEGER},
       project_address = #{projectAddress,jdbcType=VARCHAR},

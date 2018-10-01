@@ -51,6 +51,8 @@ public class TWinBidNominate implements Serializable {
 
     private Date openEnd;
 
+    private String letterPath;
+
     private String processStatus;
 
     private Long operateId;
@@ -247,6 +249,14 @@ public class TWinBidNominate implements Serializable {
         this.openEnd = openEnd;
     }
 
+    public String getLetterPath() {
+        return letterPath;
+    }
+
+    public void setLetterPath(String letterPath) {
+        this.letterPath = letterPath == null ? null : letterPath.trim();
+    }
+
     public String getProcessStatus() {
         return processStatus;
     }
@@ -316,6 +326,7 @@ public class TWinBidNominate implements Serializable {
         sb.append(", winBidSupplierid=").append(winBidSupplierid);
         sb.append(", openStart=").append(openStart);
         sb.append(", openEnd=").append(openEnd);
+        sb.append(", letterPath=").append(letterPath);
         sb.append(", processStatus=").append(processStatus);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);

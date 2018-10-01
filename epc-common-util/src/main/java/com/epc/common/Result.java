@@ -2,6 +2,7 @@ package com.epc.common;
 
 import com.epc.common.constants.ErrorMessagesEnum;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -19,8 +20,11 @@ public class Result<T> implements Serializable {
 
     private static final long serialVersionUID = 9219485591159741586L;
 
+    @ApiModelProperty(value = "返回码[0:表示成功; 1表示失败]", example = "1")
     private Integer code;
+    @ApiModelProperty(value = "前端页面弹窗内容|该字段为前端弹窗内容", example = "新增成功！")
     private String msg;
+    @ApiModelProperty(value = "返回的数据|该字段为前端渲染数据对象", dataType = "Json")
     private T data;
 
     public Result() {
@@ -48,7 +52,7 @@ public class Result<T> implements Serializable {
     @JsonIgnore
     //使之不在json序列化结果当中
     public boolean isSuccess(){
-        return this.code==ResultCode.SUCCESS.getCode();
+        return this.code.equals(ResultCode.SUCCESS.getCode());
     }
 
     public Integer getcode(){

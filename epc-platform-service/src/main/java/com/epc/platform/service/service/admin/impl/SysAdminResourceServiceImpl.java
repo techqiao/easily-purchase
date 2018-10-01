@@ -1,11 +1,13 @@
 package com.epc.platform.service.service.admin.impl;
 
 import com.epc.administration.facade.admin.handle.ResourceHandle;
+import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.Tree;
 import com.epc.common.util.TreeUtils;
 import com.epc.platform.service.domain.admin.SysAdminResource;
 import com.epc.platform.service.domain.admin.SysAdminResourceCriteria;
+import com.epc.platform.service.domain.admin.SysAdminRoleResource;
 import com.epc.platform.service.domain.admin.SysAdminRoleResourceCriteria;
 import com.epc.platform.service.mapper.admin.SysAdminResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
@@ -100,12 +102,12 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
     }
 
     @Override
-    public SysAdminResource findByNameAndType(String resourceName, String type) {
+    public Result<Boolean> findByNameAndType(String resourceName, String type) {
         final SysAdminResourceCriteria criteria = new SysAdminResourceCriteria();
         final SysAdminResourceCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andNameEqualTo(resourceName).andTypeEqualTo(type);
         List<SysAdminResource> sysAdminResourceList = sysAdminResourceMapper.selectByExample(criteria);
-        return sysAdminResourceList.isEmpty() ? null : sysAdminResourceList.get(0);
+        return Result.success(sysAdminResourceList.isEmpty() ? true : false);
     }
 
     /**
@@ -128,7 +130,14 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
         if (Const.RESOURCE_TYPE.ACTION.equals(sysAdminResource.getType())) {
             sysAdminResource.setUrl(null);
         }
-        this.sysAdminResourceMapper.insertSelective(sysAdminResource);
+        sysAdminResourceMapper.insertSelective(sysAdminResource);
+        SysAdminRoleResource sysAdminRoleResource = new SysAdminRoleResource();
+        sysAdminRoleResource.setAmdinRoleId(Long.valueOf(Const.Role.ROLE_ADMIN));
+        sysAdminRoleResource.setAdminResourceId(sysAdminResource.getId());
+        sysAdminRoleResource.setCreateAt(new Date());
+        sysAdminRoleResource.setUpdateAt(new Date());
+        sysAdminRoleResource.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        sysAdminRoleResourceMapper.insertSelective(sysAdminRoleResource);
     }
 
     @Override
@@ -191,6 +200,7 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
             tree.setId(resource.getId().toString());
             tree.setParentId(resource.getParentId().toString());
             tree.setText(resource.getName());
+            tree.setUrl(resource.getUrl());
             trees.add(tree);
         });
     }

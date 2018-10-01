@@ -1,6 +1,7 @@
 package com.epc.platform.service.service.admin;
 
 import com.epc.administration.facade.admin.handle.ResourceHandle;
+import com.epc.common.Result;
 import com.epc.common.util.Tree;
 import com.epc.platform.service.domain.admin.SysAdminResource;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +14,7 @@ import java.util.Map;
  * <p>Date : 2018-09-12 20:37
  * <p>@Author : wjq
  */
+
 public interface SysAdminResourceService {
 
     /**
@@ -62,7 +64,7 @@ public interface SysAdminResourceService {
      * @param type
      * @return
      */
-    SysAdminResource findByNameAndType(String resourceName, String type);
+    Result<Boolean> findByNameAndType(String resourceName, String type);
 
 
     /**

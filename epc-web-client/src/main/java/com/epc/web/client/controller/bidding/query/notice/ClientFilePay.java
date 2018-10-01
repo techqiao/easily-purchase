@@ -6,7 +6,11 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-
+/**
+ * @Description: 下载文件支付查询
+ * @Author: linzhixiang
+ * @Date: 2018/9/30
+ */
 @Data
 @ApiModel(value = "ClientFilePay",description = "下载文件支付查询")
 public class ClientFilePay {

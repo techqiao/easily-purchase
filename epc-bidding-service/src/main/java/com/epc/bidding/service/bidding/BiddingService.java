@@ -1,6 +1,5 @@
 package com.epc.bidding.service.bidding;
 
-import com.epc.bidding.domain.bidding.TPretrialMessage;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
@@ -10,7 +9,7 @@ import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.QueryAnswerQustionListVO;
+import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
 
 import java.util.List;
 
@@ -24,14 +23,6 @@ public interface BiddingService {
      */
     Result<List<NoticeDetailVO>> findBySupplierId(QueryNoticeDTO queryNoticeDTO);
 
-
-    /**
-     * 查询供应商是否支付下载招标文件金额
-     * @return
-     */
-    Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto);
-
-
     /**
      *  查看公告详情 及 下载文件路径
      * @param queryNoticeDetail 公告详情
@@ -40,12 +31,18 @@ public interface BiddingService {
      */
     Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail,Boolean isPay);
 
+
+
+
+
+
+
     /**
-     * 查看公告答疑列表
+     * 查看 答疑列表
      * @param queryAnswerQuestionDTO
      * @return
      */
-    Result<List<QueryAnswerQustionListVO>> getAnswerQuestionfindByNoticeId(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
+    Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 
 
     /**
@@ -55,12 +52,26 @@ public interface BiddingService {
      */
     Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion);
 
+
+
+
+
+    /**
+     * 查询供应商是否支付下载招标文件金额
+     * @return
+     */
+    Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto);
+
     /**
      * 文件上传
      * @param handlePretriaFile
      * @return
      */
     Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile) ;
+
+
+
+
 
     /**
      * 预审信息 修改/删除

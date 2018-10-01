@@ -1,9 +1,12 @@
 package com.epc.platform.service.controller.supplier;
 
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.supplier.SupplierUserService;
+import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
+import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
+import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
@@ -15,6 +18,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +29,6 @@ import java.util.List;
  * <p>Date : 2018-09-10  18:08
  * <p>@author : wjq
  */
-@Api(value = "供应商服务", description = "供应商服务")
 @RestController
 public class SupplierController extends BaseController implements SupplierUserService {
     @Autowired
@@ -54,44 +57,54 @@ public class SupplierController extends BaseController implements SupplierUserSe
 
     /**
      * 供应商资料删除
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
     @Override
-    public Result<Boolean> deleteSupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return supplierService.deleteSupplierDetailInfo(queryDetailIfo);
+    public Result<Boolean> deleteSupplierDetailInfo(@RequestParam("whereId") Long whereId) {
+        return supplierService.deleteSupplierDetailInfo(whereId);
     }
 
     /**
      * 供应商资料查询
-     * @param queryDetailIfo
+     * @param id
      * @return
      */
     @Override
-    public Result<TOperatorDetailInfo> querySupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return supplierService.querySupplierDetailInfo(queryDetailIfo);
-    }
-
-    /**
-     * 供应商资料模糊查询
-     * @param queryDetailIfo
-     * @return
-     */
-    @Override
-    public Result<List<TOperatorDetailInfo>> selectSupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return supplierService.selectSupplierDetailInfo(queryDetailIfo);
+    public Result<TOperatorDetailInfo> querySupplierDetailInfo(@RequestParam("whereId") Long id) {
+        return supplierService.querySupplierDetailInfo(id);
     }
 
     /**
      * 查询所有的供应商 分页展示
-     * @param queryRequest
+     * @param queryDetailIfo
      * @return
      */
     @Override
-    public Result selectAllSupplierByPage(@RequestBody QueryRequest queryRequest) {
-        PageHelper.startPage(queryRequest.getPageNum(),queryRequest.getPageSize());
-        List<TSupplierDetailInfo> tSupplierDetailInfos = supplierService.selectAllSupplierByPage();
-        PageInfo<TSupplierDetailInfo> pageInfo = new PageInfo<>(tSupplierDetailInfos);
+    public Result selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+        PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
+        List<SupplierUserVO> supplierUserVOS = supplierService.selectAllSupplierByPage(queryDetailIfo);
+        PageInfo<SupplierUserVO> pageInfo = new PageInfo<>(supplierUserVOS);
         return Result.success(getDataTable(pageInfo));
+    }
+
+    /**
+     * 审核供应商
+     * @param examineSupplierHandle
+     * @return
+     */
+    @Override
+    public Result examineSupplier(@RequestBody ExamineSupplierHandle examineSupplierHandle) {
+        return supplierService.examineSupplier(examineSupplierHandle);
+    }
+
+    /**
+     * 禁用启用供应商
+     * @param supplierForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
+        return supplierService.forbiddenSupplierUser(supplierForbiddenHandle);
     }
 }

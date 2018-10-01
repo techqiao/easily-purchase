@@ -2,8 +2,12 @@ package com.epc.platform.service.controller.operator;
 
 import com.epc.administration.facade.operator.FacadeOperatorService;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
@@ -13,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -51,44 +56,55 @@ public class OperatorServerController extends BaseController implements FacadeOp
 
     /**
      * 运营商资料删除
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
     @Override
-    public Result<Boolean> deleteOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return operatorService.deleteOperatorDetailInfo(queryDetailIfo);
+    public Result<Boolean> deleteOperatorDetailInfo(@RequestParam("whereId") Long whereId) {
+        return operatorService.deleteOperatorDetailInfo(whereId);
     }
 
     /**
      * 运营商资料查询
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
     @Override
-    public Result<TOperatorDetailInfo> queryOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return operatorService.queryOperatorDetailInfo(queryDetailIfo);
+    public Result<OperatorUserVO> queryOperatorDetailInfo(@RequestParam("whereId") Long whereId) {
+        return operatorService.queryOperatorDetailInfo(whereId);
     }
 
-    /**
-     * 运营商资料模糊查询
-     * @param queryDetailIfo
-     * @return
-     */
-    @Override
-    public Result<List<TOperatorDetailInfo>> selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo) {
-        return operatorService.selectOperatorDetailInfo(queryDetailIfo);
-    }
 
     /**
      * 运营商资料所有查询 分页展示
-     * @param queryRequest
+     * @param queryDetailIfo
      * @return
      */
     @Override
-    public Result selectAllOperatorByPage(@RequestBody QueryRequest queryRequest) {
-        PageHelper.startPage(queryRequest.getPageNum(),queryRequest.getPageSize());
-        List<TOperatorDetailInfo> tOperatorDetailInfos = operatorService.selectAllOperatorByPage();
-        PageInfo<TOperatorDetailInfo> page = new PageInfo<>(tOperatorDetailInfos);
+    public Result selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+        PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
+        List<OperatorVO> operatorVOS = operatorService.selectAllOperatorByPage(queryDetailIfo);
+        PageInfo<OperatorVO> page = new PageInfo<>(operatorVOS);
         return Result.success(getDataTable(page));
+    }
+
+    /**
+     * 审核运营商
+     * @param examineOperatorHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> examineOperator(@RequestBody ExamineOperatorHandle examineOperatorHandle) {
+        return operatorService.examineOperator(examineOperatorHandle);
+    }
+
+    /**
+     * 启动锁定运营商 0启用 1锁定
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> forbiddenOperatorUser(OperatorForbiddenHandle operatorForbiddenHandle) {
+        return operatorService.forbiddenOperatorUser(operatorForbiddenHandle);
     }
 }

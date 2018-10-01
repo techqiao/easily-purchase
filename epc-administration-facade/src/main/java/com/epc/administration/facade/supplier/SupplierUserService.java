@@ -1,13 +1,19 @@
 package com.epc.administration.facade.supplier;
 
 
-import com.epc.administration.facade.operator.dto.QueryDetailIfo;
-import com.epc.administration.facade.operator.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.dto.QueryDetailIfo;
+import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
+import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.common.Result;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 供应商接口
@@ -23,7 +29,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "createSupplierUserInfo", consumes = "application/json; charset=UTF-8")
-     Result<Boolean> createSupplierUserInfo(@RequestBody UserBasicInfo userBasicInfo);
+     Result<Boolean> createSupplierUserInfo(UserBasicInfo userBasicInfo);
 
     /**
      * 供应商完善资料
@@ -35,34 +41,43 @@ public interface SupplierUserService {
 
     /**
      * 删除供应商资料
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    @PostMapping(value = "deleteSupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result<Boolean> deleteSupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    @GetMapping(value = "deleteSupplierDetailInfo" )
+    Result<Boolean> deleteSupplierDetailInfo(@RequestParam("whereId") Long whereId);
 
     /**
      * 根据id查询供应商详情
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    @PostMapping(value = "querySupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result querySupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    @GetMapping(value = "querySupplierDetailInfo" )
+    Result querySupplierDetailInfo(@RequestParam("whereId") Long whereId);
 
-    /**
-     * 根据模糊name查询供应商详情
-     * @param queryDetailIfo
-     * @return
-     */
-    @PostMapping(value = "selectSupplierDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result selectSupplierDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 查询所有供应商 ，分页展示
-     * @param queryRequest
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectAllSupplierByPage" ,consumes = "application/json; charset=UTF-8")
-    Result selectAllSupplierByPage(@RequestBody QueryRequest queryRequest);
+    Result<List<SupplierUserVO>> selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
+
+    /**
+     * 审核供应商
+     * @param examineSupplierHandle
+     * @return
+     */
+    @PostMapping(value = "examineSupplier",consumes ="application/json; charset=UTF-8" )
+    Result examineSupplier(ExamineSupplierHandle examineSupplierHandle);
+
+    /**
+     * 启用禁用供应商
+     * @param supplierForbiddenHandle
+     * @return
+     */
+    @PostMapping(value = "clientSupplierForbiddenHandle",consumes ="application/json; charset=UTF-8")
+    Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle);
 }

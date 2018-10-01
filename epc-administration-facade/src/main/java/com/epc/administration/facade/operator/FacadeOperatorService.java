@@ -1,11 +1,16 @@
 package com.epc.administration.facade.operator;
 
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
+import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
+import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
-import com.epc.common.QueryRequest;
+import com.epc.administration.facade.operator.vo.OperatorUserVO;
+import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -33,35 +38,43 @@ public interface FacadeOperatorService {
 
     /**
      * 删除运营商资料
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    @PostMapping(value = "deleteOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result<Boolean> deleteOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    @GetMapping(value = "deleteOperatorDetailInfo" )
+    Result<Boolean> deleteOperatorDetailInfo(@RequestParam("whereId") Long whereId);
 
     /**
      * 根据id查询运营商详情
-     * @param queryDetailIfo
+     * @param whereId
      * @return
      */
-    @PostMapping(value = "queryOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result queryOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
+    @GetMapping(value = "queryOperatorDetailInfo")
+    Result<OperatorUserVO> queryOperatorDetailInfo(@RequestParam("whereId") Long whereId);
 
-    /**
-     * 根据模糊name查询运营商详情
-     * @param queryDetailIfo
-     * @return
-     */
-    @PostMapping(value = "selectOperatorDetailInfo" , consumes = "application/json; charset=UTF-8")
-    Result selectOperatorDetailInfo(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 查询所有运营商 分页展示
-     * @param queryRequest
+     * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectAllOperatorByPage" ,consumes = "application/json; charset=UTF-8")
-    Result  selectAllOperatorByPage(@RequestBody QueryRequest queryRequest);
+    Result<List<OperatorVO>>  selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
 
+    /**
+     * 审核运营商
+     * @param examineOperatorHandle
+     * @return
+     */
+    @PostMapping(value = "examineOperator" ,consumes = "application/json; charset=UTF-8")
+    Result<Boolean> examineOperator(@RequestBody ExamineOperatorHandle examineOperatorHandle);
+
+    /**
+     * 锁定启动运营商
+     * @param operatorForbiddenHandle
+     * @return
+     */
+    @PostMapping(value = "forbiddenOperatorUser" ,consumes = "application/json; charset=UTF-8")
+    Result<Boolean> forbiddenOperatorUser(@RequestBody OperatorForbiddenHandle operatorForbiddenHandle);
 }

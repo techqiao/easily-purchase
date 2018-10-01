@@ -10,15 +10,17 @@ public class BAnswerQuestion implements Serializable {
 
     private Long questionerId;
 
+    private String questionType;
+
     private String questionerName;
 
-    private String problem;
+    private Long typeId;
 
     private Long answerId;
 
     private String answerName;
 
-    private String answer;
+    private String status;
 
     private Long operateId;
 
@@ -54,6 +56,14 @@ public class BAnswerQuestion implements Serializable {
         this.questionerId = questionerId;
     }
 
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType == null ? null : questionType.trim();
+    }
+
     public String getQuestionerName() {
         return questionerName;
     }
@@ -62,12 +72,12 @@ public class BAnswerQuestion implements Serializable {
         this.questionerName = questionerName == null ? null : questionerName.trim();
     }
 
-    public String getProblem() {
-        return problem;
+    public Long getTypeId() {
+        return typeId;
     }
 
-    public void setProblem(String problem) {
-        this.problem = problem == null ? null : problem.trim();
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
     }
 
     public Long getAnswerId() {
@@ -86,12 +96,12 @@ public class BAnswerQuestion implements Serializable {
         this.answerName = answerName == null ? null : answerName.trim();
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getStatus() {
+        return status;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer == null ? null : answer.trim();
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public Long getOperateId() {
@@ -135,11 +145,12 @@ public class BAnswerQuestion implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", questionerId=").append(questionerId);
+        sb.append(", questionType=").append(questionType);
         sb.append(", questionerName=").append(questionerName);
-        sb.append(", problem=").append(problem);
+        sb.append(", typeId=").append(typeId);
         sb.append(", answerId=").append(answerId);
         sb.append(", answerName=").append(answerName);
-        sb.append(", answer=").append(answer);
+        sb.append(", status=").append(status);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

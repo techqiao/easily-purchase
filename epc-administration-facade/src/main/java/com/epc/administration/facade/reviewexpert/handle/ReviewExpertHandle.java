@@ -1,127 +1,49 @@
 package com.epc.administration.facade.reviewexpert.handle;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author 01
  */
+@Data
 public class ReviewExpertHandle implements Serializable {
     private static final long serialVersionUID = -2265620201281709989L;
-    private String systemRole;
-    private Long userId;
-    private String companyName;
-    private String publicBankName;
-    private String publicBanAccountNumber;
-    private String qualificationCertificate;
-    private String businessLicense;
+    @ApiModelProperty(value = "专家id")
+    private Long id;
+    @ApiModelProperty(value = "评标专家姓名")
+    private String name;
+    @ApiModelProperty(value = "专业")
+    private String profession;
+    @ApiModelProperty(value = "职称")
+    private String level;
+    @ApiModelProperty(value = "通知时间")
+    private Date circularDt;
+    @ApiModelProperty(value = "通知方式")
+    private String circularMethod;
+    @ApiModelProperty(value = "其他信息")
+    private String otherInformation;
+    @ApiModelProperty(value = "法人身份证正面照片url")
     private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
     private String legalIdCardOther;
-    private String certificateOfAuthorization;
-    private String operatorIdCardFront;
+    @ApiModelProperty(value = "统一信用代码")
+    private String uniformCreditCode;
+    @ApiModelProperty(value = "公司名称")
+    private String companyName;
+    @ApiModelProperty(value = "对公银行名称")
+    private String publicBankName;
+    @ApiModelProperty(value = "对公银行账号")
+    private String publicBanAccountNumber;
+
+    @ApiModelProperty(value = "资质证书url")
+    private List<AttachmentHandle> attachmentHandleList;
 
 
-    @Override
-    public String toString() {
-        return "ReviewExpertHandle{" +
-                "systemRole='" + systemRole + '\'' +
-                ", userId=" + userId +
-                ", companyName='" + companyName + '\'' +
-                ", publicBankName='" + publicBankName + '\'' +
-                ", publicBanAccountNumber='" + publicBanAccountNumber + '\'' +
-                ", qualificationCertificate='" + qualificationCertificate + '\'' +
-                ", businessLicense='" + businessLicense + '\'' +
-                ", legalIdCardPositive='" + legalIdCardPositive + '\'' +
-                ", legalIdCardOther='" + legalIdCardOther + '\'' +
-                ", certificateOfAuthorization='" + certificateOfAuthorization + '\'' +
-                ", operatorIdCardFront='" + operatorIdCardFront + '\'' +
-                '}';
-    }
 
-    public String getSystemRole() {
-        return systemRole;
-    }
 
-    public void setSystemRole(String systemRole) {
-        this.systemRole = systemRole;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getPublicBankName() {
-        return publicBankName;
-    }
-
-    public void setPublicBankName(String publicBankName) {
-        this.publicBankName = publicBankName;
-    }
-
-    public String getPublicBanAccountNumber() {
-        return publicBanAccountNumber;
-    }
-
-    public void setPublicBanAccountNumber(String publicBanAccountNumber) {
-        this.publicBanAccountNumber = publicBanAccountNumber;
-    }
-
-    public String getQualificationCertificate() {
-        return qualificationCertificate;
-    }
-
-    public void setQualificationCertificate(String qualificationCertificate) {
-        this.qualificationCertificate = qualificationCertificate;
-    }
-
-    public String getBusinessLicense() {
-        return businessLicense;
-    }
-
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
-    }
-
-    public String getLegalIdCardPositive() {
-        return legalIdCardPositive;
-    }
-
-    public void setLegalIdCardPositive(String legalIdCardPositive) {
-        this.legalIdCardPositive = legalIdCardPositive;
-    }
-
-    public String getLegalIdCardOther() {
-        return legalIdCardOther;
-    }
-
-    public void setLegalIdCardOther(String legalIdCardOther) {
-        this.legalIdCardOther = legalIdCardOther;
-    }
-
-    public String getCertificateOfAuthorization() {
-        return certificateOfAuthorization;
-    }
-
-    public void setCertificateOfAuthorization(String certificateOfAuthorization) {
-        this.certificateOfAuthorization = certificateOfAuthorization;
-    }
-
-    public String getOperatorIdCardFront() {
-        return operatorIdCardFront;
-    }
-
-    public void setOperatorIdCardFront(String operatorIdCardFront) {
-        this.operatorIdCardFront = operatorIdCardFront;
-    }
 }

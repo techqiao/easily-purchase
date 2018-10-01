@@ -3,7 +3,10 @@ package com.epc.tendering.service.service.announcement;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
+
+import java.util.List;
 
 /**
  * <p>Description : easily-purchase
@@ -30,4 +33,12 @@ public interface AnnouncementService {
      * @return
      */
     Boolean handleAnnouncementBiddingEnd();
+
+    /**
+     * 项目经理查询相关公告
+     *
+     * @param queryAnnouncement
+     * @return
+     */
+    Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(QueryAnnouncement queryAnnouncement);
 }

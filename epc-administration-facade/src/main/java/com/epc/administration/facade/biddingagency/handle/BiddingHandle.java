@@ -1,126 +1,56 @@
 package com.epc.administration.facade.biddingagency.handle;
 
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author luozhixin
  */
+@Data
 public class BiddingHandle implements Serializable {
     private static final long serialVersionUID = 2295340220100317777L;
-    private String systemRole;
-    private Long userId;
+    /**
+     * 主键id
+     */
+    private Long id;
+
+    /**
+     * 公司名称
+     */
     private String companyName;
-    private String publicBankName;
-    private String publicBanAccountNumber;
-    private String qualificationCertificate;
+
+    /**
+     *统一信用代码
+     */
+    private String uniformCreditCode;
+    /**
+     * 营业执照照片url
+     */
     private String businessLicense;
+    /**
+     * 法人身份证正面照片url
+     */
     private String legalIdCardPositive;
+    /**
+     * 法人身份证反面照片url
+     */
     private String legalIdCardOther;
-    private String certificateOfAuthorization;
-    private String operatorIdCardFront;
+    /**
+     *对公银行名称
+     */
+    private String publicBankName;
 
-    @Override
-    public String toString() {
-        return "BiddingHandle{" +
-                "systemRole='" + systemRole + '\'' +
-                ", userId=" + userId +
-                ", companyName='" + companyName + '\'' +
-                ", publicBankName='" + publicBankName + '\'' +
-                ", publicBanAccountNumber='" + publicBanAccountNumber + '\'' +
-                ", qualificationCertificate='" + qualificationCertificate + '\'' +
-                ", businessLicense='" + businessLicense + '\'' +
-                ", legalIdCardPositive='" + legalIdCardPositive + '\'' +
-                ", legalIdCardOther='" + legalIdCardOther + '\'' +
-                ", certificateOfAuthorization='" + certificateOfAuthorization + '\'' +
-                ", operatorIdCardFront='" + operatorIdCardFront + '\'' +
-                '}';
-    }
+    /**
+     *对公银行账号
+     */
+    private String publicBanAccountNumber;
 
-    public String getSystemRole() {
-        return systemRole;
-    }
+    /**
+     * 附件集合
+     */
+    private List<AttachmentHandle> clientAttachmentHandles;
 
-    public void setSystemRole(String systemRole) {
-        this.systemRole = systemRole;
-    }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getPublicBankName() {
-        return publicBankName;
-    }
-
-    public void setPublicBankName(String publicBankName) {
-        this.publicBankName = publicBankName;
-    }
-
-    public String getPublicBanAccountNumber() {
-        return publicBanAccountNumber;
-    }
-
-    public void setPublicBanAccountNumber(String publicBanAccountNumber) {
-        this.publicBanAccountNumber = publicBanAccountNumber;
-    }
-
-    public String getQualificationCertificate() {
-        return qualificationCertificate;
-    }
-
-    public void setQualificationCertificate(String qualificationCertificate) {
-        this.qualificationCertificate = qualificationCertificate;
-    }
-
-    public String getBusinessLicense() {
-        return businessLicense;
-    }
-
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
-    }
-
-    public String getLegalIdCardPositive() {
-        return legalIdCardPositive;
-    }
-
-    public void setLegalIdCardPositive(String legalIdCardPositive) {
-        this.legalIdCardPositive = legalIdCardPositive;
-    }
-
-    public String getLegalIdCardOther() {
-        return legalIdCardOther;
-    }
-
-    public void setLegalIdCardOther(String legalIdCardOther) {
-        this.legalIdCardOther = legalIdCardOther;
-    }
-
-    public String getCertificateOfAuthorization() {
-        return certificateOfAuthorization;
-    }
-
-    public void setCertificateOfAuthorization(String certificateOfAuthorization) {
-        this.certificateOfAuthorization = certificateOfAuthorization;
-    }
-
-    public String getOperatorIdCardFront() {
-        return operatorIdCardFront;
-    }
-
-    public void setOperatorIdCardFront(String operatorIdCardFront) {
-        this.operatorIdCardFront = operatorIdCardFront;
-    }
 }

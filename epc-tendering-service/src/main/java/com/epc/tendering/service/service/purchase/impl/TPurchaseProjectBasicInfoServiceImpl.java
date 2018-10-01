@@ -51,7 +51,6 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
         TPurchaseProjectBasicInfo pojo = new TPurchaseProjectBasicInfo();
         BeanUtils.copyProperties(handlePurchaseProjectBasicInfoSub, pojo);
-        pojo.setCreateAt(new Date());
         //操作人ID
         Long operateId = handlePurchaseProjectBasicInfoSub.getOperateId();
         //操作人姓名
@@ -62,22 +61,25 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         Long auditorId = handlePurchaseProjectBasicInfoSub.getAuditorId();
         //采购人项目ID
         Long purchaseProjectId = handlePurchaseProjectBasicInfoSub.getPurchaseProjectId();
+        //是否全权委托代理机构
+        Integer isOtherAgency = handlePurchaseProjectBasicInfoSub.getIsOtherAgency();
         //采购项目参与者集合
         List<HandleParticipantBasicInfo> basicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
         //不全权委托招标代理机构
-        if (Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY == handlePurchaseProjectBasicInfoSub.getIsOtherAgency()) {
+        if (Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY == isOtherAgency) {
             try {
                 if (pojo.getId() == null) {
                     pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                     pojo.setPurchaseProjectStatus(PurchaseProjectStatusEnum.CREATED.getCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
-                    addUserRole(basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
+                    //指定采购项目参与者 经办人 审核人 批复人 负责人
+                    addUserRole(isOtherAgency,basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
                 } else if (pojo.getId() != null &&
                         tPurchaseProjectBasicInfoMapper.getPurchaseProjectStatusById(pojo.getId())
                                 .equals(PurchaseProjectStatusEnum.CREATED.getCode())) {
-                    //修改|刪除采购项目
-                    deleteAndUpdatePurchaseProject(pojo, operateId, creator, agentId, auditorId, purchaseProjectId, basicInfoList);
+                    //修改|刪除采购项目 isDeleted 前端控制，修改删除
+                    deleteAndUpdatePurchaseProject(isOtherAgency,pojo, operateId, creator, agentId, auditorId, purchaseProjectId, basicInfoList);
                 }
                 return Result.success();
             } catch (BusinessException e) {
@@ -98,14 +100,14 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
                     //指定批复人
-                    addUserRole(ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
+                    addUserRole(isOtherAgency,ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
                     //指定负责人
-                    addUserRole(ParticipantPermissionEnum.PERSON_LIABLE.getCode(), basicInfoList, operateId, creator, purchaserAgencyId, purchaseProjectId);
+                    addUserRole(isOtherAgency,ParticipantPermissionEnum.PERSON_LIABLE.getCode(), basicInfoList, operateId, creator, purchaserAgencyId, purchaseProjectId);
                 } else if (pojo.getId() != null &&
                         tPurchaseProjectBasicInfoMapper.getPurchaseProjectStatusById(pojo.getId())
                                 .equals(PurchaseProjectStatusEnum.CREATED.getCode())) {
                     //修改|刪除采购项目
-                    deleteAndUpdatePurchaseProject(pojo, operateId, creator, agentId, auditorId, purchaseProjectId, basicInfoList);
+                    deleteAndUpdatePurchaseProject(isOtherAgency,pojo, operateId, creator, agentId, auditorId, purchaseProjectId, basicInfoList);
                 }
                 return Result.success();
             } catch (BusinessException e) {
@@ -118,7 +120,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     }
 
     /**
-     * 修改|刪除采购项目
+     * 修改|刪除采购项目  采购项目参与者
      *
      * @param pojo
      * @param operateId
@@ -128,20 +130,21 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
      * @param purchaseProjectId
      * @param basicInfoList
      */
-    private void deleteAndUpdatePurchaseProject(TPurchaseProjectBasicInfo pojo, Long operateId, String creator, Long agentId, Long auditorId, Long purchaseProjectId, List<HandleParticipantBasicInfo> basicInfoList) {
+    private void  deleteAndUpdatePurchaseProject(Integer isOtherAgency,TPurchaseProjectBasicInfo pojo, Long operateId, String creator, Long agentId, Long auditorId, Long purchaseProjectId, List<HandleParticipantBasicInfo> basicInfoList) {
         tPurchaseProjectBasicInfoMapper.updateByPrimaryKeySelective(pojo);
         final TPurchaseProjectParticipantCriteria criteria = new TPurchaseProjectParticipantCriteria();
         criteria.createCriteria().andPurchaseProjectIdEqualTo(pojo.getId());
         List<TPurchaseProjectParticipant> tpppList = tPurchaseProjectParticipantMapper.selectByExample(criteria);
         deleteParticipantAndPermission(operateId, creator, tpppList);
         if (pojo.getIsDeleted() != Const.IS_DELETED.IS_DELETED) {
-            addUserRole(basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
+            addUserRole(isOtherAgency,basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
         }
     }
 
     /**
      * 指定采购项目参与者 经办人 审核人 批复人 负责人
      *
+     * @param isOtherAgency  是否全权委托
      * @param basicInfoList
      * @param operateId
      * @param creator
@@ -149,15 +152,15 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
      * @param auditorId
      * @param purchaseProjectId
      */
-    private void addUserRole(List<HandleParticipantBasicInfo> basicInfoList, Long operateId, String creator, Long agentId, Long auditorId, Long purchaseProjectId) {
+    private void addUserRole(Integer isOtherAgency,List<HandleParticipantBasicInfo> basicInfoList, Long operateId, String creator, Long agentId, Long auditorId, Long purchaseProjectId) {
         //指定经办人
-        addUserRole(ParticipantPermissionEnum.AGENT.getCode(), basicInfoList, operateId, creator, agentId, purchaseProjectId);
+        addUserRole(isOtherAgency,ParticipantPermissionEnum.AGENT.getCode(), basicInfoList, operateId, creator, agentId, purchaseProjectId);
         //指定审核人
-        addUserRole(ParticipantPermissionEnum.AUDITOR.getCode(), basicInfoList, operateId, creator, auditorId, purchaseProjectId);
+        addUserRole(isOtherAgency,ParticipantPermissionEnum.AUDITOR.getCode(), basicInfoList, operateId, creator, auditorId, purchaseProjectId);
         //指定批复人
-        addUserRole(ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
+        addUserRole(isOtherAgency,ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
         //指定负责人
-        addUserRole(ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
+        addUserRole(isOtherAgency,ParticipantPermissionEnum.PERSON_LIABLE.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
     }
 
     /**
@@ -198,7 +201,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
      * @param userId            当前角色ID
      * @param purchaseProjectId 采购项目ID
      */
-    private void addUserRole(String type, List<HandleParticipantBasicInfo> basicInfoList, Long operateId, String creator, Long userId, Long purchaseProjectId) {
+    private void addUserRole(Integer isOtherAgency,String type, List<HandleParticipantBasicInfo> basicInfoList, Long operateId, String creator, Long userId, Long purchaseProjectId) {
         TPurchaseProjectParticipant tppp = new TPurchaseProjectParticipant();
         tppp.setPurchaseProjectId(purchaseProjectId);
         tppp.setUserId(userId);
@@ -207,6 +210,13 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         tppp.setCreateAt(new Date());
         tppp.setUpdateAt(new Date());
         tppp.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        if(isOtherAgency.equals(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY)) {
+            //采购人类型
+            tppp.setParticipantType(4);
+        }else {
+            //招标代理机构类型
+            tppp.setParticipantType(2);
+        }
         for (HandleParticipantBasicInfo item : basicInfoList) {
             if (item.getType().equals(type)) {
                 BeanUtils.copyProperties(item, tppp);
@@ -222,6 +232,16 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         tpppp.setCreateAt(new Date());
         tpppp.setUpdateAt(new Date());
         tpppp.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        if(isOtherAgency.equals(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY)) {
+            //采购人类型
+            tpppp.setParticipantType(4);
+        }else {
+            //招标代理机构类型
+            tpppp.setParticipantType(2);
+        }
+        //0:暂未到达此步 1待办 2已完成 -1 打回到此步
+        tpppp.setActionState(0);
+        tpppp.setPurchaseProjectId(purchaseProjectId);
         //分配权限
         tPurchaseProjectParticipantPermissionMapper.insertSelective(tpppp);
     }

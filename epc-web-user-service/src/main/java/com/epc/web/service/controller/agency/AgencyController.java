@@ -1,20 +1,20 @@
 package com.epc.web.service.controller.agency;
 
 import com.epc.common.Result;
+import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
 import com.epc.web.facade.agency.dto.AgencyExpertDto;
-import com.epc.web.facade.agency.dto.AgencySubjectDto;
 import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
+import com.epc.web.facade.loginuser.dto.RegisterDto;
 import com.epc.web.service.service.agency.AgencyService;
 import com.epc.web.facade.agency.FacadeAgencyService;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,34 +53,27 @@ public class AgencyController implements FacadeAgencyService {
     }
 
     @Override
-
     public Result<List<HandleAgency>>  queryAgencies(@RequestBody HandleAgency agency) {
 
         return agencyService.queryAgencies(agency);
     }
 
     @Override
-
     public Result modifypassword( @RequestBody HandleAgency agency) {
 
         return agencyService.modifypassword(agency);
     }
 
     @Override
-
     public Result completeInfo( @RequestBody HandleAgency agency) {
 
         return agencyService.completeInfo(agency);
     }
 
-    @Override
-    public Result proxySubjects(@RequestBody AgencySubjectDto subjectDto) {
-        return agencyService.proxySubjects( subjectDto);
-    }
 
     @Override
 
-    public Result queryEmployee( @RequestBody HandleEmployee employee) {
+    public Result queryEmployee( @RequestBody AgencyEmployeeDto employee) {
 
         return agencyService.queryEmployee(employee);
     }

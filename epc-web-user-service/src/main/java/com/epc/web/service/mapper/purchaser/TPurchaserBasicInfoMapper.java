@@ -68,5 +68,10 @@ public interface TPurchaserBasicInfoMapper {
 
     int updateExpertStateById(@Param("id") Long id, @Param("state") Integer state);
 
+    int updatePurchaserEmployeeRole(@Param("id")Long id, @Param("role")Integer role);
 
+    int updatePurchaserEmployeeDetail(TPurchaserBasicInfo info);
+
+
+    int enableOrDisablePurchaserEmployee(@Param("id")Long id, @Param("forbidden")Integer forbidden);
 }

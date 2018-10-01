@@ -104,4 +104,7 @@ public interface TPurchaserExpertMapper {
      * @mbggenerated Fri Sep 14 17:41:19 CST 2018
      */
     int updateByPrimaryKey(TPurchaserExpert record);
+
+
+    int deleteExpertById(@Param("id") Long id, @Param("del") Integer delete);
 }

@@ -1,8 +1,8 @@
 package com.epc.web.facade.agency;
 
 import com.epc.common.Result;
+import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
 import com.epc.web.facade.agency.dto.AgencyExpertDto;
-import com.epc.web.facade.agency.dto.AgencySubjectDto;
 import com.epc.web.facade.agency.dto.AgencySupplierDto;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
@@ -11,9 +11,9 @@ import com.epc.web.facade.agency.handle.HandleSupplier;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
+import com.epc.web.facade.loginuser.dto.RegisterDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -91,15 +91,7 @@ public interface FacadeAgencyService{
     @PostMapping(value = "completeInfo", consumes = "application/json; charset=UTF-8")
     public Result completeInfo( @RequestBody HandleAgency agency);
 
-    /**
-     *@author :winlin
-     *@Description :代理机构代理的所有项目
-     *@param: 需要项目名称,项目编号,采购人id
-     *@return: 序号,项目名称,项目编号,项目区域,招标信息条数,采购人,创建时间,项目状态
-     *@date:2018/9/18
-     */
-    @PostMapping(value = "proxySubjects", consumes = "application/json; charset=UTF-8")
-    public Result proxySubjects(@RequestBody AgencySubjectDto subjectDto);
+
 
     /**
      *@author :winlin
@@ -109,7 +101,7 @@ public interface FacadeAgencyService{
      *@date:2018/9/18
      */
     @PostMapping(value = "queryAgencyEmployee", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployee( @RequestBody HandleEmployee employee);
+    public Result queryEmployee( @RequestBody AgencyEmployeeDto employee);
 
     /**
      *@author :winlin

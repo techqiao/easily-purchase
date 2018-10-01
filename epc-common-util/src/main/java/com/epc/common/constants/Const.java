@@ -32,6 +32,18 @@ public class Const {
         int NOT_OK = 0;
     }
 
+    /**
+     *@author :winlin
+     *@Description : 启用或禁用
+     *@param:
+     *@return:
+     *@date:2018/9/29
+     */
+    public interface ENABLE_OR_DISABLE{
+        int ENABLE= 0;
+        int DISABLE=1;
+    }
+
     public interface STATE {
         int REGISTERED = 0;
         int PERFECTING = 1;
@@ -68,6 +80,8 @@ public class Const {
         int SUPPLIER=2;
         int PROXY=3;
         int PLATFORM=4;
+        int PLATFORM_ID =99999999;
+
     }
 
     public interface OPEN_STATUS {
@@ -103,5 +117,23 @@ public class Const {
         int PURCHASER=-1;
 
     }
+
+
+    public interface IS_IDLE_OR_NOT{
+        int IS_IDLE=1;
+        int NOT_IDLE=0;
+    }
+    /**
+     *@author :winlin
+     *@Description :
+     *@param:
+     *@return:
+     *@date:2018/10/1
+     */
+    public interface TRUST_OR_NOT{
+        String TRUST ="white_list";
+        String NOT_TRUST="black_list";
+    }
+
 
 }

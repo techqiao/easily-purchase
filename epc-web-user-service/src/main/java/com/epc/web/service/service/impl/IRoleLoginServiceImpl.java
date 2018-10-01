@@ -19,6 +19,7 @@ import com.epc.web.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.netflix.ribbon.proxy.annotation.Http;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     @Autowired
     TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Override
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public Result login(@RequestBody LoginUser user) {
         //用户类型
         Integer type = user.getType();

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>Date : 2018-09-14 20:55
  * <p>@Author : luozhixin
  */
-@Api(value = "系统用户",tags = {"系统用户服务"})
+@Api(value = "系统用户 @罗志鑫",tags = {"系统用户服务"})
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminUserController {

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  * <p>Date : 2018-09-15 11:03
  * <p>@Author : luozhixin
  */
-@Api(value = "系统后台登录",tags = {"系统后台登录"})
+@Api(value = "系统后台登录 @罗志鑫",tags = {"系统后台登录"})
 @RestController
 @RequestMapping(value = "/loginIn", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @SessionAttributes("session")

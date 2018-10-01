@@ -27,7 +27,7 @@ import java.util.List;
  * @author luozhixin
  * 评审专家服务
  */
-@Api(value = "评审专家服务",tags = {"评审专家服务"})
+@Api(value = "评审专家服务 @罗志鑫",tags = {"评审专家服务"})
 @RestController
 @RequestMapping(value = "/reviewexpert", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 class ReviewExpertController {

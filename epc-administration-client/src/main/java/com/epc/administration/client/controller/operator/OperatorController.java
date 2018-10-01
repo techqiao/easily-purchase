@@ -29,7 +29,7 @@ import java.util.List;
  * <p>Date : 2018-09-10  18:31
  * <p>@author : wjq
  */
-@Api(value = "运营商服务",tags = {"运营商服务"})
+@Api(value = "运营商服务 @罗志鑫",tags = {"运营商服务"})
 @RestController
 @RequestMapping(value = "/operator", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController {

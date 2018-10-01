@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>Date : 2018-09-15 10:21
  * <p>@Author : luozhixin
  */
-@Api(value = "系统资源",tags = {"系统资源服务"})
+@Api(value = "系统资源 @罗志鑫",tags = {"系统资源服务"})
 @RestController
 @RequestMapping(value = "/resource", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminResourceController {

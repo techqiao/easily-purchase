@@ -1,5 +1,6 @@
 package com.epc.administration.facade.supplier.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,16 +19,19 @@ public class AttachmentVO implements Serializable {
     /**
      * 附件url
      */
+    @ApiModelProperty("附件url")
     private String certificateFilePath;
 
 
     /**
      * 附件对应证书名称
      */
+    @ApiModelProperty("附件对应证书名称")
     private String certificateName;
 
     /**
      * 附件类型
      */
+    @ApiModelProperty("附件类型")
     private  String certificateType;
 }

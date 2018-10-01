@@ -1,6 +1,5 @@
 package com.epc.web.facade.terdering.announcement.handle;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -35,6 +34,15 @@ public class HandleAnnouncementStatus implements Serializable {
      * 操作人ID
      */
     private Long operateId;
+    /**
+     * 采购项目ID
+     */
+    private Long purchaseProjectId;
+    /**
+     * 是否全权委托代理机构
+     */
+    private Long isOtherAgency;
+
 
 
 }

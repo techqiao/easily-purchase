@@ -91,4 +91,17 @@ public class Const {
 
     }
 
+
+    public interface ACTION_STATE{
+        //暂未到达此步
+        int NOT_ARRIVING=0;
+        //待办
+        int NEED_DEAL=1;
+        //完成
+        int COMPLETE=2;
+        //打回到此步
+        int PURCHASER=-1;
+
+    }
+
 }

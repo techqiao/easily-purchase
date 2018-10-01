@@ -9,8 +9,12 @@ import com.epc.tendering.service.domain.announcement.BReleaseAnnouncement;
 import com.epc.tendering.service.domain.announcement.BReleaseAnnouncementCriteria;
 import com.epc.tendering.service.domain.bid.TWinBidNominate;
 import com.epc.tendering.service.domain.bid.TWinBidNominateCriteria;
+import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantCriteria;
+import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission;
+import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria;
 import com.epc.tendering.service.mapper.announcement.BReleaseAnnouncementMapper;
 import com.epc.tendering.service.mapper.bid.TWinBidNominateMapper;
+import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.tendering.service.service.announcement.AnnouncementService;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
@@ -38,6 +42,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
     @Autowired
     private TWinBidNominateMapper tWinBidNominateMapper;
+    @Autowired
+    private TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
     @Override
     public Result<Boolean> insertAnnouncement(HandleAnnouncement handleAnnouncement) {
         BReleaseAnnouncement bReleaseAnnouncement = new BReleaseAnnouncement();
@@ -60,15 +66,46 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         BReleaseAnnouncement bReleaseAnnouncement = new BReleaseAnnouncement();
         bReleaseAnnouncement.setId(handleAnnouncementStatus.getId());
         bReleaseAnnouncement.setUpdateAt(new Date());
+        //由待提交-->待审核
         if(AnnouncementProcessStatusEnum.NOT_SUBMIT.equals(handleAnnouncementStatus.getProcessStatus())){
             //待审核
             bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.AUDITING.getCode());
+            //将 审核 步骤的负责人流程状态更新为  待办
+            TPurchaseProjectParticipantPermission permission = new TPurchaseProjectParticipantPermission();
+            permission.setUserId(handleAnnouncementStatus.getOperateId());
+            permission.setPurchaseProjectId(handleAnnouncementStatus.getPurchaseProjectId());
+            permission.setActionState(Const.ACTION_STATE.NEED_DEAL);
+            permission.setParticipantPermission(AnnouncementProcessStatusEnum.AUDITING.getCode());
+            if(handleAnnouncementStatus.getIsOtherAgency().equals(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY)){
+                permission.setParticipantType(Const.LOGIN_USER_TYPE.PURCHASER);
+            }else{
+                permission.setParticipantType(Const.LOGIN_USER_TYPE.PROXY);
+            }
+            tPurchaseProjectParticipantPermissionMapper.updateActionState(permission);
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
+        //由待审核-->待批复
         if(AnnouncementProcessStatusEnum.AUDITING.getCode().equals(handleAnnouncementStatus.getProcessStatus())){
             //待批复
             bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.REPLY.getCode());
             bReleaseAnnouncement.setAuditorId(handleAnnouncementStatus.getOperateId());
+            //将 审核 步骤的负责人流程状态更新为 待办
+            TPurchaseProjectParticipantPermission permission = new TPurchaseProjectParticipantPermission();
+            permission.setUserId(handleAnnouncementStatus.getOperateId());
+            permission.setPurchaseProjectId(handleAnnouncementStatus.getPurchaseProjectId());
+            if(handleAnnouncementStatus.getIsOtherAgency().equals(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY)){
+                permission.setParticipantType(Const.LOGIN_USER_TYPE.PURCHASER);
+            }else{
+                permission.setParticipantType(Const.LOGIN_USER_TYPE.PROXY);
+            }
+            //将 批复 步骤的负责人流程状态更新为 待办
+            permission.setActionState(Const.ACTION_STATE.NEED_DEAL);
+            permission.setParticipantPermission(AnnouncementProcessStatusEnum.REPLY.getCode());
+            tPurchaseProjectParticipantPermissionMapper.updateActionState(permission);
+            //将 审核 步骤的负责人流程状态更新为 完成
+            permission.setActionState(Const.ACTION_STATE.COMPLETE);
+            permission.setParticipantPermission(AnnouncementProcessStatusEnum.AUDITING.getCode());
+            tPurchaseProjectParticipantPermissionMapper.updateActionState(permission);
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
         if(AnnouncementProcessStatusEnum.REPLY.getCode().equals(handleAnnouncementStatus.getProcessStatus())) {

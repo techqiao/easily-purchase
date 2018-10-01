@@ -1,5 +1,6 @@
 package com.epc.administration.facade.biddingagency.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class AgencyUserAttachmentVO extends BiddingAgencyVO implements Serializa
 
     private static final long serialVersionUID = 6869267792661617405L;
 
+    @ApiModelProperty("附件集合")
     private List<AgencyAttachmentVO> agencyAttachmentVOS;
 
 }

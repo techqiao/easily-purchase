@@ -23,7 +23,7 @@ public class ClientHandleSupplierForgetPassword {
     private String cellphone;
 
     @ApiModelProperty(value = "输入的是新的密码")
-    @NotEmpty(message = "ClientHandleSupplierForgetPassword.cellphone.null")
+    @NotEmpty(message = "ClientHandleSupplierForgetPassword.password.null")
     private String password;
 
     @ApiModelProperty(value = "输入的是发送的的手机验证码")

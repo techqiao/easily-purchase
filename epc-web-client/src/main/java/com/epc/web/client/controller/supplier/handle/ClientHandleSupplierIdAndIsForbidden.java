@@ -5,16 +5,17 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
-@ApiModel(value = "ClientHandleSupplierEmployeeByisDeleted",description = "是否禁用")
+@ApiModel(value = "ClientHandleSupplierIdAndIsForbidden",description = "是否禁用")
 @Data
-public class ClientHandleSupplierEmployeeByisDeleted {
+public class ClientHandleSupplierIdAndIsForbidden {
 
     @ApiModelProperty(value = "员工id")
-    @NotEmpty(message = "ClientHandleSupplierEmployeeByisDeleted.id.null")
+    @NotEmpty(message = "ClientHandleSupplierIdAndIsForbidden.id.null")
     private Long id;
 
+
     @ApiModelProperty(value = "是否禁用")
-    @NotEmpty(message = "ClientHandleSupplierEmployeeByisDeleted.isDeleted.null")
-    private Integer isDeleted;
+    @NotEmpty(message = "ClientHandleSupplierIdAndIsForbidden.isForbidden.null")
+    private Integer isForbidden;
 
 }

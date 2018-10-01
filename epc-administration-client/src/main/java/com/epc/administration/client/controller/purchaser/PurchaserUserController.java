@@ -1,6 +1,7 @@
 package com.epc.administration.client.controller.purchaser;
 
 
+import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.controller.purchaser.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.purchaser.handle.ClientExaminePurchaserHandle;
 import com.epc.administration.client.controller.purchaser.handle.ClientPurchaserForbiddenHandle;
@@ -29,10 +30,10 @@ import java.util.List;
  * @author luozhixin
  * 采购人接口
  */
-@Api(value = "采购人服务",tags = {"采购人服务"})
+@Api(value = "采购人服务 @罗志鑫",tags = {"采购人服务"})
 @RestController
 @RequestMapping(value = "/purchaseruser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PurchaserUserController {
+public class PurchaserUserController extends BaseController {
     @Autowired
     private PurchaserClient purchaserClient;
     @ApiOperation(value = "添加采购人",notes = "添加采购人")
@@ -40,6 +41,7 @@ public class PurchaserUserController {
     public Result<Boolean> createPurchaserUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
+        userBasicInfo.setId(getLoginUser().getId());
         return purchaserClient.createPurchaserUserInfo(userBasicInfo);
     }
     @ApiOperation(value = "采购人完善资料",notes = "采购人完善资料")

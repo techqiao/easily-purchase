@@ -29,21 +29,21 @@ public class RoleDetailInfo {
     //角色
     private String systemRole;
 
-    //员工（供应商id）
+    //员工（供应商id）0
     private Long supplierId;
 
     //法人姓名
     private String name;
 
-    //公司名字
+    //公司名字 0
     private String companyName;
 
-    //信用号码
+    //信用号码 0
     private String uniformCreditCode;
 
-    //对公银行名称
+    //对公银行名称 0
     private String publicBankName;
-    //对公银行号码
+    //对公银行号码 0
     private String publicBanAccountNumber;
 
     //资质证书url

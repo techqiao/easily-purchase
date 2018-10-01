@@ -1,5 +1,6 @@
 package com.epc.administration.client.controller.operator;
 
+import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.controller.operator.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.operator.handle.ClientExamineOperatorHandle;
 import com.epc.administration.client.controller.operator.handle.ClientOperatorDetailInfo;
@@ -29,10 +30,10 @@ import java.util.List;
  * <p>Date : 2018-09-10  18:31
  * <p>@author : wjq
  */
-@Api(value = "运营商服务",tags = {"运营商服务"})
+@Api(value = "运营商服务 @罗志鑫",tags = {"运营商服务"})
 @RestController
 @RequestMapping(value = "/operator", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class OperatorController {
+public class OperatorController extends BaseController {
     @Autowired
     private OperatorClient operatorClient;
 
@@ -41,6 +42,7 @@ public class OperatorController {
     public Result<Boolean> insertOperatorBasicInfo(@RequestBody ClientUserBasicInfo clientUserBasicInfo) {
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo, pojo);
+        pojo.setId(getLoginUser().getId());
         return operatorClient.insertOperatorBasicInfo(pojo);
     }
 

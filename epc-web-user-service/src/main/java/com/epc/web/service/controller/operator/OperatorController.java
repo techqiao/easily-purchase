@@ -4,10 +4,12 @@ package com.epc.web.service.controller.operator;
 import com.epc.common.Result;
 import com.epc.web.facade.operator.FacadeOperatorService;
 import com.epc.web.facade.operator.handle.*;
+import com.epc.web.facade.operator.query.HandleOperatorCellphone;
+import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
+import com.epc.web.facade.operator.query.HandleOperatorId;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
-import com.epc.web.facade.purchaser.handle.PurchaserHandleSupplierDto;
+import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 import com.epc.web.service.service.operator.OperatorService;
-import com.epc.web.service.service.purchaser.PurchaserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,141 +27,160 @@ public class OperatorController implements FacadeOperatorService {
     @Autowired
     private OperatorService operatorService;
 
-    /**
-     * 运营商注册(没有通过任何人拉取的，自己找到平台来注册的)
-     * @author donghuan
+
+    /**0
+     *  运营商注册(没有通过任何人拉取的，自己找到平台来注册的)
      */
     @Override
-    public Result<Boolean> registerOperator(@RequestBody  HandleOperator handleOperator) {
+    public Result<Boolean> registerOperator(@RequestBody HandleOperator handleOperator){
         return operatorService.registerOperator(handleOperator);
     }
 
-    /**
-     * 运营商注册,(有人拉的，手机与名字都有,只需要设置密码就可以登陆)
-     * @author donghuan
+    /**1
+     *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
+     *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
+     *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
+     *           )
      */
     @Override
-    public Result<Boolean> addPasswordOperator(@RequestBody  HandleOperator handleOperator) {
+    public Result<Boolean> addPasswordOperator(@RequestBody HandleOperator handleOperator){
         return operatorService.addPasswordOperator(handleOperator);
     }
 
-    /**
-     * 查询运营商用户信息
-     * @author donghuan
+    /**2
+     * 完善运营商信息
      */
     @Override
-    public  Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperatorId handleOperatorId) {
-        return operatorService.findByName(handleOperatorId);
+    public Result<Boolean> insertCompleteOperatorInfo(@RequestBody RoleDetailInfo roleDetailInfo){
+        return operatorService.insertCompleteOperatorInfo(roleDetailInfo);
     }
 
-    /**
-     * 忘记密码
-     * @author donghuan
-     */
-    @Override
-    public Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword) {
-        return operatorService.forgetPassword(handleOperatorForgetPassword);
-    }
 
-    /**
-     * 运营商新增自己的员工
-     * @author donghuan
+    //--------------------------平台审核通过之后----------------------------------
+
+
+    /**3
+     * 运营商增加一个员工
      */
     @Override
-    public Result<Boolean> createOperatorEmployee(@RequestBody HandleOperatorAddEmployee handleOperatorAddEmployee) {
+    public Result<Boolean> createOperatorEmployee(@RequestBody HandleOperatorAddEmployee handleOperatorAddEmployee){
         return operatorService.createOperatorEmployee(handleOperatorAddEmployee);
     }
 
-    /**
-     * 依据id来删除一个员工
+    /**4
+     * 依据id查询已经登陆的个人信息
      */
     @Override
-    public Result<Boolean> deleteOperatorEmployeeById(@RequestBody HandleOperatorId handleOperatorId){
-        return operatorService.deleteOperatorEmployeeById(handleOperatorId);
+    public Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperatorId handleOperatorId){
+        return operatorService.findByName(handleOperatorId);
     }
 
-    /**
-     *  通过id来改变员工的状态,是否禁用
-     * @author donghuan
+    /**5
+     * 通过员工id来修改员工信息
      */
     @Override
-    public Result<Boolean> updateOperatorEmployeeByisDeleted(@RequestBody HandleOperatorId handleOperatorId){
-        return operatorService.updateOperatorEmployeeByisDeleted(handleOperatorId);
+    public Result<Boolean> updateOperatorEmployeeById(@RequestBody HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById){
+        return operatorService.updateOperatorEmployeeById(handleOperatorUpdateEmployeeById);
     }
 
-    /**
-     * 通过id来修改对应的state  0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
-     * @author donghuan
+    /**6
+     * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
      */
-    @Override
-    public Result<Boolean> updateOperatorEmployeeStateById(@RequestBody HandleOperatorState handleOperatorState){
-        return operatorService.updateOperatorEmployeeStateById(handleOperatorState);
-    }
 
-    /**
-     * 根据用户id来修改他的role 用户角色:0-法人,1-管理员,2-普通员工'
-     * @author donghuan
-     */
-    @Override
-    public Result<Boolean> updateOperatorEmployeeRoleById(@RequestBody HandleOperatorRole handleOperatorRole) {
-        return operatorService.updateOperatorEmployeeRoleById(handleOperatorRole);
-    }
-
-    /**
-     * 依据电话来删除一个员工
-     *  @author donghuan
-     */
-    @Override
-    public Result<Boolean> deleteOperatorEmployeeByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone){
-        return operatorService.deleteOperatorEmployeeByCellphone(handleOperatorCellphone);
-    }
-
-    /**
+    /**7
      * 根据电话来查找一条记录,返回一个真假值
-     * @author donghuan
      */
     @Override
     public Result<Boolean> findOperatorRecordByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone){
         return operatorService.findOperatorRecordByCellphone(handleOperatorCellphone);
     }
 
-
-    /**
-     *  根据员工的id来更新该员工的个人信息
-     *  @author donghuan
+    /**8
+     * 依据电话来删除一个员工,只是改变is_deleted 为1
      */
     @Override
-    public Result<Boolean> updateOperatorEmployeeById(@RequestBody HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById) {
-        return operatorService.updateOperatorEmployeeById(handleOperatorUpdateEmployeeById);
+    public Result<Boolean> deleteOperatorEmployeeByCellphone(@RequestBody HandleOperatorCellphone handleOperatorCellphone){
+        return operatorService.deleteOperatorEmployeeByCellphone(handleOperatorCellphone);
     }
 
-    /**
-     *  依据供应商输入的员工姓名来模糊匹配
-     *  @author donghuan
+    /**9
+     * 通过员工id 只 修改员工 是否禁用
+     */
+
+    /**10
+     * 依据id来删除一个员工,只是改变is_deleted 为1
      */
     @Override
-    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(@RequestBody HandleOperatorFindAllByName handleOperatorFindAllByName) {
+    public Result<Boolean> deleteOperatorEmployeeById(@RequestBody HandleOperatorIdAndIsDeleted handleOperatorIdAndIsDeleted){
+        return operatorService.deleteOperatorEmployeeById(handleOperatorIdAndIsDeleted);
+    }
+
+    /**11
+     * 根据用户id来修改他的role 用户角色:0-法人,1-管理员,2-普通员工'
+     */
+    @Override
+    public Result<Boolean> updateOperatorEmployeeRoleById(@RequestBody HandleOperatorRole handleOperatorRole){
+        return operatorService.updateOperatorEmployeeRoleById(handleOperatorRole);
+    }
+
+    /**12
+     *  通过id来改变员工是否禁用
+     */
+    @Override
+    public Result<Boolean> updateOperatorEmployeeByisDeleted(@RequestBody HandleOperatorIdAndIsForbidden handleOperatorIdAndIsForbidden){
+        return operatorService.updateOperatorEmployeeByisDeleted(handleOperatorIdAndIsForbidden);
+    }
+
+    /**13
+     * 运营商忘记密码
+     */
+    @Override
+    public Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword){
+        return operatorService.forgetPassword(handleOperatorForgetPassword);
+    }
+
+    /**14
+     * 根据员工的名字,角色，是否禁用
+     *     来匹配出符合条件的员工返回一个list：
+     */
+    @Override
+    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(@RequestBody HandleOperatorFindAllByName handleOperatorFindAllByName){
         return operatorService.queryOperatorEmployeeAll(handleOperatorFindAllByName);
     }
 
-
-
-    /**
-     *  运营商新增供应商
-     * @author donghuan
+    /**15
+     *  运营商新增采购人（包括完善信息）
      */
     @Override
-    public Result<Boolean> createSupplierByOperator(@RequestBody HandleCreateSupplerByOperator handleCreateSupplerByOperator) {
-        return operatorService.createSupplierByOperator(handleCreateSupplerByOperator);
-    }
-
-    /**
-     * @Description:    运营商新增采购人
-     */
-
-    @Override
-    public Result<Boolean> createPurchaseByOperator(@RequestBody HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
+    public Result<Boolean> createPurchaseByOperator(@RequestBody HandleCreatePurchaserByOperator handleCreatePurchaserByOperator){
         return operatorService.createPurchaseByOperator(handleCreatePurchaserByOperator);
     }
+
+    /**16
+     *  运营商新增采购人（不包括完善信息，只填写姓名，电话）
+     */
+    @Override
+    public Result<Boolean> createPurchaseByOperatorSimple(@RequestBody HandleOperatorCreateSupplier handleOperatorCreateSupplier){
+        return operatorService.createPurchaseByOperatorSimple(handleOperatorCreateSupplier);
+    }
+
+
+    /**17
+     *  运营商新增供应商  (不包括完善信息,只填 姓名、电话)
+     */
+    @Override
+    public Result<Boolean> operatorCreateSupplierSimple(@RequestBody HandleOperatorCreateSupplier handleOperatorCreateSupplier){
+        return operatorService.operatorCreateSupplierSimple(handleOperatorCreateSupplier);
+    }
+
+
+    /**18
+     *  运营商新增供应商（包括完善信息）
+     */
+    @Override
+    public Result<Boolean> operatorCreateSupplier(@RequestBody HandleCreatePurchaserByOperator handleCreatePurchaserByOperator){
+        return operatorService.operatorCreateSupplier(handleCreatePurchaserByOperator);
+    }
+
 
 }

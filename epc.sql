@@ -466,6 +466,7 @@ CREATE TABLE `t_purchase_project_basic_info` (
 
 
 -- 招标流程: 采购项目参与者   表
+--  增加类型用户区分代理机构和采购人
 DROP TABLE IF EXISTS `t_purchase_project_participant`;
 CREATE TABLE `t_purchase_project_participant` (
 	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
@@ -475,6 +476,7 @@ CREATE TABLE `t_purchase_project_participant` (
 	`user_phone` varchar(32) NOT NULL COMMENT '参与者电话',
 	`user_agency_id` BIGINT(11) NOT NULL COMMENT '参与者机构ID',
 	`agency_name` varchar(32) NOT NULL COMMENT '参与者机构名称',
+	`participant_type` int(1) NOT NULL COMMENT '参与者类型 招标代理机构2 采购人4',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -490,6 +492,11 @@ DROP TABLE IF EXISTS `t_purchase_project_participant_permission`;
 CREATE TABLE `t_purchase_project_participant_permission` (
 	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
 	`participant_id` BIGINT(11) NOT NULL COMMENT '采购项目参与者ID',
+	`user_id` BIGINT(11) NOT NULL COMMENT '参与者ID',
+	`participant_type` int(1) NOT NULL COMMENT '参与者类型 招标代理机构2 采购人4',
+	`action_state` int(1) DEFAULT '0' NOT NULL COMMENT '0:暂未到达此步 1待办 2已完成 -1 打回到此步',
+	`step_type` VARCHAR(64) NOT NULL COMMENT '流程步骤类型 用来区分是具体哪个流程步骤 发布公告 发布招标文件',
+	`purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
 	`participant_permission` VARCHAR(32) NOT NULL COMMENT '项目参与者权限 批复reply 经办agent 审核auditor 负责人person_liable' ,
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',

@@ -1,5 +1,7 @@
 package com.epc.web.facade.terdering.bid.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,47 +11,28 @@ import java.math.BigDecimal;
  * <p>Date : 2018-09-25 13:43
  * <p>@Author : wjq
  */
+@ApiModel(value = "保证金详情")
 @Data
 public class BidsGuaranteeAmountVO {
-    /**
-     * ID
-     */
+    @ApiModelProperty(value = "ID")
     private Long id;
-    /**
-     * 采购项目ID
-     */
+    @ApiModelProperty(value = "采购项目ID")
     private Long procurementProjectId;
-    /**
-     * 发售招标文件表主键ID
-     */
+    @ApiModelProperty(value = "发售招标文件表主键ID")
     private Long bIssueDocumentsId;
-    /**
-     * 投标保证金
-     */
+    @ApiModelProperty(value = "投标保证金")
     private BigDecimal tenderGuaranteeAmount;
-    /**
-     * 标段名称
-     */
+    @ApiModelProperty(value = "标段名称")
     private String bidsName;
-    /**
-     * 标段编号
-     */
+    @ApiModelProperty(value = "标段编号")
     private String bidsCode;
-    /**
-     * 标段ID
-     */
+    @ApiModelProperty(value = "标段ID")
     private Long bidsId;
-    /**
-     * 收款单位
-     */
+    @ApiModelProperty(value = "收款单位")
     private String receivables;
-    /**
-     * 开户行帐号
-     */
+    @ApiModelProperty(value = "开户行帐号")
     private String bankAccount;
-    /**
-     * 操作人ID
-     */
+    @ApiModelProperty(value = "操作人ID")
     private Long operateId;
 
 }

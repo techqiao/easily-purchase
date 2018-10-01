@@ -30,4 +30,6 @@ public interface TPurchaseProjectParticipantPermissionMapper {
     int updateByPrimaryKeySelective(TPurchaseProjectParticipantPermission record);
 
     int updateByPrimaryKey(TPurchaseProjectParticipantPermission record);
+
+    int updateActionState(TPurchaseProjectParticipantPermission record);
 }

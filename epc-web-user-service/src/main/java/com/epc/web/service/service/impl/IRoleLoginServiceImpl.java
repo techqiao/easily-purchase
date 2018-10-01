@@ -97,6 +97,14 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                     return Result.success( loginUser3);
                 }
                 break;
+            case IRoleLoginService.EXPERT:
+                LoginUser loginUser4 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
+                if (loginUser4 != null) {
+                    loginUser4.setType(type);
+                    //this.cacheInredis(request,response,loginUser3);
+                    return Result.success( loginUser4);
+                }
+                break;
             default:
                 return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(),"登录失败");
         }

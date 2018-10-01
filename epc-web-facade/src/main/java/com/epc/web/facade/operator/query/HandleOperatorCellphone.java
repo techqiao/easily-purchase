@@ -1,4 +1,4 @@
-package com.epc.web.facade.operator.handle;
+package com.epc.web.facade.operator.query;
 
 import lombok.Data;
 
@@ -12,5 +12,10 @@ public class HandleOperatorCellphone implements Serializable {
      * 电话
      */
     private String cellphone;
+
+    /**
+     * 是否删除
+     */
+    private Integer isDeleted;
 
 }

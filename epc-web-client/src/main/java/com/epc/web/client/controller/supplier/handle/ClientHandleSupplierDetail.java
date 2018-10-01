@@ -16,8 +16,6 @@ import java.io.Serializable;
 @ApiModel(value = "ClientHandleSupplierDetail", description = "供应商信息")
 public class ClientHandleSupplierDetail {
 
-    @ApiModelProperty(value = "用户id")
-    private Long userId;
 
     @ApiModelProperty(value = "姓名")
     private String name;
@@ -27,7 +25,6 @@ public class ClientHandleSupplierDetail {
     private String cellphone;
 
     @ApiModelProperty(value = "密码")
-    @NotEmpty(message = "ClientHandleSupplierDetail.password.null")
     private String password;
 
 

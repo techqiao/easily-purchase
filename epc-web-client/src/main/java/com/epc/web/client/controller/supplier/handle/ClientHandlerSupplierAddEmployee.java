@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -41,14 +42,6 @@ public class ClientHandlerSupplierAddEmployee{
     @NotEmpty(message = "ClientHandlerSupplierAddEmployee.password.null")
     private String password;
 
-    @ApiModelProperty(value = "是否存在")
-    private Integer isDeleted;
-
-    @ApiModelProperty(value = "创建的时间")
-    private Date createAt;
-
-    @ApiModelProperty(value = "修改的时间")
-    private Date updateAt;
 
 
 }

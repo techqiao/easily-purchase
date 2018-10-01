@@ -30,7 +30,7 @@ import java.util.List;
  * @author luozhixin
  * 供应商接口
  */
-@Api(value = "供应商服务",tags = {"供应商服务"})
+@Api(value = "供应商服务 @罗志鑫",tags = {"供应商服务"})
 @RestController
 @RequestMapping(value = "/supplieruser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SupplierUserController extends BaseController {
@@ -41,6 +41,7 @@ public class SupplierUserController extends BaseController {
     public Result<Boolean> createSupplierUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo userBasicInfo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,userBasicInfo);
+        userBasicInfo.setUsername(getLoginUser().getName());
         return supplierClient.createSupplierUserInfo(userBasicInfo);
     }
     @ApiOperation(value = "供应商完善资料",notes = "供应商完善资料")

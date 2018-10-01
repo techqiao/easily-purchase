@@ -1,4 +1,4 @@
-package com.epc.web.client.controller.operator.handle;
+package com.epc.web.client.controller.operator.query;
 
 
 import io.swagger.annotations.ApiModel;
@@ -13,6 +13,10 @@ public class ClientHandleOperatorCellphone {
     @ApiModelProperty(value = "运营商员工电话")
     @NotEmpty(message = "ClientHandleOperatorCellphone.cellphone.null")
     private String cellphone;
+
+    @ApiModelProperty(value = "是否删除")
+    @NotEmpty(message = "ClientHandleOperatorCellphone.isDeleted.null")
+    private Integer isDeleted;
 
 }
 

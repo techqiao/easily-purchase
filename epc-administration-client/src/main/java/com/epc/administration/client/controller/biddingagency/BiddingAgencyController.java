@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  * @author luozhixin
  * @date 2018-9-19 19:26:15
  */
-@Api(value = "招标代理机构服务",tags = {"招标代理机构服务"})
+@Api(value = "招标代理机构服务 @罗志鑫",tags = {"招标代理机构服务"})
 @RestController
 @RequestMapping(value = "/biddingagency", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BiddingAgencyController {

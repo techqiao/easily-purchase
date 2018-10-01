@@ -29,7 +29,7 @@ import java.util.List;
  * @author luozhixin
  * 采购人接口
  */
-@Api(value = "采购人服务",tags = {"采购人服务"})
+@Api(value = "采购人服务 @罗志鑫",tags = {"采购人服务"})
 @RestController
 @RequestMapping(value = "/purchaseruser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PurchaserUserController {

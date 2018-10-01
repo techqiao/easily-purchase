@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>Date : 2018-09-15 09:53
  * <p>@Author : luozhixin
  */
-@Api(value = "系统角色",tags = {"系统角色服务"})
+@Api(value = "系统角色 @罗志鑫",tags = {"系统角色服务"})
 @RestController
 @RequestMapping(value = "/role", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminRoleController {

@@ -69,14 +69,14 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
         HttpServletResponse response = ((ServletRequestAttributes)requestAttributes).getResponse();
         switch (type) {
-            case IRoleLoginService.OPERRATOR:
-                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
-                if (loginUser != null) {
-                    loginUser.setType(type);
-                    //this.cacheInredis(request,response,loginUser);
-                    return Result.success( loginUser);
-                }
-                break;
+//            case IRoleLoginService.OPERRATOR:
+//                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
+//                if (loginUser != null) {
+//                    loginUser.setType(type);
+//                    //this.cacheInredis(request,response,loginUser);
+//                    return Result.success( loginUser);
+//                }
+//                break;
             case IRoleLoginService.AGENCY:
                 LoginUser loginUser1 = tAgencyBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser1 != null) {

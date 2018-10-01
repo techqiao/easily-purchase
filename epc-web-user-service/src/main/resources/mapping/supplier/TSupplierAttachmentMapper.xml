@@ -365,4 +365,11 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectAttachmentBySupplierId"
+            resultType="com.epc.web.service.domain.supplier.TSupplierAttachment">
+      SELECT 
+      <include refid="Base_Column_List"/>
+      FROM  t_supplier_attachment
+      WHERE supplier_id = #{supplierId}
+    </select>
 </mapper>

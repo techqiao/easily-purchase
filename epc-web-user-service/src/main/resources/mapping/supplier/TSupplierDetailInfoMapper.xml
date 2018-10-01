@@ -367,4 +367,12 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectTSupplierDetailInfoBySupplierId"
+            resultType="com.epc.web.service.domain.supplier.TSupplierDetailInfo">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_supplier_detail_info
+      WHERE supplier_id = #{supplierId}
+    </select>
+
 </mapper>

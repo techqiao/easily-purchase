@@ -17,6 +17,7 @@
     <result column="inviter_company_id" property="inviterCompanyId" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="role" property="role" jdbcType="INTEGER" />
+    <result column="is_forbidden" property="isForbidden" jdbcType="INTEGER"/>
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -456,5 +457,26 @@
     AND basic.supplier_id=boss.supplier_id
     AND boss.role=0;
 
+    </select>
+    <select id="selectSupplierBasicByNameAndCell"
+            resultType="com.epc.web.service.domain.supplier.TSupplierBasicInfo">
+
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_supplier_basic_info
+      WHERE `name` = #{name}
+      AND cellphone =# {cellphone}
+    </select>
+    <select id="selectBasicInfo" resultType="com.epc.web.facade.agency.vo.AgencySupplierVo">
+        SELECT supplier_id AS supplierId ,company_name AS companyName ,create_at AS createAt
+        FROM t_supplier_detail_info
+        <where>
+          <if test="id!=null">
+            AND  supplier_id = #{id}
+          </if>
+          <if test="fuzzyName!=null">
+            AND companyName LIKE '%'#{fuzzyName}'%'
+          </if>
+        </where>
     </select>
 </mapper>

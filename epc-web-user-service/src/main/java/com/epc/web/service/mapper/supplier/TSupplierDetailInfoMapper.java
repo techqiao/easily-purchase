@@ -102,4 +102,9 @@ public interface TSupplierDetailInfoMapper {
      * @mbggenerated Sun Sep 23 10:58:04 CST 2018
      */
     int updateByPrimaryKey(TSupplierDetailInfo record);
+
+    TSupplierDetailInfo selectTSupplierDetailInfoBySupplierId(Long supplierId);
+
+
+
 }

@@ -102,4 +102,7 @@ public interface TSupplierAttachmentMapper {
      * @mbggenerated Sun Sep 23 10:59:21 CST 2018
      */
     int updateByPrimaryKey(TSupplierAttachment record);
+
+    List<TSupplierAttachment> selectAttachmentBySupplierId(Long supplierId);
+
 }

@@ -29,52 +29,19 @@ public class HandlerUpdateSupplierEmployeeById implements Serializable {
     private String cellphone;
 
     /**
-     * 员工状态是否启用与禁用
+     * 密码
      */
-    private Integer isDeleted;
+    private String password;
 
     /**
-     * 最后更新的时间
+     * role 角色
      */
-    private Date updateAt;
+    private Integer role;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * 是否禁用
+     */
+    private Integer isForbidden;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCellphone() {
-        return cellphone;
-    }
-
-    public void setCellphone(String cellphone) {
-        this.cellphone = cellphone;
-    }
-
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
 }

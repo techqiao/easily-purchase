@@ -461,38 +461,6 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="updatePurchaserEmployeeRole">
-      UPDATE t_purchaser_basic_info
-      <set>
-        <if test="role!=null">
-          role=#{role}
-        </if>
-      </set>
-      WHERE id=#{id}
-    </update>
-  <update id="updatePurchaserEmployeeDetail" parameterType="com.epc.web.service.domain.purchaser.TPurchaserBasicInfo">
-    UPDATE t_purchaser_basic_info
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="cellphone != null">
-        cellphone = #{cellphone,jdbcType=CHAR},
-      </if>
-      <if test="role != null">
-        role = #{role,jdbcType=INTEGER},
-      </if>
-      <if test="updateAt != null">
-        update_at = #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    WHERE id=#{id}
-  </update>
-  <update id="enableOrDisablePurchaserEmployee">
-    UPDATE t_purchaser_basic_info
-    SET is_forbidden = #{forbidden}
-    WHERE id = #{id}
-  </update>
   <select id="selectByExampleWithRowbounds" parameterType="com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated

@@ -24,7 +24,6 @@ public class ClientHandleCreateSupplerByOperator {
     private String cellphone;
 
     @ApiModelProperty(value = "供应商姓名")
-    @NotEmpty(message = "ClientHandleCreateSupplerByOperator.supplierName.null")
     private String supplierName;
 
     @ApiModelProperty(value = "统一信用代码")

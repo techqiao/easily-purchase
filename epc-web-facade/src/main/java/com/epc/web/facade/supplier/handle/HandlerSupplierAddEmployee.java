@@ -43,20 +43,7 @@ public class HandlerSupplierAddEmployee implements Serializable{
      */
     private String password;
 
-    /**
-     * 是否存在
-     */
-    private Integer isDeleted;
 
-    /**
-     * 创建的时间
-     */
-    private Date createAt;
-
-    /**
-     * 修改的时间
-     */
-    private Date updateAt;
 
 }
 

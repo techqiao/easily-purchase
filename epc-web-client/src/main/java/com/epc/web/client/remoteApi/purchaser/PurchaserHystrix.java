@@ -46,14 +46,15 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
     @Override
-    public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
+    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
         return null;
     }
 
     @Override
     public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
-        return Result.hystrixError();
+        return null;
     }
+
 
     @Override
     public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {

@@ -1,5 +1,6 @@
 package com.epc.web.facade.loginuser.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +15,9 @@ public class LoginUser implements Serializable {
     private String name;
     private String password;
     private String cellphone;
+    /**
+     *  运营商1,代理商2,供货商3,采购商4
+     */
     private Integer type;
     private Long bossId;
     private String bossName;

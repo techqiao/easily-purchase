@@ -17,7 +17,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -387,7 +386,7 @@ public class OperatorController {
     public Result<Boolean> forgetPassword(@RequestBody ClientHandleOperatorForgetPassword clientHandleOperatorForgetPassword){
         HandleOperatorForgetPassword handleOperatorForgetPassword=new HandleOperatorForgetPassword();
         BeanUtils.copyProperties(clientHandleOperatorForgetPassword,handleOperatorForgetPassword);
-        return operatorClient.forgetPassword(handleOperatorForgetPassword);
+        return operatorClient.forgetPasswordOperator(handleOperatorForgetPassword);
     }
 
     /**14

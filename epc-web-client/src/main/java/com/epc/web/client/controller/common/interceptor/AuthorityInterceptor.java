@@ -26,6 +26,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        request.getHeader("epc-token");
+
         LOGGER.info("preHandle");
         LoginUser loginUser = new LoginUser();
         String loginToken = CookieUtil.readLoginToken(request);

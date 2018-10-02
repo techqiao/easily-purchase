@@ -57,10 +57,6 @@ public class AgencyExpertDto implements Serializable {
      */
     private String otherInformation;
     /**
-     * 邀请人类型
-     */
-    private Integer inviterType;
-    /**
      * 邀请人Id
      */
     private Long inviterId;

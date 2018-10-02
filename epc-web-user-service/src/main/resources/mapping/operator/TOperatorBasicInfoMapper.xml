@@ -245,6 +245,15 @@
       </if>
     </trim>
   </insert>
+  <insert id="registerUser">
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT  INTO t_operator_basic_info
+    (cellphone,password,,`name`)
+    VALUES
+    (#{cellphone},#{pwd},#{name})
+  </insert>
   <select id="countByExample" parameterType="com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria" resultType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated

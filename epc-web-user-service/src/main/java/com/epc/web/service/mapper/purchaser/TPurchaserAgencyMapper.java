@@ -33,4 +33,7 @@ public interface TPurchaserAgencyMapper {
     int updateByPrimaryKey(TPurchaserAgency record);
 
     int updateTrustList(HandleTrustList trustList);
+
+    TPurchaserAgency selectAgencyByAgencyId(Long agencyId);
+
 }

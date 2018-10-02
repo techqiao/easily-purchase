@@ -29,9 +29,6 @@ public class HandleSupplier implements Serializable{
 
     private Long supplierId;
 
-    private Integer inviterType;
-
-
     private Long inviterId;
 
 
@@ -43,15 +40,6 @@ public class HandleSupplier implements Serializable{
 
     private Integer role;
 
-
-    private Date createAt;
-
-    private Date updateAt;
-
-
-    private Integer isDeleted;
-
-    private Integer isForbidden;
 
     private String companyName;
 

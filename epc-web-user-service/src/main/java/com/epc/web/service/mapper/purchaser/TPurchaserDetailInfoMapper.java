@@ -104,4 +104,7 @@ public interface TPurchaserDetailInfoMapper {
      * @mbggenerated Thu Sep 13 16:31:58 CST 2018
      */
     int updateByPrimaryKey(TPurchaserDetailInfo record);
+
+    TPurchaserDetailInfo selectDetailByPurchaserId(Long purchaseId);
+
 }

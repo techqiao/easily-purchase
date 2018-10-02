@@ -385,4 +385,10 @@
             order by ${orderByClause}
         </if>
     </select>
+    <select id="selectAttachmentByAgencyId" resultType="com.epc.web.service.domain.agency.TAgencyAttachment">
+        select
+        <include refid="Base_Column_List"/>
+        from t_agency_attachment
+        where agency_id =#{agencyId}
+    </select>
 </mapper>

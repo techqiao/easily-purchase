@@ -107,4 +107,9 @@ public interface TPurchaserExpertMapper {
 
 
     int deleteExpertById(@Param("id") Long id, @Param("del") Integer delete);
+
+    TPurchaserExpert selectExpertByNameAndCellPhone(@Param("name") String name, @Param("cellphone") String cellphone);
+
+    TPurchaserExpert selectExpertByExpertId(Long expertId);
+
 }

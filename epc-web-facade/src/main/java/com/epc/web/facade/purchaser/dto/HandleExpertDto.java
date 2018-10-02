@@ -77,4 +77,13 @@ public class HandleExpertDto implements Serializable{
      * 专家附件
      */
     private List<Attachement> atts;
+    /**
+     *密码
+     */
+    private String password;
+
+    /**
+     * 来源
+     */
+    private String source;
 }

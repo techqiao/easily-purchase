@@ -19,6 +19,7 @@ public class LoginUser implements Serializable {
     private String bossName;
     private Long userId;
     private String companyName;
+    private  String token;
 
     public String getName() {
         return name;

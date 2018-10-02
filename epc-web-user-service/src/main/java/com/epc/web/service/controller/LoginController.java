@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.web.facade.loginuser.FacadeLoginUserService;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.RegisterUser;
 import com.epc.web.service.service.IRoleLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,5 +31,10 @@ public class LoginController implements FacadeLoginUserService {
            return Result.success("登陆成功",loginUser);
        }
         return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR);
+    }
+
+    @Override
+    public Result<Boolean> registerUser(@RequestBody  RegisterUser registerUser) {
+        return iRoleLoginService.registerUser(registerUser);
     }
 }

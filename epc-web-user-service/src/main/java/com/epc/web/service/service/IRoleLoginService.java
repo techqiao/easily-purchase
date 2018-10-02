@@ -2,6 +2,7 @@ package com.epc.web.service.service;
 
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.RegisterUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,14 @@ public interface IRoleLoginService {
       *@return: 返回详细信息
       *@date:2018/9/18
       */
-     Result login (LoginUser user);
+     Result<LoginUser> login (LoginUser user);
 
+     /**
+      *@author :winlin
+      *@Description :统一注册接口
+      *@param:
+      *@return:
+      *@date:2018/10/1
+      */
+     Result<Boolean> registerUser(RegisterUser registerUser);
 }

@@ -3,14 +3,9 @@
 <mapper namespace="com.epc.web.service.mapper.purchaser.TPurchaserAgencyMapper" >
   <resultMap id="BaseResultMap" type="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="cellphone" property="cellphone" jdbcType="CHAR" />
-    <result column="password" property="password" jdbcType="CHAR" />
+
     <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
-    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
-    <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR" />
-    <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR" />
-    <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR" />
+
     <result column="purchaser_id" property="purchaserId" jdbcType="CHAR" />
     <result column="source" property="source" jdbcType="CHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -374,4 +369,10 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectAgencyByAgencyId" resultType="com.epc.web.service.domain.purchaser.TPurchaserAgency">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_purchaser_agency
+      WHERE agency_id =#{agencyId}
+    </select>
 </mapper>

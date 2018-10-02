@@ -24,7 +24,6 @@ public class HandleExpert implements Serializable {
 
     private String circularMethod;
 
-    private Integer invitertype;
 
     private Long inviterid;
 

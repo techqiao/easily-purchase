@@ -113,8 +113,8 @@ public interface FacadeOperatorService {
     /**13
      * 运营商忘记密码
      */
-    @PostMapping(value = "forgetPasswordSupplier",consumes = "application/json; charset=UTF-8")
-    Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword);
+    @PostMapping(value = "forgetPasswordOperator",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> forgetPasswordOperator(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword);
 
     /**14
      * 根据员工的名字,角色，是否禁用

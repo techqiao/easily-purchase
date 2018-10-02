@@ -376,7 +376,7 @@ public class AgencyServiceImpl implements AgencyService {
         criteria1.andPublicBanAccountNumberLike(agency.getPublicBanAccountNumber());
         criteria1.andPublicBankNameLike(agency.getPublicBankName());
 
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         for (Attachement attachement : agency.getAtts()) {
             String certificateName = attachement.getCertificateName();
             list.add(certificateName);

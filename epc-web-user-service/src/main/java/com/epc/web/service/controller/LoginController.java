@@ -36,7 +36,7 @@ public class LoginController implements FacadeLoginUserService {
        if(result.getData()!=null){
            LoginUser loginUser = (LoginUser) result.getData();
            String token = "EPC_PRIVATE_"+UUID.randomUUID().toString().replace("-","");
-           Map<String,Object> resultMap = new HashMap<>();
+           Map<String,Object> resultMap = new HashMap<String,Object>();
            resultMap.put("user",result);
            resultMap.put("epc-token",token);
            RedisShardedPoolUtil.setEx(token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);

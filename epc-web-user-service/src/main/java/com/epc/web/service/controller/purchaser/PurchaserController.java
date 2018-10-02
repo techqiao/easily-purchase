@@ -159,25 +159,7 @@ public  class PurchaserController implements FacadePurchaserService {
         return purchaserService.updateEmployeeState(id,state);
     }
 
-    @Override
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
-        return null;
-    }
 
-    @Override
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
-        return null;
-    }
-
-    @Override
-    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
-        return null;
-    }
-
-    @Override
-    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
-        return null;
-    }
 
     @Override
     public Result queryEmployee(Long userId) {

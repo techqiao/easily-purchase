@@ -804,7 +804,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
         }
         //拼装信息
-        List<PurchaserEmplyeeVo> list = new ArrayList<>();
+        List<PurchaserEmplyeeVo> list = new ArrayList<PurchaserEmplyeeVo>();
         for (TPurchaserBasicInfo basicInfo : tPurchaserBasicInfos) {
             PurchaserEmplyeeVo vo = new PurchaserEmplyeeVo();
             vo.setUserId(basicInfo.getId().toString());

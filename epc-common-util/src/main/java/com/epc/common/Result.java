@@ -22,7 +22,7 @@ public class Result<T> implements Serializable {
 
     @ApiModelProperty(value = "返回码[0:表示成功; 1表示失败]", example = "1")
     private Integer code;
-    @ApiModelProperty(value = "前端页面弹窗内容|该字段为前端弹窗内容", example = "新增成功！")
+    @ApiModelProperty(value = "前端页面弹窗内容|该字段为前端弹 窗内容", example = "新增成功！")
     private String msg;
     @ApiModelProperty(value = "返回的数据|该字段为前端渲染数据对象", dataType = "Json")
     private T data;

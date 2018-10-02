@@ -10,15 +10,13 @@ import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
 import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncementOfficialNetwork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,7 +38,7 @@ public class AnnouncementController extends BaseController {
     public Result<Boolean> insertAnnouncement(@RequestBody ClientHandleAnnouncement clientHandleAnnouncement){
         HandleAnnouncement handleBidsBasicInfo = new HandleAnnouncement();
         BeanUtils.copyProperties(clientHandleAnnouncement, handleBidsBasicInfo);
-//        handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
+        handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
         handleBidsBasicInfo.setCreator(getLoginUser().getName());
         return announcementClient.insertAnnouncement(handleBidsBasicInfo);
     }
@@ -50,7 +48,7 @@ public class AnnouncementController extends BaseController {
     public Result<Boolean> updateAnnouncementStatus(@RequestBody ClientHandleAnnouncementStatus clientHandleAnnouncementStatus){
         HandleAnnouncementStatus handleAnnouncementStatus = new HandleAnnouncementStatus();
         BeanUtils.copyProperties(clientHandleAnnouncementStatus,handleAnnouncementStatus);
-//        handleAnnouncementStatus.setOperateId(getLoginUser().getUserId());
+        handleAnnouncementStatus.setOperateId(getLoginUser().getUserId());
         return announcementClient.updateAnnouncementStatus(handleAnnouncementStatus);
     }
 
@@ -60,6 +58,13 @@ public class AnnouncementController extends BaseController {
         QueryAnnouncement queryAnnouncement = new QueryAnnouncement();
         BeanUtils.copyProperties(clientQueryAnnouncement, queryAnnouncement);
         return announcementClient.getPurchaseProjectAnnouncementList(queryAnnouncement);
+    }
+
+
+    @ApiOperation(value = "查询官网相关公告预告")
+    @PostMapping(value = "getAnnouncementListOfficialNetwork", consumes = "application/json; charset=UTF-8")
+    public Result<List<PurchaseProjectAnnouncementOfficialNetwork>> getAnnouncementListOfficialNetwork(@RequestBody String type){
+        return announcementClient.getAnnouncementListOfficialNetwork(type);
     }
 
 

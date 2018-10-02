@@ -20,12 +20,6 @@ import java.util.Map;
  */
 public class BaseController {
 
-	protected Map<String, Object> getDataTable(PageInfo<?> pageInfo) {
-		Map<String, Object> rspData = new HashMap<>();
-		rspData.put("rows", pageInfo.getList());
-		rspData.put("total", pageInfo.getTotal());
-		return rspData;
-	}
 
 	public ClientLoginUser getLoginUser(){
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -34,7 +28,5 @@ public class BaseController {
         ClientLoginUser loginHandle = JSONObject.parseObject(userJsonStr, ClientLoginUser.class);
 		return loginHandle;
 	}
-
-
 
 }

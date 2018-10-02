@@ -42,4 +42,13 @@ public interface FacadeTPurchaseProjectBasicInfoService {
      */
     @PostMapping(value = "getPurchaseProjectList", consumes = "application/json; charset=UTF-8")
     Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(@RequestBody QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO);
+
+    /**
+     * 官网采购项目列表
+     * @param queryPurchaseBasicInfoVO
+     * @return
+     */
+    @PostMapping(value = "getPurchaseProjectListOfficialNetwork", consumes = "application/json; charset=UTF-8")
+    Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectListOfficialNetwork(@RequestBody QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO);
+
 }

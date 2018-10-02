@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.project.TProjectBasicInfo;
 import com.epc.tendering.service.domain.project.TProjectBasicInfoCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TProjectBasicInfoMapper {
@@ -38,4 +39,7 @@ public interface TProjectBasicInfoMapper {
     int updateByPrimaryKeyWithBLOBs(TProjectBasicInfo record);
 
     int updateByPrimaryKey(TProjectBasicInfo record);
+
+    @Select("SELECT t.project_address FROM t_project_basic_info t where t.id =#{id}")
+    String getProjectAddress(Long id);
 }

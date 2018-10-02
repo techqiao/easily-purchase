@@ -8,6 +8,7 @@ import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicIn
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class TPurchaseProjectBasicInfoController implements FacadeTPurchaseProje
     private TPurchaseProjectBasicInfoService tPurchaseProjectBasicInfoService;
 
     @Override
-    public Result<Boolean> handlePurchaseProjectBasicInfo(HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
+    public Result<Boolean> handlePurchaseProjectBasicInfo(@RequestBody HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
         return tPurchaseProjectBasicInfoService.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfoSub);
     }
 
@@ -33,7 +34,12 @@ public class TPurchaseProjectBasicInfoController implements FacadeTPurchaseProje
     }
 
     @Override
-    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO) {
+    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(@RequestBody QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO) {
+        return tPurchaseProjectBasicInfoService.getPurchaseProjectList(queryPurchaseBasicInfoVO);
+    }
+
+    @Override
+    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectListOfficialNetwork(@RequestBody QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO) {
         return tPurchaseProjectBasicInfoService.getPurchaseProjectList(queryPurchaseBasicInfoVO);
     }
 

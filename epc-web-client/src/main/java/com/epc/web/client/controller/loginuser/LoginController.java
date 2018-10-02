@@ -59,10 +59,10 @@ public class LoginController {
      */
     @ApiOperation(value = "角色注册" ,notes="根据用户类型注册,运营商1,代理商2,供货商3,采购商4专家5")
     @PostMapping(value = "/register",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Result<Boolean> registerUser(@RequestBody ClientRegisterUser registerUser){
+    public Result<Boolean> registerUser(@RequestBody ClientRegisterUser registerUser){
         RegisterUser user = new RegisterUser();
         BeanUtils.copyProperties(registerUser,user);
         return iLoginUserClient.registerUser(user);
-    };
+    }
 
 }

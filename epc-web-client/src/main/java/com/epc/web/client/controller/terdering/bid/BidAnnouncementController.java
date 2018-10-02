@@ -41,7 +41,7 @@ public class BidAnnouncementController extends BaseController {
     public Result<Boolean> insertBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {
         HandleBidAnnouncement handleBidAnnouncement = new HandleBidAnnouncement();
         BeanUtils.copyProperties(dto, handleBidAnnouncement);
-//        handleBidAnnouncement.setOperateId(getLoginUser().getUserId());
+        handleBidAnnouncement.setOperateId(getLoginUser().getUserId());
         return bidAnnouncementClient.insertBidAnnouncement(handleBidAnnouncement);
     }
 

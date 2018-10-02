@@ -15,6 +15,7 @@ import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -118,5 +119,14 @@ public class PurchaseProjectBasicInfoController extends BaseController {
         return purchaseProjectClient.getPurchaseProjectList(pojo);
     }
 
+    @ApiOperation(value = "查询官网采购项目列表")
+    @PostMapping(value = "getPurchaseProjectListOfficialNetwork")
+    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectListOfficialNetwork(@ApiParam("劳务分包labor_subcontract 专业分包professional_subcontracting 设备租赁 货物采购 服务采购 工程采购")
+                                                                                              @RequestBody String type) {
+        QueryPurchaseBasicInfoVO pojo = new QueryPurchaseBasicInfoVO();
+        //采购分类 劳务分包labor_subcontract 专业分包professional_subcontracting 设备租赁 货物采购 服务采购 工程采购
+        pojo.setPurchaseCategory(type);
+        return purchaseProjectClient.getPurchaseProjectListOfficialNetwork(pojo);
+    }
 
 }

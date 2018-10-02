@@ -12,7 +12,7 @@ public enum  AnnouncementProcessStatusEnum {
     AGENT("agent","经办"),
     RELEASED("released","已发布"),
     WAIT_RELEASE("wait_release","待发布"),
-    NOT_SUBMIT("not_submit","未提交"),
+    NOT_SUBMIT("not_submit","待提交"),
     INVALID("invalid","失效"),
     ;
     private String code;

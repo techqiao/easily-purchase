@@ -18,35 +18,36 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- *@author :winlin
- *@Description :
- *@param:
- *@return:
- *@date:2018/9/18
+ * @author :winlin
+ * @Description :
+ * @param:
+ * @return:
+ * @date:2018/9/18
  */
 @RestController
 public class LoginController implements FacadeLoginUserService {
 
     @Autowired
     IRoleLoginService iRoleLoginService;
+
     @Override
     public Result login(@RequestBody LoginUser user) {
 
-       Result result= iRoleLoginService.login(user);
-       if(result.getData()!=null){
-           LoginUser loginUser = (LoginUser) result.getData();
-           String token = "EPC_PRIVATE_"+UUID.randomUUID().toString().replace("-","");
-           Map<String,Object> resultMap = new HashMap<String,Object>();
-           resultMap.put("user",result);
-           resultMap.put("epc-token",token);
-           RedisShardedPoolUtil.setEx(token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
-           return Result.success("登陆成功",resultMap);
-       }
+        Result result = iRoleLoginService.login(user);
+        if (result.getData() != null) {
+            LoginUser loginUser = (LoginUser) result.getData();
+            String token = "EPC_PRIVATE_" + UUID.randomUUID().toString().replace("-", "");
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put("user", result);
+            resultMap.put("epc-token", token);
+            RedisShardedPoolUtil.setEx(token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+            return Result.success("登陆成功", resultMap);
+        }
         return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR);
     }
 
     @Override
-    public Result<Boolean> registerUser(@RequestBody  RegisterUser registerUser) {
+    public Result<Boolean> registerUser(@RequestBody RegisterUser registerUser) {
         return iRoleLoginService.registerUser(registerUser);
     }
 }

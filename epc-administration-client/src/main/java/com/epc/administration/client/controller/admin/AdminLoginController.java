@@ -4,7 +4,6 @@ import com.epc.administration.client.controller.admin.handle.ClientUserLoginHand
 import com.epc.administration.client.remoteapi.admin.AdminLoginClient;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.common.Result;
-import com.epc.common.util.RedisShardedPoolUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**

@@ -1,6 +1,8 @@
 package com.epc.web.facade.supplier;
 
 import com.epc.common.Result;
+import com.epc.web.facade.operator.handle.HandleOperatorRole;
+import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;

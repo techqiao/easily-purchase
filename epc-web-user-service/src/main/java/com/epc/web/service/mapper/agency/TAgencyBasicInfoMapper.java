@@ -52,4 +52,9 @@ public interface TAgencyBasicInfoMapper {
 
 
     TAgencyBasicInfo selectAgencyBasicByCellphoneAndName(@Param("name") String name, @Param("cellphone") String cellphone);
+
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+
+    TAgencyBasicInfo selectBossBasicInfoByPurchaserIdAndRole(@Param("agencyId") Long agencyId, @Param("roleCorporation") int roleCorporation);
+
 }

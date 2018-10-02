@@ -8,13 +8,11 @@
       This element was generated on Fri Sep 14 17:41:19 CST 2018.
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="cellphone" jdbcType="CHAR" property="cellphone" />
-    <result column="password" jdbcType="CHAR" property="password" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="expert_id" jdbcType="BIGINT" property="expertId" />
-    <result column="expert_name" jdbcType="VARCHAR" property="expertName" />
     <result column="purchaser_id" jdbcType="CHAR" property="purchaserId" />
     <result column="source" jdbcType="CHAR" property="source" />
+    <result column="creater_id" jdbcType="INTEGER" property="createrId"/>
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
     <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
@@ -403,5 +401,19 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+    <select id="selectExpertByNameAndCellPhone"
+            resultType="com.epc.web.service.domain.purchaser.TPurchaserExpert">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_purchaser_expert
+      WHERE expert_name =#{name}
+      AND cellphone =#{cellphone}
+    </select>
+  <select id="selectExpertByExpertId" resultType="com.epc.web.service.domain.purchaser.TPurchaserExpert">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_purchaser_expert
+    WHERE expert_id =#{expertId}
   </select>
 </mapper>

@@ -1,11 +1,9 @@
 package com.epc.web.client.controller.agency.handle;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +12,7 @@ import java.util.Date;
  * @author  winlin
  */
 @Data
-@ApiModel(value = "ClientAttachment" ,description = "上传附件类型")
+@ApiModel(value = "Attachment" ,description = "上传附件类型")
 public class ClientAttachement implements Serializable{
 
     private static final long serialVersionUID = 6378334629429412094L;
@@ -29,10 +27,8 @@ public class ClientAttachement implements Serializable{
     @ApiModelProperty(value = "附件对应证书的名称")
     private String certificateName;
     @ApiModelProperty(value = "新增时间")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
     @ApiModelProperty(value = "更新时间")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updateAt;
     @ApiModelProperty(value ="存在状态")
     private Boolean isDelete;

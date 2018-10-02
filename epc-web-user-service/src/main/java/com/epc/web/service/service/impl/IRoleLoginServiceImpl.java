@@ -8,24 +8,20 @@ import com.epc.common.util.CookieUtil;
 import com.epc.common.util.MD5Util;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.dto.LoginUser;
-import com.epc.web.service.domain.operator.TOperatorBasicInfo;
-import com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria;
-import com.epc.web.service.domain.operator.TOperatorDetailInfo;
-import com.epc.web.service.domain.operator.TOperatorDetailInfoCriteria;
+import com.epc.web.facade.loginuser.dto.RegisterUser;
+import com.epc.web.service.domain.agency.TAgencyBasicInfo;
+import com.epc.web.service.domain.expert.TExpertBasicInfo;
+import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
-import com.epc.web.service.mapper.agency.TAgencyDetailInfoMapper;
+import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.web.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.web.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.netflix.ribbon.proxy.annotation.Http;
-import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -33,7 +29,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author :winlin
@@ -55,9 +50,10 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     TPurchaserBasicInfoMapper tPurchaserBasicInfoMapper;
     @Autowired
     TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
+    @Autowired
+    TExpertBasicInfoMapper tExpertBasicInfoMapper;
     @Override
     @JsonInclude(JsonInclude.Include.NON_NULL)
-
     public Result login(@RequestBody LoginUser user) {
         //用户类型
         Integer type = user.getType();
@@ -69,14 +65,14 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
         HttpServletResponse response = ((ServletRequestAttributes)requestAttributes).getResponse();
         switch (type) {
-//            case IRoleLoginService.OPERRATOR:
-//                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
-//                if (loginUser != null) {
-//                    loginUser.setType(type);
-//                    //this.cacheInredis(request,response,loginUser);
-//                    return Result.success( loginUser);
-//                }
-//                break;
+            case IRoleLoginService.OPERRATOR:
+                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
+                if (loginUser != null) {
+                    loginUser.setType(type);
+                    this.cacheInredis(request,response,loginUser);
+                    return Result.success( loginUser);
+                }
+                break;
             case IRoleLoginService.AGENCY:
                 LoginUser loginUser1 = tAgencyBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser1 != null) {
@@ -113,6 +109,70 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(),"登录失败");
         }
         return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(),"登录失败");
+    }
+
+    @Override
+    public Result<Boolean> registerUser(@RequestBody RegisterUser registerUser) {
+        //用户类型
+        Integer type = registerUser.getType();
+        //密码加密
+        String pwd = MD5Util.MD5EncodeUtf8(registerUser.getPassword());
+        //注册电话
+        String cellphone = registerUser.getCellphone();
+        //注册姓名
+        String name = registerUser.getName();
+        //获得当前请求的HttpServletRequest和HttpServletResponse
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        HttpServletResponse response = ((ServletRequestAttributes) requestAttributes).getResponse();
+        switch (type) {
+            case IRoleLoginService.OPERRATOR:
+                int sucess = tOperatorBasicInfoMapper.registerUser(cellphone, pwd, name);
+                if (sucess > 0) {
+                    return Result.success("运营商注册成功", true);
+                }
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+
+            case IRoleLoginService.AGENCY:
+               TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name,cellphone);
+               if(basicInfo==null) {
+                   int sucess1 = tAgencyBasicInfoMapper.registerUser(cellphone, pwd, name);
+                   if (sucess1 > 0) {
+                       return Result.success("代理机构注册成功", true);
+                   }
+               }
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+
+            case IRoleLoginService.SUPPLIER:
+                int sucess2 = tSupplierBasicInfoMapper.registerUser(cellphone, pwd, name);
+                if (sucess2 > 0) {
+                    return Result.success("供货商注册成功", true);
+                }
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+
+            case IRoleLoginService.PURCHASER:
+                TPurchaserBasicInfo tPurchaserBasicInfo =tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name,cellphone);
+                if(tPurchaserBasicInfo==null) {
+                    int sucess3 = tPurchaserBasicInfoMapper.registerUser(cellphone, pwd, name);
+                    if (sucess3 > 0) {
+                        return Result.success("运营商注册成功", true);
+                    }
+                }
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+
+            case IRoleLoginService.EXPERT:
+                TExpertBasicInfo tExpertBasicInfo =tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(name,cellphone);
+                if(tExpertBasicInfo==null) {
+                    int sucess4 = tExpertBasicInfoMapper.registerUser(cellphone, pwd, name);
+                    if (sucess4 > 0) {
+                        return Result.success("运营商注册成功", true);
+                    }
+                }
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+
+            default:
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+        }
     }
 
     public void  cacheInredis(HttpServletRequest request,HttpServletResponse response,LoginUser user ){

@@ -218,6 +218,16 @@
       </if>
     </trim>
   </insert>
+  <insert id="registerUser">
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT  INTO t_agency_basic_info
+    (cellphone,password,,`name`)
+    VALUES
+    (#{cellphone},#{pwd},#{name})
+
+  </insert>
   <select id="countByExample" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria" resultType="java.lang.Integer" >
     select count(*) from t_agency_basic_info
     <if test="_parameter != null" >
@@ -447,5 +457,12 @@
       </if>
     </where>
 
+  </select>
+  <select id="selectBossBasicInfoByPurchaserIdAndRole"
+          resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+    SELECT <include refid="Base_Column_List"/>
+    FROM t_agency_basic_info
+    WHERE agency_id =#{agencyId}
+    AND role = #{roleCorporation}
   </select>
 </mapper>

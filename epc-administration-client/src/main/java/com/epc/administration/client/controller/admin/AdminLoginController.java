@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -30,17 +30,16 @@ public class AdminLoginController {
 
     /**用户登录
      * @param httpServletResponse
-     * @param session
      * @param clientUserLoginHandle
      * @return
      */
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @PostMapping(value = "login")
-    public Result login(HttpServletResponse httpServletResponse, HttpSession  session ,
-                        @RequestBody ClientUserLoginHandle clientUserLoginHandle){
+    public Result<Map<String,Object>> login(HttpServletResponse httpServletResponse ,
+                                            @RequestBody ClientUserLoginHandle clientUserLoginHandle){
         LoginHandle loginHandle =  new LoginHandle();
         BeanUtils.copyProperties(clientUserLoginHandle,loginHandle);
-        return loginClient.login( session, httpServletResponse,loginHandle);
+        return loginClient.login(  httpServletResponse,loginHandle);
     }
 
 
@@ -50,8 +49,8 @@ public class AdminLoginController {
     @ApiOperation(value = "用户登出", notes = "用户登出")
     @PostMapping(value = "loginOut")
     @ResponseBody
-    public Result<Boolean> loginOut(@RequestParam(value = "httpServletRequest",required=false)HttpServletRequest httpServletRequest,
-                                    @RequestParam(value = "httpServletResponse" ,required=false) HttpServletResponse httpServletResponse) {
+    public Result<Boolean> loginOut(HttpServletRequest httpServletRequest,
+                                     HttpServletResponse httpServletResponse) {
         return loginClient.loginOut(httpServletRequest, httpServletResponse);
     }
 }

@@ -11,9 +11,23 @@ import java.io.Serializable;
  *@date:2018/10/1
  */
 @Data
-public class RegisterDto implements Serializable {
+public class RegisterUser implements Serializable {
     private static final long serialVersionUID = -8746674454679315502L;
+    /**
+     * 手机号
+     */
     private String cellphone;
+    /**
+     * 密码
+     */
     private String password;
-    private Long id;
+    /**
+     * 注册类型
+     */
+    private Integer type;
+    /**
+     * 注册姓名
+     */
+    private String name;
+
 }

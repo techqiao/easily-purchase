@@ -11,6 +11,7 @@ import com.epc.common.Result;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -29,12 +30,19 @@ public interface FacadeOperatorService {
 
     /**
      * 运营商完善资料
-     * @param roleDetailInfo 附件信息
+     * @param roleDetailInfo 所有信息
      * @return
      */
     @PostMapping(value = "insertOperatorDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailInfo);
 
+    /**
+     * 运营商修改资料
+     * @param roleDetailInfo 所有信息
+     * @return
+     */
+    @PostMapping(value = "updateOperatorDetailInfo", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateOperatorDetailInfo(@RequestBody RoleDetailInfo roleDetailInfo);
 
     /**
      * 删除运营商资料
@@ -52,15 +60,13 @@ public interface FacadeOperatorService {
     @GetMapping(value = "queryOperatorDetailInfo")
     Result<OperatorUserVO> queryOperatorDetailInfo(@RequestParam("whereId") Long whereId);
 
-
     /**
      * 查询所有运营商 分页展示
      * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectAllOperatorByPage" ,consumes = "application/json; charset=UTF-8")
-    Result<List<OperatorVO>>  selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo);
-
+    Result<Map<String, Object>>  selectAllOperatorByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 审核运营商

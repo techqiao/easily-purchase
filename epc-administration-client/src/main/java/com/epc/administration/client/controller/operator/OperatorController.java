@@ -7,13 +7,13 @@ import com.epc.administration.client.controller.operator.handle.ClientOperatorDe
 import com.epc.administration.client.controller.operator.handle.ClientOperatorForbiddenHandle;
 import com.epc.administration.client.controller.operator.handle.ClientUserBasicInfo;
 import com.epc.administration.client.remoteapi.operator.OperatorClient;
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.operator.dto.QueryDetailIfo;
 import com.epc.administration.facade.operator.handle.ExamineOperatorHandle;
 import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
-import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -42,19 +42,28 @@ public class OperatorController extends BaseController {
     public Result<Boolean> insertOperatorBasicInfo(@RequestBody ClientUserBasicInfo clientUserBasicInfo) {
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo, pojo);
-        pojo.setId(getLoginUser().getId());
+        LoginHandle loginUser = getLoginUser();
+        if(loginUser==null){
+            return Result.error("请先登录");
+        }
+        pojo.setId(loginUser.getId());
         return operatorClient.insertOperatorBasicInfo(pojo);
     }
 
-    @ApiOperation(value = "运营商完善资料", notes = "运营商完善资料")
+    @ApiOperation(value = "完善运营商资料", notes = "完善运营商资料")
     @PostMapping(value = "registryDetail",consumes = "application/json;charset=UTF-8")
     public Result<Boolean> insertOperatorDetailInfo(@RequestBody ClientOperatorDetailInfo clientOperatorDetailInfo) {
         RoleDetailInfo pojo = new RoleDetailInfo();
         BeanUtils.copyProperties(clientOperatorDetailInfo, pojo);
         return operatorClient.insertOperatorDetailInfo(pojo);
     }
-
-
+    @ApiOperation(value = "修改运营商资料", notes = "修改运营商资料")
+    @PostMapping(value = "updateOperatorDetailInfo",consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> updateOperatorDetailInfo(ClientOperatorDetailInfo clientOperatorDetailInfo){
+        RoleDetailInfo pojo = new RoleDetailInfo();
+        BeanUtils.copyProperties(clientOperatorDetailInfo, pojo);
+        return operatorClient.updateOperatorDetailInfo(pojo);
+    }
     @ApiOperation(value = "运营商删除资料", notes = "运营商删除资料")
     @GetMapping(value = "deleteOperatorDetailInfo")
     public Result<Boolean> deleteOperatorDetailInfo(@RequestParam("whereId") Long whereId)  {
@@ -69,7 +78,7 @@ public class OperatorController extends BaseController {
 
     @ApiOperation(value = "查询所有运营商分页展示", notes = "查询所有运营商分页展示")
     @PostMapping(value = "selectAllOperatorByPage",consumes = "application/json;charset=UTF-8")
-    public Result<List<OperatorVO>> selectAllOperatorByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo) {
+    public Result<Map<String, Object>> selectAllOperatorByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo) {
         QueryDetailIfo  queryDetailIfo = new QueryDetailIfo();
         BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
         return operatorClient.selectAllOperatorByPage(queryDetailIfo);

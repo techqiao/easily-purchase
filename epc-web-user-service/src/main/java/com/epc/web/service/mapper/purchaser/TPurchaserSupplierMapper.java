@@ -33,4 +33,7 @@ public interface TPurchaserSupplierMapper {
     int updateByPrimaryKey(TPurchaserSupplier record);
 
     int updateTrustList(HandleTrustList trustList);
+
+    TPurchaserSupplier selectPurchaserSupplierBySupplierId(Long supplierId);
+
 }

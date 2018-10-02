@@ -3,9 +3,13 @@ package com.epc.tendering.service.mapper.question;
 import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
-import java.util.List;
+import com.epc.web.service.domain.question.BAnswerQuestion;
+import com.epc.web.service.domain.question.BAnswerQuestionCriteria;
+import com.epc.web.service.domain.question.BAnswerQuestionWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface BAnswerQuestionMapper {
     int countByExample(BAnswerQuestionCriteria example);

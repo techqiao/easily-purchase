@@ -31,6 +31,13 @@ public interface AgencyService {
     Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle);
 
     /**
+     * 招标代理机构完善资料
+     * @param biddingHandle
+     * @return
+     */
+    Result<Boolean> updateBiddingAgencyDetailInfo(BiddingHandle biddingHandle);
+
+    /**
      * 删除运营商资料
      * @param whereid
      * @return

@@ -382,4 +382,11 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectDetailByPurchaserId"
+            resultType="com.epc.web.service.domain.purchaser.TPurchaserDetailInfo">
+    SELECT
+    <include refid="Base_Column_List"/>
+      FROM t_purchaser_detail_info
+      WHERE purchaser_id =#{purchaseId}
+    </select>
 </mapper>

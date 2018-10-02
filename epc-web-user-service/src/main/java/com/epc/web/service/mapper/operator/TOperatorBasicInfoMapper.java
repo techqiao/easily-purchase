@@ -33,4 +33,7 @@ public interface TOperatorBasicInfoMapper {
     int updateByPrimaryKey(TOperatorBasicInfo record);
 
     LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+
 }

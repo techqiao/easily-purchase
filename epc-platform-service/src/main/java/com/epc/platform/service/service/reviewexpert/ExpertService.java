@@ -30,7 +30,12 @@ public interface ExpertService {
      */
     Result<Boolean> insertExpertDetailInfo(ReviewExpertHandle reviewExpertHandle);
 
-
+    /**
+     * 修改评审专家资料
+     * @param reviewExpertHandle
+     * @return
+     */
+    Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle);
     /**
      * 删除评审专家资料
      * @param whereId

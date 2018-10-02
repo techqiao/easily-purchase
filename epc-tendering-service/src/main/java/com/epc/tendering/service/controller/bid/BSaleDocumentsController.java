@@ -3,7 +3,7 @@ package com.epc.tendering.service.controller.bid;
 import com.epc.common.Result;
 import com.epc.tendering.service.service.bid.SaleDocumentsService;
 import com.epc.web.facade.terdering.bid.FacadeSaleDocumentsService;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ public class BSaleDocumentsController implements FacadeSaleDocumentsService {
     private SaleDocumentsService saleDocumentsService;
 
     @Override
-    public Result<Boolean> handleSaleDocuments(HandDocuments handDocuments) {
+    public Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments) {
         return saleDocumentsService.handleSaleDocuments(handDocuments);
     }
 

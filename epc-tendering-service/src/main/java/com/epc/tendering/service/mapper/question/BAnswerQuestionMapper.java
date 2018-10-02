@@ -3,9 +3,6 @@ package com.epc.tendering.service.mapper.question;
 import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
-import com.epc.web.service.domain.question.BAnswerQuestion;
-import com.epc.web.service.domain.question.BAnswerQuestionCriteria;
-import com.epc.web.service.domain.question.BAnswerQuestionWithBLOBs;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 

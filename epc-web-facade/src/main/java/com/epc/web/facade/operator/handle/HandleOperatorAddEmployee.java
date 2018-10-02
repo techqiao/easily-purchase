@@ -1,12 +1,8 @@
 package com.epc.web.facade.operator.handle;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 public class HandleOperatorAddEmployee implements Serializable {
@@ -28,17 +24,12 @@ public class HandleOperatorAddEmployee implements Serializable {
     private String password;
 
     /**
-     * 创建的时间
+     * 员工id(运营商id)
      */
-    private Date createAt;
+    private Long id;
 
     /**
-     * 修改的时间
-     */
-    private Date updateAt;
-
-    /**
-     * 用户的角色，0-法人,1-管理员,2-普通员工
+     * 员工的角色
      */
     private Integer role;
 
@@ -57,75 +48,5 @@ public class HandleOperatorAddEmployee implements Serializable {
      */
     private Integer state;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCellphone() {
-        return cellphone;
-    }
-
-    public void setCellphone(String cellphone) {
-        this.cellphone = cellphone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
-    }
-
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Long getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(Long operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
 }

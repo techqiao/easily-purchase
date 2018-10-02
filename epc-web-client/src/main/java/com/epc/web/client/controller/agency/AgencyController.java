@@ -20,14 +20,13 @@ import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import com.epc.web.facade.purchaser.dto.QueryDto;
 import com.epc.web.facade.purchaser.handle.HandleTrustList;
-import com.sun.deploy.util.SessionState;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**

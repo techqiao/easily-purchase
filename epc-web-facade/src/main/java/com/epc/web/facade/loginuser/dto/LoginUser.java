@@ -1,5 +1,6 @@
 package com.epc.web.facade.loginuser.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,7 +11,9 @@ import java.io.Serializable;
 @Data
 public class LoginUser implements Serializable {
 
+    private static final long serialVersionUID = 1652716944499144386L;
     private String name;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private String cellphone;
     private Integer type;

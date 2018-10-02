@@ -2,7 +2,7 @@ package com.epc.web.client.remoteApi.terdering.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.FacadeSaleDocumentsService;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
 
 /**
@@ -12,7 +12,7 @@ import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
  */
 public class SaleDocumentsHystrix implements FacadeSaleDocumentsService {
     @Override
-    public Result<Boolean> handleSaleDocuments(HandDocuments handDocuments) {
+    public Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments) {
         return Result.hystrixError();
     }
 

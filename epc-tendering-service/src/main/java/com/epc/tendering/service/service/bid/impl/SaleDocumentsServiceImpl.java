@@ -7,7 +7,7 @@ import com.epc.tendering.service.mapper.bid.BBidsGuaranteeAmountMapper;
 import com.epc.tendering.service.mapper.bid.BSaleDocumentsMapper;
 import com.epc.tendering.service.mapper.bid.BTenderDocumentsPlaceSaleMapper;
 import com.epc.tendering.service.service.bid.SaleDocumentsService;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.handle.HandleUnderLine;
 import com.epc.web.facade.terdering.bid.vo.BidsGuaranteeAmountVO;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
@@ -41,7 +41,7 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
 
 
     @Override
-    public Result<Boolean> handleSaleDocuments(HandDocuments handDocuments) {
+    public Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments) {
         BSaleDocuments bSaleDocuments = new BSaleDocuments();
         //招标文件
         BeanUtils.copyProperties(handDocuments.getHandleSaleDocuments(), bSaleDocuments);

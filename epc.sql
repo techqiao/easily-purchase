@@ -142,6 +142,29 @@ CREATE TABLE  `t_operator_attachment`(
 
 
 
+
+-- 私库 运营商添加供应商
+DROP TABLE IF EXISTS `t_operator_supplier`;
+CREATE TABLE `t_operator_supplier` (
+	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
+	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商姓名',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
+	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
+	`operator_id` BIGINT(11) NOT NULL COMMENT '运营商ID',
+	`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商-采购人:私库';
+
+
+
 -- 供应商 注册
 DROP TABLE IF EXISTS `t_supplier_basic_info`;
 CREATE TABLE `t_supplier_basic_info` (

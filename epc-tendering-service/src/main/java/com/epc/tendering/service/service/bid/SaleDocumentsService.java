@@ -1,7 +1,7 @@
 package com.epc.tendering.service.service.bid;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
 
 /**
@@ -16,7 +16,7 @@ public interface SaleDocumentsService {
      * @param handDocuments
      * @return
      */
-    Result<Boolean> handleSaleDocuments(HandDocuments handDocuments);
+    Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments);
 
     /**
      * 查询招标文件详情

@@ -149,27 +149,7 @@ public class PurchaserHystrix implements FacadePurchaserService {
     }
 
 
-    @Override
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
-        return Result.hystrixError();
-    }
 
-    @Override
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
-        return Result.hystrixError();
-    }
-
-
-    @Override
-    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
-        return Result.hystrixError();
-    }
-
-
-    @Override
-    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
-        return Result.hystrixError();
-    }
 
 
 

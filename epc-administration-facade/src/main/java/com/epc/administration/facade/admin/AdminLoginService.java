@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -23,7 +24,7 @@ public interface AdminLoginService {
      */
     @PostMapping(value = "login", consumes = "application/json; charset=UTF-8")
     @ResponseBody
-     Result login( @RequestParam("session") HttpSession session,
+    Result<Map<String,Object>> login(
                      @RequestParam("httpServletResponse")  HttpServletResponse httpServletResponse,
                            @RequestBody LoginHandle loginHandle);
 

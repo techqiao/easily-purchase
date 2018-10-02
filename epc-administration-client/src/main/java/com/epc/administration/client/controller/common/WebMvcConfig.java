@@ -14,11 +14,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         // AccessKeyInterceptor（跨域拦截器）
         // 对来自/**这个链接的请求进行拦截
         registry.addInterceptor(new AccessKeyInterceptor()).addPathPatterns("/**")
-         .excludePathPatterns("/css/**")
-         .excludePathPatterns("/js/**")
-         .excludePathPatterns("/images/**")
-                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**")
-          .excludePathPatterns("/**/public/**");
+        .excludePathPatterns("/css/**")
+        .excludePathPatterns("/js/**")
+        .excludePathPatterns("/images/**")
+        .excludePathPatterns("/**/login/**")
+        .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**")
+        .excludePathPatterns("/**/public/**");
     }
 
     @Override

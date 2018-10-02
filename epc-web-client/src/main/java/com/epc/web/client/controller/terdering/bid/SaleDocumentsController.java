@@ -9,7 +9,7 @@ import com.epc.web.client.controller.terdering.bid.handle.ClientHandleBidsGuaran
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleSaleDocuments;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleUnderLine;
 import com.epc.web.client.remoteApi.terdering.bid.SaleDocumentsClient;
-import com.epc.web.facade.terdering.bid.handle.HandDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.handle.HandleBidsGuaranteeAmount;
 import com.epc.web.facade.terdering.bid.handle.HandleSaleDocuments;
 import com.epc.web.facade.terdering.bid.handle.HandleUnderLine;
@@ -43,7 +43,7 @@ public class SaleDocumentsController extends BaseController {
     @ApiOperation(value = "发布|审核|批复|修改|删除 招标文件")
     @PostMapping(value="/handleSaleDocuments")
     public Result<Boolean> handleSaleDocuments(ClientHandDocuments clientHandDocuments){
-        HandDocuments handDocuments = new HandDocuments();
+        HandleDocuments handleDocuments = new HandleDocuments();
         List<ClientHandleBidsGuaranteeAmount> clientHandleBidsGuaranteeAmounts = clientHandDocuments.getClientHandleBidsGuaranteeAmounts();
         ClientHandleSaleDocuments clientHandleSaleDocuments = clientHandDocuments.getClientHandleSaleDocuments();
         ClientHandleUnderLine clientHandleUnderLine = clientHandDocuments.getClientHandleUnderLine();
@@ -52,7 +52,7 @@ public class SaleDocumentsController extends BaseController {
                 && !clientHandleBidsGuaranteeAmounts.isEmpty()) {
             HandleSaleDocuments handleSaleDocuments = new HandleSaleDocuments();
             BeanUtils.copyProperties(clientHandleSaleDocuments, handleSaleDocuments);
-            return handleSaleDocuments(handDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
+            return handleSaleDocuments(handleDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
         }
         //处理招标文件
         else if(clientHandleSaleDocuments.getId() != null && clientHandleUnderLine.getId() != null
@@ -61,17 +61,17 @@ public class SaleDocumentsController extends BaseController {
             BeanUtils.copyProperties(clientHandleSaleDocuments, handleSaleDocuments);
             //未提交 操作人是提交人
             if(clientHandleSaleDocuments.getProcessStatus().equals(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode())){
-                return handleSaleDocuments(handDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
+                return handleSaleDocuments(handleDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
             }
             //审核 操作人是审核人
             if(clientHandleSaleDocuments.getProcessStatus().equals(AnnouncementProcessStatusEnum.AUDITING.getCode())){
                 handleSaleDocuments.setAuditorId(getLoginUser().getUserId());
-                return handleSaleDocuments(handDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
+                return handleSaleDocuments(handleDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
             }
             //批复 操作人是批复人
             if(clientHandleSaleDocuments.getProcessStatus().equals(AnnouncementProcessStatusEnum.REPLY.getCode())){
                 handleSaleDocuments.setRepliesId(getLoginUser().getUserId());
-                return handleSaleDocuments(handDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
+                return handleSaleDocuments(handleDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
             }
         }
         return Result.error();
@@ -86,13 +86,13 @@ public class SaleDocumentsController extends BaseController {
 
     /**
      * 招标文件相关数据构造
-     * @param handDocuments
+     * @param handleDocuments
      * @param clientHandleBidsGuaranteeAmounts
      * @param clientHandleUnderLine
      * @param handleSaleDocuments
      * @return
      */
-    private Result<Boolean> handleSaleDocuments(HandDocuments handDocuments, List<ClientHandleBidsGuaranteeAmount> clientHandleBidsGuaranteeAmounts, ClientHandleUnderLine clientHandleUnderLine, HandleSaleDocuments handleSaleDocuments) {
+    private Result<Boolean> handleSaleDocuments(HandleDocuments handleDocuments, List<ClientHandleBidsGuaranteeAmount> clientHandleBidsGuaranteeAmounts, ClientHandleUnderLine clientHandleUnderLine, HandleSaleDocuments handleSaleDocuments) {
         //招标文件 操作人
         handleSaleDocuments.setOperateId(getLoginUser().getUserId());
         HandleUnderLine handleUnderLine = new HandleUnderLine();
@@ -107,14 +107,14 @@ public class SaleDocumentsController extends BaseController {
             handleBidsGuaranteeAmountList.add(handleBidsGuaranteeAmount);
         }
         //招标文件
-        handDocuments.setHandleSaleDocuments(handleSaleDocuments);
+        handleDocuments.setHandleSaleDocuments(handleSaleDocuments);
         //保证金
-        handDocuments.setHandleBidsGuaranteeAmount(handleBidsGuaranteeAmountList);
+        handleDocuments.setHandleBidsGuaranteeAmount(handleBidsGuaranteeAmountList);
         //线下招标文件
         if(!handleSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)){
-            handDocuments.setHandleUnderLine(handleUnderLine);
+            handleDocuments.setHandleUnderLine(handleUnderLine);
         }
-        return saleDocumentsClient.handleSaleDocuments(handDocuments);
+        return saleDocumentsClient.handleSaleDocuments(handleDocuments);
     }
 
 }

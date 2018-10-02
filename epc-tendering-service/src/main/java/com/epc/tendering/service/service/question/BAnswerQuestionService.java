@@ -1,7 +1,6 @@
 package com.epc.tendering.service.service.question;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
@@ -27,10 +26,4 @@ public interface BAnswerQuestionService {
      * @return
      */
     Result<Boolean> replyQuestion(HandleReplyQuestion handleReplyQuestion);
-
-    /**
-     *澄清公式
-     * @return
-     */
-    Result selectAnswerQuestion(AnswerQuestionHandle answerQuestionHandle);
 }

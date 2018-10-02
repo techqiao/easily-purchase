@@ -47,7 +47,7 @@ public class PurchaseProjectBasicInfoController extends BaseController {
         handlePurchaseProjectBasicInfoSub.setCreator(getLoginUser().getName());
         //当前登录用户ID(采购人ID)
         Long userId = getLoginUser().getUserId();
-        //不全权委托代理机构
+        //不全权委托代理机构 指定经办人审核人 其中批复人和负责人为项目经理
         if (Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY == clientHandlePurchaseProjectBasicInfo.getIsOtherAgency()) {
             //经办人ID
             Long agentId = clientHandlePurchaseProjectBasicInfo.getAgentId();
@@ -71,6 +71,7 @@ public class PurchaseProjectBasicInfoController extends BaseController {
         else {
             //参与者集合
             List<HandleParticipantBasicInfo> handleParticipantBasicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
+            //批复人为项目经理即当前登录人(采购人)
             if (userId != null) {
                 addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
             }

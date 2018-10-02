@@ -1,7 +1,10 @@
 package com.epc.web.facade.supplier.handle;
 
 
+import com.epc.web.facade.operator.handle.Attachment;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * <p>Description : 角色完善资料
@@ -46,28 +49,30 @@ public class RoleDetailInfo {
     //对公银行号码 0
     private String publicBanAccountNumber;
 
-    //资质证书url
-    private String qualificationCertificate;
-    private String qualificationCertificateNumber;
+//    //资质证书url
+//    private String qualificationCertificate;
+//    private String qualificationCertificateNumber;
+//
+//    //营业执照照片url
+//    private String businessLicense;
+//    private String businessLicenseNumber;
+//
+//    //法人身份证正面照片url
+//    private String legalIdCardPositive;
+//    private String legalIdCardPositiveNumber;
+//
+//
+//    //法人身份证反面照片url
+//    private String legalIdCardOther;
+//
+//    //带公章的授权书照片url
+//    private String certificateOfAuthorization;
+//    private String certificateOfAuthorizationNumber;
+//
+//   // 经办人(运营商员工)手持身份证正面照片url
+//    private String operatorIdCardFront;
+//    private String operatorIdCardFrontNumber;
 
-    //营业执照照片url
-    private String businessLicense;
-    private String businessLicenseNumber;
-
-    //法人身份证正面照片url
-    private String legalIdCardPositive;
-    private String legalIdCardPositiveNumber;
-
-
-    //法人身份证反面照片url
-    private String legalIdCardOther;
-
-    //带公章的授权书照片url
-    private String certificateOfAuthorization;
-    private String certificateOfAuthorizationNumber;
-
-   // 经办人(运营商员工)手持身份证正面照片url
-    private String operatorIdCardFront;
-    private String operatorIdCardFrontNumber;
+    private List<Attachment> atts;
 
 }

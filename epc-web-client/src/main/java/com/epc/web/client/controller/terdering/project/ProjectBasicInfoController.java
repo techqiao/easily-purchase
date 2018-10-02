@@ -5,7 +5,6 @@ import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.project.handle.ClientHandleProjectBasicInfo;
 import com.epc.web.client.controller.terdering.project.query.ClientQueryProjectInfoDTO;
 import com.epc.web.client.remoteApi.terdering.project.ProjectClient;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
 import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
@@ -37,8 +36,8 @@ public class ProjectBasicInfoController extends BaseController {
     public Result<Boolean> handleProjectBasicInfo(@RequestBody ClientHandleProjectBasicInfo clientHandleProjectBasicInfo){
         HandleProjectBasicInfo handleProjectBasicInfo = new HandleProjectBasicInfo();
         BeanUtils.copyProperties(clientHandleProjectBasicInfo, handleProjectBasicInfo);
-        handleProjectBasicInfo.setPurchaserId(getLoginUser().getUserId());
-        handleProjectBasicInfo.setOperateId(getLoginUser().getUserId());
+//        handleProjectBasicInfo.setPurchaserId(getLoginUser().getUserId());
+//        handleProjectBasicInfo.setOperateId(getLoginUser().getUserId());
         handleProjectBasicInfo.setCreator(getLoginUser().getName());
         return projectClient.handleProjectBasicInfo(handleProjectBasicInfo);
     }
@@ -54,7 +53,7 @@ public class ProjectBasicInfoController extends BaseController {
     public Result<List<ProjectBasicInfoVO>> getProjectList(@RequestBody ClientQueryProjectInfoDTO clientQueryProjectInfoDTO){
         QueryProjectInfoDTO queryProjectInfoDTO = new QueryProjectInfoDTO();
         BeanUtils.copyProperties(clientQueryProjectInfoDTO, queryProjectInfoDTO);
-        queryProjectInfoDTO.setPurchaserId(getLoginUser().getUserId());
+//        queryProjectInfoDTO.setPurchaserId(getLoginUser().getUserId());
         return projectClient.getProjectList(queryProjectInfoDTO);
     }
 

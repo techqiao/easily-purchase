@@ -3,7 +3,6 @@ package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
-import com.epc.web.client.controller.bidding.handle.monitor.ClientMonitoringFile;
 import com.epc.web.client.controller.bidding.query.monitor.ClientMonitoringFileDTO;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.monitoring.MonitorFileClient;
@@ -47,7 +46,7 @@ public class MonitoringFileController extends BaseController {
     public Result<Boolean> createMonitoringFile(HandleMonitoringFile dto){
         HandleMonitoringFile handleMonitoringFile=new HandleMonitoringFile();
         BeanUtils.copyProperties(handleMonitoringFile,dto);
-        dto.setOperateId(getLoginUser().getUserId());
+//        dto.setOperateId(getLoginUser().getUserId());
         dto.setOperator(getLoginUser().getName());
         String personType=null;
         //运营商1,代理商2,供货商3,采购商4

@@ -33,7 +33,7 @@ public class OpeningRecordController extends BaseController {
     public Result<Boolean> insertOpeningRecord(@RequestBody ClientHandleOpeningRecord clientHandleOpeningRecord){
         HandleOpeningRecord handleOpeningRecord = new HandleOpeningRecord();
         BeanUtils.copyProperties(clientHandleOpeningRecord, handleOpeningRecord);
-        handleOpeningRecord.setOperateId(getLoginUser().getUserId());
+//        handleOpeningRecord.setOperateId(getLoginUser().getUserId());
         return openingRecordClient.insertOpeningRecord(handleOpeningRecord);
     }
 

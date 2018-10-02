@@ -32,7 +32,7 @@ public class ExpertSignController extends BaseController {
     public Result<Boolean> insertExpertSign(@RequestBody ClientHandleExpertSign clientHandleExpertSign){
         HandleExpertSign handleExpertSign = new HandleExpertSign();
         BeanUtils.copyProperties(clientHandleExpertSign, handleExpertSign);
-        handleExpertSign.setOperateId(getLoginUser().getUserId());
+//        handleExpertSign.setOperateId(getLoginUser().getUserId());
         return expertSignClient.insertExpertSign(handleExpertSign);
     }
 

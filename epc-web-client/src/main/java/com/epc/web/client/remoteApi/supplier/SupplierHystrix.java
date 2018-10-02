@@ -29,6 +29,11 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
+    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail) {
         return Result.hystrixError();
     }
@@ -89,7 +94,7 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+    public Result<Boolean> forgetPasswordSupplier(HandleSupplierForgetPassword handleSupplierForgetPassword) {
         return Result.hystrixError();
     }
 

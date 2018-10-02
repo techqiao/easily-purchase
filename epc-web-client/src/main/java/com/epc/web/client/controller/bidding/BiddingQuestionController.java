@@ -46,7 +46,7 @@ public class BiddingQuestionController extends BaseController {
     public Result<Boolean> insertQuestion(@RequestBody ClientHandleQuestion dto){
         HandleQuestion handleQuestion=new HandleQuestion();
         BeanUtils.copyProperties(dto,handleQuestion);
-        handleQuestion.setQuestionerId(getLoginUser().getUserId());
+//        handleQuestion.setQuestionerId(getLoginUser().getUserId());
         handleQuestion.setQuestionerName(getLoginUser().getName());
         return  biddingClient.insertQuestion(handleQuestion);
     }

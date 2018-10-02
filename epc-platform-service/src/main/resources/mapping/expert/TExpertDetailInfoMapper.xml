@@ -318,8 +318,8 @@
   SELECT tb.id,tb.create_at,tb.profession,tb.positional,tb.`level` ,tb.`name`,tb.state
  FROM  t_expert_basic_info tb
 WHERE tb.is_deleted=0
-    <if test="whereName != null">
-    and tb.`name` like #{whereName}
+    <if test="where != null">
+    and tb.`name` like #{where}
     </if>
     <if test="status != null">
       and  tb.state =#{status}

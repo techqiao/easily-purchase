@@ -14,7 +14,6 @@ import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
-import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,8 +21,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 

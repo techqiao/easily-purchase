@@ -1,7 +1,6 @@
 package com.epc.administration.client.controller.biddingagency;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.epc.administration.client.controller.biddingagency.dto.ClientQueryDetailIfo;
 import com.epc.administration.client.controller.biddingagency.handle.ClientAgencyForbiddenHandle;
 import com.epc.administration.client.controller.biddingagency.handle.ClientBiddingAgencyDetailInfo;
@@ -15,10 +14,7 @@ import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
 import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
-import com.epc.common.RedisShardedPool;
 import com.epc.common.Result;
-import com.epc.common.constants.Const;
-import com.epc.common.util.RedisShardedPoolUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -44,12 +40,6 @@ public class BiddingAgencyController extends BaseController {
     @ApiOperation(value = "添加招标代理机构",notes = "添加招标代理机构")
     @PostMapping(value = "/public/createBiddingAgencyUser", consumes = "application/json;charset=UTF-8")
     public Result<Boolean> createBiddingAgencyUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
-       /* LoginHandle loginHandle = new LoginHandle();
-        loginHandle.setId(55L);
-        loginHandle.setPhone("5555");
-        loginHandle.setPassword("5555");
-        loginHandle.setName("5555");
-        RedisShardedPoolUtil.setEx("EPC_PRIVATE_5555",JSONObject.toJSONString(loginHandle),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);*/
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,pojo);
         LoginHandle loginUser = getLoginUser();

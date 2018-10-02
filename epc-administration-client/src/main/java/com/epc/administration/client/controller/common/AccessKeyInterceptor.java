@@ -1,5 +1,6 @@
 package com.epc.administration.client.controller.common;
 
+import com.epc.common.Result;
 import com.epc.common.util.RedisShardedPoolUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,7 +16,6 @@ import java.io.PrintWriter;
 public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
 
     private static Log log = LogFactory.getLog(AccessKeyInterceptor.class);
-
     /**
      * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，
      * SpringMVC中的Interceptor拦截器是链式的，可以同时存在多个Interceptor，
@@ -46,7 +46,12 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        writer.write("to Login please");
+        writer.write("{\n" +
+                "  \"code\": 1,\n" +
+                "  \"data\": false,\n" +
+                "  \"msg\": \"to Login please\",\n" +
+                "  \"success\": true\n" +
+                "}");
         writer.flush();
         return false;
     }

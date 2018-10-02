@@ -13,7 +13,6 @@ import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
-import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,8 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 /**

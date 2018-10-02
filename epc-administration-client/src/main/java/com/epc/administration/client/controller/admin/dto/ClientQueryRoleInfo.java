@@ -1,6 +1,5 @@
 package com.epc.administration.client.controller.admin.dto;
 
-import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.common.QueryRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

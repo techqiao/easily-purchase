@@ -14,7 +14,6 @@ import com.epc.administration.facade.operator.handle.OperatorForbiddenHandle;
 import com.epc.administration.facade.operator.handle.RoleDetailInfo;
 import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
-import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 

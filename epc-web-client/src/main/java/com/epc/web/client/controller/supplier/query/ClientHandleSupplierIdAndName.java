@@ -17,11 +17,9 @@ public class ClientHandleSupplierIdAndName {
     private String name;
 
     @ApiModelProperty(value = "角色")
-    @NotEmpty(message = "ClientHandleSupplierIdAndName.role.null")
     private Integer role;
 
     @ApiModelProperty(value = "是否禁用")
-    @NotEmpty(message = "ClientHandleSupplierIdAndName.isForbidden.null")
     private Integer isForbidden;
 
 }

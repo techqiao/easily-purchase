@@ -3,8 +3,6 @@ package com.epc.web.service.service;
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author winlin

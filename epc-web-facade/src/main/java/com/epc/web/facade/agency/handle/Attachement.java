@@ -1,10 +1,8 @@
 package com.epc.web.facade.agency.handle;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,9 +30,7 @@ public class Attachement implements Serializable{
      * 附件的名称
      */
     private String certificateName;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updateAt;
     private Boolean isDelete;
 

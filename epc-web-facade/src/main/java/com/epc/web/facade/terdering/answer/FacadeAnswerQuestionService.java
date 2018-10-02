@@ -1,6 +1,7 @@
 package com.epc.web.facade.terdering.answer;
 
 import com.epc.common.Result;
+import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
@@ -32,4 +33,11 @@ public interface FacadeAnswerQuestionService {
      */
     @PostMapping(value = "replyQuestion", consumes = "application/json; charset=UTF-8")
     Result<Boolean> replyQuestion(@RequestBody HandleReplyQuestion handleReplyQuestion);
+
+    /**
+     * 澄清公式
+     * @return
+     */
+    @PostMapping(value ="selectAnswerQuestion",consumes = "application/json; charset=UTF-8" )
+    Result selectAnswerQuestion(@RequestBody AnswerQuestionHandle questionHandle);
 }

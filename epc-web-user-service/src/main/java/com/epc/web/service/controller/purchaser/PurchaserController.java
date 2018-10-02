@@ -15,10 +15,8 @@ import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.FacadePurchaserService;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -36,7 +34,7 @@ public  class PurchaserController implements FacadePurchaserService {
      * 新增采购人员
      */
     @Override
-    public Result<Boolean> createPurchaseBasicInfo(@RequestBody HandlePurchaser handleOperator) {
+    public Result<Boolean> createPurchaseBasicInfo(HandlePurchaser handleOperator) {
         return purchaserService.createPurchaserUserInfo(handleOperator,Const.Role.ROLE_CUSTOMER);
     }
     @Override
@@ -53,8 +51,8 @@ public  class PurchaserController implements FacadePurchaserService {
      * 采购人 添加 供应商
      */
     @Override
-    public Result<Boolean> createSupplierByPurchaser(@RequestBody HandleSupplierDto handleSupplierDetail) {
-        return purchaserService.createSupplierByPurchaser(handleSupplierDetail);
+    public Result<Boolean> createSupplierByPurchaser(HandleSupplierDetail handleSupplierDetail) {
+        return purchaserService.createSupplierByPurchaser(null);
     }
 
 
@@ -62,7 +60,7 @@ public  class PurchaserController implements FacadePurchaserService {
      * 采购人 添加 专家
      */
     @Override
-    public Result<Boolean> createExpertByPurchaser(@RequestBody HandleExpert handleExpert) {
+    public Result<Boolean> createExpertByPurchaser(HandleExpert handleExpert) {
         return purchaserService.createExpertUserInfo(handleExpert);
     }
 
@@ -70,7 +68,7 @@ public  class PurchaserController implements FacadePurchaserService {
      * 采购人 添加 代理机构
      */
     @Override
-    public Result<Boolean> createAgencyByPurchaser(@RequestBody HandleAgnecy handleAgnecy) {
+    public Result<Boolean> createAgencyByPurchaser(HandleAgnecy handleAgnecy) {
         return purchaserService.createAgencyUserInfo(handleAgnecy);
     }
 
@@ -80,7 +78,7 @@ public  class PurchaserController implements FacadePurchaserService {
      * @return
      */
     @Override
-    public Result<Boolean> updatePurchaserDetail(@RequestBody HandleRegisterPurchaser handlePurchaser) {
+    public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
         return purchaserService.updatePurchaserDetail(handlePurchaser);
     }
 
@@ -90,9 +88,20 @@ public  class PurchaserController implements FacadePurchaserService {
      * @return
      */
     @Override
-    public Result<Boolean> updateAgencyDetail(@RequestBody HandleAgnecy handleAgnecy) {
+    public Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy) {
         return purchaserService.updateAgencyDetail(handleAgnecy);
     }
+
+    @Override
+    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
+        return null;
+    }
+
     /**
      *@author :winlin
      *@Description :完善采购人供货商信息
@@ -101,9 +110,9 @@ public  class PurchaserController implements FacadePurchaserService {
      *@date:2018/9/25
      */
     @Override
-    public Result<Boolean> updateSupplierDetail(@RequestBody PurchaserHandleSupplierDto dto) {
-        return purchaserService.updateSupplierDetail(dto);
-    }
+//    public Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto) {
+//        return purchaserService.updateSupplierDetail(dto);
+//    }
     /**
      *@author :winlin
      *@Description :完善采购人专家的信息
@@ -111,10 +120,10 @@ public  class PurchaserController implements FacadePurchaserService {
      *@return:
      *@date:2018/9/25
      */
-    @Override
-    public Result<Boolean> completePurchaserExpertInfo(@RequestBody HandleExpertDto expertDto) {
-        return purchaserService.completePurchaserExpertInfo(expertDto);
-    }
+//    @Override
+//    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto) {
+//        return purchaserService.completePurchaserExpertInfo(expertDto);
+//    }
 /**
  *@author :winlin
  *@Description :采购人注册
@@ -122,8 +131,8 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result registerPurchaser(@RequestBody HandleRegisterPurchaser purchaser) {
+//    @Override
+    public Result registerPurchaser(HandleRegisterPurchaser purchaser) {
         return purchaserService.registerPurchaser(purchaser);
     }
 /**
@@ -134,8 +143,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result allEmployee(@RequestBody HashMap<String,Long> map) {
-        Long purchaserId=map.get("purchaserId");
+    public Result allEmployee(Long purchaserId) {
         return purchaserService.allEmployee(purchaserId);
     }
 /**
@@ -146,10 +154,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result findEmployeeByName(@RequestBody HashMap<String,Object> map) {
-            String fuzzyName = (String) map.get("fuzzyName");
-        String pur=(String) map.get("purchaseId");
-        Long purchaseId = Long.parseLong(pur);
+    public Result findEmployeeByName(String fuzzyName,Long purchaseId) {
         return purchaserService.findEmployeeByName(fuzzyName,purchaseId);
     }
 /**
@@ -160,10 +165,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result updateEmployeeState(@RequestBody HashMap<String,Object> map) {
-        String cellphone =(String)map.get("cellphone");
-        String states = (String)map.get("state");
-        Integer state =Integer.parseInt(states);
+    public Result updateEmployeeState(String cellphone, Integer state) {
         return purchaserService.updateEmployeeState(cellphone,state);
     }
 /**
@@ -174,18 +176,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result updateEmployeeStateById(@RequestBody HashMap<String,Object> map) {
-        String ids = (String) map.get("id");
-        String states =(String)map.get("state");
-        Long id = Long .parseLong(ids);
-        Integer state = Integer.parseInt(states);
+    public Result updateEmployeeStateById(Long id, Integer state) {
         return purchaserService.updateEmployeeState(id,state);
     }
-
-
-
-
-    /**
+/**
  *@author :winlin
  *@Description :通过电话查找员工
  *@param:
@@ -193,8 +187,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,Object> map) {
-        String cellphone =(String)map.get("cellphone");
+    public Result queryEmployee(String cellphone) {
         return purchaserService.queryEmployee(cellphone);
     }
 /**
@@ -205,9 +198,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result  queryEmployeeById(@RequestBody HashMap<String,Object> map) {
-            String ids = (String) map.get("id");
-            Long id =Long.parseLong(ids);
+    public Result queryEmployee(Long id) {
         return purchaserService.queryEmployee(id);
     }
 
@@ -219,7 +210,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result queryEmplyee(@RequestBody HandleEmployeeDto employeeDto) {
+    public Result queryEmplyee(HandleEmployeeDto employeeDto) {
         return purchaserService.queryEmplyee(employeeDto);
     }
 
@@ -231,15 +222,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result updateRole(@RequestBody HashMap<String,Object> map) {
-        String ids = (String)map.get("id");
-        String roles = (String) map.get("role");
-        Long id= Long.parseLong(ids);
-        Integer role =Integer.parseInt(roles);
+    public Result updateRole(Long id, Integer role) {
         return purchaserService.updateRole(id,role);
     }
-
-    /**
+/**
  *@author :winlin
  *@Description :查询采购人下所有的供货商信息
  *@param:
@@ -247,9 +233,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result queryAllSuppliers(@RequestBody HashMap<String,Object> map) {
-       String pur =(String)map.get("purchaseId");
-        Long purchaseId =Long.parseLong(pur);
+    public Result queryAllSuppliers(Long purchaseId) {
         return purchaserService.queryAllSuppliers(purchaseId);
     }
     /**
@@ -260,10 +244,7 @@ public  class PurchaserController implements FacadePurchaserService {
      *@date:2018/9/25
      */
     @Override
-    public Result querySuppliersByName(@RequestBody HashMap<String,Object> map) {
-        String fuzzyName = (String)map.get("fuzzyName");
-        String pur =(String)map.get("purchaseId");
-        Long purchaseId =Long.parseLong(pur);
+    public Result querySuppliers(String fuzzyName, Long purchaseId) {
         return purchaserService.querySuppliers(fuzzyName,purchaseId);
     }
 
@@ -275,9 +256,7 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result querySuppliersById(@RequestBody HashMap<String,Object> map) {
-        String pur =(String)map.get("id");
-        Long id =Long.parseLong(pur);
+    public Result querySuppliers(Long id) {
         return purchaserService.querySuppliers(id);
     }
 /**
@@ -288,8 +267,8 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result updateSuppliers(@RequestBody HandleSupplierDto attachment) {
-        return purchaserService.updateSuppliers(attachment);
+    public Result updateSuppliers(HandPurchaserAttachment attachment) {
+        return purchaserService.updateSuppliers(null);
     }
 /**
  *@author :winlin
@@ -299,12 +278,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result queryExperts(@RequestBody HandleExpertDto dto) {
+    public Result queryExperts(HandleExpertDto dto) {
         return purchaserService.queryExperts(dto);
     }
-
-
-    /**
+/**
  *@author :winlin
  *@Description :依据id修改状态
  *@param:
@@ -312,12 +289,28 @@ public  class PurchaserController implements FacadePurchaserService {
  *@date:2018/9/25
  */
     @Override
-    public Result updateExpertState(@RequestBody HashMap<String, Object> map) {
-        String states = (String)map.get("state");
-        String pur =(String)map.get("id");
-        Long id =Long.parseLong(pur);
-        Integer state =Integer.parseInt(states);
+    public Result updateExpertState(Long id, Integer state) {
         return purchaserService.updateExpertState(id,state);
+    }
+
+    @Override
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
+        return null;
+    }
+
+    @Override
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
+        return null;
+    }
+
+    @Override
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
+        return null;
     }
 /**
  *@author :winlin
@@ -326,10 +319,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody HandleAgencyDto agencyDto) {
-        return purchaserService.queryAgenciesByCriteria(agencyDto);
-    }
+//    @Override
+//    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto) {
+//        return purchaserService.queryAgenciesByCriteria(agencyDto);
+//    }
 /**
  *@author :winlin
  *@Description :综合条件查询供货商
@@ -337,10 +330,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody HandleSupplierDto supplierDto) {
-        return purchaserService.querySupplierByCriterias(supplierDto);
-    }
+//    @Override
+//    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto) {
+//        return purchaserService.querySupplierByCriterias(supplierDto);
+//    }
 /**
  *@author :winlin
  *@Description :更新代理机构信息
@@ -348,10 +341,10 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<Boolean> updatePurchaserAgency(@RequestBody HandleAgencyDto agencyDto) {
-        return purchaserService.updatePurchaserAgency(agencyDto);
-    }
+//    @Override
+//    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto) {
+//        return purchaserService.updatePurchaserAgency(agencyDto);
+//    }
 /**
  *@author :winlin
  *@Description :更新专家信息
@@ -359,14 +352,9 @@ public  class PurchaserController implements FacadePurchaserService {
  *@return:
  *@date:2018/9/25
  */
-    @Override
-    public Result<Boolean> updatePurchaserExpert(@RequestBody HandleExpertDto expertDto) {
-        return purchaserService.updatePurchaserExpert(expertDto);
-    }
-
-    @Override
-    public Result queryEmployee(Long userId) {
-        return purchaserService.queryEmployee(userId);
-    }
+//    @Override
+//    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto) {
+//        return purchaserService.updatePurchaserExpert(expertDto);
+//    }
 
 }

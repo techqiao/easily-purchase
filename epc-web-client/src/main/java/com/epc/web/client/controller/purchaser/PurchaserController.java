@@ -6,7 +6,6 @@ import com.epc.web.client.controller.purchaser.dto.ClientHandleEmployeeDto;
 import com.epc.web.client.controller.purchaser.dto.ClientHandleExpertDto;
 import com.epc.web.client.controller.purchaser.dto.ClientHandleSupplierDto;
 import com.epc.web.client.controller.purchaser.handle.*;
-import com.epc.web.client.controller.supplier.handle.ClientHandleSupplierDetail;
 import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
 import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
@@ -16,14 +15,11 @@ import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
 import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +28,7 @@ import java.util.List;
 @RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PurchaserController  {
     @Autowired
-    PurchaserClient purchaserClient;
+     private PurchaserClient purchaserClient;
 
     @ApiOperation(value = "注册采购人员",notes = "注册采购人员")
     @PostMapping(value = "/registerPurchaseBasicInfo")

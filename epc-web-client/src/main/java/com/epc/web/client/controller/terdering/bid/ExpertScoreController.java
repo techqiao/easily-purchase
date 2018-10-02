@@ -4,7 +4,6 @@ import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleExpertScore;
 import com.epc.web.client.controller.terdering.bid.handle.ClientScoreReport;
-import com.epc.web.client.remoteApi.terdering.bid.ExpertScoreClient;
 import com.epc.web.facade.bidding.handle.HandleScoreReport;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertScore;
 import com.epc.web.facade.terdering.bid.vo.BidderListVO;

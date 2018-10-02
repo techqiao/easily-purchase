@@ -1,6 +1,9 @@
 package com.epc.web.facade.operator.query;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -9,9 +12,9 @@ public class HandleOperatorFindAllByName implements Serializable {
 
     private static final long serialVersionUID = -5503378128453752419L;
     /**
-     *  员工id=运营商的（法人）id
+     * 运营商的（法人）id
      */
-    private Long id;
+    private Long operatorId;
 
     /**
      * 输入查询的员工名字

@@ -285,76 +285,6 @@ public class BAnswerQuestionCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andQuestionerNameIsNull() {
-            addCriterion("questioner_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameIsNotNull() {
-            addCriterion("questioner_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameEqualTo(String value) {
-            addCriterion("questioner_name =", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameNotEqualTo(String value) {
-            addCriterion("questioner_name <>", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameGreaterThan(String value) {
-            addCriterion("questioner_name >", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameGreaterThanOrEqualTo(String value) {
-            addCriterion("questioner_name >=", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameLessThan(String value) {
-            addCriterion("questioner_name <", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameLessThanOrEqualTo(String value) {
-            addCriterion("questioner_name <=", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameLike(String value) {
-            addCriterion("questioner_name like", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameNotLike(String value) {
-            addCriterion("questioner_name not like", value, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameIn(List<String> values) {
-            addCriterion("questioner_name in", values, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameNotIn(List<String> values) {
-            addCriterion("questioner_name not in", values, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameBetween(String value1, String value2) {
-            addCriterion("questioner_name between", value1, value2, "questionerName");
-            return (Criteria) this;
-        }
-
-        public Criteria andQuestionerNameNotBetween(String value1, String value2) {
-            addCriterion("questioner_name not between", value1, value2, "questionerName");
-            return (Criteria) this;
-        }
-
         public Criteria andQuestionTypeIsNull() {
             addCriterion("question_type is null");
             return (Criteria) this;
@@ -422,6 +352,76 @@ public class BAnswerQuestionCriteria {
 
         public Criteria andQuestionTypeNotBetween(String value1, String value2) {
             addCriterion("question_type not between", value1, value2, "questionType");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameIsNull() {
+            addCriterion("questioner_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameIsNotNull() {
+            addCriterion("questioner_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameEqualTo(String value) {
+            addCriterion("questioner_name =", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameNotEqualTo(String value) {
+            addCriterion("questioner_name <>", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameGreaterThan(String value) {
+            addCriterion("questioner_name >", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameGreaterThanOrEqualTo(String value) {
+            addCriterion("questioner_name >=", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameLessThan(String value) {
+            addCriterion("questioner_name <", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameLessThanOrEqualTo(String value) {
+            addCriterion("questioner_name <=", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameLike(String value) {
+            addCriterion("questioner_name like", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameNotLike(String value) {
+            addCriterion("questioner_name not like", value, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameIn(List<String> values) {
+            addCriterion("questioner_name in", values, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameNotIn(List<String> values) {
+            addCriterion("questioner_name not in", values, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameBetween(String value1, String value2) {
+            addCriterion("questioner_name between", value1, value2, "questionerName");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuestionerNameNotBetween(String value1, String value2) {
+            addCriterion("questioner_name not between", value1, value2, "questionerName");
             return (Criteria) this;
         }
 

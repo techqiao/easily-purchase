@@ -39,6 +39,9 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
     public Result<Boolean> handleProjectBasicInfo(HandleProjectBasicInfo handleProjectBasicInfo) {
         TProjectBasicInfo pojo = new TProjectBasicInfo();
         BeanUtils.copyProperties(handleProjectBasicInfo, pojo);
+        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        pojo.setCreateAt(new Date());
+        pojo.setUpdateAt(new Date());
         try {
             if(pojo.getId() == null){
                 pojo.setProjectCode(GeneratorCodeUtil.GeneratorProjectCode());

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface FacadePurchaserService {
@@ -49,7 +48,7 @@ public interface FacadePurchaserService {
      * @return
      */
     @PostMapping(value = "registerSupplierByPurchaser", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> createSupplierByPurchaser(@RequestBody HandleSupplierDto handleSupplierDetail);
+    Result<Boolean> createSupplierByPurchaser(@RequestBody HandleSupplierDetail handleSupplierDetail);
 
     /**
      * 采购人员注册专家
@@ -99,7 +98,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/21
      */
     @PostMapping(value = "completePurchaserExpertInfo", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> completePurchaserExpertInfo(@RequestBody HandleExpertDto expertDto);
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
 
     /**
      * @author :winlin
@@ -109,7 +108,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/18
      */
     @PostMapping(value = "registerPurchaser", consumes = "application/json; charset=UTF-8")
-    Result registerPurchaser(@RequestBody HandleRegisterPurchaser purchaser);
+    Result registerPurchaser(HandleRegisterPurchaser purchaser);
 
     /**
      * @author :winlin
@@ -119,7 +118,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "allEmployee", consumes = "application/json; charset=UTF-8")
-    Result allEmployee(@RequestBody HashMap<String,Long> map);
+    Result allEmployee(Long purchaserId);
 
     /**
      * @author :winlin
@@ -129,7 +128,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "findEmployeeByName", consumes = "application/json; charset=UTF-8")
-    Result findEmployeeByName(@RequestBody HashMap<String,Object> map);
+    Result findEmployeeByName(@RequestParam("fuzzyName")String fuzzyName, @RequestParam("id")Long purchaseId);
 
     /**
      * @author :winlin
@@ -139,7 +138,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "updateEmployeeState", consumes = "application/json; charset=UTF-8")
-    Result updateEmployeeState(@RequestBody HashMap<String,Object> map);
+    Result updateEmployeeState(@RequestParam("cellphone")String cellphone,@RequestParam("state")Integer state);
 
     /**
      * @author :winlin
@@ -149,7 +148,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "updateEmployeeStateById", consumes = "application/json; charset=UTF-8")
-    Result updateEmployeeStateById(@RequestBody HashMap<String,Object> map);
+    Result updateEmployeeStateById(@RequestParam("id")Long id,@RequestParam("state")Integer state);
 
     /**
      * @author :winlin
@@ -159,7 +158,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryEmployee", consumes = "application/json; charset=UTF-8")
-    Result queryEmployeeByCellphone(@RequestBody HashMap<String,Object> map);
+    Result queryEmployee(String cellphone);
 
     /**
      * @author :winlin
@@ -169,7 +168,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryPurchaserEmployeeById", consumes = "application/json; charset=UTF-8")
-    Result queryEmployeeById(@RequestBody HashMap<String,Object> map);
+    Result queryEmployee(Long id);
     /**
      *@author :winlin
      *@Description :根据条件查询多有符合条件的员工
@@ -178,7 +177,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/19
      */
     @PostMapping(value = "queryEmplyeeByCriteria", consumes = "application/json; charset=UTF-8")
-    Result queryEmplyee(@RequestBody HandleEmployeeDto employeeDto);
+    Result queryEmplyee(HandleEmployeeDto employeeDto);
 
     /**
      *@author :winlin
@@ -188,7 +187,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/19
      */
     @PostMapping(value = "updateRole", consumes = "application/json; charset=UTF-8")
-    Result updateRole(@RequestBody HashMap<String,Object> map);
+    Result updateRole(@RequestParam("id")Long id,@RequestParam("role")Integer role);
 
     /**
      * @author :winlin
@@ -198,7 +197,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryAllSuppliers", consumes = "application/json; charset=UTF-8")
-    Result queryAllSuppliers(@RequestBody HashMap<String,Object> map);
+    Result queryAllSuppliers(Long purchaseId);
 
     /**
      * @author :winlin
@@ -208,7 +207,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "querySuppliers", consumes = "application/json; charset=UTF-8")
-    Result querySuppliersByName(@RequestBody HashMap<String,Object> map);
+    Result querySuppliers(@RequestParam("fuzzyName")String fuzzyName,@RequestParam("purchaseId")Long purchaseId);
 
     /**
      * @author :winlin
@@ -218,7 +217,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "querySuppliersById", consumes = "application/json; charset=UTF-8")
-    Result querySuppliersById(@RequestBody HashMap<String,Object> map);
+    Result querySuppliers(Long id);
 
     /**
      * @author :winlin
@@ -228,7 +227,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "updateSuppliers", consumes = "application/json; charset=UTF-8")
-    Result updateSuppliers( @RequestBody HandleSupplierDto attachment);
+    Result updateSuppliers(HandPurchaserAttachment attachment);
 
     /**
      * @author :winlin
@@ -238,7 +237,7 @@ public interface FacadePurchaserService {
      * @date:2018/9/19
      */
     @PostMapping(value = "queryExperts", consumes = "application/json; charset=UTF-8")
-    Result queryExperts(@RequestBody HandleExpertDto dto);
+    Result queryExperts(HandleExpertDto dto);
     /**
      *@author :winlin
      *@Description :根据id删除专家,修改is_delete状态
@@ -247,7 +246,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/19
      */
     @PostMapping(value = "updateExpertState", consumes = "application/json; charset=UTF-8")
-    Result updateExpertState(@RequestBody HashMap<String,Object> map);
+    Result updateExpertState(@RequestParam("id")Long id ,@RequestParam("state")Integer state);
 
     /**
      *@author :winlin
@@ -257,7 +256,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/20
      */
     @PostMapping(value = "findAgenciesByCriteria", consumes = "application/json; charset=UTF-8")
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody HandleAgencyDto agencyDto);
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto);
 
     /**
      *@author :winlin
@@ -267,7 +266,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/20
      */
     @PostMapping(value = "findSupplierByCriterias", consumes = "application/json; charset=UTF-8")
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody HandleSupplierDto supplierDto);
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto);
 
     /**
      *@author :winlin
@@ -277,7 +276,7 @@ public interface FacadePurchaserService {
      *@date:2018/9/21
      */
     @PostMapping(value = "updatePurchaserAgency", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> updatePurchaserAgency(@RequestBody HandleAgencyDto agencyDto);
+    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto);
     /**
      *@author :winlin
      *@Description :修改采购人专家的信息
@@ -286,7 +285,5 @@ public interface FacadePurchaserService {
      *@date:2018/9/21
      */
     @PostMapping(value = "updatePurchaserExpert", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> updatePurchaserExpert(@RequestBody HandleExpertDto expertDto);
-    @PostMapping(value = "queryEmployees", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployee(@RequestParam(value = "userId") Long userId);
+    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 }

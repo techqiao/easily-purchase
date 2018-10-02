@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>@Author : luozhixin
  * <p>PreviewController
  */
-@Api(value = "发布预告", tags = {"发布预告"})
+@Api(value = "发布预告",tags ={"发布预告"} )
 @RestController
 @RequestMapping(value = "/preview", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PreviewController extends BaseController {
@@ -33,62 +33,55 @@ public class PreviewController extends BaseController {
 
     /**
      * 发布预告
-     *
      * @param clientPreviewHandle
      * @return
      */
     @ApiOperation("发布预告")
-    @PostMapping(value = "insertPreview", consumes = "application/json;charset=UTF-8")
-    public Result insertPreview(@RequestBody ClientPreviewHandle clientPreviewHandle) {
-        PreviewHandle previewHandle = new PreviewHandle();
-        BeanUtils.copyProperties(clientPreviewHandle, previewHandle);
-        previewHandle.setCreator(getLoginUser().getName());
-        previewHandle.setSetOperateId(getLoginUser().getUserId());
-        return previewClient.insertPreview(previewHandle);
+    @PostMapping(value = "insertPreview" ,consumes = "application/json;charset=UTF-8")
+    public Result insertPreview(@RequestBody ClientPreviewHandle clientPreviewHandle ){
+        PreviewHandle previewHande = new PreviewHandle();
+        BeanUtils.copyProperties(clientPreviewHandle,previewHande);
+        previewHande.setCreator(getLoginUser().getName());
+        previewHande.setSetOperateId(getLoginUser().getUserId());
+        return previewClient.insertPreview(previewHande );
     }
-
     /**
      * 查询预告列表
-     *
      * @param clientQueryPageDTO
      * @return
      */
     @ApiOperation("查询预告列表")
-    @PostMapping(value = "selectPreview", consumes = "application/json;charset=UTF-8")
-    public Result selectPreview(@RequestBody ClientQueryPageDTO clientQueryPageDTO) {
+    @PostMapping(value = "selectPreview",consumes = "application/json;charset=UTF-8")
+    public Result selectPreview(@RequestBody ClientQueryPageDTO clientQueryPageDTO){
         PagerParam pagerParam = new PagerParam();
-        BeanUtils.copyProperties(clientQueryPageDTO, pagerParam);
+        BeanUtils.copyProperties(clientQueryPageDTO,pagerParam);
         return previewClient.selectPreview(pagerParam);
     }
-
     /**
      * 详情
-     *
      * @param clientQueryPreviewOneDTO
      * @return
      */
     @ApiOperation("详情")
-    @PostMapping(value = "queryPreview", consumes = "application/json;charset=UTF-8")
-    public Result queryPreview(@RequestBody ClientQueryPreviewOneDTO clientQueryPreviewOneDTO) {
+    @PostMapping(value = "queryPreview",consumes = "application/json;charset=UTF-8")
+    public Result queryPreview(@RequestBody ClientQueryPreviewOneDTO clientQueryPreviewOneDTO){
         QueryWhere queryWhere = new QueryWhere();
-        BeanUtils.copyProperties(clientQueryPreviewOneDTO, queryWhere);
+        BeanUtils.copyProperties(clientQueryPreviewOneDTO,queryWhere);
         return previewClient.queryPreview(queryWhere);
     }
-
     /**
      * 根据时间段查询
-     *
      * @param startDate
      * @param endDate
      * @return
      */
     @ApiOperation("根据时间段查询")
-    @PostMapping(value = "queryByDate", consumes = "application/json;charset=UTF-8")
+    @PostMapping(value = "queryByDate",consumes = "application/json;charset=UTF-8")
     public Result queryByDate(@RequestBody ClientQueryPageDTO clientQueryPageDTO,
-                              String startDate, String endDate) {
+                               String startDate , String endDate){
         PagerParam pagerParam = new PagerParam();
-        BeanUtils.copyProperties(clientQueryPageDTO, pagerParam);
-        return previewClient.queryByDate(pagerParam, startDate, endDate);
+        BeanUtils.copyProperties(clientQueryPageDTO,pagerParam);
+        return  previewClient.queryByDate(pagerParam,startDate,endDate);
     }
 
 }

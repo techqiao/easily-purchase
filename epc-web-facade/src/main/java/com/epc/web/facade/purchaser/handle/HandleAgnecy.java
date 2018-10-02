@@ -57,11 +57,8 @@ public class HandleAgnecy implements Serializable{
     /**
      * 附件list
      */
-    private List<Attachement> atts;
-    /**
-     * 来源
-     */
-    private String source;
+    protected List<Attachement> atts;
+
 
 
 

@@ -32,11 +32,6 @@ public class ProjectBasicInfoController extends BaseController {
     @Autowired
     private ProjectClient projectClient;
 
-    /**
-     * 是否国家项目 是否必须招标 是采购项目属性，当前创建项目已忽略
-     * @param clientHandleProjectBasicInfo
-     * @return
-     */
     @ApiOperation(value = "新增|修改项目")
     @PostMapping(value="/handleProjectBasicInfo")
     public Result<Boolean> handleProjectBasicInfo(@RequestBody ClientHandleProjectBasicInfo clientHandleProjectBasicInfo){

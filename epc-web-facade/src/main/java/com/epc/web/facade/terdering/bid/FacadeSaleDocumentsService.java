@@ -1,7 +1,7 @@
 package com.epc.web.facade.terdering.bid;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
+import com.epc.web.facade.terdering.bid.handle.HandDocuments;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +18,11 @@ public interface FacadeSaleDocumentsService {
 
     /**
      * 发布|审核|批复|修改|删除 招标文件
-     * @param handleDocuments
+     * @param handDocuments
      * @return
      */
     @PostMapping(value = "handleSaleDocuments", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> handleSaleDocuments(@RequestBody HandleDocuments handleDocuments);
+    Result<Boolean> handleSaleDocuments(@RequestBody HandDocuments handDocuments);
 
     /**
      * 查询招标文件详情

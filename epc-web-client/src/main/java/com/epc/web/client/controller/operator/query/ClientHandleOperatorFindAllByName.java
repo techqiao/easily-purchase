@@ -9,9 +9,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @ApiModel(value = "ClientHandleOperatorFindAllByName",description = "运营商查询列表")
 public class ClientHandleOperatorFindAllByName {
 
-    @ApiModelProperty(value = "员工id=运营商的（法人）id")
-    @NotEmpty(message = "ClientHandleOperatorFindAllByName.id.null")
-    private Long id;
+    @ApiModelProperty(value = "运营商的（法人）id")
+    @NotEmpty(message = "ClientHandleOperatorFindAllByName.operatorId.null")
+    private Long operatorId;
 
     @ApiModelProperty(value = "输入查询的员工名字")
     @NotEmpty(message = "ClientHandleOperatorFindAllByName.name.null")

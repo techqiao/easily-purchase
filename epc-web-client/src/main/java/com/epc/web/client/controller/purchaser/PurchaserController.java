@@ -1,6 +1,7 @@
 package com.epc.web.client.controller.purchaser;
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.purchaser.dto.*;
 import com.epc.web.client.controller.purchaser.handle.*;
 import com.epc.web.client.controller.supplier.handle.ClientHandleSupplierDetail;
@@ -24,7 +25,7 @@ import java.util.List;
 @Api(value = "采购人服务")
 @RestController
 @RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PurchaserController {
+public class PurchaserController extends BaseController {
     @Autowired
     PurchaserClient purchaserClient;
 
@@ -35,6 +36,7 @@ public class PurchaserController {
     @PostMapping(value = "/clientcreatePurchaserUserInfo")
     Result<Boolean> createPurchaserUserInfo(@RequestBody ClientHandlePurchaser handleEmployee) {
         HandlePurchaser purchaser = new HandlePurchaser();
+        super.getLoginUser().getUserId();
         BeanUtils.copyProperties(handleEmployee, purchaser);
         return purchaserClient.createPurchaserUserInfo(purchaser);
     }

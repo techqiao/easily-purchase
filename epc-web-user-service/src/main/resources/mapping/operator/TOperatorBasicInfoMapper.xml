@@ -250,7 +250,7 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     INSERT  INTO t_operator_basic_info
-    (cellphone,password,,`name`)
+    (cellphone,password,`name`)
     VALUES
     (#{cellphone},#{pwd},#{name})
   </insert>

@@ -6,6 +6,7 @@ import com.epc.web.client.controller.agency.handle.ClientHandleAgency;
 import com.epc.web.client.controller.agency.handle.ClientHandleEmployee;
 import com.epc.web.client.controller.agency.handle.ClientHandleExpert;
 import com.epc.web.client.controller.agency.handle.ClientHandleSupplier;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.purchaser.dto.ClientQueryDto;
 import com.epc.web.client.controller.purchaser.handle.ClientHandleTrustList;
 import com.epc.web.client.remoteApi.agency.AgencyClient;
@@ -37,7 +38,7 @@ import java.util.List;
 @Api(value = "代理机构")
 @RequestMapping(value = "/agency", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @RestController
-public class AgencyController {
+public class AgencyController extends BaseController {
 
     @Autowired
     AgencyClient agencyClient;

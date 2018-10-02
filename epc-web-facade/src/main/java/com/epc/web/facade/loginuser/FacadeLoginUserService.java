@@ -28,5 +28,5 @@ public interface FacadeLoginUserService {
      *@date:2018/10/1
      */
     @PostMapping(value = "register", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> registerUser(RegisterUser registerUser);
+    Result<Boolean> registerUser( @RequestBody RegisterUser registerUser);
 }

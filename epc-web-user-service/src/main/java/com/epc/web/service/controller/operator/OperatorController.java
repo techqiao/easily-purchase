@@ -142,7 +142,7 @@ public class OperatorController implements FacadeOperatorService {
      * 运营商忘记密码
      */
     @Override
-    public Result<Boolean> forgetPasswordOperator(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword){
+    public Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword){
         return operatorService.forgetPassword(handleOperatorForgetPassword);
     }
 

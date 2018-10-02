@@ -54,7 +54,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     TExpertBasicInfoMapper tExpertBasicInfoMapper;
     @Override
     @JsonInclude(JsonInclude.Include.NON_NULL)
-
     public Result login(@RequestBody LoginUser user) {
         //用户类型
         Integer type = user.getType();
@@ -113,7 +112,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     }
 
     @Override
-    public Result<Boolean> registerUser(RegisterUser registerUser) {
+    public Result<Boolean> registerUser(@RequestBody RegisterUser registerUser) {
         //用户类型
         Integer type = registerUser.getType();
         //密码加密

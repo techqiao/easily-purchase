@@ -12,10 +12,7 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.domain.purchaser.TPurchaserAttachment;
-import com.epc.platform.service.domain.purchaser.TPurchaserBasicInfo;
-import com.epc.platform.service.domain.purchaser.TPurchaserBasicInfoCriteria;
-import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
+import com.epc.platform.service.domain.purchaser.*;
 import com.epc.platform.service.mapper.purchaser.TPurchaserAttachmentMapper;
 import com.epc.platform.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.platform.service.mapper.purchaser.TPurchaserDetailInfoMapper;
@@ -77,13 +74,14 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
     }
     /**
-     * 采购人完善资料
+     * 完善采购人资料
      * @param purchaserHandle
      * @return
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> insertPurchaserDetailInfo(PurchaserHandle purchaserHandle) {
+    public Result<Boolean> updatePurchaserDetailInfo(PurchaserHandle purchaserHandle) {
+        Date date = new Date();
         TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
         tPurchaserDetailInfo.setPurchaserId(purchaserHandle.getId());
         tPurchaserDetailInfo.setCompanyName(purchaserHandle.getCompanyName());
@@ -91,42 +89,35 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserDetailInfo.setPublicBankName(purchaserHandle.getPublicBankName());
         tPurchaserDetailInfo.setPublicBanAccountNumber(purchaserHandle.getPublicBanAccountNumber());
         tPurchaserDetailInfo.setExtendedField(purchaserHandle.getBusinessLicense());
-        Date date = new Date();
-        tPurchaserDetailInfo.setCreateAt(date);
         tPurchaserDetailInfo.setUpdateAt(date);
-        tPurchaserDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
+        tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
+
         TPurchaserAttachment attachment = new TPurchaserAttachment();
         attachment.setPurchaserId(purchaserHandle.getId());
-        attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
-        attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         try {
             //公司名称
-            tPurchaserDetailInfoMapper.insertSelective(tPurchaserDetailInfo);
+            tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo,tPurchaserDetailInfoCriteria);
             //经办人(采购人员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
+            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
             //法人身份证反面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardOther());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
+            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
             //营业执照照片url
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getBusinessLicense());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
+            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
             //资质证书url
             List<AttachmentHandle> attachmentHandleList = purchaserHandle.getAttachmentHandleList();
             for (AttachmentHandle attachmentHandle : attachmentHandleList) {
-                TPurchaserAttachment tPurchaserAttachment = new TPurchaserAttachment();
-                tPurchaserAttachment.setPurchaserId(purchaserHandle.getId());
-                tPurchaserAttachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                tPurchaserAttachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
-                tPurchaserAttachment.setCertificateName(attachmentHandle.getCertificateName());
-                tPurchaserAttachment.setCreateAt(new Date());
-                tPurchaserAttachment.setUpdateAt(new Date());
-                tPurchaserAttachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                tPurchaserAttachmentMapper.insertSelective(tPurchaserAttachment);
+                attachment.setCertificateName(attachmentHandle.getCertificateName());
+                attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
             }
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
@@ -139,11 +130,79 @@ public class PurchaserServiceImpl implements PurchaserService {
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }catch (Exception e){
             LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
-            return Result.error(e.getMessage());
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+    }
+    /**
+     * 采购人完善资料
+     * @param purchaserHandle
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> insertPurchaserDetailInfo(PurchaserHandle purchaserHandle) {
+        Date date = new Date();
+        TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
+        tPurchaserDetailInfo.setPurchaserId(purchaserHandle.getId());
+        tPurchaserDetailInfo.setCompanyName(purchaserHandle.getCompanyName());
+        tPurchaserDetailInfo.setUniformCreditCode(purchaserHandle.getUniformCreditCode());
+        tPurchaserDetailInfo.setPublicBankName(purchaserHandle.getPublicBankName());
+        tPurchaserDetailInfo.setPublicBanAccountNumber(purchaserHandle.getPublicBanAccountNumber());
+        tPurchaserDetailInfo.setExtendedField(purchaserHandle.getBusinessLicense());
+        tPurchaserDetailInfo.setUpdateAt(date);
+        TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
+        tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
+
+        TPurchaserAttachment attachment = new TPurchaserAttachment();
+        attachment.setPurchaserId(purchaserHandle.getId());
+        attachment.setUpdateAt(date);
+        try {
+            tPurchaserDetailInfoMapper.deleteByExample(tPurchaserDetailInfoCriteria);
+            TPurchaserAttachmentCriteria criteria = new TPurchaserAttachmentCriteria();
+            criteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
+            tPurchaserAttachmentMapper.deleteByExample(criteria);
+            //公司名称
+            tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo,tPurchaserDetailInfoCriteria);
+            //经办人(采购人员工)手持身份证正面照片url
+            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
+            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            //法人身份证反面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardOther());
+            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            //营业执照照片url
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateFilePath(purchaserHandle.getBusinessLicense());
+            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            //资质证书url
+            List<AttachmentHandle> attachmentHandleList = purchaserHandle.getAttachmentHandleList();
+            for (AttachmentHandle attachmentHandle : attachmentHandleList) {
+                attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                attachment.setCertificateName(attachmentHandle.getCertificateName());
+                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            }
+            //完善信息完成后 更新信息状态至已提交
+            TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
+            tSupplierBasicInfo.setId(purchaserHandle.getId());
+            tSupplierBasicInfo.setName("");
+            tSupplierBasicInfo.setCellphone("");
+            tSupplierBasicInfo.setPassword("");
+            tSupplierBasicInfo.setPurchaserId(0L);
+            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setUpdateAt(new Date());
+            return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
+        }catch (BusinessException e) {
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
     /**
@@ -186,6 +245,11 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public List<PurchaserVO> selectAllPurchaserByPage(QueryDetailIfo queryDetailIfo) {
+        String where = queryDetailIfo.getWhere();
+        if(where!=null){
+            where="%"+where+"%";
+            queryDetailIfo.setWhere(where);
+        }
         return  tPurchaserDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**

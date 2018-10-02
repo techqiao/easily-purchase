@@ -1,11 +1,13 @@
 package com.epc.administration.facade.admin;
 
 import com.epc.administration.facade.admin.handle.LoginHandle;
+import com.epc.administration.facade.admin.vo.LoginVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -22,9 +24,9 @@ public interface AdminLoginService {
      */
     @PostMapping(value = "login", consumes = "application/json; charset=UTF-8")
     @ResponseBody
-     Result login(@RequestParam(value = "session", required = false) HttpSession session,
-                  @RequestParam(value = "httpServletResponse", required = false) HttpServletResponse httpServletResponse,
-                  @RequestBody LoginHandle loginHandle);
+    Result<Map<String,Object>> login(
+                     @RequestParam("httpServletResponse")  HttpServletResponse httpServletResponse,
+                           @RequestBody LoginHandle loginHandle);
 
 
     /**用户登出
@@ -32,7 +34,7 @@ public interface AdminLoginService {
      */
     @PostMapping(value = "loginOut", consumes = "application/json; charset=UTF-8")
     @ResponseBody
-    Result loginOut(@RequestParam(value = "httpServletRequest", required = false) HttpServletRequest httpServletRequest,
-                    @RequestParam(value = "httpServletResponse", required = false) HttpServletResponse httpServletResponse);
+    Result loginOut( @RequestParam("httpServletRequest") HttpServletRequest httpServletRequest,
+                     @RequestParam("httpServletResponse") HttpServletResponse httpServletResponse);
 }
 

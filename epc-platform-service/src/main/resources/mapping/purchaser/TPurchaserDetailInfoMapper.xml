@@ -314,31 +314,19 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select resultMap="selectMap" parameterType="com.epc.administration.facade.purchaser.vo.PurchaserVO" id="selectByPageWhereName" >
-    SELECT tp.id id, tp.cellphone,tp.`name`,tp.state, td.company_name,td.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.purchaser_id,td.uniform_credit_code
-  FROM t_purchaser_basic_info tp
- LEFT  JOIN t_purchaser_detail_info td ON td.purchaser_id=tp.id
-  WHERE tp.is_deleted=0 AND td.company_name LIKE #{companyName,jdbcType=VARCHAR}
-  ORDER BY id DESC
-  </select>
+
   <select resultMap="selectMap" parameterType="com.epc.administration.facade.purchaser.vo.PurchaserVO" id="selectByPage" >
    SELECT tp.id id, tp.cellphone,tp.`name`,tp.state, td.company_name,td.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.purchaser_id,td.uniform_credit_code
   FROM t_purchaser_basic_info tp
  LEFT  JOIN t_purchaser_detail_info td ON td.purchaser_id=tp.id
   WHERE tp.is_deleted=0
-  <if  test="whereName != null">
-    and td.company_name like #{whereName}
+  <if  test="where != null">
+    and td.company_name like #{where}
   </if>
     <if test="status != null">
       and  tp.state = #{status}
     </if>
   ORDER BY id DESC
   </select>
-  <select resultMap="selectMap" parameterType="com.epc.administration.facade.purchaser.vo.PurchaserVO" id="selectByPageWithStatus" >
-   SELECT tp.id id, tp.cellphone,tp.`name`,tp.state, td.company_name,td.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.purchaser_id,td.uniform_credit_code
-  FROM t_purchaser_basic_info tp
- LEFT  JOIN t_purchaser_detail_info td ON td.purchaser_id=tp.id
-  WHERE tp.is_deleted=0  AND tp.state = #{status,jdbcType=INTEGER}
-  ORDER BY id DESC
-  </select>
+
 </mapper>

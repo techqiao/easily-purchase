@@ -28,6 +28,12 @@ public interface SupplierService {
      * @return
      */
      Result<Boolean> insertSupplierDetailInfo(SupplierHandle supplierHandle);
+    /**
+     * 修改供应商资料
+     * @param supplierHandle
+     * @return
+     */
+    Result<Boolean> updateSupplierDetailInfo(SupplierHandle supplierHandle);
 
     /**
      * 供应商资料删除

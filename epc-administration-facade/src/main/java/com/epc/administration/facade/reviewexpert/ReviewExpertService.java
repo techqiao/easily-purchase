@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReviewExpertService {
 
@@ -26,9 +27,6 @@ public interface ReviewExpertService {
     @PostMapping(value = "insertReviewExpertBasicInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertReviewExpertBasicInfo(@RequestBody UserBasicInfo userBasicInfo);
 
-
-
-
     /**
      * 评审专家完善资料
      * @param reviewExpertHandle
@@ -37,6 +35,13 @@ public interface ReviewExpertService {
     @PostMapping(value = "insertReviewExpertDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertReviewExpertDetailInfo(@RequestBody ReviewExpertHandle reviewExpertHandle);
 
+    /**
+     * 评审专家完善资料
+     * @param reviewExpertHandle
+     * @return
+     */
+    @PostMapping(value = "updateReviewExpertDetailInfo", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateReviewExpertDetailInfo(@RequestBody ReviewExpertHandle reviewExpertHandle);
     /**
      * 删除评审专家资料
      * @param whereId
@@ -53,14 +58,13 @@ public interface ReviewExpertService {
     @GetMapping(value = "queryReviewExpertDetailInfo" )
     Result queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId);
 
-
     /**
      * 查询所有评审专家 分页展示
      * @param queryDetailIfo
      * @return
      */
     @PostMapping(value = "selectAllExpertByPage" , consumes = "application/json; charset=UTF-8")
-    Result<List<ReviewExpertVO>> selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<Map<String, Object>> selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 审核评审专家

@@ -33,7 +33,6 @@ public interface TPurchaserDetailInfoMapper {
 
     int updateByPrimaryKey(TPurchaserDetailInfo record);
 
-    List<PurchaserVO> selectByPageWhereName(String name);
 
     /**
      * 分页查询
@@ -41,11 +40,5 @@ public interface TPurchaserDetailInfoMapper {
      */
     List<PurchaserVO> selectByPage(QueryDetailIfo queryDetailIfo);
 
-    /**
-     * 根据状态
-     * 分页查询
-     * @param status
-     * @return
-     */
-    List<PurchaserVO> selectByPageWithStatus(Integer status);
+
 }

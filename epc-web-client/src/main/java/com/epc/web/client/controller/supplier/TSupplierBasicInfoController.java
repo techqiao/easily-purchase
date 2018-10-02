@@ -4,7 +4,6 @@ import com.epc.common.Result;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorRole;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorState;
 import com.epc.web.client.controller.supplier.handle.*;
-import com.epc.web.client.controller.supplier.query.ClientHandleFindSupplierByInfo;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierCellphone;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierId;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierIdAndName;
@@ -12,14 +11,12 @@ import com.epc.web.client.remoteApi.supplier.SupplierClient;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
-import com.epc.web.facade.supplier.query.HandleFindSupplierByInfo;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +29,10 @@ import java.util.List;
 @Api(value = "供应商服务"/*,tags = "供应商服务"*/)
 @RestController
 @RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TSupplierBasicInfoController {
+public class TSupplierBasicInfoController /*extends BaseController*/ {
 
     @Autowired
     private SupplierClient supplierClient;
-
-//    @ApiOperation(value="自己找到平台网站注册供应商",notes = "自己找到平台网站注册供应商")
-//    @PostMapping(value = "/registerSupplier")
-//    public Result<Boolean> registerSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail) {
-//        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
-//        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
-//        return supplierClient.registerSupplier(handleSupplierDetail);
-//    }
-
 
     /**0
      * 注册供应商
@@ -56,11 +44,20 @@ public class TSupplierBasicInfoController {
      *  自己找到平台网站注册供应商
      */
     @ApiOperation(value = "0:自己找到平台网站注册供应商",notes = "donghuan")
-    @PostMapping(value = "/registerSupplier")
+    @PostMapping(value = "public/registerSupplier")
     public Result<Boolean> registerSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
         HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
         BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
         return supplierClient.registerSupplier(handleSupplierDetail);
+    }
+
+
+    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
+    @PostMapping(value="public/addPasswordSupplierLogin")
+    public Result<Boolean> addPasswordSupplierLogin(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
+        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
+        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
+        return supplierClient.addPasswordSupplierLogin(handleSupplierDetail);
     }
 
     /**1
@@ -70,7 +67,7 @@ public class TSupplierBasicInfoController {
      *      )
      */
     @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
-    @PostMapping(value="/addPasswordSupplier")
+    @PostMapping(value="public/addPasswordSupplier")
     public Result<Boolean> addPasswordSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
         HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
         BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
@@ -93,7 +90,7 @@ public class TSupplierBasicInfoController {
     /**3
      * 供应商增加一个员工(有可能增加的是一个管理员)
      */
-    @ApiModelProperty(value = "3:供应商增加一个员工(有可能增加的是一个管理员)",notes = "donghuan")
+    @ApiOperation(value = "3:供应商增加一个员工(有可能增加的是一个管理员)",notes = "donghuan")
     @PostMapping(value = "/createSupplierEmployee")
     public Result<Boolean> createSupplierEmployee(@RequestBody ClientHandlerSupplierAddEmployee clientHandlerSupplierAddEmployee){
         HandlerSupplierAddEmployee handlerSupplierAddEmployee=new HandlerSupplierAddEmployee();
@@ -104,7 +101,7 @@ public class TSupplierBasicInfoController {
     /**4
      * 根据员工的id来查询基本信息
      */
-    @ApiModelProperty(value = "4:根据员工的id来查询基本信息",notes = "donghuan")
+    @ApiOperation(value = "4:根据员工的id来查询基本信息",notes = "donghuan")
     @PostMapping(value = "/findSupplierBasicById")
     public Result<SupplierBasicInfoVO> findSupplierBasicById(@RequestBody ClientHandleSupplierId clientHandleSupplierId){
         HandleSupplierId handleSupplierId=new HandleSupplierId();
@@ -207,11 +204,11 @@ public class TSupplierBasicInfoController {
      *  忘记密码
      */
     @ApiOperation(value = "13:忘记密码",notes = "donghuan")
-    @PostMapping(value = "/forgetPasswordSupplier")
-    public Result<Boolean> forgetPassword(@RequestBody ClientHandleSupplierForgetPassword clientHandleSupplierForgetPassword) {
+    @PostMapping(value = "public/forgetPasswordSupplier")
+    public Result<Boolean> forgetPasswordSupplier(@RequestBody ClientHandleSupplierForgetPassword clientHandleSupplierForgetPassword) {
         HandleSupplierForgetPassword handleSupplierForgetPassword=new HandleSupplierForgetPassword();
         BeanUtils.copyProperties(clientHandleSupplierForgetPassword,handleSupplierForgetPassword);
-        return supplierClient.forgetPassword(handleSupplierForgetPassword);
+        return supplierClient.forgetPasswordSupplier(handleSupplierForgetPassword);
     }
 
 

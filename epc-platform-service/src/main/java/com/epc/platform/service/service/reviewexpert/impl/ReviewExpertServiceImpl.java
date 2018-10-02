@@ -132,10 +132,34 @@ public class ReviewExpertServiceImpl implements ExpertService {
         } catch (Exception e) {
             LOGGER.error("BusinessException insertExpertDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
 
+    /**
+     * 修改专家信息
+     * @param reviewExpertHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
+        TExpertDetailInfoCriteria  tExpertBasicInfoCriteria = new TExpertDetailInfoCriteria();
+        tExpertBasicInfoCriteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
+
+        TExpertAttachmentCriteria criteria = new TExpertAttachmentCriteria();
+        criteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
+
+        try {
+            tExpertDetailInfoMapper.deleteByExample(tExpertBasicInfoCriteria);
+            tExpertAttachmentMapper.deleteByExample(criteria);
+           return this.insertExpertDetailInfo(reviewExpertHandle);
+        } catch (Exception e) {
+            LOGGER.error("BusinessException updateExpertDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+
+    }
 
     /**
      * 删除评审专家
@@ -179,7 +203,11 @@ public class ReviewExpertServiceImpl implements ExpertService {
      */
     @Override
     public List<ReviewExpertVO> selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
-
+        String where = queryDetailIfo.getWhere();
+        if(where!=null){
+            where="%"+where+"%";
+            queryDetailIfo.setWhere(where);
+        }
         return  tExpertDetailInfoMapper.selectByPage(queryDetailIfo);
 
     }

@@ -392,10 +392,10 @@ FROM t_agency_detail_info ts WHERE ts.is_deleted=0 AND ts.company_name like #{co
  LEFT  JOIN t_agency_detail_info td ON td.agency_id=tb.id
   WHERE tb.is_deleted=0
   <if test="status != null">
-    tb.state = #{status,jdbcType=INTEGER}
+   and tb.state = #{status,jdbcType=INTEGER}
   </if>
     <if test="where != null">
-      td.company_name LIKE #{where,jdbcType=VARCHAR}
+    and  td.company_name LIKE #{where,jdbcType=VARCHAR}
     </if>
   ORDER BY id DESC
   </select>

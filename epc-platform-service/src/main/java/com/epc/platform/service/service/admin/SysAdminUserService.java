@@ -8,6 +8,7 @@ import com.epc.platform.service.domain.admin.SysAdminUser;
 import com.epc.platform.service.domain.admin.UserWithRole;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -21,7 +22,7 @@ public interface SysAdminUserService {
      * @param loginHandle
      * @return
      */
-    Result<SysAdminUser> login(LoginHandle loginHandle);
+    Result<Map<String,Object>> login(LoginHandle loginHandle , String token);
 
     /**
      * 查询用户信息

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -47,6 +48,13 @@ public class BiddingAgencyController extends BaseController implements BiddingAg
         return agencyService.insertBiddingAgencyDetailInfo(biddingHandle);
     }
     /**
+     * 修改招标代理机构资料
+     */
+    @Override
+    public Result<Boolean> updateBiddingAgencyDetailInfo(@RequestBody BiddingHandle biddingHandle) {
+        return agencyService.updateBiddingAgencyDetailInfo(biddingHandle);
+    }
+    /**
      * 招标代理机构资料删除
      */
     @Override
@@ -67,11 +75,12 @@ public class BiddingAgencyController extends BaseController implements BiddingAg
      * @return
      */
     @Override
-    public Result selectAllAgencyByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+    public Result<Map<String, Object>> selectAllAgencyByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
         List<BiddingAgencyVO> biddingAgencyVOS = agencyService.selectAllAgencyByPage(queryDetailIfo);
         PageInfo<BiddingAgencyVO> pageInfo = new PageInfo<>(biddingAgencyVOS);
-        return Result.success(getDataTable(pageInfo)) ;
+        Map<String, Object> dataTable = getDataTable(pageInfo);
+        return Result.success(dataTable) ;
     }
 
     /**

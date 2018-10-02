@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -54,6 +55,15 @@ public class SupplierController extends BaseController implements SupplierUserSe
         return supplierService.insertSupplierDetailInfo(supplierHandle);
     }
 
+    /**
+     * 修改供应商资料
+     * @param supplierHandle 附件信息
+     * @return
+     */
+    @Override
+    public Result<Boolean> updateSupplierDetailInfo(SupplierHandle supplierHandle) {
+        return supplierService.updateSupplierDetailInfo(supplierHandle);
+    }
 
     /**
      * 供应商资料删除
@@ -81,7 +91,7 @@ public class SupplierController extends BaseController implements SupplierUserSe
      * @return
      */
     @Override
-    public Result selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+    public Result<Map<String, Object>> selectAllSupplierByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
         List<SupplierUserVO> supplierUserVOS = supplierService.selectAllSupplierByPage(queryDetailIfo);
         PageInfo<SupplierUserVO> pageInfo = new PageInfo<>(supplierUserVOS);

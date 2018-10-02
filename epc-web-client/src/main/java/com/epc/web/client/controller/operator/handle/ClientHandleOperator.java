@@ -32,7 +32,6 @@ public class ClientHandleOperator  {
     private String cellphone;
 
     @ApiModelProperty(value = "密码")
-    @NotEmpty(message = "ClientHandleOperator.password.null")
     private String password;
 
 }

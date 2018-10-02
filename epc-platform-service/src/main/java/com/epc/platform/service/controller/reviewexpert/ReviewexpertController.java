@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  * <p>Description : 评审专家控制器
  * <p>Date : 2018-09-14 10:33:12
@@ -51,6 +53,11 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
         return expertService.insertExpertDetailInfo(reviewExpertHandle);
     }
 
+    @Override
+    public Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
+        return expertService.updateReviewExpertDetailInfo(reviewExpertHandle);
+    }
+
     /**
      * 评审专家资料删除
      * @param whereId
@@ -78,7 +85,7 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
      * @return
      */
     @Override
-    public Result selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
+    public Result<Map<String, Object>> selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
         List<ReviewExpertVO> reviewExpertVOS = expertService.selectAllExpertByPage(queryDetailIfo);
         PageInfo<ReviewExpertVO> pageInfo = new PageInfo<>(reviewExpertVOS);

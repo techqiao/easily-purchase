@@ -25,7 +25,10 @@ public class OperatorHystrix implements FacadeOperatorService {
     public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
         return Result.hystrixError();
     }
-
+    @Override
+    public Result<Boolean> updateOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
+        return Result.hystrixError();
+    }
     @Override
     public Result<Boolean> deleteOperatorDetailInfo( Long whereId) {
         return Result.hystrixError();

@@ -30,10 +30,9 @@ public class BaseController {
 	public LoginHandle getLoginUser(){
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
-		String loginToken = CookieUtil.readLoginToken(request);
-		String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-		JSONObject.parseObject(userJsonStr);
-		return JSONObject.parseObject(userJsonStr, LoginHandle.class);
+		String userJsonStr = CookieUtil.readLoginToken(request);
+		LoginHandle loginHandle = JSONObject.parseObject(userJsonStr, LoginHandle.class);
+		return loginHandle;
 	}
 
 

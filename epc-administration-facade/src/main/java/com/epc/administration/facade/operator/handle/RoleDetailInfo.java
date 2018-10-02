@@ -19,6 +19,11 @@ public class RoleDetailInfo implements Serializable {
      * 注册人Id
      */
     private Long id;
+
+    /**
+     * 姓名
+     */
+    private String name;
     /**
      * 公司名称
      */

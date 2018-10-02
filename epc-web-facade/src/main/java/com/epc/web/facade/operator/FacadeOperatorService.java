@@ -35,6 +35,11 @@ public interface FacadeOperatorService {
     @PostMapping(value = "registerOperator",consumes = "application/json; charset=UTF-8")
     Result<Boolean> registerOperator(@RequestBody HandleOperator handleOperator);
 
+    /**0.5
+     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
+     */
+    @PostMapping(value = "addPasswordOperatorLogin",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> addPasswordOperatorLogin(@RequestBody HandleOperator handleOperator);
     /**1
      *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
      *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
@@ -114,7 +119,7 @@ public interface FacadeOperatorService {
      * 运营商忘记密码
      */
     @PostMapping(value = "forgetPasswordOperator",consumes = "application/json; charset=UTF-8")
-    Result<Boolean> forgetPasswordOperator(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword);
+    Result<Boolean> forgetPassword(@RequestBody HandleOperatorForgetPassword handleOperatorForgetPassword);
 
     /**14
      * 根据员工的名字,角色，是否禁用

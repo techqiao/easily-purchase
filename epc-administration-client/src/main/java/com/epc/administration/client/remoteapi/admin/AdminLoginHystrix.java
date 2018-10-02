@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  */
 public class AdminLoginHystrix implements AdminLoginService {
     @Override
-    public Result login(HttpSession session, HttpServletResponse httpServletResponse, LoginHandle loginHandle) {
+    public Result login( HttpServletResponse httpServletResponse, LoginHandle loginHandle) {
         return Result.hystrixError();
     }
 

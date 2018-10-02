@@ -77,7 +77,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 LoginUser loginUser1 = tAgencyBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser1 != null) {
                     loginUser1.setType(type);
-                    //this.cacheInredis(request,response,loginUser1);
+                    this.cacheInredis(request,response,loginUser1);
                     return Result.success( loginUser1);
                 }
                 break;
@@ -85,7 +85,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 LoginUser loginUser2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser2 != null) {
                     loginUser2.setType(type);
-                    //this.cacheInredis(request,response,loginUser2);
+                    this.cacheInredis(request,response,loginUser2);
                     return Result.success( loginUser2);
                 }
                 break;
@@ -93,7 +93,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 LoginUser loginUser3 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser3 != null) {
                     loginUser3.setType(type);
-                    //this.cacheInredis(request,response,loginUser3);
+                    this.cacheInredis(request,response,loginUser3);
                     return Result.success( loginUser3);
                 }
                 break;
@@ -101,7 +101,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 LoginUser loginUser4 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
                 if (loginUser4 != null) {
                     loginUser4.setType(type);
-                    //this.cacheInredis(request,response,loginUser3);
+//                    this.cacheInredis(request,response,loginUser3);
                     return Result.success( loginUser4);
                 }
                 break;

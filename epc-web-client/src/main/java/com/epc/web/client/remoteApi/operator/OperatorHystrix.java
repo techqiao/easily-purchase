@@ -25,6 +25,11 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
+    public Result<Boolean> addPasswordOperatorLogin(HandleOperator handleOperator) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> addPasswordOperator(HandleOperator handleOperator) {
         return Result.hystrixError();
     }

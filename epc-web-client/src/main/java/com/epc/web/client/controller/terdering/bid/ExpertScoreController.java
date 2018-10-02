@@ -40,8 +40,8 @@ public class ExpertScoreController extends BaseController {
     public Result<Boolean> handleExpertScore(@RequestBody ClientHandleExpertScore clientHandleExpertScore){
         HandleExpertScore handleExpertScore = new HandleExpertScore();
         BeanUtils.copyProperties(clientHandleExpertScore, handleExpertScore);
-        handleExpertScore.setOperateId(getLoginUser().getUserId());
-        handleExpertScore.setExpertId(getLoginUser().getUserId());
+//        handleExpertScore.setOperateId(getLoginUser().getUserId());
+//        handleExpertScore.setExpertId(getLoginUser().getUserId());
         handleExpertScore.setExpertName(getLoginUser().getName());
         return expertScoreClient.handleExpertScore(handleExpertScore);
     }

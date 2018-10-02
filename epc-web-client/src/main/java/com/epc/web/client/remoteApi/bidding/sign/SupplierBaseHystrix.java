@@ -20,6 +20,11 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
+    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail) {
+        return null;
+    }
+
+    @Override
     public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail) {
         return Result.hystrixError();
     }
@@ -48,6 +53,11 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     public Result<Boolean> updateSupplierEmployeeStateById(HandleOperatorState handleOperatorState) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result<Boolean> forgetPasswordSupplier(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+        return null;
+    }
 //
 //    @Override
 //    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleFindSupplierByInfo handleFindSupplierByInfo) {
@@ -65,9 +75,9 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     //}
 
 
-    @Override
-    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
-        return Result.hystrixError();    }
+//    @Override
+//    public Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+//        return Result.hystrixError();    }
 
     @Override
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {

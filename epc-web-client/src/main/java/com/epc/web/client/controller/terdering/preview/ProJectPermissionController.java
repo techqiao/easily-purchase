@@ -1,14 +1,9 @@
 package com.epc.web.client.controller.terdering.preview;
 
-import com.alibaba.fastjson.JSON;
 import com.epc.common.PagerParam;
 import com.epc.common.Result;
-import com.epc.common.constants.Const;
-import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.client.controller.common.BaseController;
-import com.epc.web.client.controller.terdering.preview.handle.ClientProJectPermissionHandle;
 import com.epc.web.client.remoteApi.terdering.preview.ProJectPermissionClient;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.terdering.preview.handle.ProJectPermissionHandle;
 import com.epc.web.facade.terdering.preview.vo.ProJectPermissionVO;
 import io.swagger.annotations.Api;
@@ -42,7 +37,7 @@ public class ProJectPermissionController extends BaseController {
     public Result<List<ProJectPermissionVO>> getProJectListByPermission(@RequestBody PagerParam pagerParam){
         ProJectPermissionHandle proJectPermissionHandle = new ProJectPermissionHandle();
         BeanUtils.copyProperties(pagerParam,proJectPermissionHandle);
-        proJectPermissionHandle.setUserId(getLoginUser().getUserId());
+//        proJectPermissionHandle.setUserId(getLoginUser().getUserId());
         return proJectPermissionClient.getProJectListByPermission(proJectPermissionHandle);
 
     }

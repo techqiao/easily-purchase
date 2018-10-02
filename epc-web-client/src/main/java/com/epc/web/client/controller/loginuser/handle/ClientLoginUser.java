@@ -22,11 +22,13 @@ public class ClientLoginUser implements Serializable {
     @ApiModelProperty(value = "机构类型运营商1,代理商2,供货商3,采购商4")
     private Integer type;
     @ApiModelProperty(value = "法人id")
-    private String bossId;
+//    private String bossId;
+    private Long bossId;
     @ApiModelProperty(value = "法人姓名")
     private String bossName;
     @ApiModelProperty(value = "用户id")
-    private String selfId;
+//    private String selfId;
+    private Long userId;
     @ApiModelProperty(value = "公司名")
-    private String CompanyName;
+    private String companyName;
 }

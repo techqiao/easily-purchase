@@ -8,7 +8,6 @@ import com.epc.web.client.remoteApi.terdering.question.AnswerQuestionClient;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
-import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -43,7 +42,7 @@ public class AnswerQuestionController extends BaseController {
     public Result<Boolean> replyQuestion(@RequestBody ClientHandleReplyQuestion clientHandleReplyQuestion) {
         HandleReplyQuestion handleReplyQuestion = new HandleReplyQuestion();
         BeanUtils.copyProperties(clientHandleReplyQuestion, handleReplyQuestion);
-        handleReplyQuestion.setOperateId(getLoginUser().getUserId());
+//        handleReplyQuestion.setOperateId(getLoginUser().getUserId());
         handleReplyQuestion.setOperateName(getLoginUser().getName());
         return answerQuestionClient.replyQuestion(handleReplyQuestion);
     }

@@ -4,8 +4,6 @@ import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author winlin

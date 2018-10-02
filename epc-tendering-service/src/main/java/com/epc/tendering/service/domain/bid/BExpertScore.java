@@ -8,7 +8,7 @@ public class BExpertScore implements Serializable {
 
     private Long bidsId;
 
-    private String bidsCode;
+    private Long bidsCode;
 
     private Long procurementProjectId;
 
@@ -16,15 +16,15 @@ public class BExpertScore implements Serializable {
 
     private String supplierCompanyName;
 
-    private Integer status;
+    private String status;
 
     private String standardType;
 
-    private Double techTypeScore;
+    private Integer techTypeScore;
 
-    private Double commerceTypeScore;
+    private Integer commerceTypeScore;
 
-    private Double finalScore;
+    private Integer finalScore;
 
     private Long expertId;
 
@@ -56,12 +56,12 @@ public class BExpertScore implements Serializable {
         this.bidsId = bidsId;
     }
 
-    public String getBidsCode() {
+    public Long getBidsCode() {
         return bidsCode;
     }
 
-    public void setBidsCode(String bidsCode) {
-        this.bidsCode = bidsCode == null ? null : bidsCode.trim();
+    public void setBidsCode(Long bidsCode) {
+        this.bidsCode = bidsCode;
     }
 
     public Long getProcurementProjectId() {
@@ -88,12 +88,12 @@ public class BExpertScore implements Serializable {
         this.supplierCompanyName = supplierCompanyName == null ? null : supplierCompanyName.trim();
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getStandardType() {
@@ -104,27 +104,27 @@ public class BExpertScore implements Serializable {
         this.standardType = standardType == null ? null : standardType.trim();
     }
 
-    public Double getTechTypeScore() {
+    public Integer getTechTypeScore() {
         return techTypeScore;
     }
 
-    public void setTechTypeScore(Double techTypeScore) {
+    public void setTechTypeScore(Integer techTypeScore) {
         this.techTypeScore = techTypeScore;
     }
 
-    public Double getCommerceTypeScore() {
+    public Integer getCommerceTypeScore() {
         return commerceTypeScore;
     }
 
-    public void setCommerceTypeScore(Double commerceTypeScore) {
+    public void setCommerceTypeScore(Integer commerceTypeScore) {
         this.commerceTypeScore = commerceTypeScore;
     }
 
-    public Double getFinalScore() {
+    public Integer getFinalScore() {
         return finalScore;
     }
 
-    public void setFinalScore(Double finalScore) {
+    public void setFinalScore(Integer finalScore) {
         this.finalScore = finalScore;
     }
 

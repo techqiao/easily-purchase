@@ -6,8 +6,6 @@ import com.epc.web.facade.terdering.bid.FacadeExpertSignService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,17 +21,17 @@ public class ExpertSignController implements FacadeExpertSignService {
     private ExpertSignService expertSignService;
 
     @Override
-    public Result<Boolean> insertExpertSign(@RequestBody HandleExpertSign handleExpertSign) {
+    public Result<Boolean> insertExpertSign(HandleExpertSign handleExpertSign) {
         return expertSignService.insertExpertSign(handleExpertSign);
     }
 
     @Override
-    public Result<Boolean> handleExpert(@RequestParam(value = "id") Long id) {
+    public Result<Boolean> handleExpert(Long id) {
         return expertSignService.handleExpert(id);
     }
 
     @Override
-    public Result<List<ExpertSignVO>> getExpertList(@RequestParam(value = "procurementProjectId") Long procurementProjectId) {
+    public Result<List<ExpertSignVO>> getExpertList(Long procurementProjectId) {
         return expertSignService.getExpertList(procurementProjectId);
     }
 }

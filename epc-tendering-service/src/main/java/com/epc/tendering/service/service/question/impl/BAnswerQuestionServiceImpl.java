@@ -6,6 +6,7 @@ import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
+import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
@@ -62,5 +63,13 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
         questionWithBLOBs.setStatus("replied");
         questionWithBLOBs.setAnswer(handleReplyQuestion.getAnswer());
         return Result.success(bAnswerQuestionMapper.updateByPrimaryKeyWithBLOBs(questionWithBLOBs) > 0);
+    }
+
+
+    @Override
+    public Result selectAnswerQuestion(AnswerQuestionHandle answerQuestionHandle) {
+        BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
+        criteria.createCriteria().andQuestionTypeEqualTo(answerQuestionHandle.getQuestionType());
+        return  Result.success(bAnswerQuestionMapper.selectByExample(criteria));
     }
 }

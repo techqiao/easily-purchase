@@ -55,4 +55,8 @@ public class PurchaserHandleSupplierDto implements Serializable{
      * 附件list
      */
     protected List<Attachement> atts;
+    /**
+     * 来源
+     */
+    private String source;
 }

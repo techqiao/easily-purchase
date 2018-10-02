@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author winlin
@@ -21,7 +22,6 @@ public class ClientHandleSupplier implements Serializable{
     @ApiModelProperty(value = "供货商电话")
     @NotEmpty(message = "ClientHandleSupplier.cellphone.null")
     private String cellphone;
-
     @ApiModelProperty(value = "供货商密码")
     private String password;
 
@@ -31,8 +31,6 @@ public class ClientHandleSupplier implements Serializable{
     @ApiModelProperty(value = "供货商来源")
     private String source;
 
-    @ApiModelProperty(value = "邀请类型")
-    private Integer inviterType;
 
     @ApiModelProperty(value = "供货商公司名")
     private String companyName;
@@ -45,4 +43,7 @@ public class ClientHandleSupplier implements Serializable{
 
     @ApiModelProperty(value = "对公银行账号")
     private String publicBanAccountNumber;
+
+    @ApiModelProperty(value = "证件附件信息")
+    private List<ClientAttachement> atts;
 }

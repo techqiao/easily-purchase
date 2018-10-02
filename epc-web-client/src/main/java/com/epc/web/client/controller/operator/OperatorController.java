@@ -1,6 +1,7 @@
 package com.epc.web.client.controller.operator;
 
 import com.epc.common.Result;
+
 import com.epc.web.client.controller.operator.handle.*;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorCellphone;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorFindAllByName;
@@ -25,7 +26,7 @@ import java.util.List;
 @Api(value = "运营商服务"/*,tags = "运营商服务"*/)
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class OperatorController/* extends BaseController */{
+public class OperatorController /*extends BaseController*/ {
 
     @Autowired
     private OperatorClient operatorClient;

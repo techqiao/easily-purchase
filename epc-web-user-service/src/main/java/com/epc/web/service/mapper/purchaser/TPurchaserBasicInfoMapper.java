@@ -70,8 +70,19 @@ public interface TPurchaserBasicInfoMapper {
 
     int updatePurchaserEmployeeRole(@Param("id")Long id, @Param("role")Integer role);
 
-    int updatePurchaserEmployeeDetail(TPurchaserBasicInfo info);
+    //int updatePurchaserEmployeeDetail(TPurchaserBasicInfo info);
 
 
     int enableOrDisablePurchaserEmployee(@Param("id")Long id, @Param("forbidden")Integer forbidden);
+
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+
+    List<TPurchaserBasicInfo> selectBasicInfoCriteria(HandleEmployeeDto employeeDto);
+
+    TPurchaserBasicInfo selectBossBasicInfoByPurchaserIdAndRole(@Param("purchaseId") Long purchaseId, @Param("role") Integer role);
+
+    TPurchaserBasicInfo selectBasicInfoByNameAndPhone(@Param("name") String name, @Param("phone") String phone);
+
+    int updatePurchaserEmployeeDetail(TPurchaserBasicInfo info);
+
 }

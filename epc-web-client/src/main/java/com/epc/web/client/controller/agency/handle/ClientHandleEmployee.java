@@ -13,7 +13,6 @@ import java.util.Date;
 public class ClientHandleEmployee implements Serializable {
 
     private static final long serialVersionUID = 709531248696403820L;
-    private Long id;
 
     @ApiModelProperty(value = "员工姓名")
     @NotEmpty(message = "ClientHandleEmployee.name.null")
@@ -39,9 +38,5 @@ public class ClientHandleEmployee implements Serializable {
     @NotEmpty(message = "ClientHandleEmployee.role.null")
     private Integer role;
 
-    @ApiModelProperty(value = "创建时间")
-    private Date createAt;
-    @ApiModelProperty(value = "跟新时间")
-    private Date updateAt;
 
 }

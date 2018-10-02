@@ -1,5 +1,6 @@
 package com.epc.web.service.mapper.expert;
 
+import com.epc.web.facade.agency.handle.Attachement;
 import com.epc.web.service.domain.expert.TExpertAttachment;
 import com.epc.web.service.domain.expert.TExpertAttachmentCriteria;
 import java.util.List;
@@ -103,4 +104,7 @@ public interface TExpertAttachmentMapper {
      * @mbggenerated Fri Sep 14 11:20:30 CST 2018
      */
     int updateByPrimaryKey(TExpertAttachment record);
+
+    List<TExpertAttachment> selectAttchamentByExpertId(Long expertId);
+
 }

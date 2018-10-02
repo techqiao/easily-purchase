@@ -374,5 +374,16 @@
       FROM t_supplier_detail_info
       WHERE supplier_id = #{supplierId}
     </select>
+    <select id="selectSupplierByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo" parameterType="com.epc.web.facade.purchaser.dto.QuerySupplierDto">
+      SELECT t_supplier_detail_info.supplier_id AS  supplierId,t_supplier_detail_info.company_name AS companyName ,t_supplier_detail_info.create_at AS createAt
+      FROM t_supplier_detail_info LEFT JOIN t_purchaser_supplier ON t_supplier_detail_info.supplier_id =t_purchaser_supplier.supplier_id
+      <where>
+        purchaser_id =#{purchaserId}
+        <if test="name!=null">
+          AND `name` Like '%'#{name}'%'
+        </if>
+      </where>
+
+    </select>
 
 </mapper>

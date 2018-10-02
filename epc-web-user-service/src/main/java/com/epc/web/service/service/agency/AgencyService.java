@@ -1,17 +1,16 @@
 package com.epc.web.service.service.agency;
 
 import com.epc.common.Result;
-import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
-import com.epc.web.facade.agency.dto.AgencyExpertDto;
-import com.epc.web.facade.agency.dto.AgencySupplierDto;
+import com.epc.web.facade.agency.dto.*;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertDetailVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
-import com.epc.web.facade.loginuser.dto.RegisterDto;
+import com.epc.web.facade.purchaser.dto.QueryDto;
 import com.epc.web.facade.purchaser.handle.HandleTrustList;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public interface AgencyService {
      * @Description :新增员工
      * @Date:2018/9/13
      */
-    public Result<Integer> insertEmployee(HandleEmployee handleEmployee);
+    public Result<Boolean> insertEmployee(HandleEmployee handleEmployee);
     
     /**
      *@author :winlin
@@ -68,7 +67,7 @@ public interface AgencyService {
      * @Description :新增专家
      * @Date:2018/9/13
      */
-    public Result<Integer> insertExpert(HandleExpert handleExpert);
+    public Result<Boolean> insertExpert(HandleExpert handleExpert);
     /**
      * @author :winlin
      * @Description :代理机构专家完善自己个人信息
@@ -94,7 +93,16 @@ public interface AgencyService {
      * @date:2018/9/20
      */
 
-    public Result<List<AgencyExpertVo>> queryExpertCriteria(AgencyExpertDto expertDto);
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(ExpertDto expertDto);
+
+    /**
+     *@author :winlin
+     *@Description : id查询专家详情
+     *@param:
+     *@return:
+     *@date:2018/10/2
+     */
+    public Result<AgencyExpertDetailVo> queryExpertDetailById(QueryDto dto);
 
     /**
      * @Author :winlin
@@ -118,7 +126,7 @@ public interface AgencyService {
      * @return:
      * @date:2018/9/20
      */
-    public Result<List<AgencySupplierVo>> querySupplierCriteria(AgencySupplierDto supplierDto);
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(SupplierDto supplierDto);
     /**
      *@author :winlin
      *@Description :依据id查询供货商详情
@@ -126,10 +134,10 @@ public interface AgencyService {
      *@return:
      *@date:2018/10/1
      */
-    public Result<AgencySupplierVo> queryAgencySupplierDetail(Long supplierId);
+    public Result<AgencySupplierVo> queryAgencySupplierDetail(QueryDto dto);
 
     /**
-     * @param agency 页面传入的信息
+     * @param
      * @return 注册是否成功, 成功返回注册信息
      * @author :winlin
      * @Description :代理机构注册
@@ -190,7 +198,7 @@ public interface AgencyService {
      * @return:
      * @date:2018/9/19
      */
-    public Result<AgencyEmployeeVo> queryEmployeeById(Long id);
+    public Result<AgencyEmployeeVo> queryEmployeeById(QueryDto dto);
 
 
 

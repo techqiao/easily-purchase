@@ -23,28 +23,28 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/test"
-                        userId="root"
-                        password="123456">
+                        connectionURL="jdbc:mysql://rm-bp12c6h25larzdo42uo.mysql.rds.aliyuncs.com:3306/easily_purchase"
+                        userId="ecp"
+                        password="ECPrds5197">
         </jdbcConnection>
 
         <!-- 生成model模型，对应的包，存放位置可以指定具体的路径-->
-        <javaModelGenerator targetPackage="com.epc.web.service.domain.question" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.epc.web.service.domain.purchaser" targetProject="src/main/java">
             <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="true"/>
             <!-- 设置是否在getter方法中，对String类型字段调用trim()方法 -->
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <!--对应的xml mapper文件  -->
-        <sqlMapGenerator targetPackage="mapping.question" targetProject="src/main/resources" >
+        <sqlMapGenerator targetPackage="mapping.purchaser" targetProject="src/main/resources" >
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 对应的dao接口 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.epc.web.service.mapper.question" targetProject="src/main/java" >
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.epc.web.service.mapper.purchaser" targetProject="src/main/java" >
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="easily_purchase" tableName="b_answer_question" domainObjectName="BAnswerQuestion">
+        <table schema="easily_purchase" tableName="t_purchaser_agency" domainObjectName="TPurchaserAgency">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

@@ -111,4 +111,5 @@ public interface TSupplierBasicInfoMapper {
 
     List<AgencySupplierVo> selectBasicInfo(@Param("id") Long agencyId, @Param("fuzzyName") String fuzzyName);
 
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
 }

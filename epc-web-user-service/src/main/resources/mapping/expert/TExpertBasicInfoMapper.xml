@@ -290,6 +290,15 @@
             </if>
         </trim>
     </insert>
+    <insert id="registerUser">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT  INTO t_operator_basic_info
+        (cellphone,password,,`name`)
+        VALUES
+        (#{cellphone},#{pwd},#{name})
+    </insert>
     <select id="countByExample" parameterType="com.epc.web.service.domain.expert.TExpertBasicInfoCriteria"
             resultType="java.lang.Integer">
         <!--
@@ -505,7 +514,7 @@
         WHERE `name`=#{expertName}
         AND cellphone =#{cellPhone}
     </select>
-    <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo" parameterType="com.epc.web.facade.agency.dto.AgencyExpertDto">
+    <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo" parameterType="com.epc.web.facade.agency.dto.ExpertDto">
         SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.serialNum
         FROM t_expert_basic_info basic
        /* LEFT JOIN t_expert_attachment t
@@ -533,5 +542,23 @@
         FROM t_expert_basic_info
         WHERE cellphone = #{cellphone}
         AND password = #{pwd}
+    </select>
+    <select id="selectExpertByQueryCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserExpertVo" parameterType="com.epc.web.facade.purchaser.dto.QueryExpertDto">
+        SELECT id AS serialNum ,`name` AS  expertName, profession , positional ,`level`
+        FROM t_expert_basic_info
+        <where>
+            <if test="expertName!=null">
+              AND `name` LIKE '%'#{expertName}'%'
+            </if>
+            <if test="level!=null">
+                AND `level` #{level}
+            </if>
+            <if test="positional!=null">
+                AND positional=#{positional}
+            </if>
+            <if test="profession!=null">
+                AND profession =#{profession}
+            </if>
+        </where>
     </select>
 </mapper>

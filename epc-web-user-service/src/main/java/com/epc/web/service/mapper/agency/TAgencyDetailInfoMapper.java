@@ -1,6 +1,8 @@
 package com.epc.web.service.mapper.agency;
 
 
+import com.epc.web.facade.purchaser.dto.QueryAgencyDto;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
 import com.epc.web.service.domain.agency.TAgencyDetailInfo;
 import com.epc.web.service.domain.agency.TAgencyDetailInfoCriteria;
 import org.apache.ibatis.annotations.Param;
@@ -103,4 +105,9 @@ public interface TAgencyDetailInfoMapper {
      * @mbggenerated Thu Sep 13 16:20:46 CST 2018
      */
     int updateByPrimaryKey(TAgencyDetailInfo record);
+
+    TAgencyDetailInfo selectAgencyDetailByAgencyId(Long agencyId);
+
+    List<PurchaserAgencyVo> selectAgencyByCriteria(QueryAgencyDto dto);
+
 }

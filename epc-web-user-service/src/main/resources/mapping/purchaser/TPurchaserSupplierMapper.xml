@@ -3,15 +3,8 @@
 <mapper namespace="com.epc.web.service.mapper.purchaser.TPurchaserSupplierMapper">
   <resultMap id="BaseResultMap" type="com.epc.web.service.domain.purchaser.TPurchaserSupplier">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="cellphone" jdbcType="CHAR" property="cellphone" />
-    <result column="password" jdbcType="CHAR" property="password" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
-    <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
-    <result column="uniform_credit_code" jdbcType="VARCHAR" property="uniformCreditCode" />
-    <result column="public_bank_name" jdbcType="VARCHAR" property="publicBankName" />
-    <result column="public_ban_account_number" jdbcType="VARCHAR" property="publicBanAccountNumber" />
-    <result column="purchaser_id" jdbcType="CHAR" property="purchaserId" />
     <result column="source" jdbcType="CHAR" property="source" />
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
@@ -365,8 +358,14 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectPurchaserSupplierBySupplierId"
+            resultType="com.epc.web.service.domain.purchaser.TPurchaserSupplier">
+      SELECT <include refid="Base_Column_List"/>
+      FROM t_purchaser_supplier
+      WHERE supplier_id =#{supplierId}
+    </select>
 
-  <update id="updateTrustList" parameterType="com.epc.web.facade.purchaser.handle.HandleTrustList">
+    <update id="updateTrustList" parameterType="com.epc.web.facade.purchaser.handle.HandleTrustList">
     UPDATE t_purchaser_supplier
     <set>
       <if test="trustOrNot!=null">

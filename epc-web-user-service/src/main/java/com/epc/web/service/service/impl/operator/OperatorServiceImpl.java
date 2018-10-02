@@ -715,7 +715,7 @@ public class OperatorServiceImpl implements OperatorService {
         //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
         tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
         //邀请人id
-        tPurchaserBasicInfo.setInviterId(id);
+        tPurchaserBasicInfo.setInviterId(id.intValue());
         //邀请机构 id
         tPurchaserBasicInfo.setInviterCompanyId(operatorId.intValue());
         //设置状态，已注册
@@ -828,7 +828,7 @@ public class OperatorServiceImpl implements OperatorService {
         //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
         tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
         //邀请人id
-        tPurchaserBasicInfo.setInviterId(id);
+        tPurchaserBasicInfo.setInviterId(id.intValue());
         //邀请机构 id
         tPurchaserBasicInfo.setInviterCompanyId(operatorId.intValue());
         //设置状态，已注册

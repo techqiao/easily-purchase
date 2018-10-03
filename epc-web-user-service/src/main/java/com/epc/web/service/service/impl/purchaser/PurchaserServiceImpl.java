@@ -44,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
-import javax.print.attribute.standard.MediaSizeName;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,8 +56,6 @@ public class PurchaserServiceImpl implements PurchaserService {
 
     @Autowired
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
-    @Autowired
-    TOperatorPurchaserMapper tOperatorPurchaserMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired

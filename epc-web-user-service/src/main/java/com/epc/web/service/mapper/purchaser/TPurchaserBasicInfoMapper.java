@@ -102,4 +102,5 @@ public interface TPurchaserBasicInfoMapper {
      * @mbggenerated Fri Sep 28 21:51:54 CST 2018
      */
     int updateByPrimaryKey(TPurchaserBasicInfo record);
+
 }

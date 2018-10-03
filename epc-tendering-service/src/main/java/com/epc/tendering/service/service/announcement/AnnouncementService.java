@@ -6,7 +6,6 @@ import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus
 import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncementOfficialNetwork;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

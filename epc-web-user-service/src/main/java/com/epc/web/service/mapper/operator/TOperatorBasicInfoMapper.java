@@ -1,8 +1,11 @@
 package com.epc.web.service.mapper.operator;
 
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.service.domain.operator.TOperatorBasicInfo;
 import com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -34,6 +37,11 @@ public interface TOperatorBasicInfoMapper {
 
     LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 
-    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates") Date date);
 
+    TOperatorBasicInfo selectByNameAndCellphone(@Param("name") String name, @Param("cellphone") String cellphone);
+
+    int updateOperatorPassword(ModifyUser modifyUser);
+
+    TOperatorBasicInfo selectByCellphone(@Param("cell") String cell);
 }

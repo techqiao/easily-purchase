@@ -26,7 +26,7 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, referer, login-token, X-Requested-With");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8010");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         response.setHeader("Access-Control-Max-Age", "3600");
 //        String header = request.getHeader("epc-token");

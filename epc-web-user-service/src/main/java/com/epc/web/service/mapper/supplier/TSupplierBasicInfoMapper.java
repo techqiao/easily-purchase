@@ -2,8 +2,11 @@ package com.epc.web.service.mapper.supplier;
 
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -107,9 +110,14 @@ public interface TSupplierBasicInfoMapper {
 
     LoginUser login(@Param("cellphone") String cellphone, @Param("pwd")String pwd);
 
-    TSupplierBasicInfo selectSupplierBasicByNameAndCell(@Param("name") String name, @feign.Param("cellphone") String cellphone);
+    TSupplierBasicInfo selectSupplierBasicByNameAndCell(@Param("name") String name, @Param("cellphone") String cellphone);
 
     List<AgencySupplierVo> selectBasicInfo(@Param("id") Long agencyId, @Param("fuzzyName") String fuzzyName);
 
-    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates")Date date);
+
+    int updateSupplierPassword(ModifyUser modifyUser);
+
+    TSupplierBasicInfo selectSupplierBasicByCell(@Param("cell") String cell);
+
 }

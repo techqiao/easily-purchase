@@ -2,6 +2,7 @@ package com.epc.web.service.service;
 
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,4 +38,13 @@ public interface IRoleLoginService {
       *@date:2018/10/1
       */
      Result<Boolean> registerUser(RegisterUser registerUser);
+
+     /**
+      *@author :winlin
+      *@Description :修改密码
+      *@param:
+      *@return:
+      *@date:2018/10/3
+      */
+     Result<Boolean> modifyPassword(ModifyUser modifyUser);
 }

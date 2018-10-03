@@ -79,16 +79,12 @@
     id, name, agency_id, cellphone, password, inviter_type, inviter_id, inviter_company_id, 
     state, role, create_at, update_at, is_deleted
   </sql>
-  <select id="login" resultType="com.epc.web.facade.loginuser.dto.LoginUser">
-    SELECT agency.id AS selfId,agency.`name`,agency.cellphone,agency.agency_id AS bossId,boss.name AS bossName ,d.company_name AS
-    companyName
-    FROM t_agency_basic_info agency
-    LEFT JOIN t_agency_basic_info boss ON agency.agency_id=boss.agency_id
-    LEFT JOIN t_agency_detail_info  d ON d.agency_id = agency.agency_id
-    WHERE agency.cellphone=#{cellphone}
-    AND agency.password=#{pwd}
-    AND agency.agency_id=boss.agency_id
-    AND boss.role=0;
+  <select id="login" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_agency_basic_info
+    WHERE cellphone=#{cellphone}
+    AND password=#{pwd}
   </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria" >
     select
@@ -223,9 +219,9 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     INSERT  INTO t_agency_basic_info
-    (cellphone,password,,`name`)
+    (cellphone,password,`name`,create_at)
     VALUES
-    (#{cellphone},#{pwd},#{name})
+    (#{cellphone},#{pwd},#{name},#{dates})
 
   </insert>
   <select id="countByExample" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria" resultType="java.lang.Integer" >
@@ -399,6 +395,11 @@
     </set>
     WHERE id=#{id}
   </update>
+  <update id="updateAgencyPassword" parameterType="com.epc.web.facade.loginuser.dto.ModifyUser">
+    UPDATE t_agency_basic_info
+    SET password =#{newPassword}
+    WHERE cellphone =#{cellphone}
+  </update>
   <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
@@ -448,6 +449,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     FROM
+    t_agency_basic_info
     <where>
       <if test="name!=null">
         AND `name` = #{name}
@@ -464,5 +466,10 @@
     FROM t_agency_basic_info
     WHERE agency_id =#{agencyId}
     AND role = #{roleCorporation}
+  </select>
+  <select id="selectAgencyBasicByCellphone" resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+    SELECT <include refid="Base_Column_List"/>
+    FROM t_agency_basic_info
+    WHERE cellphone =#{cell}
   </select>
 </mapper>

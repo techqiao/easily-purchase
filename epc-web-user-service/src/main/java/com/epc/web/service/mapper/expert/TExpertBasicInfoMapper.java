@@ -4,10 +4,13 @@ import com.epc.web.facade.agency.dto.AgencyExpertDto;
 import com.epc.web.facade.agency.dto.ExpertDto;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.purchaser.dto.QueryExpertDto;
 import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
 import com.epc.web.service.domain.expert.TExpertBasicInfoCriteria;
+
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -118,8 +121,11 @@ public interface TExpertBasicInfoMapper {
 
     LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 
-    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates")Date date);
 
     List<PurchaserExpertVo> selectExpertByQueryCriteria(QueryExpertDto dto);
 
+    int updateExpertPassword(ModifyUser modifyUser);
+
+    TExpertBasicInfo selectExpertCellPhone(@Param("cell") String cell);
 }

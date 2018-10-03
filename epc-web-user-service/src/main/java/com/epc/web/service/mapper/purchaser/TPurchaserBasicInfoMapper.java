@@ -1,6 +1,7 @@
 package com.epc.web.service.mapper.purchaser;
 
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
 import com.epc.web.facade.purchaser.dto.HandleExpertDto;
 import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import java.util.Date;
 import java.util.List;
 @Mapper
 public interface TPurchaserBasicInfoMapper {
@@ -40,7 +42,7 @@ public interface TPurchaserBasicInfoMapper {
 
     int updateByPrimaryKey(TPurchaserBasicInfo record);
 
-    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+    TPurchaserBasicInfo login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 
     List<PurchaserEmplyeeVo> queryEmplyees(Long supplierId);
 
@@ -75,7 +77,7 @@ public interface TPurchaserBasicInfoMapper {
 
     int enableOrDisablePurchaserEmployee(@Param("id")Long id, @Param("forbidden")Integer forbidden);
 
-    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates")Date date);
 
     List<TPurchaserBasicInfo> selectBasicInfoCriteria(HandleEmployeeDto employeeDto);
 
@@ -85,4 +87,7 @@ public interface TPurchaserBasicInfoMapper {
 
     int updatePurchaserEmployeeDetail(TPurchaserBasicInfo info);
 
+    int updatePurchaserPassword(ModifyUser modifyUser);
+
+    TPurchaserBasicInfo selectPurchaserBasicInfoByCell(@Param("cell") String cell);
 }

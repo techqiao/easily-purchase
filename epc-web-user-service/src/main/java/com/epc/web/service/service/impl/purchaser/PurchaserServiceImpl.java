@@ -113,8 +113,6 @@ public class PurchaserServiceImpl implements PurchaserService {
                 //查询详情库获得供应商的详细信息
                 Long supplierId = basicInfo.getSupplierId();
                 TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(supplierId);
-
-                //设置私库存储对象
                 //从页面传入
                 TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
                 purchaserSupplier.setOperateId((int)handleSupplier.getOperatorId());
@@ -141,7 +139,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         } else {
             //供应商不存在的时候抽取handleSupplier的字段添加
             TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
-            //purchaserSupplier.setSupplierId(0L);
+            //采购人数据库
             purchaserSupplier.setOperateId((int)handleSupplier.getOperatorId());
             purchaserSupplier.setSource(handleSupplier.getSource());
             purchaserSupplier.setCreateAt(new Date());
@@ -149,12 +147,11 @@ public class PurchaserServiceImpl implements PurchaserService {
             purchaserSupplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
             purchaserSupplier.setState(Const.STATE.COMMITTED);
-            //purchaserSupplier.setSupplierId(handleSupplier.getSupplierId());
 
-            //详细信息
+
+            //供应商详情数据库
             TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
-            detailInfo.setId(0L);
-            detailInfo.setSupplierId(0L);
+            //if(StringUtils.)
             detailInfo.setCompanyName(handleSupplier.getCompanyName());
             detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
             detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
@@ -164,13 +161,11 @@ public class PurchaserServiceImpl implements PurchaserService {
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
 
-
+            //供应商基本信息数据库
             basicInfo = new TSupplierBasicInfo();
-            basicInfo.setId(0L);
             basicInfo.setName(handleSupplier.getName());
             basicInfo.setCellphone(handleSupplier.getCellphone());
-//            basicInfo.setPassword("");
-            //basicInfo.setSupplierId();
+
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             basicInfo.setInviterId(handleSupplier.getOperatorId());
             basicInfo.setInviterCompanyId((int)handleSupplier.getCompanyId());

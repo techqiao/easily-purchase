@@ -7,6 +7,7 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.FacadeLoginUserService;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import com.epc.web.service.service.IRoleLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,7 @@ public class LoginController implements FacadeLoginUserService {
             LoginUser loginUser = (LoginUser) result.getData();
             String token = "EPC_PRIVATE_" + UUID.randomUUID().toString().replace("-", "");
             Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("user", result);
-            resultMap.put("epc-token", token);
+            resultMap.put("epc_token", token);
             RedisShardedPoolUtil.setEx(token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             return Result.success("登陆成功", resultMap);
         }
@@ -49,6 +49,11 @@ public class LoginController implements FacadeLoginUserService {
     @Override
     public Result<Boolean> registerUser(@RequestBody RegisterUser registerUser) {
         return iRoleLoginService.registerUser(registerUser);
+    }
+
+    @Override
+    public Result<Boolean> modifyPassword(@RequestBody ModifyUser modifyUser) {
+        return iRoleLoginService.modifyPassword(modifyUser);
     }
 }
 

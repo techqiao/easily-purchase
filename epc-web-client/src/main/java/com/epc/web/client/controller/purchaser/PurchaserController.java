@@ -2,10 +2,12 @@ package com.epc.web.client.controller.purchaser;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
 import com.epc.web.client.controller.purchaser.dto.*;
 import com.epc.web.client.controller.purchaser.handle.*;
 import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
 import com.epc.web.facade.expert.Handle.HandleExpert;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.purchaser.dto.*;
 import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.*;
@@ -32,8 +34,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcreatePurchaserUserInfo")
     Result<Boolean> createPurchaserUserInfo(@RequestBody ClientHandlePurchaser handleEmployee) {
         HandlePurchaser purchaser = new HandlePurchaser();
-        super.getLoginUser().getUserId();
         BeanUtils.copyProperties(handleEmployee, purchaser);
+        ClientLoginUser loginUser =super.getLoginUser();
+        purchaser.setPurchaserId(loginUser.getCompanyId());
         return purchaserClient.createPurchaserUserInfo(purchaser);
     }
 
@@ -118,6 +121,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcreateExpertUserInfo")
     Result<Boolean> createExpertUserInfo(@RequestBody ClientHandleExpert handleExpert) {
         HandleExpert handleExpert1 = new HandleExpert();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        handleExpert1.setOperatorId(clientLoginUser.getUserId());
+        handleExpert1.setPurchaserId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(handleExpert, handleExpert1);
         return purchaserClient.createExpertUserInfo(handleExpert1);
     }
@@ -135,6 +141,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcompletePurchaserExpertInfo")
     public Result<Boolean> completePurchaserExpertInfo(@RequestBody ClientHandleExpertDto expertDto) {
         HandleExpertDto handleExpertDto = new HandleExpertDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        handleExpertDto.setInviterId(clientLoginUser.getUserId());
+        handleExpertDto.setInviterCompanyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(expertDto, handleExpertDto);
         return purchaserClient.completePurchaserExpertInfo(handleExpertDto);
     }
@@ -185,6 +194,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcreateAgencyUserInfo")
     Result<Boolean> createAgencyUserInfo(@RequestBody  ClientHandleAgnecy handleAgnecy){
         HandleAgnecy agnecy = new HandleAgnecy();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        agnecy.setOperatorId(clientLoginUser.getUserId());
+        agnecy.setCompanyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(handleAgnecy,agnecy);
         return purchaserClient.createAgencyUserInfo(agnecy);
     };
@@ -199,6 +211,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientupdateAgencyDetail")
     Result<Boolean> updateAgencyDetail(@RequestBody  ClientHandleAgnecy handleAgnecy){
         HandleAgnecy agnecy = new HandleAgnecy();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        agnecy.setOperatorId(clientLoginUser.getUserId());
+        agnecy.setCompanyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(handleAgnecy,agnecy);
         return purchaserClient.updateAgencyDetail(agnecy);
     };
@@ -244,6 +259,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcreateSupplierByPurchaser")
     Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleOperator){
         HandleSupplierDto handleSupplierDto = new HandleSupplierDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        handleSupplierDto.setOperatorId(clientLoginUser.getUserId());
+        handleSupplierDto.setCompanyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(handleOperator,handleSupplierDto);
         return purchaserClient.createSupplierByPurchaser(handleSupplierDto);
     };
@@ -258,6 +276,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientupdateSupplierDetail")
     Result<Boolean> updateSupplierDetail(@RequestBody  ClientPurchaserHandleSupplierDto dto){
         PurchaserHandleSupplierDto purchaserHandleSupplierDto = new PurchaserHandleSupplierDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        purchaserHandleSupplierDto.setOperatorId(clientLoginUser.getUserId());
+        purchaserHandleSupplierDto.setCompanyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(dto,purchaserHandleSupplierDto);
         return purchaserClient.updateSupplierDetail(purchaserHandleSupplierDto);
     };
@@ -303,6 +324,9 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientupdatePurchaserDetail")
     Result<Boolean> updatePurchaserDetail(@RequestBody  ClientHandleRegisterPurchaser handlePurchaser){
         HandleRegisterPurchaser handleRegisterPurchaser = new HandleRegisterPurchaser();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        handleRegisterPurchaser.setOperatorId(clientLoginUser.getUserId());
+        handleRegisterPurchaser.setPurchaseId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(handlePurchaser,handleRegisterPurchaser);
         return purchaserClient.updatePurchaserDetail(handleRegisterPurchaser);
     };

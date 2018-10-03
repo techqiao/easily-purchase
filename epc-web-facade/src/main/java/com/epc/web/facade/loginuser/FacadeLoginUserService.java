@@ -2,6 +2,7 @@ package com.epc.web.facade.loginuser;
 
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,4 +30,14 @@ public interface FacadeLoginUserService {
      */
     @PostMapping(value = "register", consumes = "application/json; charset=UTF-8")
     Result<Boolean> registerUser(@RequestBody RegisterUser registerUser);
+
+    /**
+     *@author :winlin
+     *@Description :修改密码
+     *@param:
+     *@return:
+     *@date:2018/10/3
+     */
+    @PostMapping(value = "modifyPassword", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> modifyPassword(@RequestBody ModifyUser modifyUser);
 }

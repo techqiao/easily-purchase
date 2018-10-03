@@ -37,7 +37,7 @@ public class ProJectPermissionController extends BaseController {
     public Result<List<ProJectPermissionVO>> getProJectListByPermission(@RequestBody PagerParam pagerParam){
         ProJectPermissionHandle proJectPermissionHandle = new ProJectPermissionHandle();
         BeanUtils.copyProperties(pagerParam,proJectPermissionHandle);
-//        proJectPermissionHandle.setUserId(getLoginUser().getUserId());
+        proJectPermissionHandle.setUserId(getLoginUser().getUserId());
         return proJectPermissionClient.getProJectListByPermission(proJectPermissionHandle);
 
     }

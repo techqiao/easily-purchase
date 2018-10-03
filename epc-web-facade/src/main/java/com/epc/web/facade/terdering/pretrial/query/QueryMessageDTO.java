@@ -12,6 +12,9 @@ import java.io.Serializable;
  */
 @Data
 public class QueryMessageDTO extends PagerParam implements Serializable {
+    /**
+     * 公告ID
+     */
     private Long releaseAnnouncementId;
     /**
      * 状态

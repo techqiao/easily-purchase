@@ -25,7 +25,7 @@ public interface FacadePretrialMessageService {
     Result<List<PretrialMessageVO>> getPretrialMessageList(@RequestBody QueryMessageDTO queryMessageDTO);
 
     /**
-     * 处理供应商
+     * 处理供应商是否通过资格审查
      * @param handlePretrialMessage
      * @return
      */

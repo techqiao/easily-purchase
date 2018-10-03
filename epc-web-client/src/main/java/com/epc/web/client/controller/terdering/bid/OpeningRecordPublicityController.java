@@ -32,7 +32,7 @@ public class OpeningRecordPublicityController extends BaseController {
     public Result<Boolean> insertOpeningRecordPublicity(@RequestBody ClientHandOpeningRecordPublicity clientHandOpeningRecordPublicity){
         HandOpeningRecordPublicity handOpeningRecordPublicity = new HandOpeningRecordPublicity();
         BeanUtils.copyProperties(clientHandOpeningRecordPublicity, handOpeningRecordPublicity);
-//        handOpeningRecordPublicity.setOperateId(getLoginUser().getUserId());
+        handOpeningRecordPublicity.setOperateId(getLoginUser().getUserId());
         return openingRecordPublicityClient.insertOpeningRecordPublicity(handOpeningRecordPublicity);
     }
 
@@ -41,7 +41,7 @@ public class OpeningRecordPublicityController extends BaseController {
     public Result<Boolean> insertPurchaseProjectBegin(@RequestBody ClientPurchaseProjectBegin clientPurchaseProjectBegin){
         HandlePurchaseProjectBegin handlePurchaseProjectBegin = new HandlePurchaseProjectBegin();
         BeanUtils.copyProperties(clientPurchaseProjectBegin, handlePurchaseProjectBegin);
-//        handlePurchaseProjectBegin.setOperateId(getLoginUser().getUserId());
+        handlePurchaseProjectBegin.setOperateId(getLoginUser().getUserId());
         handlePurchaseProjectBegin.setCreator(getLoginUser().getName());
         return openingRecordPublicityClient.insertPurchaseProjectBegin(handlePurchaseProjectBegin);
     }

@@ -6,9 +6,9 @@ import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
+import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
-import com.epc.common.util.MD5Util;
 import com.epc.platform.service.controller.admin.BaseController;
 import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.platform.service.service.purchaser.PurchaserService;
@@ -17,7 +17,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sun.security.provider.MD5;
 
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,7 @@ public class PurchaserController extends BaseController implements PurchaserUser
      * @return
      */
     @Override
-    public Result<TPurchaserDetailInfo> queryPurchaserDetailInfo(Long whereId) {
+    public Result<PurchaserDetailVO> queryPurchaserDetailInfo(Long whereId) {
         return purchaserService.queryPurchaserDetailInfo(whereId);
     }
 

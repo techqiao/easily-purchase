@@ -80,8 +80,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, procurement_project_id, auditor_id, replies_id, bidding_documents_url, bidding_start, 
-    bidding_end, defecation_start, defecation_end, title, process_status, operate_id, 
+    id, procurement_project_id, auditor_id, replies_id, bidding_documents_url, bidding_start,
+    bidding_end, defecation_start, defecation_end, title, process_status, operate_id,
     create_at, update_at, is_deleted
   </sql>
   <sql id="Blob_Column_List">
@@ -118,7 +118,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -139,16 +139,16 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_release_announcement (procurement_project_id, auditor_id, replies_id, 
-      bidding_documents_url, bidding_start, bidding_end, 
-      defecation_start, defecation_end, title, 
-      process_status, operate_id, create_at, 
+    insert into b_release_announcement (procurement_project_id, auditor_id, replies_id,
+      bidding_documents_url, bidding_start, bidding_end,
+      defecation_start, defecation_end, title,
+      process_status, operate_id, create_at,
       update_at, is_deleted, announcement_content
       )
-    values (#{procurementProjectId,jdbcType=BIGINT}, #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT}, 
-      #{biddingDocumentsUrl,jdbcType=VARCHAR}, #{biddingStart,jdbcType=TIMESTAMP}, #{biddingEnd,jdbcType=TIMESTAMP}, 
-      #{defecationStart,jdbcType=TIMESTAMP}, #{defecationEnd,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
-      #{processStatus,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT},
+      #{biddingDocumentsUrl,jdbcType=VARCHAR}, #{biddingStart,jdbcType=TIMESTAMP}, #{biddingEnd,jdbcType=TIMESTAMP},
+      #{defecationStart,jdbcType=TIMESTAMP}, #{defecationEnd,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR},
+      #{processStatus,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP},
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{announcementContent,jdbcType=LONGVARCHAR}
       )
   </insert>

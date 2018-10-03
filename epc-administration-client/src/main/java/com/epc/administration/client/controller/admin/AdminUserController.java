@@ -3,8 +3,10 @@ package com.epc.administration.client.controller.admin;
 import com.epc.administration.client.controller.admin.dto.ClientQueryUserDTO;
 import com.epc.administration.client.controller.admin.handle.ClientUserHandle;
 import com.epc.administration.client.controller.admin.handle.InsertUserHandle;
+import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.remoteapi.admin.SysAdminUserClient;
 import com.epc.administration.facade.admin.dto.QueryUserDTO;
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api(value = "系统用户 @罗志鑫",tags = {"系统用户服务"})
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class AdminUserController {
+public class AdminUserController extends BaseController {
 
     @Autowired
     private SysAdminUserClient sysAdminUserClient;
@@ -94,6 +96,8 @@ public class AdminUserController {
     public Result updateUser(@RequestBody ClientUserHandle clientUserHandle) {
         UserHandle userHandle = new UserHandle();
         BeanUtils.copyProperties(clientUserHandle,userHandle);
+        LoginHandle loginUser = getLoginUser();
+        userHandle.setId(loginUser.getId());
         return sysAdminUserClient.updateUser(userHandle);
     }
 
@@ -120,13 +124,15 @@ public class AdminUserController {
 
     /**修改密码
      * @param newPassword
-     * @param httpServletRequest
      * @return
      */
     @ApiOperation(value = "修改密码", notes = "修改密码")
     @PostMapping(value = "updatePassword")
-    public Result updatePassword(@RequestBody String newPassword, @RequestParam("httpServletRequest") HttpServletRequest httpServletRequest) {
-        return sysAdminUserClient.updatePassword(newPassword, httpServletRequest);
+    public Result updatePassword(@RequestBody String newPassword) {
+        UserHandle userHandle = new UserHandle();
+        userHandle.setPassword(newPassword);
+        userHandle.setId(getLoginUser().getId());
+        return sysAdminUserClient.updatePassword(userHandle);
     }
 
     /**获取用户基本信息

@@ -149,19 +149,12 @@ public class UserController extends BaseController implements AdminUserService {
 
     /**修改密码
      * @param newPassword
-     * @param httpServletRequest
      * @return
      */
     @Override
-    public Result updatePassword(@RequestBody String newPassword, @RequestParam("httpServletRequest")HttpServletRequest httpServletRequest) {
+    public Result updatePassword(@RequestBody UserHandle userHandle) {
         try {
-            SysAdminUser user = getCurrentUser(httpServletRequest);
-            UserHandle userHandle = new UserHandle();
-            userHandle.setName(user.getName());
-            userHandle.setPhone(user.getPhone());
-            userHandle.setPassword(user.getPassword());
-            userHandle.setId(user.getId());
-            this.sysAdminUserService.updatePassword(userHandle,newPassword);
+            this.sysAdminUserService.updatePassword(userHandle);
             return Result.success("更改密码成功！");
         } catch (Exception e) {
             LOGGER.error("修改密码失败", e);

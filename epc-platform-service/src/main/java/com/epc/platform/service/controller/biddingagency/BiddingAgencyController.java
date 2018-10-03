@@ -10,7 +10,6 @@ import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
-import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 import com.epc.platform.service.service.biddingagency.AgencyService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

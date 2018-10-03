@@ -7,7 +7,6 @@ import com.epc.administration.facade.biddingagency.handle.ExamineAgencyHandle;
 import com.epc.administration.facade.biddingagency.handle.UserBasicInfo;
 import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
 import com.epc.common.Result;
-import com.epc.platform.service.domain.tagency.TAgencyDetailInfo;
 
 import java.util.List;
 

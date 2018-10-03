@@ -17,7 +17,6 @@ import java.util.Map;
 
 public interface AdminLoginService {
     /**用户登录
-     * @param session
      * @param httpServletResponse
      * @param loginHandle
      * @return

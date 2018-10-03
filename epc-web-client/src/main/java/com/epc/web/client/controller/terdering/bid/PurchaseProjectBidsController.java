@@ -36,7 +36,7 @@ public class PurchaseProjectBidsController extends BaseController {
     public Result<Boolean> handleBidsBasicInfo(@RequestBody ClientHandleBidsBasicInfo clientHandleBidsBasicInfo){
         HandleBidsBasicInfo handleBidsBasicInfo = new HandleBidsBasicInfo();
         BeanUtils.copyProperties(clientHandleBidsBasicInfo,handleBidsBasicInfo);
-//        handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
+        handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
         handleBidsBasicInfo.setCreator(getLoginUser().getName());
         return bidClient.handleBidsBasicInfo(handleBidsBasicInfo);
     }

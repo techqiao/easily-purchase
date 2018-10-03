@@ -36,7 +36,7 @@ public class ClientRoleDetailInfo {
     @ApiModelProperty(value = "角色")
     private String systemRole;
 
-    @ApiModelProperty(value = "供应商id")
+    @ApiModelProperty(value = "员工id（供应商id）")
     @NotEmpty(message = "ClientRoleDetailInfo.supplierId.null")
     private Long supplierId;
 

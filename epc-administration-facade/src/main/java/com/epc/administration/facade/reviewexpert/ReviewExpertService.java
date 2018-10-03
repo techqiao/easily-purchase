@@ -6,6 +6,7 @@ import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
+import com.epc.administration.facade.reviewexpert.vo.ExpertDetailVO;
 import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.common.Result;
 import org.springframework.validation.annotation.Validated;
@@ -56,7 +57,7 @@ public interface ReviewExpertService {
      * @return
      */
     @GetMapping(value = "queryReviewExpertDetailInfo" )
-    Result queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId);
+    Result<ExpertDetailVO> queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId);
 
     /**
      * 查询所有评审专家 分页展示

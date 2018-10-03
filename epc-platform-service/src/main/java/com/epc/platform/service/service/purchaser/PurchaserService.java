@@ -5,6 +5,7 @@ import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
+import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
@@ -49,7 +50,7 @@ public interface PurchaserService {
      * @param id
      * @return
      */
-    Result<TPurchaserDetailInfo> queryPurchaserDetailInfo(Long id);
+    Result<PurchaserDetailVO> queryPurchaserDetailInfo(Long id);
 
     /**
      * 查询所有采购人 ，分页展示

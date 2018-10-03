@@ -50,9 +50,12 @@
             <groupId>com.epc</groupId>
             <artifactId>epc-web-facade</artifactId>
             <version>1.0.0</version>
-            <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.16</version>
+        </dependency>
 
     </dependencies>
 

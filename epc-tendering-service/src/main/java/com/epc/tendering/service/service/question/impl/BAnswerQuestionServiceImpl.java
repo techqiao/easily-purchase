@@ -1,7 +1,6 @@
 package com.epc.tendering.service.service.question.impl;
 
 import com.epc.common.Result;
-import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;

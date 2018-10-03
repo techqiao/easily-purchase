@@ -3,11 +3,12 @@ package com.epc.tendering.service.mapper.announcement;
 import com.epc.tendering.service.domain.announcement.BReleaseAnnouncement;
 import com.epc.tendering.service.domain.announcement.BReleaseAnnouncementCriteria;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
-
 public interface BReleaseAnnouncementMapper {
     int countByExample(BReleaseAnnouncementCriteria example);
 

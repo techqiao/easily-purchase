@@ -655,76 +655,6 @@ public class BReleaseAnnouncementCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andBiddingTypeIsNull() {
-            addCriterion("bidding_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeIsNotNull() {
-            addCriterion("bidding_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeEqualTo(String value) {
-            addCriterion("bidding_type =", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeNotEqualTo(String value) {
-            addCriterion("bidding_type <>", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeGreaterThan(String value) {
-            addCriterion("bidding_type >", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("bidding_type >=", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeLessThan(String value) {
-            addCriterion("bidding_type <", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeLessThanOrEqualTo(String value) {
-            addCriterion("bidding_type <=", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeLike(String value) {
-            addCriterion("bidding_type like", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeNotLike(String value) {
-            addCriterion("bidding_type not like", value, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeIn(List<String> values) {
-            addCriterion("bidding_type in", values, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeNotIn(List<String> values) {
-            addCriterion("bidding_type not in", values, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeBetween(String value1, String value2) {
-            addCriterion("bidding_type between", value1, value2, "biddingType");
-            return (Criteria) this;
-        }
-
-        public Criteria andBiddingTypeNotBetween(String value1, String value2) {
-            addCriterion("bidding_type not between", value1, value2, "biddingType");
-            return (Criteria) this;
-        }
-
         public Criteria andTitleIsNull() {
             addCriterion("title is null");
             return (Criteria) this;
@@ -805,52 +735,62 @@ public class BReleaseAnnouncementCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusEqualTo(Integer value) {
+        public Criteria andProcessStatusEqualTo(String value) {
             addCriterion("process_status =", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusNotEqualTo(Integer value) {
+        public Criteria andProcessStatusNotEqualTo(String value) {
             addCriterion("process_status <>", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusGreaterThan(Integer value) {
+        public Criteria andProcessStatusGreaterThan(String value) {
             addCriterion("process_status >", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andProcessStatusGreaterThanOrEqualTo(String value) {
             addCriterion("process_status >=", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusLessThan(Integer value) {
+        public Criteria andProcessStatusLessThan(String value) {
             addCriterion("process_status <", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andProcessStatusLessThanOrEqualTo(String value) {
             addCriterion("process_status <=", value, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusIn(List<Integer> values) {
+        public Criteria andProcessStatusLike(String value) {
+            addCriterion("process_status like", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusNotLike(String value) {
+            addCriterion("process_status not like", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusIn(List<String> values) {
             addCriterion("process_status in", values, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusNotIn(List<Integer> values) {
+        public Criteria andProcessStatusNotIn(List<String> values) {
             addCriterion("process_status not in", values, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusBetween(Integer value1, Integer value2) {
+        public Criteria andProcessStatusBetween(String value1, String value2) {
             addCriterion("process_status between", value1, value2, "processStatus");
             return (Criteria) this;
         }
 
-        public Criteria andProcessStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andProcessStatusNotBetween(String value1, String value2) {
             addCriterion("process_status not between", value1, value2, "processStatus");
             return (Criteria) this;
         }

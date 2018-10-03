@@ -22,11 +22,9 @@ public class BReleaseAnnouncement implements Serializable {
 
     private Date defecationEnd;
 
-    private String biddingType;
-
     private String title;
 
-    private Integer processStatus;
+    private String processStatus;
 
     private Long operateId;
 
@@ -63,7 +61,6 @@ public class BReleaseAnnouncement implements Serializable {
     public void setAuditorId(Long auditorId) {
         this.auditorId = auditorId;
     }
-
 
     public Long getRepliesId() {
         return repliesId;
@@ -113,14 +110,6 @@ public class BReleaseAnnouncement implements Serializable {
         this.defecationEnd = defecationEnd;
     }
 
-    public String getBiddingType() {
-        return biddingType;
-    }
-
-    public void setBiddingType(String biddingType) {
-        this.biddingType = biddingType == null ? null : biddingType.trim();
-    }
-
     public String getTitle() {
         return title;
     }
@@ -129,12 +118,12 @@ public class BReleaseAnnouncement implements Serializable {
         this.title = title == null ? null : title.trim();
     }
 
-    public Integer getProcessStatus() {
+    public String getProcessStatus() {
         return processStatus;
     }
 
-    public void setProcessStatus(Integer processStatus) {
-        this.processStatus = processStatus;
+    public void setProcessStatus(String processStatus) {
+        this.processStatus = processStatus == null ? null : processStatus.trim();
     }
 
     public Long getOperateId() {
@@ -192,7 +181,6 @@ public class BReleaseAnnouncement implements Serializable {
         sb.append(", biddingEnd=").append(biddingEnd);
         sb.append(", defecationStart=").append(defecationStart);
         sb.append(", defecationEnd=").append(defecationEnd);
-        sb.append(", biddingType=").append(biddingType);
         sb.append(", title=").append(title);
         sb.append(", processStatus=").append(processStatus);
         sb.append(", operateId=").append(operateId);

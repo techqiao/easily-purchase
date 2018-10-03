@@ -36,8 +36,8 @@ public class ProjectBasicInfoController extends BaseController {
     public Result<Boolean> handleProjectBasicInfo(@RequestBody ClientHandleProjectBasicInfo clientHandleProjectBasicInfo){
         HandleProjectBasicInfo handleProjectBasicInfo = new HandleProjectBasicInfo();
         BeanUtils.copyProperties(clientHandleProjectBasicInfo, handleProjectBasicInfo);
-//        handleProjectBasicInfo.setPurchaserId(getLoginUser().getUserId());
-//        handleProjectBasicInfo.setOperateId(getLoginUser().getUserId());
+        handleProjectBasicInfo.setPurchaserId(getLoginUser().getUserId());
+        handleProjectBasicInfo.setOperateId(getLoginUser().getUserId());
         handleProjectBasicInfo.setCreator(getLoginUser().getName());
         return projectClient.handleProjectBasicInfo(handleProjectBasicInfo);
     }
@@ -53,7 +53,7 @@ public class ProjectBasicInfoController extends BaseController {
     public Result<List<ProjectBasicInfoVO>> getProjectList(@RequestBody ClientQueryProjectInfoDTO clientQueryProjectInfoDTO){
         QueryProjectInfoDTO queryProjectInfoDTO = new QueryProjectInfoDTO();
         BeanUtils.copyProperties(clientQueryProjectInfoDTO, queryProjectInfoDTO);
-//        queryProjectInfoDTO.setPurchaserId(getLoginUser().getUserId());
+        queryProjectInfoDTO.setPurchaserId(getLoginUser().getUserId());
         return projectClient.getProjectList(queryProjectInfoDTO);
     }
 

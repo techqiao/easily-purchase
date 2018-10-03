@@ -36,5 +36,7 @@ public class PretrialMessageVO implements Serializable {
     private String creator;
     @ApiModelProperty(value = "文件")
     private List<String> url;
+    @ApiModelProperty(value = "标段ID")
+    private Long bidId;
 
 }

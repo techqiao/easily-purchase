@@ -14,8 +14,6 @@ import java.io.PrintWriter;
 
 public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
 
-    private static Log log = LogFactory.getLog(AccessKeyInterceptor.class);
-
     /**
      * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，
      * SpringMVC中的Interceptor拦截器是链式的，可以同时存在多个Interceptor，
@@ -31,26 +29,26 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:8010");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         response.setHeader("Access-Control-Max-Age", "3600");
-        String header = request.getHeader("epc-token");
-        if (null != handler) {
-            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
-            if (null != s) {
-                return true;
-            }
-        }
-        response.setContentType(";charset=UTF-8");
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        writer.write("to Login please");
-        writer.flush();
-        return false;
+//        String header = request.getHeader("epc-token");
+//        if (null != handler) {
+//            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
+//            if (null != s) {
+//                return true;
+//            }
+//        }
+//        response.setContentType(";charset=UTF-8");
+//        response.setHeader("Pragma", "No-cache");
+//        response.setHeader("Cache-Control", "no-cache");
+//        response.setDateHeader("Expires", 0);
+//        PrintWriter writer = null;
+//        try {
+//            writer = response.getWriter();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        writer.write("to Login please");
+//        writer.flush();
+        return true;
     }
 
     /**

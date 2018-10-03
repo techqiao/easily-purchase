@@ -52,7 +52,7 @@ public class AnnouncementController extends BaseController {
         return announcementClient.updateAnnouncementStatus(handleAnnouncementStatus);
     }
 
-    @ApiOperation(value = "项目经理查询相关公告")
+    @ApiOperation(value = "监控 ： 项目经理查询相关公告")
     @PostMapping(value = "getPurchaseProjectAnnouncementList", consumes = "application/json; charset=UTF-8")
     public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody ClientQueryAnnouncement clientQueryAnnouncement){
         QueryAnnouncement queryAnnouncement = new QueryAnnouncement();

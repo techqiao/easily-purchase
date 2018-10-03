@@ -3,6 +3,8 @@ package com.epc.tendering.service.mapper.purchase;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfoCriteria;
 import java.util.List;
+
+import com.epc.web.facade.terdering.answer.vo.PublicityVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -37,5 +39,13 @@ public interface TPurchaseProjectBasicInfoMapper {
     @Select("select t.purchase_project_status from t_purchase_project_basic_info where id=#{id}")
     @ResultType(String.class)
     String getPurchaseProjectStatusById(Long id);
+
+    @Select("select t.project_name projectName,t.project_id projectId," +
+            "t.purchase_project_name purchaseProjectName," +
+            "t.purchase_project_code purchaseProjectCode," +
+            "t.id as purchaseProjectId," +
+            "from t_purchase_project_basic_info where id=#{id}")
+    @ResultType(PublicityVO.class)
+    PublicityVO getDetailInfoById(Long id);
 
 }

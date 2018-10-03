@@ -3,12 +3,16 @@ package com.epc.tendering.service.service.question.impl;
 import com.epc.common.Result;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
+import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
+import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
+import com.epc.web.facade.terdering.answer.vo.PublicitySubVO;
+import com.epc.web.facade.terdering.answer.vo.PublicityVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,8 @@ import java.util.List;
 public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     @Autowired
     private BAnswerQuestionMapper bAnswerQuestionMapper;
+    @Autowired
+    private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
 
     @Override
     public Result<List<FacadeAnswerQuestionVO>> getQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
@@ -37,17 +43,17 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
         final BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
         final BAnswerQuestionCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andProcurementProjectIdEqualTo(queryAnswerQuestionDTO.getProcurementProjectId());
-        if(StringUtils.isNotBlank(queryAnswerQuestionDTO.getQuestionerName())) {
+        if (StringUtils.isNotBlank(queryAnswerQuestionDTO.getQuestionerName())) {
             subCriteria.andQuestionerNameEqualTo(queryAnswerQuestionDTO.getQuestionerName());
         }
-        if(StringUtils.isNotBlank(queryAnswerQuestionDTO.getStatus())) {
+        if (StringUtils.isNotBlank(queryAnswerQuestionDTO.getStatus())) {
             subCriteria.andStatusEqualTo(queryAnswerQuestionDTO.getStatus());
         }
         criteria.setOrderByClause("id desc");
         List<BAnswerQuestionWithBLOBs> withBLOBsList = bAnswerQuestionMapper.selectByExampleWithBLOBsWithRowbounds(criteria, queryAnswerQuestionDTO.getRowBounds());
         for (BAnswerQuestionWithBLOBs item : withBLOBsList) {
             FacadeAnswerQuestionVO pojo = new FacadeAnswerQuestionVO();
-            BeanUtils.copyProperties(item,pojo);
+            BeanUtils.copyProperties(item, pojo);
             returnList.add(pojo);
         }
         return Result.success(returnList);
@@ -69,6 +75,23 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     public Result selectAnswerQuestion(AnswerQuestionHandle answerQuestionHandle) {
         BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
         criteria.createCriteria().andQuestionTypeEqualTo(answerQuestionHandle.getQuestionType());
-        return  Result.success(bAnswerQuestionMapper.selectByExample(criteria));
+        return Result.success(bAnswerQuestionMapper.selectByExample(criteria));
+    }
+
+    @Override
+    public Result<List<PublicityVO>> getPublicityListOfficialNetwork(QueryPublicityDTO QueryPublicityDTO) {
+        List<PublicityVO> returnList = new ArrayList<>();
+        //公告-announcement,招标文件-bidFile,评标-bidEvaluation
+        BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
+        criteria.createCriteria().andQuestionTypeEqualTo(QueryPublicityDTO.getType()).andStatusEqualTo("replied");
+        List<BAnswerQuestionWithBLOBs> bAnswerQuestionList = bAnswerQuestionMapper.selectByExampleWithBLOBs(criteria);
+        for (BAnswerQuestionWithBLOBs item : bAnswerQuestionList) {
+            PublicityVO publicityVO= tPurchaseProjectBasicInfoMapper.getDetailInfoById(item.getProcurementProjectId());
+            List<PublicitySubVO> list = bAnswerQuestionMapper.getListGroupByProcurementProjectId(item.getProcurementProjectId());
+            publicityVO.setAnswerProblemList(list);
+            returnList.add(publicityVO);
+        }
+
+        return Result.success(returnList);
     }
 }

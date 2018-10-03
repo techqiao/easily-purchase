@@ -34,23 +34,8 @@ public interface TSupplierDetailInfoMapper {
     int updateByPrimaryKey(TSupplierDetailInfo record);
 
     /**
-     * 分页查询所有带公司名称
-     * @param name
-     * @return
-     */
-    List<SupplierUserVO> selectByPageWhereName(String name);
-
-    /**
      * 分页查询
      * @return
      */
     List<SupplierUserVO> selectByPage(QueryDetailIfo queryDetailIfo);
-
-    /**
-     * 根据状态
-     * 分页查询
-     * @param status
-     * @return
-     */
-    List<SupplierUserVO> selectByPageWithStatus(Integer status);
 }

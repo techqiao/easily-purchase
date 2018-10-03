@@ -11,7 +11,6 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.platform.service.domain.admin.SysAdminUserOperator;
 import com.epc.platform.service.domain.operator.*;
-import com.epc.platform.service.domain.tagency.TAgencyDetailInfoCriteria;
 import com.epc.platform.service.mapper.admin.SysAdminUserOperatorMapper;
 import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;

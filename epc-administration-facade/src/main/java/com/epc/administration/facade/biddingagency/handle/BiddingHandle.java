@@ -1,6 +1,8 @@
 package com.epc.administration.facade.biddingagency.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +22,9 @@ public class BiddingHandle implements Serializable {
      * 公司名称
      */
     private String companyName;
+
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
 
     /**
      *统一信用代码

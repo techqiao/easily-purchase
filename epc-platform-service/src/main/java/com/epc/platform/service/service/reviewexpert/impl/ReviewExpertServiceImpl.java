@@ -196,7 +196,16 @@ public class ReviewExpertServiceImpl implements ExpertService {
             TExpertDetailInfoCriteria criteria = new TExpertDetailInfoCriteria();
             criteria.createCriteria().andExpertIdEqualTo(whereId);
             List<TExpertDetailInfo> tExpertDetailInfos = tExpertDetailInfoMapper.selectByExample(criteria);
+            if(tExpertDetailInfos.isEmpty()){
+                ExpertDetailVO expertDetailVO = new ExpertDetailVO();
+                expertDetailVO.setName(tExpertBasicInfo.getName());
+                expertDetailVO.setCellphone(tExpertBasicInfo.getCellphone());
+                expertDetailVO.setId(tExpertBasicInfo.getId());
+                expertDetailVO.setState(tExpertBasicInfo.getState());
+                return Result.success(expertDetailVO);
+            }
             TExpertDetailInfo tExpertDetailInfo = tExpertDetailInfos.get(0);
+
             ExpertDetailVO expertDetailVO = new ExpertDetailVO();
             List<AttachmentVO> attachmentVOS = new ArrayList<>();
             if(null != tExpertDetailInfo){

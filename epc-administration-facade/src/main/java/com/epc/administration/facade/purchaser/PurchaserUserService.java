@@ -6,6 +6,7 @@ import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
+import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,7 @@ public interface PurchaserUserService {
      * @return
      */
     @GetMapping(value = "queryPurchaserDetailInfo")
-    Result queryPurchaserDetailInfo(@RequestParam("whereId") Long whereId);
+    Result<PurchaserDetailVO> queryPurchaserDetailInfo(@RequestParam("whereId") Long whereId);
 
 
     /**

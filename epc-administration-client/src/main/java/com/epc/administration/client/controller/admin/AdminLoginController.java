@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Api(value = "系统后台登录 @罗志鑫",tags = {"系统后台登录"})
 @RestController
-@RequestMapping(value = "loginIn", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @SessionAttributes("session")
 public class AdminLoginController {
     @Autowired

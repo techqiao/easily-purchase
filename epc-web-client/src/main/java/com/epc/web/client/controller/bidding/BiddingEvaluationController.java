@@ -8,7 +8,6 @@ import com.epc.web.client.controller.bidding.handle.evaluation.ClientEvaluationH
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.evaluation.EvaluationClient;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -36,18 +35,9 @@ public class BiddingEvaluationController extends BaseController {
         EvaluationHandle evaluationHandle = new EvaluationHandle();
         BeanUtils.copyProperties(clientEvaluationHandle,evaluationHandle);
         //测试数据
-       LoginUser loginUser = new LoginUser();
-        loginUser.setName("admin");
-        loginUser.setPassword("admin");
-        loginUser.setCellphone("admin");
-        loginUser.setType(0);
-        loginUser.setBossId(0L);
-        loginUser.setBossName("admin");
-        loginUser.setUserId(1L);
-        loginUser.setCompanyName("admin");
-        RedisShardedPoolUtil.setEx("123",JSON.toJSONString(loginUser) , Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+        RedisShardedPoolUtil.setEx("123",JSON.toJSONString("123123123:123123123") , Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         System.out.println(RedisShardedPoolUtil.get("123"));
-        evaluationHandle.setOperateId(getLoginUser().getUserId());
+//        evaluationHandle.setOperateId(getLoginUser().getUserId());
         return evaluationClient.insertEvaluation(evaluationHandle);
     }
     @ApiOperation(value = "查询供应商列表",tags = "查询供应商列表")

@@ -60,11 +60,17 @@
             <version>1.2.6.RELEASE</version>
         </dependency>
 
-        <!--SpringBoot开发工具 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
         </dependency>
+
+        <!--SpringBoot开发工具 -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+        <!--</dependency>-->
     </dependencies>
 
     <dependencyManagement>

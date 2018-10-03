@@ -20,7 +20,7 @@ import java.util.List;
  * <p>Date : 2018-09-26 15:17
  * <p>@Author : wjq
  */
-@Api(value = "开标记录服务",tags="开标记录服务")
+@Api(value = "开标服务",tags="开标服务")
 @RestController
 @RequestMapping(value = "/record", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OpeningRecordController extends BaseController {
@@ -28,7 +28,7 @@ public class OpeningRecordController extends BaseController {
     @Autowired
     private OpeningRecordClient openingRecordClient;
 
-    @ApiOperation(value = "新增开标记录")
+    @ApiOperation(value = "开标确认")
     @PostMapping(value = "insertOpeningRecord")
     public Result<Boolean> insertOpeningRecord(@RequestBody ClientHandleOpeningRecord clientHandleOpeningRecord){
         HandleOpeningRecord handleOpeningRecord = new HandleOpeningRecord();

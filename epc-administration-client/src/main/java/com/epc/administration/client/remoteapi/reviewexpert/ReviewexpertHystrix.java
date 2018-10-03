@@ -34,6 +34,11 @@ public class ReviewexpertHystrix implements ReviewExpertService {
     }
 
     @Override
+    public Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result queryReviewExpertDetailInfo( Long whereId) {
         return Result.hystrixError();
     }

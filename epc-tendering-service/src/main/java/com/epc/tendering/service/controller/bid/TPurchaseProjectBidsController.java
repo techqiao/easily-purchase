@@ -8,7 +8,6 @@ import com.epc.web.facade.terdering.bid.query.QueryBidsDTO;
 import com.epc.web.facade.terdering.bid.vo.BidsBasicInfoSubVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,12 +22,12 @@ public class TPurchaseProjectBidsController implements FacadePurchaseProjectBidS
     @Autowired
     private TPurchaseProjectBidsService tPurchaseProjectBidsService;
     @Override
-    public Result<Boolean> handleBidsBasicInfo(@RequestBody HandleBidsBasicInfo handleBidsBasicInfo) {
+    public Result<Boolean> handleBidsBasicInfo(HandleBidsBasicInfo handleBidsBasicInfo) {
         return tPurchaseProjectBidsService.handleBidsBasicInfo(handleBidsBasicInfo);
     }
 
     @Override
-    public Result<BidsBasicInfoSubVO> getBidsDetailInfo(@RequestParam(value = "bidId") Long bidId) {
+    public Result<BidsBasicInfoSubVO> getBidsDetailInfo(Long bidId) {
         return tPurchaseProjectBidsService.getBidsDetailInfo(bidId);
     }
 

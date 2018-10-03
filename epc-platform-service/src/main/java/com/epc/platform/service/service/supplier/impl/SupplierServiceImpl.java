@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,12 +130,38 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
             LOGGER.error("BusinessException insertSupplierDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
+    /**
+     * 修改供应商信息
+     * @param supplierHandle
+     * @return
+     */
+    @Override
+    public Result<Boolean> updateSupplierDetailInfo(SupplierHandle supplierHandle) {
+        TSupplierDetailInfoCriteria tSupplierDetailInfoCriteria = new TSupplierDetailInfoCriteria();
+        tSupplierDetailInfoCriteria.createCriteria().andSupplierIdEqualTo(supplierHandle.getId());
+
+        TSupplierAttachmentCriteria tSupplierAttachmentCriteria = new TSupplierAttachmentCriteria();
+        tSupplierAttachmentCriteria.createCriteria().andSupplierIdEqualTo(supplierHandle.getId());
+
+        try {
+            tSupplierDetailInfoMapper.deleteByExample(tSupplierDetailInfoCriteria);
+            tSupplierAttachmentMapper.deleteByExample(tSupplierAttachmentCriteria);
+            return this.insertSupplierDetailInfo(supplierHandle);
+        } catch (Exception e) {
+            LOGGER.error("BusinessException updateSupplierDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+    }
+
     /**
      * 删除供应商
      * @param
@@ -204,7 +231,11 @@ public class SupplierServiceImpl  implements SupplierService {
      */
     @Override
     public List<SupplierUserVO> selectAllSupplierByPage(QueryDetailIfo queryDetailIfo) {
-
+        String where = queryDetailIfo.getWhere();
+        if(where!=null){
+            where="%"+where+"%";
+            queryDetailIfo.setWhere(where);
+        }
         return  tSupplierDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**

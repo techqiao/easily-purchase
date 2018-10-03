@@ -4,8 +4,10 @@ import com.epc.common.Result;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
+import com.epc.web.client.controller.loginuser.handle.ClientRegisterUser;
 import com.epc.web.client.remoteApi.loginuser.ILoginUserClient;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.RegisterUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -31,7 +33,7 @@ public class LoginController {
     @Autowired
     ILoginUserClient iLoginUserClient;
 
-    @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4")
+    @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4,专家5")
     @PostMapping(value = "/roleLogin",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<LoginUser> login(@RequestBody ClientLoginUser user){
         LoginUser loginUser = new LoginUser();
@@ -40,7 +42,7 @@ public class LoginController {
     }
 
 
-    @ApiOperation(value = "角色登出" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4")
+    @ApiOperation(value = "角色登出" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4专家5")
     @PostMapping(value = "/roleLoginOut",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Boolean> loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
@@ -48,4 +50,19 @@ public class LoginController {
         RedisShardedPoolUtil.del(loginToken);
         return Result.success();
     }
+    /**
+     *@author :winlin
+     *@Description :统一注册接口
+     *@param:
+     *@return:
+     *@date:2018/10/1
+     */
+    @ApiOperation(value = "角色注册" ,notes="根据用户类型注册,运营商1,代理商2,供货商3,采购商4专家5")
+    @PostMapping(value = "/register",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<Boolean> registerUser(@RequestBody ClientRegisterUser registerUser){
+        RegisterUser user = new RegisterUser();
+        BeanUtils.copyProperties(registerUser,user);
+        return iLoginUserClient.registerUser(user);
+    }
+
 }

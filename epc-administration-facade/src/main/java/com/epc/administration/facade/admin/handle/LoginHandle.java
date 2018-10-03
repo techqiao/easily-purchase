@@ -13,10 +13,23 @@ import java.io.Serializable;
 @Data
 public class LoginHandle implements Serializable {
     private static final long serialVersionUID = -2786704516067092737L;
-    private  String phone;
-    private String  password;
-    private String name;
+    /**
+     * 用戶id
+     */
     private Long id;
+    /**
+     * 用戶手机号
+     */
+    private  String phone;
+    /**
+     * 用户密码
+     */
+    private String  password;
+    /**
+     * 用户名
+     */
+    private String name;
+
 
 
 }

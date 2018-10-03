@@ -1,10 +1,12 @@
 package com.epc.web.facade.supplier.vo;
 
+import com.epc.web.facade.operator.handle.Attachment;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class SupplierAttachmentAndDetailVO implements Serializable {
@@ -77,28 +79,31 @@ public class SupplierAttachmentAndDetailVO implements Serializable {
     //最后修改时间
     private String updateAt;
 
-    //资质证书url
-    private String qualificationCertificate;
-    private String qualificationCertificateNumber;
+    private List<Attachment> atts;
 
-    //营业执照照片url
-    private String businessLicense;
-    private String businessLicenseNumber;
 
-    //法人身份证正面照片url
-    private String legalIdCardPositive;
-    private String legalIdCardPositiveNumber;
-
-    //法人身份证反面照片url
-    private String legalIdCardOther;
-
-    //带公章的授权书照片url
-    private String certificateOfAuthorization;
-    private String certificateOfAuthorizationNumber;
-
-    // 经办人(运营商员工)手持身份证正面照片url
-    private String operatorIdCardFront;
-    private String operatorIdCardFrontNumber;
+//    //资质证书url
+//    private String qualificationCertificate;
+//    private String qualificationCertificateNumber;
+//
+//    //营业执照照片url
+//    private String businessLicense;
+//    private String businessLicenseNumber;
+//
+//    //法人身份证正面照片url
+//    private String legalIdCardPositive;
+//    private String legalIdCardPositiveNumber;
+//
+//    //法人身份证反面照片url
+//    private String legalIdCardOther;
+//
+//    //带公章的授权书照片url
+//    private String certificateOfAuthorization;
+//    private String certificateOfAuthorizationNumber;
+//
+//    // 经办人(运营商员工)手持身份证正面照片url
+//    private String operatorIdCardFront;
+//    private String operatorIdCardFrontNumber;
 
 
 

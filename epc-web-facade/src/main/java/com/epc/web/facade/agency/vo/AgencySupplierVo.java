@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class AgencySupplierVo implements Serializable {
     private static final long serialVersionUID = -6368258212851191773L;
+
     /**
      * 代理机构员工的名称
      */
@@ -46,7 +47,7 @@ public class AgencySupplierVo implements Serializable {
      */
         private List<Attachement> atts;
     /**
-     * 代理机构供应商id
+     * 供应商id
      */
     private Long supplierId;
 }

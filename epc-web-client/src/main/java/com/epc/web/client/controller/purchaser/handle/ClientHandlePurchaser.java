@@ -17,13 +17,13 @@ import java.io.Serializable;
 * @Version:        1.0
 */
 @Data
-@ApiModel(value = "ClientHandlePurchaser", description = "采购人员信息")
+@ApiModel(value = "ClientHandleCreatePurchaserByOperator", description = "采购人员信息")
 public class ClientHandlePurchaser implements Serializable {
     private static final long serialVersionUID = -2197056195533241604L;
     @ApiModelProperty(value = "采购人Id")
     private long userId;
     @ApiModelProperty(value = "采购人姓名")
-    @NotEmpty(message = "ClientHandlePurchaser.name.null")
+    @NotEmpty(message = "ClientHandleCreatePurchaserByOperator.name.null")
     private String name;
     @ApiModelProperty(value = "公司名称")
     private String companyName;

@@ -365,4 +365,10 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectAttchamentByExpertId" resultType="com.epc.web.service.domain.expert.TExpertAttachment">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_expert_attachment
+      WHERE expert_id=#{expertId}
+    </select>
 </mapper>

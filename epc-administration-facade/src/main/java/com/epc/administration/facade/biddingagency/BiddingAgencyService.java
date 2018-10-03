@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Map;
+
 
 /**
  * <p>Description : 招标代理机构接口
@@ -32,6 +34,14 @@ public interface BiddingAgencyService {
      */
     @PostMapping(value = "insertBiddingAgencyDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertBiddingAgencyDetailInfo(@RequestBody BiddingHandle biddingHandle);
+
+    /**
+     * 招标代理机构完善资料
+     * @param biddingHandle 附件信息
+     * @return
+     */
+    @PostMapping(value = "updateBiddingAgencyDetailInfo", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateBiddingAgencyDetailInfo(@RequestBody BiddingHandle biddingHandle);
 
 
     /**
@@ -57,7 +67,7 @@ public interface BiddingAgencyService {
      * @return
      */
     @PostMapping(value = "selectAllByPage" ,consumes = "application/json; charset=UTF-8")
-    Result selectAllAgencyByPage(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<Map<String, Object>> selectAllAgencyByPage(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 审核招标代理机构

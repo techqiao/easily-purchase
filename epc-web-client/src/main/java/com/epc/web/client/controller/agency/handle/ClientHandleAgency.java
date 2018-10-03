@@ -38,7 +38,7 @@ public class ClientHandleAgency implements Serializable {
     @ApiModelProperty(value = "对公银行名称")
     private String publicBankName;
 
-    @ApiModelProperty
+    @ApiModelProperty(value = "对公银行账号")
     private String publicBanAccountNumber;
 
     @ApiModelProperty(value = "所有的附件")

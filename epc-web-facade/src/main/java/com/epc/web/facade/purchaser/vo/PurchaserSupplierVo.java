@@ -19,10 +19,6 @@ public class PurchaserSupplierVo implements Serializable{
      */
     private Long supplierId;
     /**
-     * 员工的名称
-     */
-    private String employeeName;
-    /**
      * 公司名称
      */
     private String companyName;
@@ -32,24 +28,5 @@ public class PurchaserSupplierVo implements Serializable{
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 
-    /**
-     * 统一信用证号
-     */
-    private String uniformCreditCode;
-    /**
-     * 对公银行
-     */
-    private String publicBankName;
-    /**
-     * 对公银行账号
-     */
-    private String publicBanAccountNumber;
-    /**
-     * 法人手机号
-     */
-    private String cellphone;
-    /**
-     * 资料集合
-     */
-    private List<Attachement> atts;
+
 }

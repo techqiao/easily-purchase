@@ -33,5 +33,20 @@ public class HandleOperatorAddEmployee implements Serializable {
      */
     private Integer role;
 
+    /**
+     * 是否删除
+     */
+    private Integer isDeleted;
+
+    /**
+     * 运营商id
+     */
+    private Long operatorId;
+
+    /**
+     * 员工的审核状态，0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     */
+    private Integer state;
+
 
 }

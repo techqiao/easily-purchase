@@ -65,12 +65,12 @@ public class SaleDocumentsController extends BaseController {
             }
             //审核 操作人是审核人
             if(clientHandleSaleDocuments.getProcessStatus().equals(AnnouncementProcessStatusEnum.AUDITING.getCode())){
-                handleSaleDocuments.setAuditorId(getLoginUser().getUserId());
+//                handleSaleDocuments.setAuditorId(getLoginUser().getUserId());
                 return handleSaleDocuments(handleDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
             }
             //批复 操作人是批复人
             if(clientHandleSaleDocuments.getProcessStatus().equals(AnnouncementProcessStatusEnum.REPLY.getCode())){
-                handleSaleDocuments.setRepliesId(getLoginUser().getUserId());
+//                handleSaleDocuments.setRepliesId(getLoginUser().getUserId());
                 return handleSaleDocuments(handleDocuments, clientHandleBidsGuaranteeAmounts, clientHandleUnderLine, handleSaleDocuments);
             }
         }
@@ -94,16 +94,16 @@ public class SaleDocumentsController extends BaseController {
      */
     private Result<Boolean> handleSaleDocuments(HandleDocuments handleDocuments, List<ClientHandleBidsGuaranteeAmount> clientHandleBidsGuaranteeAmounts, ClientHandleUnderLine clientHandleUnderLine, HandleSaleDocuments handleSaleDocuments) {
         //招标文件 操作人
-        handleSaleDocuments.setOperateId(getLoginUser().getUserId());
+//        handleSaleDocuments.setOperateId(getLoginUser().getUserId());
         HandleUnderLine handleUnderLine = new HandleUnderLine();
         BeanUtils.copyProperties(clientHandleUnderLine, handleUnderLine);
         //招标文件 操作人
-        handleUnderLine.setOperateId(getLoginUser().getUserId());
+//        handleUnderLine.setOperateId(getLoginUser().getUserId());
         List<HandleBidsGuaranteeAmount> handleBidsGuaranteeAmountList = new ArrayList<>();
         for (ClientHandleBidsGuaranteeAmount item : clientHandleBidsGuaranteeAmounts) {
             HandleBidsGuaranteeAmount handleBidsGuaranteeAmount = new HandleBidsGuaranteeAmount();
             BeanUtils.copyProperties(item, handleBidsGuaranteeAmount);
-            handleBidsGuaranteeAmount.setOperateId(getLoginUser().getUserId());
+//            handleBidsGuaranteeAmount.setOperateId(getLoginUser().getUserId());
             handleBidsGuaranteeAmountList.add(handleBidsGuaranteeAmount);
         }
         //招标文件

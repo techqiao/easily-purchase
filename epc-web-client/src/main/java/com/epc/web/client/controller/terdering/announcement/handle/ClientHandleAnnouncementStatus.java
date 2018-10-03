@@ -14,7 +14,9 @@ import lombok.Data;
 public class ClientHandleAnnouncementStatus {
     @ApiModelProperty(value = "主键ID")
     private Long id;
-    @ApiModelProperty(value = "公告状态")
+    @ApiModelProperty(value = "当前公告状态")
     private String processStatus;
+    @ApiModelProperty(value = "是否通过 0不通过 1通过")
+    private Integer isPass;
 
 }

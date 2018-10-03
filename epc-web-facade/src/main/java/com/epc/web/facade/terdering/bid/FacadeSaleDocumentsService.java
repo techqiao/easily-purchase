@@ -18,11 +18,11 @@ public interface FacadeSaleDocumentsService {
 
     /**
      * 发布|审核|批复|修改|删除 招标文件
-     * @param handleDocuments
+     * @param handDocuments
      * @return
      */
     @PostMapping(value = "handleSaleDocuments", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> handleSaleDocuments(@RequestBody HandleDocuments handleDocuments);
+    Result<Boolean> handleSaleDocuments(@RequestBody HandleDocuments handDocuments);
 
     /**
      * 查询招标文件详情

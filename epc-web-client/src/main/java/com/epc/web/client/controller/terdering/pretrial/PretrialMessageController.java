@@ -47,7 +47,7 @@ public class PretrialMessageController extends BaseController {
         HandlePretrialMessage handlePretrialMessage = new HandlePretrialMessage();
         BeanUtils.copyProperties(clientHandleMessage, handlePretrialMessage);
         handlePretrialMessage.setCreator(getLoginUser().getName());
-        handlePretrialMessage.setOperateId(getLoginUser().getUserId());
+//        handlePretrialMessage.setOperateId(getLoginUser().getUserId());
         return pretrialMessageClient.handlePretrialMessage(handlePretrialMessage);
     }
 }

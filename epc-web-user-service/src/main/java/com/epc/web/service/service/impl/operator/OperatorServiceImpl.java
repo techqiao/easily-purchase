@@ -146,6 +146,34 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+
+    /**0.5
+     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> addPasswordOperatorLogin(HandleOperator handleOperator){
+
+        //得到电话 姓名
+        String cellphone=handleOperator.getCellphone();
+        String name = handleOperator.getName();
+
+        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
+        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+        }
+        subCriteria.andCellphoneEqualTo(cellphone);
+        subCriteria.andNameEqualTo(name);
+        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
+
+        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
+            return Result.success(false);
+        }
+        return Result.success(true);
+
+    }
     /**1
      *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
      *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
@@ -164,14 +192,14 @@ public class OperatorServiceImpl implements OperatorService {
         //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
         TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        if(StringUtils.isBlank(cellphone)) {
-            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) : {参数异常}");
+        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
         }
         subCriteria.andCellphoneEqualTo(cellphone);
         subCriteria.andNameEqualTo(name);
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
         if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-            return Result.error("[运营商注册] 数据库中没有这个电话，名字，必须由别人拉取，或者在平台自己注册");
+            return Result.error("[运营商注册] 查不到符合条件的信息");
         }
         //通过电话,名字 能查出这个数据在数据库中 存在
         TOperatorBasicInfo operatorBasic = tOperatorBasicInfos.get(0);
@@ -181,7 +209,7 @@ public class OperatorServiceImpl implements OperatorService {
         if(StringUtils.isNotBlank(password)){
             //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
             //因为你的电话与名字可能某些人知道！！
-            return Result.error("如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
+            return Result.error("如果你由别人拉取，数据库密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
         }
         //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
         //设置一些表中必须的信息
@@ -194,8 +222,7 @@ public class OperatorServiceImpl implements OperatorService {
         int i=0;
         try{
             //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息,并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
-            i=tOperatorBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
-            return  Result.success(i>0);
+            tOperatorBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
         }catch (BusinessException e){
             LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {由平台拉取完成登陆，更新密码}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -205,7 +232,11 @@ public class OperatorServiceImpl implements OperatorService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
+        return  Result.success(true);
     }
+
+
+
 
     /**2
      * 完善运营商信息
@@ -226,83 +257,48 @@ public class OperatorServiceImpl implements OperatorService {
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
 
-        //完善附件表
-        TOperatorAttachment attachment=new TOperatorAttachment();
-        attachment.setOperatorId(supplierId);
-        attachment.setCreateAt(date);
-        attachment.setUpdateAt(date);
-
-        int i=0;
-        int k1=0;
-        int k2=0;
-        int k3=0;
-        int k4=0;
-        int k5=0;
-        int k6=0;
-        int j=0;
-
         try{
             //插入运营商详情表
-            i=tOperatorDetailInfoMapper.insertSelective(detailInfo);
+            tOperatorDetailInfoMapper.insertSelective(detailInfo);
+        }catch (BusinessException e){
+            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper.insertSelective : {}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper.insertSelective : {}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
+        }
 
-            //证书类型(经办人(运营商员工)手持身份证正面照片)
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            //经办人(运营商员工)手持身份证正面照片url
-            attachment.setCertificateFilePath(roleDetailInfo.getOperatorIdCardFront());
-            //证书名字
-            attachment.setCertificateName(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc());
-            //证书上的号码
-            attachment.setCertificateNumber(roleDetailInfo.getOperatorIdCardFrontNumber());
-            k1=tOperatorAttachmentMapper.insertSelective(attachment); //插入一条数据
 
-            //证书类型(法人身份证反面照片)
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            //法人身份证反面照片url
-            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
-            //证书名字
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-            k2=tOperatorAttachmentMapper.insertSelective(attachment);
+        //完善附件表
+        TOperatorAttachment attachment=new TOperatorAttachment();
+        List<Attachment> atts = roleDetailInfo.getAtts();
+        for(Attachment att:atts){
+            attachment.setOperatorId(supplierId);
+            attachment.setCreateAt(date);
+            attachment.setUpdateAt(date);
 
-            //证书类型(法人身份证正面照片)
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            //法人身份证正面照片url
-            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
-            //证书名字
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-            //证书号码
-            attachment.setCertificateNumber(roleDetailInfo.getLegalIdCardPositiveNumber());
-            k3=tOperatorAttachmentMapper.insertSelective(attachment);
+            attachment.setCertificateFilePath(att.getCertificateFilePath());
+            attachment.setCertificateName(att.getCertificateName());
+            attachment.setCertificateNumber(att.getCertificateNumber());
+            attachment.setCertificateType(att.getCertificateType());
 
-            //证书类型(营业执照照片)
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            //营业执照照片url
-            attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
-            //证书名称
-            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
-            //证书号码
-            attachment.setCertificateNumber(roleDetailInfo.getBusinessLicenseNumber());
-            k4=tOperatorAttachmentMapper.insertSelective(attachment);
+            try{
+                tOperatorAttachmentMapper.insertSelective(attachment);
+            }catch (BusinessException e){
+                LOGGER.error("[供应商完善信息] tOperatorAttachmentMapper.insertSelective : {}",e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+            }catch (Exception e){
+                LOGGER.error("[供应商完善信息] tOperatorAttachmentMapper.insertSelective : {}",e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error(e.getMessage());
+            }
+        }
 
-            //证书类型(带公章的授权书照片)
-            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            //带公章的授权书照片url
-            attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
-            //公章证书名字
-            attachment.setCertificateName(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getDesc());
-            //公章证书号码
-            attachment.setCertificateNumber(roleDetailInfo.getCertificateOfAuthorizationNumber());
-            k5=tOperatorAttachmentMapper.insertSelective(attachment);
 
-            //证书类型(资质证书)
-            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-            //资质证书url
-            attachment.setCertificateFilePath(roleDetailInfo.getQualificationCertificate());
-            //证书名称
-            attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-            //证书号码
-            attachment.setCertificateNumber(roleDetailInfo.getQualificationCertificateNumber());
-            k6=tOperatorAttachmentMapper.insertSelective(attachment);
-
+        try{
             //将运营商主表中的basic信息更新
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(supplierId);
             //设置更新日期
@@ -316,19 +312,20 @@ public class OperatorServiceImpl implements OperatorService {
                 tOperatorBasicInfo.setName(name);
             }
             //如果不为空，就只需要更改状态,以及更新时间就可以
-            j = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-
-            return Result.success(i>0 && k1>0 && k2>0 && k3>0 && k4>0 && k5>0 && k6>0 && j>0);
+            tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
         }catch (BusinessException e){
-            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper(tOperatorAttachmentMapper).insertSelective : {}",e);
+            LOGGER.error("[供应商完善信息] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }catch (Exception e){
-            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper(tOperatorAttachmentMapper).insertSelective : {}",e);
+            LOGGER.error("[供应商完善信息] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
+        return Result.success(true);
     }
+
+
 
 
     //--------------------------平台审核通过之后----------------------------------
@@ -454,7 +451,7 @@ public class OperatorServiceImpl implements OperatorService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> findOperatorRecordByCellphone(HandleOperatorCellphone handleOperatorCellphone){
         String cellphone=handleOperatorCellphone.getCellphone();
-        System.out.println("电话 cellphone==="+cellphone);
+//        System.out.println("电话 cellphone==="+cellphone);
         if(StringUtils.isNotBlank(cellphone)){
             TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
             TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
@@ -525,8 +522,8 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
             tOperatorBasicInfo.setIsDeleted(isDeleted);
             tOperatorBasicInfo.setUpdateAt(new Date());
+            tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
 
-            return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo)>0);
         } catch (BusinessException e) {
             LOGGER.error("[运营商依据id来删除一个员工] tOperatorBasicInfoMapper.updateByExample : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -536,6 +533,7 @@ public class OperatorServiceImpl implements OperatorService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
+        return Result.success(true);
     }
 
     /**11
@@ -611,6 +609,7 @@ public class OperatorServiceImpl implements OperatorService {
         }
         subCriteria.andCellphoneEqualTo(cellphone);
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
+//        System.out.println("通过电话查询出来的对象有多少个   =="+tOperatorBasicInfos.size());
         if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
             return Result.error("[运营商忘记密码] tOperatorBasicInfoMapper.selectByExample : {条件异常，查询结果是空}");
         }
@@ -619,8 +618,7 @@ public class OperatorServiceImpl implements OperatorService {
         tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(newPassword));
         tOperatorBasicInfo.setUpdateAt(new Date());
         try{
-            int i = tOperatorBasicInfoMapper.updateByExampleSelective(tOperatorBasicInfo, criteria);
-            return Result.success(i>0);
+            tOperatorBasicInfoMapper.updateByExampleSelective(tOperatorBasicInfo, criteria);
         }catch (BusinessException e){
             LOGGER.error("[运营商忘记密码] tOperatorBasicInfoMapper.updateByExample : {}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -630,7 +628,7 @@ public class OperatorServiceImpl implements OperatorService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-
+        return Result.success(true);
     }
 
     /**14
@@ -647,8 +645,8 @@ public class OperatorServiceImpl implements OperatorService {
         Integer isForbidden = handleOperatorFindAllByName.getIsForbidden();
         //角色是管理员，还是员工
         Integer role = handleOperatorFindAllByName.getRole();
-        if(id==null || isForbidden==null || role==null){
-            return Result.error("[运营商查询员工列表] id==null || isForbidden==null || role==null : {参数异常}");
+        if(id==null){
+            return Result.error("[运营商查询员工列表] id==null : {参数异常}");
         }
         //根据当前操作人的id来得到法人id (因为你所有的查询列表都是基于法人id员工之下)
         TOperatorBasicInfo basic = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
@@ -659,8 +657,13 @@ public class OperatorServiceImpl implements OperatorService {
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //注意，is_deleted 为0 （存在） 的
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        subCriteria.andRoleEqualTo(role);
-        subCriteria.andIsForbiddenEqualTo(isForbidden);
+        subCriteria.andOperatorIdEqualTo(operatorId);
+        if(role!=null){
+            subCriteria.andRoleEqualTo(role);
+        }
+        if(isForbidden!=null){
+            subCriteria.andIsForbiddenEqualTo(isForbidden);
+        }
         if(StringUtils.isNotBlank(name)){
             subCriteria.andNameLike("%"+name+"%");
         }
@@ -712,7 +715,7 @@ public class OperatorServiceImpl implements OperatorService {
         //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
         tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
         //邀请人id
-        tPurchaserBasicInfo.setInviterId(id);
+        tPurchaserBasicInfo.setInviterId(id.intValue());
         //邀请机构 id
         tPurchaserBasicInfo.setInviterCompanyId(operatorId.intValue());
         //设置状态，已注册
@@ -775,11 +778,11 @@ public class OperatorServiceImpl implements OperatorService {
         TPurchaserAttachment tPurchaserAttachment=new TPurchaserAttachment();
         //完善附件表
         for(Attachment att:atts){
-            tPurchaserAttachment.setPurchaserId(purchaserId);
             tPurchaserAttachment.setCertificateType(att.getCertificateType());
             tPurchaserAttachment.setCertificateFilePath(att.getCertificateFilePath());
             tPurchaserAttachment.setCertificateName(att.getCertificateName());
             tPurchaserAttachment.setCertificateNumber(att.getCertificateNumber());
+            tPurchaserAttachment.setPurchaserId(purchaserId);
             tPurchaserAttachment.setCreateAt(date);
             tPurchaserAttachment.setUpdateAt(date);
             try {
@@ -825,7 +828,7 @@ public class OperatorServiceImpl implements OperatorService {
         //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
         tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
         //邀请人id
-        tPurchaserBasicInfo.setInviterId(id);
+        tPurchaserBasicInfo.setInviterId(id.intValue());
         //邀请机构 id
         tPurchaserBasicInfo.setInviterCompanyId(operatorId.intValue());
         //设置状态，已注册
@@ -985,10 +988,10 @@ public class OperatorServiceImpl implements OperatorService {
         TSupplierAttachment tSupplierAttachment=new TSupplierAttachment();
         List<Attachment> atts = handleCreatePurchaserByOperator.getAtts();
         for(Attachment att:atts){
-            att.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
-            att.setCertificateName(tSupplierAttachment.getCertificateName());
-            att.setCertificateNumber(tSupplierAttachment.getCertificateNumber());
-            att.setCertificateType(tSupplierAttachment.getCertificateType());
+            tSupplierAttachment.setCertificateFilePath(att.getCertificateFilePath());
+            tSupplierAttachment.setCertificateName(att.getCertificateName());
+            tSupplierAttachment.setCertificateNumber(att.getCertificateNumber());
+            tSupplierAttachment.setCertificateType(att.getCertificateType());
 
             tSupplierAttachment.setSupplierId(supplierId);
             tSupplierAttachment.setCreateAt(date);

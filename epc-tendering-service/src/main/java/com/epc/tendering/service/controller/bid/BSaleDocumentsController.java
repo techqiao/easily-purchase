@@ -6,8 +6,6 @@ import com.epc.web.facade.terdering.bid.FacadeSaleDocumentsService;
 import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,12 +20,12 @@ public class BSaleDocumentsController implements FacadeSaleDocumentsService {
     private SaleDocumentsService saleDocumentsService;
 
     @Override
-    public Result<Boolean> handleSaleDocuments(@RequestBody HandleDocuments handleDocuments) {
-        return saleDocumentsService.handleSaleDocuments(handleDocuments);
+    public Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments) {
+        return saleDocumentsService.handleSaleDocuments(handDocuments);
     }
 
     @Override
-    public Result<DocumentsVO> getSaleDocuments(@RequestParam(value = "id") Long id) {
+    public Result<DocumentsVO> getSaleDocuments(Long id) {
         return saleDocumentsService.getSaleDocuments(id);
     }
 }

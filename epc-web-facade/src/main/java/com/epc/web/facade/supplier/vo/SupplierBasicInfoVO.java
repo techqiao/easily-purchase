@@ -3,6 +3,7 @@ package com.epc.web.facade.supplier.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 登陆进来的基本属性

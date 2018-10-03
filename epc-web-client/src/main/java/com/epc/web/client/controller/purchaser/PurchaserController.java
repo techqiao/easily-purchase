@@ -1,266 +1,381 @@
 package com.epc.web.client.controller.purchaser;
 
 import com.epc.common.Result;
-import com.epc.web.client.controller.purchaser.dto.ClientHandleAgencyDto;
-import com.epc.web.client.controller.purchaser.dto.ClientHandleEmployeeDto;
-import com.epc.web.client.controller.purchaser.dto.ClientHandleExpertDto;
-import com.epc.web.client.controller.purchaser.dto.ClientHandleSupplierDto;
+import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.controller.purchaser.dto.*;
 import com.epc.web.client.controller.purchaser.handle.*;
-import com.epc.web.client.controller.supplier.handle.ClientHandleSupplierDetail;
 import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
 import com.epc.web.facade.expert.Handle.HandleExpert;
-import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
-import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
-import com.epc.web.facade.purchaser.dto.HandleExpertDto;
-import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
-import com.epc.web.facade.purchaser.handle.HandPurchaserAttachment;
-import com.epc.web.facade.purchaser.handle.HandleAgnecy;
-import com.epc.web.facade.purchaser.handle.HandlePurchaser;
-import com.epc.web.facade.purchaser.handle.HandleRegisterPurchaser;
-import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
-import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
+import com.epc.web.facade.purchaser.dto.*;
+import com.epc.web.facade.purchaser.handle.*;
+import com.epc.web.facade.purchaser.vo.*;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.crypto.Data;
-import java.util.HashMap;
 import java.util.List;
 
-@Api(value = "采购人服务",tags = {"采购人服务"})
+@Api(value = "采购人服务")
 @RestController
-@RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PurchaserController  {
+@RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+public class PurchaserController extends BaseController {
     @Autowired
     PurchaserClient purchaserClient;
 
-    @ApiOperation(value = "注册采购人员",notes = "注册采购人员")
-    @PostMapping(value = "/registerPurchaseBasicInfo")
-    public Result<Boolean> createPurchaseBasicInfo(@RequestBody ClientHandlePurchaser handlePurchaser) {
+    /**
+     * 新增采购人员工
+     */
+    @ApiOperation(value = "新增采购人机构员工")
+    @PostMapping(value = "/clientcreatePurchaserUserInfo")
+    Result<Boolean> createPurchaserUserInfo(@RequestBody ClientHandlePurchaser handleEmployee) {
         HandlePurchaser purchaser = new HandlePurchaser();
-        BeanUtils.copyProperties(handlePurchaser,purchaser);
-        return purchaserClient.createPurchaseBasicInfo(purchaser);
+        super.getLoginUser().getUserId();
+        BeanUtils.copyProperties(handleEmployee, purchaser);
+        return purchaserClient.createPurchaserUserInfo(purchaser);
     }
 
-    @ApiOperation(value = "注册供应商",notes = "注册供应商")
-    @PostMapping(value = "/registerSupplierBasicInfo")
-    public Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleSupplierDetail) {
-        HandleSupplierDto supplierDetail = new HandleSupplierDto();
-        BeanUtils.copyProperties(handleSupplierDetail,supplierDetail);
-        return purchaserClient.createSupplierByPurchaser(supplierDetail);
+    ;
+
+    /**
+     * @author :winlin
+     * @Description :启用或禁用员工
+     * @param:
+     * @return:
+     * @date:2018/9/29
+     */
+    @ApiOperation(value = "启用或禁用员工")
+    @PostMapping(value = "/clientenableOrDisablePurchaserEmployee")
+    public Result<Boolean> enableOrDisablePurchaserEmployee(@RequestBody ClientHandleTrustList trustList) {
+        HandleTrustList handleTrustList = new HandleTrustList();
+        BeanUtils.copyProperties(trustList, handleTrustList);
+        return purchaserClient.enableOrDisablePurchaserEmployee(handleTrustList);
     }
 
-    @ApiOperation(value = "注册专家",notes = "注册专家")
-    @PostMapping(value = "/registerExpertBasicInfo")
-    public Result<Boolean> createExpertByPurchaser(@RequestBody ClientHandleExpert handleExpert) {
-        HandleExpert expert = new HandleExpert();
-        BeanUtils.copyProperties(handleExpert,expert);
-        return purchaserClient.createExpertByPurchaser(expert);
+    ;
+
+    /**
+     * @author :winlin
+     * @Description :修改员工权限
+     * @param:
+     * @return:
+     * @date:2018/9/30
+     */
+    @ApiOperation(value = "修改员工权限")
+    @PostMapping(value = "/clienteupdatePurchaserEmployeeRole")
+    public Result<Boolean> updatePurchaserEmployeeRole(@RequestBody ClientHandleTrustList trustList) {
+        HandleTrustList handleTrustList = new HandleTrustList();
+        BeanUtils.copyProperties(trustList, handleTrustList);
+        return purchaserClient.updatePurchaserEmployeeRole(handleTrustList);
     }
 
-    @ApiOperation(value = "注册代理机构",notes = "注册代理机构")
-    @PostMapping(value = "/registerAgencyBasicInfo")
-    public Result<Boolean> createAgencyByPurchaser(@RequestBody ClientHandleAgnecy handleAgnecy) {
-        HandleAgnecy agnecy = new HandleAgnecy();
-        BeanUtils.copyProperties(handleAgnecy,agnecy);
-        return purchaserClient.createAgencyByPurchaser(agnecy);
-    }
+    ;
 
-    @ApiOperation(value = "完善采购人信息",notes = "完善采购人信息")
-    @PostMapping(value = "/updatePurchaserDetail")
-    public Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandleRegisterPurchaser handlePurchaser) {
-        HandleRegisterPurchaser purchaser = new HandleRegisterPurchaser();
-        BeanUtils.copyProperties(handlePurchaser,purchaser);
-        return purchaserClient.updatePurchaserDetail(purchaser);
-    }
-
-    @ApiOperation(value = "完善代理机构信息",notes = "完善代理机构信息")
-    @PostMapping(value = "/updateAgencyDetail")
-    public Result<Boolean> updateAgencyDetail(@RequestBody ClientHandleAgnecy handleAgnecy) {
-        HandleAgnecy agnecy = new HandleAgnecy();
-        BeanUtils.copyProperties(handleAgnecy,agnecy);
-        return purchaserClient.updateAgencyDetail(agnecy);
-    }
-
-    @ApiOperation(value = "采购商注册",notes = "采购商注册")
-    @PostMapping(value = "/registerPurchasers")
-    public Result registerPurchaser(@RequestBody ClientHandleRegisterPurchaser purchaser) {
-        HandleRegisterPurchaser handleRegisterPurchaser = new HandleRegisterPurchaser();
-        BeanUtils.copyProperties(purchaser,handleRegisterPurchaser);
-        return purchaserClient.registerPurchaser(handleRegisterPurchaser);
-    }
-
-    @ApiOperation(value = "查找采购商所有员工",notes = "查找采购商所有员工,map中key为\"purchaserId\"")
-    @PostMapping(value = "/allEmployee")
-    public Result allEmployee(@RequestBody @ApiParam(value = "map是的key为purchaserId的json格式")HashMap<String,Long> map) {
-        return purchaserClient.allEmployee(map);
-    }
-
-    @ApiOperation(value = "根据name查找员工",notes = "根据name查找员工")
-    @PostMapping(value = "/findEmployeeByName")
-    public Result findEmployeeByName(@RequestBody @ApiParam(value = "map是的key为fuzzyName和purchaseId的json格式")HashMap<String,Object> map) {
-        return purchaserClient.findEmployeeByName(map);
-    }
-
-    @ApiOperation(value = "根据手机修改员工状态",notes = "根据手机修改员工状态")
-    @PostMapping(value = "/updateEmployeeState")
-    public Result updateEmployeeState(@RequestBody @ApiParam(value = "map是的key为cellphone和state的json格式")HashMap<String,Object> map) {
-        return purchaserClient.updateEmployeeState(map);
+    /**
+     * @author :winlin
+     * @Description :修改员工信息
+     * @param:
+     * @return:
+     * @date:2018/9/30
+     */
+    @ApiOperation(value = "修改员工信息")
+    @PostMapping(value = "/clientupdatePurchaserEmployeeInfo")
+    public Result<Boolean> updatePurchaserEmployeeInfo(@RequestBody ClientHandlePurchaserDto handlePurchaser) {
+        HandlePurchaserDto handlePurchaserDto = new HandlePurchaserDto();
+        BeanUtils.copyProperties(handlePurchaser, handlePurchaserDto);
+        return purchaserClient.updatePurchaserEmployeeInfo(handlePurchaserDto);
 
     }
 
-    @ApiOperation(value = "根据id修改员工状态",notes = "根据id修改员工状态")
-    @PostMapping(value = "/updateEmployeeStateById")
-    public Result updateEmployeeStateById(@RequestBody @ApiParam(value = "map是的key为id和state的json格式")HashMap<String,Object> map) {
-        return purchaserClient.updateEmployeeStateById(map);
-    }
+    ;
 
-    @ApiOperation(value = "依据手机查员工",notes = "依据手机查员工")
-    @PostMapping(value = "/queryEmployeeByCell")
-    public Result queryEmployeeByCellphone(@RequestBody @ApiParam(value = "map是的key为cellphone的json格式")HashMap<String,Object> map) {
-        return purchaserClient.queryEmployeeByCellphone(map);
-    }
-
-    @ApiOperation(value = "依据id查员工",notes = "依据id查员工")
-    @PostMapping(value = "/queryEmployeeById")
-    public Result queryEmployeeById(@RequestBody @ApiParam(value = "map是的key为idjson格式")HashMap<String,Object> map) {
-        return purchaserClient.queryEmployeeById(map);
-    }
-    @ApiOperation(value = "依据综合条件查员工",notes = "依据综合条件查员工")
-    @PostMapping(value = "/queryEmplyees")
-    public Result queryEmplyee(@RequestBody ClientHandleEmployeeDto employeeDto) {
+    /**
+     * @author :winlin
+     * @Description :根据条件查询多有符合条件的员工
+     * @param: name cellphone role
+     * @return:
+     * @date:2018/9/19
+     */
+    @ApiOperation(value = "根据条件查询多有符合条件的员工")
+    @PostMapping(value = "/clientqueryEmplyee")
+    public Result<List<PurchaserEmplyeeVo>> queryEmplyee(@RequestBody ClientEmployeeDto employeeDto) {
         HandleEmployeeDto dto = new HandleEmployeeDto();
-        BeanUtils.copyProperties(employeeDto,dto);
+        BeanUtils.copyProperties(employeeDto, dto);
         return purchaserClient.queryEmplyee(dto);
     }
 
-    @ApiOperation(value = "依据id改权限",notes = "依据id改权限")
-    @PostMapping(value = "/updateRole")
-    public Result updateRole(@RequestBody @ApiParam(value = "map是的key为id和role的json格式")HashMap<String,Object> map) {
-        return purchaserClient.updateRole(map);
-    }
-
-    @ApiOperation(value = "查询机构下所有的供货商",notes = "查询机构下所有的供货商")
-    @PostMapping(value = "/queryAllSuppliers")
-    public Result queryAllSuppliers(@RequestBody HashMap<String,Object> map) {
-        return purchaserClient.queryAllSuppliers(map);
-    }
-
-    @ApiOperation(value = "模糊查询机构下的供货商",notes = "查询机构下所有的供货商")
-    @PostMapping(value = "/querySuppliersByName")
-    public Result querySuppliersByName(@RequestBody @ApiParam(value = "map是的key为fuzzyName和purchaseId的json格式")HashMap<String,Object> map) {
-        return purchaserClient.querySuppliersByName(map);
-    }
-
-    @ApiOperation(value = "依据id查询供货商",notes = "依据id查询供货商")
-    @PostMapping(value = "/querySuppliers")
-    public Result querySuppliersById(@RequestBody @ApiParam(value = "map是的key为id的json格式")HashMap<String,Object> map) {
-        return purchaserClient.querySuppliersById(map);
-    }
-
-    @ApiOperation(value = "修改供货商信息",notes = "修改供货商信息")
-    @PostMapping(value = "/updateSuppliers")
-    public Result updateSuppliers(@RequestBody ClientHandleSupplierDto attachment) {
-        HandleSupplierDto purchaserAttachment = new HandleSupplierDto();
-        BeanUtils.copyProperties(attachment,purchaserAttachment);
-        return purchaserClient.updateSuppliers(purchaserAttachment);
-    }
-
-    @ApiOperation(value = "根据综合条件查询所有专家",notes = "根据综合条件查询所有专家")
-    @PostMapping(value = "/queryExperts")
-    public Result queryExperts(@RequestBody ClientHandleExpertDto dto) {
-        HandleExpertDto expertDto = new HandleExpertDto();
-        BeanUtils.copyProperties(dto,expertDto);
-        return purchaserClient.queryExperts(expertDto);
-    }
-
-    @ApiOperation(value = "根据id修专家状态",notes = "根据id修专家状态")
-    @PostMapping(value = "/updateExpertState")
-    public Result updateExpertState(@RequestBody @ApiParam(value = "map是的key为id和state的json格式")HashMap<String,Object> map) {
-        return purchaserClient.updateExpertState(map);
-    }
+    ;
 
     /**
-     *@author :winlin
-     *@Description :根据条件查询代理机构
-     *@param:
-     *@return:
-     *@date:2018/9/20
+     * 采购人新增专家
+     *
+     * @param handleExpert
+     * @return
      */
-    @ApiOperation(value = "根据条件查询代理机构",notes = "根据条件查询代理机构")
-    @PostMapping(value = "/queryAgenciesByCriteria")
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody ClientHandleAgencyDto agencyDto){
-        HandleAgencyDto dto = new HandleAgencyDto();
-        BeanUtils.copyProperties(agencyDto,dto);
-        return purchaserClient.queryAgenciesByCriteria(dto);
+    @ApiOperation(value = "采购人新增专家")
+    @PostMapping(value = "/clientcreateExpertUserInfo")
+    Result<Boolean> createExpertUserInfo(@RequestBody ClientHandleExpert handleExpert) {
+        HandleExpert handleExpert1 = new HandleExpert();
+        BeanUtils.copyProperties(handleExpert, handleExpert1);
+        return purchaserClient.createExpertUserInfo(handleExpert1);
+    }
+
+    ;
+
+    /**
+     * @author :winlin
+     * @Description :完善采购人专家信息
+     * @param:
+     * @return:
+     * @date:2018/9/21
+     */
+    @ApiOperation(value = "完善采购人专家信息")
+    @PostMapping(value = "/clientcompletePurchaserExpertInfo")
+    public Result<Boolean> completePurchaserExpertInfo(@RequestBody ClientHandleExpertDto expertDto) {
+        HandleExpertDto handleExpertDto = new HandleExpertDto();
+        BeanUtils.copyProperties(expertDto, handleExpertDto);
+        return purchaserClient.completePurchaserExpertInfo(handleExpertDto);
+    }
+
+    ;
+
+    /**
+     * @author :winlin
+     * @Description :删除评标专家 修改delete字段的属性值
+     * @param:
+     * @return:
+     * @date:2018/9/30
+     */
+    @ApiOperation(value = "删除评标专家")
+    @PostMapping(value = "/clientdeletePurchaserExpert")
+    public Result<Boolean> deletePurchaserExpert(@RequestBody ClientHandleTrustList trustList) {
+        HandleTrustList handleTrustList = new HandleTrustList();
+        BeanUtils.copyProperties(trustList, handleTrustList);
+        return purchaserClient.deletePurchaserExpert(handleTrustList);
+    }
+
+    ;
+
+    /**
+     * @author :winlin
+     * @Description :根据综合条件查询所有专家
+     * @param: HandlExpertDto综合信息
+     * @return:
+     * @date:2018/9/19
+     */
+    @ApiOperation(value = "启用或禁用员工")
+    @PostMapping(value = "/clientqueryExperts")
+    public Result<List<PurchaserExpertVo>> queryExperts(@RequestBody ClientQueryExpertDto dto) {
+        QueryExpertDto queryExpertDto = new QueryExpertDto();
+        BeanUtils.copyProperties(dto, queryExpertDto);
+        return purchaserClient.queryExperts(queryExpertDto);
+    }
+
+    ;
+
+    /**
+     * 添加代理机构
+     *
+     * @param handleAgnecy
+     * @return
+     */
+    @ApiOperation(value = "添加代理机构")
+    @PostMapping(value = "/clientcreateAgencyUserInfo")
+    Result<Boolean> createAgencyUserInfo(@RequestBody  ClientHandleAgnecy handleAgnecy){
+        HandleAgnecy agnecy = new HandleAgnecy();
+        BeanUtils.copyProperties(handleAgnecy,agnecy);
+        return purchaserClient.createAgencyUserInfo(agnecy);
     };
 
     /**
-     *@author :winlin
-     *@Description :
-     *@param: 依据条件检索供应商
-     *@return:
-     *@date:2018/9/20
+     * 完善代理机构detail
+     *
+     * @param handleAgnecy
+     * @return
      */
-    @ApiOperation(value = "根据条件查询供货商",notes = "根据条件查询供货商")
-    @PostMapping(value = "/querySupplierByCriterias")
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody ClientHandleSupplierDto supplierDto){
-        HandleSupplierDto dto = new HandleSupplierDto();
-        BeanUtils.copyProperties(supplierDto,dto);
-        return purchaserClient.querySupplierByCriterias(dto);
+    @ApiOperation(value = "完善代理机构detail")
+    @PostMapping(value = "/clientupdateAgencyDetail")
+    Result<Boolean> updateAgencyDetail(@RequestBody  ClientHandleAgnecy handleAgnecy){
+        HandleAgnecy agnecy = new HandleAgnecy();
+        BeanUtils.copyProperties(handleAgnecy,agnecy);
+        return purchaserClient.updateAgencyDetail(agnecy);
     };
 
     /**
-     *@author :winlin
-     *@Description :完善采购人专家信息
-     *@param:
-     *@return:
-     *@date:2018/9/21
+     * @author :winlin
+     * @Description :添加黑名单-agency
+     * @param:
+     * @return:
+     * @date:2018/9/28
      */
-    @ApiOperation(value = "采购人完善专家信息",notes = "采购人完善专家信息")
-    @PostMapping(value = "/completePurchaserExpertInfo")
-    public Result<Boolean> completePurchaserExpertInfo(@RequestBody ClientHandleExpertDto expertDto){
-        HandleExpertDto dto = new HandleExpertDto();
-        BeanUtils.copyProperties(expertDto,dto);
-        return purchaserClient.completePurchaserExpertInfo(dto);
+    @ApiOperation(value = "添加黑名单-agency")
+    @PostMapping(value = "/clientupdateTrustListForAgency")
+    public Result<Boolean> updateTrustListForAgency(@RequestBody ClientHandleTrustList trustList){
+        HandleTrustList handleTrustList = new HandleTrustList();
+        BeanUtils.copyProperties(trustList,handleTrustList);
+        return purchaserClient.updateTrustListForAgency(handleTrustList);
     };
 
     /**
-     *@author :winlin
-     *@Description :修改采购人代理机构详细信息
-     *@param:
-     *@return:
-     *@date:2018/9/21
+     * @author :winlin
+     * @Description :根据条件查询代理机构
+     * @param:
+     * @return:
+     * @date:2018/9/20
      */
-    @ApiOperation(value = "采购人完善代理机构信息",notes = "采购人完善代理机构信息")
-    @PostMapping(value = "/updatePurchaserAgency")
-    public Result<Boolean> updatePurchaserAgency(@RequestBody ClientHandleAgencyDto agencyDto){
-        HandleAgencyDto dto = new HandleAgencyDto();
-        BeanUtils.copyProperties(agencyDto,dto);
-        return purchaserClient.updatePurchaserAgency(dto);
-    };
-    /**
-     *@author :winlin
-     *@Description :修改采购人专家的信息
-     *@param:
-     *@return:
-     *@date:2018/9/21
-     */
-    @ApiOperation(value = "采购人完善专家信息",notes = "采购人完善专家信息")
-    @PostMapping(value = "/updatePurchaserExpert")
-    public Result<Boolean> updatePurchaserExpert(@RequestBody ClientHandleExpertDto expertDto){
-        HandleExpertDto dto = new HandleExpertDto();
-        BeanUtils.copyProperties(expertDto,dto);
-        return purchaserClient.updatePurchaserExpert(dto);
+    @ApiOperation(value = "根据条件查询代理机构")
+    @PostMapping(value = "/clientqueryAgenciesByCriteria")
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody ClientQueryAgencyDto agencyDto){
+        QueryAgencyDto queryAgencyDto = new QueryAgencyDto();
+        BeanUtils.copyProperties(agencyDto,queryAgencyDto);
+        return purchaserClient.queryAgenciesByCriteria(queryAgencyDto);
     };
 
-    public Result queryEmployee(@RequestParam Long userId){
+
+    /**
+     * 添加供应商(私库)
+     *
+     * @param handleOperator
+     * @return
+     */
+    @ApiOperation(value = " 添加供应商")
+    @PostMapping(value = "/clientcreateSupplierByPurchaser")
+    Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleOperator){
+        HandleSupplierDto handleSupplierDto = new HandleSupplierDto();
+        BeanUtils.copyProperties(handleOperator,handleSupplierDto);
+        return purchaserClient.createSupplierByPurchaser(handleSupplierDto);
+    };
+
+    /**
+     * 完善供货商信息detail
+     *
+     * @param dto
+     * @return
+     */
+    @ApiOperation(value = "完善供货商信息detail")
+    @PostMapping(value = "/clientupdateSupplierDetail")
+    Result<Boolean> updateSupplierDetail(@RequestBody  ClientPurchaserHandleSupplierDto dto){
+        PurchaserHandleSupplierDto purchaserHandleSupplierDto = new PurchaserHandleSupplierDto();
+        BeanUtils.copyProperties(dto,purchaserHandleSupplierDto);
+        return purchaserClient.updateSupplierDetail(purchaserHandleSupplierDto);
+    };
+
+    /**
+     * @author :winlin
+     * @Description :添加黑名单-supplier
+     * @param:
+     * @return:
+     * @date:2018/9/28
+     */
+    @ApiOperation(value = "添加黑名单-supplier")
+    @PostMapping(value = "/clientupdateTrustListForSupplier")
+    public Result<Boolean> updateTrustListForSupplier(@RequestBody ClientHandleTrustList trustList){
+        HandleTrustList handleTrustList = new HandleTrustList();
+        BeanUtils.copyProperties(trustList,handleTrustList);
+        return purchaserClient.updateTrustListForSupplier(handleTrustList);
+    };
+
+    /**
+     * @author :winlin
+     * @Description :
+     * @param: 依据条件检索供应商
+     * @return:
+     * @date:2018/9/20
+     */
+    @ApiOperation(value = "依据条件检索供应商")
+    @PostMapping(value = "/clientquerySupplierByCriterias")
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody ClientQuerySupplierDto supplierDto){
+            QuerySupplierDto querySupplierDto = new QuerySupplierDto();
+            BeanUtils.copyProperties(supplierDto,querySupplierDto);
+            return purchaserClient.querySupplierByCriterias(querySupplierDto);
+    };
+
+
+    /**
+     * 完善采购人信息detail
+     *
+     * @param handlePurchaser
+     * @return
+     */
+    @ApiOperation(value = "完善采购人信息detail")
+    @PostMapping(value = "/clientupdatePurchaserDetail")
+    Result<Boolean> updatePurchaserDetail(@RequestBody  ClientHandleRegisterPurchaser handlePurchaser){
+        HandleRegisterPurchaser handleRegisterPurchaser = new HandleRegisterPurchaser();
+        BeanUtils.copyProperties(handlePurchaser,handleRegisterPurchaser);
+        return purchaserClient.updatePurchaserDetail(handleRegisterPurchaser);
+    };
+
+
+    /**
+     * @author :winlin
+     * @Description : 根据id 查询员工
+     * @param:
+     * @return:
+     * @date:2018/9/19
+     */
+    @ApiOperation(value = "根据id 查询员工")
+    @PostMapping(value = "/clientqueryEmployeeDto")
+    public Result<PurchaserEmplyeeVo> queryEmployeeDto(@RequestBody ClientQueryDto dto){
+        QueryDto queryDto = new QueryDto();
+        BeanUtils.copyProperties(dto,queryDto);
+        return purchaserClient.queryEmployeeDto(queryDto);
+    };
+
+
+    /**
+     * @author :winlin
+     * @Description :根据id查询供应商信息
+     * @param:
+     * @return:
+     * @date:2018/9/19
+     */
+    @ApiOperation(value = "根据id查询供应商信息")
+    @PostMapping(value = "/clientquerySuppliersDto")
+    public Result<SupplierDetailVo> querySuppliersDto(@RequestBody ClientQueryDto dto){
+        QueryDto queryDto = new QueryDto();
+        BeanUtils.copyProperties(dto,queryDto);
+        return purchaserClient.querySuppliersDto(queryDto);
+    };
+
+    /**
+     * @author :winlin
+     * @Description : id查询专家详情
+     * @param:
+     * @return:
+     * @date:2018/10/2
+     */
+    @ApiOperation(value = "id查询专家详情")
+    @PostMapping(value = "/clientqueryExpertDetailById")
+    public Result<PurchaserExpertDetailVo> queryExpertDetailById(@RequestBody ClientQueryDto dto) {
+        QueryDto queryDto = new QueryDto();
+        BeanUtils.copyProperties(dto,queryDto);
+        return purchaserClient.queryExpertDetailById(queryDto);
+    }
+
+    ;
+
+
+    /**
+     * @author :winlin
+     * @Description :依据id查询代理机构
+     * @param:
+     * @return:
+     * @date:2018/10/2
+     */
+    @ApiOperation(value = "依据id查询代理机构")
+    @PostMapping(value = "/clientqueryAgencyDetailById")
+    public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(@RequestBody ClientQueryDto dto) {
+        QueryDto queryDto = new QueryDto();
+        BeanUtils.copyProperties(dto, queryDto);
+        return purchaserClient.queryAgencyDetailById(queryDto);
+    }
+
+    ;
+
+
+    public Result queryEmployee(@RequestParam Long userId) {
         return purchaserClient.queryEmployee(userId);
     }
 

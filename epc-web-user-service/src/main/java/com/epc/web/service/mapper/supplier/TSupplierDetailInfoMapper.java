@@ -1,5 +1,7 @@
 package com.epc.web.service.mapper.supplier;
 
+import com.epc.web.facade.purchaser.dto.QuerySupplierDto;
+import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfoCriteria;
 import java.util.List;
@@ -102,4 +104,10 @@ public interface TSupplierDetailInfoMapper {
      * @mbggenerated Fri Sep 28 18:32:32 CST 2018
      */
     int updateByPrimaryKey(TSupplierDetailInfo record);
+
+    TSupplierDetailInfo selectTSupplierDetailInfoBySupplierId(Long supplierId);
+
+
+    List<PurchaserSupplierVo> selectSupplierByCriteria(QuerySupplierDto dto);
+
 }

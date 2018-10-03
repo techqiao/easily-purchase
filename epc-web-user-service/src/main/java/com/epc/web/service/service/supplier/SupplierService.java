@@ -32,6 +32,10 @@ public interface SupplierService {
      */
     Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail);
 
+    /**0.5
+     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
+     */
+    Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail);
     /**1
      *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
      *      (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
@@ -103,7 +107,7 @@ public interface SupplierService {
     /**13
      *  忘记密码
      */
-    Result<Boolean> forgetPassword(HandleSupplierForgetPassword handleSupplierForgetPassword);
+    Result<Boolean> forgetPasswordSupplier(HandleSupplierForgetPassword handleSupplierForgetPassword);
 
 
     /**14

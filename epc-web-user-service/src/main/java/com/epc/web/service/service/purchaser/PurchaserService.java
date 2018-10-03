@@ -1,17 +1,13 @@
 package com.epc.web.service.service.purchaser;
 
 import com.epc.common.Result;
+import com.epc.web.facade.agency.vo.AgencyExpertDetailVo;
 import com.epc.web.facade.expert.Handle.HandleExpert;
-import com.epc.web.facade.purchaser.dto.HandleAgencyDto;
-import com.epc.web.facade.purchaser.dto.HandleEmployeeDto;
-import com.epc.web.facade.purchaser.dto.HandleExpertDto;
-import com.epc.web.facade.purchaser.dto.HandleSupplierDto;
+import com.epc.web.facade.purchaser.dto.*;
 import com.epc.web.facade.purchaser.handle.*;
-import com.epc.web.facade.purchaser.vo.PurchaserAgencyVo;
-import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
-import com.epc.web.facade.purchaser.vo.PurchaserExpertVo;
-import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
+import com.epc.web.facade.purchaser.vo.*;
 
+import javax.management.Query;
 import java.util.List;
 
 /**
@@ -23,7 +19,103 @@ public interface PurchaserService {
     /**
      * 新增采购人员工
      */
-    Result<Boolean> createPurchaserUserInfo(HandlePurchaser handleOperator, int roleType);
+    Result<Boolean> createPurchaserUserInfo(HandlePurchaser handleEmployee);
+    /**
+     *@author :winlin
+     *@Description :启用或禁用员工
+     *@param:
+     *@return:
+     *@date:2018/9/29
+     */
+    public Result<Boolean> enableOrDisablePurchaserEmployee(HandleTrustList trustList);
+    /**
+     *@author :winlin
+     *@Description :修改员工权限
+     *@param:
+     *@return:
+     *@date:2018/9/30
+     */
+    public Result<Boolean> updatePurchaserEmployeeRole(HandleTrustList trustList);
+/**
+ *@author :winlin
+ *@Description :修改员工信息
+ *@param:
+ *@return:
+ *@date:2018/9/30
+ */
+public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurchaser);
+    /**
+     *@author :winlin
+     *@Description :根据条件查询多有符合条件的员工
+     *@param: name cellphone role
+     *@return:
+     *@date:2018/9/19
+     */
+    public Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto);
+
+    /**
+     * 采购人新增专家
+     *
+     * @param handleExpert
+     * @return
+     */
+    Result<Boolean> createExpertUserInfo(HandleExpert handleExpert);
+    /**
+     *@author :winlin
+     *@Description :完善采购人专家信息
+     *@param:
+     *@return:
+     *@date:2018/9/21
+     */
+    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
+
+    /**
+     *@author :winlin
+     *@Description :删除评标专家 修改delete字段的属性值
+     *@param:
+     *@return:
+     *@date:2018/9/30
+     */
+    public Result<Boolean> deletePurchaserExpert(HandleTrustList trustList);
+
+    /**
+     * @author :winlin
+     * @Description :根据综合条件查询所有专家
+     * @param: HandlExpertDto综合信息
+     * @return:
+     * @date:2018/9/19
+     */
+    public Result<List<PurchaserExpertVo>> queryExperts(QueryExpertDto dto);
+    /**
+     * 添加代理机构(私库)
+     *
+     * @param handleAgnecy
+     * @return
+     */
+    Result<Boolean> createAgencyUserInfo(HandleAgnecy handleAgnecy);
+    /**
+     * 完善代理机构detail
+     *
+     * @param handleAgnecy
+     * @return
+     */
+    Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy);
+    /**
+     *@author :winlin
+     *@Description :添加黑名单-agency
+     *@param:
+     *@return:
+     *@date:2018/9/28
+     */
+    public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList);
+    /**
+     *@author :winlin
+     *@Description :根据条件查询代理机构
+     *@param:
+     *@return:
+     *@date:2018/9/20
+     */
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(QueryAgencyDto agencyDto);
 
 
     /**
@@ -33,24 +125,39 @@ public interface PurchaserService {
      * @return
      */
     Result<Boolean> createSupplierByPurchaser(HandleSupplierDto handleOperator);
-
     /**
-     * 添加专家(私库)
+     * 完善供货商信息detail
      *
-     * @param handleExpert
+     * @param  dto
      * @return
      */
-    Result<Boolean> createExpertUserInfo(HandleExpert handleExpert);
-
+    Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto);
     /**
-     * 添加代理机构(私库)
-     *
-     * @param handleAgnecy
-     * @return
+     *@author :winlin
+     *@Description :添加黑名单-supplier
+     *@param:
+     *@return:
+     *@date:2018/9/28
      */
-    Result<Boolean> createAgencyUserInfo(HandleAgnecy handleAgnecy);
+    public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList);
+    /**
+     *@author :winlin
+     *@Description :
+     *@param: 依据条件检索供应商
+     *@return:
+     *@date:2018/9/20
+     */
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(QuerySupplierDto supplierDto);
 
 
+//    /**
+//     * @author :winlin
+//     * @Description :采购人注册
+//     * @param:
+//     * @return:
+//     * @date:2018/9/18
+//     */
+//    public Result<HandleRegisterPurchaser> registerPurchaser(HandleRegisterPurchaser purchaser);
     /**
      * 完善采购人信息detail
      *
@@ -59,30 +166,7 @@ public interface PurchaserService {
      */
     Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser);
 
-    /**
-     * 完善供货商信息detail
-     *
-     * @param  dto
-     * @return
-     */
-    Result<Boolean> updateSupplierDetail(PurchaserHandleSupplierDto dto);
 
-    /**
-     * 完善代理机构detail
-     *
-     * @param handleAgnecy
-     * @return
-     */
-    Result<Boolean> updateAgencyDetail(HandleAgnecy handleAgnecy);
-
-    /**
-     * @author :winlin
-     * @Description :采购人注册
-     * @param:
-     * @return:
-     * @date:2018/9/18
-     */
-    public Result<HandleRegisterPurchaser> registerPurchaser(HandleRegisterPurchaser purchaser);
 
     /**
      * @author :winlin
@@ -136,15 +220,7 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result<PurchaserEmplyeeVo> queryEmployee(Long id);
-    /**
-     *@author :winlin
-     *@Description :根据条件查询多有符合条件的员工
-     *@param: name cellphone role
-     *@return:
-     *@date:2018/9/19
-     */
-    public Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto);
+    public Result<PurchaserEmplyeeVo> queryEmployeeDto(QueryDto dto);
 
     /**
      *@author :winlin
@@ -155,23 +231,23 @@ public interface PurchaserService {
      */
     public Result<Boolean> updateRole(Long id,Integer role);
 
-    /**
-     * @author :winlin
-     * @Description :查询采购人下所有的供应商
-     * @param:
-     * @return:
-     * @date:2018/9/19
-     */
-    public Result<List<PurchaserSupplierVo>> queryAllSuppliers(Long purchaseId);
+//    /**
+//     * @author :winlin
+//     * @Description :查询采购人下所有的供应商
+//     * @param:
+//     * @return:
+//     * @date:2018/9/19
+//     */
+//    public Result<List<PurchaserSupplierVo>> queryAllSuppliers(Long purchaseId);
 
-    /**
-     * @author :winlin
-     * @Description : 模糊查询供应商,根据姓名
-     * @param:
-     * @return:
-     * @date:2018/9/19
-     */
-    public Result<List<PurchaserSupplierVo>> querySuppliers(String fuzzyName,Long purchaseId);
+//    /**
+//     * @author :winlin
+//     * @Description : 模糊查询供应商,根据姓名
+//     * @param:
+//     * @return:
+//     * @date:2018/9/19
+//     */
+//    public Result<List<PurchaserSupplierVo>> querySuppliers(String fuzzyName,Long purchaseId);
 
     /**
      * @author :winlin
@@ -180,25 +256,35 @@ public interface PurchaserService {
      * @return:
      * @date:2018/9/19
      */
-    public Result<PurchaserSupplierVo> querySuppliers(Long id);
+    public Result<SupplierDetailVo> querySuppliersDto(QueryDto dto);
+    /**
+     *@author :winlin
+     *@Description : id查询专家详情
+     *@param:
+     *@return:
+     *@date:2018/10/2
+     */
+    public Result<PurchaserExpertDetailVo> queryExpertDetailById(QueryDto dto);
 
     /**
-     * @author :winlin
-     * @Description :修改供应商信息
-     * @param:
-     * @return:
-     * @date:2018/9/19
+     *@author :winlin
+     *@Description :依据id查询代理机构
+     *@param:
+     *@return:
+     *@date:2018/10/2
      */
-    public Result<Boolean> updateSuppliers(HandleSupplierDto attachment);
+    public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(QueryDto dto);
 
-    /**
-     * @author :winlin
-     * @Description :根据综合条件查询所有专家
-     * @param: HandleAgency 综合信息
-     * @return:
-     * @date:2018/9/19
-     */
-    public Result<List<PurchaserExpertVo>> queryExperts(HandleExpertDto dto);
+//    /**
+//     * @author :winlin
+//     * @Description :修改供应商信息
+//     * @param:
+//     * @return:
+//     * @date:2018/9/19
+//     */
+//    public Result<Boolean> updateSuppliers(HandleSupplierDto attachment);
+
+
     /**
      *@author :winlin
      *@Description :根据id删除专家,修改is_delete状态
@@ -207,88 +293,28 @@ public interface PurchaserService {
      *@date:2018/9/19
      */
     public Result<Boolean> updateExpertState(Long id ,Integer state);
-    /**
-     *@author :winlin
-     *@Description :根据条件查询代理机构
-     *@param:
-     *@return:
-     *@date:2018/9/20
-     */
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(HandleAgencyDto agencyDto);
+//    /**
+//     *@author :winlin
+//     *@Description :修改采购人代理机构详细信息
+//     *@param:
+//     *@return:
+//     *@date:2018/9/21
+//     */
+//    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto);
+//    /**
+//     *@author :winlin
+//     *@Description :修改采购人专家的信息
+//     *@param:
+//     *@return:
+//     *@date:2018/9/21
+//     */
+//    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 
-    /**
-     *@author :winlin
-     *@Description :
-     *@param: 依据条件检索供应商
-     *@return:
-     *@date:2018/9/20
-     */
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(HandleSupplierDto supplierDto);
 
-    /**
-     *@author :winlin
-     *@Description :完善采购人专家信息
-     *@param:
-     *@return:
-     *@date:2018/9/21
-     */
-    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
 
-    /**
-     *@author :winlin
-     *@Description :修改采购人代理机构详细信息
-     *@param:
-     *@return:
-     *@date:2018/9/21
-     */
-    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto agencyDto);
-    /**
-     *@author :winlin
-     *@Description :修改采购人专家的信息
-     *@param:
-     *@return:
-     *@date:2018/9/21
-     */
-    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 
-   /**
-    *@author :winlin
-    *@Description :Supplier平台审核通过后,数据库更新同步
-    *@param:
-    *@return:
-    *@date:2018/9/28
-    */
 
-   /**
-    *@author :winlin
-    *@Description :Agency平台审核通过后,数据库更新同步
-    *@param:
-    *@return:
-    *@date:2018/9/28
-    */
-   /**
-    *@author :winlin
-    *@Description :Expert平台审核通过后,数据库更新同步
-    *@param:
-    *@return:
-    *@date:2018/9/28
-    */
 
-   /**
-    *@author :winlin
-    *@Description :添加黑名单-supplier
-    *@param:
-    *@return:
-    *@date:2018/9/28
-    */
-   public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList);
-   /**
-    *@author :winlin
-    *@Description :添加黑名单-agency
-    *@param:
-    *@return:
-    *@date:2018/9/28
-    */
-   public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList);
+
 
 }

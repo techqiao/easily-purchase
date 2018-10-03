@@ -18,6 +18,10 @@ public class SupplierHystrix implements SupplierUserService {
     public Result<Boolean> insertSupplierDetailInfo(SupplierHandle supplierHandle) {
         return Result.hystrixError();
     }
+    @Override
+    public Result<Boolean> updateSupplierDetailInfo(SupplierHandle supplierHandle) {
+        return Result.hystrixError();
+    }
 
     @Override
     public Result<Boolean> deleteSupplierDetailInfo( Long whereId) {

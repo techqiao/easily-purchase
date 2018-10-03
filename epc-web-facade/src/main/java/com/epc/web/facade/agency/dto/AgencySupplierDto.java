@@ -10,13 +10,13 @@ import java.util.List;
 public class AgencySupplierDto implements Serializable {
     private static final long serialVersionUID = 631901486442300798L;
     /**
+     * 代理机构id
+     */
+    private Long agencyId;
+    /**
      * supplierId供货商id
      */
     private Long supplierId;
-    /**
-     * 用于接受数据库生成的的机构id
-     */
-    private Long agencyId;
     /**
      * 手机号
      */

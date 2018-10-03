@@ -33,7 +33,7 @@ public class PurchaseProjectBasicInfoVO implements Serializable {
     private BigDecimal purchaseProjectBudgetaryAmount;
     @ApiModelProperty(value = "采购方式")
     private String purchaseMode;
-    @ApiModelProperty(value = "采购分类")
+    @ApiModelProperty(value = "采购分类 劳务分包labor_subcontract 专业分包professional_subcontracting 设备租赁 货物采购 服务采购 工程采购")
     private String purchaseCategory;
     @ApiModelProperty(value = "采购类型")
     private String purchaseType;
@@ -45,6 +45,7 @@ public class PurchaseProjectBasicInfoVO implements Serializable {
     private Integer isOtherAgency;
     @ApiModelProperty(value = "采购项目状态")
     private String purchaseProjectStatus;
-
+    @ApiModelProperty(value = "项目地址")
+    private String projectAddress;
 
 }

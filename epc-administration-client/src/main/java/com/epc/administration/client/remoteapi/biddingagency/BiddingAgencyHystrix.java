@@ -25,6 +25,11 @@ public class BiddingAgencyHystrix  implements BiddingAgencyService {
     }
 
     @Override
+    public Result<Boolean> updateBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> deleteBiddingAgencyDetailInfo(Long whereId) {
         return  Result.hystrixError();
     }

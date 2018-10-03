@@ -1,19 +1,20 @@
 package com.epc.web.facade.agency;
 
 import com.epc.common.Result;
-import com.epc.web.facade.agency.dto.AgencyExpertDto;
-import com.epc.web.facade.agency.dto.AgencySubjectDto;
-import com.epc.web.facade.agency.dto.AgencySupplierDto;
+import com.epc.web.facade.agency.dto.*;
 import com.epc.web.facade.agency.handle.HandleAgency;
 import com.epc.web.facade.agency.handle.HandleEmployee;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.agency.handle.HandleSupplier;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
+import com.epc.web.facade.agency.vo.AgencyExpertDetailVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
+import com.epc.web.facade.purchaser.dto.QueryDto;
+import com.epc.web.facade.purchaser.handle.HandleTrustList;
+import org.apache.el.parser.BooleanNode;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,144 +26,77 @@ import java.util.List;
  */
 public interface FacadeAgencyService{
     /**
-     * 代理商新增员工
-     *
-     * @param employee
-     * @return
+     * @Author :winlin
+     * @Description :新增员工
+     * @Date:2018/9/13
      */
     @PostMapping(value = "insertEmployee", consumes = "application/json; charset=UTF-8")
-    Result insertEmployee(@RequestBody HandleEmployee employee);
-
-    /**
-     * 代理商新增专家
-     *
-     * @param handleExpert
-     * @return
-     */
-    @PostMapping(value = "insertExpert", consumes = "application/json; charset=UTF-8")
-    public Result insertExpert( @RequestBody HandleExpert handleExpert);
-
-    /**
-     * 代理商新增供货商
-     *
-     * @param handleSupplier
-     * @return
-     */
-    @PostMapping(value = "insertSupplier", consumes = "application/json; charset=UTF-8")
-    public Result insertSupplier( @RequestBody HandleSupplier handleSupplier);
-
-    /**
-     * @param agency 页面传入的信息
-     * @return 注册是否成功
-     * @author :winlin
-     * @Description :代理机构注册
-     * @date:2018/9/18
-     */
-    @PostMapping(value = "regesityAgency", consumes = "application/json; charset=UTF-8")
-    public Result regesityAgency(@RequestBody HandleAgency agency);
-
-    /**
-     * @author :winlin
-     * @Description :代理机构查询
-     * @param: agency 查询条件
-     * @date:2018/9/18
-     * @return 返回按条件查询的所有信息
-     */
-    @PostMapping(value = "queryAgencies", consumes = "application/json; charset=UTF-8")
-    public Result queryAgencies(@RequestBody HandleAgency agency);
-
+    public Result<Boolean> insertEmployee(HandleEmployee handleEmployee);
 
     /**
      *@author :winlin
-     *@Description : 代理机构忘记密码状态
-     *@param: agency 验证通过的用户信息
-     *@return: 数据库信息修改状态
-     *@date:2018/9/18
-     */
-    @PostMapping(value = "modifypassword", consumes = "application/json; charset=UTF-8")
-    public Result modifypassword( @RequestBody HandleAgency agency);
-    /**
-     *@author :winlin
-     *@Description : 代理机构信息完善详细信息
-     *@param:
-     *@return: 数据库添加状态
-     *@date:2018/9/18
-     */
-    @PostMapping(value = "completeInfo", consumes = "application/json; charset=UTF-8")
-    public Result completeInfo( @RequestBody HandleAgency agency);
-
-    /**
-     *@author :winlin
-     *@Description :代理机构代理的所有项目
-     *@param: 需要项目名称,项目编号,采购人id
-     *@return: 序号,项目名称,项目编号,项目区域,招标信息条数,采购人,创建时间,项目状态
-     *@date:2018/9/18
-     */
-    @PostMapping(value = "proxySubjects", consumes = "application/json; charset=UTF-8")
-    public Result proxySubjects(@RequestBody AgencySubjectDto subjectDto);
-
-    /**
-     *@author :winlin
-     *@Description :查询员工信息
-     *@param: emplyee 查询所需要的条件
-     *@return: 员工的信息
-     *@date:2018/9/18
-     */
-    @PostMapping(value = "queryAgencyEmployee", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployee( @RequestBody HandleEmployee employee);
-
-    /**
-     *@author :winlin
-     *@Description : 根据cellphone查询员工信息
+     *@Description :启用或禁用员工,查询条件为员工id
      *@param:
      *@return:
-     *@date:2018/9/18
+     *@date:2018/9/30
      */
-
-    @PostMapping(value = "queryEmployeeByCellphone")
-    public Result queryEmployeeByCellphone(@RequestBody HashMap<String,String> map);
-
+    @PostMapping(value = "enableOrDisableAgencyEmployee", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> enableOrDisableAgencyEmployee(HandleTrustList trustList);
     /**
-     *@author :winlin
-     *@Description :根据id查询员工信息
-     *@param:
-     *@return:
-     *@date:2018/9/19
-     */
-    @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
-    public Result queryEmployeeById(@RequestBody HashMap<String,Long> map);
-
-     /**
-     *@author :winlin
-     *@Description :
-     *@param:页面修该好的员工信息
-     *@return:yes or no
-     *@date:2018/9/18
+     *
+     * @author :winlin
+     * @Description :
+     * @param:页面修该好的员工信息
+     * @return:yes or no
+     * @date:2018/9/18
      */
     @PostMapping(value = "updateEmployeeBy", consumes = "application/json; charset=UTF-8")
-    public Result updateEmployeeBy( @RequestBody HandleEmployee employee);
+    public Result<Boolean> updateEmployeeBy(@RequestBody  HandleEmployee employee);
     /**
-     * @author :winlin
-     * @Description :查询机构下所有员工的信息
-     * @param: 机构的id
-     * @return:
-     * @date:2018/9/20
+     *@author :winlin
+     *@Description :依据id修改员工权限
+     *@param:
+     *@return:
+     *@date:2018/9/30
      */
-    @PostMapping(value = "queryAEmployees", consumes = "application/json; charset=UTF-8")
-    public Result<List<AgencyEmployeeVo>> queryAllEmployee(@RequestBody HashMap<String,Long> map);
-
+    @PostMapping(value = "updateAgencyEmployeeRoleById", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> updateAgencyEmployeeRoleById(@RequestBody HandleTrustList trustList);
     /**
      * @author :winlin
-     * @Description : 封装条件查供应商
+     * @Description :查询员工信息
+     * @param: emplyee 查询所需要的条件
+     * @return: 员工的信息
+     * @date:2018/9/18
+     */
+    @PostMapping(value = "queryEmployee", consumes = "application/json; charset=UTF-8")
+    public Result<List<AgencyEmployeeVo>> queryEmployee(@RequestBody AgencyEmployeeDto employee);
+    /**
+     * @Author :winlin
+     * @Description :新增专家
+     * @Date:2018/9/13
+     */
+    @PostMapping(value = "insertExpert", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> insertExpert(@RequestBody HandleExpert handleExpert);
+    /**
+     * @author :winlin
+     * @Description :代理机构专家完善自己个人信息
      * @param:
      * @return:
-     * @date:2018/9/20
+     * @date:2018/9/21
      */
-    @PostMapping(value = "querySuppilerCriteria", consumes = "application/json; charset=UTF-8")
-    public Result<List<AgencySupplierVo>> querySupplierCriteria(@RequestBody AgencySupplierDto supplierDto);
-
+    @PostMapping(value = "completeAgencyExpertInfo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> completeAgencyExpertInfo(@RequestBody AgencyExpertDto expertDto);
     /**
-     /**
+     *@author :winlin
+     *@Description :删除专家 修改is_delete的字段属性
+     *@param:
+     *@return:
+     *@date:2018/9/30
+     */
+    @PostMapping(value = "deleteAgencyExpertById", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> deleteAgencyExpertById(@RequestBody HandleTrustList trustList);
+    /**
+     *
      * @author :winlin
      * @Description :封装条件查询专家
      * @param:
@@ -170,8 +104,25 @@ public interface FacadeAgencyService{
      * @date:2018/9/20
      */
     @PostMapping(value = "queryExpertCriteria", consumes = "application/json; charset=UTF-8")
-    public Result<List<AgencyExpertVo>> queryExpertCriteria(@RequestBody AgencyExpertDto expertDto);
+    public Result<List<AgencyExpertVo>> queryExpertCriteria(@RequestBody ExpertDto expertDto);
 
+    /**
+     *@author :winlin
+     *@Description : id查询专家详情
+     *@param:
+     *@return:
+     *@date:2018/10/2
+     */
+    @PostMapping(value = "queryExpertDeById", consumes = "application/json; charset=UTF-8")
+    public Result<AgencyExpertDetailVo> queryExpertDetailById(@RequestBody QueryDto dto);
+
+    /**
+     * @Author :winlin
+     * @Description :新增供应商
+     * @Date:2018/9/13
+     */
+    @PostMapping(value = "insertSupplier", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> insertSupplier(@RequestBody HandleSupplier handleSupplier);
     /**
      * @author :winlin
      * @Description :代理机构供应商完善自己的注册信息
@@ -184,11 +135,44 @@ public interface FacadeAgencyService{
 
     /**
      * @author :winlin
-     * @Description :代理机构专家完善自己个人信息
+     * @Description : 封装条件查供应商
      * @param:
      * @return:
-     * @date:2018/9/21
+     * @date:2018/9/20
      */
-    @PostMapping(value = "completeAgencyExpertInfo", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> completeAgencyExpertInfo(@RequestBody AgencyExpertDto expertDto);
+    @PostMapping(value = "querySupplierCriteria", consumes = "application/json; charset=UTF-8")
+    public Result<List<AgencySupplierVo>> querySupplierCriteria(@RequestBody SupplierDto supplierDto);
+    /**
+     *@author :winlin
+     *@Description :依据id查询供货商详情
+     *@param:
+     *@return:
+     *@date:2018/10/1
+     */
+    @PostMapping(value = "queryAgencySupplierDetail", consumes = "application/json; charset=UTF-8")
+    public Result<AgencySupplierVo> queryAgencySupplierDetail(@RequestBody QueryDto dto);
+
+    /**
+     * @author :winlin
+     * @Description : 代理机构注册完善信息信息完善详细信息
+     * @param:
+     * @return: 数据库添加状态
+     * @date:2018/9/18
+     */
+    @PostMapping(value = "completeInfo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> completeInfo(@RequestBody HandleAgency agency);
+
+
+    /**
+     * @author :winlin
+     * @Description :根据id查询员工信息
+     * @param:
+     * @return:
+     * @date:2018/9/19
+     */
+    @PostMapping(value = "queryEmployeeById", consumes = "application/json; charset=UTF-8")
+    public Result<AgencyEmployeeVo> queryEmployeeById(@RequestBody QueryDto dto);
+
+
+
 }

@@ -1,10 +1,13 @@
 package com.epc.web.facade.expert.Handle;
 
+import com.epc.web.facade.agency.handle.Attachement;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Date;
+import java.util.List;
 
 /**
 * @Description:    采购人录入专家信息
@@ -15,6 +18,7 @@ import java.util.Date;
 * @UpdateRemark:   修改内容
 * @Version:        1.0
 */
+@Data
 @ApiModel(value = "HandleExpert", description = "专家信息")
 public class HandleExpert {
     @ApiModelProperty(value = "手机号")
@@ -44,76 +48,21 @@ public class HandleExpert {
     @ApiModelProperty(value = "其他信息")
     @NotEmpty(message = "HandleExpert.otherInformation.null")
     private String otherInformation;
+    /**
+     * 专家附件
+     */
+    private List<Attachement> atts;
 
-    public String getCellPhone() {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public String getPositional() {
-        return positional;
-    }
-
-    public void setPositional(String positional) {
-        this.positional = positional;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public Date getCircularDt() {
-        return circularDt;
-    }
-
-    public void setCircularDt(Date circularDt) {
-        this.circularDt = circularDt;
-    }
-
-    public String getCircularMethod() {
-        return circularMethod;
-    }
-
-    public void setCircularMethod(String circularMethod) {
-        this.circularMethod = circularMethod;
-    }
-
-    public String getOtherInformation() {
-        return otherInformation;
-    }
-
-    public void setOtherInformation(String otherInformation) {
-        this.otherInformation = otherInformation;
-    }
+    /**
+     * 机构id
+     */
+    private Long purchaserId;
+    /**
+     * 来源
+     */
+    private String source;
+    /**
+     * 添加人的id
+     */
+    private Long operatorId;
 }

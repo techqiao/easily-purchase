@@ -3,7 +3,6 @@ import java.util.Date;
 
 import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.LoginHandle;
-import com.epc.administration.facade.admin.handle.ResourceHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -15,7 +14,6 @@ import com.epc.platform.service.mapper.admin.SysAdminResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserMapper;
 import com.epc.platform.service.mapper.admin.SysAdminUserRoleMapper;
-import com.epc.platform.service.service.admin.SysAdminResourceService;
 import com.epc.platform.service.service.admin.SysAdminUserRoleService;
 import com.epc.platform.service.service.admin.SysAdminUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +55,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
      * @return
      */
     @Override
-    public Result login(LoginHandle loginHandle) {
+    public Result<Map<String,Object>> login(LoginHandle loginHandle,String token) {
         Validate.notNull(loginHandle.getPhone());
         Validate.notNull(loginHandle.getPassword());
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
@@ -74,6 +72,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         resultMap.put("user",sysAdminUser);
         Tree<SysAdminResource> resource = getResource(sysAdminUser.getId());
         resultMap.put("resourceList",resource);
+        resultMap.put("epc-token", token);
         return Result.success(resultMap);
     }
 

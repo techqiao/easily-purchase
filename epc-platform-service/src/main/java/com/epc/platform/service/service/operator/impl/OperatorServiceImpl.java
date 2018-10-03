@@ -11,6 +11,7 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.platform.service.domain.admin.SysAdminUserOperator;
 import com.epc.platform.service.domain.operator.*;
+import com.epc.platform.service.domain.tagency.TAgencyDetailInfoCriteria;
 import com.epc.platform.service.mapper.admin.SysAdminUserOperatorMapper;
 import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
@@ -92,8 +93,8 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
-        TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
         Date date = new Date();
+        TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
         detailInfo.setOperatorId(roleDetailInfo.getId());
         detailInfo.setCompanyName(roleDetailInfo.getCompanyName());
         detailInfo.setUniformCreditCode(roleDetailInfo.getUniformCreditCode());
@@ -156,6 +157,80 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+    /**
+     * 修改运营商资料
+     * @param roleDetailInfo
+     * @return
+     */
+    @Override
+    public Result<Boolean> updateOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
+       TOperatorAttachment attachment = new TOperatorAttachment();
+       Date date =  new Date();
+       attachment.setCreateAt(date);
+       attachment.setUpdateAt(date);
+       attachment.setOperatorId(roleDetailInfo.getId());
+        TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
+        detailInfo.setOperatorId(roleDetailInfo.getId());
+        detailInfo.setCompanyName(roleDetailInfo.getCompanyName());
+        detailInfo.setUniformCreditCode(roleDetailInfo.getUniformCreditCode());
+        detailInfo.setPublicBankName(roleDetailInfo.getPublicBankName());
+        detailInfo.setPublicBanAccountNumber(roleDetailInfo.getPublicBanAccountNumber());
+        detailInfo.setCreateAt(date);
+        detailInfo.setUpdateAt(date);
+        detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        try {
+            //删除详细信息
+            TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
+            tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
+            tOperatorDetailInfoMapper.deleteByExample(tOperatorDetailInfoCriteria);
+            //删除详细信息
+            TOperatorAttachmentCriteria criteria = new TOperatorAttachmentCriteria();
+            criteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
+            tOperatorAttachmentMapper.deleteByExample(criteria);
+            //新增详细信息
+            tOperatorDetailInfoMapper.insertSelective(detailInfo);
+            //新增带公章的授权书
+            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+            //法人手持身份证正面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+            //法人手持身份证反面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+            //营业执照
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
+            //资质证书url
+            List<OperatorAttachmentHandle> qualificationCertificateList = roleDetailInfo.getQualificationCertificateList();
+
+            if (qualificationCertificateList != null) {
+                for (OperatorAttachmentHandle operatorAttachmentHandle : qualificationCertificateList) {
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    attachment.setCertificateName(operatorAttachmentHandle.getCertificateName());
+                    attachment.setCertificateFilePath(operatorAttachmentHandle.getCertificateFilePath());
+                    tOperatorAttachmentMapper.insertSelective(attachment);
+                }
+            }
+            //执行成功更新提交状态
+            TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+            tOperatorBasicInfo.setId(roleDetailInfo.getId());
+            tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
+            tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+            tOperatorBasicInfo.setUpdateAt(new Date());
+            return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
+        } catch (Exception e) {
+            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }
+
+
+    }
 
     /**
      * 删除运营商
@@ -231,6 +306,11 @@ public class OperatorServiceImpl implements OperatorService {
      */
     @Override
     public List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo) {
+        String where = queryDetailIfo.getWhere();
+        if(where!=null){
+            where="%"+where+"%";
+            queryDetailIfo.setWhere(where);
+        }
         return  tOperatorDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**

@@ -7,8 +7,10 @@ import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
 import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncementOfficialNetwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,5 +37,10 @@ public class FacadeAnnouncementController implements FacadeAnnouncementService {
     @Override
     public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody QueryAnnouncement queryAnnouncement) {
         return announcementService.getPurchaseProjectAnnouncementList(queryAnnouncement);
+    }
+
+    @Override
+    public Result<List<PurchaseProjectAnnouncementOfficialNetwork>> getAnnouncementListOfficialNetwork(@RequestBody String type) {
+        return announcementService.getAnnouncementListOfficialNetwork(type);
     }
 }

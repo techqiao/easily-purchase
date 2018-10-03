@@ -367,4 +367,18 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectAgencyDetailByAgencyId" resultType="com.epc.web.service.domain.agency.TAgencyDetailInfo">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_agency_detail_info
+      WHERE agency_id =#{agencyId}
+    </select>
+  <select id="selectAgencyByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserAgencyVo" parameterType="com.epc.web.facade.purchaser.dto.QueryAgencyDto">
+    SELECT t_agency_detail_info.agency_id AS  agencyId,t_agency_detail_info.create_at AS createAt ,t_agency_detail_info.company_name AS companyName
+    FROM t_agency_detail_info LEFT JOIN t_purchaser_agency ON t_agency_detail_info.agency_id = t_purchaser_agency.agency_id
+    WHERE t_purchaser_agency.purchaser_id=#{purchaserId}
+    <if test="name!=null">
+      AND company_name LIKE '%'#{name}'%'
+    </if>
+  </select>
 </mapper>

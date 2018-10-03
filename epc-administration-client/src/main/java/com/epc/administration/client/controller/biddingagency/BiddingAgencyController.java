@@ -8,6 +8,7 @@ import com.epc.administration.client.controller.biddingagency.handle.ClientExami
 import com.epc.administration.client.controller.biddingagency.handle.ClientUserBasicInfo;
 import com.epc.administration.client.controller.common.BaseController;
 import com.epc.administration.client.remoteapi.biddingagency.BiddingAgencyClient;
+import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.handle.AgencyForbiddenHandle;
 import com.epc.administration.facade.biddingagency.handle.BiddingHandle;
@@ -21,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 招标代理机构接口
  * @author luozhixin
@@ -28,18 +31,22 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "招标代理机构服务 @罗志鑫",tags = {"招标代理机构服务"})
 @RestController
-@RequestMapping(value = "/biddingagency", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "biddingagency", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BiddingAgencyController extends BaseController {
 
     @Autowired
     private BiddingAgencyClient biddingAgencyClient;
 
     @ApiOperation(value = "添加招标代理机构",notes = "添加招标代理机构")
-    @PostMapping(value = "createBiddingAgencyUser", consumes = "application/json;charset=UTF-8")
+    @PostMapping(value = "/public/createBiddingAgencyUser", consumes = "application/json;charset=UTF-8")
     public Result<Boolean> createBiddingAgencyUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,pojo);
-        pojo.setId(getLoginUser().getId());
+        LoginHandle loginUser = getLoginUser();
+        if(loginUser==null){
+            return Result.error("请先登录");
+        }
+        pojo.setId(loginUser.getId());
         return biddingAgencyClient.insertBiddingAgencyBasicInfo(pojo);
     }
 
@@ -50,6 +57,15 @@ public class BiddingAgencyController extends BaseController {
         BeanUtils.copyProperties(clientBiddingAgencyDetailInfo,biddingHandle);
         return biddingAgencyClient.insertBiddingAgencyDetailInfo(biddingHandle);
     }
+
+    @ApiOperation(value = "修改招标代理机构资料",notes = "修改招标代理机构资料")
+    @PostMapping(value = "updateBiddingAgencyDetailInfo",consumes = "application/json;charset=UTF-8")
+    public Result<Boolean> updateBiddingAgencyDetailInfo(@RequestBody ClientBiddingAgencyDetailInfo clientBiddingAgencyDetailInfo) {
+        BiddingHandle biddingHandle = new BiddingHandle();
+        BeanUtils.copyProperties(clientBiddingAgencyDetailInfo,biddingHandle);
+        return biddingAgencyClient.updateBiddingAgencyDetailInfo(biddingHandle);
+    }
+
 
 
     @ApiOperation(value = "招标代理机构删除资料",notes = "招标代理机构删除资料")
@@ -67,7 +83,7 @@ public class BiddingAgencyController extends BaseController {
 
     @ApiOperation(value = "分页查询所有招标代理机构" ,notes = "分页查询所有招标代理机构")
     @PostMapping(value = "selectAllAgencyByPage",consumes = "application/json;charset=UTF-8")
-    public Result selectAllAgencyByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+    public Result<Map<String, Object>> selectAllAgencyByPage(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
         QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
         BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
         return biddingAgencyClient.selectAllAgencyByPage(queryDetailIfo);

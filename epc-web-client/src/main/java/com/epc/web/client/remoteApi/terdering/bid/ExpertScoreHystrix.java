@@ -5,7 +5,6 @@ import com.epc.web.facade.bidding.handle.HandleScoreReport;
 import com.epc.web.facade.terdering.bid.FacadeExpertScoreService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertScore;
 import com.epc.web.facade.terdering.bid.vo.BidderListVO;
-import com.epc.web.facade.terdering.bid.vo.ExpertScoreVO;
 import com.epc.web.facade.terdering.bid.vo.ScoreAndPathVO;
 
 import java.util.List;

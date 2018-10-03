@@ -99,7 +99,7 @@ CREATE TABLE `t_operator_basic_info` (
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '运营商员工姓名',
-	`operator_id` BIGINT(11) UNSIGNED COMMENT '运营商(法人)ID',
+	`operator_id` BIGINT(11)  UNSIGNED DEFAULT NULL COMMENT '运营商(法人)ID',
 	`state` INT(2) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -142,6 +142,29 @@ CREATE TABLE  `t_operator_attachment`(
 
 
 
+
+-- 私库 运营商添加供应商
+DROP TABLE IF EXISTS `t_operator_supplier`;
+CREATE TABLE `t_operator_supplier` (
+	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
+	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
+	`supplier_name` VARCHAR(16) NOT NULL COMMENT '供应商姓名',
+	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
+	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
+	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
+	`operator_id` BIGINT(11) NOT NULL COMMENT '运营商ID',
+	`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商-采购人:私库';
+
+
+
 -- 供应商 注册
 DROP TABLE IF EXISTS `t_supplier_basic_info`;
 CREATE TABLE `t_supplier_basic_info` (
@@ -149,7 +172,7 @@ CREATE TABLE `t_supplier_basic_info` (
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '员工姓名',
 	`cellphone` CHAR(11) NOT NULL COMMENT '手机号',
 	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
-	`supplier_id` BIGINT(11) UNSIGNED COMMENT '供应商(法人)ID',
+	`supplier_id` BIGINT(11) UNSIGNED DEFAULT NULL COMMENT '供应商(法人)ID',
 	`inviter_type` INT(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台',
 	`inviter_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人Id',
 	`inviter_company_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人机构ID',

@@ -8,8 +8,6 @@ import com.epc.administration.facade.operator.handle.UserBasicInfo;
 import com.epc.administration.facade.operator.vo.OperatorUserVO;
 import com.epc.administration.facade.operator.vo.OperatorVO;
 import com.epc.common.Result;
-import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -33,6 +31,12 @@ public interface OperatorService {
      */
     Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo);
 
+    /**
+     * 运营商修改资料
+     * @param roleDetailInfo
+     * @return
+     */
+    Result<Boolean> updateOperatorDetailInfo(RoleDetailInfo roleDetailInfo);
 
     /**
      * 删除运营商资料
@@ -48,14 +52,12 @@ public interface OperatorService {
      */
     Result<OperatorUserVO> queryOperatorDetailInfo(Long whereId);
 
-
     /**
      * 分页查询
      * @param queryDetailIfo
      * @return
      */
     List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo);
-
 
     /**
      * 审核运营商

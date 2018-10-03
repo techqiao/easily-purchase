@@ -8,7 +8,7 @@ public class BExpertScoreReport implements Serializable {
 
     private String filePath;
 
-    private Long bidsId;
+    private String expertScoreId;
 
     private Long operateId;
 
@@ -38,12 +38,12 @@ public class BExpertScoreReport implements Serializable {
         this.filePath = filePath == null ? null : filePath.trim();
     }
 
-    public Long getBidsId() {
-        return bidsId;
+    public String getExpertScoreId() {
+        return expertScoreId;
     }
 
-    public void setBidsId(Long bidsId) {
-        this.bidsId = bidsId;
+    public void setExpertScoreId(String expertScoreId) {
+        this.expertScoreId = expertScoreId == null ? null : expertScoreId.trim();
     }
 
     public Long getOperateId() {
@@ -94,7 +94,7 @@ public class BExpertScoreReport implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", filePath=").append(filePath);
-        sb.append(", bidsId=").append(bidsId);
+        sb.append(", expertScoreId=").append(expertScoreId);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

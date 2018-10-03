@@ -1,10 +1,13 @@
 package com.epc.web.client.controller.supplier.handle;
 
 
+import com.epc.web.client.controller.operator.handle.ClientAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.List;
 
 /**
  * <p>Description : 角色完善资料
@@ -33,7 +36,7 @@ public class ClientRoleDetailInfo {
     @ApiModelProperty(value = "角色")
     private String systemRole;
 
-    @ApiModelProperty(value = "员工id（供应商id）")
+    @ApiModelProperty(value = "供应商id")
     @NotEmpty(message = "ClientRoleDetailInfo.supplierId.null")
     private Long supplierId;
 
@@ -51,32 +54,35 @@ public class ClientRoleDetailInfo {
     @ApiModelProperty(value = "对公银行号码")
     private String publicBanAccountNumber;
 
-    @ApiModelProperty(value = "资质证书url")
-    private String qualificationCertificate;
-    @ApiModelProperty(value = "资质证书号码")
-    private String qualificationCertificateNumber;
+    @ApiModelProperty(value = "全部附件")
+    private List<ClientAttachment> atts;
 
-    @ApiModelProperty(value = "营业执照照片url")
-    private String businessLicense;
-    @ApiModelProperty(value = "营业执照号码")
-    private String businessLicenseNumber;
-
-    @ApiModelProperty(value = "法人身份证正面照片url")
-    private String legalIdCardPositive;
-    @ApiModelProperty(value = "法人身份证正面照片号码")
-    private String legalIdCardPositiveNumber;
-
-    @ApiModelProperty(value = "法人身份证反面照片url")
-    private String legalIdCardOther;
-
-    @ApiModelProperty(value = "带公章的授权书照片url")
-    private String certificateOfAuthorization;
-    @ApiModelProperty(value = "带公章的授权书号码")
-    private String certificateOfAuthorizationNumber;
-
-    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
-    private String operatorIdCardFront;
-    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片号码")
-    private String operatorIdCardFrontNumber;
+//    @ApiModelProperty(value = "资质证书url")
+//    private String qualificationCertificate;
+//    @ApiModelProperty(value = "资质证书号码")
+//    private String qualificationCertificateNumber;
+//
+//    @ApiModelProperty(value = "营业执照照片url")
+//    private String businessLicense;
+//    @ApiModelProperty(value = "营业执照号码")
+//    private String businessLicenseNumber;
+//
+//    @ApiModelProperty(value = "法人身份证正面照片url")
+//    private String legalIdCardPositive;
+//    @ApiModelProperty(value = "法人身份证正面照片号码")
+//    private String legalIdCardPositiveNumber;
+//
+//    @ApiModelProperty(value = "法人身份证反面照片url")
+//    private String legalIdCardOther;
+//
+//    @ApiModelProperty(value = "带公章的授权书照片url")
+//    private String certificateOfAuthorization;
+//    @ApiModelProperty(value = "带公章的授权书号码")
+//    private String certificateOfAuthorizationNumber;
+//
+//    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片url")
+//    private String operatorIdCardFront;
+//    @ApiModelProperty(value = "经办人(运营商员工)手持身份证正面照片号码")
+//    private String operatorIdCardFrontNumber;
 
 }

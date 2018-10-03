@@ -10,7 +10,6 @@ import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
 import com.epc.web.client.remoteApi.terdering.purchase.PurchaseProjectClient;
 import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
 import com.epc.web.facade.terdering.participant.handle.HandleParticipantBasicInfo;
-import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
@@ -43,10 +42,14 @@ public class PurchaseProjectBasicInfoController extends BaseController {
     public Result<Boolean> handlePurchaseProjectBasicInfo(@RequestBody ClientHandlePurchaseProjectBasicInfo clientHandlePurchaseProjectBasicInfo) {
         HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub = new HandlePurchaseProjectBasicInfoSub();
         BeanUtils.copyProperties(clientHandlePurchaseProjectBasicInfo, handlePurchaseProjectBasicInfoSub);
-        handlePurchaseProjectBasicInfoSub.setOperateId(getLoginUser().getUserId());
+//        handlePurchaseProjectBasicInfoSub.setOperateId(getLoginUser().getUserId());
         handlePurchaseProjectBasicInfoSub.setCreator(getLoginUser().getName());
         //当前登录用户ID(采购人ID)
+<<<<<<< HEAD
         Long userId = getLoginUser().getUserId();
+=======
+//        Long userId = getLoginUser().getUserId();
+>>>>>>> origin/master
         //不全权委托代理机构 指定经办人审核人 其中批复人和负责人为项目经理
         if (Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY == clientHandlePurchaseProjectBasicInfo.getIsOtherAgency()) {
             //经办人ID
@@ -61,10 +64,10 @@ public class PurchaseProjectBasicInfoController extends BaseController {
             if (auditorId != null) {
                 addUserRole(ParticipantPermissionEnum.AUDITOR.getCode(), auditorId, handleParticipantBasicInfoList);
             }
-            if (userId != null) {
-                addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
-                addUserRole(ParticipantPermissionEnum.PERSON_LIABLE.getCode(), userId, handleParticipantBasicInfoList);
-            }
+//            if (userId != null) {
+//                addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
+//                addUserRole(ParticipantPermissionEnum.PERSON_LIABLE.getCode(), userId, handleParticipantBasicInfoList);
+//            }
             return purchaseProjectClient.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfoSub);
         }
         //全权委托代理机构
@@ -72,9 +75,15 @@ public class PurchaseProjectBasicInfoController extends BaseController {
             //参与者集合
             List<HandleParticipantBasicInfo> handleParticipantBasicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
             //批复人为项目经理即当前登录人(采购人)
+<<<<<<< HEAD
             if (userId != null) {
                 addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
             }
+=======
+//            if (userId != null) {
+//                addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
+//            }
+>>>>>>> origin/master
             //招标代理机构ID
             Long purchaserAgencyId = clientHandlePurchaseProjectBasicInfo.getPurchaserAgencyId();
             if ( purchaserAgencyId!= null) {

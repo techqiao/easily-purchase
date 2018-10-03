@@ -78,6 +78,7 @@ public class PurchaserController  {
         HandleAgnecy agnecy = new HandleAgnecy();
         BeanUtils.copyProperties(handleAgnecy,agnecy);
         return purchaserClient.createAgencyByPurchaser(agnecy);
+<<<<<<< HEAD
     }
 
     @ApiOperation(value = "完善采购人信息",notes = "完善采购人信息")
@@ -88,6 +89,18 @@ public class PurchaserController  {
         return purchaserClient.updatePurchaserDetail(purchaser);
     }
 
+=======
+    }
+
+//    @ApiOperation(value = "完善采购人信息",notes = "完善采购人信息")
+//    @PostMapping(value = "/updatePurchaserDetail")
+//    public Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandleRegisterPurchaser handlePurchaser) {
+//        HandleRegisterPurchaser purchaser = new HandleRegisterPurchaser();
+//        BeanUtils.copyProperties(handlePurchaser,purchaser);
+//        return purchaserClient.updatePurchaserDetail(purchaser);
+//    }
+
+>>>>>>> origin/master
     @ApiOperation(value = "完善代理机构信息",notes = "完善代理机构信息")
     @PostMapping(value = "/updateAgencyDetail")
     public Result<Boolean> updateAgencyDetail(@RequestBody ClientHandleAgnecy handleAgnecy) {

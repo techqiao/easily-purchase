@@ -40,7 +40,7 @@ public class AnnouncementController extends BaseController {
     public Result<Boolean> insertAnnouncement(@RequestBody ClientHandleAnnouncement clientHandleAnnouncement){
         HandleAnnouncement handleBidsBasicInfo = new HandleAnnouncement();
         BeanUtils.copyProperties(clientHandleAnnouncement, handleBidsBasicInfo);
-        handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
+//        handleBidsBasicInfo.setOperateId(getLoginUser().getUserId());
         handleBidsBasicInfo.setCreator(getLoginUser().getName());
         return announcementClient.insertAnnouncement(handleBidsBasicInfo);
     }
@@ -50,7 +50,7 @@ public class AnnouncementController extends BaseController {
     public Result<Boolean> updateAnnouncementStatus(@RequestBody ClientHandleAnnouncementStatus clientHandleAnnouncementStatus){
         HandleAnnouncementStatus handleAnnouncementStatus = new HandleAnnouncementStatus();
         BeanUtils.copyProperties(clientHandleAnnouncementStatus,handleAnnouncementStatus);
-        handleAnnouncementStatus.setOperateId(getLoginUser().getUserId());
+//        handleAnnouncementStatus.setOperateId(getLoginUser().getUserId());
         return announcementClient.updateAnnouncementStatus(handleAnnouncementStatus);
     }
 

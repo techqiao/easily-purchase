@@ -20,7 +20,11 @@ public class ReviewExpertHandle implements Serializable {
     @ApiModelProperty(value = "专业")
     private String profession;
     @ApiModelProperty(value = "职称")
+    private String positional;
+    @ApiModelProperty(value = "级别")
     private String level;
+    @ApiModelProperty(value = "从业年限")
+    private Integer workingYears;
     @ApiModelProperty(value = "通知时间")
     private Date circularDt;
     @ApiModelProperty(value = "通知方式")
@@ -31,15 +35,10 @@ public class ReviewExpertHandle implements Serializable {
     private String legalIdCardPositive;
     @ApiModelProperty(value = "法人身份证反面照片url")
     private String legalIdCardOther;
-    @ApiModelProperty(value = "统一信用代码")
-    private String uniformCreditCode;
     @ApiModelProperty(value = "公司名称")
     private String companyName;
-    @ApiModelProperty(value = "对公银行名称")
-    private String publicBankName;
-    @ApiModelProperty(value = "对公银行账号")
-    private String publicBanAccountNumber;
-
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
     @ApiModelProperty(value = "资质证书url")
     private List<AttachmentHandle> attachmentHandleList;
 

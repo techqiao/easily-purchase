@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Api(value = "系统后台登录 @罗志鑫",tags = {"系统后台登录"})
 @RestController
-@RequestMapping(value = "/loginIn", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "loginIn", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @SessionAttributes("session")
 public class AdminLoginController {
     @Autowired
@@ -47,7 +47,7 @@ public class AdminLoginController {
      * @return
      */
     @ApiOperation(value = "用户登出", notes = "用户登出")
-    @PostMapping(value = "loginOut")
+    @PostMapping(value = "/public/loginOut")
     @ResponseBody
     public Result<Boolean> loginOut(HttpServletRequest httpServletRequest,
                                      HttpServletResponse httpServletResponse) {

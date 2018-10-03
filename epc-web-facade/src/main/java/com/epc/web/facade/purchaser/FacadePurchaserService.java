@@ -73,7 +73,11 @@ public interface FacadePurchaserService {
      * @return
      */
     @PostMapping(value = "registerPurchaserDetail", consumes = "application/json; charset=UTF-8")
+<<<<<<< HEAD
     Result<Boolean> updatePurchaserDetail(@RequestBody HandleRegisterPurchaser handlePurchaser);
+=======
+    Result<Boolean> updatePurchaserDetail(@RequestBody HandlePurchaser handlePurchaser);
+>>>>>>> origin/master
 
     /**
      * 完善代理机构信息

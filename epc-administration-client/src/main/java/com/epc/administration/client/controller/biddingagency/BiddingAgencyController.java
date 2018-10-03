@@ -38,7 +38,7 @@ public class BiddingAgencyController extends BaseController {
     private BiddingAgencyClient biddingAgencyClient;
 
     @ApiOperation(value = "添加招标代理机构",notes = "添加招标代理机构")
-    @PostMapping(value = "/public/createBiddingAgencyUser", consumes = "application/json;charset=UTF-8")
+    @PostMapping(value = "createBiddingAgencyUser", consumes = "application/json;charset=UTF-8")
     public Result<Boolean> createBiddingAgencyUser(@RequestBody ClientUserBasicInfo clientUserBasicInfo){
         UserBasicInfo pojo = new UserBasicInfo();
         BeanUtils.copyProperties(clientUserBasicInfo,pojo);

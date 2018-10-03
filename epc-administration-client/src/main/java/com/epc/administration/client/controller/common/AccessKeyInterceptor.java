@@ -1,6 +1,5 @@
 package com.epc.administration.client.controller.common;
 
-import com.epc.common.Result;
 import com.epc.common.util.RedisShardedPoolUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

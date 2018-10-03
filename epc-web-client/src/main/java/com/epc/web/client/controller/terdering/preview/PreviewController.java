@@ -43,7 +43,11 @@ public class PreviewController extends BaseController {
         PreviewHandle previewHandle = new PreviewHandle();
         BeanUtils.copyProperties(clientPreviewHandle, previewHandle);
         previewHandle.setCreator(getLoginUser().getName());
+<<<<<<< HEAD
         previewHandle.setSetOperateId(getLoginUser().getUserId());
+=======
+//        previewHandle.setSetOperateId(getLoginUser().getUserId());
+>>>>>>> origin/master
         return previewClient.insertPreview(previewHandle);
     }
 

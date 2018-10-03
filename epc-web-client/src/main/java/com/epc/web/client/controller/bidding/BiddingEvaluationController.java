@@ -47,7 +47,7 @@ public class BiddingEvaluationController extends BaseController {
         loginUser.setCompanyName("admin");
         RedisShardedPoolUtil.setEx("123",JSON.toJSONString(loginUser) , Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         System.out.println(RedisShardedPoolUtil.get("123"));
-        evaluationHandle.setOperateId(getLoginUser().getUserId());
+//        evaluationHandle.setOperateId(getLoginUser().getUserId());
         return evaluationClient.insertEvaluation(evaluationHandle);
     }
     @ApiOperation(value = "查询供应商列表",tags = "查询供应商列表")

@@ -27,7 +27,7 @@ public interface PurchaserService {
      *@return:
      *@date:2018/9/29
      */
-    public Result<Boolean> enableOrDisablePurchaserEmployee(HandleTrustList trustList);
+     Result<Boolean> enableOrDisablePurchaserEmployee(HandleTrustList trustList);
     /**
      *@author :winlin
      *@Description :修改员工权限
@@ -35,7 +35,7 @@ public interface PurchaserService {
      *@return:
      *@date:2018/9/30
      */
-    public Result<Boolean> updatePurchaserEmployeeRole(HandleTrustList trustList);
+     Result<Boolean> updatePurchaserEmployeeRole(HandleTrustList trustList);
 /**
  *@author :winlin
  *@Description :修改员工信息
@@ -43,7 +43,7 @@ public interface PurchaserService {
  *@return:
  *@date:2018/9/30
  */
-public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurchaser);
+        Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurchaser);
     /**
      *@author :winlin
      *@Description :根据条件查询多有符合条件的员工
@@ -51,7 +51,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/19
      */
-    public Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto);
+     Result<List<PurchaserEmplyeeVo>> queryEmplyee(HandleEmployeeDto employeeDto);
 
     /**
      * 采购人新增专家
@@ -67,7 +67,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/21
      */
-    public Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
+     Result<Boolean> completePurchaserExpertInfo(HandleExpertDto expertDto);
 
     /**
      *@author :winlin
@@ -76,7 +76,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/30
      */
-    public Result<Boolean> deletePurchaserExpert(HandleTrustList trustList);
+     Result<Boolean> deletePurchaserExpert(HandleTrustList trustList);
 
     /**
      * @author :winlin
@@ -85,7 +85,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<List<PurchaserExpertVo>> queryExperts(QueryExpertDto dto);
+     Result<List<PurchaserExpertVo>> queryExperts(QueryExpertDto dto);
     /**
      * 添加代理机构(私库)
      *
@@ -107,7 +107,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/28
      */
-    public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList);
+     Result<Boolean> updateTrustListForAgency(HandleTrustList trustList);
     /**
      *@author :winlin
      *@Description :根据条件查询代理机构
@@ -115,7 +115,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/20
      */
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(QueryAgencyDto agencyDto);
+     Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(QueryAgencyDto agencyDto);
 
 
     /**
@@ -139,7 +139,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/28
      */
-    public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList);
+     Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList);
     /**
      *@author :winlin
      *@Description :
@@ -147,7 +147,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/20
      */
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(QuerySupplierDto supplierDto);
+     Result<List<PurchaserSupplierVo>> querySupplierByCriterias(QuerySupplierDto supplierDto);
 
 
 //    /**
@@ -175,7 +175,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<List<PurchaserEmplyeeVo>> allEmployee(Long purchaserId);
+     Result<List<PurchaserEmplyeeVo>> allEmployee(Long purchaserId);
 
     /**
      * @author :winlin
@@ -184,7 +184,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<List<PurchaserEmplyeeVo>> findEmployeeByName(String fuzzyName,Long purchaseId);
+     Result<List<PurchaserEmplyeeVo>> findEmployeeByName(String fuzzyName,Long purchaseId);
 
     /**
      * @author :winlin
@@ -193,7 +193,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<Boolean> updateEmployeeState(String cellphone,Integer state);
+     Result<Boolean> updateEmployeeState(String cellphone,Integer state);
 
     /**
      * @author :winlin
@@ -202,7 +202,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<Boolean> updateEmployeeState(Long id,Integer state);
+     Result<Boolean> updateEmployeeState(Long id,Integer state);
 
     /**
      * @author :winlin
@@ -211,7 +211,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<PurchaserEmplyeeVo> queryEmployee(String cellphone);
+     Result<PurchaserEmplyeeVo> queryEmployee(String cellphone);
 
     /**
      * @author :winlin
@@ -220,7 +220,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<PurchaserEmplyeeVo> queryEmployeeDto(QueryDto dto);
+     Result<PurchaserEmplyeeVo> queryEmployeeDto(QueryDto dto);
 
     /**
      *@author :winlin
@@ -229,7 +229,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/19
      */
-    public Result<Boolean> updateRole(Long id,Integer role);
+     Result<Boolean> updateRole(Long id,Integer role);
 
 //    /**
 //     * @author :winlin
@@ -256,7 +256,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      * @return:
      * @date:2018/9/19
      */
-    public Result<SupplierDetailVo> querySuppliersDto(QueryDto dto);
+     Result<SupplierDetailVo> querySuppliersDto(QueryDto dto);
     /**
      *@author :winlin
      *@Description : id查询专家详情
@@ -264,7 +264,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/10/2
      */
-    public Result<PurchaserExpertDetailVo> queryExpertDetailById(QueryDto dto);
+     Result<PurchaserExpertDetailVo> queryExpertDetailById(QueryDto dto);
 
     /**
      *@author :winlin
@@ -273,7 +273,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/10/2
      */
-    public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(QueryDto dto);
+     Result<PurchaserAgencyDetailVo> queryAgencyDetailById(QueryDto dto);
 
 //    /**
 //     * @author :winlin
@@ -292,7 +292,7 @@ public Result<Boolean> updatePurchaserEmployeeInfo(HandlePurchaserDto handlePurc
      *@return:
      *@date:2018/9/19
      */
-    public Result<Boolean> updateExpertState(Long id ,Integer state);
+     Result<Boolean> updateExpertState(Long id ,Integer state);
 //    /**
 //     *@author :winlin
 //     *@Description :修改采购人代理机构详细信息

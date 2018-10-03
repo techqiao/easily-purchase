@@ -13,7 +13,6 @@ import com.epc.web.facade.purchaser.vo.PurchaserSupplierVo;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.FacadePurchaserService;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,12 +31,17 @@ public  class PurchaserController implements FacadePurchaserService {
     @Autowired
     PurchaserService purchaserService;
 
+    @Override
+    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
+        return null;
+    }
+
     /**
      * 新增采购人员
      */
     @Override
     public Result<Boolean> createPurchaseBasicInfo(@RequestBody HandlePurchaser handleOperator) {
-        return purchaserService.createPurchaserUserInfo(handleOperator,Const.Role.ROLE_CUSTOMER);
+        return purchaserService.createPurchaserUserInfo(handleOperator);
     }
     @Override
     public Result<Boolean> enableOrDisablePurchaserEmployee(@RequestBody HandleTrustList trustList){
@@ -85,6 +89,24 @@ public  class PurchaserController implements FacadePurchaserService {
     }
 
     /**
+=======
+    @Override
+    public Result<Boolean> updatePurchaserDetail(HandlePurchaser handlePurchaser) {
+        return null;
+    }
+
+    /**
+     * 完善 采购人信息
+     * @param handlePurchaser
+     * @return
+     */
+//    @Override
+//    public Result<Boolean> updatePurchaserDetail(@RequestBody HandleRegisterPurchaser handlePurchaser) {
+//        return purchaserService.updatePurchaserDetail(handlePurchaser);
+//    }
+
+    /**
+>>>>>>> origin/master
      * 完善 代理机构信息
      * @param handleAgnecy
      * @return
@@ -208,7 +230,7 @@ public  class PurchaserController implements FacadePurchaserService {
     public Result  queryEmployeeById(@RequestBody HashMap<String,Object> map) {
             String ids = (String) map.get("id");
             Long id =Long.parseLong(ids);
-        return purchaserService.queryEmployee(id);
+        return purchaserService.queryEmployeeDto(id);
     }
 
 /**
@@ -363,7 +385,6 @@ public  class PurchaserController implements FacadePurchaserService {
     public Result<Boolean> updatePurchaserExpert(@RequestBody HandleExpertDto expertDto) {
         return purchaserService.updatePurchaserExpert(expertDto);
     }
-
     @Override
     public Result queryEmployee(Long userId) {
         return purchaserService.queryEmployee(userId);

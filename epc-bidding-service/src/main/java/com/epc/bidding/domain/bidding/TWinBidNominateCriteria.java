@@ -756,6 +756,76 @@ public class TWinBidNominateCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBidNameIsNull() {
+            addCriterion("bid_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameIsNotNull() {
+            addCriterion("bid_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameEqualTo(String value) {
+            addCriterion("bid_name =", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameNotEqualTo(String value) {
+            addCriterion("bid_name <>", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameGreaterThan(String value) {
+            addCriterion("bid_name >", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameGreaterThanOrEqualTo(String value) {
+            addCriterion("bid_name >=", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameLessThan(String value) {
+            addCriterion("bid_name <", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameLessThanOrEqualTo(String value) {
+            addCriterion("bid_name <=", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameLike(String value) {
+            addCriterion("bid_name like", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameNotLike(String value) {
+            addCriterion("bid_name not like", value, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameIn(List<String> values) {
+            addCriterion("bid_name in", values, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameNotIn(List<String> values) {
+            addCriterion("bid_name not in", values, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameBetween(String value1, String value2) {
+            addCriterion("bid_name between", value1, value2, "bidName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidNameNotBetween(String value1, String value2) {
+            addCriterion("bid_name not between", value1, value2, "bidName");
+            return (Criteria) this;
+        }
+
         public Criteria andBidCodeIsNull() {
             addCriterion("bid_code is null");
             return (Criteria) this;
@@ -1396,66 +1466,6 @@ public class TWinBidNominateCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andWinBidSupplieridIsNull() {
-            addCriterion("win_bid_supplierId is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridIsNotNull() {
-            addCriterion("win_bid_supplierId is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridEqualTo(Long value) {
-            addCriterion("win_bid_supplierId =", value, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridNotEqualTo(Long value) {
-            addCriterion("win_bid_supplierId <>", value, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridGreaterThan(Long value) {
-            addCriterion("win_bid_supplierId >", value, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridGreaterThanOrEqualTo(Long value) {
-            addCriterion("win_bid_supplierId >=", value, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridLessThan(Long value) {
-            addCriterion("win_bid_supplierId <", value, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridLessThanOrEqualTo(Long value) {
-            addCriterion("win_bid_supplierId <=", value, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridIn(List<Long> values) {
-            addCriterion("win_bid_supplierId in", values, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridNotIn(List<Long> values) {
-            addCriterion("win_bid_supplierId not in", values, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridBetween(Long value1, Long value2) {
-            addCriterion("win_bid_supplierId between", value1, value2, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
-        public Criteria andWinBidSupplieridNotBetween(Long value1, Long value2) {
-            addCriterion("win_bid_supplierId not between", value1, value2, "winBidSupplierid");
-            return (Criteria) this;
-        }
-
         public Criteria andOpenStartIsNull() {
             addCriterion("open_start is null");
             return (Criteria) this;
@@ -1576,73 +1586,73 @@ public class TWinBidNominateCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathIsNull() {
-            addCriterion("letter_path is null");
+        public Criteria andFilePathIsNull() {
+            addCriterion("file_path is null");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathIsNotNull() {
-            addCriterion("letter_path is not null");
+        public Criteria andFilePathIsNotNull() {
+            addCriterion("file_path is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathEqualTo(String value) {
-            addCriterion("letter_path =", value, "letterPath");
+        public Criteria andFilePathEqualTo(String value) {
+            addCriterion("file_path =", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathNotEqualTo(String value) {
-            addCriterion("letter_path <>", value, "letterPath");
+        public Criteria andFilePathNotEqualTo(String value) {
+            addCriterion("file_path <>", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathGreaterThan(String value) {
-            addCriterion("letter_path >", value, "letterPath");
+        public Criteria andFilePathGreaterThan(String value) {
+            addCriterion("file_path >", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathGreaterThanOrEqualTo(String value) {
-            addCriterion("letter_path >=", value, "letterPath");
+        public Criteria andFilePathGreaterThanOrEqualTo(String value) {
+            addCriterion("file_path >=", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathLessThan(String value) {
-            addCriterion("letter_path <", value, "letterPath");
+        public Criteria andFilePathLessThan(String value) {
+            addCriterion("file_path <", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathLessThanOrEqualTo(String value) {
-            addCriterion("letter_path <=", value, "letterPath");
+        public Criteria andFilePathLessThanOrEqualTo(String value) {
+            addCriterion("file_path <=", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathLike(String value) {
-            addCriterion("letter_path like", value, "letterPath");
+        public Criteria andFilePathLike(String value) {
+            addCriterion("file_path like", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathNotLike(String value) {
-            addCriterion("letter_path not like", value, "letterPath");
+        public Criteria andFilePathNotLike(String value) {
+            addCriterion("file_path not like", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathIn(List<String> values) {
-            addCriterion("letter_path in", values, "letterPath");
+        public Criteria andFilePathIn(List<String> values) {
+            addCriterion("file_path in", values, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathNotIn(List<String> values) {
-            addCriterion("letter_path not in", values, "letterPath");
+        public Criteria andFilePathNotIn(List<String> values) {
+            addCriterion("file_path not in", values, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathBetween(String value1, String value2) {
-            addCriterion("letter_path between", value1, value2, "letterPath");
+        public Criteria andFilePathBetween(String value1, String value2) {
+            addCriterion("file_path between", value1, value2, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andLetterPathNotBetween(String value1, String value2) {
-            addCriterion("letter_path not between", value1, value2, "letterPath");
+        public Criteria andFilePathNotBetween(String value1, String value2) {
+            addCriterion("file_path not between", value1, value2, "filePath");
             return (Criteria) this;
         }
 

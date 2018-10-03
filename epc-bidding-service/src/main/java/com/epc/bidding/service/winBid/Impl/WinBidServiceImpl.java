@@ -102,8 +102,10 @@ public class WinBidServiceImpl implements WinBidService {
             vo.setProcurementProjectCode(purchaseProjectBasicInfo.getPurchaseProjectCode());
             vo.setPurchaseType(purchaseProjectBasicInfo.getPurchaseType());
             vo.setPurchaseMode(purchaseProjectBasicInfo.getPurchaseMode());
+            return Result.success(vo);
+        }else{
+            return Result.success(null);
         }
-        return Result.success(vo);
     }
 
     /**

@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +32,10 @@ public class WinBidRecordController {
      * @param procurementProjectId
      * @return
      */
-    @ApiOperation(value = "获取中标通知列表")
-    @PostMapping(value = "getTWinBidNominated", consumes = "application/json; charset=UTF-8")
-    public Result<List<NominateVO>> getTWinBidNominated(@RequestBody Long procurementProjectId) {
+
+    @ApiOperation(value = "获取采购项目下各标段的中标公示记录")
+    @GetMapping(value = "getTWinBidNominated", consumes = "application/json; charset=UTF-8")
+    public Result<List<NominateVO>> getTWinBidNominated(@RequestParam("procurementProjectId") Long procurementProjectId) {
         return  winBidClient.getTWinBidNominated(procurementProjectId);
     }
 

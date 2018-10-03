@@ -8,13 +8,11 @@
     <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
-    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="operate_name" property="operateName" jdbcType="VARCHAR" />
     <result column="delegator" property="delegator" jdbcType="VARCHAR" />
     <result column="identit_card" property="identitCard" jdbcType="VARCHAR" />
     <result column="bailment_path" property="bailmentPath" jdbcType="VARCHAR" />
     <result column="bid_appendix" property="bidAppendix" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -79,8 +77,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, purchase_project_id, release_announcement_id, bids_id, company_id, company_name, 
-    operate_id, operate_name, delegator, identit_card, bailment_path, bid_appendix, status, 
-    create_at, update_at, is_deleted
+    delegator, identit_card, bailment_path, bid_appendix, operate_id, create_at, update_at, 
+    is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TTenderMessageCriteria" >
     select
@@ -118,16 +116,14 @@
     </selectKey>
     insert into t_tender_message (purchase_project_id, release_announcement_id, 
       bids_id, company_id, company_name, 
-      operate_id, operate_name, delegator, 
-      identit_card, bailment_path, bid_appendix, 
-      status, create_at, update_at, 
-      is_deleted)
+      delegator, identit_card, bailment_path, 
+      bid_appendix, operate_id, create_at, 
+      update_at, is_deleted)
     values (#{purchaseProjectId,jdbcType=BIGINT}, #{releaseAnnouncementId,jdbcType=BIGINT}, 
       #{bidsId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{operateName,jdbcType=VARCHAR}, #{delegator,jdbcType=VARCHAR}, 
-      #{identitCard,jdbcType=VARCHAR}, #{bailmentPath,jdbcType=VARCHAR}, #{bidAppendix,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+      #{delegator,jdbcType=VARCHAR}, #{identitCard,jdbcType=VARCHAR}, #{bailmentPath,jdbcType=VARCHAR}, 
+      #{bidAppendix,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TTenderMessage" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -150,12 +146,6 @@
       <if test="companyName != null" >
         company_name,
       </if>
-      <if test="operateId != null" >
-        operate_id,
-      </if>
-      <if test="operateName != null" >
-        operate_name,
-      </if>
       <if test="delegator != null" >
         delegator,
       </if>
@@ -168,8 +158,8 @@
       <if test="bidAppendix != null" >
         bid_appendix,
       </if>
-      <if test="status != null" >
-        status,
+      <if test="operateId != null" >
+        operate_id,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -197,12 +187,6 @@
       <if test="companyName != null" >
         #{companyName,jdbcType=VARCHAR},
       </if>
-      <if test="operateId != null" >
-        #{operateId,jdbcType=BIGINT},
-      </if>
-      <if test="operateName != null" >
-        #{operateName,jdbcType=VARCHAR},
-      </if>
       <if test="delegator != null" >
         #{delegator,jdbcType=VARCHAR},
       </if>
@@ -215,8 +199,8 @@
       <if test="bidAppendix != null" >
         #{bidAppendix,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+      <if test="operateId != null" >
+        #{operateId,jdbcType=BIGINT},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -256,12 +240,6 @@
       <if test="record.companyName != null" >
         company_name = #{record.companyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.operateId != null" >
-        operate_id = #{record.operateId,jdbcType=BIGINT},
-      </if>
-      <if test="record.operateName != null" >
-        operate_name = #{record.operateName,jdbcType=VARCHAR},
-      </if>
       <if test="record.delegator != null" >
         delegator = #{record.delegator,jdbcType=VARCHAR},
       </if>
@@ -274,8 +252,8 @@
       <if test="record.bidAppendix != null" >
         bid_appendix = #{record.bidAppendix,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.operateId != null" >
+        operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -299,13 +277,11 @@
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       company_id = #{record.companyId,jdbcType=BIGINT},
       company_name = #{record.companyName,jdbcType=VARCHAR},
-      operate_id = #{record.operateId,jdbcType=BIGINT},
-      operate_name = #{record.operateName,jdbcType=VARCHAR},
       delegator = #{record.delegator,jdbcType=VARCHAR},
       identit_card = #{record.identitCard,jdbcType=VARCHAR},
       bailment_path = #{record.bailmentPath,jdbcType=VARCHAR},
       bid_appendix = #{record.bidAppendix,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -331,12 +307,6 @@
       <if test="companyName != null" >
         company_name = #{companyName,jdbcType=VARCHAR},
       </if>
-      <if test="operateId != null" >
-        operate_id = #{operateId,jdbcType=BIGINT},
-      </if>
-      <if test="operateName != null" >
-        operate_name = #{operateName,jdbcType=VARCHAR},
-      </if>
       <if test="delegator != null" >
         delegator = #{delegator,jdbcType=VARCHAR},
       </if>
@@ -349,8 +319,8 @@
       <if test="bidAppendix != null" >
         bid_appendix = #{bidAppendix,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+      <if test="operateId != null" >
+        operate_id = #{operateId,jdbcType=BIGINT},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -371,13 +341,11 @@
       bids_id = #{bidsId,jdbcType=BIGINT},
       company_id = #{companyId,jdbcType=BIGINT},
       company_name = #{companyName,jdbcType=VARCHAR},
-      operate_id = #{operateId,jdbcType=BIGINT},
-      operate_name = #{operateName,jdbcType=VARCHAR},
       delegator = #{delegator,jdbcType=VARCHAR},
       identit_card = #{identitCard,jdbcType=VARCHAR},
       bailment_path = #{bailmentPath,jdbcType=VARCHAR},
       bid_appendix = #{bidAppendix,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}

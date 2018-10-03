@@ -14,7 +14,9 @@ import java.io.Serializable;
 @ApiModel(value = "供应商签到")
 public class ClientSignerDTO {
     @ApiModelProperty(value = "标段ID")
-    private Long bidId;
+    private Long bidsId;
+    @ApiModelProperty(value = "标段名称")
+    private String bidsName;
     @ApiModelProperty(value = "签到人姓名")
     private String name;
     @ApiModelProperty(value = "电话号码")

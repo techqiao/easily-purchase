@@ -475,136 +475,6 @@ public class TTenderMessageCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andOperateIdIsNull() {
-            addCriterion("operate_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdIsNotNull() {
-            addCriterion("operate_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdEqualTo(Long value) {
-            addCriterion("operate_id =", value, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdNotEqualTo(Long value) {
-            addCriterion("operate_id <>", value, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdGreaterThan(Long value) {
-            addCriterion("operate_id >", value, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("operate_id >=", value, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdLessThan(Long value) {
-            addCriterion("operate_id <", value, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdLessThanOrEqualTo(Long value) {
-            addCriterion("operate_id <=", value, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdIn(List<Long> values) {
-            addCriterion("operate_id in", values, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdNotIn(List<Long> values) {
-            addCriterion("operate_id not in", values, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdBetween(Long value1, Long value2) {
-            addCriterion("operate_id between", value1, value2, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateIdNotBetween(Long value1, Long value2) {
-            addCriterion("operate_id not between", value1, value2, "operateId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameIsNull() {
-            addCriterion("operate_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameIsNotNull() {
-            addCriterion("operate_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameEqualTo(String value) {
-            addCriterion("operate_name =", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameNotEqualTo(String value) {
-            addCriterion("operate_name <>", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameGreaterThan(String value) {
-            addCriterion("operate_name >", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameGreaterThanOrEqualTo(String value) {
-            addCriterion("operate_name >=", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameLessThan(String value) {
-            addCriterion("operate_name <", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameLessThanOrEqualTo(String value) {
-            addCriterion("operate_name <=", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameLike(String value) {
-            addCriterion("operate_name like", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameNotLike(String value) {
-            addCriterion("operate_name not like", value, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameIn(List<String> values) {
-            addCriterion("operate_name in", values, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameNotIn(List<String> values) {
-            addCriterion("operate_name not in", values, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameBetween(String value1, String value2) {
-            addCriterion("operate_name between", value1, value2, "operateName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateNameNotBetween(String value1, String value2) {
-            addCriterion("operate_name not between", value1, value2, "operateName");
-            return (Criteria) this;
-        }
-
         public Criteria andDelegatorIsNull() {
             addCriterion("delegator is null");
             return (Criteria) this;
@@ -885,73 +755,63 @@ public class TTenderMessageCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
+        public Criteria andOperateIdIsNull() {
+            addCriterion("operate_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
+        public Criteria andOperateIdIsNotNull() {
+            addCriterion("operate_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(String value) {
-            addCriterion("status =", value, "status");
+        public Criteria andOperateIdEqualTo(Long value) {
+            addCriterion("operate_id =", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
-            addCriterion("status <>", value, "status");
+        public Criteria andOperateIdNotEqualTo(Long value) {
+            addCriterion("operate_id <>", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(String value) {
-            addCriterion("status >", value, "status");
+        public Criteria andOperateIdGreaterThan(Long value) {
+            addCriterion("operate_id >", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
-            addCriterion("status >=", value, "status");
+        public Criteria andOperateIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("operate_id >=", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(String value) {
-            addCriterion("status <", value, "status");
+        public Criteria andOperateIdLessThan(Long value) {
+            addCriterion("operate_id <", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
-            addCriterion("status <=", value, "status");
+        public Criteria andOperateIdLessThanOrEqualTo(Long value) {
+            addCriterion("operate_id <=", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLike(String value) {
-            addCriterion("status like", value, "status");
+        public Criteria andOperateIdIn(List<Long> values) {
+            addCriterion("operate_id in", values, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("status not like", value, "status");
+        public Criteria andOperateIdNotIn(List<Long> values) {
+            addCriterion("operate_id not in", values, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<String> values) {
-            addCriterion("status in", values, "status");
+        public Criteria andOperateIdBetween(Long value1, Long value2) {
+            addCriterion("operate_id between", value1, value2, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
-            addCriterion("status not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(String value1, String value2) {
-            addCriterion("status between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(String value1, String value2) {
-            addCriterion("status not between", value1, value2, "status");
+        public Criteria andOperateIdNotBetween(Long value1, Long value2) {
+            addCriterion("operate_id not between", value1, value2, "operateId");
             return (Criteria) this;
         }
 

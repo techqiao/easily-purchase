@@ -555,6 +555,76 @@ public class TSupplierSignCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andIdentitCardIsNull() {
+            addCriterion("identit_card is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardIsNotNull() {
+            addCriterion("identit_card is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardEqualTo(String value) {
+            addCriterion("identit_card =", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotEqualTo(String value) {
+            addCriterion("identit_card <>", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardGreaterThan(String value) {
+            addCriterion("identit_card >", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardGreaterThanOrEqualTo(String value) {
+            addCriterion("identit_card >=", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardLessThan(String value) {
+            addCriterion("identit_card <", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardLessThanOrEqualTo(String value) {
+            addCriterion("identit_card <=", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardLike(String value) {
+            addCriterion("identit_card like", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotLike(String value) {
+            addCriterion("identit_card not like", value, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardIn(List<String> values) {
+            addCriterion("identit_card in", values, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotIn(List<String> values) {
+            addCriterion("identit_card not in", values, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardBetween(String value1, String value2) {
+            addCriterion("identit_card between", value1, value2, "identitCard");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdentitCardNotBetween(String value1, String value2) {
+            addCriterion("identit_card not between", value1, value2, "identitCard");
+            return (Criteria) this;
+        }
+
         public Criteria andCellphoneIsNull() {
             addCriterion("cellphone is null");
             return (Criteria) this;

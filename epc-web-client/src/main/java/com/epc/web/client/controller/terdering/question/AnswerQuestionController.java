@@ -7,7 +7,9 @@ import com.epc.web.client.controller.terdering.question.query.ClientQueryAnswerQ
 import com.epc.web.client.remoteApi.terdering.question.AnswerQuestionClient;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
+import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
+import com.epc.web.facade.terdering.answer.vo.PublicityVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -42,9 +44,17 @@ public class AnswerQuestionController extends BaseController {
     public Result<Boolean> replyQuestion(@RequestBody ClientHandleReplyQuestion clientHandleReplyQuestion) {
         HandleReplyQuestion handleReplyQuestion = new HandleReplyQuestion();
         BeanUtils.copyProperties(clientHandleReplyQuestion, handleReplyQuestion);
-//        handleReplyQuestion.setOperateId(getLoginUser().getUserId());
+        handleReplyQuestion.setOperateId(getLoginUser().getUserId());
         handleReplyQuestion.setOperateName(getLoginUser().getName());
         return answerQuestionClient.replyQuestion(handleReplyQuestion);
+    }
+
+    @ApiOperation(value = "官网:澄清公示")
+    @PostMapping(value = "getPublicityListOfficialNetwork")
+    public Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody String type) {
+        QueryPublicityDTO queryPublicityDTO = new QueryPublicityDTO();
+        queryPublicityDTO.setType(type);
+        return answerQuestionClient.getPublicityListOfficialNetwork(queryPublicityDTO);
     }
 
 }

@@ -38,4 +38,6 @@ public interface BReleaseAnnouncementMapper {
     int updateByPrimaryKeyWithBLOBs(BReleaseAnnouncement record);
 
     int updateByPrimaryKey(BReleaseAnnouncement record);
+
+
 }

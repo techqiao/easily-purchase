@@ -5,6 +5,7 @@ import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
 import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncementOfficialNetwork;
 
 import java.util.List;
 
@@ -41,4 +42,12 @@ public interface AnnouncementService {
      * @return
      */
     Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(QueryAnnouncement queryAnnouncement);
+
+    /**
+     * 查询官网预告公告
+     * @param type
+     * @return
+     */
+    Result<List<PurchaseProjectAnnouncementOfficialNetwork>> getAnnouncementListOfficialNetwork(String type);
+
 }

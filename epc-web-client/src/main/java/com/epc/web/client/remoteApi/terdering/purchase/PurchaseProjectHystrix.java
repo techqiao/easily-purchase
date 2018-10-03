@@ -30,4 +30,9 @@ public class PurchaseProjectHystrix implements FacadeTPurchaseProjectBasicInfoSe
         return Result.hystrixError();
     }
 
+    @Override
+    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectListOfficialNetwork(QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO) {
+        return Result.hystrixError();
+    }
+
 }

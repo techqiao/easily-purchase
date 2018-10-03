@@ -21,12 +21,12 @@ public interface FacadeLoginUserService {
     Result login(@RequestBody LoginUser user);
 
     /**
-     *@author :winlin
-     *@Description :统一注册接口
-     *@param:
-     *@return:
-     *@date:2018/10/1
+     * @author :winlin
+     * @Description :统一注册接口
+     * @param:
+     * @return:
+     * @date:2018/10/1
      */
     @PostMapping(value = "register", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> registerUser( @RequestBody RegisterUser registerUser);
+    Result<Boolean> registerUser(@RequestBody RegisterUser registerUser);
 }

@@ -6,6 +6,7 @@ import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
 import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
+import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncementOfficialNetwork;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class AnnouncementHystrix implements FacadeAnnouncementService {
 
     @Override
     public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(QueryAnnouncement queryAnnouncement) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<PurchaseProjectAnnouncementOfficialNetwork>> getAnnouncementListOfficialNetwork(String type) {
         return Result.hystrixError();
     }
 }

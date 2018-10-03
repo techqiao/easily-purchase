@@ -4,8 +4,6 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandOpeningRecordPublicity;
 import com.epc.web.facade.terdering.bid.handle.HandlePurchaseProjectBegin;
 import com.epc.web.facade.terdering.bid.vo.PurchaseProjectBeginVO;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>Description : easily-purchase

@@ -80,7 +80,7 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<Boolean> forgetPasswordOperator(HandleOperatorForgetPassword handleOperatorForgetPassword) {
+    public Result<Boolean> forgetPassword(HandleOperatorForgetPassword handleOperatorForgetPassword) {
         return Result.hystrixError();
     }
 

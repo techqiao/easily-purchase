@@ -94,16 +94,16 @@ public class SaleDocumentsController extends BaseController {
      */
     private Result<Boolean> handleSaleDocuments(HandleDocuments handleDocuments, List<ClientHandleBidsGuaranteeAmount> clientHandleBidsGuaranteeAmounts, ClientHandleUnderLine clientHandleUnderLine, HandleSaleDocuments handleSaleDocuments) {
         //招标文件 操作人
-//        handleSaleDocuments.setOperateId(getLoginUser().getUserId());
+        handleSaleDocuments.setOperateId(getLoginUser().getUserId());
         HandleUnderLine handleUnderLine = new HandleUnderLine();
         BeanUtils.copyProperties(clientHandleUnderLine, handleUnderLine);
         //招标文件 操作人
-//        handleUnderLine.setOperateId(getLoginUser().getUserId());
+        handleUnderLine.setOperateId(getLoginUser().getUserId());
         List<HandleBidsGuaranteeAmount> handleBidsGuaranteeAmountList = new ArrayList<>();
         for (ClientHandleBidsGuaranteeAmount item : clientHandleBidsGuaranteeAmounts) {
             HandleBidsGuaranteeAmount handleBidsGuaranteeAmount = new HandleBidsGuaranteeAmount();
             BeanUtils.copyProperties(item, handleBidsGuaranteeAmount);
-//            handleBidsGuaranteeAmount.setOperateId(getLoginUser().getUserId());
+            handleBidsGuaranteeAmount.setOperateId(getLoginUser().getUserId());
             handleBidsGuaranteeAmountList.add(handleBidsGuaranteeAmount);
         }
         //招标文件

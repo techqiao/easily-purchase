@@ -12,7 +12,7 @@ import com.epc.web.facade.terdering.bid.vo.DocumentsVO;
  */
 public class SaleDocumentsHystrix implements FacadeSaleDocumentsService {
     @Override
-    public Result<Boolean> handleSaleDocuments(HandleDocuments handleDocuments) {
+    public Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments) {
         return Result.hystrixError();
     }
 

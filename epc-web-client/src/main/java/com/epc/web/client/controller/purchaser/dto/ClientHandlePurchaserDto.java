@@ -1,6 +1,5 @@
 package com.epc.web.client.controller.purchaser.dto;
 
-import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

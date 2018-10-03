@@ -13,10 +13,10 @@ public interface SaleDocumentsService {
 
     /**
      * 处理招标文件
-     * @param handleDocuments
+     * @param handDocuments
      * @return
      */
-    Result<Boolean> handleSaleDocuments(HandleDocuments handleDocuments);
+    Result<Boolean> handleSaleDocuments(HandleDocuments handDocuments);
 
     /**
      * 查询招标文件详情

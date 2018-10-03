@@ -7,8 +7,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-//@Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+@Configuration
+public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -19,6 +19,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/js/**")
                 .excludePathPatterns("/images/**")
                 .excludePathPatterns("/**/login/**")
+                .excludePathPatterns("/**/roleLogin/**")
                 .excludePathPatterns("/**/register/**")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**")
                 .excludePathPatterns("/**/public/**");

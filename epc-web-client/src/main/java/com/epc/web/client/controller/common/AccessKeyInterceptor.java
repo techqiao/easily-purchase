@@ -14,8 +14,6 @@ import java.io.PrintWriter;
 
 public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
 
-    private static Log log = LogFactory.getLog(AccessKeyInterceptor.class);
-
     /**
      * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，
      * SpringMVC中的Interceptor拦截器是链式的，可以同时存在多个Interceptor，
@@ -25,30 +23,32 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
      * 这种中断方式是令preHandle的返回值为false，当preHandle的返回值为false的时候整个请求就结束了。
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-    {
-//        //测试数据
-//        RedisShardedPoolUtil.setEx("EPC_PRIVATE_"+"5555",JSON.toJSONString("LoginHandle(id=55, phone=5555, password=5555, name=5555)") , Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
-        String header = request.getHeader("epc-token");
-        if(null!=handler){
-            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
-            if(null!=s){
-                return  true;
-            }
-        }
-        response.setContentType(";charset=UTF-8");
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        writer.write("to Login please");
-        writer.flush();
-        return false;
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, referer, login-token, X-Requested-With");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8010");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        response.setHeader("Access-Control-Max-Age", "3600");
+//        String header = request.getHeader("epc-token");
+//        if (null != handler) {
+//            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
+//            if (null != s) {
+//                return true;
+//            }
+//        }
+//        response.setContentType(";charset=UTF-8");
+//        response.setHeader("Pragma", "No-cache");
+//        response.setHeader("Cache-Control", "no-cache");
+//        response.setDateHeader("Expires", 0);
+//        PrintWriter writer = null;
+//        try {
+//            writer = response.getWriter();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        writer.write("to Login please");
+//        writer.flush();
+        return true;
     }
 
     /**

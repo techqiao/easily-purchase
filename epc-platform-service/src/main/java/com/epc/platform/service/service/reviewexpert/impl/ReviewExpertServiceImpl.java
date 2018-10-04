@@ -159,7 +159,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             tExpertAttachmentMapper.deleteByExample(criteria);
            return this.insertExpertDetailInfo(reviewExpertHandle);
         } catch (Exception e) {
-            LOGGER.error("BusinessException updateExpertDetailInfo : {}", e);
+            LOGGER.error("BusinessException updateReviewExpertDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }

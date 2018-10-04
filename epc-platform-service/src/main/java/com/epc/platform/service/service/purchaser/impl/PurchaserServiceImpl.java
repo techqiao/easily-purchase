@@ -69,10 +69,10 @@ public class PurchaserServiceImpl implements PurchaserService {
         try {
             return Result.success(tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo) > 0);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException insertSelective : {}", e);
+            LOGGER.error("BusinessException insertPurchaserUserInfo : {}", e);
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         } catch (Exception e) {
-            LOGGER.error("BusinessException insertSelective : {}", e);
+            LOGGER.error("BusinessException insertPurchaserUserInfo : {}", e);
             return Result.error(e.getMessage());
         }
     }
@@ -160,10 +160,10 @@ public class PurchaserServiceImpl implements PurchaserService {
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException updatePurchaserDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }catch (Exception e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException updatePurchaserDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -232,11 +232,11 @@ public class PurchaserServiceImpl implements PurchaserService {
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException insertSelective : {}", e);
+            LOGGER.error("BusinessException insertPurchaserDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException insertPurchaserDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
@@ -255,7 +255,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         try{
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo)>0);
         }catch (BusinessException e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException deletePurchaserDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -317,7 +317,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             purchaserDetailVO.setAttachmentVOS(attachmentVOS);
             return Result.success(purchaserDetailVO);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
+            LOGGER.error("BusinessException queryPurchaserDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
     }

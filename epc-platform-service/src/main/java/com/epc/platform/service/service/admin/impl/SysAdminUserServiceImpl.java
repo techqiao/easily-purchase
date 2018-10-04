@@ -60,7 +60,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         Validate.notNull(loginHandle.getPassword());
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
         final SysAdminUserCriteria.Criteria subCriteria= criteria.createCriteria();
-        subCriteria.andPhoneEqualTo(loginHandle.getPassword());
+        subCriteria.andPhoneEqualTo(loginHandle.getPhone());
         subCriteria.andPasswordEqualTo(MD5Util.MD5EncodeUtf8(loginHandle.getPassword()));
         List<SysAdminUser> sysAdminUsers = sysAdminUserMapper.selectByExample(criteria);
         if(sysAdminUsers.isEmpty()){
@@ -125,7 +125,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         try {
             return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);
         } catch (Exception e) {
-            LOGGER.error("error", e);
+            LOGGER.error("findUserWithDept", e);
             return new ArrayList<>();
         }
     }
@@ -156,6 +156,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         sysAdminUser.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
         sysAdminUserMapper.insertSelective(sysAdminUser);
+        userHandle.setId(sysAdminUser.getId());
         setUserRoles(userHandle);
     }
 
@@ -237,7 +238,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
             ur.setAdminUserId(userHandle.getId());
             ur.setAdminRoleId(role);
             ur.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-            this.sysAdminUserRoleMapper.insertSelective(ur);
+            sysAdminUserRoleMapper.insertSelective(ur);
         }
     }
 

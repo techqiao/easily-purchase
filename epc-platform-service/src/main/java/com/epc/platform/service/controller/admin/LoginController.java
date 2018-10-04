@@ -34,7 +34,6 @@ public class LoginController extends BaseController implements AdminLoginService
 
     @Autowired
     private SysAdminUserService sysAdminUserService;
-
     /**用户登录
      * @param httpServletResponse
      * @param loginHandle
@@ -52,7 +51,6 @@ public class LoginController extends BaseController implements AdminLoginService
         }
         return result;
     }
-
     /**用户登出
      * @return
      */

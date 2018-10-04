@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class UserHandle implements Serializable {
     private static final long serialVersionUID = -2906415443589618056L;
+
     private  String name;
     private  String phone;
     private String  password;

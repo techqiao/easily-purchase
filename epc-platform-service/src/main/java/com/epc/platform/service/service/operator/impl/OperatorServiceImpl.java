@@ -240,7 +240,7 @@ public class OperatorServiceImpl implements OperatorService {
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
         } catch (Exception e) {
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException updateOperatorDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
@@ -262,7 +262,7 @@ public class OperatorServiceImpl implements OperatorService {
         try {
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException deleteOperatorDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -275,8 +275,6 @@ public class OperatorServiceImpl implements OperatorService {
      */
     @Override
     public Result<OperatorUserVO> queryOperatorDetailInfo(Long whereId) {
-
-
         try {
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(whereId);
             TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
@@ -324,7 +322,7 @@ public class OperatorServiceImpl implements OperatorService {
             operatorUserVO.setName(tOperatorBasicInfo.getName());
             return Result.success(operatorUserVO);
         } catch (Exception e1) {
-            LOGGER.error("BusinessException selectOperatorUserVO : {}", e1);
+            LOGGER.error("BusinessException queryOperatorDetailInfo : {}", e1);
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
 

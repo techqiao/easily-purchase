@@ -1,7 +1,6 @@
 package com.epc.platform.service.service.biddingagency.impl;
 import com.epc.administration.facade.biddingagency.handle.*;
 import com.epc.administration.facade.biddingagency.vo.AgencyAttachmentVO;
-
 import com.epc.administration.facade.biddingagency.dto.QueryDetailIfo;
 import com.epc.administration.facade.biddingagency.vo.AgencyUserAttachmentVO;
 import com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO;
@@ -64,10 +63,10 @@ public class AgencyServiceImpl implements AgencyService {
         try {
             return Result.success(tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo) > 0);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException inserttAgencyBasicInfo : {}", e);
+            LOGGER.error("BusinessException insertBiddingAgencyBasicInfo : {}", e);
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         } catch (Exception e) {
-            LOGGER.error("BusinessException inserttAgencyBasicInfo : {}", e);
+            LOGGER.error("BusinessException insertBiddingAgencyBasicInfo : {}", e);
             return Result.error(e.getMessage());
         }
     }
@@ -124,11 +123,11 @@ public class AgencyServiceImpl implements AgencyService {
             tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException inserttAgencyDetailInfo : {}", e);
+            LOGGER.error("BusinessException insertBiddingAgencyDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
-            LOGGER.error("BusinessException inserttAgencyDetailInfo : {}", e);
+            LOGGER.error("BusinessException insertBiddingAgencyDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
@@ -193,11 +192,11 @@ public class AgencyServiceImpl implements AgencyService {
             tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException updateBiddingAgencyDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }catch (Exception e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException updateBiddingAgencyDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
@@ -215,7 +214,7 @@ public class AgencyServiceImpl implements AgencyService {
         try{
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException deleteBiddingAgencyDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -278,7 +277,7 @@ public class AgencyServiceImpl implements AgencyService {
                 agencyUserAttachmentVO.setAgencyAttachmentVOS(agencyAttachmentVOS);
                 return Result.success(agencyUserAttachmentVO);
             } catch (BusinessException e) {
-                LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
+                LOGGER.error("BusinessException queryBiddingAgencyDetailInfo : {}", e);
                 return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
             }
     }

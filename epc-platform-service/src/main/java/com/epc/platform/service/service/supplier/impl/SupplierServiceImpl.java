@@ -66,7 +66,7 @@ public class SupplierServiceImpl  implements SupplierService {
         try {
             return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException insertSupplierBasicInfo : {}", e);
+            LOGGER.error("BusinessException insertSupplierUserInfo : {}", e);
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }
     }
@@ -175,7 +175,7 @@ public class SupplierServiceImpl  implements SupplierService {
         try{
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException deleteSupplierDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }

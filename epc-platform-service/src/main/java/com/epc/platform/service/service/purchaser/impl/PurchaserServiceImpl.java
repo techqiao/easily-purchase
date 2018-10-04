@@ -1,6 +1,5 @@
 package com.epc.platform.service.service.purchaser.impl;
 import com.epc.administration.facade.purchaser.vo.AttachmentVO;
-import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;

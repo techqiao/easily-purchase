@@ -24,6 +24,9 @@ public class ClientExpertDetailIfo implements Serializable {
     @ApiModelProperty(value = "评标专家姓名")
     @NotEmpty(message = "ClientExpertDetailIfo.name.null")
     private String name;
+    @ApiModelProperty(value = "手机号")
+    @NotEmpty(message = "ClientExpertDetailIfo.cellPhone.null")
+    private String cellPhone;
     @ApiModelProperty(value = "专业")
     @NotEmpty(message = "ClientExpertDetailIfo.profession.null")
     private String profession;

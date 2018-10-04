@@ -3,16 +3,21 @@ package com.epc.web.client.controller.common;
 import com.epc.common.util.RedisShardedPoolUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 
 public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccessKeyInterceptor.class);
 
     /**
      * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，
@@ -24,32 +29,9 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-     response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, referer, login-token, X-Requested-With");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        response.setHeader("Access-Control-Max-Age", "3600");
-       response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        String header = request.getHeader("epc-token");
-        if (null != handler) {
-            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
-            if (null != s) {
-                return true;
-            }
-        }
-        PrintWriter writer = null;
-        try {
-            writer = response.getWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        writer.write("to Login please");
-        writer.flush();
         return true;
     }
+
 
     /**
      * 这个方法只会在当前这个Interceptor的preHandle方法返回值为true的时候才会执行。

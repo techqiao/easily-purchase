@@ -32,17 +32,15 @@ public class LoginController implements FacadeLoginUserService {
     IRoleLoginService iRoleLoginService;
 
     @Override
-    public Result login(@RequestBody LoginUser user) {
+    public Result<String>  login(@RequestBody LoginUser user) {
 
         Result result = iRoleLoginService.login(user);
         if (result.getData() != null) {
             LoginUser loginUser = (LoginUser) result.getData();
             String token =  UUID.randomUUID().toString().replace("-", "");
             String epc_token ="EPC_PRIVATE_"+token;
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("epc_token", token);
             RedisShardedPoolUtil.setEx(epc_token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
-            return Result.success("登陆成功", resultMap);
+            return Result.success("登陆成功", epc_token);
         }
         return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR);
     }

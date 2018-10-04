@@ -18,6 +18,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/js/**")
                 .excludePathPatterns("/images/**")
                 .excludePathPatterns("/**/login/**")
+                .excludePathPatterns("/**/roleLogin/**")
                 .excludePathPatterns("/**/register/**")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**")
                 .excludePathPatterns("/**/public/**");

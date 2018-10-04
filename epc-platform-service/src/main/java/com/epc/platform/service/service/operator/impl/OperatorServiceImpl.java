@@ -107,36 +107,52 @@ public class OperatorServiceImpl implements OperatorService {
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
+
+        TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
+        tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
+
+        TOperatorAttachmentCriteria tOperatorAttachmentCriteria = new TOperatorAttachmentCriteria();
+        tOperatorAttachmentCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
+
         try {
-            //新增详细信息
-            tOperatorDetailInfoMapper.insertSelective(detailInfo);
-            //新增带公章的授权书
-            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
-            tOperatorAttachmentMapper.insertSelective(attachment);
-            //法人手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
-            tOperatorAttachmentMapper.insertSelective(attachment);
-            //法人手持身份证反面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
-            tOperatorAttachmentMapper.insertSelective(attachment);
-            //营业执照
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
-
-            //资质证书url
-            List<OperatorAttachmentHandle> qualificationCertificateList = roleDetailInfo.getQualificationCertificateList();
-
-            if (qualificationCertificateList != null) {
-                for (OperatorAttachmentHandle operatorAttachmentHandle : qualificationCertificateList) {
-                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                    attachment.setCertificateFilePath(operatorAttachmentHandle.getCertificateFilePath());
-                    attachment.setCertificateName(operatorAttachmentHandle.getCertificateName());
-                    tOperatorAttachmentMapper.insertSelective(attachment);
-                }
+            List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria);
+            //没有就新增 未通过重填就修改
+            if(tOperatorDetailInfos.isEmpty()){
+                //新增详细信息
+                tOperatorDetailInfoMapper.insertSelective(detailInfo);
+            }else {
+                tOperatorDetailInfoMapper.updateByExampleSelective(detailInfo,tOperatorDetailInfoCriteria);
             }
+                List<TOperatorAttachment> tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(tOperatorAttachmentCriteria);
+                if(!tOperatorAttachments.isEmpty()){
+                          tOperatorAttachmentMapper.deleteByExample(tOperatorAttachmentCriteria);
+                      }
+                    //新增带公章的授权书
+                    attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+                    attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
+                    tOperatorAttachmentMapper.insertSelective(attachment);
+                    //法人手持身份证正面照片url
+                    attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                    attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
+                    tOperatorAttachmentMapper.insertSelective(attachment);
+                    //法人手持身份证反面照片url
+                    attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                    attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
+                    tOperatorAttachmentMapper.insertSelective(attachment);
+                    //营业执照
+                    attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                    attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
+                    tOperatorAttachmentMapper.insertSelective(attachment);
+                    //资质证书url
+                    List<OperatorAttachmentHandle> qualificationCertificateList = roleDetailInfo.getQualificationCertificateList();
+                    if (qualificationCertificateList != null) {
+                        for (OperatorAttachmentHandle operatorAttachmentHandle : qualificationCertificateList) {
+                            attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                            attachment.setCertificateFilePath(operatorAttachmentHandle.getCertificateFilePath());
+                            attachment.setCertificateName(operatorAttachmentHandle.getCertificateName());
+                            tOperatorAttachmentMapper.insertSelective(attachment);
+                        }
+                    }
             //执行成功更新提交状态
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
@@ -203,6 +219,7 @@ public class OperatorServiceImpl implements OperatorService {
             //营业执照
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
+            tOperatorAttachmentMapper.insertSelective(attachment);
             //资质证书url
             List<OperatorAttachmentHandle> qualificationCertificateList = roleDetailInfo.getQualificationCertificateList();
 
@@ -259,45 +276,58 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public Result<OperatorUserVO> queryOperatorDetailInfo(Long whereId) {
 
-        TOperatorBasicInfo tOperatorBasicInfo;
-        TOperatorDetailInfo tOperatorDetailInfo;
-        List<TOperatorAttachment> tOperatorAttachments;
+
         try {
-            tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(whereId);
-            if(tOperatorBasicInfo.getIsDeleted()!=0){
-                return Result.error();
-            }
+            TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(whereId);
             TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
             tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(whereId);
-            tOperatorDetailInfo = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria).get(0);
+            List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria);
+            if(tOperatorDetailInfos.isEmpty()){
+                OperatorUserVO operatorUserVO = new OperatorUserVO();
+                operatorUserVO.setId(tOperatorBasicInfo.getId());
+                operatorUserVO.setName(tOperatorBasicInfo.getName());
+                operatorUserVO.setState(tOperatorBasicInfo.getState());
+                operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
+                return Result.success(operatorUserVO) ;
+            }
+            TOperatorDetailInfo tOperatorDetailInfo = tOperatorDetailInfos.get(0);
+            OperatorUserVO operatorUserVO = new OperatorUserVO();
+            operatorUserVO.setCompanyName(tOperatorDetailInfo.getCompanyName());
+            operatorUserVO.setUniformCreditCode(tOperatorDetailInfo.getUniformCreditCode());
+            operatorUserVO.setPublicBankName(tOperatorDetailInfo.getPublicBankName());
+            operatorUserVO.setPublicBanAccountNumber(tOperatorDetailInfo.getPublicBanAccountNumber());
+
             TOperatorAttachmentCriteria tOperatorAttachmentCriteria = new TOperatorAttachmentCriteria();
             tOperatorAttachmentCriteria.createCriteria().andOperatorIdEqualTo(whereId);
-            tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(tOperatorAttachmentCriteria);
+            List<TOperatorAttachment>  tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(tOperatorAttachmentCriteria);
+            List<OperatorAttachmentVO> operatorAttachmentVOS = new ArrayList<>();
+            for (TOperatorAttachment tOperatorAttachment : tOperatorAttachments) {
+                if(tOperatorAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                    operatorUserVO.setLegalIdCardPositive(tOperatorAttachment.getCertificateFilePath());
+                }else if(tOperatorAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                    operatorUserVO.setLegalIdCardOther(tOperatorAttachment.getCertificateFilePath());
+                }else if(tOperatorAttachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+                    operatorUserVO.setBusinessLicense(tOperatorAttachment.getCertificateFilePath());
+                }else{
+                    OperatorAttachmentVO operatorAttachmentVO = new OperatorAttachmentVO();
+                    operatorAttachmentVO.setCertificateFilePath(tOperatorAttachment.getCertificateFilePath());
+                    operatorAttachmentVO.setCertificateName(tOperatorAttachment.getCertificateName());
+                    operatorAttachmentVOS.add(operatorAttachmentVO);
+                }
+            }
+            operatorUserVO.setOperatorAttachmentVOList(operatorAttachmentVOS);
+            operatorUserVO.setId(tOperatorBasicInfo.getId());
+            operatorUserVO.setCreateAt(new Date());
+            operatorUserVO.setIsDeleted(tOperatorBasicInfo.getIsDeleted());
+            operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
+            operatorUserVO.setState(tOperatorBasicInfo.getState());
+            operatorUserVO.setName(tOperatorBasicInfo.getName());
+            return Result.success(operatorUserVO);
         } catch (Exception e1) {
             LOGGER.error("BusinessException selectOperatorUserVO : {}", e1);
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
-        List<OperatorAttachmentVO> operatorAttachmentVOS = new ArrayList<>();
-        for (TOperatorAttachment tOperatorAttachment : tOperatorAttachments) {
-            OperatorAttachmentVO operatorAttachmentVO = new OperatorAttachmentVO();
-            operatorAttachmentVO.setCertificateFilePath(tOperatorAttachment.getCertificateFilePath());
-            operatorAttachmentVO.setCertificateName(tOperatorAttachment.getCertificateName());
-            operatorAttachmentVO.setCertificateType(tOperatorAttachment.getCertificateType());
-            operatorAttachmentVOS.add(operatorAttachmentVO);
-        }
-        OperatorUserVO operatorUserVO = new OperatorUserVO();
-        operatorUserVO.setOperatorAttachmentVOList(operatorAttachmentVOS);
-        operatorUserVO.setId(tOperatorBasicInfo.getId());
-        operatorUserVO.setCompanyName(tOperatorDetailInfo.getCompanyName());
-        operatorUserVO.setUniformCreditCode(tOperatorDetailInfo.getUniformCreditCode());
-        operatorUserVO.setPublicBankName(tOperatorDetailInfo.getPublicBankName());
-        operatorUserVO.setPublicBanAccountNumber(tOperatorDetailInfo.getPublicBanAccountNumber());
-        operatorUserVO.setCreateAt(new Date());
-        operatorUserVO.setIsDeleted(tOperatorBasicInfo.getIsDeleted());
-        operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
-        operatorUserVO.setState(tOperatorBasicInfo.getState());
-        operatorUserVO.setName(tOperatorBasicInfo.getName());
-        return Result.success(operatorUserVO);
+
     }
     /**
      * 查询运营商 分页展示

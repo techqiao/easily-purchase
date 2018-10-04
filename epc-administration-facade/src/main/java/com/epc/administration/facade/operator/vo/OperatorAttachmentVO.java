@@ -27,10 +27,4 @@ public class OperatorAttachmentVO implements Serializable {
      */
     @ApiModelProperty("附件对应证书名称")
     private String certificateName;
-
-    /**
-     * 附件类型
-     */
-    @ApiModelProperty("附件类型")
-    private  String certificateType;
 }

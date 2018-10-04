@@ -154,11 +154,18 @@ public class AgencyServiceImpl implements AgencyService {
         TAgencyAttachment attachment = new TAgencyAttachment();
         attachment.setUpdateAt(date);
         try {
+            List<TAgencyDetailInfo> tAgencyDetailInfos = tAgencyDetailInfoMapper.selectByExample(tAgencyDetailInfoCriteria);
+            if(tAgencyDetailInfos.isEmpty()){
+                tAgencyDetailInfoMapper.insertSelective(detailInfo);
+            }else {
+                tAgencyDetailInfoMapper.updateByExampleSelective(detailInfo,tAgencyDetailInfoCriteria);
+            }
             TAgencyAttachmentCriteria criteria = new TAgencyAttachmentCriteria();
             criteria.createCriteria().andAgencyIdEqualTo(biddingHandle.getId());
-            tAgencyDetailInfoMapper.deleteByExample(tAgencyDetailInfoCriteria);
-            tAgencyAttachmentMapper.deleteByExample(criteria);
-            tAgencyDetailInfoMapper.insertSelective(detailInfo);
+            List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectByExample(criteria);
+            if(!tAgencyAttachments.isEmpty()){
+                tAgencyAttachmentMapper.deleteByExample(criteria);
+            }
             //法人身份证反面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
             attachment.setCertificateFilePath(biddingHandle.getLegalIdCardOther());
@@ -223,25 +230,31 @@ public class AgencyServiceImpl implements AgencyService {
             try {
                 TAgencyBasicInfo tAgencyBasicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(whereId);
 
+
                 TAgencyDetailInfoCriteria criteria = new TAgencyDetailInfoCriteria();
                 criteria.createCriteria().andAgencyIdEqualTo(whereId);
+                List<TAgencyDetailInfo> tAgencyDetailInfos = tAgencyDetailInfoMapper.selectByExample(criteria);
+                if(tAgencyDetailInfos.isEmpty()){
+                    AgencyUserAttachmentVO agencyUserAttachmentVO = new AgencyUserAttachmentVO();
+                    agencyUserAttachmentVO.setName(tAgencyBasicInfo.getName());
+                    agencyUserAttachmentVO.setCellphone(tAgencyBasicInfo.getCellphone());
+                    agencyUserAttachmentVO.setState(tAgencyBasicInfo.getState());
+                    return Result.success(agencyUserAttachmentVO);
+                }
 
-                TAgencyAttachmentCriteria tAgencyAttachmentCriteria = new TAgencyAttachmentCriteria();
-                tAgencyAttachmentCriteria.createCriteria().andAgencyIdEqualTo(whereId);
-
-                List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectByExample(tAgencyAttachmentCriteria);
-
+                TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfos.get(0);
                 AgencyUserAttachmentVO agencyUserAttachmentVO = new AgencyUserAttachmentVO();
                 agencyUserAttachmentVO.setId(whereId);
-                TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfoMapper.selectByExample(criteria).get(0);
                 if(tAgencyDetailInfo!=null){
-
                     agencyUserAttachmentVO.setCompanyName(tAgencyDetailInfo.getCompanyName());
                     agencyUserAttachmentVO.setUniformCreditCode(tAgencyDetailInfo.getUniformCreditCode());
                     agencyUserAttachmentVO.setPublicBankName(tAgencyDetailInfo.getPublicBankName());
                     agencyUserAttachmentVO.setPublicBanAccountNumber(tAgencyDetailInfo.getPublicBanAccountNumber());
 
                 }
+                TAgencyAttachmentCriteria tAgencyAttachmentCriteria = new TAgencyAttachmentCriteria();
+                tAgencyAttachmentCriteria.createCriteria().andAgencyIdEqualTo(whereId);
+                List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectByExample(tAgencyAttachmentCriteria);
                 agencyUserAttachmentVO.setCreateAt(new Date());
                 agencyUserAttachmentVO.setIsDeleted(tAgencyBasicInfo.getIsDeleted());
                 agencyUserAttachmentVO.setCellphone(tAgencyBasicInfo.getCellphone());
@@ -250,6 +263,13 @@ public class AgencyServiceImpl implements AgencyService {
                 List<AgencyAttachmentVO> agencyAttachmentVOS = new ArrayList<>();
 
                 for (TAgencyAttachment tAgencyAttachment : tAgencyAttachments) {
+                    if(tAgencyAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                        agencyUserAttachmentVO.setLegalIdCardOther(tAgencyAttachment.getCertificateFilePath());
+                    }  else if (tAgencyAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                        agencyUserAttachmentVO.setLegalIdCardPositive(tAgencyAttachment.getCertificateFilePath());
+                    }   else if (tAgencyAttachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+                        agencyUserAttachmentVO.setBusinessLicense(tAgencyAttachment.getCertificateFilePath());
+                    }
                     AgencyAttachmentVO agencyAttachmentVO = new AgencyAttachmentVO();
                     agencyAttachmentVO.setCertificateFilePath(tAgencyAttachment.getCertificateFilePath());
                     agencyAttachmentVO.setCertificateName(tAgencyAttachment.getCertificateName());

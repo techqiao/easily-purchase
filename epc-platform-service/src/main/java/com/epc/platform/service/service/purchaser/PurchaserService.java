@@ -8,7 +8,6 @@ import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
 import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
-import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
 
 import java.util.List;
 

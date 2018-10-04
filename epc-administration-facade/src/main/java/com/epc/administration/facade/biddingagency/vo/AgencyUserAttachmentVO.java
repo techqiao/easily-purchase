@@ -19,5 +19,11 @@ public class AgencyUserAttachmentVO extends BiddingAgencyVO implements Serializa
 
     @ApiModelProperty("附件集合")
     private List<AgencyAttachmentVO> agencyAttachmentVOS;
+    @ApiModelProperty(value = "身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "身份证反面照片url")
+    private String legalIdCardOther;
+    @ApiModelProperty(value = "营业执照照片url")
+    private String businessLicense;
 
 }

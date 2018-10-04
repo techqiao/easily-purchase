@@ -1,6 +1,5 @@
 package com.epc.platform.service.service.purchaser.impl;
 import com.epc.administration.facade.purchaser.vo.AttachmentVO;
-
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
@@ -49,7 +48,7 @@ public class PurchaserServiceImpl implements PurchaserService {
 
 
     /**
-     * 供采购人注册
+     * 采购人注册
      * @param userBasicInfo
      * @return
      */
@@ -78,7 +77,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
     }
     /**
-     * 完善采购人资料
+     * 未通过后 重新完善采购人资料
      * @param purchaserHandle
      * @return
      */
@@ -103,32 +102,57 @@ public class PurchaserServiceImpl implements PurchaserService {
         attachment.setUpdateAt(date);
         try {
             List<TPurchaserDetailInfo> tPurchaserDetailInfos = tPurchaserDetailInfoMapper.selectByExample(tPurchaserDetailInfoCriteria);
+            //没有就新增 未通过重填就修改
             if(tPurchaserDetailInfos.isEmpty()){
                 tPurchaserDetailInfoMapper.insertSelective(tPurchaserDetailInfo);
+                //经办人(采购人员工)手持身份证正面照片url
+                attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+                attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
+                tPurchaserAttachmentMapper.insertSelective(attachment);
+                //法人身份证反面照片url
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardOther());
+                tPurchaserAttachmentMapper.insertSelective(attachment);
+                //营业执照照片url
+                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                attachment.setCertificateFilePath(purchaserHandle.getBusinessLicense());
+                tPurchaserAttachmentMapper.insertSelective(attachment);
+                //资质证书url
+                List<AttachmentHandle> attachmentHandleList = purchaserHandle.getAttachmentHandleList();
+                for (AttachmentHandle attachmentHandle : attachmentHandleList) {
+                    attachment.setCertificateName(attachmentHandle.getCertificateName());
+                    attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    tPurchaserAttachmentMapper.insertSelective(attachment);
+                }
+                //未通过重填就修改
             } else {
                 tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo, tPurchaserDetailInfoCriteria);
+                TPurchaserAttachmentCriteria tPurchaserAttachmentCriteria = new TPurchaserAttachmentCriteria();
+                tPurchaserAttachmentCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
+                //经办人(采购人员工)手持身份证正面照片url
+                attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+                attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
+                tPurchaserAttachmentMapper.updateByExample(attachment,tPurchaserAttachmentCriteria);
+                //法人身份证反面照片url
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardOther());
+                tPurchaserAttachmentMapper.updateByExample(attachment,tPurchaserAttachmentCriteria);
+                //营业执照照片url
+                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                attachment.setCertificateFilePath(purchaserHandle.getBusinessLicense());
+                tPurchaserAttachmentMapper.updateByExample(attachment,tPurchaserAttachmentCriteria);
+                //资质证书url
+                List<AttachmentHandle> attachmentHandleList = purchaserHandle.getAttachmentHandleList();
+                for (AttachmentHandle attachmentHandle : attachmentHandleList) {
+                    attachment.setCertificateName(attachmentHandle.getCertificateName());
+                    attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    tPurchaserAttachmentMapper.updateByExample(attachment,tPurchaserAttachmentCriteria);
+                }
+
             }
 
-            //经办人(采购人员工)手持身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
-            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
-            //法人身份证反面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardOther());
-            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
-            //营业执照照片url
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateFilePath(purchaserHandle.getBusinessLicense());
-            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
-            //资质证书url
-            List<AttachmentHandle> attachmentHandleList = purchaserHandle.getAttachmentHandleList();
-            for (AttachmentHandle attachmentHandle : attachmentHandleList) {
-                attachment.setCertificateName(attachmentHandle.getCertificateName());
-                attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
-                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
-            }
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
@@ -171,6 +195,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserAttachment attachment = new TPurchaserAttachment();
         attachment.setPurchaserId(purchaserHandle.getId());
         attachment.setUpdateAt(date);
+        attachment.setCreateAt(date);
         try {
             List<TPurchaserDetailInfo> tPurchaserDetailInfos = tPurchaserDetailInfoMapper.selectByExample(tPurchaserDetailInfoCriteria);
             if(tPurchaserDetailInfos.isEmpty()){
@@ -183,22 +208,22 @@ public class PurchaserServiceImpl implements PurchaserService {
             //经办人(采购人员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
-            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            tPurchaserAttachmentMapper.insertSelective(attachment);
             //法人身份证反面照片url
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardOther());
-            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            tPurchaserAttachmentMapper.insertSelective(attachment);
             //营业执照照片url
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getBusinessLicense());
-            tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+            tPurchaserAttachmentMapper.insertSelective(attachment);
             //资质证书url
             List<AttachmentHandle> attachmentHandleList = purchaserHandle.getAttachmentHandleList();
             for (AttachmentHandle attachmentHandle : attachmentHandleList) {
                 attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
                 attachment.setCertificateName(attachmentHandle.getCertificateName());
                 attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                tPurchaserAttachmentMapper.updateByPrimaryKeySelective(attachment);
+                tPurchaserAttachmentMapper.insertSelective(attachment);
             }
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
@@ -207,7 +232,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException insertSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){

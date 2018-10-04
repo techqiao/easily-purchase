@@ -9,6 +9,7 @@ import com.epc.web.client.remoteApi.bidding.moneyPay.MoneyPayClient;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
+import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,12 +36,14 @@ public class BiddingMoneyPayController extends BaseController {
     @Autowired
     MoneyPayClient moneyPayClient;
 
-    @ApiOperation(value = "获取服务费支付列表",tags = "获取服务费支付列表")
+    @ApiOperation(value = "获取保证金支付列表",tags = "获取保证金支付列表")
     @PostMapping(value = "getMoneyPayList", consumes = "application/json; charset=UTF-8")
-    public Result<List<MoneyPayVO>> getMoneyPayList(@RequestBody ClientMoneyPayDTO dto){
+    public Result<List<GuarantyListVo>> getMoneyPayList(@RequestBody ClientMoneyPayDTO dto){
         QueryMoneyPayDTO queryMoneyPayDTO=new QueryMoneyPayDTO();
         BeanUtils.copyProperties(dto,queryMoneyPayDTO);
-       return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
+      //  queryMoneyPayDTO.setOperateId(getLoginUser().getUserId());
+        queryMoneyPayDTO.setOperateId(1L);
+        return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
 
 

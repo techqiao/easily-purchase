@@ -5,6 +5,7 @@ import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
+import com.epc.web.facade.terdering.answer.vo.MonitorAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
 import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 
@@ -45,4 +46,12 @@ public interface BAnswerQuestionService {
      * @return
      */
     Result<List<WinBidVO>> getwinBids();
+
+
+    /**
+     *
+     * @param queryAnswerQuestionDTO
+     * @return
+     */
+    Result<List<MonitorAnswerQuestionVO>> getProcurementProjectAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 }

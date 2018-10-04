@@ -35,7 +35,7 @@ public class HandleProjectBasicInfo implements Serializable {
     /**
      * 投资来源
      */
-    private String sourceOfInvestment;
+    private Integer sourceOfInvestment;
     /**
      * 项目地址
      */

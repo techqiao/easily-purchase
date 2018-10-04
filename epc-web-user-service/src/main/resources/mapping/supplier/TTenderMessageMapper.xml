@@ -365,7 +365,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.supplier.TTenderMessage" id="querySupplierProject" >
+  <select resultMap="BaseResultMap" resultType="com.epc.web.service.domain.supplier.TTenderMessage" id="querySupplierProject" >
    SELECT
   ttm.*
 FROM

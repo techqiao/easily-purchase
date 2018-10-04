@@ -183,7 +183,7 @@ public class SupplierController extends BaseController implements FacadeTSupplie
      * @return
      */
     @Override
-    public Result<Map<String, Object>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
+    public Result<Map<String, Object>> querySupplierProject(@RequestBody QuerywithPageHandle querywithPageHandle) {
         PageHelper.startPage(querywithPageHandle.getPageNum(),querywithPageHandle.getPageSize());
             Result<List<TTenderMessage>> listResult = supplierService.querySupplierProject(querywithPageHandle);
         PageInfo<TTenderMessage> pageInfo = new PageInfo<>(listResult.getData());

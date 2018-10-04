@@ -233,12 +233,12 @@ public class TSupplierBasicInfoController extends BaseController {
     @PostMapping("querySupplierProject")
     public Result<Map<String, Object>> querySupplierProject(@RequestBody QueryRequest queryRequest){
         QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
-        LoginUser loginUser = new LoginUser();
+       // LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(querywithPageHandle,queryRequest);
-        if(loginUser==null){
+       /* if(loginUser==null){
             return Result.error();
-        }
-        querywithPageHandle.setId(loginUser.getUserId());
+        }*/
+        querywithPageHandle.setId(1L);
         return supplierClient.querySupplierProject(querywithPageHandle);
     }
 

@@ -8,8 +8,10 @@ import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
+import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.service.domain.supplier.TTenderMessage;
 
 import java.util.List;
 
@@ -115,6 +117,13 @@ public interface SupplierService {
      * 来匹配出符合条件的员工返回一个list：
      */
     Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName);
+
+    /**
+     * 根据登录者id查询对应的投标项目
+     * @param querywithPageHandle
+     * @return
+     */
+    Result<List<TTenderMessage>>  querySupplierProject(QuerywithPageHandle querywithPageHandle);
 
 
 }

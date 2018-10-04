@@ -1,18 +1,21 @@
 package com.epc.web.facade.supplier;
 
 import com.epc.common.Result;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
+import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -133,5 +136,12 @@ public interface FacadeTSupplierBasicInfoService {
     Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleSupplierIdAndName handleSupplierIdAndName);
 
 
+    /**
+     * 根据登录者id查询他需要看到的投标项目
+     * @param querywithPageHandle
+     * @return
+     */
+    @PostMapping(value = "querySupplierProject" ,consumes = "application/json;charset=UTF-8")
+    Result<Map<String, Object>> querySupplierProject(@RequestBody QuerywithPageHandle querywithPageHandle);
 
 }

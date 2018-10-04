@@ -974,9 +974,13 @@ public class PurchaserServiceImpl implements PurchaserService {
         //获得自己机构的id
         Long purchaseId = tPurchaserBasicInfo.getPurchaserId();
         //依据id查询所有的对应的信息t_purchaser_detail_info
+        PurchaserEmplyeeVo vo = new PurchaserEmplyeeVo();
         TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaseId);
         if (tPurchaserDetail==null) {
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(),"查询失败");
+            vo.setUserId(tPurchaserBasicInfo.getId().toString());
+            vo.setUserName(tPurchaserBasicInfo.getName());
+            vo.setCellphone(tPurchaserBasicInfo.getCellphone());
+            return Result.success("查询成功", vo);
         }
         TPurchaserBasicInfo boss =tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaseId,Const.Role.ROLE_CORPORATION);
         //获得老板name和公司name
@@ -984,7 +988,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         String bossName = boss.getName();
         String companyId = tPurchaserDetail.getId().toString();
         //拼装信息
-        PurchaserEmplyeeVo vo = new PurchaserEmplyeeVo();
         vo.setUserId(tPurchaserBasicInfo.getId().toString());
         vo.setUserName(tPurchaserBasicInfo.getName());
         vo.setCellphone(tPurchaserBasicInfo.getCellphone());

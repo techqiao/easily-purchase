@@ -1,6 +1,7 @@
 package com.epc.web.service.controller.supplier;
 
 import com.epc.common.Result;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
@@ -8,21 +9,27 @@ import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
+import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.service.controller.BaseController;
+import com.epc.web.service.domain.supplier.TTenderMessage;
 import com.epc.web.service.service.supplier.SupplierService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 供应商服务
  * @author donghuan
  */
 @RestController
-public class SupplierController implements FacadeTSupplierBasicInfoService {
+public class SupplierController extends BaseController implements FacadeTSupplierBasicInfoService {
 
     @Autowired
     private SupplierService supplierService;
@@ -171,7 +178,16 @@ public class SupplierController implements FacadeTSupplierBasicInfoService {
     }
 
 
-
-
-
+    /**
+     * 投标项目列表展示
+     * @param querywithPageHandle
+     * @return
+     */
+    @Override
+    public Result<Map<String, Object>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
+        PageHelper.startPage(querywithPageHandle.getPageNum(),querywithPageHandle.getPageSize());
+        Result<List<TTenderMessage>> listResult = supplierService.querySupplierProject(querywithPageHandle);
+        PageInfo<TTenderMessage> pageInfo = new PageInfo<>(listResult.getData());
+        return Result.success(getDataTable(pageInfo));
+    }
 }

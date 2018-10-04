@@ -16,11 +16,4 @@ public class ClientQueryBidsDTO extends PagerParam {
     @ApiModelProperty(value = "采购项目ID")
     private Long purchaseProjectId;
 
-    public Long getPurchaseProjectId() {
-        return purchaseProjectId;
-    }
-
-    public void setPurchaseProjectId(Long purchaseProjectId) {
-        this.purchaseProjectId = purchaseProjectId;
-    }
 }

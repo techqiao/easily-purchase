@@ -41,7 +41,10 @@ public class BiddingSignController {
 
         HandleSign handleSign=new HandleSign();
         BeanUtils.copyProperties(clientSign,handleSign);
-        BeanUtils.copyProperties(signBaseDTO,handleSign);
+        handleSign.setIdentitCard(clientSign.getIdCard());
+        handleSign.setCompanyName(signBaseDTO.getCompanyName());
+        handleSign.setSupplierId(signBaseDTO.getSupplierId());
+        handleSign.setProcurementProjectId(signBaseDTO.getPurchaseProjectId());
         return signClient.insertSupplierSign(handleSign);
     }
 }

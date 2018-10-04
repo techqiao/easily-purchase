@@ -9,6 +9,7 @@ import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class BiddingWinBidController implements FacadeWinBidService {
      * @return
      */
     @Override
-    public Result<TWinBidNominateVO> getTWinBidNominate(@RequestBody Long bidId){
+    public Result<TWinBidNominateVO> getTWinBidNominate(Long bidId){
         return winBidService.getTWinBidNominate(bidId);
     }
 

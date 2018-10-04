@@ -33,5 +33,5 @@ public interface TSupplierSignMapper {
 
     int updateByPrimaryKey(TSupplierSign record);
 
-    SignBaseDTO getSignPeronInfo(String name,String cellPhone);
+    SignBaseDTO getSignPeronInfo(String name, String cellPhone);
 }

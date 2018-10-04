@@ -39,6 +39,4 @@ public interface TPurchaserDetailInfoMapper {
      * @return
      */
     List<PurchaserVO> selectByPage(QueryDetailIfo queryDetailIfo);
-
-
 }

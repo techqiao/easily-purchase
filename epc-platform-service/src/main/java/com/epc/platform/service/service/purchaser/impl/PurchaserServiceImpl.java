@@ -1,10 +1,13 @@
 package com.epc.platform.service.service.purchaser.impl;
+import com.epc.administration.facade.purchaser.vo.AttachmentVO;
+import com.google.common.collect.Lists;
 
 import com.epc.administration.facade.purchaser.dto.QueryDetailIfo;
 import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
+import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.administration.facade.supplier.handle.AttachmentHandle;
 import com.epc.common.Result;
@@ -23,7 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -85,6 +90,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
         tPurchaserDetailInfo.setPurchaserId(purchaserHandle.getId());
         tPurchaserDetailInfo.setCompanyName(purchaserHandle.getCompanyName());
+        tPurchaserDetailInfo.setCompanyAddress(purchaserHandle.getCompanyAddress());
         tPurchaserDetailInfo.setUniformCreditCode(purchaserHandle.getUniformCreditCode());
         tPurchaserDetailInfo.setPublicBankName(purchaserHandle.getPublicBankName());
         tPurchaserDetailInfo.setPublicBanAccountNumber(purchaserHandle.getPublicBanAccountNumber());
@@ -97,8 +103,13 @@ public class PurchaserServiceImpl implements PurchaserService {
         attachment.setPurchaserId(purchaserHandle.getId());
         attachment.setUpdateAt(date);
         try {
-            //公司名称
-            tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo,tPurchaserDetailInfoCriteria);
+            List<TPurchaserDetailInfo> tPurchaserDetailInfos = tPurchaserDetailInfoMapper.selectByExample(tPurchaserDetailInfoCriteria);
+            if(tPurchaserDetailInfos.isEmpty()){
+                tPurchaserDetailInfoMapper.insertSelective(tPurchaserDetailInfo);
+            } else {
+                tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo, tPurchaserDetailInfoCriteria);
+            }
+
             //经办人(采购人员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
@@ -122,10 +133,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
-            tSupplierBasicInfo.setName("");
-            tSupplierBasicInfo.setCellphone("");
-            tSupplierBasicInfo.setPassword("");
-            tSupplierBasicInfo.setPurchaserId(0L);
             tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
@@ -152,21 +159,28 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserDetailInfo.setUniformCreditCode(purchaserHandle.getUniformCreditCode());
         tPurchaserDetailInfo.setPublicBankName(purchaserHandle.getPublicBankName());
         tPurchaserDetailInfo.setPublicBanAccountNumber(purchaserHandle.getPublicBanAccountNumber());
+        tPurchaserDetailInfo.setCompanyAddress(purchaserHandle.getCompanyAddress());
         tPurchaserDetailInfo.setExtendedField(purchaserHandle.getBusinessLicense());
+        tPurchaserDetailInfo.setCreateAt(date);
         tPurchaserDetailInfo.setUpdateAt(date);
+        //是否有重复数据判断条件
         TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
         tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
+        TPurchaserAttachmentCriteria tPurchaserAttachmentCriteria = new TPurchaserAttachmentCriteria();
+        tPurchaserAttachmentCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
 
         TPurchaserAttachment attachment = new TPurchaserAttachment();
         attachment.setPurchaserId(purchaserHandle.getId());
         attachment.setUpdateAt(date);
         try {
-            tPurchaserDetailInfoMapper.deleteByExample(tPurchaserDetailInfoCriteria);
-            TPurchaserAttachmentCriteria criteria = new TPurchaserAttachmentCriteria();
-            criteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
-            tPurchaserAttachmentMapper.deleteByExample(criteria);
-            //公司名称
-            tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo,tPurchaserDetailInfoCriteria);
+            List<TPurchaserDetailInfo> tPurchaserDetailInfos = tPurchaserDetailInfoMapper.selectByExample(tPurchaserDetailInfoCriteria);
+            if(tPurchaserDetailInfos.isEmpty()){
+                tPurchaserDetailInfoMapper.insertSelective(tPurchaserDetailInfo);
+            }else {
+               //有重复数据就删除历史附件信息和修改详情信息
+                tPurchaserAttachmentMapper.deleteByExample(tPurchaserAttachmentCriteria);
+                tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo,tPurchaserDetailInfoCriteria);
+            }
             //经办人(采购人员工)手持身份证正面照片url
             attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
             attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
@@ -190,18 +204,16 @@ public class PurchaserServiceImpl implements PurchaserService {
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
-            tSupplierBasicInfo.setName("");
-            tSupplierBasicInfo.setCellphone("");
-            tSupplierBasicInfo.setPassword("");
-            tSupplierBasicInfo.setPurchaserId(0L);
             tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
             LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -229,10 +241,57 @@ public class PurchaserServiceImpl implements PurchaserService {
      * @return
      */
     @Override
-    public Result<TPurchaserDetailInfo> queryPurchaserDetailInfo(Long id) {
+    public Result<PurchaserDetailVO> queryPurchaserDetailInfo(Long id) {
         try {
-            TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectByPrimaryKey(id);
-            return Result.success(tPurchaserDetailInfo);
+            TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(id);
+
+            TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
+            tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(tPurchaserBasicInfo.getId());
+            List<TPurchaserDetailInfo> tPurchaserDetailInfos = tPurchaserDetailInfoMapper.selectByExample(tPurchaserDetailInfoCriteria);
+            if(tPurchaserDetailInfos.isEmpty()){
+                PurchaserDetailVO purchaserDetailVO = new PurchaserDetailVO();
+                purchaserDetailVO.setName(tPurchaserBasicInfo.getName());
+                purchaserDetailVO.setState(tPurchaserBasicInfo.getState());
+                purchaserDetailVO.setCellphone(tPurchaserBasicInfo.getCellphone());
+                return Result.success(purchaserDetailVO);
+            }
+            TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfos.get(0);
+            PurchaserDetailVO  purchaserDetailVO = new PurchaserDetailVO();
+            purchaserDetailVO.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
+
+            purchaserDetailVO.setCompanyName(tPurchaserDetailInfo.getCompanyName());
+            purchaserDetailVO.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
+            purchaserDetailVO.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
+            purchaserDetailVO.setPublicBanAccountNumber(tPurchaserDetailInfo.getPublicBanAccountNumber());
+
+            purchaserDetailVO.setCreateAt(tPurchaserBasicInfo.getCreateAt());
+            purchaserDetailVO.setIsDeleted(tPurchaserBasicInfo.getIsDeleted());
+            purchaserDetailVO.setCellphone(tPurchaserBasicInfo.getCellphone());
+            purchaserDetailVO.setState(tPurchaserBasicInfo.getState());
+            purchaserDetailVO.setName(tPurchaserBasicInfo.getName());
+
+            TPurchaserAttachmentCriteria tPurchaserAttachmentCriteria = new TPurchaserAttachmentCriteria();
+            tPurchaserAttachmentCriteria.createCriteria().andPurchaserIdEqualTo(id);
+            List<TPurchaserAttachment> tPurchaserAttachments = tPurchaserAttachmentMapper.selectByExample(tPurchaserAttachmentCriteria);
+
+            List<AttachmentVO> attachmentVOS = new ArrayList<>();
+            for (TPurchaserAttachment tPurchaserAttachment : tPurchaserAttachments) {
+                if(tPurchaserAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                    purchaserDetailVO.setLegalIdCardPositive(tPurchaserAttachment.getCertificateFilePath());
+
+                }    else if (tPurchaserAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                    purchaserDetailVO.setLegalIdCardOther(tPurchaserAttachment.getCertificateFilePath());
+                } else if (tPurchaserAttachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())) {
+                    purchaserDetailVO.setBusinessLicense(tPurchaserAttachment.getCertificateFilePath());
+                }else{
+                    AttachmentVO attachmentVO = new AttachmentVO();
+                    attachmentVO.setCertificateName(tPurchaserAttachment.getCertificateName());
+                    attachmentVO.setCertificateFilePath(tPurchaserAttachment.getCertificateFilePath());
+                    attachmentVOS.add(attachmentVO);
+                }
+            }
+            purchaserDetailVO.setAttachmentVOS(attachmentVOS);
+            return Result.success(purchaserDetailVO);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException deleteByPrimaryKey : {}", e);
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);

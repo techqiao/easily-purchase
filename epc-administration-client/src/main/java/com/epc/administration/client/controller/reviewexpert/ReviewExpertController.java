@@ -13,6 +13,7 @@ import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
+import com.epc.administration.facade.reviewexpert.vo.ExpertDetailVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,7 +69,7 @@ class ReviewExpertController extends BaseController {
     }
     @ApiOperation(value = "评审专家查询资料",notes = "评审专家查询资料")
     @GetMapping(value = "queryReviewExpertDetailInfo")
-    public Result queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId) {
+    public Result<ExpertDetailVO> queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId) {
         return reviewExpertClient.queryReviewExpertDetailInfo(whereId);
     }
     @ApiOperation(value = "查询所有评审专家分页展示",notes = "查询所有评审专家分页展示")

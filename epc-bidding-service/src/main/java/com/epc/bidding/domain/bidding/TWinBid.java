@@ -33,6 +33,8 @@ public class TWinBid implements Serializable {
 
     private Long operateId;
 
+    private String processStatus;
+
     private Date createAt;
 
     private Integer isDeleted;
@@ -151,6 +153,14 @@ public class TWinBid implements Serializable {
         this.operateId = operateId;
     }
 
+    public String getProcessStatus() {
+        return processStatus;
+    }
+
+    public void setProcessStatus(String processStatus) {
+        this.processStatus = processStatus == null ? null : processStatus.trim();
+    }
+
     public Date getCreateAt() {
         return createAt;
     }
@@ -187,6 +197,7 @@ public class TWinBid implements Serializable {
         sb.append(", filePath=").append(filePath);
         sb.append(", supplierId=").append(supplierId);
         sb.append(", operateId=").append(operateId);
+        sb.append(", processStatus=").append(processStatus);
         sb.append(", createAt=").append(createAt);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append("]");

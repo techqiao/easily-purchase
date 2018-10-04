@@ -32,6 +32,9 @@ public class ClientPurchaserUserDetailInfo implements Serializable {
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.companyName.null")
     private String companyName;
 
+    @ApiModelProperty(value = "公司地址")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
+    private String companyAddress;
     /**
      *统一信用代码
      */

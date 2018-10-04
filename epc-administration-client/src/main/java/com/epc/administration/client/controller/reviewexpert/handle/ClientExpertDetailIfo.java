@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +28,14 @@ public class ClientExpertDetailIfo implements Serializable {
     @NotEmpty(message = "ClientExpertDetailIfo.profession.null")
     private String profession;
     @ApiModelProperty(value = "职称")
+    @NotEmpty(message = "ClientExpertDetailIfo.positional.null")
+    private String positional;
+    @ApiModelProperty(value = "级别")
     @NotEmpty(message = "ClientExpertDetailIfo.level.null")
     private String level;
+    @ApiModelProperty(value = "从业年限")
+    @NotEmpty(message = "ClientExpertDetailIfo.workingYears.null")
+    private Integer workingYears;
     @ApiModelProperty(value = "通知时间")
     @NotEmpty(message = "ClientExpertDetailIfo.circularDt.null")
     private Date circularDt;
@@ -46,19 +51,13 @@ public class ClientExpertDetailIfo implements Serializable {
     @ApiModelProperty(value = "法人身份证反面照片url")
     @NotEmpty(message = "ClientExpertDetailIfo.legalIdCardOther.null")
     private String legalIdCardOther;
-    @ApiModelProperty(value = "统一信用代码")
-    @NotEmpty(message = "ClientExpertDetailIfo.uniformCreditCode.null")
-    private String uniformCreditCode;
+
     @ApiModelProperty(value = "公司名称")
     @NotEmpty(message = "ClientExpertDetailIfo.companyName.null")
     private String companyName;
-    @ApiModelProperty(value = "对公银行名称")
-    @NotEmpty(message = "ClientExpertDetailIfo.publicBankName.null")
-    private String publicBankName;
-    @ApiModelProperty(value = "对公银行账号")
-    @NotEmpty(message = "ClientExpertDetailIfo.publicBanAccountNumber.null")
-    private String publicBanAccountNumber;
-
+    @ApiModelProperty(value = "公司地址")
+    @NotEmpty(message = "ClientExpertDetailIfo.companyAddress.null")
+    private String companyAddress;
     @ApiModelProperty(value = "资质证书url")
     @NotEmpty(message = "ClientExpertDetailIfo.qualificationCertificateList.null")
     private List<ClientAttachmentHandle> attachmentHandleList;

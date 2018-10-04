@@ -73,9 +73,8 @@ public interface SysAdminUserService {
     /**
      * 修改密码
      * @param userHandle
-     * @param password
      */
-    void updatePassword(UserHandle userHandle, String password);
+    void updatePassword(UserHandle userHandle);
 
 
     /**

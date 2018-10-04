@@ -79,6 +79,7 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
+
         TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
         Date date = new Date();
         detailInfo.setAgencyId(biddingHandle.getId());
@@ -225,8 +226,6 @@ public class AgencyServiceImpl implements AgencyService {
                 TAgencyDetailInfoCriteria criteria = new TAgencyDetailInfoCriteria();
                 criteria.createCriteria().andAgencyIdEqualTo(whereId);
 
-
-
                 TAgencyAttachmentCriteria tAgencyAttachmentCriteria = new TAgencyAttachmentCriteria();
                 tAgencyAttachmentCriteria.createCriteria().andAgencyIdEqualTo(whereId);
 
@@ -236,6 +235,7 @@ public class AgencyServiceImpl implements AgencyService {
                 agencyUserAttachmentVO.setId(whereId);
                 TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfoMapper.selectByExample(criteria).get(0);
                 if(tAgencyDetailInfo!=null){
+
                     agencyUserAttachmentVO.setCompanyName(tAgencyDetailInfo.getCompanyName());
                     agencyUserAttachmentVO.setUniformCreditCode(tAgencyDetailInfo.getUniformCreditCode());
                     agencyUserAttachmentVO.setPublicBankName(tAgencyDetailInfo.getPublicBankName());
@@ -253,7 +253,6 @@ public class AgencyServiceImpl implements AgencyService {
                     AgencyAttachmentVO agencyAttachmentVO = new AgencyAttachmentVO();
                     agencyAttachmentVO.setCertificateFilePath(tAgencyAttachment.getCertificateFilePath());
                     agencyAttachmentVO.setCertificateName(tAgencyAttachment.getCertificateName());
-                    agencyAttachmentVO.setCertificateType(tAgencyAttachment.getCertificateType());
                     agencyAttachmentVOS.add(agencyAttachmentVO);
                 }
                 agencyUserAttachmentVO.setAgencyAttachmentVOS(agencyAttachmentVOS);

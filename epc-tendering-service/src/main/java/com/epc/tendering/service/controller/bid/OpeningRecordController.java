@@ -6,6 +6,8 @@ import com.epc.web.facade.terdering.bid.FacadeOpeningRecordService;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
 import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,12 +23,12 @@ public class OpeningRecordController implements FacadeOpeningRecordService {
     private OpeningRecordService openingRecordService;
 
     @Override
-    public Result<Boolean> insertOpeningRecord(HandleOpeningRecord handleOpeningRecord) {
+    public Result<Boolean> insertOpeningRecord(@RequestBody HandleOpeningRecord handleOpeningRecord) {
         return openingRecordService.insertOpeningRecord(handleOpeningRecord);
     }
 
     @Override
-    public Result<List<OpeningRecordVO>> getOpeningRecordList(Long purchaseProjectId) {
+    public Result<List<OpeningRecordVO>> getOpeningRecordList(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId) {
         return openingRecordService.getOpeningRecordList(purchaseProjectId);
     }
 }

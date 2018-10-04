@@ -30,6 +30,4 @@ public interface TPretrialMessageMapper {
     int updateByPrimaryKeySelective(TPretrialMessage record);
 
     int updateByPrimaryKey(TPretrialMessage record);
-
-
 }

@@ -85,6 +85,7 @@ public class SupplierServiceImpl  implements SupplierService {
         tSupplierDetailInfo.setCompanyName(supplierHandle.getCompanyName());
         tSupplierDetailInfo.setUniformCreditCode(supplierHandle.getUniformCreditCode());
         tSupplierDetailInfo.setPublicBankName(supplierHandle.getPublicBankName());
+        tSupplierDetailInfo.setCompanyAddress(supplierHandle.getCompanyAddress());
         tSupplierDetailInfo.setPublicBanAccountNumber(supplierHandle.getPublicBanAccountNumber());
         Date date = new Date();
         tSupplierDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -212,11 +213,20 @@ public class SupplierServiceImpl  implements SupplierService {
 
             List<AttachmentVO> attachmentVOS = new ArrayList<>();
             for (TSupplierAttachment tSupplierAttachment : tSupplierAttachments) {
-                AttachmentVO attachmentVO = new AttachmentVO();
-                attachmentVO.setCertificateType(tSupplierAttachment.getCertificateType());
-                attachmentVO.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
-                attachmentVO.setCertificateName(tSupplierAttachment.getCertificateName());
-                attachmentVOS.add(attachmentVO);
+                if(tSupplierAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                    supplierAttachmentVO.setLegalIdCardPositive(tSupplierAttachment.getCertificateFilePath());
+                }else if(tSupplierAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                    supplierAttachmentVO.setLegalIdCardOther(tSupplierAttachment.getCertificateFilePath());
+                }else if (tSupplierAttachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+                    tSupplierAttachment.setCertificateType(tSupplierAttachment.getCertificateType());
+
+                }else {
+                    AttachmentVO attachmentVO = new AttachmentVO();
+                    attachmentVO.setCertificateType(tSupplierAttachment.getCertificateType());
+                    attachmentVO.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
+                    attachmentVO.setCertificateName(tSupplierAttachment.getCertificateName());
+                    attachmentVOS.add(attachmentVO);
+                }
             }
             supplierAttachmentVO.setAttachmentVOList(attachmentVOS);
             return Result.success(supplierAttachmentVO);

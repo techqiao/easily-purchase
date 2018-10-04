@@ -32,7 +32,7 @@ public class BiddingFileUploadController extends BaseController {
     public Result<Boolean> updatePretrialFile(ClientHandleFileUpload clientHandleFileUpload) {
         HandlePretriaFile handlePretriaFile=new HandlePretriaFile();
         BeanUtils.copyProperties(clientHandleFileUpload,handlePretriaFile);
-//        handlePretriaFile.setOperateId(getLoginUser().getUserId());
+        handlePretriaFile.setOperateId(getLoginUser().getUserId());
         handlePretriaFile.setOperateName(getLoginUser().getName());
         return biddingClient.updatePretrialFile(handlePretriaFile);
     }

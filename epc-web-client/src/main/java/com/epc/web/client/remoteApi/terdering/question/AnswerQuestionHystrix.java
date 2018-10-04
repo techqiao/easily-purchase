@@ -28,10 +28,6 @@ public class AnswerQuestionHystrix implements FacadeAnswerQuestionService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result selectAnswerQuestion(AnswerQuestionHandle questionHandle) {
-        return Result.hystrixError();
-    }
 
     @Override
     public Result<List<PublicityVO>> getPublicityListOfficialNetwork(QueryPublicityDTO QueryPublicityDTO) {

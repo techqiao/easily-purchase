@@ -36,15 +36,6 @@ public class BAnswerQuestionController implements FacadeAnswerQuestionService {
         return bAnswerQuestionService.replyQuestion(handleReplyQuestion);
     }
 
-    /**
-     * 澄清公式
-     * @param questionHandle
-     * @return
-     */
-    @Override
-    public Result selectAnswerQuestion(AnswerQuestionHandle questionHandle) {
-        return bAnswerQuestionService.selectAnswerQuestion(questionHandle);
-    }
 
     @Override
     public Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO) {

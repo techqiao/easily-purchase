@@ -36,13 +36,6 @@ public interface FacadeAnswerQuestionService {
     @PostMapping(value = "replyQuestion", consumes = "application/json; charset=UTF-8")
     Result<Boolean> replyQuestion(@RequestBody HandleReplyQuestion handleReplyQuestion);
 
-    /**
-     * 澄清公式
-     * @return
-     */
-    @PostMapping(value ="selectAnswerQuestion",consumes = "application/json; charset=UTF-8" )
-    Result selectAnswerQuestion(@RequestBody AnswerQuestionHandle questionHandle);
-
 
     /**
      * 澄清公示

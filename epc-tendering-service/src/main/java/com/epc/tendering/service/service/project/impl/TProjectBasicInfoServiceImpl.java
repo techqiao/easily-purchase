@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         pojo.setUpdateAt(new Date());
         try {
             if(pojo.getId() == null){
+                pojo.setTotalProjectInvestment(new BigDecimal(handleProjectBasicInfo.getTotalProjectInvestment()));
                 pojo.setProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                 return Result.success(tProjectBasicInfoMapper.insertSelective(pojo) > 0);
             }else {

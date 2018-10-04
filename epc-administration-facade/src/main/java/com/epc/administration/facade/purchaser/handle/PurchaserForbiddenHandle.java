@@ -15,7 +15,13 @@ public class PurchaserForbiddenHandle implements Serializable {
 
     private static final long serialVersionUID = 1694713788498403082L;
 
+    /**
+     * 主键id
+     */
     private Long id;
 
+    /**
+     * 使用锁定 0 启用 1 锁定
+     */
     private Integer isForbidden;
 }

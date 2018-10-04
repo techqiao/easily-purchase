@@ -67,6 +67,7 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException insertSupplierUserInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }
     }
@@ -176,6 +177,7 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e){
             LOGGER.error("BusinessException deleteSupplierDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -198,6 +200,7 @@ public class SupplierServiceImpl  implements SupplierService {
         supplierAttachmentVO.setState(tSupplierBasicInfo.getState());
         supplierAttachmentVO.setName(tSupplierBasicInfo.getName());
         supplierAttachmentVO.setCreateAt(tSupplierBasicInfo.getCreateAt());
+        //如果没有完善信息
         if(tSupplierBasicInfo.getState()!=0){
             TSupplierDetailInfoCriteria criteria = new TSupplierDetailInfoCriteria();
             criteria.createCriteria().andSupplierIdEqualTo(id);

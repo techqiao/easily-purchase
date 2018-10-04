@@ -11,7 +11,13 @@ import lombok.Data;
 @Data
 public class ExamineSupplierHandle {
 
+    /**
+     * 供应商用户id
+     */
     private Long supplierId;
 
+    /**
+     * 供应商用户状态
+     */
     private int state;
 }

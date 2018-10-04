@@ -6,7 +6,6 @@ import com.epc.common.Result;
 import com.epc.common.util.Tree;
 import com.epc.platform.service.domain.admin.SysAdminDept;
 import com.epc.platform.service.service.admin.SysAdminDeptService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

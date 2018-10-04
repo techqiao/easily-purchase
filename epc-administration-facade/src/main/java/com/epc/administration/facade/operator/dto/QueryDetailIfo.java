@@ -2,9 +2,7 @@ package com.epc.administration.facade.operator.dto;
 
 import com.epc.common.QueryRequest;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -15,7 +13,13 @@ import java.io.Serializable;
 @Data
 public class QueryDetailIfo extends QueryRequest implements Serializable {
     private static final long serialVersionUID = -3855856242263856687L;
+    /**
+     * 条件
+     */
     private String where;
+    /**
+     * 状态
+     */
     private Integer status;
 
 

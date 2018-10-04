@@ -1,12 +1,12 @@
 package com.epc.web.facade.terdering.answer;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
+import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,12 +36,6 @@ public interface FacadeAnswerQuestionService {
     @PostMapping(value = "replyQuestion", consumes = "application/json; charset=UTF-8")
     Result<Boolean> replyQuestion(@RequestBody HandleReplyQuestion handleReplyQuestion);
 
-    /**
-     * 澄清公式
-     * @return
-     */
-    @PostMapping(value ="selectAnswerQuestion",consumes = "application/json; charset=UTF-8" )
-    Result selectAnswerQuestion(@RequestBody AnswerQuestionHandle questionHandle);
 
 
     /**
@@ -51,4 +45,11 @@ public interface FacadeAnswerQuestionService {
      */
     @PostMapping(value ="getPublicityListOfficialNetwork",consumes = "application/json; charset=UTF-8" )
     Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO);
+
+    /**
+     * 中标公示
+     * @return
+     */
+    @GetMapping(value ="getwinBids" )
+    Result<List<WinBidVO>> getwinBids();
 }

@@ -20,6 +20,11 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="BaseResultMap" type="com.epc.web.facade.terdering.answer.vo.WinBidVO" >
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="supplier_name" property="supplierName" jdbcType="BIGINT" />
+    <result column="bid_name" property="bidName" jdbcType="VARCHAR"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -411,5 +416,10 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+  </select>
+  <select resultMap="selectMap" parameterType="com.epc.web.facade.terdering.answer.vo.WinBidVO" id="selectBySuppilerId" >
+   SELECT w.bid_name,w.create_at,s.company_name
+    FROM t_win_bid w ,t_supplier_detail_info s
+    WHERE w.supplier_id=s.supplier_id
   </select>
 </mapper>

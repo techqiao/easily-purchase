@@ -3,13 +3,14 @@
 <mapper namespace="com.epc.bidding.mapper.bidding.BMonitoringFileMapper" >
   <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BMonitoringFile" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="file_type" property="fileType" jdbcType="VARCHAR" />
     <result column="file_id" property="fileId" jdbcType="BIGINT" />
     <result column="file_name" property="fileName" jdbcType="VARCHAR" />
     <result column="file_path" property="filePath" jdbcType="VARCHAR" />
     <result column="operate_type" property="operateType" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="operater" property="operater" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, file_type, file_id, file_name, file_path, operate_type, operate_id, operator, 
-    create_at, update_at, is_deleted
+    id, project_id, file_type, file_id, file_name, file_path, operate_type, operate_id, 
+    operater, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BMonitoringFileCriteria" >
     select
@@ -110,14 +111,14 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_monitoring_file (file_type, file_id, file_name, 
-      file_path, operate_type, operate_id, 
-      operator, create_at, update_at, 
-      is_deleted)
-    values (#{fileType,jdbcType=VARCHAR}, #{fileId,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, 
-      #{filePath,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, 
-      #{operator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+    insert into b_monitoring_file (project_id, file_type, file_id, 
+      file_name, file_path, operate_type, 
+      operate_id, operater, create_at, 
+      update_at, is_deleted)
+    values (#{projectId,jdbcType=BIGINT}, #{fileType,jdbcType=VARCHAR}, #{fileId,jdbcType=BIGINT}, 
+      #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{operater,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BMonitoringFile" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -125,6 +126,9 @@
     </selectKey>
     insert into b_monitoring_file
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
       <if test="fileType != null" >
         file_type,
       </if>
@@ -143,8 +147,8 @@
       <if test="operateId != null" >
         operate_id,
       </if>
-      <if test="operator != null" >
-        operator,
+      <if test="operater != null" >
+        operater,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -157,6 +161,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=BIGINT},
+      </if>
       <if test="fileType != null" >
         #{fileType,jdbcType=VARCHAR},
       </if>
@@ -175,8 +182,8 @@
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="operator != null" >
-        #{operator,jdbcType=VARCHAR},
+      <if test="operater != null" >
+        #{operater,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -201,6 +208,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=BIGINT},
+      </if>
       <if test="record.fileType != null" >
         file_type = #{record.fileType,jdbcType=VARCHAR},
       </if>
@@ -219,8 +229,8 @@
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
-      <if test="record.operator != null" >
-        operator = #{record.operator,jdbcType=VARCHAR},
+      <if test="record.operater != null" >
+        operater = #{record.operater,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -239,13 +249,14 @@
   <update id="updateByExample" parameterType="map" >
     update b_monitoring_file
     set id = #{record.id,jdbcType=BIGINT},
+      project_id = #{record.projectId,jdbcType=BIGINT},
       file_type = #{record.fileType,jdbcType=VARCHAR},
       file_id = #{record.fileId,jdbcType=BIGINT},
       file_name = #{record.fileName,jdbcType=VARCHAR},
       file_path = #{record.filePath,jdbcType=VARCHAR},
       operate_type = #{record.operateType,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
-      operator = #{record.operator,jdbcType=VARCHAR},
+      operater = #{record.operater,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -256,6 +267,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BMonitoringFile" >
     update b_monitoring_file
     <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=BIGINT},
+      </if>
       <if test="fileType != null" >
         file_type = #{fileType,jdbcType=VARCHAR},
       </if>
@@ -274,8 +288,8 @@
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=VARCHAR},
+      <if test="operater != null" >
+        operater = #{operater,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -291,13 +305,14 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BMonitoringFile" >
     update b_monitoring_file
-    set file_type = #{fileType,jdbcType=VARCHAR},
+    set project_id = #{projectId,jdbcType=BIGINT},
+      file_type = #{fileType,jdbcType=VARCHAR},
       file_id = #{fileId,jdbcType=BIGINT},
       file_name = #{fileName,jdbcType=VARCHAR},
       file_path = #{filePath,jdbcType=VARCHAR},
       operate_type = #{operateType,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
-      operator = #{operator,jdbcType=VARCHAR},
+      operater = #{operater,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}

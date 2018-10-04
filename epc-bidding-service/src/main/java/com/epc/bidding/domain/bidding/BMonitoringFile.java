@@ -6,6 +6,8 @@ import java.util.Date;
 public class BMonitoringFile implements Serializable {
     private Long id;
 
+    private Long projectId;
+
     private String fileType;
 
     private Long fileId;
@@ -18,7 +20,7 @@ public class BMonitoringFile implements Serializable {
 
     private Long operateId;
 
-    private String operator;
+    private String operater;
 
     private Date createAt;
 
@@ -34,6 +36,14 @@ public class BMonitoringFile implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public String getFileType() {
@@ -84,12 +94,12 @@ public class BMonitoringFile implements Serializable {
         this.operateId = operateId;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getOperater() {
+        return operater;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
+    public void setOperater(String operater) {
+        this.operater = operater == null ? null : operater.trim();
     }
 
     public Date getCreateAt() {
@@ -123,13 +133,14 @@ public class BMonitoringFile implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", projectId=").append(projectId);
         sb.append(", fileType=").append(fileType);
         sb.append(", fileId=").append(fileId);
         sb.append(", fileName=").append(fileName);
         sb.append(", filePath=").append(filePath);
         sb.append(", operateType=").append(operateType);
         sb.append(", operateId=").append(operateId);
-        sb.append(", operator=").append(operator);
+        sb.append(", operater=").append(operater);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

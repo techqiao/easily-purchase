@@ -5,6 +5,7 @@ import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
+import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public interface FacadeMoneyPayService {
      * @return
      */
     @PostMapping(value = "getMoneyPayList", consumes = "application/json; charset=UTF-8")
-    Result<List<MoneyPayVO>> getMoneyPayList(@RequestBody QueryMoneyPayDTO dto);
+    Result<List<GuarantyListVo>> getMoneyPayList(@RequestBody QueryMoneyPayDTO dto);
     /**
      * 查询是否标段支付服务费
      * @param dto

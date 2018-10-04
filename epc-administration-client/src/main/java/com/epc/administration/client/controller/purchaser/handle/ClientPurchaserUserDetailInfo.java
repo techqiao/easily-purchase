@@ -25,6 +25,13 @@ public class ClientPurchaserUserDetailInfo implements Serializable {
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.id.null")
     private Long id;
 
+    @ApiModelProperty(value = "用户名")
+    @NotEmpty(message = "ClientPurchaserUserDetailInfo.name.null")
+    private String name;
+
+    @ApiModelProperty(value = "手机号")
+    @NotEmpty(message = "ClientPurchaserUserDetailInfo.cellPhone.null")
+    private String cellPhone;
     /**
      * 公司名称
      */

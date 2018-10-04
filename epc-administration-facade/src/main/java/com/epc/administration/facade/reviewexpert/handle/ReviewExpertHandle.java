@@ -17,6 +17,8 @@ public class ReviewExpertHandle implements Serializable {
     private Long id;
     @ApiModelProperty(value = "评标专家姓名")
     private String name;
+    @ApiModelProperty(value = "手机号")
+    private String cellPhone;
     @ApiModelProperty(value = "专业")
     private String profession;
     @ApiModelProperty(value = "职称")

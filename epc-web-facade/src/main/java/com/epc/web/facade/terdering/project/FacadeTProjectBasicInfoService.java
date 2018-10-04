@@ -4,13 +4,12 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
 import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : 项目接口
@@ -43,7 +42,7 @@ public interface FacadeTProjectBasicInfoService {
      * @return
      */
     @PostMapping(value = "getProjectList", consumes = "application/json; charset=UTF-8")
-    Result<List<ProjectBasicInfoVO>> getProjectList(@RequestBody QueryProjectInfoDTO queryProjectInfoDTO);
+    Result<Map<String, Object>> getProjectList(@RequestBody QueryProjectInfoDTO queryProjectInfoDTO);
 
 
 }

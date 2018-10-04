@@ -39,27 +39,38 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
 
         BMonitoringFileCriteria criteria=new BMonitoringFileCriteria();
         BMonitoringFileCriteria.Criteria cubCriteria=criteria.createCriteria();
-        if(StringUtils.isNotEmpty(dto.getFileType())){
-            cubCriteria.andFileTypeLike("%"+dto.getFileType()+"%");
-        }
-        if(StringUtils.isNotEmpty(dto.getFileName())){
-            cubCriteria.andFileNameLike("%"+dto.getFileName()+"%");
+        if(dto.getProjectId()>0){
+            cubCriteria.andProjectIdEqualTo(dto.getProjectId());
         }
 
-        if(StringUtils.isNotEmpty(dto.getOperateType())){
-            cubCriteria.andOperateTypeEqualTo(dto.getOperateType());
-        }
-        if(StringUtils.isNotEmpty(dto.getOperator())){
-            cubCriteria.andOperatorLike("%"+dto.getOperator()+"%");
-        }
-        if(dto.getStartDate()!=null && dto.getEndDate()!=null){
-            cubCriteria.andCreateAtBetween(dto.getStartDate(),dto.getEndDate());
-        }
         List<MonitorFileVO> voList= new ArrayList<>();
         List<BMonitoringFile> result=bMonitoringFileMapper.selectByExampleWithRowbounds(criteria,dto.getRowBounds());
         for(BMonitoringFile entity:result){
             MonitorFileVO vo =new MonitorFileVO();
             BeanUtils.copyProperties(entity,vo);
+            switch (entity.getFileType()){
+                case "pretrialFile":
+                    vo.setFileType("资格预审文件");
+                    break;
+                case "biddingDocuments":
+                    vo.setFileType("招标文件");
+                    break;
+                case "invitation":
+                    vo.setFileType("投标邀请书");
+                    break;
+                case "tenderDocuments":
+                    vo.setFileType("投标文件");
+                case "evaluationRepost":
+                    vo.setFileType("评标报告");
+                    break;
+                case "winBid":
+                    vo.setFileType("中标通知书");
+                    break;
+                case "contract":
+                    vo.setFileType("合同");
+                    break;
+                default:vo.setFileType("");
+            }
             voList.add(vo);
         }
         return Result.success(voList);

@@ -99,6 +99,8 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from t_operator_basic_info
     where id = #{id,jdbcType=BIGINT}
+    and is_deleted=0
+    and  is_forbidden=0
   </delete>
   <delete id="deleteByExample" parameterType="com.epc.platform.service.domain.operator.TOperatorBasicInfoCriteria" >
     delete from t_operator_basic_info

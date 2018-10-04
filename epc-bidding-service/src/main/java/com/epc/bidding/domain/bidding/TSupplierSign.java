@@ -18,6 +18,8 @@ public class TSupplierSign implements Serializable {
 
     private String personName;
 
+    private String identitCard;
+
     private String cellphone;
 
     private Date createAt;
@@ -84,6 +86,14 @@ public class TSupplierSign implements Serializable {
         this.personName = personName == null ? null : personName.trim();
     }
 
+    public String getIdentitCard() {
+        return identitCard;
+    }
+
+    public void setIdentitCard(String identitCard) {
+        this.identitCard = identitCard == null ? null : identitCard.trim();
+    }
+
     public String getCellphone() {
         return cellphone;
     }
@@ -129,6 +139,7 @@ public class TSupplierSign implements Serializable {
         sb.append(", companyId=").append(companyId);
         sb.append(", companyName=").append(companyName);
         sb.append(", personName=").append(personName);
+        sb.append(", identitCard=").append(identitCard);
         sb.append(", cellphone=").append(cellphone);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

@@ -93,10 +93,9 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
                 subCriteria.andTypeEqualTo(sysAdminResource.getType());
             }
             criteria.setOrderByClause("id desc");
-
             return this.sysAdminResourceMapper.selectByExample(criteria);
         } catch (NumberFormatException e) {
-            LOGGER.error("error", e);
+            LOGGER.error("findAllResources", e);
             return new ArrayList<>();
         }
     }

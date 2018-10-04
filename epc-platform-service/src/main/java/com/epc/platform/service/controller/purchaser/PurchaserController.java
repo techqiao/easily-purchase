@@ -10,7 +10,6 @@ import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.administration.facade.purchaser.vo.PurchaserVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
-import com.epc.platform.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.platform.service.service.purchaser.PurchaserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -105,7 +104,6 @@ public class PurchaserController extends BaseController implements PurchaserUser
     public Result examinePurchaser(@RequestBody ExaminePurchaserHandle examinePurchaserHandle) {
         return purchaserService.examinePurchaser(examinePurchaserHandle);
     }
-
 
     /**
      * 启用锁定采购人

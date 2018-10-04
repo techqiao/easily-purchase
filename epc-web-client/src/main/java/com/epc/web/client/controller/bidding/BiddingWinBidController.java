@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "中标通知书服务",tags = "获取中标通知书列表")
+@Api(value = "中标通知书服务",tags = "中标通知书")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
@@ -43,7 +43,7 @@ public class BiddingWinBidController {
      * @param bidId
      * @return
      */
-    @PostMapping(value = "/getTWinBidNominate", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "/getTWinBidNominate")
     public  Result<TWinBidNominateVO> getTWinBidNominate(@RequestParam("bidId") Long bidId){
         return  winBidClient.getTWinBidNominate(bidId);
     }

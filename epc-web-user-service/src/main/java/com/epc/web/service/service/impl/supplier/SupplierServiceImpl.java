@@ -1,7 +1,6 @@
 package com.epc.web.service.service.impl.supplier;
 
 import com.epc.common.Result;
-import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
@@ -13,12 +12,11 @@ import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
+import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.service.domain.supplier.*;
-import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
-import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
-import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
+import com.epc.web.service.mapper.supplier.*;
 import com.epc.web.service.service.supplier.SupplierService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -52,7 +50,8 @@ public class SupplierServiceImpl implements SupplierService {
     private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired
     private TSupplierAttachmentMapper tSupplierAttachmentMapper;
-
+    @Autowired
+    private TTenderMessageMapper tTenderMessageMapper;
 
     /**0
      * 注册供应商
@@ -904,4 +903,15 @@ public class SupplierServiceImpl implements SupplierService {
 //        }
 //    }
 
+
+    /**
+     * 根据当前登录者查对应的投标项目
+     * @param querywithPageHandle
+     * @return
+     */
+    @Override
+    public Result querySupplierProject(QuerywithPageHandle querywithPageHandle) {
+        List<TTenderMessage> tTenderMessages = tTenderMessageMapper.querySupplierProject(querywithPageHandle.getId());
+        return Result.success(tTenderMessages);
+    }
 }

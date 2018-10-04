@@ -29,6 +29,7 @@ public class BiddingAnnouncementController extends BaseController {
     @Autowired
     NoticeClient noticeClient;
 
+
     @PostMapping("listAdvanceNotice")
     @ApiOperation(value = "查询预告列表",tags = "供应商预告查询")
     public Result<List<AdvanceNoticeVO>> listAdvanceNotice(@RequestBody  ClientAdvanceNoticeDTO dto){
@@ -38,7 +39,7 @@ public class BiddingAnnouncementController extends BaseController {
     }
 
 
-    @GetMapping(value = "AdvanceNoticeDetail", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "AdvanceNoticeDetail")
     @ApiOperation(value = "查询预告详情",tags = "查询预告详情")
     Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(@RequestParam("id")  Long id){
         return noticeClient.AdvanceNoticeDetail(id);

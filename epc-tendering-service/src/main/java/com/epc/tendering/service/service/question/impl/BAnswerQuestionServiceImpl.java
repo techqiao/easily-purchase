@@ -1,25 +1,23 @@
 package com.epc.tendering.service.service.question.impl;
 
 import com.epc.common.Result;
+import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
+import com.epc.tendering.service.mapper.winBid.TWinBidMapper;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
-import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
-import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
-import com.epc.web.facade.terdering.answer.vo.PublicitySubVO;
-import com.epc.web.facade.terdering.answer.vo.PublicityVO;
+import com.epc.web.facade.terdering.answer.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +34,9 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     private BAnswerQuestionMapper bAnswerQuestionMapper;
     @Autowired
     private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+    @Autowired
+    private TWinBidMapper tWinBidMapper;
+
 
     @Override
     public Result<List<FacadeAnswerQuestionVO>> getQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
@@ -70,14 +71,6 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
         return Result.success(bAnswerQuestionMapper.updateByPrimaryKeyWithBLOBs(questionWithBLOBs) > 0);
     }
 
-
-    @Override
-    public Result selectAnswerQuestion(AnswerQuestionHandle answerQuestionHandle) {
-        BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
-        criteria.createCriteria().andQuestionTypeEqualTo(answerQuestionHandle.getQuestionType());
-        return Result.success(bAnswerQuestionMapper.selectByExample(criteria));
-    }
-
     @Override
     public Result<List<PublicityVO>> getPublicityListOfficialNetwork(QueryPublicityDTO QueryPublicityDTO) {
         List<PublicityVO> returnList = new ArrayList<>();
@@ -92,6 +85,34 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
             returnList.add(publicityVO);
         }
 
+        return Result.success(returnList);
+    }
+
+    /**
+     * 查询中标公示
+     * @return
+     */
+    @Override
+    public Result<List<WinBidVO>> getwinBids() {
+        List<WinBidVO> winBidVOS = tWinBidMapper.selectBySuppilerId();
+        return Result.success(winBidVOS);
+    }
+
+    @Override
+    public Result<List<MonitorAnswerQuestionVO>> getProcurementProjectAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
+        List<MonitorAnswerQuestionVO> returnList = new ArrayList<>();
+        BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
+        BAnswerQuestionCriteria.Criteria subCriteria = criteria.createCriteria();
+        criteria.setOrderByClause("id desc");
+        if(queryAnswerQuestionDTO.getProcurementProjectId() !=null){
+            subCriteria.andProcurementProjectIdEqualTo(queryAnswerQuestionDTO.getProcurementProjectId());
+        }
+        List<BAnswerQuestion> questionList = bAnswerQuestionMapper.selectByExample(criteria);
+        for (BAnswerQuestion item : questionList) {
+            MonitorAnswerQuestionVO pojo = new MonitorAnswerQuestionVO();
+            BeanUtils.copyProperties(item, pojo);
+            returnList.add(pojo);
+        }
         return Result.success(returnList);
     }
 }

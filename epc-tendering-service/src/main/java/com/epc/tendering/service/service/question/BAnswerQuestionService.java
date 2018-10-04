@@ -1,14 +1,13 @@
 package com.epc.tendering.service.service.question;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
+import com.epc.web.facade.terdering.answer.vo.MonitorAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 
 import java.util.List;
 
@@ -32,12 +31,6 @@ public interface BAnswerQuestionService {
      */
     Result<Boolean> replyQuestion(HandleReplyQuestion handleReplyQuestion);
 
-    /**
-     *澄清公式
-     * @return
-     */
-    Result selectAnswerQuestion(AnswerQuestionHandle answerQuestionHandle);
-
 
     /**
      * 澄清公示
@@ -46,4 +39,19 @@ public interface BAnswerQuestionService {
      * @return
      */
     Result<List<PublicityVO>> getPublicityListOfficialNetwork(QueryPublicityDTO QueryPublicityDTO);
+
+
+    /**
+     * 中标公示
+     * @return
+     */
+    Result<List<WinBidVO>> getwinBids();
+
+
+    /**
+     *
+     * @param queryAnswerQuestionDTO
+     * @return
+     */
+    Result<List<MonitorAnswerQuestionVO>> getProcurementProjectAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 }

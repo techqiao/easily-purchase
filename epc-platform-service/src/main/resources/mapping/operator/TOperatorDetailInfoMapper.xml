@@ -327,7 +327,7 @@ FROM t_operator_detail_info tp WHERE tp.is_deleted=0 AND tp.company_name like #{
     LEFT  JOIN t_operator_detail_info td ON td.operator_id=tb.id
     WHERE tb.is_deleted=0
     <if test="where != null">
-      and  td.company_name=#{whereName}
+      and  td.company_name=#{where}
     </if>
     <if test="status != null">
       and tb.state=#{status}

@@ -16,16 +16,6 @@ public class QueryMonitoringFileDTO extends PagerParam implements Serializable {
 
     private static final long serialVersionUID = 5073558120339217414L;
 
-    private String fileType;
-
-    private String fileName;
-
-    private String operateType;
-
-    private String operator;
-
-    private Date startDate;
-
-    private Date endDate;
+    private Long projectId;
 
 }

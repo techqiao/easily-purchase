@@ -1,9 +1,10 @@
 package com.epc.administration.client.controller.admin.handle;
 
-import com.epc.administration.facade.admin.handle.LoginHandle;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.io.Serializable;
 
 /**
  * <p>Description : easilys
@@ -12,11 +13,17 @@ import org.hibernate.validator.constraints.NotEmpty;
  * <p>InsertUserHandle
  */
 @Data
-public class InsertUserHandle extends LoginHandle {
-    private static final long serialVersionUID = -7478233784938327985L;
+public class InsertUserHandle implements Serializable{
+    private static final long serialVersionUID = 496970299142601713L;
     @ApiModelProperty(value = "用户姓名")
     @NotEmpty(message = "InsertUserHandle.name.null")
     private  String name;
+    @ApiModelProperty(value = "用户手机")
+    @NotEmpty(message = "InsertUserHandle.phone.null")
+    private  String phone;
+    @ApiModelProperty(value = "用户密码")
+    @NotEmpty(message = "InsertUserHandle.password.null")
+    private String password;
     @ApiModelProperty(value = "用户部门id")
     @NotEmpty(message = "InsertUserHandle.deptId.null")
     private  Long deptId;

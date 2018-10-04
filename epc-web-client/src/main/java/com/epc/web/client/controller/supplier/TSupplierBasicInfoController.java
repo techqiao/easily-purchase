@@ -1,6 +1,9 @@
 package com.epc.web.client.controller.supplier;
 
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
+import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorRole;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorState;
 import com.epc.web.client.controller.supplier.handle.*;
@@ -8,12 +11,14 @@ import com.epc.web.client.controller.supplier.query.ClientHandleSupplierCellphon
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierId;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierIdAndName;
 import com.epc.web.client.remoteApi.supplier.SupplierClient;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
+import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import io.swagger.annotations.Api;
@@ -24,12 +29,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Api(value = "供应商服务"/*,tags = "供应商服务"*/)
 @RestController
 @RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TSupplierBasicInfoController /*extends BaseController*/ {
+public class TSupplierBasicInfoController extends BaseController {
 
     @Autowired
     private SupplierClient supplierClient;
@@ -223,7 +229,18 @@ public class TSupplierBasicInfoController /*extends BaseController*/ {
         return supplierClient.querySupplierEmployeeAll(handleSupplierIdAndName);
     }
 
-
+    @ApiOperation(value = "15:根据当前登录供应商获取对应项目详情")
+    @PostMapping("querySupplierProject")
+    public Result<Map<String, Object>> querySupplierProject(@RequestBody QueryRequest queryRequest){
+        QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
+       // LoginUser loginUser = new LoginUser();
+        BeanUtils.copyProperties(querywithPageHandle,queryRequest);
+       /* if(loginUser==null){
+            return Result.error();
+        }*/
+        querywithPageHandle.setId(1L);
+        return supplierClient.querySupplierProject(querywithPageHandle);
+    }
 
 
 }

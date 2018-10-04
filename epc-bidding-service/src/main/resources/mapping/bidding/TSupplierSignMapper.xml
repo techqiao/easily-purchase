@@ -9,6 +9,7 @@
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
     <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="identit_card" property="identitCard" jdbcType="VARCHAR" />
     <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, procurement_project_id, bids_id, bids_name, company_id, company_name, person_name, 
-    cellphone, create_at, update_at, is_deleted
+    identit_card, cellphone, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TSupplierSignCriteria" >
     select
@@ -112,12 +113,12 @@
     </selectKey>
     insert into t_supplier_sign (procurement_project_id, bids_id, bids_name, 
       company_id, company_name, person_name, 
-      cellphone, create_at, update_at, 
-      is_deleted)
+      identit_card, cellphone, create_at, 
+      update_at, is_deleted)
     values (#{procurementProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, #{bidsName,jdbcType=VARCHAR}, 
       #{companyId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, 
-      #{cellphone,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+      #{identitCard,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TSupplierSign" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -142,6 +143,9 @@
       </if>
       <if test="personName != null" >
         person_name,
+      </if>
+      <if test="identitCard != null" >
+        identit_card,
       </if>
       <if test="cellphone != null" >
         cellphone,
@@ -174,6 +178,9 @@
       </if>
       <if test="personName != null" >
         #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="identitCard != null" >
+        #{identitCard,jdbcType=VARCHAR},
       </if>
       <if test="cellphone != null" >
         #{cellphone,jdbcType=VARCHAR},
@@ -219,6 +226,9 @@
       <if test="record.personName != null" >
         person_name = #{record.personName,jdbcType=VARCHAR},
       </if>
+      <if test="record.identitCard != null" >
+        identit_card = #{record.identitCard,jdbcType=VARCHAR},
+      </if>
       <if test="record.cellphone != null" >
         cellphone = #{record.cellphone,jdbcType=VARCHAR},
       </if>
@@ -245,6 +255,7 @@
       company_id = #{record.companyId,jdbcType=BIGINT},
       company_name = #{record.companyName,jdbcType=VARCHAR},
       person_name = #{record.personName,jdbcType=VARCHAR},
+      identit_card = #{record.identitCard,jdbcType=VARCHAR},
       cellphone = #{record.cellphone,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
@@ -274,6 +285,9 @@
       <if test="personName != null" >
         person_name = #{personName,jdbcType=VARCHAR},
       </if>
+      <if test="identitCard != null" >
+        identit_card = #{identitCard,jdbcType=VARCHAR},
+      </if>
       <if test="cellphone != null" >
         cellphone = #{cellphone,jdbcType=VARCHAR},
       </if>
@@ -297,6 +311,7 @@
       company_id = #{companyId,jdbcType=BIGINT},
       company_name = #{companyName,jdbcType=VARCHAR},
       person_name = #{personName,jdbcType=VARCHAR},
+      identit_card = #{identitCard,jdbcType=VARCHAR},
       cellphone = #{cellphone,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -319,15 +334,14 @@
   </select>
 
   <select id="getSignPeronInfo"  resultType="com.epc.web.facade.bidding.dto.SignBaseDTO">
-    SELECT
-	sbf.supplier_id as supplierId,sbf.`name`,sbf.cellphone,sdi.company_name as companyName
-FROM
-	t_supplier_basic_info sbf
-LEFT JOIN t_supplier_detail_info sdi on sdi.id=sbf.supplier_id and sdi.is_deleted=0
-WHERE 1=1
-and sbf.is_deleted= 0
-and sbf.`name`=#{name}
-and sbf.cellphone=#{cellphone}
-
-  </select>
+  SELECT
+  sbf.supplier_id as supplierId,sbf.`name`,sbf.cellphone,sdi.company_name as companyName
+  FROM
+  t_supplier_basic_info sbf
+  LEFT JOIN t_supplier_detail_info sdi on sdi.id=sbf.supplier_id and sdi.is_deleted=0
+  WHERE 1=1
+  and sbf.is_deleted= 0
+  and sbf.`name`=#{name}
+  and sbf.cellphone=#{cellphone}
+   </select>
 </mapper>

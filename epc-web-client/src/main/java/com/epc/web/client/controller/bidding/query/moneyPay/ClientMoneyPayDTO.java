@@ -9,10 +9,5 @@ import java.io.Serializable;
  */
 @Data
 public class ClientMoneyPayDTO implements Serializable {
-
-    private Long procurementProjectId;
-
     private Long companyId;
-
-
 }

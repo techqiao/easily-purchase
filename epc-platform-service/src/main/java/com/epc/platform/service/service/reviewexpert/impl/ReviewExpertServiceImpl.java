@@ -123,6 +123,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             tExpertBasicInfo.setName(reviewExpertHandle.getName());
             tExpertBasicInfo.setProfession(reviewExpertHandle.getProfession());
             tExpertBasicInfo.setLevel(reviewExpertHandle.getLevel());
+            tExpertBasicInfo.setCellphone(reviewExpertHandle.getCellPhone());
             tExpertBasicInfo.setCircularDt(reviewExpertHandle.getCircularDt());
             tExpertBasicInfo.setCircularMethod(reviewExpertHandle.getCircularMethod());
             tExpertBasicInfo.setOtherInformation(reviewExpertHandle.getOtherInformation());
@@ -151,16 +152,14 @@ public class ReviewExpertServiceImpl implements ExpertService {
     public Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
         TExpertDetailInfoCriteria  tExpertBasicInfoCriteria = new TExpertDetailInfoCriteria();
         tExpertBasicInfoCriteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
-
         TExpertAttachmentCriteria criteria = new TExpertAttachmentCriteria();
         criteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
-
         try {
             tExpertDetailInfoMapper.deleteByExample(tExpertBasicInfoCriteria);
             tExpertAttachmentMapper.deleteByExample(criteria);
            return this.insertExpertDetailInfo(reviewExpertHandle);
         } catch (Exception e) {
-            LOGGER.error("BusinessException updateExpertDetailInfo : {}", e);
+            LOGGER.error("BusinessException updateReviewExpertDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }

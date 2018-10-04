@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         BeanUtils.copyProperties(handleProjectBasicInfo, pojo);
         try {
             if(pojo.getId() == null){
+                pojo.setTotalProjectInvestment(new BigDecimal(handleProjectBasicInfo.getTotalProjectInvestment()));
                 pojo.setProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                 return Result.success(tProjectBasicInfoMapper.insertSelective(pojo) > 0);
             }else {
@@ -81,11 +83,12 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
             subCriteria.andPurchaserIdEqualTo(queryProjectInfoDTO.getPurchaserId());
         }
         criteria.setOrderByClause("id desc");
-        List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExampleWithRowbounds(criteria, queryProjectInfoDTO.getRowBounds());
+        List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExample(criteria);
         List<ProjectBasicInfoVO> returnList = new ArrayList<>();
         tProjectBasicInfoList.forEach(item -> {
             ProjectBasicInfoVO projectBasicInfoVO = new ProjectBasicInfoVO();
             BeanUtils.copyProperties(item, projectBasicInfoVO);
+            projectBasicInfoVO.setName(item.getCreator());
             returnList.add(projectBasicInfoVO);
         });
         return Result.success(returnList);

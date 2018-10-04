@@ -20,7 +20,7 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.epc.web.facade.terdering.answer.vo.WinBidVO" >
+  <resultMap id="selectMap" type="com.epc.web.facade.terdering.answer.vo.WinBidVO" >
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="supplier_name" property="supplierName" jdbcType="BIGINT" />
     <result column="bid_name" property="bidName" jdbcType="VARCHAR"/>

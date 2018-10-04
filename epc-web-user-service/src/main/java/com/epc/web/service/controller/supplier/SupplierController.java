@@ -1,7 +1,6 @@
 package com.epc.web.service.controller.supplier;
 
 import com.epc.common.Result;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
@@ -186,7 +185,7 @@ public class SupplierController extends BaseController implements FacadeTSupplie
     @Override
     public Result<Map<String, Object>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
         PageHelper.startPage(querywithPageHandle.getPageNum(),querywithPageHandle.getPageSize());
-        Result<List<TTenderMessage>> listResult = supplierService.querySupplierProject(querywithPageHandle);
+            Result<List<TTenderMessage>> listResult = supplierService.querySupplierProject(querywithPageHandle);
         PageInfo<TTenderMessage> pageInfo = new PageInfo<>(listResult.getData());
         return Result.success(getDataTable(pageInfo));
     }

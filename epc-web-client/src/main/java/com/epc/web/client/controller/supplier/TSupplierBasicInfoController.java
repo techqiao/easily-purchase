@@ -231,7 +231,7 @@ public class TSupplierBasicInfoController extends BaseController {
 
     @ApiOperation(value = "15:根据当前登录供应商获取对应项目详情")
     @PostMapping("querySupplierProject")
-    public Result<Map<String, Object>> querySupplierProject(QueryRequest queryRequest){
+    public Result<Map<String, Object>> querySupplierProject(@RequestBody QueryRequest queryRequest){
         QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(querywithPageHandle,queryRequest);

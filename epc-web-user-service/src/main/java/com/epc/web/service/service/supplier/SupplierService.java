@@ -2,7 +2,6 @@ package com.epc.web.service.service.supplier;
 
 
 import com.epc.common.Result;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;

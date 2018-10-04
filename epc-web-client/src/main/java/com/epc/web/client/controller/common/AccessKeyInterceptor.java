@@ -24,30 +24,30 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        response.setHeader("Access-Control-Allow-Credentials", "true");
+     response.setHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, referer, login-token, X-Requested-With");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         response.setHeader("Access-Control-Max-Age", "3600");
-//        String header = request.getHeader("epc-token");
-//        if (null != handler) {
-//            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
-//            if (null != s) {
-//                return true;
-//            }
-//        }
-//        response.setContentType(";charset=UTF-8");
-//        response.setHeader("Pragma", "No-cache");
-//        response.setHeader("Cache-Control", "no-cache");
-//        response.setDateHeader("Expires", 0);
-//        PrintWriter writer = null;
-//        try {
-//            writer = response.getWriter();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        writer.write("to Login please");
-//        writer.flush();
+       response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        String header = request.getHeader("epc-token");
+        if (null != handler) {
+            String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
+            if (null != s) {
+                return true;
+            }
+        }
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writer.write("to Login please");
+        writer.flush();
         return true;
     }
 

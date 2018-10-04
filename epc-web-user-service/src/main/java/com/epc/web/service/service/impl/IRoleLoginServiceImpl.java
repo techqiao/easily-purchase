@@ -11,9 +11,11 @@ import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyDetailInfo;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
 import com.epc.web.service.domain.operator.TOperatorBasicInfo;
+import com.epc.web.service.domain.operator.TOperatorDetailInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
+import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
 import com.epc.web.service.mapper.agency.TAgencyDetailInfoMapper;
 import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
@@ -25,8 +27,8 @@ import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sun.org.apache.regexp.internal.RE;
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +44,7 @@ import java.util.Date;
  */
 @Service
 public class IRoleLoginServiceImpl implements IRoleLoginService {
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(IRoleLoginServiceImpl.class);
 
     @Autowired
     TOperatorBasicInfoMapper tOperatorBasicInfoMapper;
@@ -72,12 +75,30 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         String cellphone = user.getCellphone();
         switch (type) {
             case IRoleLoginService.OPERRATOR:
-                LoginUser loginUser = tOperatorBasicInfoMapper.login(cellphone, pwd);
-                if (loginUser != null) {
-                    loginUser.setType(type);
+                TOperatorBasicInfo basicInfo = tOperatorBasicInfoMapper.login(cellphone, pwd);
+                if (basicInfo != null) {
+                    return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                }
+                //获得运营商机构id
+                Long operatorId = basicInfo.getOperatorId();
+                //得到法人的信息
+                TOperatorBasicInfo boss = tOperatorBasicInfoMapper.selectOperatorDetailByOperatorId(operatorId, Const.Role.ROLE_CORPORATION);
+                //获得公司信息
+                TOperatorDetailInfo detailInfo = tOperatorDetailInfoMapper.selectOperatorDetailByOperatorId(operatorId);
+                //封装登录信息返回
+                LoginUser loginUser = new LoginUser();
+                loginUser.setName(basicInfo.getName());
+                loginUser.setCellphone(basicInfo.getCellphone());
+                loginUser.setUserId(basicInfo.getId());
+                loginUser.setType(type);
+                if (boss != null && detailInfo != null) {
+                    loginUser.setBossName(boss.getName());
+                    loginUser.setCompanyId(detailInfo.getOperatorId());
+                    loginUser.setCompanyName(detailInfo.getCompanyName());
+                    loginUser.setBossId(boss.getId());
                     return Result.success(loginUser);
                 }
-                break;
+                return Result.success(loginUser);
             case IRoleLoginService.AGENCY:
                 TAgencyBasicInfo basicinfo1 = tAgencyBasicInfoMapper.login(cellphone, pwd);
                 if (basicinfo1 == null) {
@@ -95,9 +116,9 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser1.setCellphone(basicinfo1.getCellphone());
                 loginUser1.setUserId(basicinfo1.getId());
                 loginUser1.setType(type);
-                loginUser1.setCompanyId(detailInfo1.getAgencyId());
-                loginUser1.setBossName(boss1.getName());
                 if (boss1 != null && detailInfo1 != null) {
+                    loginUser1.setBossName(boss1.getName());
+                    loginUser1.setCompanyId(detailInfo1.getAgencyId());
                     loginUser1.setCompanyName(detailInfo1.getCompanyName());
                     loginUser1.setBossId(boss1.getId());
                     return Result.success(loginUser1);
@@ -105,34 +126,52 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 return Result.success(loginUser1);
 
             case IRoleLoginService.SUPPLIER:
-                LoginUser loginUser2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
-                if (loginUser2 != null) {
-                    loginUser2.setType(type);
-                    return Result.success(loginUser2);
-                }
-                break;
-            case IRoleLoginService.PURCHASER:
-                TPurchaserBasicInfo basicinfo2 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
+                TSupplierBasicInfo basicinfo2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
                 if (basicinfo2 == null) {
                     return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
                 }
                 //获得机构id
-                Long purchaserId = basicinfo2.getPurchaserId();
+                Long suuplierId = basicinfo2.getSupplierId();
                 //获得老板
-                TPurchaserBasicInfo boss2 = tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaserId, Const.Role.ROLE_CORPORATION);
+                TSupplierBasicInfo boss2 = tSupplierBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(suuplierId, Const.Role.ROLE_CORPORATION);
                 //获得公司信息
-                TPurchaserDetailInfo detailInfo2 = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaserId);
+                TSupplierDetailInfo detailInfo2 = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(suuplierId);
+                //封装返回对象
+                LoginUser loginUser2 = new LoginUser();
+                loginUser2.setName(basicinfo2.getName());
+                loginUser2.setCellphone(basicinfo2.getCellphone());
+                loginUser2.setUserId(basicinfo2.getId());
+                loginUser2.setType(type);
+                if (boss2 != null && detailInfo2 != null) {
+                    loginUser2.setBossName(boss2.getName());
+                    loginUser2.setCompanyId(detailInfo2.getSupplierId());
+                    loginUser2.setCompanyName(detailInfo2.getCompanyName());
+                    loginUser2.setBossId(boss2.getId());
+                    return Result.success(loginUser2);
+                }
+                return Result.success(loginUser2);
+            case IRoleLoginService.PURCHASER:
+                TPurchaserBasicInfo basicinfo3 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
+                if (basicinfo3 == null) {
+                    return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                }
+                //获得机构id
+                Long purchaserId = basicinfo3.getPurchaserId();
+                //获得老板
+                TPurchaserBasicInfo boss3 = tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaserId, Const.Role.ROLE_CORPORATION);
+                //获得公司信息
+                TPurchaserDetailInfo detailInfo3 = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaserId);
                 //封装返回对象
                 LoginUser loginUser3 = new LoginUser();
-                loginUser3.setName(basicinfo2.getName());
-                loginUser3.setCellphone(basicinfo2.getCellphone());
-                loginUser3.setUserId(basicinfo2.getId());
+                loginUser3.setName(basicinfo3.getName());
+                loginUser3.setCellphone(basicinfo3.getCellphone());
+                loginUser3.setUserId(basicinfo3.getId());
                 loginUser3.setType(type);
-                loginUser3.setCompanyId(detailInfo2.getPurchaserId());
-                loginUser3.setBossName(boss2.getName());
-                if (boss2 != null && detailInfo2 != null) {
-                    loginUser3.setCompanyName(detailInfo2.getCompanyName());
-                    loginUser3.setBossId(boss2.getId());
+                if (boss3 != null && detailInfo3 != null) {
+                    loginUser3.setBossName(boss3.getName());
+                    loginUser3.setCompanyId(detailInfo3.getPurchaserId());
+                    loginUser3.setCompanyName(detailInfo3.getCompanyName());
+                    loginUser3.setBossId(boss3.getId());
                     return Result.success(loginUser3);
                 }
                 return Result.success(loginUser3);
@@ -147,7 +186,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             default:
                 return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
         }
-        return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
     }
 
     @Override
@@ -164,55 +202,82 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         Date date = new Date();
         switch (type) {
             case IRoleLoginService.OPERRATOR:
-                TOperatorBasicInfo operatorBasicInfo = tOperatorBasicInfoMapper.selectByNameAndCellphone(name, cellphone);
-                if (operatorBasicInfo == null) {
-                    return Result.success(tOperatorBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                TOperatorBasicInfo operatorBasicInfo = null;
+                try {
+                    operatorBasicInfo = tOperatorBasicInfoMapper.selectByNameAndCellphone(name, cellphone);
+                    //tOperatorBasicInfoMapper.selectCountOperatorBasicByNameAndCellphone(name,cellphone);
+                    if (operatorBasicInfo == null) {
+                        return Result.success(tOperatorBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                    } else {
+                        return Result.success("运营商" + name + "已存在!");
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("用户名密码不匹配:Exception={}", e);
+                    return Result.error("用户名密码不匹配!");
                 }
-                if (operatorBasicInfo != null) {
-                    return Result.success("运营商" + name + "已存在!");
-                }
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+                //return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
             case IRoleLoginService.AGENCY:
-                TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
-                if (basicInfo == null) {
-                    return Result.success(tAgencyBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                TAgencyBasicInfo basicInfo = null;
+                try {
+                    basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+                    if (basicInfo == null) {
+                        return Result.success(tAgencyBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                    } else {
+                        return Result.success("代理机构" + name + "已存在!");
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("代理机构注册失败:Exception={}", e);
+                    return Result.error("代理机构注册失败");
                 }
-                if (basicInfo != null) {
-                    return Result.success("代理机构" + name + "已存在!");
-                }
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+                //return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
             case IRoleLoginService.SUPPLIER:
-                TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
-                if (tSupplierBasicInfo == null) {
-                    return Result.success(tSupplierBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                TSupplierBasicInfo tSupplierBasicInfo = null;
+                try {
+                    tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
+                    if (tSupplierBasicInfo == null) {
+                        return Result.success(tSupplierBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                    } else {
+                        return Result.success("供货商" + name + "已存在!");
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("供货商注册失败:Exception={}", e);
+                    return Result.error("代理商注册失败");
                 }
-                if (tSupplierBasicInfo != null) {
-                    return Result.success("供货商" + name + "已存在!");
-                }
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+                //return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
             case IRoleLoginService.PURCHASER:
-                TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, cellphone);
-                if (tPurchaserBasicInfo == null) {
-                    return Result.success(tPurchaserBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                TPurchaserBasicInfo tPurchaserBasicInfo = null;
+                try {
+                    tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, cellphone);
+                    if (tPurchaserBasicInfo == null) {
+                        return Result.success(tPurchaserBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                    } else {
+                        return Result.success("采购商" + name + "已存在!");
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("采购商注册失败:Exception={}", e);
+                    return Result.error("采购商注册失败:Excepiton={}");
                 }
-                if (tPurchaserBasicInfo != null) {
-                    return Result.success("采购商" + name + "已存在!");
-                }
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+                // return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
 
             case IRoleLoginService.EXPERT:
-                TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(name, cellphone);
-                if (tExpertBasicInfo == null) {
-                    return Result.success(tExpertBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                TExpertBasicInfo tExpertBasicInfo = null;
+                try {
+                    tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(name, cellphone);
+                    if (tExpertBasicInfo == null) {
+                        return Result.success(tExpertBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                    } else {
+                        return Result.success("评标专家" + name + "已存在!");
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("评标专家注册失败:Exception={}", e);
+                    return Result.error("评标专家注册失败");
                 }
-                if (tExpertBasicInfo != null) {
-                    return Result.success("评标专家" + name + "已存在!");
-                }
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
+                //return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
 
             default:
                 return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
         }
+
     }
 
     @Override
@@ -227,47 +292,52 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         TAgencyBasicInfo tAgencyBasicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cell);
         TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectPurchaserBasicInfoByCell(cell);
         TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectExpertCellPhone(cell);
-        int agency=0;
-        int purchaser=0;
-        int operator=0;
-        int supplier=0;
+        int agency = 0;
+        int purchaser = 0;
+        int operator = 0;
+        int supplier = 0;
         int expert = 0;
-        if (tAgencyBasicInfo != null) {
-            agency = tAgencyBasicInfoMapper.updateAgencyPassword(modifyUser);
-            String oldPassword = tAgencyBasicInfo.getPassword();
-            if (oldPassword.equals(password)) {
-                return Result.error("新旧密码不能相同");
+        try {
+            if (tAgencyBasicInfo != null) {
+                agency = tAgencyBasicInfoMapper.updateAgencyPassword(modifyUser);
+                String oldPassword = tAgencyBasicInfo.getPassword();
+                if (oldPassword.equals(password)) {
+                    return Result.error("新旧密码不能相同");
+                }
             }
-        }
-        if (tPurchaserBasicInfo != null) {
-            purchaser = tPurchaserBasicInfoMapper.updatePurchaserPassword(modifyUser);
-            String oldPassword = tPurchaserBasicInfo.getPassword();
-            if (oldPassword.equals(password)) {
-                return Result.error("新旧密码不能相同");
+            if (tPurchaserBasicInfo != null) {
+                purchaser = tPurchaserBasicInfoMapper.updatePurchaserPassword(modifyUser);
+                String oldPassword = tPurchaserBasicInfo.getPassword();
+                if (oldPassword.equals(password)) {
+                    return Result.error("新旧密码不能相同");
+                }
             }
-        }
-        if (tSupplierBasicInfo != null) {
-            supplier = tSupplierBasicInfoMapper.updateSupplierPassword(modifyUser);
-            String oldPassword = tSupplierBasicInfo.getPassword();
-            if (oldPassword.equals(password)) {
-                return Result.error("新旧密码不能相同");
+            if (tSupplierBasicInfo != null) {
+                supplier = tSupplierBasicInfoMapper.updateSupplierPassword(modifyUser);
+                String oldPassword = tSupplierBasicInfo.getPassword();
+                if (oldPassword.equals(password)) {
+                    return Result.error("新旧密码不能相同");
+                }
             }
-        }
-        if (tOperatorBasicInfo != null) {
-            operator = tOperatorBasicInfoMapper.updateOperatorPassword(modifyUser);
-            String oldPassword = tOperatorBasicInfo.getPassword();
-            if (oldPassword.equals(password)) {
-                return Result.error("新旧密码不能相同");
+            if (tOperatorBasicInfo != null) {
+                operator = tOperatorBasicInfoMapper.updateOperatorPassword(modifyUser);
+                String oldPassword = tOperatorBasicInfo.getPassword();
+                if (oldPassword.equals(password)) {
+                    return Result.error("新旧密码不能相同");
+                }
             }
-        }
-        if (tExpertBasicInfo != null) {
-            expert = tExpertBasicInfoMapper.updateExpertPassword(modifyUser);
-            String oldPassword = tExpertBasicInfo.getPassword();
-            if (oldPassword.equals(password)) {
-                return Result.error("新旧密码不能相同");
+            if (tExpertBasicInfo != null) {
+                expert = tExpertBasicInfoMapper.updateExpertPassword(modifyUser);
+                String oldPassword = tExpertBasicInfo.getPassword();
+                if (oldPassword.equals(password)) {
+                    return Result.error("新旧密码不能相同");
+                }
             }
+        } catch (Exception e) {
+            LOGGER.error("密码修改失败:Exception:{}", e);
+            return Result.error("密码修改失败");
         }
-        if(expert>0||supplier>0||agency>0||operator>0||purchaser>0){
+        if (expert > 0 || supplier > 0 || agency > 0 || operator > 0 || purchaser > 0) {
             return Result.success("密码修改成功");
         }
         return Result.error("密码修改失败!");

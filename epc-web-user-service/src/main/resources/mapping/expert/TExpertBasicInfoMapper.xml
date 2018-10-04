@@ -512,7 +512,7 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectExpertByNameAndCellPhone" resultType="com.epc.web.service.domain.expert.TExpertBasicInfo">
+    <select id="selectExpertByNameAndCellPhone" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_expert_basic_info
@@ -520,7 +520,7 @@
         AND cellphone =#{cellPhone}
     </select>
     <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo" parameterType="com.epc.web.facade.agency.dto.ExpertDto">
-        SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.serialNum
+        SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.id as serialNum
         FROM t_expert_basic_info basic
        /* LEFT JOIN t_expert_attachment t
         ON basic.id = t.expert_id*/

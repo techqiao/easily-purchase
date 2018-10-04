@@ -414,7 +414,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectEmployee" resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo" parameterType="com.epc.web.facade.agency.dto.AgencyEmployeeDto">
+  <select id="selectEmployee" resultMap="BaseResultMap" parameterType="com.epc.web.facade.agency.dto.AgencyEmployeeDto">
     SELECT
     <include refid="Base_Column_List"/>
     FROM
@@ -445,7 +445,7 @@
     </where>
   </select>
   <select id="selectAgencyBasicByCellphoneAndName"
-          resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+          resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM
@@ -461,13 +461,13 @@
 
   </select>
   <select id="selectBossBasicInfoByPurchaserIdAndRole"
-          resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+          resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     FROM t_agency_basic_info
     WHERE agency_id =#{agencyId}
     AND role = #{roleCorporation}
   </select>
-  <select id="selectAgencyBasicByCellphone" resultType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
+  <select id="selectAgencyBasicByCellphone" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/>
     FROM t_agency_basic_info
     WHERE cellphone =#{cell}

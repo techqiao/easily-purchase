@@ -7,8 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 @Data
-public class PurchaserAgencyVo implements Serializable{
+public class PurchaserAgencyVo implements Serializable {
     private static final long serialVersionUID = 6721578941831979985L;
     /**
      * 代理机构的id

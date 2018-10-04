@@ -366,7 +366,7 @@
     </if>
   </select>
     <select id="selectAttachmentBySupplierId"
-            resultType="com.epc.web.service.domain.supplier.TSupplierAttachment">
+            resultMap="BaseResultMap">
       SELECT 
       <include refid="Base_Column_List"/>
       FROM  t_supplier_attachment

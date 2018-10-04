@@ -35,7 +35,7 @@ public interface TOperatorBasicInfoMapper {
 
     int updateByPrimaryKey(TOperatorBasicInfo record);
 
-    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+    TOperatorBasicInfo login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 
     int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates") Date date);
 
@@ -44,4 +44,8 @@ public interface TOperatorBasicInfoMapper {
     int updateOperatorPassword(ModifyUser modifyUser);
 
     TOperatorBasicInfo selectByCellphone(@Param("cell") String cell);
+
+    TOperatorBasicInfo selectOperatorDetailByOperatorId(@Param("operatorId") Long operatorId, @Param("roleCorporation") int roleCorporation);
+
+    boolean selectCountOperatorBasicByNameAndCellphone(@Param("name") String name, @Param("cellphone") String cellphone);
 }

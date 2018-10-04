@@ -14,5 +14,9 @@ public class QueryAgencyDto implements Serializable {
      * 代理机构名字
      */
     private String name;
+    /**
+     * 代理机构id
+     */
+    private Long agencyId;
 
 }

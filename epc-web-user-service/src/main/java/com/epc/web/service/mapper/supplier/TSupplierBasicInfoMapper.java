@@ -108,11 +108,11 @@ public interface TSupplierBasicInfoMapper {
      */
     int updateByPrimaryKey(TSupplierBasicInfo record);
 
-    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd")String pwd);
+    TSupplierBasicInfo login(@Param("cellphone") String cellphone, @Param("pwd")String pwd);
 
     TSupplierBasicInfo selectSupplierBasicByNameAndCell(@Param("name") String name, @Param("cellphone") String cellphone);
 
-    List<AgencySupplierVo> selectBasicInfo(@Param("id") Long agencyId, @Param("fuzzyName") String fuzzyName);
+    List<AgencySupplierVo> selectBasicInfo(@Param("id") Long agencyId, @Param("fuzzyName") String fuzzyName,@Param("supplierId") Long supplierId);
 
     int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates")Date date);
 
@@ -120,4 +120,5 @@ public interface TSupplierBasicInfoMapper {
 
     TSupplierBasicInfo selectSupplierBasicByCell(@Param("cell") String cell);
 
+    TSupplierBasicInfo selectBossBasicInfoByPurchaserIdAndRole(@Param("supplierId") Long suuplierId, @Param("roleCorporation") int roleCorporation);
 }

@@ -385,7 +385,7 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectAttachmentByAgencyId" resultType="com.epc.web.service.domain.agency.TAgencyAttachment">
+    <select id="selectAttachmentByAgencyId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_agency_attachment

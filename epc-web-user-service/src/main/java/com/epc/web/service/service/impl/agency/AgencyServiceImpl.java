@@ -827,8 +827,9 @@ public class AgencyServiceImpl implements AgencyService {
         //封装查询条依据id和时间查询
         Long agencyId = supplierDto.getAgencyId();
         String fuzzyName = supplierDto.getCompanyName();
+        Long supplierId = supplierDto.getSupplierId();
         //查询结果
-        List<AgencySupplierVo> supplierVos = tSupplierBasicInfoMapper.selectBasicInfo(agencyId, fuzzyName);
+        List<AgencySupplierVo> supplierVos = tSupplierBasicInfoMapper.selectBasicInfo(agencyId, fuzzyName,supplierId);
         if (CollectionUtils.isEmpty(supplierVos)) {
             return Result.error("没有符合条件的供货商");
         }

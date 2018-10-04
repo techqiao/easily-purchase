@@ -102,4 +102,7 @@ public interface TOperatorDetailInfoMapper {
      * @mbggenerated Sun Sep 30 14:41:43 CST 2018
      */
     int updateByPrimaryKey(TOperatorDetailInfo record);
+
+    TOperatorDetailInfo selectOperatorDetailByOperatorId(Long operatorId);
+
 }

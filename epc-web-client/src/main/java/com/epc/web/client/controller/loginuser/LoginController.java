@@ -4,16 +4,21 @@ import com.epc.common.Result;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
+import com.epc.web.client.controller.loginuser.handle.ClientModifyUser;
 import com.epc.web.client.controller.loginuser.handle.ClientRegisterUser;
 import com.epc.web.client.remoteApi.loginuser.ILoginUserClient;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,5 +69,18 @@ public class LoginController {
         BeanUtils.copyProperties(registerUser,user);
         return iLoginUserClient.registerUser(user);
     }
-
+    /**
+     *@author :winlin
+     *@Description :修改密码
+     *@param:
+     *@return:
+     *@date:2018/10/3
+     */
+    @ApiOperation(value = "用户修改密码" )
+    @PostMapping(value = "/modifyPassword",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    Result<Boolean> modifyPassword(@RequestBody ClientModifyUser clientModifyUser){
+        ModifyUser modifyUser = new ModifyUser();
+        BeanUtils.copyProperties(clientModifyUser,modifyUser);
+        return iLoginUserClient.modifyPassword(modifyUser);
+    };
 }

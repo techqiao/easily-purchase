@@ -295,9 +295,9 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT  INTO t_operator_basic_info
-        (cellphone,password,,`name`)
+        (cellphone,password,`name`,create_at)
         VALUES
-        (#{cellphone},#{pwd},#{name})
+        (#{cellphone},#{pwd},#{name},#{dates})
     </insert>
     <select id="countByExample" parameterType="com.epc.web.service.domain.expert.TExpertBasicInfoCriteria"
             resultType="java.lang.Integer">
@@ -487,6 +487,11 @@
         is_deleted = #{isDeleted,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <update id="updateExpertPassword" parameterType="com.epc.web.facade.loginuser.dto.ModifyUser">
+        UPDATE t_expert_basic_info
+        SET password =#{newPassword}
+        WHERE cellphone =#{cellphone}
+    </update>
     <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.expert.TExpertBasicInfoCriteria"
             id="selectByExampleWithRowbounds">
         <!--
@@ -507,7 +512,7 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectExpertByNameAndCellPhone" resultType="com.epc.web.service.domain.expert.TExpertBasicInfo">
+    <select id="selectExpertByNameAndCellPhone" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_expert_basic_info
@@ -515,7 +520,7 @@
         AND cellphone =#{cellPhone}
     </select>
     <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo" parameterType="com.epc.web.facade.agency.dto.ExpertDto">
-        SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.serialNum
+        SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.id as serialNum
         FROM t_expert_basic_info basic
        /* LEFT JOIN t_expert_attachment t
         ON basic.id = t.expert_id*/
@@ -560,5 +565,10 @@
                 AND profession =#{profession}
             </if>
         </where>
+    </select>
+    <select id="selectExpertCellPhone" resultType="com.epc.web.service.domain.expert.TExpertBasicInfo">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_expert_basic_info
+        WHERE cellphone =#{cell}
     </select>
 </mapper>

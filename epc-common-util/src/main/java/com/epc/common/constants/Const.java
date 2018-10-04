@@ -9,7 +9,7 @@ package com.epc.common.constants;
 public class Const {
 
     public interface RedisCacheExtime {
-        int REDIS_SESSION_EXTIME = 60 * 30;//30分钟
+        int REDIS_SESSION_EXTIME = 60 * 30*30000;//30分钟
     }
 
     public interface Role {
@@ -42,6 +42,18 @@ public class Const {
     public interface ENABLE_OR_DISABLE{
         int ENABLE= 0;
         int DISABLE=1;
+    }
+
+    /**
+     *@author :winlin
+     *@Description : 来源
+     *@param:
+     *@return:
+     *@date:2018/10/4
+     */
+    public interface SOURCE{
+        String PUBLICS = "publics";
+        String PRIVATES ="privates";
     }
 
     public interface STATE {

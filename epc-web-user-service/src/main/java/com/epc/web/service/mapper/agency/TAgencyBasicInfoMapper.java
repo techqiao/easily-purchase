@@ -2,8 +2,11 @@ package com.epc.web.service.mapper.agency;
 
 import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
+
+import java.util.Date;
 import java.util.List;
 
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
@@ -35,7 +38,7 @@ public interface TAgencyBasicInfoMapper {
 
     int updateByPrimaryKey(TAgencyBasicInfo record);
 
-    LoginUser login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
+    TAgencyBasicInfo login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 
 
     int updateAgencyForbbiden(@Param("id") Long id, @Param("forbidden") Integer forbidden);
@@ -53,8 +56,11 @@ public interface TAgencyBasicInfoMapper {
 
     TAgencyBasicInfo selectAgencyBasicByCellphoneAndName(@Param("name") String name, @Param("cellphone") String cellphone);
 
-    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name);
+    int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates") Date date);
 
     TAgencyBasicInfo selectBossBasicInfoByPurchaserIdAndRole(@Param("agencyId") Long agencyId, @Param("roleCorporation") int roleCorporation);
 
+    int updateAgencyPassword(ModifyUser modifyUser);
+
+    TAgencyBasicInfo selectAgencyBasicByCellphone(@Param("cell") String cell);
 }

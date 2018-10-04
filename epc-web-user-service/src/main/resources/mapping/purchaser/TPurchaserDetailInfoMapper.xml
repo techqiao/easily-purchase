@@ -383,7 +383,7 @@
     </if>
   </select>
     <select id="selectDetailByPurchaserId"
-            resultType="com.epc.web.service.domain.purchaser.TPurchaserDetailInfo">
+            resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
       FROM t_purchaser_detail_info

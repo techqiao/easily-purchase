@@ -21,5 +21,10 @@ public class ClientQueryAgencyDto implements Serializable {
      */
     @ApiModelProperty(value = "代理机构公司名")
     private String name;
+    /**
+     * 代理机构id
+     */
+    @ApiModelProperty(value = "代理机构id")
+    private Long agencyId;
 
 }

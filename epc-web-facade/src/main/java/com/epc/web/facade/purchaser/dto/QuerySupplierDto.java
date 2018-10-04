@@ -9,9 +9,13 @@ public class QuerySupplierDto implements Serializable {
     /**
      * 机构id
      */
-    private Long purchaserId;
+    private Long supplierId;
     /**
      * 供应商名字
      */
     private String name;
+    /**
+     * 采购人id
+     */
+    private Long purchaserId;
 }

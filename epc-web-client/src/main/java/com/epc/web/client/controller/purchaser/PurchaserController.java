@@ -2,10 +2,12 @@ package com.epc.web.client.controller.purchaser;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
 import com.epc.web.client.controller.purchaser.dto.*;
 import com.epc.web.client.controller.purchaser.handle.*;
 import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
 import com.epc.web.facade.expert.Handle.HandleExpert;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.purchaser.dto.*;
 import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.*;
@@ -14,8 +16,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.remote.SubjectDelegationPermission;
 import java.util.List;
 
 @Api(value = "采购人服务")
@@ -32,7 +36,6 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcreatePurchaserUserInfo")
     Result<Boolean> createPurchaserUserInfo(@RequestBody ClientHandlePurchaser handleEmployee) {
         HandlePurchaser purchaser = new HandlePurchaser();
-        super.getLoginUser().getUserId();
         BeanUtils.copyProperties(handleEmployee, purchaser);
         return purchaserClient.createPurchaserUserInfo(purchaser);
     }
@@ -103,6 +106,11 @@ public class PurchaserController extends BaseController {
     public Result<List<PurchaserEmplyeeVo>> queryEmplyee(@RequestBody ClientEmployeeDto employeeDto) {
         HandleEmployeeDto dto = new HandleEmployeeDto();
         BeanUtils.copyProperties(employeeDto, dto);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        dto.setPurchaseId(clientLoginUser.getCompanyId());
         return purchaserClient.queryEmplyee(dto);
     }
 
@@ -118,6 +126,12 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientcreateExpertUserInfo")
     Result<Boolean> createExpertUserInfo(@RequestBody ClientHandleExpert handleExpert) {
         HandleExpert handleExpert1 = new HandleExpert();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        handleExpert1.setOperatorId(clientLoginUser.getUserId());
+        handleExpert1.setPurchaserId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(handleExpert, handleExpert1);
         return purchaserClient.createExpertUserInfo(handleExpert1);
     }
@@ -131,10 +145,16 @@ public class PurchaserController extends BaseController {
      * @return:
      * @date:2018/9/21
      */
-    @ApiOperation(value = "完善采购人专家信息")
+    @ApiOperation(value = "完善采购人专家信息++专家登录完善自己的信息")
     @PostMapping(value = "/clientcompletePurchaserExpertInfo")
     public Result<Boolean> completePurchaserExpertInfo(@RequestBody ClientHandleExpertDto expertDto) {
         HandleExpertDto handleExpertDto = new HandleExpertDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getName())) {
+            return Result.error("请先完善信息!");
+        }
+        handleExpertDto.setCellphone(clientLoginUser.getCellphone());
+        handleExpertDto.setExpertName(clientLoginUser.getName());
         BeanUtils.copyProperties(expertDto, handleExpertDto);
         return purchaserClient.completePurchaserExpertInfo(handleExpertDto);
     }
@@ -165,7 +185,7 @@ public class PurchaserController extends BaseController {
      * @return:
      * @date:2018/9/19
      */
-    @ApiOperation(value = "启用或禁用员工")
+    @ApiOperation(value = "条件查询专家信息")
     @PostMapping(value = "/clientqueryExperts")
     public Result<List<PurchaserExpertVo>> queryExperts(@RequestBody ClientQueryExpertDto dto) {
         QueryExpertDto queryExpertDto = new QueryExpertDto();
@@ -183,11 +203,19 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "添加代理机构")
     @PostMapping(value = "/clientcreateAgencyUserInfo")
-    Result<Boolean> createAgencyUserInfo(@RequestBody  ClientHandleAgnecy handleAgnecy){
+    Result<Boolean> createAgencyUserInfo(@RequestBody ClientHandleAgnecy handleAgnecy) {
         HandleAgnecy agnecy = new HandleAgnecy();
-        BeanUtils.copyProperties(handleAgnecy,agnecy);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        agnecy.setOperatorId(clientLoginUser.getUserId());
+        agnecy.setCompanyId(clientLoginUser.getCompanyId());
+        BeanUtils.copyProperties(handleAgnecy, agnecy);
         return purchaserClient.createAgencyUserInfo(agnecy);
-    };
+    }
+
+    ;
 
     /**
      * 完善代理机构detail
@@ -195,13 +223,18 @@ public class PurchaserController extends BaseController {
      * @param handleAgnecy
      * @return
      */
-    @ApiOperation(value = "完善代理机构detail")
+    @ApiOperation(value = "完善代理机构detail+代理机构登录完善自己信息")
     @PostMapping(value = "/clientupdateAgencyDetail")
-    Result<Boolean> updateAgencyDetail(@RequestBody  ClientHandleAgnecy handleAgnecy){
+    Result<Boolean> updateAgencyDetail(@RequestBody ClientHandleAgnecy handleAgnecy) {
         HandleAgnecy agnecy = new HandleAgnecy();
-        BeanUtils.copyProperties(handleAgnecy,agnecy);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        agnecy.setCellphone(clientLoginUser.getCellphone());
+        agnecy.setName(clientLoginUser.getName());
+        BeanUtils.copyProperties(handleAgnecy, agnecy);
         return purchaserClient.updateAgencyDetail(agnecy);
-    };
+    }
+
+    ;
 
     /**
      * @author :winlin
@@ -212,11 +245,13 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "添加黑名单-agency")
     @PostMapping(value = "/clientupdateTrustListForAgency")
-    public Result<Boolean> updateTrustListForAgency(@RequestBody ClientHandleTrustList trustList){
+    public Result<Boolean> updateTrustListForAgency(@RequestBody ClientHandleTrustList trustList) {
         HandleTrustList handleTrustList = new HandleTrustList();
-        BeanUtils.copyProperties(trustList,handleTrustList);
+        BeanUtils.copyProperties(trustList, handleTrustList);
         return purchaserClient.updateTrustListForAgency(handleTrustList);
-    };
+    }
+
+    ;
 
     /**
      * @author :winlin
@@ -227,11 +262,18 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "根据条件查询代理机构")
     @PostMapping(value = "/clientqueryAgenciesByCriteria")
-    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody ClientQueryAgencyDto agencyDto){
+    public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody ClientQueryAgencyDto agencyDto) {
         QueryAgencyDto queryAgencyDto = new QueryAgencyDto();
-        BeanUtils.copyProperties(agencyDto,queryAgencyDto);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        queryAgencyDto.setPurchaserId(clientLoginUser.getCompanyId());
+        BeanUtils.copyProperties(agencyDto, queryAgencyDto);
         return purchaserClient.queryAgenciesByCriteria(queryAgencyDto);
-    };
+    }
+
+    ;
 
 
     /**
@@ -242,11 +284,19 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = " 添加供应商")
     @PostMapping(value = "/clientcreateSupplierByPurchaser")
-    Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleOperator){
+    Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleOperator) {
         HandleSupplierDto handleSupplierDto = new HandleSupplierDto();
-        BeanUtils.copyProperties(handleOperator,handleSupplierDto);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        handleSupplierDto.setOperatorId(clientLoginUser.getUserId());
+        handleSupplierDto.setCompanyId(clientLoginUser.getCompanyId());
+        BeanUtils.copyProperties(handleOperator, handleSupplierDto);
         return purchaserClient.createSupplierByPurchaser(handleSupplierDto);
-    };
+    }
+
+    ;
 
     /**
      * 完善供货商信息detail
@@ -254,13 +304,21 @@ public class PurchaserController extends BaseController {
      * @param dto
      * @return
      */
-    @ApiOperation(value = "完善供货商信息detail")
+    @ApiOperation(value = "完善供货商信息detail+供货商登录完善")
     @PostMapping(value = "/clientupdateSupplierDetail")
-    Result<Boolean> updateSupplierDetail(@RequestBody  ClientPurchaserHandleSupplierDto dto){
+    Result<Boolean> updateSupplierDetail(@RequestBody ClientPurchaserHandleSupplierDto dto) {
         PurchaserHandleSupplierDto purchaserHandleSupplierDto = new PurchaserHandleSupplierDto();
-        BeanUtils.copyProperties(dto,purchaserHandleSupplierDto);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        purchaserHandleSupplierDto.setCellphone(clientLoginUser.getCellphone());
+        purchaserHandleSupplierDto.setName(clientLoginUser.getName());
+        BeanUtils.copyProperties(dto, purchaserHandleSupplierDto);
         return purchaserClient.updateSupplierDetail(purchaserHandleSupplierDto);
-    };
+    }
+
+    ;
 
     /**
      * @author :winlin
@@ -271,11 +329,13 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "添加黑名单-supplier")
     @PostMapping(value = "/clientupdateTrustListForSupplier")
-    public Result<Boolean> updateTrustListForSupplier(@RequestBody ClientHandleTrustList trustList){
+    public Result<Boolean> updateTrustListForSupplier(@RequestBody ClientHandleTrustList trustList) {
         HandleTrustList handleTrustList = new HandleTrustList();
-        BeanUtils.copyProperties(trustList,handleTrustList);
+        BeanUtils.copyProperties(trustList, handleTrustList);
         return purchaserClient.updateTrustListForSupplier(handleTrustList);
-    };
+    }
+
+    ;
 
     /**
      * @author :winlin
@@ -286,11 +346,18 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "依据条件检索供应商")
     @PostMapping(value = "/clientquerySupplierByCriterias")
-    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody ClientQuerySupplierDto supplierDto){
-            QuerySupplierDto querySupplierDto = new QuerySupplierDto();
-            BeanUtils.copyProperties(supplierDto,querySupplierDto);
-            return purchaserClient.querySupplierByCriterias(querySupplierDto);
-    };
+    public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody ClientQuerySupplierDto supplierDto) {
+        QuerySupplierDto querySupplierDto = new QuerySupplierDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if (StringUtils.isEmpty(clientLoginUser.getCompanyId())) {
+            return Result.error("请先完善信息!");
+        }
+        querySupplierDto.setPurchaserId(clientLoginUser.getCompanyId());
+        BeanUtils.copyProperties(supplierDto, querySupplierDto);
+        return purchaserClient.querySupplierByCriterias(querySupplierDto);
+    }
+
+    ;
 
 
     /**
@@ -301,11 +368,16 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "完善采购人信息detail")
     @PostMapping(value = "/clientupdatePurchaserDetail")
-    Result<Boolean> updatePurchaserDetail(@RequestBody  ClientHandleRegisterPurchaser handlePurchaser){
+    Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandleRegisterPurchaser handlePurchaser) {
         HandleRegisterPurchaser handleRegisterPurchaser = new HandleRegisterPurchaser();
-        BeanUtils.copyProperties(handlePurchaser,handleRegisterPurchaser);
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        handleRegisterPurchaser.setCellphone(clientLoginUser.getCellphone());
+        handleRegisterPurchaser.setName(clientLoginUser.getName());
+        BeanUtils.copyProperties(handlePurchaser, handleRegisterPurchaser);
         return purchaserClient.updatePurchaserDetail(handleRegisterPurchaser);
-    };
+    }
+
+    ;
 
 
     /**
@@ -317,11 +389,13 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "根据id 查询员工")
     @PostMapping(value = "/clientqueryEmployeeDto")
-    public Result<PurchaserEmplyeeVo> queryEmployeeDto(@RequestBody ClientQueryDto dto){
+    public Result<PurchaserEmplyeeVo> queryEmployeeDto(@RequestBody ClientQueryDto dto) {
         QueryDto queryDto = new QueryDto();
-        BeanUtils.copyProperties(dto,queryDto);
+        BeanUtils.copyProperties(dto, queryDto);
         return purchaserClient.queryEmployeeDto(queryDto);
-    };
+    }
+
+    ;
 
 
     /**
@@ -333,11 +407,13 @@ public class PurchaserController extends BaseController {
      */
     @ApiOperation(value = "根据id查询供应商信息")
     @PostMapping(value = "/clientquerySuppliersDto")
-    public Result<SupplierDetailVo> querySuppliersDto(@RequestBody ClientQueryDto dto){
+    public Result<SupplierDetailVo> querySuppliersDto(@RequestBody ClientQueryDto dto) {
         QueryDto queryDto = new QueryDto();
-        BeanUtils.copyProperties(dto,queryDto);
+        BeanUtils.copyProperties(dto, queryDto);
         return purchaserClient.querySuppliersDto(queryDto);
-    };
+    }
+
+    ;
 
     /**
      * @author :winlin
@@ -350,7 +426,7 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientqueryExpertDetailById")
     public Result<PurchaserExpertDetailVo> queryExpertDetailById(@RequestBody ClientQueryDto dto) {
         QueryDto queryDto = new QueryDto();
-        BeanUtils.copyProperties(dto,queryDto);
+        BeanUtils.copyProperties(dto, queryDto);
         return purchaserClient.queryExpertDetailById(queryDto);
     }
 

@@ -60,7 +60,7 @@ public class AgencyController implements FacadeAgencyService {
 
     @Override
     public Result<AgencyEmployeeVo> queryEmployeeById(@RequestBody QueryDto dto) {
-        return null;
+        return agencyService.queryEmployeeById(dto);
     }
 
     @Override

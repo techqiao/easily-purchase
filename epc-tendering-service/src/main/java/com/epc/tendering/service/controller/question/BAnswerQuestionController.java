@@ -43,8 +43,4 @@ public class BAnswerQuestionController implements FacadeAnswerQuestionService {
     }
 
 
-    @Override
-    public Result<List<WinBidVO>> getwinBids() {
-        return bAnswerQuestionService.getwinBids();
-    }
 }

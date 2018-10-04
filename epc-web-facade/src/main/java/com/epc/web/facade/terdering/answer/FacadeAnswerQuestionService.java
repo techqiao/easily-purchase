@@ -6,8 +6,6 @@ import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -37,7 +35,6 @@ public interface FacadeAnswerQuestionService {
     Result<Boolean> replyQuestion(@RequestBody HandleReplyQuestion handleReplyQuestion);
 
 
-
     /**
      * 澄清公示
      * @param QueryPublicityDTO
@@ -45,11 +42,4 @@ public interface FacadeAnswerQuestionService {
      */
     @PostMapping(value ="getPublicityListOfficialNetwork",consumes = "application/json; charset=UTF-8" )
     Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO);
-
-    /**
-     * 中标公示
-     * @return
-     */
-    @GetMapping(value ="getwinBids" )
-    Result<List<WinBidVO>> getwinBids();
 }

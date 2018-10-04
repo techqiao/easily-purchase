@@ -7,7 +7,6 @@ import com.epc.web.client.controller.terdering.project.query.ClientQueryProjectI
 import com.epc.web.client.remoteApi.terdering.project.ProjectClient;
 import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
 import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : 项目接口服务
@@ -55,7 +54,7 @@ public class ProjectBasicInfoController extends BaseController {
 
     @ApiOperation(value = "项目列表")
     @PostMapping(value="/getProjectList")
-    public Result<List<ProjectBasicInfoVO>> getProjectList(@RequestBody ClientQueryProjectInfoDTO clientQueryProjectInfoDTO){
+    public Result<Map<String, Object>> getProjectList(@RequestBody ClientQueryProjectInfoDTO clientQueryProjectInfoDTO){
         QueryProjectInfoDTO queryProjectInfoDTO = new QueryProjectInfoDTO();
         BeanUtils.copyProperties(clientQueryProjectInfoDTO, queryProjectInfoDTO);
         queryProjectInfoDTO.setPurchaserId(getLoginUser().getUserId());

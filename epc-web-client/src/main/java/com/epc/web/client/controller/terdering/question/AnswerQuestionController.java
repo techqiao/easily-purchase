@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -55,6 +56,15 @@ public class AnswerQuestionController extends BaseController {
         QueryPublicityDTO queryPublicityDTO = new QueryPublicityDTO();
         queryPublicityDTO.setType(type);
         return answerQuestionClient.getPublicityListOfficialNetwork(queryPublicityDTO);
+    }
+
+
+    @ApiOperation(value = "监控 : 问题答复列表")
+    @PostMapping(value = "getProcurementProjectAnswerQuestionList")
+    public Result<Map<String,Object>> getProcurementProjectAnswerQuestionList(@RequestBody Long procurementProjectId) {
+        QueryAnswerQuestionDTO queryAnswerQuestionDTO = new QueryAnswerQuestionDTO();
+        queryAnswerQuestionDTO.setProcurementProjectId(procurementProjectId);
+        return answerQuestionClient.getProcurementProjectAnswerQuestionList(queryAnswerQuestionDTO);
     }
 
 }

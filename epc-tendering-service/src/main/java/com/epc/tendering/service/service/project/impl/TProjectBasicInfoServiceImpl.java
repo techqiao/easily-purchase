@@ -83,11 +83,12 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
             subCriteria.andPurchaserIdEqualTo(queryProjectInfoDTO.getPurchaserId());
         }
         criteria.setOrderByClause("id desc");
-        List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExampleWithRowbounds(criteria, queryProjectInfoDTO.getRowBounds());
+        List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExample(criteria);
         List<ProjectBasicInfoVO> returnList = new ArrayList<>();
         tProjectBasicInfoList.forEach(item -> {
             ProjectBasicInfoVO projectBasicInfoVO = new ProjectBasicInfoVO();
             BeanUtils.copyProperties(item, projectBasicInfoVO);
+            projectBasicInfoVO.setName(item.getCreator());
             returnList.add(projectBasicInfoVO);
         });
         return Result.success(returnList);

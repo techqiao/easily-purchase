@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -54,7 +55,7 @@ public class AnnouncementController extends BaseController {
 
     @ApiOperation(value = "监控 ： 项目经理查询相关公告")
     @PostMapping(value = "getPurchaseProjectAnnouncementList", consumes = "application/json; charset=UTF-8")
-    public Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody ClientQueryAnnouncement clientQueryAnnouncement){
+    public Result<Map<String, Object>> getPurchaseProjectAnnouncementList(@RequestBody ClientQueryAnnouncement clientQueryAnnouncement){
         QueryAnnouncement queryAnnouncement = new QueryAnnouncement();
         BeanUtils.copyProperties(clientQueryAnnouncement, queryAnnouncement);
         return announcementClient.getPurchaseProjectAnnouncementList(queryAnnouncement);

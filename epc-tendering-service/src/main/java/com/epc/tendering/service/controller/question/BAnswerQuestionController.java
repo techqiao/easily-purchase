@@ -1,19 +1,23 @@
 package com.epc.tendering.service.controller.question;
 
 import com.epc.common.Result;
+import com.epc.tendering.service.controller.common.BaseController;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.FacadeAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
+import com.epc.web.facade.terdering.answer.vo.MonitorAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -21,7 +25,7 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @RestController
-public class BAnswerQuestionController implements FacadeAnswerQuestionService {
+public class BAnswerQuestionController extends BaseController implements FacadeAnswerQuestionService {
 
     @Autowired
     private BAnswerQuestionService bAnswerQuestionService;
@@ -42,5 +46,12 @@ public class BAnswerQuestionController implements FacadeAnswerQuestionService {
         return bAnswerQuestionService.getPublicityListOfficialNetwork(QueryPublicityDTO);
     }
 
+    @Override
+    public Result<Map<String, Object>> getProcurementProjectAnswerQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
+        PageHelper.startPage(queryAnswerQuestionDTO.getPage(),queryAnswerQuestionDTO.getRows());
+        Result<List<MonitorAnswerQuestionVO>> procurementProjectAnswerQuestionList = bAnswerQuestionService.getProcurementProjectAnswerQuestionList(queryAnswerQuestionDTO);
+        PageInfo<MonitorAnswerQuestionVO> pageInfo = new PageInfo<>(procurementProjectAnswerQuestionList.getData());
+        return Result.success(getDataTable(pageInfo));
+    }
 
 }

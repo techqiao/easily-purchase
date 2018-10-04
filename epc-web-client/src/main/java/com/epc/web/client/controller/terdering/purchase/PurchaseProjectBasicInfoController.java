@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -113,7 +114,7 @@ public class PurchaseProjectBasicInfoController extends BaseController {
 
     @ApiOperation(value = "查询采购项目列表")
     @PostMapping(value = "getPurchaseProjectList")
-    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(@RequestBody ClientQueryPurchaseBasicInfoVO clientQueryPurchaseBasicInfoVO) {
+    public Result<Map<String, Object>> getPurchaseProjectList(@RequestBody ClientQueryPurchaseBasicInfoVO clientQueryPurchaseBasicInfoVO) {
         QueryPurchaseBasicInfoVO pojo = new QueryPurchaseBasicInfoVO();
         BeanUtils.copyProperties(clientQueryPurchaseBasicInfoVO, pojo);
         return purchaseProjectClient.getPurchaseProjectList(pojo);

@@ -9,6 +9,7 @@ import com.epc.web.facade.terdering.answer.vo.PublicityVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : 采购项目问题相关接口
@@ -41,4 +42,13 @@ public interface FacadeAnswerQuestionService {
      */
     @PostMapping(value ="getPublicityListOfficialNetwork",consumes = "application/json; charset=UTF-8" )
     Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO);
+
+
+    /**
+     * 监控 : 问题答复列表
+     * @param queryAnswerQuestionDTO
+     * @return
+     */
+    @PostMapping(value ="getProcurementProjectAnswerQuestionList",consumes = "application/json; charset=UTF-8")
+    Result<Map<String, Object>> getProcurementProjectAnswerQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 }

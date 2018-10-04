@@ -9,6 +9,7 @@ import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -30,6 +31,11 @@ public class AnswerQuestionHystrix implements FacadeAnswerQuestionService {
 
     @Override
     public Result<List<PublicityVO>> getPublicityListOfficialNetwork(QueryPublicityDTO QueryPublicityDTO) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Map<String, Object>> getProcurementProjectAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
         return Result.hystrixError();
     }
 }

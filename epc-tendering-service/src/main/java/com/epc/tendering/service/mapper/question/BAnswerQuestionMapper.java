@@ -43,6 +43,12 @@ public interface BAnswerQuestionMapper {
 
     int updateByPrimaryKey(BAnswerQuestion record);
 
+    /**
+     * 通过采购项目ID分组查询相关参数
+     * @param procurementProjectId 采购项目ID
+     * @return
+     */
     @Select("select b.problem,b.answer,b.create_at as startTime from b_answer_question b where b.procurement_project_id ={procurementProjectId} group by b.procurement_project_id")
     List<PublicitySubVO> getListGroupByProcurementProjectId(Long procurementProjectId);
+
 }

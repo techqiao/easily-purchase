@@ -10,7 +10,6 @@ import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -58,10 +57,4 @@ public class AnswerQuestionController extends BaseController {
         return answerQuestionClient.getPublicityListOfficialNetwork(queryPublicityDTO);
     }
 
-    @ApiOperation(value = "官网：中标公示")
-    @GetMapping(value = "getwinBids")
-    public Result<List<WinBidVO>> getwinBids(){
-        return  answerQuestionClient.getwinBids();
-
-    }
 }

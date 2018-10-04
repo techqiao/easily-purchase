@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,7 @@ public class MonitoringFileController extends BaseController {
 
     @ApiOperation(value = "文件监控列表")
     @PostMapping(value = "ListBMonitoringFile", consumes = "application/json; charset=UTF-8")
-    public  Result<List<MonitorFileVO>> ListBMonitoringFile(ClientMonitoringFileDTO dto){
+    public  Result<List<MonitorFileVO>> ListBMonitoringFile(@RequestBody ClientMonitoringFileDTO dto){
         QueryMonitoringFileDTO queryMonitoringFileDTO=new QueryMonitoringFileDTO();
         BeanUtils.copyProperties(dto,queryMonitoringFileDTO);
         return  monitorFileClient.ListBMonitoringFile(queryMonitoringFileDTO);
@@ -43,11 +44,11 @@ public class MonitoringFileController extends BaseController {
 
     @ApiOperation(value = "新增文件监控记录")
     @PostMapping(value = "createMonitoringFile", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> createMonitoringFile(HandleMonitoringFile dto){
+    public Result<Boolean> createMonitoringFile(@RequestBody HandleMonitoringFile dto){
         HandleMonitoringFile handleMonitoringFile=new HandleMonitoringFile();
         BeanUtils.copyProperties(handleMonitoringFile,dto);
-        dto.setOperateId(getLoginUser().getUserId());
-        dto.setOperator(getLoginUser().getName());
+        dto.setOperateId(1L);
+        dto.setOperator("lin");
         String personType=null;
         //运营商1,代理商2,供货商3,采购商4
         switch (getLoginUser().getType()){

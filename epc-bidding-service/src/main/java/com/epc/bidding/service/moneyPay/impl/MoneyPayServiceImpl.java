@@ -1,9 +1,7 @@
 package com.epc.bidding.service.moneyPay.impl;
+import java.math.BigDecimal;
 import com.epc.bidding.domain.bidding.*;
-import com.epc.bidding.mapper.bidding.BBidsGuaranteeAmountMapper;
-import com.epc.bidding.mapper.bidding.TPurchaseProjectFilePayMapper;
-import com.epc.bidding.mapper.bidding.TServiceMoneyPayMapper;
-import com.epc.bidding.mapper.bidding.TServiceMoneyPayRecordMapper;
+import com.epc.bidding.mapper.bidding.*;
 import com.epc.bidding.service.moneyPay.MoneyPayService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -11,6 +9,7 @@ import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
+import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,8 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     TPurchaseProjectFilePayMapper tPurchaseProjectFilePayMapper;
     @Autowired
     BBidsGuaranteeAmountMapper bBidsGuaranteeAmountMapper;
+    @Autowired
+    BBidOpeningPayMapper bBidOpeningPayMapper;
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -42,10 +43,26 @@ public class MoneyPayServiceImpl implements MoneyPayService {
      * @return
      */
     @Override
+    public Result<List<GuarantyListVo>> getMoneyPayList(QueryMoneyPayDTO dto){
+        BBidOpeningPayCriteria criteria=new BBidOpeningPayCriteria();
+        BBidOpeningPayCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andTendererCompanyIdEqualTo(dto.getCompanyId());
+        cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //参与的项目列表
+        List<GuarantyListVo> voList=new ArrayList<>();
+        List<BBidOpeningPay> result=bBidOpeningPayMapper.selectByExample(criteria);
+        for(BBidOpeningPay entity:result){
+            //查询缴费记录
+            Long bidId=entity.getBidId();
+
+        }
+        return Result.success(voList);
+
+    }
+   /* @Override
     public Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto){
         TServiceMoneyPayCriteria criteria=new TServiceMoneyPayCriteria();
         TServiceMoneyPayCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
         cubCriteria.andCompanyIdEqualTo(dto.getCompanyId());
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TServiceMoneyPay> result=tServiceMoneyPayMapper.selectByExample(criteria);
@@ -56,7 +73,7 @@ public class MoneyPayServiceImpl implements MoneyPayService {
             voList.add(vo);
         }
         return Result.success(voList);
-    }
+    }*/
 
 
     /**

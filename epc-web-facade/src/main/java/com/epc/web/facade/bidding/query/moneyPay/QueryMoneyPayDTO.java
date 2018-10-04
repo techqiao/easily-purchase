@@ -11,9 +11,8 @@ import java.math.BigDecimal;
 @Data
 public class QueryMoneyPayDTO implements Serializable {
 
-    private Long procurementProjectId;
-
     private Long companyId;
 
+    private Long operateId;
 
 }

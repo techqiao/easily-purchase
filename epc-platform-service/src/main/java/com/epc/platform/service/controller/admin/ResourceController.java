@@ -1,5 +1,4 @@
 package com.epc.platform.service.controller.admin;
-import java.util.Date;
 
 import com.epc.administration.facade.admin.AdminResourceService;
 import com.epc.administration.facade.admin.handle.ResourceHandle;
@@ -7,22 +6,15 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.Tree;
 import com.epc.platform.service.domain.admin.SysAdminResource;
-import com.epc.platform.service.domain.admin.SysAdminRoleResource;
-import com.epc.platform.service.domain.admin.SysAdminRoleResourceCriteria;
-import com.epc.platform.service.mapper.admin.SysAdminRoleResourceMapper;
 import com.epc.platform.service.service.admin.SysAdminResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +31,6 @@ public class ResourceController extends BaseController implements AdminResourceS
 
     @Autowired
     private SysAdminResourceService sysAdminResourceService;
-    @Autowired
-    private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
 
     /**获取菜单信息
      * @param phone

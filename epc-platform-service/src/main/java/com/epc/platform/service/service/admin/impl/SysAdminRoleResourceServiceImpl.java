@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 16:29
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 @Service
 public class SysAdminRoleResourceServiceImpl implements SysAdminRoleResourceService {
@@ -21,6 +21,10 @@ public class SysAdminRoleResourceServiceImpl implements SysAdminRoleResourceServ
     @Autowired
     private SysAdminRoleResourceMapper sysAdminRoleResourceMapper;
 
+    /**
+     * 删除角色对应资源
+     * @param roleIds
+     */
     @Override
     public void deleteRoleResourceByRoleId(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(","));

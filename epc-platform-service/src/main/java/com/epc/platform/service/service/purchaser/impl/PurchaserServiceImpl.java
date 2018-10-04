@@ -152,7 +152,6 @@ public class PurchaserServiceImpl implements PurchaserService {
                 }
 
             }
-
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
@@ -161,9 +160,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException updatePurchaserDetailInfo : {}", e);
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("BusinessException updatePurchaserDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }

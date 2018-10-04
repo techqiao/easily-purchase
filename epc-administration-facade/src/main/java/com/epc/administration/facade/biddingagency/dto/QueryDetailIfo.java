@@ -1,10 +1,7 @@
 package com.epc.administration.facade.biddingagency.dto;
 
-import com.epc.administration.facade.biddingagency.handle.BaseDetailIfo;
 import com.epc.common.QueryRequest;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -14,6 +11,12 @@ import java.io.Serializable;
 @Data
 public class QueryDetailIfo  extends QueryRequest implements Serializable {
     private static final long serialVersionUID = 5533344554793829363L;
+    /**
+     * 条件
+     */
     private String where;
+    /**
+     * 状态
+     */
     private Integer status;
 }

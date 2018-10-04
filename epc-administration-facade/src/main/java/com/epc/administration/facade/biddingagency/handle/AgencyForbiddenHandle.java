@@ -13,8 +13,12 @@ import java.io.Serializable;
 @Data
 public class AgencyForbiddenHandle implements Serializable {
     private static final long serialVersionUID = 1728901411823109032L;
-
+    /**
+     * 主键id
+     */
     private  Long id;
-
+    /**
+     * 是否锁定 0 启用 1 锁定
+     */
     private Integer isForbidden;
 }

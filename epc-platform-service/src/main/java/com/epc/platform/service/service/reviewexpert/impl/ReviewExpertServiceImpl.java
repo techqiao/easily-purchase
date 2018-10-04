@@ -65,10 +65,8 @@ public class ReviewExpertServiceImpl implements ExpertService {
             return Result.success(tExpertBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException insertExpertBasicInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        } catch (Exception e) {
-            LOGGER.error("BusinessException insertExpertBasicInfo : {}", e);
-            return Result.error(e.getMessage());
         }
     }
 
@@ -180,6 +178,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             return Result.success(tExpertBasicInfoMapper.updateByPrimaryKeySelective(tExpertBasicInfo)>0);
         }catch (BusinessException e){
             LOGGER.error("BusinessException deleteExpertDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -244,6 +243,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             return Result.success(expertDetailVO);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException queryExpertDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
         }
     }

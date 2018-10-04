@@ -15,7 +15,13 @@ public class ExaminePurchaserHandle implements Serializable {
 
     private static final long serialVersionUID = 2422282308712763793L;
 
+    /**
+     * 采购人用户id
+     */
     private Long purchaserId;
 
+    /**
+     * 采购人用户状态
+     */
     private int state;
 }

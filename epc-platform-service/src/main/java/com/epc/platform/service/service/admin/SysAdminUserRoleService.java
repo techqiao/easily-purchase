@@ -3,7 +3,7 @@ package com.epc.platform.service.service.admin;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 16:32
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 public interface SysAdminUserRoleService {
     /**

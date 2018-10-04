@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 19:27
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 public interface SysAdminDeptService {
 

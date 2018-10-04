@@ -11,7 +11,13 @@ import lombok.Data;
 @Data
 public class ExamineExpertHandle {
 
+    /**
+     * 评审专家用户id
+     */
     private Long expertId;
 
+    /**
+     * 评审专家用户状态
+     */
     private int state;
 }

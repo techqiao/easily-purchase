@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 19:27
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -35,6 +35,10 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     @Autowired
     private SysAdminDeptMapper sysAdminDeptMapper;
 
+    /**
+     * 获取部门树
+     * @return
+     */
     @Override
     public Tree<SysAdminDept> getDeptTree() {
         List<Tree<SysAdminDept>> trees = new ArrayList<>();
@@ -49,6 +53,11 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
         return TreeUtils.build(trees);
     }
 
+    /**
+     * 获取所有部门
+     * @param dept
+     * @return
+     */
     @Override
     public List<SysAdminDept> findAllDepts(DeptHandle dept) {
         SysAdminDept sysAdminDept = new SysAdminDept();
@@ -72,11 +81,21 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
         }
     }
 
+    /**
+     * 根据部门id查询对应部门信息
+     * @param deptId
+     * @return
+     */
     @Override
     public SysAdminDept findById(Long deptId) {
         return sysAdminDeptMapper.selectByPrimaryKey(deptId);
     }
 
+    /**
+     * 根据部门name查询对应部门信息
+     * @param deptName
+     * @return
+     */
     @Override
     public SysAdminDept findByName(String deptName) {
         final SysAdminDeptCriteria criteria = new SysAdminDeptCriteria();
@@ -86,6 +105,10 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
         return list.isEmpty() ? null : list.get(0);
     }
 
+    /**
+     * 添加部门
+     * @param dept
+     */
     @Override
     public void addDept(DeptHandle dept) {
         Date date = new Date();
@@ -102,6 +125,10 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
         this.sysAdminDeptMapper.insertSelective(sysAdminDept);
     }
 
+    /**
+     * 删除部门
+     * @param deptIds
+     */
     @Override
     public void deleteDepts(String deptIds) {
         List<String> list = Arrays.asList(deptIds.split(","));
@@ -111,6 +138,10 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
         this.sysAdminDeptMapper.changeToTop(list);
     }
 
+    /**
+     * 修改部门
+     * @param dept
+     */
     @Override
     public void updateDept(DeptHandle dept) {
         SysAdminDept sysAdminDept = new SysAdminDept();
@@ -120,6 +151,11 @@ public class SysAdminDeptServiceImpl implements SysAdminDeptService {
     }
 
 
+    /**
+     * 校验部门
+     * @param list
+     * @return
+     */
     public int batchDeleteDepts(List<Long> list) {
         final SysAdminDeptCriteria criteria = new SysAdminDeptCriteria();
         criteria.createCriteria().andIdIn(list);

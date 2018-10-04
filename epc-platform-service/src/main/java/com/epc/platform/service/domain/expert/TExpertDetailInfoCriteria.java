@@ -74,7 +74,7 @@ public class TExpertDetailInfoCriteria {
     }
 
     /**
-     * t_expert_detail_info 2018-09-28
+     * t_expert_detail_info 2018-10-03
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -766,13 +766,83 @@ public class TExpertDetailInfoCriteria {
             addCriterion("is_deleted not between", value1, value2, "isDeleted");
             return (Criteria) this;
         }
+
+        public Criteria andCompanyAddressIsNull() {
+            addCriterion("company_address is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressIsNotNull() {
+            addCriterion("company_address is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressEqualTo(String value) {
+            addCriterion("company_address =", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressNotEqualTo(String value) {
+            addCriterion("company_address <>", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressGreaterThan(String value) {
+            addCriterion("company_address >", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressGreaterThanOrEqualTo(String value) {
+            addCriterion("company_address >=", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressLessThan(String value) {
+            addCriterion("company_address <", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressLessThanOrEqualTo(String value) {
+            addCriterion("company_address <=", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressLike(String value) {
+            addCriterion("company_address like", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressNotLike(String value) {
+            addCriterion("company_address not like", value, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressIn(List<String> values) {
+            addCriterion("company_address in", values, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressNotIn(List<String> values) {
+            addCriterion("company_address not in", values, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressBetween(String value1, String value2) {
+            addCriterion("company_address between", value1, value2, "companyAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyAddressNotBetween(String value1, String value2) {
+            addCriterion("company_address not between", value1, value2, "companyAddress");
+            return (Criteria) this;
+        }
     }
 
     /**
      * 描述:t_expert_detail_info表的实体类
      * @version
      * @author:  01
-     * @创建时间: 2018-09-28
+     * @创建时间: 2018-10-03
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -782,7 +852,7 @@ public class TExpertDetailInfoCriteria {
     }
 
     /**
-     * t_expert_detail_info 2018-09-28
+     * t_expert_detail_info 2018-10-03
      */
     public static class Criterion {
         private String condition;

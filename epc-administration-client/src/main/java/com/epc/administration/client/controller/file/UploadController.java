@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,11 +44,9 @@ public class UploadController {
         if (dirName == null || fileName == null) {
             return JSON.toJSONString(Result.error("文件夹名或者文件名不能为空"));
         }
-
         //设置相对目录 文件存储的目录 格式为根目录 + 相对目录 + (文件类型目录 + dir目录)
         String relativePath = dirName + "\\";
         String localPath = ROOT + relativePath;
-
         //给文件构造名称 格式为 文件名_timestamp_uuid(8位) 逗号分割开
         String original = StringUtils.substringBeforeLast(fileName, ".");
         String suffix = StringUtils.substringAfterLast(fileName, ".");

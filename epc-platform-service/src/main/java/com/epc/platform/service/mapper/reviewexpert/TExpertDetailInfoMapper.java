@@ -32,6 +32,7 @@ public interface TExpertDetailInfoMapper {
     int updateByPrimaryKeySelective(TExpertDetailInfo record);
 
     int updateByPrimaryKey(TExpertDetailInfo record);
+
     /**
      * 分页查询
      *

@@ -14,6 +14,7 @@ import com.epc.administration.facade.purchaser.handle.ExaminePurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserForbiddenHandle;
 import com.epc.administration.facade.purchaser.handle.PurchaserHandle;
 import com.epc.administration.facade.purchaser.handle.UserBasicInfo;
+import com.epc.administration.facade.purchaser.vo.PurchaserDetailVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,7 +69,7 @@ public class PurchaserUserController extends BaseController {
     }
     @ApiOperation(value = "采购人查询资料",notes = "采购人查询资料")
     @GetMapping(value = "queryPurchaserDetailInfo")
-    public Result queryPurchaserDetailInfo(@RequestParam("whereId") Long whereId) {
+    public Result<PurchaserDetailVO> queryPurchaserDetailInfo(@RequestParam("whereId") Long whereId) {
         return purchaserClient.queryPurchaserDetailInfo(whereId);
     }
 

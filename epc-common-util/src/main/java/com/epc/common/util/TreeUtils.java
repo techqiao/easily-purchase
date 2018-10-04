@@ -43,11 +43,11 @@ public class TreeUtils {
 		root.setChildren(topNodes);
 		String text ="根节点";
 		try {
-			text = new String(text.getBytes("UTF-8"),"UTF-8");
+			String newText = new String(text.getBytes("UTF-8"),"UTF-8");
+			root.setText(newText);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		root.setText(text);
 		Map<String, Object> state = new HashMap<>(16);
 		state.put("opened", true);
 		root.setState(state);

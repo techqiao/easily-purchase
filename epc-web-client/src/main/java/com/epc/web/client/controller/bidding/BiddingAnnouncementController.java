@@ -38,7 +38,7 @@ public class BiddingAnnouncementController extends BaseController {
     }
 
 
-    @GetMapping(value = "AdvanceNoticeDetail", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "AdvanceNoticeDetail")
     @ApiOperation(value = "查询预告详情",tags = "查询预告详情")
     Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(@RequestParam("id")  Long id){
         return noticeClient.AdvanceNoticeDetail(id);

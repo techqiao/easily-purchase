@@ -1,14 +1,14 @@
 package com.epc.platform.service.service.reviewexpert.impl;
-
+import com.epc.administration.facade.reviewexpert.vo.AttachmentVO;
 import com.epc.administration.facade.reviewexpert.dto.QueryDetailIfo;
 import com.epc.administration.facade.reviewexpert.handle.*;
+import com.epc.administration.facade.reviewexpert.vo.ExpertDetailVO;
 import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.platform.service.domain.expert.*;
 import com.epc.platform.service.mapper.reviewexpert.TExpertAttachmentMapper;
 import com.epc.platform.service.mapper.reviewexpert.TExpertBasicInfoMapper;
 import com.epc.platform.service.mapper.reviewexpert.TExpertDetailInfoMapper;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
-
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +46,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
 
     /**
      * 注册专家
-     *
      * @param userBasicInfo
      * @return
      */
@@ -74,7 +74,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
 
     /**
      * 完善专家信息
-     *
      * @param reviewExpertHandle
      * @return
      */
@@ -83,22 +82,27 @@ public class ReviewExpertServiceImpl implements ExpertService {
     public Result<Boolean> insertExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
         TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
         tExpertDetailInfo.setExpertId(reviewExpertHandle.getId());
-        tExpertDetailInfo.setCompanyName(reviewExpertHandle.getName());
-        tExpertDetailInfo.setUniformCreditCode(reviewExpertHandle.getUniformCreditCode());
-        tExpertDetailInfo.setPublicBankName(reviewExpertHandle.getPublicBankName());
-        tExpertDetailInfo.setPublicBanAccountNumber(reviewExpertHandle.getPublicBanAccountNumber());
+        tExpertDetailInfo.setCompanyName(reviewExpertHandle.getCompanyName());
         tExpertDetailInfo.setCreateAt(new Date());
         tExpertDetailInfo.setUpdateAt(new Date());
         tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
+        tExpertDetailInfo.setCompanyAddress(reviewExpertHandle.getCompanyAddress());
         TExpertAttachment attachment = new TExpertAttachment();
         attachment.setExpertId(reviewExpertHandle.getId());
         attachment.setCreateAt(new Date());
         attachment.setUpdateAt(new Date());
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         try {
+           //如果已存在详细信息
+            TExpertDetailInfoCriteria tExpertDetailInfoCriteria = new TExpertDetailInfoCriteria();
+            tExpertDetailInfoCriteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
+            List<TExpertDetailInfo> tExpertDetailInfos = tExpertDetailInfoMapper.selectByExample(tExpertDetailInfoCriteria);
             //完善补全信息
-            tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
+            if(!tExpertDetailInfos.isEmpty()){
+                tExpertDetailInfoMapper.updateByExample(tExpertDetailInfo,tExpertDetailInfoCriteria);
+            }else {
+                tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
+            }
             //上传身份证正面
             attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardPositive());
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
@@ -106,6 +110,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             //上传身份证反面
             attachment.setCertificateFilePath(reviewExpertHandle.getLegalIdCardOther());
             attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            tExpertAttachmentMapper.insertSelective(attachment);
             for (AttachmentHandle attachmentHandle : reviewExpertHandle.getAttachmentHandleList()) {
                 attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
                 attachment.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
@@ -118,9 +123,12 @@ public class ReviewExpertServiceImpl implements ExpertService {
             tExpertBasicInfo.setName(reviewExpertHandle.getName());
             tExpertBasicInfo.setProfession(reviewExpertHandle.getProfession());
             tExpertBasicInfo.setLevel(reviewExpertHandle.getLevel());
+            tExpertBasicInfo.setCellphone(reviewExpertHandle.getCellPhone());
             tExpertBasicInfo.setCircularDt(reviewExpertHandle.getCircularDt());
             tExpertBasicInfo.setCircularMethod(reviewExpertHandle.getCircularMethod());
             tExpertBasicInfo.setOtherInformation(reviewExpertHandle.getOtherInformation());
+            tExpertBasicInfo.setWorkingYears(reviewExpertHandle.getWorkingYears());
+            tExpertBasicInfo.setPositional(reviewExpertHandle.getPositional());
             tExpertBasicInfo.setState(Const.STATE.COMMITTED);
             tExpertBasicInfo.setUpdateAt(new Date());
             tExpertBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -135,7 +143,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
-
     /**
      * 修改专家信息
      * @param reviewExpertHandle
@@ -145,10 +152,8 @@ public class ReviewExpertServiceImpl implements ExpertService {
     public Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
         TExpertDetailInfoCriteria  tExpertBasicInfoCriteria = new TExpertDetailInfoCriteria();
         tExpertBasicInfoCriteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
-
         TExpertAttachmentCriteria criteria = new TExpertAttachmentCriteria();
         criteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
-
         try {
             tExpertDetailInfoMapper.deleteByExample(tExpertBasicInfoCriteria);
             tExpertAttachmentMapper.deleteByExample(criteria);
@@ -178,17 +183,65 @@ public class ReviewExpertServiceImpl implements ExpertService {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
-
     /**
      * 查询专家基本信息
      * @param whereId
      * @return
      */
     @Override
-    public Result<TExpertDetailInfo> queryExpertDetailInfo( Long whereId) {
+    public Result<ExpertDetailVO> queryExpertDetailInfo(Long whereId) {
         try {
-            TExpertDetailInfo tExpertDetailInfo = tExpertDetailInfoMapper.selectByPrimaryKey(whereId);
-            return Result.success(tExpertDetailInfo);
+            TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectByPrimaryKey(whereId);
+            TExpertDetailInfoCriteria criteria = new TExpertDetailInfoCriteria();
+            criteria.createCriteria().andExpertIdEqualTo(whereId);
+            List<TExpertDetailInfo> tExpertDetailInfos = tExpertDetailInfoMapper.selectByExample(criteria);
+            if(tExpertDetailInfos.isEmpty()){
+                ExpertDetailVO expertDetailVO = new ExpertDetailVO();
+                expertDetailVO.setName(tExpertBasicInfo.getName());
+                expertDetailVO.setCellphone(tExpertBasicInfo.getCellphone());
+                expertDetailVO.setId(tExpertBasicInfo.getId());
+                expertDetailVO.setState(tExpertBasicInfo.getState());
+                return Result.success(expertDetailVO);
+            }
+            TExpertDetailInfo tExpertDetailInfo = tExpertDetailInfos.get(0);
+
+            ExpertDetailVO expertDetailVO = new ExpertDetailVO();
+            List<AttachmentVO> attachmentVOS = new ArrayList<>();
+            if(null != tExpertDetailInfo){
+                TExpertAttachmentCriteria tExpertAttachmentCriteria = new TExpertAttachmentCriteria();
+                tExpertAttachmentCriteria.createCriteria().andExpertIdEqualTo(whereId);
+                List<TExpertAttachment> tExpertAttachments = tExpertAttachmentMapper.selectByExample(tExpertAttachmentCriteria);
+                for (TExpertAttachment tExpertAttachment : tExpertAttachments) {
+
+                    if(tExpertAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                        expertDetailVO.setLegalIdCardPositive(tExpertAttachment.getCertificateFilePath());
+                    }else if(tExpertAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                        expertDetailVO.setLegalIdCardOther(tExpertAttachment.getCertificateFilePath());
+                    }else {
+                        AttachmentVO attachmentVO = new AttachmentVO();
+                        attachmentVO.setCertificateName(tExpertAttachment.getCertificateName());
+                        attachmentVO.setCertificateFilePath(tExpertAttachment.getCertificateFilePath());
+                        attachmentVOS.add(attachmentVO);
+                    }
+                }
+                expertDetailVO.setAttachmentVOList(attachmentVOS);
+            }
+            expertDetailVO.setId(tExpertBasicInfo.getId());
+            expertDetailVO.setName(tExpertBasicInfo.getName());
+            expertDetailVO.setCellphone(tExpertBasicInfo.getCellphone());
+            expertDetailVO.setProfession(tExpertBasicInfo.getProfession());
+            expertDetailVO.setPositional(tExpertBasicInfo.getPositional());
+            expertDetailVO.setLevel(tExpertBasicInfo.getLevel());
+            expertDetailVO.setIsIdle(tExpertBasicInfo.getIsIdle());
+            expertDetailVO.setCircularDt(tExpertBasicInfo.getCircularDt());
+            expertDetailVO.setCircularMethod(tExpertBasicInfo.getCircularMethod());
+            expertDetailVO.setOtherInformation(tExpertBasicInfo.getOtherInformation());
+            expertDetailVO.setState(tExpertBasicInfo.getState());
+            expertDetailVO.setCreateAt(tExpertBasicInfo.getCreateAt());
+            expertDetailVO.setCompanyAddress(tExpertDetailInfo.getCompanyAddress());
+            expertDetailVO.setWorkingYears(tExpertBasicInfo.getWorkingYears());
+            expertDetailVO.setCompanyName(tExpertDetailInfo.getCompanyName());
+            return Result.success(expertDetailVO);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException queryExpertDetailInfo : {}", e);
             return Result.error(ErrorMessagesEnum.SELECT_FAILURE);

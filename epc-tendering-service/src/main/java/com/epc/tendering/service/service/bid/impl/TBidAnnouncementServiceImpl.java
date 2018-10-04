@@ -70,6 +70,7 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
         BeanUtils.copyProperties(handleBidAnnouncement,entity);
         entity.setCreateAt(new Date());
         entity.setUpdateAt(new Date());
+        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
           try{
               tBidAnnouncementMapper.insertSelective(entity);
           }catch (Exception e){

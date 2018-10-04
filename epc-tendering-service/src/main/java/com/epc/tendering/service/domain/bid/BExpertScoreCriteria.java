@@ -235,52 +235,62 @@ public class BExpertScoreCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeEqualTo(Long value) {
+        public Criteria andBidsCodeEqualTo(String value) {
             addCriterion("bids_code =", value, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotEqualTo(Long value) {
+        public Criteria andBidsCodeNotEqualTo(String value) {
             addCriterion("bids_code <>", value, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeGreaterThan(Long value) {
+        public Criteria andBidsCodeGreaterThan(String value) {
             addCriterion("bids_code >", value, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeGreaterThanOrEqualTo(Long value) {
+        public Criteria andBidsCodeGreaterThanOrEqualTo(String value) {
             addCriterion("bids_code >=", value, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeLessThan(Long value) {
+        public Criteria andBidsCodeLessThan(String value) {
             addCriterion("bids_code <", value, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeLessThanOrEqualTo(Long value) {
+        public Criteria andBidsCodeLessThanOrEqualTo(String value) {
             addCriterion("bids_code <=", value, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeIn(List<Long> values) {
+        public Criteria andBidsCodeLike(String value) {
+            addCriterion("bids_code like", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotLike(String value) {
+            addCriterion("bids_code not like", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeIn(List<String> values) {
             addCriterion("bids_code in", values, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotIn(List<Long> values) {
+        public Criteria andBidsCodeNotIn(List<String> values) {
             addCriterion("bids_code not in", values, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeBetween(Long value1, Long value2) {
+        public Criteria andBidsCodeBetween(String value1, String value2) {
             addCriterion("bids_code between", value1, value2, "bidsCode");
             return (Criteria) this;
         }
 
-        public Criteria andBidsCodeNotBetween(Long value1, Long value2) {
+        public Criteria andBidsCodeNotBetween(String value1, String value2) {
             addCriterion("bids_code not between", value1, value2, "bidsCode");
             return (Criteria) this;
         }
@@ -485,62 +495,52 @@ public class BExpertScoreCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(String value) {
+        public Criteria andStatusEqualTo(Integer value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
+        public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(String value) {
+        public Criteria andStatusGreaterThan(Integer value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(String value) {
+        public Criteria andStatusLessThan(Integer value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLike(String value) {
-            addCriterion("status like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("status not like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<String> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(String value1, String value2) {
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(String value1, String value2) {
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
@@ -625,52 +625,52 @@ public class BExpertScoreCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreEqualTo(Integer value) {
+        public Criteria andTechTypeScoreEqualTo(Double value) {
             addCriterion("tech_type_score =", value, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreNotEqualTo(Integer value) {
+        public Criteria andTechTypeScoreNotEqualTo(Double value) {
             addCriterion("tech_type_score <>", value, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreGreaterThan(Integer value) {
+        public Criteria andTechTypeScoreGreaterThan(Double value) {
             addCriterion("tech_type_score >", value, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTechTypeScoreGreaterThanOrEqualTo(Double value) {
             addCriterion("tech_type_score >=", value, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreLessThan(Integer value) {
+        public Criteria andTechTypeScoreLessThan(Double value) {
             addCriterion("tech_type_score <", value, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreLessThanOrEqualTo(Integer value) {
+        public Criteria andTechTypeScoreLessThanOrEqualTo(Double value) {
             addCriterion("tech_type_score <=", value, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreIn(List<Integer> values) {
+        public Criteria andTechTypeScoreIn(List<Double> values) {
             addCriterion("tech_type_score in", values, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreNotIn(List<Integer> values) {
+        public Criteria andTechTypeScoreNotIn(List<Double> values) {
             addCriterion("tech_type_score not in", values, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreBetween(Integer value1, Integer value2) {
+        public Criteria andTechTypeScoreBetween(Double value1, Double value2) {
             addCriterion("tech_type_score between", value1, value2, "techTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andTechTypeScoreNotBetween(Integer value1, Integer value2) {
+        public Criteria andTechTypeScoreNotBetween(Double value1, Double value2) {
             addCriterion("tech_type_score not between", value1, value2, "techTypeScore");
             return (Criteria) this;
         }
@@ -685,52 +685,52 @@ public class BExpertScoreCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreEqualTo(Integer value) {
+        public Criteria andCommerceTypeScoreEqualTo(Double value) {
             addCriterion("commerce_type_score =", value, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreNotEqualTo(Integer value) {
+        public Criteria andCommerceTypeScoreNotEqualTo(Double value) {
             addCriterion("commerce_type_score <>", value, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreGreaterThan(Integer value) {
+        public Criteria andCommerceTypeScoreGreaterThan(Double value) {
             addCriterion("commerce_type_score >", value, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCommerceTypeScoreGreaterThanOrEqualTo(Double value) {
             addCriterion("commerce_type_score >=", value, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreLessThan(Integer value) {
+        public Criteria andCommerceTypeScoreLessThan(Double value) {
             addCriterion("commerce_type_score <", value, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreLessThanOrEqualTo(Integer value) {
+        public Criteria andCommerceTypeScoreLessThanOrEqualTo(Double value) {
             addCriterion("commerce_type_score <=", value, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreIn(List<Integer> values) {
+        public Criteria andCommerceTypeScoreIn(List<Double> values) {
             addCriterion("commerce_type_score in", values, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreNotIn(List<Integer> values) {
+        public Criteria andCommerceTypeScoreNotIn(List<Double> values) {
             addCriterion("commerce_type_score not in", values, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreBetween(Integer value1, Integer value2) {
+        public Criteria andCommerceTypeScoreBetween(Double value1, Double value2) {
             addCriterion("commerce_type_score between", value1, value2, "commerceTypeScore");
             return (Criteria) this;
         }
 
-        public Criteria andCommerceTypeScoreNotBetween(Integer value1, Integer value2) {
+        public Criteria andCommerceTypeScoreNotBetween(Double value1, Double value2) {
             addCriterion("commerce_type_score not between", value1, value2, "commerceTypeScore");
             return (Criteria) this;
         }
@@ -745,52 +745,52 @@ public class BExpertScoreCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreEqualTo(Integer value) {
+        public Criteria andFinalScoreEqualTo(Double value) {
             addCriterion("final_score =", value, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreNotEqualTo(Integer value) {
+        public Criteria andFinalScoreNotEqualTo(Double value) {
             addCriterion("final_score <>", value, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreGreaterThan(Integer value) {
+        public Criteria andFinalScoreGreaterThan(Double value) {
             addCriterion("final_score >", value, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFinalScoreGreaterThanOrEqualTo(Double value) {
             addCriterion("final_score >=", value, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreLessThan(Integer value) {
+        public Criteria andFinalScoreLessThan(Double value) {
             addCriterion("final_score <", value, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreLessThanOrEqualTo(Integer value) {
+        public Criteria andFinalScoreLessThanOrEqualTo(Double value) {
             addCriterion("final_score <=", value, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreIn(List<Integer> values) {
+        public Criteria andFinalScoreIn(List<Double> values) {
             addCriterion("final_score in", values, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreNotIn(List<Integer> values) {
+        public Criteria andFinalScoreNotIn(List<Double> values) {
             addCriterion("final_score not in", values, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreBetween(Integer value1, Integer value2) {
+        public Criteria andFinalScoreBetween(Double value1, Double value2) {
             addCriterion("final_score between", value1, value2, "finalScore");
             return (Criteria) this;
         }
 
-        public Criteria andFinalScoreNotBetween(Integer value1, Integer value2) {
+        public Criteria andFinalScoreNotBetween(Double value1, Double value2) {
             addCriterion("final_score not between", value1, value2, "finalScore");
             return (Criteria) this;
         }

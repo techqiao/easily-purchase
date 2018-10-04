@@ -74,7 +74,7 @@ public class TExpertBasicInfoCriteria {
     }
 
     /**
-     * t_expert_basic_info 2018-09-30
+     * t_expert_basic_info 2018-10-03
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -594,6 +594,66 @@ public class TExpertBasicInfoCriteria {
 
         public Criteria andLevelNotBetween(String value1, String value2) {
             addCriterion("level not between", value1, value2, "level");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsIsNull() {
+            addCriterion("working_years is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsIsNotNull() {
+            addCriterion("working_years is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsEqualTo(Integer value) {
+            addCriterion("working_years =", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsNotEqualTo(Integer value) {
+            addCriterion("working_years <>", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsGreaterThan(Integer value) {
+            addCriterion("working_years >", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("working_years >=", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsLessThan(Integer value) {
+            addCriterion("working_years <", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsLessThanOrEqualTo(Integer value) {
+            addCriterion("working_years <=", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsIn(List<Integer> values) {
+            addCriterion("working_years in", values, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsNotIn(List<Integer> values) {
+            addCriterion("working_years not in", values, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsBetween(Integer value1, Integer value2) {
+            addCriterion("working_years between", value1, value2, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsNotBetween(Integer value1, Integer value2) {
+            addCriterion("working_years not between", value1, value2, "workingYears");
             return (Criteria) this;
         }
 
@@ -1342,7 +1402,7 @@ public class TExpertBasicInfoCriteria {
      * 描述:t_expert_basic_info表的实体类
      * @version
      * @author:  01
-     * @创建时间: 2018-09-30
+     * @创建时间: 2018-10-03
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -1352,7 +1412,7 @@ public class TExpertBasicInfoCriteria {
     }
 
     /**
-     * t_expert_basic_info 2018-09-30
+     * t_expert_basic_info 2018-10-03
      */
     public static class Criterion {
         private String condition;

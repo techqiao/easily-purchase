@@ -49,6 +49,7 @@ public class CommitteeServiceImpl implements CommitteeService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Result<Long> createCommittee(HandleCommittee dto){
         BAssessmentCommittee committee=new BAssessmentCommittee();
         BeanUtils.copyProperties(dto,committee);

@@ -1,5 +1,7 @@
 package com.epc.web.facade.bidding.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,32 +13,23 @@ import java.util.Date;
 * @Date: 2018/9/18 
 */
 @Data
+@ApiModel("答疑列表")
 public class QueryAnswerQuestionListVO implements Serializable {
 
     private static final long serialVersionUID = 3150403019447676651L;
-    /**
-     * 记录Id
-     */
+    @ApiModelProperty("记录Id")
     private Long id;
 
-    /**
-     * 提问人
-     */
+    @ApiModelProperty(" 提问人")
     private String questionerName;
 
-    /**
-     * 回答人
-     */
+    @ApiModelProperty(" 回答人")
     private String answerName;
 
-    /**
-     * 问题
-     */
+    @ApiModelProperty("问题")
     private String problem;
 
-    /**
-     * 创建时间
-     */
+    @ApiModelProperty("问题")
     private Date createAt;
 
 

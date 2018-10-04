@@ -54,7 +54,7 @@ public class SysAdminUserHystrix implements AdminUserService {
     }
 
     @Override
-    public Result updatePassword(String newPassword, HttpServletRequest httpServletRequest) {
+    public Result updatePassword(UserHandle userHandle) {
         return Result.hystrixError();
     }
 

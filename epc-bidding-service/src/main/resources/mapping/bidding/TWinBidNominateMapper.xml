@@ -12,6 +12,7 @@
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
     <result column="bid_id" property="bidId" jdbcType="BIGINT" />
+    <result column="bid_name" property="bidName" jdbcType="VARCHAR" />
     <result column="bid_code" property="bidCode" jdbcType="VARCHAR" />
     <result column="first_supplierId" property="firstSupplierid" jdbcType="BIGINT" />
     <result column="first_companyName" property="firstCompanyname" jdbcType="VARCHAR" />
@@ -22,10 +23,9 @@
     <result column="three_supplierId" property="threeSupplierid" jdbcType="BIGINT" />
     <result column="three_price" property="threePrice" jdbcType="DECIMAL" />
     <result column="three_companyName" property="threeCompanyname" jdbcType="VARCHAR" />
-    <result column="win_bid_supplierId" property="winBidSupplierid" jdbcType="BIGINT" />
     <result column="open_start" property="openStart" jdbcType="TIMESTAMP" />
     <result column="open_end" property="openEnd" jdbcType="TIMESTAMP" />
-    <result column="letter_path" property="letterPath" jdbcType="VARCHAR" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
     <result column="process_status" property="processStatus" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -92,9 +92,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, purchaser_id, purchaser_name, agency_name, agency_phone, is_power_Agency, project_name, 
-    project_code, purchase_project_id, bid_id, bid_code, first_supplierId, first_companyName, 
-    first_price, two_supplierId, two_price, two_companyName, three_supplierId, three_price, 
-    three_companyName, win_bid_supplierId, open_start, open_end, letter_path, process_status, 
+    project_code, purchase_project_id, bid_id, bid_name, bid_code, first_supplierId, 
+    first_companyName, first_price, two_supplierId, two_price, two_companyName, three_supplierId, 
+    three_price, three_companyName, open_start, open_end, file_path, process_status, 
     operate_id, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidNominateCriteria" >
@@ -134,21 +134,21 @@
     insert into t_win_bid_nominate (purchaser_id, purchaser_name, agency_name, 
       agency_phone, is_power_Agency, project_name, 
       project_code, purchase_project_id, bid_id, 
-      bid_code, first_supplierId, first_companyName, 
-      first_price, two_supplierId, two_price, 
-      two_companyName, three_supplierId, three_price, 
-      three_companyName, win_bid_supplierId, open_start, 
-      open_end, letter_path, process_status, 
+      bid_name, bid_code, first_supplierId, 
+      first_companyName, first_price, two_supplierId, 
+      two_price, two_companyName, three_supplierId, 
+      three_price, three_companyName, open_start, 
+      open_end, file_path, process_status, 
       operate_id, create_at, update_at, 
       is_deleted)
     values (#{purchaserId,jdbcType=BIGINT}, #{purchaserName,jdbcType=VARCHAR}, #{agencyName,jdbcType=VARCHAR}, 
       #{agencyPhone,jdbcType=VARCHAR}, #{isPowerAgency,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
       #{projectCode,jdbcType=VARCHAR}, #{purchaseProjectId,jdbcType=BIGINT}, #{bidId,jdbcType=BIGINT}, 
-      #{bidCode,jdbcType=VARCHAR}, #{firstSupplierid,jdbcType=BIGINT}, #{firstCompanyname,jdbcType=VARCHAR}, 
-      #{firstPrice,jdbcType=DECIMAL}, #{twoSupplierid,jdbcType=BIGINT}, #{twoPrice,jdbcType=DECIMAL}, 
-      #{twoCompanyname,jdbcType=VARCHAR}, #{threeSupplierid,jdbcType=BIGINT}, #{threePrice,jdbcType=DECIMAL}, 
-      #{threeCompanyname,jdbcType=VARCHAR}, #{winBidSupplierid,jdbcType=BIGINT}, #{openStart,jdbcType=TIMESTAMP}, 
-      #{openEnd,jdbcType=TIMESTAMP}, #{letterPath,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
+      #{bidName,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, #{firstSupplierid,jdbcType=BIGINT}, 
+      #{firstCompanyname,jdbcType=VARCHAR}, #{firstPrice,jdbcType=DECIMAL}, #{twoSupplierid,jdbcType=BIGINT}, 
+      #{twoPrice,jdbcType=DECIMAL}, #{twoCompanyname,jdbcType=VARCHAR}, #{threeSupplierid,jdbcType=BIGINT}, 
+      #{threePrice,jdbcType=DECIMAL}, #{threeCompanyname,jdbcType=VARCHAR}, #{openStart,jdbcType=TIMESTAMP}, 
+      #{openEnd,jdbcType=TIMESTAMP}, #{filePath,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
       #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER})
   </insert>
@@ -185,6 +185,9 @@
       <if test="bidId != null" >
         bid_id,
       </if>
+      <if test="bidName != null" >
+        bid_name,
+      </if>
       <if test="bidCode != null" >
         bid_code,
       </if>
@@ -215,17 +218,14 @@
       <if test="threeCompanyname != null" >
         three_companyName,
       </if>
-      <if test="winBidSupplierid != null" >
-        win_bid_supplierId,
-      </if>
       <if test="openStart != null" >
         open_start,
       </if>
       <if test="openEnd != null" >
         open_end,
       </if>
-      <if test="letterPath != null" >
-        letter_path,
+      <if test="filePath != null" >
+        file_path,
       </if>
       <if test="processStatus != null" >
         process_status,
@@ -271,6 +271,9 @@
       <if test="bidId != null" >
         #{bidId,jdbcType=BIGINT},
       </if>
+      <if test="bidName != null" >
+        #{bidName,jdbcType=VARCHAR},
+      </if>
       <if test="bidCode != null" >
         #{bidCode,jdbcType=VARCHAR},
       </if>
@@ -301,17 +304,14 @@
       <if test="threeCompanyname != null" >
         #{threeCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="winBidSupplierid != null" >
-        #{winBidSupplierid,jdbcType=BIGINT},
-      </if>
       <if test="openStart != null" >
         #{openStart,jdbcType=TIMESTAMP},
       </if>
       <if test="openEnd != null" >
         #{openEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="letterPath != null" >
-        #{letterPath,jdbcType=VARCHAR},
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
       </if>
       <if test="processStatus != null" >
         #{processStatus,jdbcType=VARCHAR},
@@ -369,6 +369,9 @@
       <if test="record.bidId != null" >
         bid_id = #{record.bidId,jdbcType=BIGINT},
       </if>
+      <if test="record.bidName != null" >
+        bid_name = #{record.bidName,jdbcType=VARCHAR},
+      </if>
       <if test="record.bidCode != null" >
         bid_code = #{record.bidCode,jdbcType=VARCHAR},
       </if>
@@ -399,17 +402,14 @@
       <if test="record.threeCompanyname != null" >
         three_companyName = #{record.threeCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="record.winBidSupplierid != null" >
-        win_bid_supplierId = #{record.winBidSupplierid,jdbcType=BIGINT},
-      </if>
       <if test="record.openStart != null" >
         open_start = #{record.openStart,jdbcType=TIMESTAMP},
       </if>
       <if test="record.openEnd != null" >
         open_end = #{record.openEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.letterPath != null" >
-        letter_path = #{record.letterPath,jdbcType=VARCHAR},
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
       </if>
       <if test="record.processStatus != null" >
         process_status = #{record.processStatus,jdbcType=VARCHAR},
@@ -443,6 +443,7 @@
       project_code = #{record.projectCode,jdbcType=VARCHAR},
       purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       bid_id = #{record.bidId,jdbcType=BIGINT},
+      bid_name = #{record.bidName,jdbcType=VARCHAR},
       bid_code = #{record.bidCode,jdbcType=VARCHAR},
       first_supplierId = #{record.firstSupplierid,jdbcType=BIGINT},
       first_companyName = #{record.firstCompanyname,jdbcType=VARCHAR},
@@ -453,10 +454,9 @@
       three_supplierId = #{record.threeSupplierid,jdbcType=BIGINT},
       three_price = #{record.threePrice,jdbcType=DECIMAL},
       three_companyName = #{record.threeCompanyname,jdbcType=VARCHAR},
-      win_bid_supplierId = #{record.winBidSupplierid,jdbcType=BIGINT},
       open_start = #{record.openStart,jdbcType=TIMESTAMP},
       open_end = #{record.openEnd,jdbcType=TIMESTAMP},
-      letter_path = #{record.letterPath,jdbcType=VARCHAR},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
       process_status = #{record.processStatus,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -496,6 +496,9 @@
       <if test="bidId != null" >
         bid_id = #{bidId,jdbcType=BIGINT},
       </if>
+      <if test="bidName != null" >
+        bid_name = #{bidName,jdbcType=VARCHAR},
+      </if>
       <if test="bidCode != null" >
         bid_code = #{bidCode,jdbcType=VARCHAR},
       </if>
@@ -526,17 +529,14 @@
       <if test="threeCompanyname != null" >
         three_companyName = #{threeCompanyname,jdbcType=VARCHAR},
       </if>
-      <if test="winBidSupplierid != null" >
-        win_bid_supplierId = #{winBidSupplierid,jdbcType=BIGINT},
-      </if>
       <if test="openStart != null" >
         open_start = #{openStart,jdbcType=TIMESTAMP},
       </if>
       <if test="openEnd != null" >
         open_end = #{openEnd,jdbcType=TIMESTAMP},
       </if>
-      <if test="letterPath != null" >
-        letter_path = #{letterPath,jdbcType=VARCHAR},
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
       </if>
       <if test="processStatus != null" >
         process_status = #{processStatus,jdbcType=VARCHAR},
@@ -567,6 +567,7 @@
       project_code = #{projectCode,jdbcType=VARCHAR},
       purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       bid_id = #{bidId,jdbcType=BIGINT},
+      bid_name = #{bidName,jdbcType=VARCHAR},
       bid_code = #{bidCode,jdbcType=VARCHAR},
       first_supplierId = #{firstSupplierid,jdbcType=BIGINT},
       first_companyName = #{firstCompanyname,jdbcType=VARCHAR},
@@ -577,10 +578,9 @@
       three_supplierId = #{threeSupplierid,jdbcType=BIGINT},
       three_price = #{threePrice,jdbcType=DECIMAL},
       three_companyName = #{threeCompanyname,jdbcType=VARCHAR},
-      win_bid_supplierId = #{winBidSupplierid,jdbcType=BIGINT},
       open_start = #{openStart,jdbcType=TIMESTAMP},
       open_end = #{openEnd,jdbcType=TIMESTAMP},
-      letter_path = #{letterPath,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
       process_status = #{processStatus,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},

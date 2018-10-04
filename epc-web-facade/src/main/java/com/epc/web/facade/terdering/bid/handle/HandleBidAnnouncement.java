@@ -21,4 +21,6 @@ public class HandleBidAnnouncement implements Serializable {
 
     private Long operateId;
 
+    private String creator;
+
 }

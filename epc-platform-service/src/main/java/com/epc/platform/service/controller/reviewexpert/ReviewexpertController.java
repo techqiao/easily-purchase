@@ -6,10 +6,10 @@ import com.epc.administration.facade.reviewexpert.handle.ExamineExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.ExpertForbiddenHandle;
 import com.epc.administration.facade.reviewexpert.handle.ReviewExpertHandle;
 import com.epc.administration.facade.reviewexpert.handle.UserBasicInfo;
+import com.epc.administration.facade.reviewexpert.vo.ExpertDetailVO;
 import com.epc.administration.facade.reviewexpert.vo.ReviewExpertVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
-import com.epc.platform.service.domain.expert.TExpertDetailInfo;
 import com.epc.platform.service.service.reviewexpert.ExpertService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -74,7 +74,7 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
      * @return
      */
     @Override
-    public Result<TExpertDetailInfo> queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId) {
+    public Result<ExpertDetailVO> queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId) {
         return expertService.queryExpertDetailInfo(whereId);
     }
 

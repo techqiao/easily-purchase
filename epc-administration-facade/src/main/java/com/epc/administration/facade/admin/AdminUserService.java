@@ -85,12 +85,11 @@ public interface AdminUserService {
 
     /**
      * 修改密码
-     * @param newPassword
-     * @param httpServletRequest
+     * @param userHandle
      * @return
      */
     @PostMapping(value = "updatePassword" ,consumes = "application/json; charset=UTF-8")
-    Result updatePassword(@RequestBody String newPassword, @RequestParam("httpServletRequest") HttpServletRequest httpServletRequest);
+    Result updatePassword(@RequestBody UserHandle userHandle);
 
     /**
      * 获取用户基本信息

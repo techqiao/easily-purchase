@@ -44,7 +44,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.epc.tendering.service.mapper.bid" targetProject="src/main/java" >
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <table schema="test" tableName="b_evaluation_tender_standard" domainObjectName="BEvaluationTenderStandard">
+        <table schema="test" tableName="`t_tender_message`" domainObjectName="TTenderMessage">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

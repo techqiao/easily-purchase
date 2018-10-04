@@ -1006,6 +1006,76 @@ public class TWinBidCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andProcessStatusIsNull() {
+            addCriterion("process_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusIsNotNull() {
+            addCriterion("process_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusEqualTo(String value) {
+            addCriterion("process_status =", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusNotEqualTo(String value) {
+            addCriterion("process_status <>", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusGreaterThan(String value) {
+            addCriterion("process_status >", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("process_status >=", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusLessThan(String value) {
+            addCriterion("process_status <", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusLessThanOrEqualTo(String value) {
+            addCriterion("process_status <=", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusLike(String value) {
+            addCriterion("process_status like", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusNotLike(String value) {
+            addCriterion("process_status not like", value, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusIn(List<String> values) {
+            addCriterion("process_status in", values, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusNotIn(List<String> values) {
+            addCriterion("process_status not in", values, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusBetween(String value1, String value2) {
+            addCriterion("process_status between", value1, value2, "processStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessStatusNotBetween(String value1, String value2) {
+            addCriterion("process_status not between", value1, value2, "processStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateAtIsNull() {
             addCriterion("create_at is null");
             return (Criteria) this;

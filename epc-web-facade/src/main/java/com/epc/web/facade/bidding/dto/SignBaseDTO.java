@@ -17,5 +17,7 @@ public class SignBaseDTO implements Serializable {
     private  String cellphone;
     @ApiModelProperty("公司名称")
     private  String companyName;
+    @ApiModelProperty("采购项目ID")
+    private  Long  purchaseProjectId;
 
 }

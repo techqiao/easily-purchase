@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface FacadeSignService {
 
     /**
-     * 供应商签到
+     * 供应商签到tTenderMessageMapper
      * @param handleSign
      * @return
      */

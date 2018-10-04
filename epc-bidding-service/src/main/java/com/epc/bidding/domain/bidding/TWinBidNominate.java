@@ -25,6 +25,8 @@ public class TWinBidNominate implements Serializable {
 
     private Long bidId;
 
+    private String bidName;
+
     private String bidCode;
 
     private Long firstSupplierid;
@@ -45,13 +47,11 @@ public class TWinBidNominate implements Serializable {
 
     private String threeCompanyname;
 
-    private Long winBidSupplierid;
-
     private Date openStart;
 
     private Date openEnd;
 
-    private String letterPath;
+    private String filePath;
 
     private String processStatus;
 
@@ -145,6 +145,14 @@ public class TWinBidNominate implements Serializable {
         this.bidId = bidId;
     }
 
+    public String getBidName() {
+        return bidName;
+    }
+
+    public void setBidName(String bidName) {
+        this.bidName = bidName == null ? null : bidName.trim();
+    }
+
     public String getBidCode() {
         return bidCode;
     }
@@ -225,14 +233,6 @@ public class TWinBidNominate implements Serializable {
         this.threeCompanyname = threeCompanyname == null ? null : threeCompanyname.trim();
     }
 
-    public Long getWinBidSupplierid() {
-        return winBidSupplierid;
-    }
-
-    public void setWinBidSupplierid(Long winBidSupplierid) {
-        this.winBidSupplierid = winBidSupplierid;
-    }
-
     public Date getOpenStart() {
         return openStart;
     }
@@ -249,12 +249,12 @@ public class TWinBidNominate implements Serializable {
         this.openEnd = openEnd;
     }
 
-    public String getLetterPath() {
-        return letterPath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setLetterPath(String letterPath) {
-        this.letterPath = letterPath == null ? null : letterPath.trim();
+    public void setFilePath(String filePath) {
+        this.filePath = filePath == null ? null : filePath.trim();
     }
 
     public String getProcessStatus() {
@@ -313,6 +313,7 @@ public class TWinBidNominate implements Serializable {
         sb.append(", projectCode=").append(projectCode);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", bidId=").append(bidId);
+        sb.append(", bidName=").append(bidName);
         sb.append(", bidCode=").append(bidCode);
         sb.append(", firstSupplierid=").append(firstSupplierid);
         sb.append(", firstCompanyname=").append(firstCompanyname);
@@ -323,10 +324,9 @@ public class TWinBidNominate implements Serializable {
         sb.append(", threeSupplierid=").append(threeSupplierid);
         sb.append(", threePrice=").append(threePrice);
         sb.append(", threeCompanyname=").append(threeCompanyname);
-        sb.append(", winBidSupplierid=").append(winBidSupplierid);
         sb.append(", openStart=").append(openStart);
         sb.append(", openEnd=").append(openEnd);
-        sb.append(", letterPath=").append(letterPath);
+        sb.append(", filePath=").append(filePath);
         sb.append(", processStatus=").append(processStatus);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);

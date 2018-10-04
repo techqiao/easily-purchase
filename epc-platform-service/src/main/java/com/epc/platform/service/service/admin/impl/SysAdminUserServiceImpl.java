@@ -193,13 +193,11 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     }
 
     @Override
-    public void updatePassword(UserHandle user, String password) {
+    public void updatePassword(UserHandle user) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setPhone(user.getPhone());
-        sysAdminUser.setPassword(user.getPassword());
         sysAdminUser.setId(user.getId());
         String newPassword = MD5Util.MD5EncodeUtf8(user.getPassword());
-        user.setPassword(newPassword);
+        sysAdminUser.setPassword(newPassword);
         this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 

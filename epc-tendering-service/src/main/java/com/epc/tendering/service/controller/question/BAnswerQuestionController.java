@@ -3,12 +3,12 @@ package com.epc.tendering.service.controller.question;
 import com.epc.common.Result;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.FacadeAnswerQuestionService;
-import com.epc.web.facade.terdering.answer.handle.AnswerQuestionHandle;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
+import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,4 +42,9 @@ public class BAnswerQuestionController implements FacadeAnswerQuestionService {
         return bAnswerQuestionService.getPublicityListOfficialNetwork(QueryPublicityDTO);
     }
 
+
+    @Override
+    public Result<List<WinBidVO>> getwinBids() {
+        return bAnswerQuestionService.getwinBids();
+    }
 }

@@ -1,7 +1,9 @@
 package com.epc.administration.facade.purchaser.handle;
 
 import com.epc.administration.facade.supplier.handle.AttachmentHandle;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,10 +20,24 @@ public class PurchaserHandle implements Serializable {
     private Long id;
 
     /**
+     * 用户名
+     */
+    private String name;
+
+    /**
+     * 手机号
+     */
+    private String cellPhone;
+
+    /**
      * 公司名称
      */
     private String companyName;
 
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
     /**
      *统一信用代码
      */

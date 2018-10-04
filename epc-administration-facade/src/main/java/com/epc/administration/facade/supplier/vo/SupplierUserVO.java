@@ -2,6 +2,7 @@ package com.epc.administration.facade.supplier.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -35,6 +36,19 @@ public class SupplierUserVO implements Serializable {
      */
     @ApiModelProperty("对公银行名称")
     private String publicBankName;
+
+    /**
+     * 营业执照照片url
+     */
+    @ApiModelProperty(value = "营业执照照片url")
+    private String businessLicense;
+
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    private String legalIdCardPositive;
+
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    private String legalIdCardOther;
+
     /**
      * 对公银行账号
      */

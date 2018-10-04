@@ -12,7 +12,7 @@
     <!-- 按日期滚动日志 -->
     <appender name="ERROR-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 日志存放位置 -->
-        <file>logs/error.log</file>
+        <file>logs/epc-web-user-service/error.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -32,7 +32,7 @@
     <!-- 按文件大小滚动日志 -->
     <appender name="INFO-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/info.log</file>
+        <file>logs/epc-web-user-service/info.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -56,10 +56,12 @@
     <!-- 按日期和大小滚动日志 -->
     <appender name="DEBUG-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/debug.log</file>
+        <file>logs/epc-web-user-service/debug.log</file>
+
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
+
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
             <onMatch>ACCEPT</onMatch>
@@ -67,18 +69,20 @@
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
     <!-- 配置好前面对应的appender -->
-    <root level="DEBUG">
-        <appender-ref ref="STDOUT" />
+    <root level="DEBUG-OUT">
+
         <appender-ref ref="ERROR-OUT" />
-        <appender-ref ref="INFO-OUT" />
-        <appender-ref ref="DEBUG-OUT" />
+        <appender-ref ref="STDOUT" />
+        <!--
+       <appender-ref ref="INFO-OUT" />
+      <appender-ref ref="DEBUG-OUT" />
+       -->
     </root>
 </configuration>

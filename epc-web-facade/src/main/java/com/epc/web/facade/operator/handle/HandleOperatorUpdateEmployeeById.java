@@ -41,7 +41,7 @@ public class HandleOperatorUpdateEmployeeById implements Serializable {
     /**
      * 修改自己的密码
      */
-    private String password;
+//    private String password;
 
 
 

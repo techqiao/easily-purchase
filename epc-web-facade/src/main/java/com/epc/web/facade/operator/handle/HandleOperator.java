@@ -35,7 +35,7 @@ public class HandleOperator implements Serializable {
      */
     private String password;
 
-    private String token;
+//    private String token;
 
 
 

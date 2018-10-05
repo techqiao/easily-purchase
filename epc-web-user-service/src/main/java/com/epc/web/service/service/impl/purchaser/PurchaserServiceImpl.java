@@ -1,4 +1,6 @@
 package com.epc.web.service.service.impl.purchaser;
+
+import com.epc.common.util.MD5Util;
 import com.google.common.collect.Lists;
 
 
@@ -31,6 +33,7 @@ import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.node.POJONode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -102,8 +105,13 @@ public class PurchaserServiceImpl implements PurchaserService {
         String name = handleSupplier.getName();
         String cellphone = handleSupplier.getCellphone();
         //返回该供应商信息
-       TSupplierBasicInfo basicInfo  = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name,cellphone);
-
+        TSupplierBasicInfo basicInfo = null;
+        try {
+            basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
+        }catch(Exception e){
+            LOGGER.error("查询错误:Exception:{}",e);
+            return Result.error("用户名错误,请检查后重新输入!");
+        }
         //判断状态
         if (basicInfo != null) {
             int state = basicInfo.getState();
@@ -112,10 +120,9 @@ public class PurchaserServiceImpl implements PurchaserService {
             if (state == Const.STATE.AUDIT_SUCCESS && role == Const.Role.ROLE_CORPORATION) {
                 //查询详情库获得供应商的详细信息
                 Long supplierId = basicInfo.getSupplierId();
-                TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(supplierId);
                 //从页面传入
                 TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
-                purchaserSupplier.setOperateId((int)handleSupplier.getOperatorId());
+                purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId());
                 purchaserSupplier.setSource(Const.SOURCE.PUBLICS);
                 purchaserSupplier.setCreateAt(basicInfo.getCreateAt());
                 purchaserSupplier.setUpdateAt(basicInfo.getUpdateAt());
@@ -140,7 +147,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             //供应商不存在的时候抽取handleSupplier的字段添加
             TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
             //采购人数据库
-            purchaserSupplier.setOperateId((int)handleSupplier.getOperatorId());
+            purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId());
             purchaserSupplier.setSource(Const.SOURCE.PRIVATES);
             purchaserSupplier.setCreateAt(new Date());
             purchaserSupplier.setUpdateAt(new Date());
@@ -165,10 +172,10 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo = new TSupplierBasicInfo();
             basicInfo.setName(handleSupplier.getName());
             basicInfo.setCellphone(handleSupplier.getCellphone());
-
+            basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             basicInfo.setInviterId(handleSupplier.getOperatorId());
-            basicInfo.setInviterCompanyId((int)handleSupplier.getCompanyId());
+            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId());
             basicInfo.setState(Const.STATE.COMMITTED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             basicInfo.setCreateAt(new Date());
@@ -268,7 +275,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             pojo.setCircularDt(date);
             pojo.setCircularMethod(handleExpert.getCircularMethod());
             pojo.setOtherInformation(handleExpert.getOtherInformation());
-            //pojo.setPassword("");
+            pojo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             pojo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             pojo.setInviterId(handleExpert.getOperatorId());
             pojo.setInviterCompanyId(handleExpert.getPurchaserId().intValue());
@@ -370,10 +377,14 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             basicInfo.setCellphone(handleAgnecy.getCellphone());
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
+            //采购人员工id
             basicInfo.setInviterId(handleAgnecy.getOperatorId());
+            //采购人公司id
             basicInfo.setInviterCompanyId((int) handleAgnecy.getCompanyId());
             basicInfo.setState(Const.STATE.COMMITTED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
+            //指定默认密码
+            basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setCreateAt(new Date());
             basicInfo.setUpdateAt(new Date());
 
@@ -381,7 +392,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             detailInfo.setCreateAt(new Date());
             detailInfo.setUpdateAt(new Date());
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
             detailInfo.setCompanyName(handleAgnecy.getCompanyName());
             detailInfo.setUniformCreditCode(handleAgnecy.getUniformCreditCode());
             detailInfo.setPublicBankName(handleAgnecy.getPublicBankName());
@@ -396,7 +406,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             agency.setCreateAt(new Date());
             agency.setUpdateAt(new Date());
             agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
             agency.setState(Const.STATE.COMMITTED);
             agency.setPurchaserId(handleAgnecy.getCompanyId() + "");
             agency.setSource(Const.SOURCE.PRIVATES);
@@ -460,7 +469,8 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserBasicInfo pojo = new TPurchaserBasicInfo();
         pojo.setName(handleOperator.getName());
         pojo.setCellphone(handleOperator.getCellPhone());
-        pojo.setPassword(handleOperator.getPassword());
+        //指定默认密码
+        pojo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
         pojo.setPurchaserId(handleOperator.getPurchaserId());
         pojo.setInviterType(Const.INVITER_TYPE.PURCHASER);
         pojo.setInviterId((int) handleOperator.getPurchaserId());
@@ -496,12 +506,12 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
-        String name =handlePurchaser.getName();
+        String name = handlePurchaser.getName();
         String cellphone = handlePurchaser.getCellphone();
-        TPurchaserBasicInfo basicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name,cellphone);
+        TPurchaserBasicInfo basicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, cellphone);
 
-        if(basicInfo==null){
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(),"没有供应商的注册信息");
+        if (basicInfo == null) {
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "没有供应商的注册信息");
         }
         //获得purchaser的id
         Long purchaserId = basicInfo.getId();
@@ -530,7 +540,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
         //附件信息
-        List<Attachement> list =handlePurchaser.getAtts();
+        List<Attachement> list = handlePurchaser.getAtts();
 
         try {
             tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(basicInfo);
@@ -583,7 +593,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 //agency.setId(0L);
                 supplier.setState(basicInfo.getState());
                 supplier.setSupplierId(basicInfo.getSupplierId());
-                supplier.setOperateId((int)dto.getOperatorId());
+                supplier.setOperateId((int) dto.getOperatorId());
                 supplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
                 supplier.setSource(Const.SOURCE.PUBLICS);
                 supplier.setCreateAt(new Date());
@@ -591,7 +601,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 supplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 tPurchaserSupplierMapper.insertSelective(supplier);
             }
-            if(detailInfo==null){
+            if (detailInfo == null) {
                 detailInfo = new TSupplierDetailInfo();
                 //detailInfo.setId(0L);
                 detailInfo.setSupplierId(supplierId);
@@ -655,15 +665,15 @@ public class PurchaserServiceImpl implements PurchaserService {
                 agency.setState(basicInfo.getState());
                 agency.setAgencyId(basicInfo.getAgencyId());
                 agency.setCreaterId(basicInfo.getInviterId());
-                agency.setPurchaserId(basicInfo.getInviterCompanyId()+"");
+                agency.setPurchaserId(basicInfo.getInviterCompanyId() + "");
                 agency.setSource(Const.SOURCE.PRIVATES);
                 agency.setCreateAt(new Date());
                 agency.setUpdateAt(new Date());
                 agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 tPurchaserAgencyMapper.insertSelective(agency);
             }
-            if(detailInfo==null){
-                 detailInfo = new TAgencyDetailInfo();
+            if (detailInfo == null) {
+                detailInfo = new TAgencyDetailInfo();
                 detailInfo.setAgencyId(agencyId);
                 detailInfo.setCompanyName(dto.getCompanyName());
                 detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
@@ -976,13 +986,13 @@ public class PurchaserServiceImpl implements PurchaserService {
         //依据id查询所有的对应的信息t_purchaser_detail_info
         PurchaserEmplyeeVo vo = new PurchaserEmplyeeVo();
         TPurchaserDetailInfo tPurchaserDetail = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaseId);
-        if (tPurchaserDetail==null) {
+        if (tPurchaserDetail == null) {
             vo.setUserId(tPurchaserBasicInfo.getId().toString());
             vo.setUserName(tPurchaserBasicInfo.getName());
             vo.setCellphone(tPurchaserBasicInfo.getCellphone());
             return Result.success("查询成功", vo);
         }
-        TPurchaserBasicInfo boss =tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaseId,Const.Role.ROLE_CORPORATION);
+        TPurchaserBasicInfo boss = tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaseId, Const.Role.ROLE_CORPORATION);
         //获得老板name和公司name
         String companyName = tPurchaserDetail.getCompanyName();
         String bossName = boss.getName();
@@ -1077,7 +1087,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(QuerySupplierDto dto) {
         //查询结果
         List<PurchaserSupplierVo> supplierVos = tSupplierDetailInfoMapper.selectSupplierByCriteria(dto);
-        if (CollectionUtils.isEmpty(supplierVos) ) {
+        if (CollectionUtils.isEmpty(supplierVos)) {
             return Result.error("供应商不存在或信息不完全");
         }
 
@@ -1243,8 +1253,8 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<SupplierDetailVo> querySuppliersDto(QueryDto dto) {
         Long id = dto.getId();
         TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(id);
-        TSupplierBasicInfo basicInfo =tSupplierBasicInfoMapper.selectByPrimaryKey(id);
-        if (detailInfo==null||basicInfo== null) {
+        TSupplierBasicInfo basicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
+        if (detailInfo == null || basicInfo == null) {
             return Result.error("没有此供货商信息");
         }
 
@@ -1275,11 +1285,11 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     public Result<PurchaserExpertDetailVo> queryExpertDetailById(QueryDto dto) {
         Long expertId = dto.getId();
-        if(expertId!=null){
-            TExpertBasicInfo basicInfo =tExpertBasicInfoMapper.selectByPrimaryKey(expertId);
-            if(basicInfo!=null){
+        if (expertId != null) {
+            TExpertBasicInfo basicInfo = tExpertBasicInfoMapper.selectByPrimaryKey(expertId);
+            if (basicInfo != null) {
                 List<TExpertAttachment> list = tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
-                if(!CollectionUtils.isEmpty(list)){
+                if (!CollectionUtils.isEmpty(list)) {
                     PurchaserExpertDetailVo vo = new PurchaserExpertDetailVo();
                     vo.setName(basicInfo.getName());
                     vo.setCellphone(basicInfo.getCellphone());
@@ -1288,28 +1298,28 @@ public class PurchaserServiceImpl implements PurchaserService {
                     vo.setLevel(basicInfo.getLevel());
                     vo.setOtherInformation(basicInfo.getOtherInformation());
                     List<Attachement> attachements = new ArrayList<>();
-                    for (TExpertAttachment att:list) {
+                    for (TExpertAttachment att : list) {
                         Attachement attt = new Attachement();
-                        BeanUtils.copyProperties(att,attt);
+                        BeanUtils.copyProperties(att, attt);
                         attachements.add(attt);
                     }
                     vo.setAtts(attachements);
-                    return Result.success("查询成功",vo);
+                    return Result.success("查询成功", vo);
                 }
             }
         }
-        return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(),"查询失败");
+        return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "查询失败");
     }
 
     @Override
     public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(QueryDto dto) {
         Long agencyId = dto.getId();
-        if(agencyId!=null){
-            TAgencyBasicInfo basicInfo =tAgencyBasicInfoMapper.selectByPrimaryKey(agencyId);
-            if(basicInfo!=null){
-                TAgencyDetailInfo detailInfo =tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
+        if (agencyId != null) {
+            TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(agencyId);
+            if (basicInfo != null) {
+                TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
                 List<TAgencyAttachment> list = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
-                if(!CollectionUtils.isEmpty(list)){
+                if (!CollectionUtils.isEmpty(list)) {
                     PurchaserAgencyDetailVo vo = new PurchaserAgencyDetailVo();
                     vo.setAgencyId(agencyId);
                     vo.setCellphone(basicInfo.getCellphone());
@@ -1320,17 +1330,17 @@ public class PurchaserServiceImpl implements PurchaserService {
                     vo.setPublicBankName(detailInfo.getPublicBankName());
                     vo.setPublicBankCount(detailInfo.getPublicBanAccountNumber());
                     List<Attachement> attachements = new ArrayList<>();
-                    for (TAgencyAttachment att:list) {
+                    for (TAgencyAttachment att : list) {
                         Attachement attt = new Attachement();
-                        BeanUtils.copyProperties(att,attt);
+                        BeanUtils.copyProperties(att, attt);
                         attachements.add(attt);
                     }
                     vo.setAtts(attachements);
-                    return Result.success("查询成功",vo);
+                    return Result.success("查询成功", vo);
                 }
             }
         }
-        return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(),"查询失败");
+        return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "查询失败");
     }
 
 //    /**
@@ -1463,7 +1473,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         List<PurchaserAgencyVo> agencyVos = tAgencyDetailInfoMapper.selectAgencyByCriteria(dto);
 
         if (CollectionUtils.isEmpty(agencyVos)) {
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(),"没有符合条件的供应商");
+            return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "没有符合条件的供应商");
         }
         return Result.success("查询成功", agencyVos);
     }

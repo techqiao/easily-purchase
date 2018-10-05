@@ -22,6 +22,7 @@ public class CountFilter implements Filter {
         httpResponse.addHeader("Access-Control-Allow-Origin", "*");
         httpResponse.addHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+        httpResponse.setContentType("application/json:charset=UTF-8");
         chain.doFilter(req, res);
     }
     @Override

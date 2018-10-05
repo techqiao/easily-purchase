@@ -469,8 +469,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_supplier_basic_info
-        WHERE basic.cellphone=#{cellphone}
-        AND basic.password=#{pwd}
+        WHERE cellphone=#{cellphone}
+        AND password=#{pwd}
 
 
     </select>

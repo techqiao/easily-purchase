@@ -294,7 +294,7 @@
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT  INTO t_operator_basic_info
+        INSERT  INTO t_expert_basic_info
         (cellphone,password,`name`,create_at)
         VALUES
         (#{cellphone},#{pwd},#{name},#{dates})
@@ -522,8 +522,7 @@
     <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo" parameterType="com.epc.web.facade.agency.dto.ExpertDto">
         SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.id as serialNum
         FROM t_expert_basic_info basic
-       /* LEFT JOIN t_expert_attachment t
-        ON basic.id = t.expert_id*/
+
         <where>
             <if test="positional!=null">
                 AND positional = #{positional}

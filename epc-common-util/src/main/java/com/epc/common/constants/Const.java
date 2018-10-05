@@ -31,7 +31,16 @@ public class Const {
         int IS_OK = 1;
         int NOT_OK = 0;
     }
-
+    /**
+     *@author :winlin
+     *@Description : 默认密码
+     *@param:
+     *@return:
+     *@date:2018/10/5
+     */
+    public interface DEFAULT_PASSWORD{
+        String PASSWORD ="epc1688";
+    }
     /**
      *@author :winlin
      *@Description : 启用或禁用

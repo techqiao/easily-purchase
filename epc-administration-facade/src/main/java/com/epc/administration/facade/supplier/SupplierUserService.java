@@ -6,11 +6,14 @@ import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,7 +92,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "supplierReviewWinningBid",consumes = "application/json; charset=UTF-8")
-    Result supplierReviewWinningBid(@RequestBody QueryDetailIfo queryDetailIfo);
+    Result<List<TWinBidVO>> supplierReviewWinningBid(@RequestBody QueryDetailIfo queryDetailIfo);
 
     /**
      * 供应商考评 奖惩
@@ -107,4 +110,11 @@ public interface SupplierUserService {
     @PostMapping(value = "supplierReviewRecordOfPerformance",consumes = "application/json; charset=UTF-8")
     Result supplierReviewRecordOfPerformance(@RequestBody QueryDetailIfo queryDetailIfo);
 
+    /**
+     * 根据ID 查供应商考评 履约记录详情
+     * @param id
+     * @return
+     */
+    @GetMapping("supplierReviewRecordOfPerformanceDetail")
+    Result supplierReviewRecordOfPerformanceDetail(@RequestParam("id") Long id);
 }

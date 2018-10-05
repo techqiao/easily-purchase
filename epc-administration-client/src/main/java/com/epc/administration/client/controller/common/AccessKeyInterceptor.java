@@ -35,10 +35,7 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         String header = request.getHeader("epc-token");
-        String requestURI = request.getRequestURI();
-        if(requestURI.equals("/login/login")){
-            return true;
-        }
+
         if (null != header) {
             String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
             if (null != s) {

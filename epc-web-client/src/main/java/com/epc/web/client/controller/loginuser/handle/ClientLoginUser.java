@@ -33,4 +33,6 @@ public class ClientLoginUser implements Serializable {
     private String companyName;
     @ApiModelProperty(value = "公司id")
     private Long companyId;
+    @ApiModelProperty(value = "公司内部角色")
+    private Integer loginRole;
 }

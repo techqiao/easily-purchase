@@ -58,7 +58,7 @@ public class SupplierController extends BaseController implements SupplierUserSe
      * @return
      */
     @Override
-    public Result<Boolean> updateSupplierDetailInfo(SupplierHandle supplierHandle) {
+    public Result<Boolean> updateSupplierDetailInfo(@RequestBody SupplierHandle supplierHandle) {
         return supplierService.updateSupplierDetailInfo(supplierHandle);
     }
 
@@ -111,7 +111,37 @@ public class SupplierController extends BaseController implements SupplierUserSe
      * @return
      */
     @Override
-    public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
+    public Result<Boolean> forbiddenSupplierUser(@RequestBody SupplierForbiddenHandle supplierForbiddenHandle) {
         return supplierService.forbiddenSupplierUser(supplierForbiddenHandle);
+    }
+
+    /**
+     * 供应商考评中标业绩列表
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result supplierReviewWinningBid(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return supplierService.supplierReviewWinningBid(queryDetailIfo);
+    }
+
+    /**
+     * 供应商考评 奖惩
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result supplierReviewRewardAndPunishment(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return supplierService.supplierReviewRewardAndPunishment(queryDetailIfo);
+    }
+
+    /**
+     * 供应商考评 履约记录
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result supplierReviewRecordOfPerformance(@RequestBody QueryDetailIfo queryDetailIfo) {
+        return supplierService.supplierReviewRecordOfPerformance(queryDetailIfo);
     }
 }

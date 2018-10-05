@@ -25,7 +25,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "createSupplierUserInfo", consumes = "application/json; charset=UTF-8")
-     Result<Boolean> createSupplierUserInfo(UserBasicInfo userBasicInfo);
+     Result<Boolean> createSupplierUserInfo(@RequestBody UserBasicInfo userBasicInfo);
 
     /**
      * 供应商完善资料
@@ -73,7 +73,7 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "examineSupplier",consumes ="application/json; charset=UTF-8" )
-    Result examineSupplier(ExamineSupplierHandle examineSupplierHandle);
+    Result examineSupplier(@RequestBody ExamineSupplierHandle examineSupplierHandle);
 
     /**
      * 启用禁用供应商
@@ -81,5 +81,30 @@ public interface SupplierUserService {
      * @return
      */
     @PostMapping(value = "clientSupplierForbiddenHandle",consumes ="application/json; charset=UTF-8")
-    Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle);
+    Result<Boolean> forbiddenSupplierUser( @RequestBody SupplierForbiddenHandle supplierForbiddenHandle);
+
+    /**
+     * 供应商考评中标业绩列表
+     * @param queryDetailIfo
+     * @return
+     */
+    @PostMapping(value = "supplierReviewWinningBid",consumes = "application/json; charset=UTF-8")
+    Result supplierReviewWinningBid(@RequestBody QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 供应商考评 奖惩
+     * @param queryDetailIfo
+     * @return
+     */
+    @PostMapping(value = "supplierReviewRewardAndPunishment",consumes = "application/json; charset=UTF-8")
+    Result supplierReviewRewardAndPunishment(@RequestBody QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 供应商考评 履约记录
+     * @param queryDetailIfo
+     * @return
+     */
+    @PostMapping(value = "supplierReviewRecordOfPerformance",consumes = "application/json; charset=UTF-8")
+    Result supplierReviewRecordOfPerformance(@RequestBody QueryDetailIfo queryDetailIfo);
+
 }

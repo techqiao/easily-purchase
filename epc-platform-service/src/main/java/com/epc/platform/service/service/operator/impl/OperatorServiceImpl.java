@@ -340,7 +340,9 @@ public class OperatorServiceImpl implements OperatorService {
         if(where!=null){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
-        }
+        }else{
+        queryDetailIfo.setWhere(null);
+    }
         return  tOperatorDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**

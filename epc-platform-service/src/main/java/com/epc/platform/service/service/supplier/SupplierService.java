@@ -64,8 +64,32 @@ public interface SupplierService {
     Result<Boolean> examineSupplier(ExamineSupplierHandle examineSupplierHandle);
 
     /**
-     * 启用禁用供应商
+     * 锁定供应商
+     * @param supplierForbiddenHandle
      * @return
      */
     Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle);
+
+    /**
+     * 供应商考评中标业绩列表
+     * @param queryDetailIfo
+     * @return
+     */
+    Result supplierReviewWinningBid(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 供应商考评 奖惩
+     * @param queryDetailIfo
+     * @return
+     */
+    Result supplierReviewRewardAndPunishment(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 供应商考评 履约记录
+     * @param queryDetailIfo
+     * @return
+     */
+    Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo);
+
+
 }

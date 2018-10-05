@@ -294,7 +294,7 @@
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT  INTO t_operator_basic_info
+        INSERT  INTO t_expert_basic_info
         (cellphone,password,`name`,create_at)
         VALUES
         (#{cellphone},#{pwd},#{name},#{dates})

@@ -101,8 +101,9 @@
     <select id="login" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        WHERE agency.cellphone=#{cellphone}
-        AND agency.password=#{pwd}
+        FROM t_operator_basic_info
+        WHERE cellphone=#{cellphone}
+        AND password=#{pwd}
     </select>
     <select id="selectByExample" parameterType="com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria"
             resultMap="BaseResultMap">

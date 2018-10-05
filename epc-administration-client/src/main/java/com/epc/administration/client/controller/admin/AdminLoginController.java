@@ -8,9 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -22,8 +20,7 @@ import java.util.Map;
  */
 @Api(value = "系统后台登录 @罗志鑫",tags = {"系统后台登录"})
 @RestController
-@RequestMapping(value = "login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@SessionAttributes("session")
+
 public class AdminLoginController {
     @Autowired
     private AdminLoginClient loginClient;
@@ -34,7 +31,7 @@ public class AdminLoginController {
      * @return
      */
     @ApiOperation(value = "用户登录", notes = "用户登录")
-    @PostMapping(value = "login")
+    @PostMapping(value = "/public/login")
     public Result<Map<String,Object>> login(HttpServletResponse httpServletResponse ,
                                             @RequestBody ClientUserLoginHandle clientUserLoginHandle){
         LoginHandle loginHandle =  new LoginHandle();

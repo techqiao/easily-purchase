@@ -6,6 +6,7 @@ import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
+import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public interface SupplierService {
      * @param queryDetailIfo
      * @return
      */
-    Result supplierReviewWinningBid(QueryDetailIfo queryDetailIfo);
+    Result<List<TWinBidVO>> supplierReviewWinningBid(QueryDetailIfo queryDetailIfo);
 
     /**
      * 供应商考评 奖惩
@@ -91,5 +92,11 @@ public interface SupplierService {
      */
     Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo);
 
+    /**
+     * 根据ID 查供应商考评 履约记录详情
+     * @param id
+     * @return
+     */
+    Result supplierReviewRecordOfPerformanceDetail(Long id);
 
 }

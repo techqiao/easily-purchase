@@ -7,6 +7,7 @@ import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
+import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
 import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
@@ -121,7 +122,7 @@ public class SupplierController extends BaseController implements SupplierUserSe
      * @return
      */
     @Override
-    public Result supplierReviewWinningBid(@RequestBody QueryDetailIfo queryDetailIfo) {
+    public Result<List<TWinBidVO>> supplierReviewWinningBid(@RequestBody QueryDetailIfo queryDetailIfo) {
         return supplierService.supplierReviewWinningBid(queryDetailIfo);
     }
 
@@ -143,5 +144,15 @@ public class SupplierController extends BaseController implements SupplierUserSe
     @Override
     public Result supplierReviewRecordOfPerformance(@RequestBody QueryDetailIfo queryDetailIfo) {
         return supplierService.supplierReviewRecordOfPerformance(queryDetailIfo);
+    }
+
+    /**
+     * 根据ID 查供应商考评 履约记录详情
+     * @param id
+     * @return
+     */
+    @Override
+    public Result supplierReviewRecordOfPerformanceDetail(@RequestParam("id") Long id) {
+        return supplierService.supplierReviewRecordOfPerformanceDetail(id);
     }
 }

@@ -28,7 +28,7 @@ public class BiddingMoneyPayController implements FacadeMoneyPayService {
      * @return
      */
     @Override
-    public Result<List<GuarantyListVo>> getMoneyPayList(@RequestBody QueryMoneyPayDTO dto){
+    public Result<List<MoneyPayVO>> getMoneyPayList(@RequestBody QueryMoneyPayDTO dto){
         return moneyPayService.getMoneyPayList(dto);
     }
 

@@ -176,62 +176,52 @@ public class TPurchaseProjectBasicInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdEqualTo(String value) {
+        public Criteria andProjectIdEqualTo(Long value) {
             addCriterion("project_id =", value, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotEqualTo(String value) {
+        public Criteria andProjectIdNotEqualTo(Long value) {
             addCriterion("project_id <>", value, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdGreaterThan(String value) {
+        public Criteria andProjectIdGreaterThan(Long value) {
             addCriterion("project_id >", value, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdGreaterThanOrEqualTo(String value) {
+        public Criteria andProjectIdGreaterThanOrEqualTo(Long value) {
             addCriterion("project_id >=", value, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLessThan(String value) {
+        public Criteria andProjectIdLessThan(Long value) {
             addCriterion("project_id <", value, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLessThanOrEqualTo(String value) {
+        public Criteria andProjectIdLessThanOrEqualTo(Long value) {
             addCriterion("project_id <=", value, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLike(String value) {
-            addCriterion("project_id like", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdNotLike(String value) {
-            addCriterion("project_id not like", value, "projectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andProjectIdIn(List<String> values) {
+        public Criteria andProjectIdIn(List<Long> values) {
             addCriterion("project_id in", values, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotIn(List<String> values) {
+        public Criteria andProjectIdNotIn(List<Long> values) {
             addCriterion("project_id not in", values, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdBetween(String value1, String value2) {
+        public Criteria andProjectIdBetween(Long value1, Long value2) {
             addCriterion("project_id between", value1, value2, "projectId");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotBetween(String value1, String value2) {
+        public Criteria andProjectIdNotBetween(Long value1, Long value2) {
             addCriterion("project_id not between", value1, value2, "projectId");
             return (Criteria) this;
         }
@@ -1143,6 +1133,66 @@ public class TPurchaseProjectBasicInfoCriteria {
 
         public Criteria andIsOtherAgencyNotBetween(Integer value1, Integer value2) {
             addCriterion("is_other_agency not between", value1, value2, "isOtherAgency");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndIsNull() {
+            addCriterion("is_end is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndIsNotNull() {
+            addCriterion("is_end is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndEqualTo(Integer value) {
+            addCriterion("is_end =", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndNotEqualTo(Integer value) {
+            addCriterion("is_end <>", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndGreaterThan(Integer value) {
+            addCriterion("is_end >", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_end >=", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndLessThan(Integer value) {
+            addCriterion("is_end <", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndLessThanOrEqualTo(Integer value) {
+            addCriterion("is_end <=", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndIn(List<Integer> values) {
+            addCriterion("is_end in", values, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndNotIn(List<Integer> values) {
+            addCriterion("is_end not in", values, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndBetween(Integer value1, Integer value2) {
+            addCriterion("is_end between", value1, value2, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_end not between", value1, value2, "isEnd");
             return (Criteria) this;
         }
 

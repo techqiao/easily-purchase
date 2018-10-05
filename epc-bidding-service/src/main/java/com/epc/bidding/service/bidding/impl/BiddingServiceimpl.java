@@ -8,12 +8,15 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
+import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
+import com.epc.web.facade.bidding.query.schedule.HandleProjectSchedule;
+import com.epc.web.facade.bidding.query.schedule.QueryProjectSchedule;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
@@ -39,7 +42,6 @@ import java.util.List;
 @Service
 public class BiddingServiceimpl implements BiddingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiddingServiceimpl.class);
-
     @Autowired
     BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
     @Autowired
@@ -56,7 +58,14 @@ public class BiddingServiceimpl implements BiddingService {
     TPretrialMessageMapper tPretrialMessageMapper;
     @Autowired
     TPretrialFileMapper tPretrialFileMapper;
-
+    @Autowired
+    TTenderMessageMapper tTenderMessageMapper;
+    @Autowired
+    TProjectBidProcedureMapper tProjectBidProcedureMapper;
+    @Autowired
+    TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+    @Autowired
+    TTenderFileMapper tTenderFileMapper;
 
     /**
      * 查询公告列表（暂时不做黑名单）
@@ -182,55 +191,88 @@ public class BiddingServiceimpl implements BiddingService {
 
 
     /**
-     * 上传 预审 文件列表
-     * @param handlePretriaFile
+     * 投标文件记录(新增/修改/删除)
+     * @param handleNotice
      * @return
      */
-
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile){
-        TPretrialMessage attachment=new TPretrialMessage();
-        BeanUtils.copyProperties(handlePretriaFile,attachment);
-        attachment.setCreateAt(new Date());
-        attachment.setUpdateAt(new Date());
-        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        try{
-            //新增审查信息记录
-            tPretrialMessageMapper.insertSelective(attachment);
-        }catch (Exception e){
-            LOGGER.error("insertPretrialFile_"+attachment.toString()+"_"+e.getMessage(),e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error();
+    public Result<Boolean> insertNotice(HandleNotice handleNotice){
+        //删除
+        if(handleNotice.getId()!=null && handleNotice.getIsDelete()==1){
+            try{
+                tTenderMessageMapper.deleteByPrimaryKey(handleNotice.getId());
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+handleNotice.getId().toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+        }
+
+        TTenderMessage entity=new TTenderMessage();
+        BeanUtils.copyProperties(handleNotice,entity);
+        entity.setCreateAt(new Date());
+        entity.setUpdateAt(new Date());
+        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+
+        if(handleNotice.getId()!=null){
+            //更新
+            try{
+                tTenderMessageMapper.updateByPrimaryKey(entity);
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+entity.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+        }else if(handleNotice.getId()==null){
+            //新增
+            try{
+                tTenderMessageMapper.insertSelective(entity);
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+entity.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
         }
         //查看文件是否上传
-        List<BasePretriaFile> list=handlePretriaFile.getFilePathList();
+        List<BasePretriaFile> list=handleNotice.getFilePathList();
         if(list.size()==0){
             return  Result.success(true);
         }
-        //新增 修改 审查文件（一条记录可以对应多个文件）
-        for(BasePretriaFile entity:list){
-            TPretrialFile tPretrialFile=new TPretrialFile();
-            tPretrialFile.setPretrialMessageId(attachment.getId());
-            tPretrialFile.setFilePath(entity.getFilePath());
-            tPretrialFile.setFileName(entity.getFileName());
-            tPretrialFile.setCreateAt(new Date());
-            tPretrialFile.setUpdateAt(new Date());
-                //文件id为空则新增记录
+        //新增 修改 投标文件（一条记录可以对应多个文件）
+        for(BasePretriaFile file:list){
+            TTenderFile tTenderFile=new TTenderFile();
+            tTenderFile.setTenderMessageId(file.getId());
+            tTenderFile.setFilePath(file.getFilePath());
+            tTenderFile.setFileName(file.getFileName());
+            tTenderFile.setCreateAt(new Date());
+            tTenderFile.setUpdateAt(new Date());
+            if(file.getId()!=null){
+                //文件id不为空则修改记录
                 try{
-                    tPretrialFileMapper.insertSelective(tPretrialFile);
-                    LOGGER.error("insertPretrialFile Error");
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    tTenderFileMapper.updateByPrimaryKey(tTenderFile);
                 }catch(Exception e){
+                    LOGGER.error("updateByPrimaryKey_"+e.getMessage());
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     return  Result.error();
                 }
+            }else  if(file.getId()==null){
+                //文件id为空则新增记录
+                try{
+                    tTenderFileMapper.insertSelective(tTenderFile);
+                }catch(Exception e){
+                    LOGGER.error("insertSelective_"+e.getMessage());
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    return  Result.error();
+                }
+            }
         }
         return Result.success();
     }
 
 
     /**
-     * 预审文件记录 更新
+     * 预审文件记录 新增/更新/删除
      * @param handlePretriaFile
      * @return
      */
@@ -240,21 +282,41 @@ public class BiddingServiceimpl implements BiddingService {
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
         attachment.setUpdateAt(new Date());
-        try{
-            //更新审查信息记录
-            tPretrialMessageMapper.updateByPrimaryKey(attachment);
-        }catch (Exception e){
-            LOGGER.error("updatePretrialFile_"+attachment.toString()+e.getMessage(),e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error();
+        if(handlePretriaFile.getIsDelete()==1 && handlePretriaFile.getId()!=null){
+            try{
+                //删除
+                tPretrialMessageMapper.deleteByPrimaryKey(handlePretriaFile.getId());
+                return  Result.success(true);
+            }catch (Exception e){
+                LOGGER.error("updatePretrialFile_"+attachment.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
         }
-
+        if(handlePretriaFile.getId()!=null){
+            try{
+                //更新审查信息记录
+                tPretrialMessageMapper.updateByPrimaryKey(attachment);
+            }catch (Exception e){
+                LOGGER.error("updatePretrialFile_"+attachment.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+        }else if(handlePretriaFile.getId()==null){
+            try{
+                //新增审查信息记录
+                tPretrialMessageMapper.insertSelective(attachment);
+            }catch (Exception e){
+                LOGGER.error("updatePretrialFile_"+attachment.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+        }
         //查看是否存在文件
         List<BasePretriaFile> list=handlePretriaFile.getFilePathList();
         if(list.size()==0){
             return  Result.success(true);
         }
-
         for(BasePretriaFile entity:list){
             TPretrialFile tPretrialFile=new TPretrialFile();
             tPretrialFile.setPretrialMessageId(attachment.getId());
@@ -362,5 +424,49 @@ public class BiddingServiceimpl implements BiddingService {
             }
         }
         return Result.success();
+    }
+
+
+    /**
+     * 根据bid 和 用户类型 判断标段环节步骤
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<String> queryProjectSchedule(QueryProjectSchedule dto){
+        TProjectBidProcedureCriteria criteria=new TProjectBidProcedureCriteria();
+        TProjectBidProcedureCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andProjectIdEqualTo(dto.getPurchaseProjectId());
+        cubCriteria.andOperateTypeEqualTo("supplier");
+        criteria.setOrderByClause("create_at desc");
+        List<TProjectBidProcedure> result=tProjectBidProcedureMapper.selectByExample(criteria);
+        if(result.size()>0){
+            return  Result.success(result.get(0).getProcedureName());
+        }else{
+            return Result.success(null);
+        }
+    }
+
+    /**
+     * 环节插入
+     * @param dto
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor =Exception.class )
+    public Result<Boolean> insertProjectSchedule(HandleProjectSchedule dto) {
+        TProjectBidProcedure entity = new TProjectBidProcedure();
+        BeanUtils.copyProperties(dto, entity);
+        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        entity.setCreateAt(new Date());
+        entity.setUpdateAt(new Date());
+        try {
+            tProjectBidProcedureMapper.insertSelective(entity);
+        } catch (Exception e) {
+            LOGGER.error("insertProjectSchedule_" + entity.toString() + "_" + e.getMessage(), e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error();
+        }
+        return Result.success(true);
     }
 }

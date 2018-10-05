@@ -13,10 +13,13 @@ import java.io.Serializable;
 @Data
 public class BasePretriaFile implements Serializable {
     private static final long serialVersionUID = -2062443423483279136L;
+    @ApiModelProperty("文件Id")
     private Long id;
+    @ApiModelProperty("文件路径")
     private String filePath;
+    @ApiModelProperty("文件名称")
     private String fileName;
-    private String fileType;
+    @ApiModelProperty("是否删除（0-否，1-是）")
     private int isDeleted;
 
     public Long getId() {
@@ -41,14 +44,6 @@ public class BasePretriaFile implements Serializable {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
     }
 
     public int getIsDeleted() {

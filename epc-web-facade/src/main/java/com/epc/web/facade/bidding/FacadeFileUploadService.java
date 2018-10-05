@@ -1,6 +1,7 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +25,23 @@ public interface FacadeFileUploadService {
     @PostMapping(value = "insertPretrialFile", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertPretrialFile(@RequestBody HandlePretriaFile handlePretriaFile);
 
-    /**
-     * 查看预审信息
-     * @param handlePretriaFile
-     * @return
-     */
+
+        /**
+         * 查看预审信息
+         * @param handlePretriaFile
+         * @return
+         */
     @PostMapping(value = "getTPretrialMessage", consumes = "application/json; charset=UTF-8")
     Result<PretrialMessageVO> getTPretrialMessage(@RequestBody HandlePretriaFile handlePretriaFile);
-}
+
+
+
+    /**
+     * 修改 投标信息
+     * @param handleNotice
+     * @return
+     */
+    @PostMapping(value = "updateNotice", consumes = "application/json; charset=UTF-8")
+     Result<Boolean> updateNotice(@RequestBody HandleNotice handleNotice);
+
+    }

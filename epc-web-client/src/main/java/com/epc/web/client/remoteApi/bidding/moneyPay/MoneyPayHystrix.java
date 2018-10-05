@@ -15,7 +15,7 @@ public class MoneyPayHystrix implements FacadeMoneyPayService {
 
 
     @Override
-    public Result<List<GuarantyListVo>> getMoneyPayList(QueryMoneyPayDTO dto) {
+    public Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto) {
         return Result.hystrixError();    }
 
     @Override

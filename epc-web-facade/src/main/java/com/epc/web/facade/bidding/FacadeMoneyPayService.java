@@ -24,7 +24,7 @@ public interface FacadeMoneyPayService {
      * @return
      */
     @PostMapping(value = "getMoneyPayList", consumes = "application/json; charset=UTF-8")
-    Result<List<GuarantyListVo>> getMoneyPayList(@RequestBody QueryMoneyPayDTO dto);
+    Result<List<MoneyPayVO>> getMoneyPayList(@RequestBody QueryMoneyPayDTO dto);
     /**
      * 查询是否标段支付服务费
      * @param dto

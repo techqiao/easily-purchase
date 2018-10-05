@@ -90,59 +90,57 @@ public class OperatorServiceImpl implements OperatorService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> registerOperator(HandleOperator handleOperator) {
         Date date=new Date();
-        //得到 电话 密码
+        //得到 电话 密码 姓名
         String cellphone = handleOperator.getCellphone();
         String password=handleOperator.getPassword();
+        String name = handleOperator.getName();
+        Integer systemRole = handleOperator.getSystemRole();
 
-        if(StringUtils.isNotBlank(cellphone)){
-            //通过 电话 查询数据库中有没有记录, 如果有，就设置密码,完善信息; 如果没有，就继续注册
-            //我这个数据库是没有记录这个电话的
-            TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
-            TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-            subCriteria.andCellphoneEqualTo(cellphone);
-            List<TOperatorBasicInfo> listTOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-            if (CollectionUtils.isEmpty(listTOperatorBasicInfos)) {
-                if(StringUtils.isNotBlank(password)){
-                    //如果没有电话，就可以注册
-                    TOperatorBasicInfo tOperatorBasicInfo=new TOperatorBasicInfo();
+        if(systemRole.intValue()!=Const.LOGIN_USER_TYPE.OPERATOR || StringUtils.isBlank(cellphone) || StringUtils.isBlank(password) || StringUtils.isBlank(name)){
+            return Result.success("请填写正确的参数");
+        }
+        //先查询 数据库中有没有这个电话，有就不能注册
+        TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
+        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andCellphoneEqualTo(cellphone);
+        List<TOperatorBasicInfo> listTOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
 
-                    tOperatorBasicInfo.setCellphone(cellphone);
-                    tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(password));
-                    //短信验证
+        if(CollectionUtils.isEmpty(listTOperatorBasicInfos)){
+            //电话在数据 中不存在,可以注册
+            TOperatorBasicInfo tOperatorBasicInfo=new TOperatorBasicInfo();
 
-                    //设置状态 为 完善中。。。
-                    tOperatorBasicInfo.setState(Const.STATE.PERFECTING);
-                    //设置角色 为法人
-                    tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
-                    //记录创建时间
-                    tOperatorBasicInfo.setCreateAt(date);
-                    tOperatorBasicInfo.setUpdateAt(date);
-                    int i=0;
-                    try{
-                        i=tOperatorBasicInfoMapper.insertSelective(tOperatorBasicInfo);
-                        //更新数据库， 将主键id设置与operator_id一样，因为是运营商注册，
-                        tOperatorBasicInfo.setOperatorId(tOperatorBasicInfo.getId());
-                        tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-                        return Result.success(i>0);
-                    }catch (BusinessException e){
-                        LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {运营商注册}",e);
-                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                        return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-                    }catch (Exception e){
-                        LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {}",e);
-                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                        return Result.error(e.getMessage());
-                    }
-                }else{
-                    return Result.error("密码不能空");
-                }
-            }else{
-                //如果有电话，证明是被其他人拉取的，可以直接通过电话与姓名进行登陆，进去直接设置密码，然后完善个人信息
-                //也有可能这个电话已经是用户了，存在数据库中了（这种可能性几乎没有,因为是每次注册都是要验证码的。）
-                return Result.error("数据库中有这条记录，不能注册，电话要唯一");
+            tOperatorBasicInfo.setCellphone(cellphone);
+            tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(password));
+            tOperatorBasicInfo.setName(name);
+            //短信验证
+
+            //设置状态 为 完善中。。。
+            tOperatorBasicInfo.setState(Const.STATE.PERFECTING);
+            //设置角色 为法人
+            tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+            //记录创建时间
+            tOperatorBasicInfo.setCreateAt(date);
+            tOperatorBasicInfo.setUpdateAt(date);
+            int i=0;
+            try{
+                i=tOperatorBasicInfoMapper.insertSelective(tOperatorBasicInfo);
+                //更新数据库， 将主键id设置与operator_id一样，因为是运营商注册，
+                tOperatorBasicInfo.setOperatorId(tOperatorBasicInfo.getId());
+                tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
+                return Result.success(i>0);
+            }catch (BusinessException e){
+                LOGGER.error("[] tOperatorBasicInfoMapper.insertSelective : {运营商注册}",e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+            }catch (Exception e){
+                LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {}",e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error(e.getMessage());
             }
         }else{
-            return Result.error("StringUtils.isNotBlank(cellphone) : {有误}");
+            //如果依据电话能查出记录，就证明电话在数据库中存在
+            //如果有电话，就请直接登陆
+            return Result.success("数据库中有这个电话，不能注册，电话要唯一");
         }
     }
 
@@ -150,92 +148,91 @@ public class OperatorServiceImpl implements OperatorService {
     /**0.5
      * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
      */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> addPasswordOperatorLogin(HandleOperator handleOperator){
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public Result<Boolean> addPasswordOperatorLogin(HandleOperator handleOperator){
+//
+//        //得到电话 姓名
+//        String cellphone=handleOperator.getCellphone();
+//        String name = handleOperator.getName();
+//
+//        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
+//        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+//        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+//            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+//        }
+//        subCriteria.andCellphoneEqualTo(cellphone);
+//        subCriteria.andNameEqualTo(name);
+//        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
+//
+//        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
+//            return Result.success(false);
+//        }
+//        return Result.success(true);
+//
+//    }
 
-        //得到电话 姓名
-        String cellphone=handleOperator.getCellphone();
-        String name = handleOperator.getName();
-
-        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
-        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
-        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-        }
-        subCriteria.andCellphoneEqualTo(cellphone);
-        subCriteria.andNameEqualTo(name);
-        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-
-        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-            return Result.success(false);
-        }
-        return Result.success(true);
-
-    }
     /**1
      *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
      *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
      *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
      *           )
      */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> addPasswordOperator(HandleOperator handleOperator){
-        Date date=new Date();
-
-        //得到电话 姓名
-        String cellphone=handleOperator.getCellphone();
-        String name = handleOperator.getName();
-
-        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
-        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
-        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-        }
-        subCriteria.andCellphoneEqualTo(cellphone);
-        subCriteria.andNameEqualTo(name);
-        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-            return Result.error("[运营商注册] 查不到符合条件的信息");
-        }
-        //通过电话,名字 能查出这个数据在数据库中 存在
-        TOperatorBasicInfo operatorBasic = tOperatorBasicInfos.get(0);
-        //然后判断从数据库中查出的这条数据 密码项为空
-        String password = operatorBasic.getPassword();
-
-        if(StringUtils.isNotBlank(password)){
-            //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
-            //因为你的电话与名字可能某些人知道！！
-            return Result.error("如果你由别人拉取，数据库密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
-        }
-        //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
-        //设置一些表中必须的信息
-        String inputPassword = handleOperator.getPassword();
-        operatorBasic.setPassword(MD5Util.MD5EncodeUtf8(inputPassword));
-        //完善中
-        operatorBasic.setState(Const.STATE.PERFECTING);
-        //最后修改时间
-        operatorBasic.setUpdateAt(date);
-        int i=0;
-        try{
-            //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息,并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
-            tOperatorBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
-        }catch (BusinessException e){
-            LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {由平台拉取完成登陆，更新密码}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
-        return  Result.success(true);
-    }
-
-
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public Result<Boolean> addPasswordOperator(HandleOperator handleOperator){
+//        Date date=new Date();
+//
+//        //得到电话 姓名
+//        String cellphone=handleOperator.getCellphone();
+//        String name = handleOperator.getName();
+//
+//        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
+//        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+//        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+//            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+//        }
+//        subCriteria.andCellphoneEqualTo(cellphone);
+//        subCriteria.andNameEqualTo(name);
+//        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
+//        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
+//            return Result.error("[运营商注册] 查不到符合条件的信息");
+//        }
+//        //通过电话,名字 能查出这个数据在数据库中 存在
+//        TOperatorBasicInfo operatorBasic = tOperatorBasicInfos.get(0);
+//        //然后判断从数据库中查出的这条数据 密码项为空
+//        String password = operatorBasic.getPassword();
+//
+//        if(StringUtils.isNotBlank(password)){
+//            //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
+//            //因为你的电话与名字可能某些人知道！！
+//            return Result.error("如果你由别人拉取，数据库密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
+//        }
+//        //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
+//        //设置一些表中必须的信息
+//        String inputPassword = handleOperator.getPassword();
+//        operatorBasic.setPassword(MD5Util.MD5EncodeUtf8(inputPassword));
+//        //完善中
+//        operatorBasic.setState(Const.STATE.PERFECTING);
+//        //最后修改时间
+//        operatorBasic.setUpdateAt(date);
+//        int i=0;
+//        try{
+//            //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息,并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
+//            tOperatorBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
+//        }catch (BusinessException e){
+//            LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {由平台拉取完成登陆，更新密码}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+//        }catch (Exception e){
+//            LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(e.getMessage());
+//        }
+//        return  Result.success(true);
+//    }
 
 
     /**2
@@ -246,8 +243,9 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<Boolean> insertCompleteOperatorInfo(RoleDetailInfo roleDetailInfo){
         //运营商法人id
         Long supplierId = roleDetailInfo.getSupplierId();
-        if(supplierId==null){
-            return Result.error("[完善运营商信息] supplierId==null : {参数异常}");
+        Integer systemRole = roleDetailInfo.getSystemRole();
+        if(supplierId==null || systemRole.intValue()!=Const.INVITER_TYPE.OPERATOR){
+            return Result.success("[完善运营商信息] supplierId==null || systemRole.intValue()!=Const.INVITER_TYPE.OPERATOR : {条件异常}");
         }
         Date date=new Date();
         //完善详情表
@@ -297,7 +295,6 @@ public class OperatorServiceImpl implements OperatorService {
             }
         }
 
-
         try{
             //将运营商主表中的basic信息更新
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(supplierId);
@@ -306,13 +303,13 @@ public class OperatorServiceImpl implements OperatorService {
             //信息完善完成后，将状态改为 （state 2） 已提交
             tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             //查看basic表中的name有没有值，如果有，证明别人拉取进来的（因为拉取的时候要填入姓名，电话，而自己注册则直接通过手机号就可以）；如果没有，就证明是自己注册的
-            String name = roleDetailInfo.getName();
+//            String name = roleDetailInfo.getName();
 //            System.out.println("当前完善信息法人的名字:"+name);
-            if(StringUtils.isBlank(tOperatorBasicInfo.getName())){
+//            if(StringUtils.isBlank(tOperatorBasicInfo.getName())){
                 //如果为空,就是自己注册。就要对basic表进行相关的填写
-                tOperatorBasicInfo.setName(name);
+//                tOperatorBasicInfo.setName(name);
 //                System.out.println("name名字为空 ，完善你的名字，ok "+name);
-            }
+//            }
             //如果不为空，就只需要更改状态,以及更新时间就可以
             tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
         }catch (BusinessException e){
@@ -342,9 +339,13 @@ public class OperatorServiceImpl implements OperatorService {
 
         //得到当前操作者的id，然后得到法人id
         Long id=handleOperatorAddEmployee.getId();
-        if(id==null){
-            return Result.error("[运营商增加一个员工] id==null : {参数异常}");
+        Integer systemRole = handleOperatorAddEmployee.getSystemRole();
+        Integer loginRole = handleOperatorAddEmployee.getLoginRole();
+
+        if(id==null || systemRole.intValue()!=Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue()==Const.Role.ROLE_CUSTOMER) {  // 不是运营商 ,或者是 员工
+            return Result.success("[运营商增加一个员工] id==null : {条件异常}");
         }
+
         TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
         Long operatorId = tOperatorBasicInfo.getOperatorId();
 

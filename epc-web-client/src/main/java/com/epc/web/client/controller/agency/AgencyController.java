@@ -7,6 +7,7 @@ import com.epc.web.client.controller.agency.handle.ClientHandleEmployee;
 import com.epc.web.client.controller.agency.handle.ClientHandleExpert;
 import com.epc.web.client.controller.agency.handle.ClientHandleSupplier;
 import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
 import com.epc.web.client.controller.purchaser.dto.ClientQueryDto;
 import com.epc.web.client.controller.purchaser.handle.ClientHandleTrustList;
 import com.epc.web.client.remoteApi.agency.AgencyClient;
@@ -25,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +48,11 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/insertAgencyEmployeee")
     public Result<Boolean > insertEmployee(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee employee1 = new HandleEmployee();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if(StringUtils.isEmpty(clientLoginUser.getCompanyId())){
+            return Result.error("请先完善个人信息!");
+        }
+        employee1.setAgencyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(employee,employee1);
         return agencyClient.insertEmployee(employee1);
     }
@@ -54,6 +61,11 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/insertAgencyExpert")
     public Result<Boolean> insertExpert(@RequestBody ClientHandleExpert handleExpert) {
        HandleExpert expert = new HandleExpert();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if(StringUtils.isEmpty(clientLoginUser.getCompanyId())){
+            return Result.error("请先完善个人信息!");
+        }
+        expert.setInvterCompanyId(clientLoginUser.getCompanyId()+"");
        BeanUtils.copyProperties(handleExpert,expert);
         return agencyClient.insertExpert(expert);
     }
@@ -62,15 +74,27 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/insertAgencySupplier")
     public Result<Boolean> insertSupplier(@RequestBody ClientHandleSupplier handleSupplier) {
         HandleSupplier supplier=new HandleSupplier();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if(StringUtils.isEmpty(clientLoginUser.getCompanyId())){
+            return Result.error("请先完善个人信息!");
+        }
+        supplier.setInviterCompanyId(clientLoginUser.getCompanyId().intValue());
+        supplier.setInviterId(clientLoginUser.getUserId());
         BeanUtils.copyProperties(handleSupplier,supplier);
         return agencyClient.insertSupplier(supplier);
     }
 
 
-    @ApiOperation(value = "代理机构注册完善信息" )
+    @ApiOperation(value = "代理机构完善信息" )
     @PostMapping(value = "/completeInfo")
     public Result completeInfo(@RequestBody ClientHandleAgency agency) {
         HandleAgency handleAgency=new HandleAgency();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if(clientLoginUser==null){
+            return Result.error("请先登录!");
+        }
+        handleAgency.setName(clientLoginUser.getName());
+        handleAgency.setCellphone(clientLoginUser.getCellphone());
         BeanUtils.copyProperties(agency,handleAgency);
         return agencyClient.completeInfo(handleAgency);
     }
@@ -80,6 +104,11 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/queryEmployee")
     public Result queryEmployee(@RequestBody ClientAgencyEmployeeDto employee) {
         AgencyEmployeeDto handleEmployee =new AgencyEmployeeDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if(StringUtils.isEmpty(clientLoginUser.getCompanyId())){
+            return Result.error("请先完善个人信息!");
+        }
+        handleEmployee.setAgencyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.queryEmployee(handleEmployee);
     }
@@ -89,6 +118,7 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/updateEmployeeBy")
     public Result updateEmployeeBy(@RequestBody ClientHandleEmployee employee) {
         HandleEmployee handleEmployee =new HandleEmployee();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
         BeanUtils.copyProperties(employee,handleEmployee);
         return agencyClient.updateEmployeeBy(handleEmployee);
     }
@@ -104,6 +134,11 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/querySuppilerCriteria")
     public Result<List<AgencySupplierVo>> querySupplierCriteria(@RequestBody ClientSupplierDto supplierDto){
         SupplierDto supplierDto1 = new SupplierDto();
+        ClientLoginUser clientLoginUser = super.getLoginUser();
+        if(StringUtils.isEmpty(clientLoginUser.getCompanyId())){
+            return Result.error("请先完善个人信息!");
+        }
+        supplierDto1.setAgencyId(clientLoginUser.getCompanyId());
         BeanUtils.copyProperties(supplierDto,supplierDto1);
         return agencyClient.querySupplierCriteria(supplierDto1);
     }

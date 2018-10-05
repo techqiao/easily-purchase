@@ -29,7 +29,7 @@
                         password="ECPrds5197">
         </jdbcConnection>-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/easily_purchase"
+                        connectionURL="jdbc:mysql://localhost:3306/easily_purchase2"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -52,72 +52,10 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!--<table schema="easily_purchase" tableName="b_issue_documents" domainObjectName="BIssueDocuments">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-
-
-         <!--<table schema="easily_purchase" tableName="b_answer_question" domainObjectName="BAnswerQuestion">
-        <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-    </table>-->
-
-
-        <!--  <table schema="easily_purchase" tableName="t_supplier_attachment" domainObjectName="TSupplierAttachment">
-             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-         </table>-->
-
-        <!--<table schema="easily_purchase" tableName="t_purchase_project_file_download" domainObjectName="TPurchaseProjectFileDownload">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-
-        <!--<table schema="easily_purchase" tableName="t_purchase_project_file_pay" domainObjectName="TPurchaseProjectFilePay">
-           <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-       </table>-->
-
-        <!--<table schema="easily_purchase" tableName="b_release_announcement" domainObjectName="BReleaseAnnouncement">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-        <!--<table schema="easily_purchase" tableName="b_sale_documents" domainObjectName="BSaleDocuments">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-
-
-        <!--<table schema="easily_purchase" tableName="t_supplier_basic_info" domainObjectName="TSupplierBasicInfo">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-        <!--<table schema="easily_purchase" tableName="t_purchase_project_bids" domainObjectName="TPurchaseProjectBids">
-           <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-       </table>-->
-
-       <!-- <table schema="easily_purchase" tableName="t_pretrial_message" domainObjectName="TPretrialMessage">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-      <!--<table schema="easily_purchase" tableName="t_pretrial_file" domainObjectName="TPretrialFile">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-      </table>-->
-        <!--<table schema="easily_purchase" tableName="b_bids_guarantee_amount" domainObjectName="BBidsGuaranteeAmount">
-                    <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-              </table>-->
-
-        <table schema="easily_purchase" tableName="t_win_bid_nominate" domainObjectName="TWinBidNominate">
+        <table schema="easily_purchase" tableName="t_project_basic_info" domainObjectName="TProjectBasicInfo">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-
-       <!-- <table schema="easily_purchase" tableName="t_supplier_sign" domainObjectName="TSupplierSign">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-
-        <!--<table schema="easily_purchase" tableName="t_service_money_pay" domainObjectName="TServiceMoneyPay">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
-        <!--<table schema="easily_purchase" tableName="b_bids_guarantee_amount" domainObjectName="BBidsGuaranteeAmount">
-                  <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-              </table>-->
-
-        <!--<table schema="easily_purchase" tableName="t_project_basic_info" domainObjectName="TProjectBasicInfo">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
     </context>
 
 </generatorConfiguration>

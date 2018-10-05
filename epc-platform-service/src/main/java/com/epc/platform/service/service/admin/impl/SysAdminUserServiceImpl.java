@@ -31,10 +31,9 @@ import java.util.stream.Collectors;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 16:45
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class SysAdminUserServiceImpl implements SysAdminUserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SysAdminUserServiceImpl.class);
@@ -60,7 +59,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         Validate.notNull(loginHandle.getPassword());
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
         final SysAdminUserCriteria.Criteria subCriteria= criteria.createCriteria();
-        subCriteria.andPhoneEqualTo(loginHandle.getPassword());
+        subCriteria.andPhoneEqualTo(loginHandle.getPhone());
         subCriteria.andPasswordEqualTo(MD5Util.MD5EncodeUtf8(loginHandle.getPassword()));
         List<SysAdminUser> sysAdminUsers = sysAdminUserMapper.selectByExample(criteria);
         if(sysAdminUsers.isEmpty()){
@@ -76,6 +75,12 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return Result.success(resultMap);
     }
 
+    /**
+     * 根据name查找用户信息
+     * @param userName
+     * @param phone
+     * @return
+     */
     @Override
     public SysAdminUser findByName(String userName, String phone) {
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
@@ -90,6 +95,11 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return sysAdminUserList.isEmpty() ? null : sysAdminUserList.get(0);
     }
 
+    /**
+     * 根据id查找用户信息
+     * @param userId
+     * @return
+     */
     @Override
     public UserWithRole findById(Long userId) {
         SysAdminUser sysAdminUser = sysAdminUserMapper.selectByPrimaryKey(userId);
@@ -125,15 +135,18 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         try {
             return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);
         } catch (Exception e) {
-            LOGGER.error("error", e);
+            LOGGER.error("findUserWithDept", e);
             return new ArrayList<>();
         }
     }
 
+    /**
+     * 校验用户
+     * @param user
+     */
     @Override
     public void registUser(UserHandle user) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-
         sysAdminUser.setCreateAt(new Date());
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         sysAdminUserMapper.insert(sysAdminUser);
@@ -144,6 +157,10 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         sysAdminUserRoleMapper.insertSelective(ur);
     }
 
+    /**
+     * 添加用户
+     * @param userHandle
+     */
     @Override
     public void addUser(UserHandle userHandle) {
         Date date =  new Date();
@@ -156,9 +173,14 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         sysAdminUser.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         sysAdminUser.setPassword(MD5Util.MD5EncodeUtf8(userHandle.getPassword()));
         sysAdminUserMapper.insertSelective(sysAdminUser);
+        userHandle.setId(sysAdminUser.getId());
         setUserRoles(userHandle);
     }
 
+    /**
+     * 修改用户
+     * @param userHandle
+     */
     @Override
     public void updateUser(UserHandle userHandle) {
         SysAdminUser sysAdminUser = new SysAdminUser();
@@ -184,6 +206,10 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         setUserRoles(userHandle);
     }
 
+    /**
+     * 删除用户
+     * @param userIds
+     */
     @Override
     public void deleteUsers(String userIds) {
         List<String> list = Arrays.asList(userIds.split(","));
@@ -192,17 +218,24 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         this.sysAdminUserRoleService.deleteUserRolesByUserId(userIds);
     }
 
+    /**
+     * 修改密码
+     * @param user
+     */
     @Override
-    public void updatePassword(UserHandle user, String password) {
+    public void updatePassword(UserHandle user) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setPhone(user.getPhone());
-        sysAdminUser.setPassword(user.getPassword());
         sysAdminUser.setId(user.getId());
         String newPassword = MD5Util.MD5EncodeUtf8(user.getPassword());
-        user.setPassword(newPassword);
+        sysAdminUser.setPassword(newPassword);
         this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 
+    /**
+     * 根据用户id查找用户详情
+     * @param userId
+     * @return
+     */
     @Override
     public SysAdminUser findUserDetail(Long userId) {
         SysAdminUser sysAdminUser = sysAdminUserMapper.selectByPrimaryKey(userId);
@@ -210,6 +243,10 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return sysAdminUser;
     }
 
+    /**
+     * 修改用户详情
+     * @param userHandle
+     */
     @Override
     public void updateUserDetail(UserHandle userHandle) {
         SysAdminUser sysAdminUser = new SysAdminUser();
@@ -226,12 +263,22 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         this.sysAdminUserMapper.updateByPrimaryKeySelective(sysAdminUser);
     }
 
+    /**
+     * 批量删除用户
+     * @param longList
+     * @return
+     */
     public int batchDelete(List<Long> longList) {
         final SysAdminUserCriteria criteria = new SysAdminUserCriteria();
         criteria.createCriteria().andIdIn(longList);
         return this.sysAdminUserMapper.deleteByExample(criteria);
     }
 
+    /**
+     * 添加用户角色
+     * 插入用户对应的角色 分方法
+     * @param userHandle
+     */
     private void setUserRoles(UserHandle userHandle) {
         Long[] roles = userHandle.getRoles();
         for (Long role : roles) {
@@ -239,7 +286,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
             ur.setAdminUserId(userHandle.getId());
             ur.setAdminRoleId(role);
             ur.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-            this.sysAdminUserRoleMapper.insertSelective(ur);
+            sysAdminUserRoleMapper.insertSelective(ur);
         }
     }
 

@@ -45,8 +45,13 @@ public class SignServiceImpl implements SignService {
     public Result<Boolean> insertSupplierSign(HandleSign handleSign) {
         TSupplierSign entity=new TSupplierSign();
         BeanUtils.copyProperties(handleSign,entity);
+        entity.setCompanyId(handleSign.getSupplierId());
+        entity.setPersonName(handleSign.getName());
         entity.setCreateAt(new Date());
         entity.setUpdateAt(new Date());
+        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        entity.setCellphone(handleSign.getCellPhone());
+
         try{
             tSupplierSignMapper.insertSelective(entity);
             return Result.success(true);
@@ -87,7 +92,7 @@ public class SignServiceImpl implements SignService {
     public Result<SignBaseDTO> getSignerInfo(QuerySignerDTO dto) {
         TTenderMessageCriteria criteria=new TTenderMessageCriteria();
         TTenderMessageCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andBidsIdEqualTo(dto.getBidId());
+        cubCriteria.andBidsIdEqualTo(dto.getBidsId());
         cubCriteria.andDelegatorEqualTo(dto.getName());
         cubCriteria.andIdentitCardEqualTo(dto.getIdCard());
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
@@ -99,6 +104,8 @@ public class SignServiceImpl implements SignService {
             signBaseDTO.setCompanyName(resultList.get(0).getCompanyName());
             signBaseDTO.setName(dto.getName());
             signBaseDTO.setSupplierId(resultList.get(0).getCompanyId());
+            signBaseDTO.setCompanyName(resultList.get(0).getCompanyName());
+            signBaseDTO.setPurchaseProjectId(resultList.get(0).getPurchaseProjectId());
             return  Result.success(signBaseDTO);
         }else{
             return  Result.success(null);

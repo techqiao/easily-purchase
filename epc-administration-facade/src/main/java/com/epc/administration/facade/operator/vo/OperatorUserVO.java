@@ -18,5 +18,10 @@ public class OperatorUserVO extends OperatorVO implements Serializable {
 
     @ApiModelProperty("附件集合")
     private List<OperatorAttachmentVO> operatorAttachmentVOList;
-
+    @ApiModelProperty(value = "身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "身份证反面照片url")
+    private String legalIdCardOther;
+    @ApiModelProperty(value = "营业执照照片url")
+    private String businessLicense;
 }

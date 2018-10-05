@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 16:44
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 public interface SysAdminUserService {
 
@@ -73,9 +73,8 @@ public interface SysAdminUserService {
     /**
      * 修改密码
      * @param userHandle
-     * @param password
      */
-    void updatePassword(UserHandle userHandle, String password);
+    void updatePassword(UserHandle userHandle);
 
 
     /**

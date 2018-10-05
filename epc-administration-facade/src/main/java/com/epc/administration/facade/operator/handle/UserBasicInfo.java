@@ -17,6 +17,12 @@ import java.io.Serializable;
 @ApiModel(value = "UserBasicInfo", description = "注册运营商")
 public class UserBasicInfo extends LoginHandle implements Serializable {
     private static final long serialVersionUID = 2062584142645359465L;
+    /**
+     * 用户手机号
+     */
     private String cellphone;
+    /**
+     * 用户名
+     */
     private String username;
 }

@@ -21,4 +21,9 @@ public class ClientSupplierDto implements Serializable {
      */
     @ApiModelProperty(value = "公司名称")
     private String companyName;
+    /**
+     * 供应商id
+     */
+    @ApiModelProperty(value = "供应商id")
+    private  Long supplierId;
 }

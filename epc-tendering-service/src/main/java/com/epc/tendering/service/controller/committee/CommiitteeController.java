@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-class CommiitteeController implements FacadeCommitteeService {
+public class CommiitteeController implements FacadeCommitteeService {
 
 @Autowired
 CommitteeService committeeService;

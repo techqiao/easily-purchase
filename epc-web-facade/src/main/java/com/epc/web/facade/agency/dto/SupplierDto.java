@@ -14,4 +14,8 @@ public class SupplierDto implements Serializable {
      * 公司名称
      */
     private String companyName;
+    /**
+     * 供货商id
+     */
+    private Long supplierId;
 }

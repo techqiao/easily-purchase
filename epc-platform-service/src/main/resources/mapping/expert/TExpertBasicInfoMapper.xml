@@ -9,6 +9,7 @@
     <result column="profession" property="profession" jdbcType="CHAR" />
     <result column="positional" property="positional" jdbcType="CHAR" />
     <result column="level" property="level" jdbcType="CHAR" />
+    <result column="working_years" property="workingYears" jdbcType="INTEGER" />
     <result column="is_idle" property="isIdle" jdbcType="INTEGER" />
     <result column="circular_dt" property="circularDt" jdbcType="TIMESTAMP" />
     <result column="circular_method" property="circularMethod" jdbcType="CHAR" />
@@ -81,8 +82,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, cellphone, password, profession, positional, level, is_idle, circular_dt, 
-    circular_method, other_information, inviter_type, inviter_id, inviter_company_id, 
+    id, name, cellphone, password, profession, positional, level, working_years, is_idle, 
+    circular_dt, circular_method, other_information, inviter_type, inviter_id, inviter_company_id, 
     state, create_at, update_at, is_forbidden, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.expert.TExpertBasicInfoCriteria" >
@@ -121,18 +122,18 @@
     </selectKey>
     insert into t_expert_basic_info (name, cellphone, password, 
       profession, positional, level, 
-      is_idle, circular_dt, circular_method, 
-      other_information, inviter_type, inviter_id, 
-      inviter_company_id, state, create_at, 
-      update_at, is_forbidden, is_deleted
-      )
+      working_years, is_idle, circular_dt, 
+      circular_method, other_information, inviter_type, 
+      inviter_id, inviter_company_id, state, 
+      create_at, update_at, is_forbidden, 
+      is_deleted)
     values (#{name,jdbcType=VARCHAR}, #{cellphone,jdbcType=CHAR}, #{password,jdbcType=CHAR}, 
       #{profession,jdbcType=CHAR}, #{positional,jdbcType=CHAR}, #{level,jdbcType=CHAR}, 
-      #{isIdle,jdbcType=INTEGER}, #{circularDt,jdbcType=TIMESTAMP}, #{circularMethod,jdbcType=CHAR}, 
-      #{otherInformation,jdbcType=VARCHAR}, #{inviterType,jdbcType=INTEGER}, #{inviterId,jdbcType=BIGINT}, 
-      #{inviterCompanyId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isForbidden,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER}
-      )
+      #{workingYears,jdbcType=INTEGER}, #{isIdle,jdbcType=INTEGER}, #{circularDt,jdbcType=TIMESTAMP}, 
+      #{circularMethod,jdbcType=CHAR}, #{otherInformation,jdbcType=VARCHAR}, #{inviterType,jdbcType=INTEGER}, 
+      #{inviterId,jdbcType=BIGINT}, #{inviterCompanyId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isForbidden,jdbcType=INTEGER}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.platform.service.domain.expert.TExpertBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -157,6 +158,9 @@
       </if>
       <if test="level != null" >
         level,
+      </if>
+      <if test="workingYears != null" >
+        working_years,
       </if>
       <if test="isIdle != null" >
         is_idle,
@@ -213,6 +217,9 @@
       </if>
       <if test="level != null" >
         #{level,jdbcType=CHAR},
+      </if>
+      <if test="workingYears != null" >
+        #{workingYears,jdbcType=INTEGER},
       </if>
       <if test="isIdle != null" >
         #{isIdle,jdbcType=INTEGER},
@@ -282,6 +289,9 @@
       <if test="record.level != null" >
         level = #{record.level,jdbcType=CHAR},
       </if>
+      <if test="record.workingYears != null" >
+        working_years = #{record.workingYears,jdbcType=INTEGER},
+      </if>
       <if test="record.isIdle != null" >
         is_idle = #{record.isIdle,jdbcType=INTEGER},
       </if>
@@ -332,6 +342,7 @@
       profession = #{record.profession,jdbcType=CHAR},
       positional = #{record.positional,jdbcType=CHAR},
       level = #{record.level,jdbcType=CHAR},
+      working_years = #{record.workingYears,jdbcType=INTEGER},
       is_idle = #{record.isIdle,jdbcType=INTEGER},
       circular_dt = #{record.circularDt,jdbcType=TIMESTAMP},
       circular_method = #{record.circularMethod,jdbcType=CHAR},
@@ -368,6 +379,9 @@
       </if>
       <if test="level != null" >
         level = #{level,jdbcType=CHAR},
+      </if>
+      <if test="workingYears != null" >
+        working_years = #{workingYears,jdbcType=INTEGER},
       </if>
       <if test="isIdle != null" >
         is_idle = #{isIdle,jdbcType=INTEGER},
@@ -416,6 +430,7 @@
       profession = #{profession,jdbcType=CHAR},
       positional = #{positional,jdbcType=CHAR},
       level = #{level,jdbcType=CHAR},
+      working_years = #{workingYears,jdbcType=INTEGER},
       is_idle = #{isIdle,jdbcType=INTEGER},
       circular_dt = #{circularDt,jdbcType=TIMESTAMP},
       circular_method = #{circularMethod,jdbcType=CHAR},

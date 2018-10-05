@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
 import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +44,6 @@ public interface FacadeBidAnnouncementService {
      * @param bidId
      * @return
      */
-    @PostMapping(value = "bidAnnouncementDetail", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "bidAnnouncementDetail", consumes = "application/json; charset=UTF-8")
     Result<String> bidAnnouncementDetail(@RequestParam("bidId") Long bidId);
 }

@@ -15,20 +15,10 @@ import java.util.Date;
  */ 
 @Data
 @ApiModel(value = "文件监控")
-public class ClientMonitoringFileDTO extends PagerParam implements Serializable {
+public class ClientMonitoringFileDTO implements Serializable {
 
     private static final long serialVersionUID = 5073558120339217414L;
-    @ApiModelProperty("文件类型")
-    private String fileType;
-    @ApiModelProperty("文件名")
-    private String fileName;
-    @ApiModelProperty("操作人类型")
-    private String operateType;
-    @ApiModelProperty("操作人姓名")
-    private String operator;
-    @ApiModelProperty("开始时间")
-    private Date startDate;
-    @ApiModelProperty("结束时间")
-    private Date endDate;
+    @ApiModelProperty("项目ID")
+    private Long projectId;
 
 }

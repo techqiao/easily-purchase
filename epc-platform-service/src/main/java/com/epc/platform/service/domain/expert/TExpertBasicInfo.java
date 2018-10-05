@@ -7,7 +7,7 @@ import java.util.Date;
  * 描述:t_expert_basic_info表的实体类
  * @version
  * @author:  01
- * @创建时间: 2018-09-30
+ * @创建时间: 2018-10-03
  */
 public class TExpertBasicInfo implements Serializable {
     /**
@@ -44,6 +44,11 @@ public class TExpertBasicInfo implements Serializable {
      * 级别
      */
     private String level;
+
+    /**
+     * 从业年限
+     */
+    private Integer workingYears;
 
     /**
      * 0-繁忙, 1-空闲
@@ -220,6 +225,22 @@ public class TExpertBasicInfo implements Serializable {
      */
     public void setLevel(String level) {
         this.level = level == null ? null : level.trim();
+    }
+
+    /**
+     * 从业年限
+     * @return working_years 从业年限
+     */
+    public Integer getWorkingYears() {
+        return workingYears;
+    }
+
+    /**
+     * 从业年限
+     * @param workingYears 从业年限
+     */
+    public void setWorkingYears(Integer workingYears) {
+        this.workingYears = workingYears;
     }
 
     /**
@@ -427,6 +448,7 @@ public class TExpertBasicInfo implements Serializable {
         sb.append(", profession=").append(profession);
         sb.append(", positional=").append(positional);
         sb.append(", level=").append(level);
+        sb.append(", workingYears=").append(workingYears);
         sb.append(", isIdle=").append(isIdle);
         sb.append(", circularDt=").append(circularDt);
         sb.append(", circularMethod=").append(circularMethod);

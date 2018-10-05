@@ -369,7 +369,7 @@
       order by ${orderByClause}
     </if>
   </select>
-    <select id="selectAgencyByAgencyId" resultType="com.epc.web.service.domain.purchaser.TPurchaserAgency">
+    <select id="selectAgencyByAgencyId" resultMap="BaseResultMap">
       SELECT
       <include refid="Base_Column_List"/>
       FROM t_purchaser_agency

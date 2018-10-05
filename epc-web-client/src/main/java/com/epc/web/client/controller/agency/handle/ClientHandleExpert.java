@@ -1,5 +1,6 @@
 package com.epc.web.client.controller.agency.handle;
 
+import com.epc.web.facade.agency.handle.Attachement;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ApiModel(value = "ClientHandleExpert",description = "新增专家的信息")
@@ -47,6 +49,10 @@ public class ClientHandleExpert implements Serializable {
     @ApiModelProperty(value = "来源")
     private String source;
 
+    @ApiModelProperty(value = "其他信息")
+    private String otherInformation;
+    @ApiModelProperty(value = "附件信息")
+    private List<ClientAttachement> atts;
 
 
 

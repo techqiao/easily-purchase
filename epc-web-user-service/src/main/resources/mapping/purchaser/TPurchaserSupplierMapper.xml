@@ -359,7 +359,7 @@
     </if>
   </select>
     <select id="selectPurchaserSupplierBySupplierId"
-            resultType="com.epc.web.service.domain.purchaser.TPurchaserSupplier">
+            resultMap="BaseResultMap">
       SELECT <include refid="Base_Column_List"/>
       FROM t_purchaser_supplier
       WHERE supplier_id =#{supplierId}

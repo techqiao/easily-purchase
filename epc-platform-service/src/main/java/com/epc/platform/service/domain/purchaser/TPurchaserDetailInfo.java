@@ -7,7 +7,7 @@ import java.util.Date;
  * 描述:t_purchaser_detail_info表的实体类
  * @version
  * @author:  01
- * @创建时间: 2018-09-28
+ * @创建时间: 2018-10-03
  */
 public class TPurchaserDetailInfo implements Serializable {
     /**
@@ -59,6 +59,11 @@ public class TPurchaserDetailInfo implements Serializable {
      * 是否删除: 0-存在,1-删除
      */
     private Integer isDeleted;
+
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
 
     /**
      * t_purchaser_detail_info
@@ -225,6 +230,22 @@ public class TPurchaserDetailInfo implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    /**
+     * 公司地址
+     * @return company_address 公司地址
+     */
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    /**
+     * 公司地址
+     * @param companyAddress 公司地址
+     */
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -241,6 +262,7 @@ public class TPurchaserDetailInfo implements Serializable {
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
+        sb.append(", companyAddress=").append(companyAddress);
         sb.append("]");
         return sb.toString();
     }

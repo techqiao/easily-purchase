@@ -154,11 +154,11 @@
     insert into
     t_agency_attachment
     (agency_id, certificate_type, certificate_file_path,
-      certificate_number, certificate_name, create_at)
+      certificate_number, certificate_name, create_at, update_at)
       values
       <foreach collection="list" item="item" open="(" separator="," close=")" >
-          (#{item.agencyId},#{item.certificateType}，#{item.certificateFilePath},
-          #{item.certificateNumber},#{item.certificateName},#{item.createAt})
+          #{item.agencyId},#{item.certificateType},#{item.certificateFilePath},
+          #{item.certificateNumber},#{item.certificateName},#{item.createAt},#{item.updateAt}
       </foreach>
   </insert>
     <insert id="insert" parameterType="com.epc.web.service.domain.agency.TAgencyAttachment">
@@ -385,7 +385,7 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectAttachmentByAgencyId" resultType="com.epc.web.service.domain.agency.TAgencyAttachment">
+    <select id="selectAttachmentByAgencyId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_agency_attachment

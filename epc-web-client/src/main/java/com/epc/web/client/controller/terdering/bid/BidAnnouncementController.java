@@ -42,6 +42,7 @@ public class BidAnnouncementController extends BaseController {
         HandleBidAnnouncement handleBidAnnouncement = new HandleBidAnnouncement();
         BeanUtils.copyProperties(dto, handleBidAnnouncement);
         handleBidAnnouncement.setOperateId(getLoginUser().getUserId());
+        handleBidAnnouncement.setCreator(getLoginUser().getName());
         return bidAnnouncementClient.insertBidAnnouncement(handleBidAnnouncement);
     }
 
@@ -61,8 +62,8 @@ public class BidAnnouncementController extends BaseController {
     }
 
 
-    @ApiOperation(value = "根据标段查询供应商投标报告")
-    @PostMapping(value = "getBidAnnouncementDetail")
+    @ApiOperation(value = "查询供应商投标报详情")
+    @GetMapping(value = "getBidAnnouncementDetail")
     public Result<String> getBidAnnouncementDetail(@RequestParam("bidId") Long bidId) {
         return bidAnnouncementClient.bidAnnouncementDetail(bidId);
     }

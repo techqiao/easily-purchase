@@ -25,5 +25,7 @@ public class ClientBidAnnouncement implements Serializable {
     private String filePath;
     @ApiModelProperty(value = "操作人ID")
     private Long operateId;
+    @ApiModelProperty(value = "创建人姓名")
+    private String creator;
 
 }

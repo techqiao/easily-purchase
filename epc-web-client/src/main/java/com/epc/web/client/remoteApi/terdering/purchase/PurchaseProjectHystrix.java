@@ -2,12 +2,12 @@ package com.epc.web.client.remoteApi.terdering.purchase;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.purchase.FacadeTPurchaseProjectBasicInfoService;
-import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -26,7 +26,7 @@ public class PurchaseProjectHystrix implements FacadeTPurchaseProjectBasicInfoSe
     }
 
     @Override
-    public Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO) {
+    public Result<Map<String, Object>> getPurchaseProjectList(QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO) {
         return Result.hystrixError();
     }
 

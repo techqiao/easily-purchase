@@ -80,7 +80,7 @@ public class BiddingNoticeController implements FacadeNoticeService {
      * @return
      */
     @Override
-    public Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(@RequestParam("id") Long id){
+    public Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(Long id){
         return advanceNoticeService.AdvanceNoticeDetail(id);
 
     }

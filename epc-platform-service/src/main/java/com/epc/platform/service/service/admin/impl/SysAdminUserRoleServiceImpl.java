@@ -5,8 +5,6 @@ import com.epc.platform.service.mapper.admin.SysAdminUserRoleMapper;
 import com.epc.platform.service.service.admin.SysAdminUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,15 +13,18 @@ import java.util.stream.Collectors;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 16:33
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class SysAdminUserRoleServiceImpl implements SysAdminUserRoleService {
 
     @Autowired
     private SysAdminUserRoleMapper sysAdminUserRoleMapper;
 
+    /**
+     * 删除用户角色根据角色id
+     * @param roleIds
+     */
     @Override
     public void deleteUserRolesByRoleId(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(","));
@@ -31,6 +32,10 @@ public class SysAdminUserRoleServiceImpl implements SysAdminUserRoleService {
         this.batchDeleteByRoleId(longList);
     }
 
+    /**
+     * 删除用户角色根据用户id
+     * @param userIds
+     */
     @Override
     public void deleteUserRolesByUserId(String userIds) {
         List<String> list = Arrays.asList(userIds.split(","));

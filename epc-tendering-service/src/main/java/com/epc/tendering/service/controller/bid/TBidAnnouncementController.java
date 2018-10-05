@@ -52,7 +52,7 @@ public class TBidAnnouncementController implements FacadeBidAnnouncementService 
      * @return
      */
     @Override
-    public Result<String> bidAnnouncementDetail(@RequestParam("bidId") Long bidId){
+    public Result<String> bidAnnouncementDetail(Long bidId){
         return bidAnnouncementService.BidAnnouncementDetail(bidId);
     }
 

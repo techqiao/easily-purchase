@@ -12,13 +12,13 @@ import java.util.Map;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-12 20:37
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 
 public interface SysAdminResourceService {
 
     /**
-     *
+     *查找角色对应权限
      * @param userName
      * @return
      */

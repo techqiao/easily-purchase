@@ -4,10 +4,9 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.project.FacadeTProjectBasicInfoService;
 import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
 import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -26,7 +25,7 @@ public class ProjectHystrix implements FacadeTProjectBasicInfoService {
     }
 
     @Override
-    public Result<List<ProjectBasicInfoVO>> getProjectList(QueryProjectInfoDTO queryProjectInfoDTO) {
+    public Result<Map<String, Object>> getProjectList(QueryProjectInfoDTO queryProjectInfoDTO) {
         return Result.hystrixError();
     }
 

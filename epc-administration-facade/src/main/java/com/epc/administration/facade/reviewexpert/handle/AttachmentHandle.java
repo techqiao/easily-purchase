@@ -18,7 +18,6 @@ public class AttachmentHandle implements Serializable {
      */
     private String certificateFilePath;
 
-
     /**
      * 附件对应证书名称
      */

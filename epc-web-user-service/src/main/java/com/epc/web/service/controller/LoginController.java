@@ -7,6 +7,7 @@ import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.FacadeLoginUserService;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import com.epc.web.service.service.IRoleLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +32,15 @@ public class LoginController implements FacadeLoginUserService {
     IRoleLoginService iRoleLoginService;
 
     @Override
-    public Result login(@RequestBody LoginUser user) {
+    public Result<String>  login(@RequestBody LoginUser user) {
 
         Result result = iRoleLoginService.login(user);
         if (result.getData() != null) {
             LoginUser loginUser = (LoginUser) result.getData();
-            String token = "EPC_PRIVATE_" + UUID.randomUUID().toString().replace("-", "");
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("user", result);
-            resultMap.put("epc-token", token);
-            RedisShardedPoolUtil.setEx(token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
-            return Result.success("登陆成功", resultMap);
+            String token =  UUID.randomUUID().toString().replace("-", "");
+            String epc_token ="EPC_PRIVATE_"+token;
+            RedisShardedPoolUtil.setEx(epc_token, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+            return Result.success("登陆成功", epc_token);
         }
         return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR);
     }
@@ -49,6 +48,11 @@ public class LoginController implements FacadeLoginUserService {
     @Override
     public Result<Boolean> registerUser(@RequestBody RegisterUser registerUser) {
         return iRoleLoginService.registerUser(registerUser);
+    }
+
+    @Override
+    public Result<Boolean> modifyPassword(@RequestBody ModifyUser modifyUser) {
+        return iRoleLoginService.modifyPassword(modifyUser);
     }
 }
 

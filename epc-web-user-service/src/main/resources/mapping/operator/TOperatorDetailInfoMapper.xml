@@ -367,4 +367,10 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectOperatorDetailByOperatorId"
+            resultMap="BaseResultMap">
+      SELECT <include refid="Base_Column_List"/>
+      FROM t_operator_detail_info
+      WHERE operator_id =#{operatorId}
+    </select>
 </mapper>

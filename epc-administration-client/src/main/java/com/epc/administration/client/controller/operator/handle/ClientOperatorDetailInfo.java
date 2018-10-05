@@ -26,6 +26,9 @@ public class ClientOperatorDetailInfo implements Serializable {
     @ApiModelProperty(value = "公司名称")
     @NotEmpty(message = "ClientOperatorDetailInfo.companyName.null")
     private String companyName;
+    @ApiModelProperty(value = "公司地址")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
+    private String companyAddress;
     @ApiModelProperty(value = "手机号")
     @NotEmpty(message = "ClientOperatorDetailInfo.cellphone.null")
     private String cellphone;

@@ -4,7 +4,10 @@ import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
 import java.util.List;
+
+import com.epc.web.facade.terdering.answer.vo.PublicitySubVO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface BAnswerQuestionMapper {
@@ -39,4 +42,13 @@ public interface BAnswerQuestionMapper {
     int updateByPrimaryKeyWithBLOBs(BAnswerQuestionWithBLOBs record);
 
     int updateByPrimaryKey(BAnswerQuestion record);
+
+    /**
+     * 通过采购项目ID分组查询相关参数
+     * @param procurementProjectId 采购项目ID
+     * @return
+     */
+    @Select("select b.problem,b.answer,b.create_at as startTime from b_answer_question b where b.procurement_project_id ={procurementProjectId} group by b.procurement_project_id")
+    List<PublicitySubVO> getListGroupByProcurementProjectId(Long procurementProjectId);
+
 }

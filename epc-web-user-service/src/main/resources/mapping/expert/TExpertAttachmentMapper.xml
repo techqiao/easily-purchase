@@ -365,7 +365,7 @@
       order by ${orderByClause}
     </if>
   </select>
-    <select id="selectAttchamentByExpertId" resultType="com.epc.web.service.domain.expert.TExpertAttachment">
+    <select id="selectAttchamentByExpertId" resultMap="BaseResultMap">
       SELECT
       <include refid="Base_Column_List"/>
       FROM t_expert_attachment

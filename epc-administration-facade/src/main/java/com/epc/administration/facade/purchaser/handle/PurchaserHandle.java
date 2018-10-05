@@ -18,10 +18,24 @@ public class PurchaserHandle implements Serializable {
     private Long id;
 
     /**
+     * 用户名
+     */
+    private String name;
+
+    /**
+     * 手机号
+     */
+    private String cellPhone;
+
+    /**
      * 公司名称
      */
     private String companyName;
 
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
     /**
      *统一信用代码
      */

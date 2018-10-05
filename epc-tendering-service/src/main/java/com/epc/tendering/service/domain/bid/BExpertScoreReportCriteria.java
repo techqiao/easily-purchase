@@ -235,73 +235,63 @@ public class BExpertScoreReportCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdIsNull() {
-            addCriterion("expert_score_id is null");
+        public Criteria andBidsIdIsNull() {
+            addCriterion("bids_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdIsNotNull() {
-            addCriterion("expert_score_id is not null");
+        public Criteria andBidsIdIsNotNull() {
+            addCriterion("bids_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdEqualTo(String value) {
-            addCriterion("expert_score_id =", value, "expertScoreId");
+        public Criteria andBidsIdEqualTo(Long value) {
+            addCriterion("bids_id =", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdNotEqualTo(String value) {
-            addCriterion("expert_score_id <>", value, "expertScoreId");
+        public Criteria andBidsIdNotEqualTo(Long value) {
+            addCriterion("bids_id <>", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdGreaterThan(String value) {
-            addCriterion("expert_score_id >", value, "expertScoreId");
+        public Criteria andBidsIdGreaterThan(Long value) {
+            addCriterion("bids_id >", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdGreaterThanOrEqualTo(String value) {
-            addCriterion("expert_score_id >=", value, "expertScoreId");
+        public Criteria andBidsIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("bids_id >=", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdLessThan(String value) {
-            addCriterion("expert_score_id <", value, "expertScoreId");
+        public Criteria andBidsIdLessThan(Long value) {
+            addCriterion("bids_id <", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdLessThanOrEqualTo(String value) {
-            addCriterion("expert_score_id <=", value, "expertScoreId");
+        public Criteria andBidsIdLessThanOrEqualTo(Long value) {
+            addCriterion("bids_id <=", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdLike(String value) {
-            addCriterion("expert_score_id like", value, "expertScoreId");
+        public Criteria andBidsIdIn(List<Long> values) {
+            addCriterion("bids_id in", values, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdNotLike(String value) {
-            addCriterion("expert_score_id not like", value, "expertScoreId");
+        public Criteria andBidsIdNotIn(List<Long> values) {
+            addCriterion("bids_id not in", values, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdIn(List<String> values) {
-            addCriterion("expert_score_id in", values, "expertScoreId");
+        public Criteria andBidsIdBetween(Long value1, Long value2) {
+            addCriterion("bids_id between", value1, value2, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andExpertScoreIdNotIn(List<String> values) {
-            addCriterion("expert_score_id not in", values, "expertScoreId");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpertScoreIdBetween(String value1, String value2) {
-            addCriterion("expert_score_id between", value1, value2, "expertScoreId");
-            return (Criteria) this;
-        }
-
-        public Criteria andExpertScoreIdNotBetween(String value1, String value2) {
-            addCriterion("expert_score_id not between", value1, value2, "expertScoreId");
+        public Criteria andBidsIdNotBetween(Long value1, Long value2) {
+            addCriterion("bids_id not between", value1, value2, "bidsId");
             return (Criteria) this;
         }
 

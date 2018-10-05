@@ -25,14 +25,14 @@ import java.util.List;
  * <p>Date : 2018-09-21 11:17
  * <p>@Author : wjq
  */
-@Api(value = "预审信息服务", tags = {"预审信息服务"})
+@Api(value = "供应商预审信息服务", tags = {"供应商预审信息服务"})
 @RestController
 @RequestMapping(value = "/pretrial", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PretrialMessageController extends BaseController {
     @Autowired
     private FacadePretrialMessageClient pretrialMessageClient;
 
-    @ApiOperation(value = "查询资格审查列表")
+    @ApiOperation(value = "查询资格审查列表 审核要求暂时砍掉")
     @PostMapping(value="/getPretrialMessageList")
     public Result<List<PretrialMessageVO>> getPretrialMessageList(@RequestBody ClientQueryMessageDTO clientQueryMessageDTO) {
         QueryMessageDTO queryMessageDTO = new QueryMessageDTO();
@@ -41,13 +41,13 @@ public class PretrialMessageController extends BaseController {
     }
 
 
-    @ApiOperation(value = "查询资格审查列表")
+    @ApiOperation(value = "处理供应商是否通过资格审查")
     @PostMapping(value="/handlePretrialMessage")
     public Result<Boolean> handlePretrialMessage(@RequestBody ClientHandleMessage clientHandleMessage){
         HandlePretrialMessage handlePretrialMessage = new HandlePretrialMessage();
         BeanUtils.copyProperties(clientHandleMessage, handlePretrialMessage);
         handlePretrialMessage.setCreator(getLoginUser().getName());
-//        handlePretrialMessage.setOperateId(getLoginUser().getUserId());
+        handlePretrialMessage.setOperateId(getLoginUser().getUserId());
         return pretrialMessageClient.handlePretrialMessage(handlePretrialMessage);
     }
 }

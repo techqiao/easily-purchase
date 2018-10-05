@@ -18,6 +18,7 @@ import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.supplier.SupplierService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,23 +53,22 @@ public class SupplierServiceImpl  implements SupplierService {
     @Transactional(rollbackFor = Exception.class)
     public Result insertSupplierUserInfo(UserBasicInfo userBasicInfo) {
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
-        pojo.setName(userBasicInfo.getName());
+        BeanUtils.copyProperties(userBasicInfo,pojo);
+        pojo.setName(userBasicInfo.getUsername());
         Date date = new Date();
-        pojo.setCellphone(userBasicInfo.getCellphone());
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        pojo.setInviterType(Const.INVITER_TYPE.PLATFORM);
+        pojo.setInviterId(userBasicInfo.getId());
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        pojo.setName(userBasicInfo.getUsername());
         pojo.setState(Const.STATE.REGISTERED);
         try {
             return Result.success(tSupplierBasicInfoMapper.insertSelective(pojo) > 0);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException insertSupplierBasicInfo : {}", e);
+            LOGGER.error("BusinessException insertSupplierUserInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        } catch (Exception e) {
-            LOGGER.error("BusinessException insertSupplierBasicInfo : {}", e);
-            return Result.error(e.getMessage());
         }
     }
 
@@ -85,6 +85,7 @@ public class SupplierServiceImpl  implements SupplierService {
         tSupplierDetailInfo.setCompanyName(supplierHandle.getCompanyName());
         tSupplierDetailInfo.setUniformCreditCode(supplierHandle.getUniformCreditCode());
         tSupplierDetailInfo.setPublicBankName(supplierHandle.getPublicBankName());
+        tSupplierDetailInfo.setCompanyAddress(supplierHandle.getCompanyAddress());
         tSupplierDetailInfo.setPublicBanAccountNumber(supplierHandle.getPublicBanAccountNumber());
         Date date = new Date();
         tSupplierDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -175,7 +176,8 @@ public class SupplierServiceImpl  implements SupplierService {
         try{
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e){
-            LOGGER.error("BusinessException updateByPrimaryKeySelective : {}", e);
+            LOGGER.error("BusinessException deleteSupplierDetailInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
@@ -197,6 +199,8 @@ public class SupplierServiceImpl  implements SupplierService {
         supplierAttachmentVO.setCellphone(tSupplierBasicInfo.getCellphone());
         supplierAttachmentVO.setState(tSupplierBasicInfo.getState());
         supplierAttachmentVO.setName(tSupplierBasicInfo.getName());
+        supplierAttachmentVO.setCreateAt(tSupplierBasicInfo.getCreateAt());
+        //如果没有完善信息
         if(tSupplierBasicInfo.getState()!=0){
             TSupplierDetailInfoCriteria criteria = new TSupplierDetailInfoCriteria();
             criteria.createCriteria().andSupplierIdEqualTo(id);
@@ -212,11 +216,19 @@ public class SupplierServiceImpl  implements SupplierService {
 
             List<AttachmentVO> attachmentVOS = new ArrayList<>();
             for (TSupplierAttachment tSupplierAttachment : tSupplierAttachments) {
-                AttachmentVO attachmentVO = new AttachmentVO();
-                attachmentVO.setCertificateType(tSupplierAttachment.getCertificateType());
-                attachmentVO.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
-                attachmentVO.setCertificateName(tSupplierAttachment.getCertificateName());
-                attachmentVOS.add(attachmentVO);
+                if(tSupplierAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                    supplierAttachmentVO.setLegalIdCardPositive(tSupplierAttachment.getCertificateFilePath());
+                }else if(tSupplierAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                    supplierAttachmentVO.setLegalIdCardOther(tSupplierAttachment.getCertificateFilePath());
+                }else if (tSupplierAttachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+                    supplierAttachmentVO.setBusinessLicense(tSupplierAttachment.getCertificateType());
+
+                }else {
+                    AttachmentVO attachmentVO = new AttachmentVO();
+                    attachmentVO.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
+                    attachmentVO.setCertificateName(tSupplierAttachment.getCertificateName());
+                    attachmentVOS.add(attachmentVO);
+                }
             }
             supplierAttachmentVO.setAttachmentVOList(attachmentVOS);
             return Result.success(supplierAttachmentVO);

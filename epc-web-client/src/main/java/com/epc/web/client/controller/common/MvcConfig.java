@@ -1,6 +1,5 @@
 package com.epc.web.client.controller.common;
 
-import com.epc.web.client.controller.common.AccessKeyInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,6 +18,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/js/**")
                 .excludePathPatterns("/images/**")
                 .excludePathPatterns("/**/login/**")
+                .excludePathPatterns("/**/roleLogin/**")
                 .excludePathPatterns("/**/register/**")
                 .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**")
                 .excludePathPatterns("/**/public/**");

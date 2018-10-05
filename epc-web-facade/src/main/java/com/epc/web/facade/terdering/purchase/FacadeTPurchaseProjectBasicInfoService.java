@@ -1,7 +1,6 @@
 package com.epc.web.facade.terdering.purchase;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : 采购项目服务
@@ -41,7 +41,7 @@ public interface FacadeTPurchaseProjectBasicInfoService {
      * @return
      */
     @PostMapping(value = "getPurchaseProjectList", consumes = "application/json; charset=UTF-8")
-    Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(@RequestBody QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO);
+    Result<Map<String, Object>> getPurchaseProjectList(@RequestBody QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO);
 
     /**
      * 官网采购项目列表

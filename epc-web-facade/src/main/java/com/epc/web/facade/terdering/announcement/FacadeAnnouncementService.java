@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -40,7 +41,7 @@ public interface FacadeAnnouncementService {
      * @return
      */
     @PostMapping(value = "getPurchaseProjectAnnouncementList", consumes = "application/json; charset=UTF-8")
-    Result<List<PurchaseProjectAnnouncement>> getPurchaseProjectAnnouncementList(@RequestBody QueryAnnouncement queryAnnouncement);
+    Result<Map<String, Object>> getPurchaseProjectAnnouncementList(@RequestBody QueryAnnouncement queryAnnouncement);
 
 
     /**

@@ -5,6 +5,7 @@ import com.epc.web.facade.bidding.handle.HandleWinBid;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,7 @@ public interface FacadeWinBidService {
      * @param bidId
      * @return
      */
-    @PostMapping(value = "getTWinBidNominate", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "getTWinBidNominate", consumes = "application/json; charset=UTF-8")
      Result<TWinBidNominateVO> getTWinBidNominate(@RequestParam("bidId") Long bidId);
 
 

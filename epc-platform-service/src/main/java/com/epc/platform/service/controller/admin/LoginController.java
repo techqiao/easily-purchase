@@ -7,7 +7,6 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
-import com.epc.platform.service.domain.admin.SysAdminUser;
 import com.epc.platform.service.service.admin.SysAdminUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,7 +32,6 @@ public class LoginController extends BaseController implements AdminLoginService
 
     @Autowired
     private SysAdminUserService sysAdminUserService;
-
     /**用户登录
      * @param httpServletResponse
      * @param loginHandle
@@ -52,7 +49,6 @@ public class LoginController extends BaseController implements AdminLoginService
         }
         return result;
     }
-
     /**用户登出
      * @return
      */

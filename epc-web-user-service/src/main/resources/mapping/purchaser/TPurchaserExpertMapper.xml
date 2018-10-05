@@ -403,14 +403,14 @@
     </if>
   </select>
     <select id="selectExpertByNameAndCellPhone"
-            resultType="com.epc.web.service.domain.purchaser.TPurchaserExpert">
+            resultMap="BaseResultMap">
       SELECT
       <include refid="Base_Column_List"/>
       FROM t_purchaser_expert
       WHERE expert_name =#{name}
       AND cellphone =#{cellphone}
     </select>
-  <select id="selectExpertByExpertId" resultType="com.epc.web.service.domain.purchaser.TPurchaserExpert">
+  <select id="selectExpertByExpertId" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM t_purchaser_expert

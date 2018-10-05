@@ -1,6 +1,7 @@
 package com.epc.web.client.controller.operator.handle;
 
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,8 +24,13 @@ import java.io.Serializable;
 @Data
 public class ClientHandleOperator  {
 
+    @ApiModelProperty(value = " 是什么角色,运营商")
+    @NotEmpty(message = "ClientHandleOperator.systemRole.null")
+    private Integer systemRole;
+
 
     @ApiModelProperty(value = "员工姓名")
+    @NotEmpty(message = "ClientHandleOperator.name.null")
     private String name;
 
     @ApiModelProperty(value = "手机号")
@@ -32,6 +38,7 @@ public class ClientHandleOperator  {
     private String cellphone;
 
     @ApiModelProperty(value = "密码")
+    @NotEmpty(message = "ClientHandleOperator.password.null")
     private String password;
 
 }

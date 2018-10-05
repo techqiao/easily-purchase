@@ -29,8 +29,11 @@ public class RoleDetailInfo {
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商:附件信息';
      */
 
-    //角色
-    private String systemRole;
+    //系统 角色
+    private Integer systemRole;
+
+    // 登陆时的用户角色
+    private Integer loginRole;
 
     //员工（供应商id）0
     private Long supplierId;

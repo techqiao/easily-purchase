@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Api(value = "角色登录服务",tags = {"角色登录服务"})
 @RestController
+@RequestMapping(value = "/public")
 public class LoginController {
 
     @Autowired
@@ -40,7 +42,7 @@ public class LoginController {
 
     @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4,专家5")
     @PostMapping(value = "/roleLogin",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<LoginUser> login(@RequestBody ClientLoginUser user){
+    public Result login(@RequestBody ClientLoginUser user){
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(user,loginUser);
         return iLoginUserClient.login(loginUser);

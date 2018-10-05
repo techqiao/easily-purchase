@@ -469,8 +469,8 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_supplier_basic_info
-        WHERE basic.cellphone=#{cellphone}
-        AND basic.password=#{pwd}
+        WHERE cellphone=#{cellphone}
+        AND password=#{pwd}
 
 
     </select>
@@ -481,7 +481,7 @@
         <include refid="Base_Column_List"/>
         FROM t_supplier_basic_info
         WHERE `name` = #{name}
-        AND cellphone =# {cellphone}
+        AND cellphone =#{cellphone}
     </select>
     <select id="selectBasicInfo" resultType="com.epc.web.facade.agency.vo.AgencySupplierVo">
         SELECT detail.supplier_id AS supplierId ,detail.company_name AS companyName ,detail.create_at AS createAt

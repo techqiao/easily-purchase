@@ -2,12 +2,15 @@ package com.epc.web.client.controller.operator;
 
 import com.epc.common.Result;
 
+import com.epc.common.constants.Const;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.operator.handle.*;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorCellphone;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorFindAllByName;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorId;
 import com.epc.web.client.controller.supplier.handle.ClientRoleDetailInfo;
 import com.epc.web.client.remoteApi.operator.OperatorClient;
+import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
@@ -26,7 +29,7 @@ import java.util.List;
 @Api(value = "运营商服务"/*,tags = "运营商服务"*/)
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class OperatorController /*extends BaseController*/ {
+public class OperatorController extends BaseController {
 
     @Autowired
     private OperatorClient operatorClient;
@@ -44,28 +47,32 @@ public class OperatorController /*extends BaseController*/ {
 
 
     /**0.5
-     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
+     *  已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
      */
-    @ApiOperation(value = "0.5:已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆",notes = "donghuan")
-    @PostMapping(value = "public/addPasswordOperatorLogin")
-    public Result<Boolean> addPasswordOperatorLogin(@RequestBody ClientHandleOperator clientHandleOperator){
-        HandleOperator  handleOperator=new HandleOperator();
-        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
-        return operatorClient.addPasswordOperatorLogin(handleOperator);
-    }
+//    @ApiOperation(value = "0.5:已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆",notes = "donghuan")
+//    @PostMapping(value = "public/addPasswordOperatorLogin")
+//    public Result<Boolean> addPasswordOperatorLogin(@RequestBody ClientHandleOperator clientHandleOperator){
+//        HandleOperator  handleOperator=new HandleOperator();
+//        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
+//        return operatorClient.addPasswordOperatorLogin(handleOperator);
+//    }
+
     /**1
+     *
+     * version 2:业务修改，被拉取的设置其默认密码为123456，直接从电话号码 与 密码框进行登陆
+     *
      *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
      *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
      *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
      *           )
      */
-    @ApiOperation(value = "1:运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)",notes = "donghuan")
-    @PostMapping(value = "public/addPasswordOperator")
-    public Result<Boolean> addPasswordOperator(@RequestBody ClientHandleOperator clientHandleOperator){
-        HandleOperator handleOperator=new HandleOperator();
-        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
-        return operatorClient.addPasswordOperator(handleOperator);
-    }
+//    @ApiOperation(value = "1:运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)",notes = "donghuan")
+//    @PostMapping(value = "public/addPasswordOperator")
+//    public Result<Boolean> addPasswordOperator(@RequestBody ClientHandleOperator clientHandleOperator){
+//        HandleOperator handleOperator=new HandleOperator();
+//        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
+//        return operatorClient.addPasswordOperator(handleOperator);
+//    }
 
     /**2
      * 完善运营商信息
@@ -75,6 +82,18 @@ public class OperatorController /*extends BaseController*/ {
     public Result<Boolean> insertCompleteOperatorInfo(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo){
         RoleDetailInfo roleDetailInfo=new RoleDetailInfo();
         BeanUtils.copyProperties(clientRoleDetailInfo,roleDetailInfo);
+        //当前 用户id
+        Long userId = getLoginUser().getUserId();
+        // 当前 登陆人的角色类型（运营商1，供应商3）
+        Integer type = getLoginUser().getType();
+        // 当前登陆人用户角色 （法人，管理员，员工）
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(userId==null || type==null || loginRole==null){
+            return Result.error("从token中获取当前登陆用户id与角色类型");
+        }
+        roleDetailInfo.setSystemRole(type);
+        roleDetailInfo.setSupplierId(userId);
+        roleDetailInfo.setLoginRole(loginRole);
         return operatorClient.insertCompleteOperatorInfo(roleDetailInfo);
     }
 
@@ -89,8 +108,8 @@ public class OperatorController /*extends BaseController*/ {
     @PostMapping(value = "/createOperatorEmployee")
     public Result<Boolean> createOperatorEmployee(@RequestBody ClientHandleOperatorAddEmployee clientHandleOperatorAddEmployee){
         HandleOperatorAddEmployee handleOperatorAddEmployee=new HandleOperatorAddEmployee();
-//        ClientLoginUser loginUser = getLoginUser();
-//        handleOperatorAddEmployee.setId(Long.valueOf(loginUser.getBossId()));
+        getLoginUser().get
+        handleOperatorAddEmployee.setId(Long.valueOf(loginUser.getBossId()));
         BeanUtils.copyProperties(clientHandleOperatorAddEmployee,handleOperatorAddEmployee);
         return operatorClient.createOperatorEmployee(handleOperatorAddEmployee);
     }

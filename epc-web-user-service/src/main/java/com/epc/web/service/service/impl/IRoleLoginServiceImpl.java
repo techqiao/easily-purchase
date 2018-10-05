@@ -91,6 +91,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser.setCellphone(basicInfo.getCellphone());
                 loginUser.setUserId(basicInfo.getId());
                 loginUser.setType(type);
+                loginUser.setLoginRole(basicInfo.getRole());
                 if (operatorId != null) {
                     TOperatorBasicInfo boss = null;
                     TOperatorDetailInfo detailInfo = null;
@@ -131,6 +132,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser1.setCellphone(basicinfo1.getCellphone());
                 loginUser1.setUserId(basicinfo1.getId());
                 loginUser1.setType(type);
+                loginUser1.setLoginRole(basicinfo1.getRole());
                 if (agencyId != null) {
                     //获得老板
                     TAgencyBasicInfo boss1 = null;
@@ -171,6 +173,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser2.setCellphone(basicinfo2.getCellphone());
                 loginUser2.setUserId(basicinfo2.getId());
                 loginUser2.setType(type);
+                loginUser2.setLoginRole(basicinfo2.getRole());
                 if (suuplierId != null) {
                     //获得老板
                     TSupplierBasicInfo boss2 = null;
@@ -211,6 +214,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser3.setCellphone(basicinfo3.getCellphone());
                 loginUser3.setUserId(basicinfo3.getId());
                 loginUser3.setType(type);
+                loginUser3.setLoginRole(basicinfo3.getRole());
                 if (purchaserId != null) {
                     //获得老板
                     TPurchaserBasicInfo boss3 = null;

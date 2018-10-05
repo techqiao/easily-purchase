@@ -260,6 +260,8 @@ public class ReviewExpertServiceImpl implements ExpertService {
         if(where!=null){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
+        }else{
+            queryDetailIfo.setWhere(null);
         }
         return  tExpertDetailInfoMapper.selectByPage(queryDetailIfo);
 

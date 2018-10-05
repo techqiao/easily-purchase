@@ -247,6 +247,8 @@ public class SupplierServiceImpl  implements SupplierService {
         if(where!=null){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
+        }else{
+            queryDetailIfo.setWhere(null);
         }
         return  tSupplierDetailInfoMapper.selectByPage(queryDetailIfo);
     }
@@ -274,5 +276,35 @@ public class SupplierServiceImpl  implements SupplierService {
         tSupplierBasicInfo.setId(supplierForbiddenHandle.getId());
         tSupplierBasicInfo.setIsForbidden(supplierForbiddenHandle.getIsForbidden());
         return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
+    }
+
+    /**
+     * 供应商考评中标业绩列表
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result supplierReviewWinningBid(QueryDetailIfo queryDetailIfo) {
+        return Result.success();
+    }
+
+    /**
+     * 供应商考评 奖惩
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result supplierReviewRewardAndPunishment(QueryDetailIfo queryDetailIfo) {
+        return null;
+    }
+
+    /**
+     * 供应商考评 履约记录
+     * @param queryDetailIfo
+     * @return
+     */
+    @Override
+    public Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo) {
+        return null;
     }
 }

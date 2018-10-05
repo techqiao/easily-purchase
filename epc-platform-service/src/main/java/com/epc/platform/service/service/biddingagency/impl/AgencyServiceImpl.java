@@ -292,6 +292,8 @@ public class AgencyServiceImpl implements AgencyService {
         if(where!=null){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
+        }else{
+            queryDetailIfo.setWhere(null);
         }
         return  tAgencyDetailInfoMapper.selectByPage(queryDetailIfo);
     }

@@ -33,8 +33,8 @@ public class ClientRoleDetailInfo {
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商:附件信息';
      */
 
-    @ApiModelProperty(value = "角色")
-    private String systemRole;
+    @ApiModelProperty(value = "角色类型")
+    private Integer type;
 
     @ApiModelProperty(value = "员工id（供应商id）")
     @NotEmpty(message = "ClientRoleDetailInfo.supplierId.null")

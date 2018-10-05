@@ -1,7 +1,6 @@
 package com.epc.web.service.service.impl.operator;
 
 import com.epc.common.Result;
-import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
@@ -10,6 +9,7 @@ import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
+import com.epc.web.facade.operator.vo.HandleFindOperatorAllByIdVO;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 import com.epc.web.service.domain.operator.*;
@@ -307,9 +307,11 @@ public class OperatorServiceImpl implements OperatorService {
             tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             //查看basic表中的name有没有值，如果有，证明别人拉取进来的（因为拉取的时候要填入姓名，电话，而自己注册则直接通过手机号就可以）；如果没有，就证明是自己注册的
             String name = roleDetailInfo.getName();
-            if(StringUtils.isBlank(name)){
+//            System.out.println("当前完善信息法人的名字:"+name);
+            if(StringUtils.isBlank(tOperatorBasicInfo.getName())){
                 //如果为空,就是自己注册。就要对basic表进行相关的填写
                 tOperatorBasicInfo.setName(name);
+//                System.out.println("name名字为空 ，完善你的名字，ok "+name);
             }
             //如果不为空，就只需要更改状态,以及更新时间就可以
             tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
@@ -380,7 +382,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     /**4
-     * 依据id查询已经登陆的个人信息
+     * 依据id查询已经登陆的个人基本信息
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -400,6 +402,40 @@ public class OperatorServiceImpl implements OperatorService {
         return Result.success(vo);
     }
 
+    /**4.5
+     *  依据当前 id 来查询你的个人信息(以当前人的id和各种role来判断查询具体的哪几张表)
+     */
+    public Result<HandleFindOperatorAllByIdVO> findOperatorAllById(HandleOperatorRole handleOperatorRole){
+
+        Long id = handleOperatorRole.getId();
+        Integer role = handleOperatorRole.getRole();
+
+        if(id==null || role==null){
+            return Result.error("[运营商查询个人信息] id==null || role==null ：{参数异常}");
+        }
+        HandleFindOperatorAllByIdVO vo=new HandleFindOperatorAllByIdVO();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+
+        switch (role){
+            case Const.Role.ROLE_CORPORATION:
+
+                break;
+            //是管理员
+            case Const.Role.ROLE_ADMIN:
+                TOperatorBasicInfo tOperatorBasicInfo1 = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
+                BeanUtils.copyProperties(tOperatorBasicInfo1,vo);
+
+                return Result.success(vo);
+            //是员工
+            case Const.Role.ROLE_CUSTOMER:
+                TOperatorBasicInfo tOperatorBasicInfo2 = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
+                BeanUtils.copyProperties(tOperatorBasicInfo2,vo);
+                return Result.success(vo);
+        }
+
+        return null;
+    }
+
     /**5
      * 通过员工id来修改员工信息
      */
@@ -417,10 +453,10 @@ public class OperatorServiceImpl implements OperatorService {
         //利用这个对象把最新从网页传输过来的的数据set进去，更新数据库,达到更新的目的
         //设置姓名
         pojo.setName(handleOperatorUpdateEmployeeById.getName());
-        //设置密码
+        //设置电话
         pojo.setCellphone(handleOperatorUpdateEmployeeById.getCellphone());
         //设置密码
-        pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperatorUpdateEmployeeById.getPassword()));
+//        pojo.setPassword(MD5Util.MD5EncodeUtf8(handleOperatorUpdateEmployeeById.getPassword()));
         //设置 角色 （管理员，员工）
         pojo.setRole(handleOperatorUpdateEmployeeById.getRole());
         //是否禁用
@@ -504,8 +540,9 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     /**9
-     * 通过员工id 只 修改员工 是否禁用
+     *
      */
+
 
     /**10
      * 依据id来删除一个员工,只是改变is_deleted 为1
@@ -800,6 +837,14 @@ public class OperatorServiceImpl implements OperatorService {
         return  Result.success(true);
     }
 
+    /**15.5
+     *  查看自己拉的采购人列表,查看采购人的信息
+     *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
+     */
+    public Result lookPurchaserByOperatorId(){
+        return null;
+    }
+
     /**16
      *  运营商新增采购人（不包括完善信息，只填写姓名，电话）
      */
@@ -857,6 +902,11 @@ public class OperatorServiceImpl implements OperatorService {
         }
         return  Result.success(true);
     }
+
+    /**16.5
+     *  查看自己拉的供应商列表,查看供应商信息
+     *
+     */
 
 
     /**17

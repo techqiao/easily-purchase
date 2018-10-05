@@ -280,6 +280,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
             tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(whereId);
             List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria);
+            //如果未完善信息返回基础信息
             if(tOperatorDetailInfos.isEmpty()){
                 OperatorUserVO operatorUserVO = new OperatorUserVO();
                 operatorUserVO.setId(tOperatorBasicInfo.getId());
@@ -288,6 +289,7 @@ public class OperatorServiceImpl implements OperatorService {
                 operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
                 return Result.success(operatorUserVO) ;
             }
+            //装填所有信息开始
             TOperatorDetailInfo tOperatorDetailInfo = tOperatorDetailInfos.get(0);
             OperatorUserVO operatorUserVO = new OperatorUserVO();
             operatorUserVO.setCompanyName(tOperatorDetailInfo.getCompanyName());
@@ -320,6 +322,7 @@ public class OperatorServiceImpl implements OperatorService {
             operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
             operatorUserVO.setState(tOperatorBasicInfo.getState());
             operatorUserVO.setName(tOperatorBasicInfo.getName());
+            //装填所有信息结束
             return Result.success(operatorUserVO);
         } catch (Exception e1) {
             LOGGER.error("BusinessException queryOperatorDetailInfo : {}", e1);

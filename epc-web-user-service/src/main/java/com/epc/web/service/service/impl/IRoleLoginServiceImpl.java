@@ -241,7 +241,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                     }
                 } catch (Exception e) {
                     LOGGER.error("供货商注册失败:Exception={}", e);
-                    return Result.error("代理商注册失败");
+                    return Result.error("供货商注册失败");
                 }
                 //return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
             case IRoleLoginService.PURCHASER:
@@ -255,7 +255,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                     }
                 } catch (Exception e) {
                     LOGGER.error("采购商注册失败:Exception={}", e);
-                    return Result.error("采购商注册失败:Excepiton={}");
+                    return Result.error("采购商注册失败");
                 }
                 // return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "注册失败");
 

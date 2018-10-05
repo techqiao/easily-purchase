@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 14:40
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 public interface SysAdminRoleService {
 

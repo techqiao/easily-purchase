@@ -14,7 +14,13 @@ import java.io.Serializable;
 @Data
 public class OperatorForbiddenHandle implements Serializable {
     private static final long serialVersionUID = 4679379294721214046L;
+    /**
+     * 主键id
+     */
     private  Long id;
 
+    /**
+     * 是否锁定 0 启用 1 锁定
+     */
     private Integer isForbidden;
 }

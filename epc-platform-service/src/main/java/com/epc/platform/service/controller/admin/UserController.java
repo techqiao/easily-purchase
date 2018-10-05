@@ -10,7 +10,6 @@ import com.epc.platform.service.domain.admin.UserWithRole;
 import com.epc.platform.service.service.admin.SysAdminUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,8 +147,8 @@ public class UserController extends BaseController implements AdminUserService {
     }
 
     /**修改密码
-     * @param newPassword
-     * @return
+     * @param userHandle
+     * @return Result
      */
     @Override
     public Result updatePassword(@RequestBody UserHandle userHandle) {

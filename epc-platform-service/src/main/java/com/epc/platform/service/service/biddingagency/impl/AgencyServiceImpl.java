@@ -64,10 +64,8 @@ public class AgencyServiceImpl implements AgencyService {
             return Result.success(tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo) > 0);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException insertBiddingAgencyBasicInfo : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        } catch (Exception e) {
-            LOGGER.error("BusinessException insertBiddingAgencyBasicInfo : {}", e);
-            return Result.error(e.getMessage());
         }
     }
     /**
@@ -144,6 +142,7 @@ public class AgencyServiceImpl implements AgencyService {
         TAgencyDetailInfoCriteria tAgencyDetailInfoCriteria = new TAgencyDetailInfoCriteria();
         tAgencyDetailInfoCriteria.createCriteria().andAgencyIdEqualTo(biddingHandle.getId());
         Date date = new Date();
+        //详情
         detailInfo.setAgencyId(biddingHandle.getId());
         detailInfo.setCompanyName(biddingHandle.getCompanyName());
         detailInfo.setUniformCreditCode(biddingHandle.getUniformCreditCode());
@@ -187,6 +186,7 @@ public class AgencyServiceImpl implements AgencyService {
                     tAgencyAttachmentMapper.insertSelective(attachment);
                 }
             }
+            //基础信息更新
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
             tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
@@ -225,14 +225,13 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     public Result<AgencyUserAttachmentVO> queryBiddingAgencyDetailInfo(Long whereId) {
-
             try {
+                //查询对应基础信息
                 TAgencyBasicInfo tAgencyBasicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(whereId);
-
-
                 TAgencyDetailInfoCriteria criteria = new TAgencyDetailInfoCriteria();
                 criteria.createCriteria().andAgencyIdEqualTo(whereId);
                 List<TAgencyDetailInfo> tAgencyDetailInfos = tAgencyDetailInfoMapper.selectByExample(criteria);
+                //如果未完善信息 返回基础信息
                 if(tAgencyDetailInfos.isEmpty()){
                     AgencyUserAttachmentVO agencyUserAttachmentVO = new AgencyUserAttachmentVO();
                     agencyUserAttachmentVO.setName(tAgencyBasicInfo.getName());
@@ -240,7 +239,7 @@ public class AgencyServiceImpl implements AgencyService {
                     agencyUserAttachmentVO.setState(tAgencyBasicInfo.getState());
                     return Result.success(agencyUserAttachmentVO);
                 }
-
+                //装填用户所有信息开始
                 TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfos.get(0);
                 AgencyUserAttachmentVO agencyUserAttachmentVO = new AgencyUserAttachmentVO();
                 agencyUserAttachmentVO.setId(whereId);
@@ -275,6 +274,7 @@ public class AgencyServiceImpl implements AgencyService {
                     agencyAttachmentVOS.add(agencyAttachmentVO);
                 }
                 agencyUserAttachmentVO.setAgencyAttachmentVOS(agencyAttachmentVOS);
+                //装填用户所有信息结束
                 return Result.success(agencyUserAttachmentVO);
             } catch (BusinessException e) {
                 LOGGER.error("BusinessException queryBiddingAgencyDetailInfo : {}", e);

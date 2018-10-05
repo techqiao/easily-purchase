@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * <p>Description : easily-purchase
  * <p>Date : 2018-09-13 14:41
- * <p>@Author : wjq
+ * <p>@Author : luozhixin
  */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -45,11 +45,21 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     private SysAdminUserRoleService sysAdminUserRoleService;
 
 
+    /**
+     * 根据名字查找角色
+     * @param userName
+     * @return
+     */
     @Override
     public List<SysAdminRole> findUserRole(String userName) {
         return sysAdminRoleMapper.findUserRole(userName);
     }
 
+    /**
+     * 查找所有角色
+     * @param queryRoleInfo
+     * @return
+     */
     @Override
     public List<SysAdminRole> findAllRole(QueryRoleInfo queryRoleInfo) {
         if (queryRoleInfo.getName() !=null){
@@ -67,6 +77,11 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
         }
     }
 
+    /**
+     * 查找角色和对应资源
+     * @param roleId
+     * @return
+     */
     @Override
     public RoleWithSource findRoleWithResource(Long roleId) {
         List<RoleWithSource> list = this.sysAdminRoleMapper.findById(roleId);
@@ -82,6 +97,11 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
         return roleWithMenu;
     }
 
+    /**
+     * 根据name查找
+     * @param roleName
+     * @return
+     */
     @Override
     public SysAdminRole findByName(String roleName) {
         final SysAdminRoleCriteria criteria = new SysAdminRoleCriteria();
@@ -90,6 +110,10 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
         return list.isEmpty()? null : list.get(0);
     }
 
+    /**
+     * 添加角色
+     * @param role
+     */
     @Override
     public void addRole(RoleHandle role) {
         SysAdminRole sysAdminRole = new SysAdminRole();
@@ -124,6 +148,11 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
         this.sysAdminUserRoleService.deleteUserRolesByRoleId(roleIds);
     }
 
+    /**
+     * 修改角色
+     * @param updateRoleDTO
+     * @return
+     */
     @Override
     public Result updateRole(UpdateRoleDTO updateRoleDTO) {
         SysAdminRole sysAdminRole = new SysAdminRole();

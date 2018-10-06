@@ -19,6 +19,7 @@ import com.epc.platform.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.platform.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.purchaser.PurchaserService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +156,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
@@ -225,7 +226,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
@@ -326,9 +327,11 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     public List<PurchaserVO> selectAllPurchaserByPage(QueryDetailIfo queryDetailIfo) {
         String where = queryDetailIfo.getWhere();
-        if(where!=null){
+        if(StringUtils.isNotBlank(where)){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
+        }else{
+            queryDetailIfo.setWhere(null);
         }
         return  tPurchaserDetailInfoMapper.selectByPage(queryDetailIfo);
     }

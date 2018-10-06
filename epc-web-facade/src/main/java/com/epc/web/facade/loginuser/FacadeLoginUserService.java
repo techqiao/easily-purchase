@@ -38,6 +38,6 @@ public interface FacadeLoginUserService {
      *@return:
      *@date:2018/10/3
      */
-    @PostMapping(value = "modifyPassword", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "modifyPassword", consumes = "application/json;charset=UTF-8")
     Result<Boolean> modifyPassword(@RequestBody ModifyUser modifyUser);
 }

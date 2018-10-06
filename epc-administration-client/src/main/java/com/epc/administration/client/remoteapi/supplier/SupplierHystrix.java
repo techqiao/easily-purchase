@@ -47,4 +47,23 @@ public class SupplierHystrix implements SupplierUserService {
     public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
         return Result.hystrixError();
     }
+    @Override
+    public Result supplierReviewWinningBid(QueryDetailIfo queryDetailIfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result supplierReviewRewardAndPunishment(QueryDetailIfo queryDetailIfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result supplierReviewRecordOfPerformanceDetail(Long id) {
+        return Result.hystrixError();
+    }
 }

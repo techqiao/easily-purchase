@@ -22,5 +22,6 @@ public class LoginUser implements Serializable {
     private Long userId;
     private String companyName;
     private Long companyId;
+    private Integer loginRole;
 
 }

@@ -2,9 +2,10 @@ package com.epc.bidding.mapper.bidding;
 
 import com.epc.bidding.domain.bidding.TTenderMessage;
 import com.epc.bidding.domain.bidding.TTenderMessageCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface TTenderMessageMapper {
     int countByExample(TTenderMessageCriteria example);
@@ -30,4 +31,5 @@ public interface TTenderMessageMapper {
     int updateByPrimaryKeySelective(TTenderMessage record);
 
     int updateByPrimaryKey(TTenderMessage record);
+
 }

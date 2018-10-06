@@ -15,4 +15,8 @@ public class QueryMoneyPayDTO implements Serializable {
 
     private Long operateId;
 
+    private String projectName;
+
+    private String status;
+
 }

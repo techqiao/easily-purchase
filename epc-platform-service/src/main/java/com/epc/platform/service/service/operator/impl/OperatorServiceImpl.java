@@ -157,7 +157,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
             tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
-            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
+            tOperatorBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
@@ -235,7 +235,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
             tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
-            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
+            tOperatorBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
@@ -340,7 +340,9 @@ public class OperatorServiceImpl implements OperatorService {
         if(where!=null){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
-        }
+        }else{
+        queryDetailIfo.setWhere(null);
+    }
         return  tOperatorDetailInfoMapper.selectByPage(queryDetailIfo);
     }
     /**

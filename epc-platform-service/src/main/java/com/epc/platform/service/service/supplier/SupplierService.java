@@ -6,6 +6,7 @@ import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
+import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 
 import java.util.List;
@@ -64,8 +65,38 @@ public interface SupplierService {
     Result<Boolean> examineSupplier(ExamineSupplierHandle examineSupplierHandle);
 
     /**
-     * 启用禁用供应商
+     * 锁定供应商
+     * @param supplierForbiddenHandle
      * @return
      */
     Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle);
+
+    /**
+     * 供应商考评中标业绩列表
+     * @param queryDetailIfo
+     * @return
+     */
+    Result<List<TWinBidVO>> supplierReviewWinningBid(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 供应商考评 奖惩
+     * @param queryDetailIfo
+     * @return
+     */
+    Result supplierReviewRewardAndPunishment(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 供应商考评 履约记录
+     * @param queryDetailIfo
+     * @return
+     */
+    Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo);
+
+    /**
+     * 根据ID 查供应商考评 履约记录详情
+     * @param id
+     * @return
+     */
+    Result supplierReviewRecordOfPerformanceDetail(Long id);
+
 }

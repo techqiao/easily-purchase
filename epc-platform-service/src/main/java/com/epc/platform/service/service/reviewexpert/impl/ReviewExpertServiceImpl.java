@@ -127,7 +127,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             tExpertBasicInfo.setOtherInformation(reviewExpertHandle.getOtherInformation());
             tExpertBasicInfo.setWorkingYears(reviewExpertHandle.getWorkingYears());
             tExpertBasicInfo.setPositional(reviewExpertHandle.getPositional());
-            tExpertBasicInfo.setState(Const.STATE.COMMITTED);
+            tExpertBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tExpertBasicInfo.setUpdateAt(new Date());
             tExpertBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             return Result.success(tExpertBasicInfoMapper.updateByPrimaryKeySelective(tExpertBasicInfo)>0);
@@ -260,6 +260,8 @@ public class ReviewExpertServiceImpl implements ExpertService {
         if(where!=null){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
+        }else{
+            queryDetailIfo.setWhere(null);
         }
         return  tExpertDetailInfoMapper.selectByPage(queryDetailIfo);
 

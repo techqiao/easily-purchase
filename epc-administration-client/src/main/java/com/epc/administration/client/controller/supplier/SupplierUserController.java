@@ -14,6 +14,7 @@ import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 
@@ -95,5 +98,37 @@ public class SupplierUserController extends BaseController {
         BeanUtils.copyProperties(clientSupplierForbiddenHandle,supplierForbiddenHandle);
         return supplierClient.forbiddenSupplierUser(supplierForbiddenHandle);
     }
+
+    @ApiOperation(value = "供应商考评 中标业绩" , notes = "供应商考评 中标业绩")
+    @PostMapping(value = "supplierReviewWinningBid",consumes = "application/json;charset=UTF-8")
+    public Result<List<TWinBidVO>>  supplierReviewWinningBid(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
+        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
+        return supplierClient.supplierReviewWinningBid(queryDetailIfo);
+    }
+
+    @ApiOperation(value = "供应商考评 奖惩" ,notes = "供应商考评 奖惩")
+    @PostMapping(value = "supplierReviewRewardAndPunishment",consumes = "application/json;charset=UTF-8")
+    public Result supplierReviewRewardAndPunishment(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo ){
+        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
+        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
+        return supplierClient.supplierReviewRewardAndPunishment(queryDetailIfo);
+    }
+
+    @ApiOperation(value = "供应商考评 履约记录",notes = "供应商考评 履约记录")
+    @PostMapping(value = "supplierReviewRecordOfPerformance" ,consumes = "application/json;charset=UTF-8")
+    public Result supplierReviewRecordOfPerformance(@RequestBody ClientQueryDetailIfo clientQueryDetailIfo){
+        QueryDetailIfo queryDetailIfo = new QueryDetailIfo();
+        BeanUtils.copyProperties(clientQueryDetailIfo,queryDetailIfo);
+        return  supplierClient.supplierReviewRecordOfPerformance(queryDetailIfo);
+    }
+
+    @ApiOperation(value = "供应商考评 履约记录",notes = "供应商考评 履约记录根据id查询")
+    @GetMapping("supplierReviewRecordOfPerformanceDetail")
+    public  Result supplierReviewRecordOfPerformanceDetail(@RequestParam("Id") Long id){
+        return  supplierClient.supplierReviewRecordOfPerformanceDetail(id);
+    }
+
+
 
 }

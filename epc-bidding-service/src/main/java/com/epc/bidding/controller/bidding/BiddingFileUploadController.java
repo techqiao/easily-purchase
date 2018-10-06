@@ -2,6 +2,7 @@ package com.epc.bidding.controller.bidding;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
+import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +19,30 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
     @Autowired
     BiddingService biddingService;
 
+
     /**
-     * 预审信息新增+文件上传
-     * @param handlePretriaFile
+     * 投标信息 更新
+     * @param handleNotice
      * @return
      */
     @Override
-    public Result<Boolean> insertPretrialFile(@RequestBody HandlePretriaFile handlePretriaFile) {
-        return biddingService.insertPretrialFile(handlePretriaFile);
+    public Result<Boolean> updateNotice(@RequestBody HandleNotice handleNotice){
+        return biddingService.insertNotice(handleNotice);
     }
 
-
-    /**
-     * 预审信息 修改
-     * @param handlePretriaFile
-     * @return
-     */
+        /**
+         * 预审信息 更新
+         * @param handlePretriaFile
+         * @return
+         */
     @Override
     public Result<Boolean> updatePretrialFile(@RequestBody HandlePretriaFile handlePretriaFile) {
         return biddingService.updatePretrialFile(handlePretriaFile);
+    }
+
+    @Override
+    public Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile) {
+        return null;
     }
 
     /**

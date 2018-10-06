@@ -542,7 +542,7 @@
         </where>
     </select>
     <select id="login" resultType="com.epc.web.facade.loginuser.dto.LoginUser">
-        SELECT id ,`name`,cellphone,state
+        SELECT id AS userId,`name`,cellphone,state
         FROM t_expert_basic_info
         WHERE cellphone = #{cellphone}
         AND password = #{pwd}

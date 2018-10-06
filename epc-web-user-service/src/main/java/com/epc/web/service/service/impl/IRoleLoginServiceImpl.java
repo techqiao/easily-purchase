@@ -85,6 +85,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             } else {
                 if (basicInfo.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser.setState(basicInfo.getState());
+                    loginUser.setUserId(basicInfo.getId());
                     return Result.success(loginUser);
                 }
             }
@@ -138,6 +139,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             } else {
                 if (basicinfo3.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser3.setState(basicinfo3.getState());
+                    loginUser3.setUserId(basicinfo3.getId());
                     return Result.success(loginUser3);
                 }
             }
@@ -192,6 +194,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             } else {
                 if (basicinfo1.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser1.setState(basicinfo1.getState());
+                    loginUser1.setUserId(basicinfo1.getId());
                     return Result.success(loginUser1);
                 }
             }
@@ -247,6 +250,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             } else {
                 if (basicinfo2.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser2.setState(basicinfo2.getState());
+                    loginUser2.setUserId(basicinfo2.getId());
                     return Result.success(loginUser2);
                 }
             }

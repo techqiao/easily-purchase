@@ -67,6 +67,8 @@ public class BiddingServiceimpl implements BiddingService {
     @Autowired
     TTenderFileMapper tTenderFileMapper;
 
+    /*******************************************公告*******************************************************/
+
     /**
      * 查询公告列表（暂时不做黑名单）
      * @param queryNoticeDTO
@@ -127,7 +129,7 @@ public class BiddingServiceimpl implements BiddingService {
         }
         return Result.success(noticeDetailVO);
     }
-
+/*******************************************问题********************************************************/
     /**
      * 查看 答疑列表
      * @param dto
@@ -166,6 +168,8 @@ public class BiddingServiceimpl implements BiddingService {
         return Result.success(returnList);
     }
 
+
+
     /**
      * 新增一条问题 (公告,招标文件，评标)
      * @param handleQuestion
@@ -189,6 +193,7 @@ public class BiddingServiceimpl implements BiddingService {
         return  Result.success(true);
     }
 
+/*******************************************投标文件记录********************************************************/
 
     /**
      * 投标文件记录(新增/修改/删除)
@@ -270,6 +275,7 @@ public class BiddingServiceimpl implements BiddingService {
         return Result.success();
     }
 
+/*******************************************预审文件记录********************************************************/
 
     /**
      * 预审文件记录 新增/更新/删除
@@ -426,9 +432,10 @@ public class BiddingServiceimpl implements BiddingService {
         return Result.success();
     }
 
+/***************************************************环节步骤*************************************************/
 
-    /**
-     * 根据bid 和 用户类型 判断标段环节步骤
+/**
+     * 根据bid 和 用户类型 判断标段
      * @param dto
      * @return
      */

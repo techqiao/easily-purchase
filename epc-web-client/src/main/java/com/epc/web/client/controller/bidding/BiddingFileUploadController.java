@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
 * @Description:  提交 文件
 * @Author: linzhixiang
@@ -43,11 +45,12 @@ public class BiddingFileUploadController extends BaseController {
 
     @ApiOperation(value = "新增/更新/删除 投标文件")
     @PostMapping(value="/updateNotice")
-    Result<Boolean> updateNotice(@RequestBody ClientNoticeFileLoad dto){
+    Result<Boolean> updateNotice(@RequestBody ClientNoticeFileLoad dto, HttpServletRequest request){
         HandleNotice handleNotice=new HandleNotice();
         BeanUtils.copyProperties(dto,handleNotice);
         handleNotice.setOperateId(getLoginUser().getUserId());
         handleNotice.setCompanyId(getLoginUser().getCompanyId());
+        handleNotice.setIp(request.getRemoteHost());
         return biddingClient.updateNotice(handleNotice);
 
     }

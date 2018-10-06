@@ -20,7 +20,7 @@ public interface MoneyPayService {
      * @param dto
      * @return
      */
-     Result<List<GuarantyListVo>> getMoneyPayList(QueryMoneyPayDTO dto);
+     Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto);
 
     /**
      * 查询是否支付服务费

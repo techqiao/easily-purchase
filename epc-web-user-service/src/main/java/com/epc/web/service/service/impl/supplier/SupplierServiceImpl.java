@@ -5,6 +5,7 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.common.util.MD5Util;
+import com.epc.web.facade.bidding.query.schedule.QueryProjectSchedule;
 import com.epc.web.facade.operator.handle.Attachment;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
@@ -15,8 +16,19 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.TenderMessageVO;
+import com.epc.web.service.domain.bid.TProjectBasicInfo;
+import com.epc.web.service.domain.bid.TProjectBidProcedure;
+import com.epc.web.service.domain.bid.TProjectBidProcedureCriteria;
+import com.epc.web.service.domain.bid.TPurchaseProjectBids;
 import com.epc.web.service.domain.supplier.*;
-import com.epc.web.service.mapper.supplier.*;
+import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
+import com.epc.web.service.mapper.bid.TProjectBidProcedureMapper;
+import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
+import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
+import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
+import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
+import com.epc.web.service.mapper.supplier.TTenderMessageMapper;
 import com.epc.web.service.service.supplier.SupplierService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -52,7 +64,12 @@ public class SupplierServiceImpl implements SupplierService {
     private TSupplierAttachmentMapper tSupplierAttachmentMapper;
     @Autowired
     private TTenderMessageMapper tTenderMessageMapper;
-
+    @Autowired
+    TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+    @Autowired
+    TProjectBasicInfoMapper tProjectBasicInfoMapper;
+    @Autowired
+    TProjectBidProcedureMapper tProjectBidProcedureMapper;
     /**0
      * 注册供应商
      *  {业务：    还需要要判断电话在数据库中有没有，（有无人拉。如无，就是自己注册；如有，就是添加密码登陆完善个人信息）
@@ -910,8 +927,57 @@ public class SupplierServiceImpl implements SupplierService {
      * @return
      */
     @Override
-    public Result querySupplierProject(QuerywithPageHandle querywithPageHandle) {
+    public Result<List<TenderMessageVO>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
         List<TTenderMessage> tTenderMessages = tTenderMessageMapper.querySupplierProject(querywithPageHandle.getId());
-        return Result.success(tTenderMessages);
+        List<TenderMessageVO> voList=new ArrayList<>();
+        for(TTenderMessage entity:tTenderMessages){
+            TenderMessageVO vo =new TenderMessageVO();
+            QueryProjectSchedule dto =new QueryProjectSchedule();
+            TPurchaseProjectBids bisEntity= tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
+            BeanUtils.copyProperties(bisEntity,vo);
+            TProjectBasicInfo projectEntity= tProjectBasicInfoMapper.selectByPrimaryKey(bisEntity.getProjectId());
+            if(projectEntity.getSourceOfInvestment()==0){
+                vo.setProjectType("国有投资");
+            }else if(projectEntity.getSourceOfInvestment()==1){
+                vo.setProjectType("私有投资");
+            }else if(projectEntity.getSourceOfInvestment()==2){
+                vo.setProjectType("国有占主体投资");
+            }
+            vo.setBidId(entity.getBidsId());
+            dto.setPurchaseProjectId(entity.getPurchaseProjectId());
+            dto.setOperateType("supplier");
+            String schedule="";
+            if(queryProjectSchedule(dto)!=null){
+                schedule  =queryProjectSchedule(dto).getData();
+            }
+            vo.setSchedule(schedule);
+            if(schedule!="退还保证金"){
+                vo.setStatus("进行中");
+            }else{
+                vo.setStatus("已结束");
+            }
+            voList.add(vo);
+        }
+        return Result.success(voList);
     }
+
+    /**
+     * 根据bid 和 用户类型 判断标段环节步骤（）
+     * @param dto
+     * @return
+     */
+    public Result<String> queryProjectSchedule(QueryProjectSchedule dto){
+        TProjectBidProcedureCriteria criteria=new TProjectBidProcedureCriteria();
+        TProjectBidProcedureCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andPurchaseProjectIdEqualTo(dto.getPurchaseProjectId());
+        cubCriteria.andOperateTypeEqualTo("supplier");
+        criteria.setOrderByClause("create_at desc");
+        List<TProjectBidProcedure> result=tProjectBidProcedureMapper.selectByExample(criteria);
+        if(result.size()>0){
+            return  Result.success(result.get(0).getProcedureName());
+        }else{
+            return Result.success(null);
+        }
+    }
+
 }

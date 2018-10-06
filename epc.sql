@@ -100,11 +100,11 @@ CREATE TABLE `t_operator_basic_info` (
 	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
 	`name` VARCHAR(16) DEFAULT NULL COMMENT '运营商员工姓名',
 	`operator_id` BIGINT(11) UNSIGNED COMMENT '运营商(法人)ID',
-	`state` INT(2) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`state` INT(3) UNSIGNED COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_forbidden` INT(1) DEFAULT '0' COMMENT '是否禁用: 0-启用,1-禁用',
+			`is_forbidden` INT(1) DEFAULT '0' COMMENT '是否禁用: 0-启用,1-禁用',
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商:法人及其员工基本(登录)信息';
@@ -177,7 +177,7 @@ CREATE TABLE `t_supplier_basic_info` (
 	`inviter_type` INT(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台',
 	`inviter_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人Id',
 	`inviter_company_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人机构ID',
-	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`state` INT(3) UNSIGNED COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
@@ -231,7 +231,7 @@ CREATE TABLE `t_purchaser_basic_info` (
 	`inviter_type` INT(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台',
 	`inviter_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人Id',
 	`inviter_company_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人机构ID',
-	`state` INT(2) UNSIGNED COMMENT '审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败',
+	`state` INT(3) UNSIGNED COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
@@ -262,9 +262,10 @@ CREATE TABLE `t_purchaser_detail_info` (
 DROP TABLE IF EXISTS `t_purchaser_supplier` ;
 CREATE TABLE `t_purchaser_supplier` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`status` INT(1) DEFAULT '0'  COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`state` INT(3) DEFAULT '0'  COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`purchaser_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
 	`supplier_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
-    `supplier_type` varchar(32) DEFAULT NULL COMMENT '白名单，white_list,黑名单：blank_list',
+  `supplier_type` varchar(32) DEFAULT NULL COMMENT '白名单，white_list,黑名单：blank_list',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -333,7 +334,7 @@ CREATE TABLE `t_agency_basic_info` (
 	`inviter_type` INT(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,4-平台',
 	`inviter_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人Id',
 	`inviter_company_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人机构ID',
-	`state` INT(2) UNSIGNED COMMENT '审核状态:0-已注册,1-完善中,2-已提交,3-审核通过,4-审核失败',
+	`state` INT(3) UNSIGNED COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
 	`role` INT(2)  COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
@@ -394,7 +395,7 @@ CREATE TABLE `t_expert_basic_info` (
 	`inviter_type` INT(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,4-平台',
 	`inviter_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人Id',
 	`inviter_company_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人机构ID',
-	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
+	`state` INT(3) UNSIGNED COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
 	`is_forbidden` INT(1) DEFAULT '0' COMMENT '是否禁用: 0-启用,1-禁用',
@@ -443,7 +444,7 @@ CREATE TABLE  `t_expert_attachment`(
 DROP TABLE IF EXISTS `t_project_basic_info`;
 CREATE TABLE `t_project_basic_info` (
 	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
-	`project_code` varchar(32) NOT NULL COMMENT '项目编号',
+	`project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
 	`project_name` varchar(64) NOT NULL COMMENT '项目名称',
 	`project_description` varchar(1024) COMMENT '项目描述',
 	`total_project_investment` decimal(18,2) NOT NULL COMMENT '项目总投资 元',
@@ -487,7 +488,7 @@ CREATE TABLE `t_purchase_project_basic_info` (
 	`project_id` BIGINT(64) NOT NULL COMMENT '项目ID',
 	`project_name` varchar(64) NOT NULL COMMENT '项目名称',
 	`purchase_project_name` varchar(32) NOT NULL COMMENT '采购项目名称',
-	`purchase_project_code` varchar(32) NOT NULL COMMENT '采购项目编号',
+	`purchase_project_code` varchar(32) DEFAULT NULL COMMENT '采购项目编号',
 	`purchase_start_time` DATETIME NOT NULL COMMENT '采购项目开始时间',
 	`purchase_end_time` DATETIME NOT NULL COMMENT '采购项目结束时间',
 	`is_state_designation` INT(1) DEFAULT '0' COMMENT '是否国家指定必须招标:0是，1不是',
@@ -591,7 +592,7 @@ CREATE TABLE `t_purchase_project_bids` (
 	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
 	`purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
 	`purchase_project_name` varchar(32) NOT NULL COMMENT '采购项目名称',
-	`purchase_project_code` varchar(32) NOT NULL COMMENT '采购项目编号',
+	`purchase_project_code` varchar(32) DEFAULT NULL COMMENT '采购项目编号',
 	`project_id` BIGINT(11) NOT NULL COMMENT '项目ID',
 	`project_name` varchar(64) NOT NULL COMMENT '项目名称',
 	`project_code` varchar(32) NOT NULL COMMENT '项目编号',
@@ -865,6 +866,7 @@ CREATE TABLE `t_tender_message` (
   `identit_card` varchar(16) NOT NULL COMMENT '授权委托人身份证',
   `bailment_path` varchar(256) NOT NULL COMMENT '委托书记录',
   `bid_appendix` varchar(256) NOT NULL COMMENT '投标附录',
+  `ip` varchar(64) DEFAULT NULL COMMENT 'ip',
   `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
   `create_at` datetime NOT NULL COMMENT '创建时间',
   `update_at` datetime NOT NULL COMMENT '最后修改时间',
@@ -1252,3 +1254,34 @@ CREATE TABLE `b_suppliers_number` (
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:供应商数量';
+
+DROP TABLE IF EXISTS `b_sign_up`;
+CREATE TABLE `b_sign_up` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目ID',
+  `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `bids_id` varchar(256) DEFAULT NULL COMMENT '标段ID',
+  `bids_name` varchar(256) NOT NULL COMMENT '标段名称',
+  `supplier_id` bigint(11) NOT NULL COMMENT '供应商ID',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报名表';
+
+DROP TABLE IF EXISTS `b_invitation`;
+CREATE TABLE `b_invitation` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目ID',
+  `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `bids_id` varchar(256) DEFAULT NULL COMMENT '标段ID',
+  `bids_name` varchar(256) NOT NULL COMMENT '标段名称',
+  `content` varchar(256) NOT NULL COMMENT '邀请内容',
+  `purchaser_id` bigint(11) NOT NULL COMMENT '采购人ID',
+  `supplier_id` bigint(11) NOT NULL COMMENT '供应商ID',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='招标流程:采购人邀请供应商参加采购项目';
+

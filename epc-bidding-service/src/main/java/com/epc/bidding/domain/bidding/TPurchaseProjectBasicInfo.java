@@ -7,7 +7,7 @@ import java.util.Date;
 public class TPurchaseProjectBasicInfo implements Serializable {
     private Long id;
 
-    private String projectId;
+    private Long projectId;
 
     private String projectName;
 
@@ -37,6 +37,8 @@ public class TPurchaseProjectBasicInfo implements Serializable {
 
     private Integer isOtherAgency;
 
+    private Integer isEnd;
+
     private Long operateId;
 
     private String creator;
@@ -57,12 +59,12 @@ public class TPurchaseProjectBasicInfo implements Serializable {
         this.id = id;
     }
 
-    public String getProjectId() {
+    public Long getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId == null ? null : projectId.trim();
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public String getProjectName() {
@@ -177,6 +179,14 @@ public class TPurchaseProjectBasicInfo implements Serializable {
         this.isOtherAgency = isOtherAgency;
     }
 
+    public Integer getIsEnd() {
+        return isEnd;
+    }
+
+    public void setIsEnd(Integer isEnd) {
+        this.isEnd = isEnd;
+    }
+
     public Long getOperateId() {
         return operateId;
     }
@@ -239,6 +249,7 @@ public class TPurchaseProjectBasicInfo implements Serializable {
         sb.append(", purchaseProjectStatus=").append(purchaseProjectStatus);
         sb.append(", isAdjust=").append(isAdjust);
         sb.append(", isOtherAgency=").append(isOtherAgency);
+        sb.append(", isEnd=").append(isEnd);
         sb.append(", operateId=").append(operateId);
         sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);

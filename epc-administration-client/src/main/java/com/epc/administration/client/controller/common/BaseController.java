@@ -3,7 +3,6 @@ package com.epc.administration.client.controller.common;
 import com.alibaba.fastjson.JSONObject;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.common.util.CookieUtil;
-import com.epc.common.util.RedisShardedPoolUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;

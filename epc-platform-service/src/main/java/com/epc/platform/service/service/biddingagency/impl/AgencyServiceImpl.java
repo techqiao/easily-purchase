@@ -57,7 +57,7 @@ public class AgencyServiceImpl implements AgencyService {
         tAgencyBasicInfo.setCreateAt(date);
         tAgencyBasicInfo.setName(userBasicInfo.getUsername());
         tAgencyBasicInfo.setUpdateAt(date);
-        tAgencyBasicInfo.setState(Const.STATE.PERFECTING);
+        tAgencyBasicInfo.setState(Const.STATE.REGISTERED);
         tAgencyBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         tAgencyBasicInfo.setInviterId(userBasicInfo.getId());
         try {
@@ -76,7 +76,6 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
-
         TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
         Date date = new Date();
         detailInfo.setAgencyId(biddingHandle.getId());
@@ -118,7 +117,7 @@ public class AgencyServiceImpl implements AgencyService {
             }
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
-            tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
+            tAgencyBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertBiddingAgencyDetailInfo : {}", e);
@@ -189,7 +188,7 @@ public class AgencyServiceImpl implements AgencyService {
             //基础信息更新
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
-            tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
+            tAgencyBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException updateBiddingAgencyDetailInfo : {}", e);

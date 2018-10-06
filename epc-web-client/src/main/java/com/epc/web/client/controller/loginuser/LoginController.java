@@ -4,10 +4,12 @@ import com.epc.common.Result;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
+import com.epc.web.client.controller.loginuser.handle.ClientLoginer;
 import com.epc.web.client.controller.loginuser.handle.ClientModifyUser;
 import com.epc.web.client.controller.loginuser.handle.ClientRegisterUser;
 import com.epc.web.client.remoteApi.loginuser.ILoginUserClient;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import io.swagger.annotations.Api;
@@ -42,10 +44,10 @@ public class LoginController {
 
     @ApiOperation(value = "角色登录" ,notes="根据用户类型登录,运营商1,代理商2,供货商3,采购商4,专家5")
     @PostMapping(value = "/roleLogin",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result login(@RequestBody ClientLoginUser user){
-        LoginUser loginUser = new LoginUser();
-        BeanUtils.copyProperties(user,loginUser);
-        return iLoginUserClient.login(loginUser);
+    public Result login(@RequestBody ClientLoginer user){
+        Loginer loginer = new Loginer();
+        BeanUtils.copyProperties(user,loginer);
+        return iLoginUserClient.login(loginer);
     }
 
 

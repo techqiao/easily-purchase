@@ -14,22 +14,13 @@ import java.util.List;
 @Data
 public class ClientHandleAgnecy implements Serializable {
     private static final long serialVersionUID = -5543183867560975179L;
-    /**
-     * 用于接受数据库生成的的id
-     */
-    @ApiModelProperty(value = "接受数据库生成的id")
-    private Long supplierId;
+
     /**
      * 手机号
      */
     @ApiModelProperty(value = "手机号")
     @NotEmpty(message = "ClientHandleAgnecy.cellphone.null")
     private String cellphone;
-    /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码")
-    private String password;
 
     /**
      * 法人姓名
@@ -57,26 +48,16 @@ public class ClientHandleAgnecy implements Serializable {
      */
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
-
-    /**
-     * 操作人id
-     */
-    @ApiModelProperty(value = "操作人id")
-    private long OperatorId;
-    /**
-     * 操作人公司的id
-     */
-    @ApiModelProperty(value = "操作人id")
-    private long companyId;
     /**
      * 附件list
      */
     @ApiModelProperty(value = "附件")
     private List<ClientAttachement> atts;
     /**
-     * 来源
+     * 公司地址
      */
-    private String source;
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
 
 //    @ApiModelProperty(value = "采购人Id")
 //    private long userId;

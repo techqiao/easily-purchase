@@ -272,9 +272,9 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO t_supplier_basic_info
-        (cellphone,password,`name`,create_at)
+        (cellphone,password,`name`,create_at,update_at,state,role)
         VALUES
-        (#{cellphone},#{pwd},#{name},#{dates})
+        (#{cellphone},#{pwd},#{name},#{dates},#{dates},2,0)
     </insert>
     <select id="countByExample" parameterType="com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria"
             resultType="java.lang.Integer">

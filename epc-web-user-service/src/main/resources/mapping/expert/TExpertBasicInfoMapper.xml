@@ -295,9 +295,9 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT  INTO t_expert_basic_info
-        (cellphone,password,`name`,create_at)
+        (cellphone,password,`name`,create_at,update_at,state)
         VALUES
-        (#{cellphone},#{pwd},#{name},#{dates})
+        (#{cellphone},#{pwd},#{name},#{dates},#{dates},2)
     </insert>
     <select id="countByExample" parameterType="com.epc.web.service.domain.expert.TExpertBasicInfoCriteria"
             resultType="java.lang.Integer">
@@ -542,7 +542,7 @@
         </where>
     </select>
     <select id="login" resultType="com.epc.web.facade.loginuser.dto.LoginUser">
-        SELECT id ,`name`,cellphone
+        SELECT id ,`name`,cellphone,state
         FROM t_expert_basic_info
         WHERE cellphone = #{cellphone}
         AND password = #{pwd}

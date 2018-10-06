@@ -67,5 +67,9 @@ public class HandleSupplierDto implements Serializable {
      * 来源
      */
     private String source;
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
 
 }

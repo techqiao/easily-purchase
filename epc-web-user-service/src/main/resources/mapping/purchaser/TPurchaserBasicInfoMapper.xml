@@ -340,9 +340,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO t_purchaser_basic_info
-        (cellphone,password,`name`,create_at)
+        (cellphone,password,`name`,create_at,update_at,state,role)
         VALUES
-        (#{cellphone},#{pwd},#{name},#{dates})
+        (#{cellphone},#{pwd},#{name},#{dates},#{dates},2,0)
+
 
     </insert>
     <select id="countByExample" parameterType="com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria"
@@ -573,6 +574,7 @@
             resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
+        FROM t_purchaser_basic_info
         WHERE role =#{role}
         AND purchaser_id =#{purchaseId}
     </select>

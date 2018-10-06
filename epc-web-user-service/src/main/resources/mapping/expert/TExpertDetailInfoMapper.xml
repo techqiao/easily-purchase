@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.web.service.mapper.purchaser.TPurchaserAgencyMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
+<mapper namespace="com.epc.web.service.mapper.expert.TExpertDetailInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.web.service.domain.expert.TExpertDetailInfo" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="agency_id" property="agencyId" jdbcType="BIGINT"/>
-    <result column="creater_id" property="createrId" jdbcType="BIGINT"/>
-    <result column="purchaser_id" property="purchaserId" jdbcType="CHAR" />
-    <result column="source" property="source" jdbcType="CHAR" />
+    <result column="expert_id" property="expertId" jdbcType="BIGINT" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+    <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR" />
+    <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR" />
+    <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR" />
+    <result column="extended_field" property="extendedField" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -71,17 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, cellphone, password, state, supplier_id, supplier_name, uniform_credit_code, 
-    public_bank_name, public_ban_account_number, purchaser_id, source, create_at, update_at, 
-    is_deleted
+    id, expert_id, company_name, company_address, uniform_credit_code, public_bank_name, 
+    public_ban_account_number, extended_field, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgencyCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfoCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_purchaser_agency
+    from t_expert_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,60 +93,62 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from t_purchaser_agency
+    from t_expert_detail_info
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from t_purchaser_agency
+    delete from t_expert_detail_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgencyCriteria" >
-    delete from t_purchaser_agency
+  <delete id="deleteByExample" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfoCriteria" >
+    delete from t_expert_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
+  <insert id="insert" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_purchaser_agency (cellphone, password, state, 
-      supplier_id, supplier_name, uniform_credit_code, 
-      public_bank_name, public_ban_account_number, 
-      purchaser_id, source, create_at, 
-      update_at, is_deleted)
-    values (#{cellphone,jdbcType=CHAR}, #{password,jdbcType=CHAR}, #{state,jdbcType=INTEGER}, 
-      #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, #{uniformCreditCode,jdbcType=VARCHAR}, 
-      #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR}, 
-      #{purchaserId,jdbcType=CHAR}, #{source,jdbcType=CHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+    insert into t_expert_detail_info (expert_id, company_name, company_address, 
+      uniform_credit_code, public_bank_name, public_ban_account_number, 
+      extended_field, create_at, update_at, 
+      is_deleted)
+    values (#{expertId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, 
+      #{uniformCreditCode,jdbcType=VARCHAR}, #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR}, 
+      #{extendedField,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
+  <insert id="insertSelective" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_purchaser_agency
+    insert into t_expert_detail_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
-
-      <if test="state != null" >
-        state,
+      <if test="expertId != null" >
+        expert_id,
       </if>
-      <if test="agencyId != null" >
-        agency_id,
+      <if test="companyName != null" >
+        company_name,
       </if>
-      <if test="createrId != null" >
-        creater_id,
+      <if test="companyAddress != null" >
+        company_address,
       </if>
-      <if test="purchaserId != null" >
-        purchaser_id,
+      <if test="uniformCreditCode != null" >
+        uniform_credit_code,
       </if>
-      <if test="source != null" >
-        source,
+      <if test="publicBankName != null" >
+        public_bank_name,
+      </if>
+      <if test="publicBanAccountNumber != null" >
+        public_ban_account_number,
+      </if>
+      <if test="extendedField != null" >
+        extended_field,
       </if>
       <if test="createAt != null" >
         create_at,
       </if>
-
       <if test="updateAt != null" >
         update_at,
       </if>
@@ -154,22 +157,26 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-
-      <if test="state != null" >
-        #{state,jdbcType=INTEGER},
+      <if test="expertId != null" >
+        #{expertId,jdbcType=BIGINT},
       </if>
-      <if test="agencyId != null" >
-        #{agencyId,jdbcType=BIGINT},
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
       </if>
-      <if test="createrId != null" >
-        #{createrId,jdbcType=BIGINT},
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
       </if>
-      <if test="purchaserId != null" >
-        #{purchaserId,jdbcType=CHAR},
+      <if test="uniformCreditCode != null" >
+        #{uniformCreditCode,jdbcType=VARCHAR},
       </if>
-
-      <if test="source != null" >
-        #{source,jdbcType=CHAR},
+      <if test="publicBankName != null" >
+        #{publicBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="publicBanAccountNumber != null" >
+        #{publicBanAccountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="extendedField != null" >
+        #{extendedField,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -182,32 +189,26 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgencyCriteria" resultType="java.lang.Integer" >
-    select count(*) from t_purchaser_agency
+  <select id="countByExample" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfoCriteria" resultType="java.lang.Integer" >
+    select count(*) from t_expert_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_purchaser_agency
+    update t_expert_detail_info
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.cellphone != null" >
-        cellphone = #{record.cellphone,jdbcType=CHAR},
+      <if test="record.expertId != null" >
+        expert_id = #{record.expertId,jdbcType=BIGINT},
       </if>
-      <if test="record.password != null" >
-        password = #{record.password,jdbcType=CHAR},
+      <if test="record.companyName != null" >
+        company_name = #{record.companyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.state != null" >
-        state = #{record.state,jdbcType=INTEGER},
-      </if>
-      <if test="record.supplierId != null" >
-        supplier_id = #{record.supplierId,jdbcType=BIGINT},
-      </if>
-      <if test="record.supplierName != null" >
-        supplier_name = #{record.supplierName,jdbcType=VARCHAR},
+      <if test="record.companyAddress != null" >
+        company_address = #{record.companyAddress,jdbcType=VARCHAR},
       </if>
       <if test="record.uniformCreditCode != null" >
         uniform_credit_code = #{record.uniformCreditCode,jdbcType=VARCHAR},
@@ -218,11 +219,8 @@
       <if test="record.publicBanAccountNumber != null" >
         public_ban_account_number = #{record.publicBanAccountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.purchaserId != null" >
-        purchaser_id = #{record.purchaserId,jdbcType=CHAR},
-      </if>
-      <if test="record.source != null" >
-        source = #{record.source,jdbcType=CHAR},
+      <if test="record.extendedField != null" >
+        extended_field = #{record.extendedField,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -239,18 +237,15 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_purchaser_agency
+    update t_expert_detail_info
     set id = #{record.id,jdbcType=BIGINT},
-      cellphone = #{record.cellphone,jdbcType=CHAR},
-      password = #{record.password,jdbcType=CHAR},
-      state = #{record.state,jdbcType=INTEGER},
-      supplier_id = #{record.supplierId,jdbcType=BIGINT},
-      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
+      expert_id = #{record.expertId,jdbcType=BIGINT},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      company_address = #{record.companyAddress,jdbcType=VARCHAR},
       uniform_credit_code = #{record.uniformCreditCode,jdbcType=VARCHAR},
       public_bank_name = #{record.publicBankName,jdbcType=VARCHAR},
       public_ban_account_number = #{record.publicBanAccountNumber,jdbcType=VARCHAR},
-      purchaser_id = #{record.purchaserId,jdbcType=CHAR},
-      source = #{record.source,jdbcType=CHAR},
+      extended_field = #{record.extendedField,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -258,23 +253,17 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
-    update t_purchaser_agency
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfo" >
+    update t_expert_detail_info
     <set >
-      <if test="cellphone != null" >
-        cellphone = #{cellphone,jdbcType=CHAR},
+      <if test="expertId != null" >
+        expert_id = #{expertId,jdbcType=BIGINT},
       </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=CHAR},
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
-      </if>
-      <if test="supplierId != null" >
-        supplier_id = #{supplierId,jdbcType=BIGINT},
-      </if>
-      <if test="supplierName != null" >
-        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      <if test="companyAddress != null" >
+        company_address = #{companyAddress,jdbcType=VARCHAR},
       </if>
       <if test="uniformCreditCode != null" >
         uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
@@ -285,11 +274,8 @@
       <if test="publicBanAccountNumber != null" >
         public_ban_account_number = #{publicBanAccountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="purchaserId != null" >
-        purchaser_id = #{purchaserId,jdbcType=CHAR},
-      </if>
-      <if test="source != null" >
-        source = #{source,jdbcType=CHAR},
+      <if test="extendedField != null" >
+        extended_field = #{extendedField,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -303,39 +289,27 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
-    update t_purchaser_agency
-    set cellphone = #{cellphone,jdbcType=CHAR},
-      password = #{password,jdbcType=CHAR},
-      state = #{state,jdbcType=INTEGER},
-      supplier_id = #{supplierId,jdbcType=BIGINT},
-      supplier_name = #{supplierName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfo" >
+    update t_expert_detail_info
+    set expert_id = #{expertId,jdbcType=BIGINT},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
       uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
       public_bank_name = #{publicBankName,jdbcType=VARCHAR},
       public_ban_account_number = #{publicBanAccountNumber,jdbcType=VARCHAR},
-      purchaser_id = #{purchaserId,jdbcType=CHAR},
-      source = #{source,jdbcType=CHAR},
+      extended_field = #{extendedField,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="updateTrustList" parameterType="com.epc.web.facade.purchaser.handle.HandleTrustList">
-      UPDATE t_purchaser_agency
-      <set>
-        <if test="trustOrNot!=null">
-          agency_type=#{trustOrNot}
-        </if>
-      </set>
-      WHERE id=#{id}
-    </update>
-    <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgencyCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.expert.TExpertDetailInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_purchaser_agency
+    from t_expert_detail_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -343,10 +317,4 @@
       order by ${orderByClause}
     </if>
   </select>
-    <select id="selectAgencyByAgencyId" resultMap="BaseResultMap">
-      SELECT
-      <include refid="Base_Column_List"/>
-      FROM t_purchaser_agency
-      WHERE agency_id =#{agencyId}
-    </select>
 </mapper>

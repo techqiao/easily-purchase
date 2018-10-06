@@ -14,17 +14,6 @@ import java.util.List;
 public class ClientHandleSupplierDto implements Serializable {
     private static final long serialVersionUID = -7953799077702459394L;
     /**
-     * 采购人id
-     */
-    @ApiModelProperty(value = "采购人id")
-    @NotEmpty(message = "ClientAgencySupplierDto.purcharseId.null")
-    private Long purcharseId;
-    /**
-     * supplierId供货商id
-     */
-    @ApiModelProperty(value = "供货商id")
-    private Long supplierId;
-    /**
      * 手机号
      */
     @ApiModelProperty(value = "供货商手机")
@@ -60,25 +49,16 @@ public class ClientHandleSupplierDto implements Serializable {
      */
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
-
     /**
-     * 操作人id
+     * 公司地址
      */
-    @ApiModelProperty(value = "操作人id")
-    private long OperatorId;
-    /**
-     * 操作人公司的id
-     */
-    @ApiModelProperty(value = "操作人公司id")
-    private long companyId;
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
     /**
      * 附件list
      */
     @ApiModelProperty(value = "附件信息:证书身份证等")
     private List<ClientAttachement> atts;
-    /**
-     * 来源
-     */
-    @ApiModelProperty(value = "来源")
-    private String source;
+
+
 }

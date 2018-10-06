@@ -13,8 +13,9 @@ public class ClientModifyUser implements Serializable {
     @ApiModelProperty(value = "手机账号")
     @NotEmpty(message = "ClientModifyUser.cellphone.null")
     private String cellphone;
-
     @ApiModelProperty(value = "新的密码")
     @NotEmpty(message = "ClientModifyUser.newPassword.null")
     private String newPassword;
+    @ApiModelProperty(value = "用户类型")
+    private Integer type;
 }

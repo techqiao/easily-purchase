@@ -32,6 +32,8 @@ public class TAgencyDetailInfo implements Serializable {
 
     private Integer isDeleted;
 
+    private String companyAddress;
+
     private static final long serialVersionUID = 1L;
 
 

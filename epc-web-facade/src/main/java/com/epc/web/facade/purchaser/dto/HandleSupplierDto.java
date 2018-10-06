@@ -54,11 +54,11 @@ public class HandleSupplierDto implements Serializable {
     /**
      * 操作人id
      */
-    private long OperatorId;
+    private Long OperatorId;
     /**
      * 操作人公司的id
      */
-    private long companyId;
+    private Long companyId;
     /**
      * 附件list
      */
@@ -67,5 +67,9 @@ public class HandleSupplierDto implements Serializable {
      * 来源
      */
     private String source;
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
 
 }

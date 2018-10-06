@@ -15,6 +15,7 @@
         <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR"/>
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
         <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="company_address" property="companyAddress" jdbcType="CHAR"/>
         <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -176,6 +177,9 @@
         </selectKey>
         insert into t_supplier_detail_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyAddress != null">
+                company_address,
+            </if>
             <if test="supplierId != null">
                 supplier_id,
             </if>
@@ -202,6 +206,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyAddress != null">
+                #{companyAddress,jdbcType=BIGINT},
+            </if>
             <if test="supplierId != null">
                 #{supplierId,jdbcType=BIGINT},
             </if>

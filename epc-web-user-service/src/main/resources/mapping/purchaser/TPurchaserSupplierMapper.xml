@@ -124,30 +124,14 @@
     </selectKey>
     insert into t_purchaser_supplier
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cellphone != null">
-        cellphone,
-      </if>
-      <if test="password != null">
-        password,
-      </if>
+
       <if test="state != null">
         state,
       </if>
       <if test="supplierId != null">
         supplier_id,
       </if>
-      <if test="supplierName != null">
-        supplier_name,
-      </if>
-      <if test="uniformCreditCode != null">
-        uniform_credit_code,
-      </if>
-      <if test="publicBankName != null">
-        public_bank_name,
-      </if>
-      <if test="publicBanAccountNumber != null">
-        public_ban_account_number,
-      </if>
+
       <if test="purchaserId != null">
         purchaser_id,
       </if>
@@ -165,29 +149,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cellphone != null">
-        #{cellphone,jdbcType=CHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=CHAR},
-      </if>
+
       <if test="state != null">
         #{state,jdbcType=INTEGER},
       </if>
       <if test="supplierId != null">
         #{supplierId,jdbcType=BIGINT},
-      </if>
-      <if test="supplierName != null">
-        #{supplierName,jdbcType=VARCHAR},
-      </if>
-      <if test="uniformCreditCode != null">
-        #{uniformCreditCode,jdbcType=VARCHAR},
-      </if>
-      <if test="publicBankName != null">
-        #{publicBankName,jdbcType=VARCHAR},
-      </if>
-      <if test="publicBanAccountNumber != null">
-        #{publicBanAccountNumber,jdbcType=VARCHAR},
       </if>
       <if test="purchaserId != null">
         #{purchaserId,jdbcType=CHAR},

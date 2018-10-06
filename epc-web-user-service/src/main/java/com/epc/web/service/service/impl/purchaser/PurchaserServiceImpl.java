@@ -122,7 +122,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 Long supplierId = basicInfo.getSupplierId();
                 //从页面传入
                 TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
-                purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId());
+                purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId().intValue());
                 purchaserSupplier.setSource(Const.SOURCE.PUBLICS);
                 purchaserSupplier.setCreateAt(basicInfo.getCreateAt());
                 purchaserSupplier.setUpdateAt(basicInfo.getUpdateAt());
@@ -147,13 +147,15 @@ public class PurchaserServiceImpl implements PurchaserService {
             //供应商不存在的时候抽取handleSupplier的字段添加
             TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
             //采购人数据库
-            purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId());
+            purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId().intValue());
             purchaserSupplier.setSource(Const.SOURCE.PRIVATES);
             purchaserSupplier.setCreateAt(new Date());
             purchaserSupplier.setUpdateAt(new Date());
             purchaserSupplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
             purchaserSupplier.setState(Const.STATE.REGISTERED);
+            purchaserSupplier.setOperateId(handleSupplier.getOperatorId().intValue());
+            purchaserSupplier.setPurchaserId(handleSupplier.getPurcharseId());
 
 
             //供应商详情数据库
@@ -175,7 +177,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             basicInfo.setInviterId(handleSupplier.getOperatorId());
-            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId());
+            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId().intValue());
             basicInfo.setState(Const.STATE.REGISTERED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             basicInfo.setCreateAt(new Date());

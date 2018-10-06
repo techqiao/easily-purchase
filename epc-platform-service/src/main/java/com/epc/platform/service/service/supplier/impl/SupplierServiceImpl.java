@@ -130,7 +130,7 @@ public class SupplierServiceImpl  implements SupplierService {
             //完善信息完成后 更新信息状态至已提交
             TSupplierBasicInfo tSupplierBasicInfo =new TSupplierBasicInfo();
             tSupplierBasicInfo.setId(supplierHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {

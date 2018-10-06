@@ -115,24 +115,21 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
      */
     @Override
     public Result<List<listMonitorVO>> listMonitor(QueryListMonitor queryListMonitor){
-        TPurchaseProjectParticipantCriteria criteria=new TPurchaseProjectParticipantCriteria();
-        TPurchaseProjectParticipantCriteria.Criteria newCriteria=criteria.createCriteria();
+        TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
+        TPurchaseProjectParticipantPermissionCriteria.Criteria newCriteria=criteria.createCriteria();
         newCriteria.andUserIdEqualTo(queryListMonitor.getSupplier());
-        newCriteria.andUserAgencyIdEqualTo(queryListMonitor.getBossId());
+        newCriteria.andParticipantTypeEqualTo(4);
+        newCriteria.andParticipantPermissionEqualTo(ParticipantPermissionEnum.PERSON_LIABLE.getCode());
         newCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        List<TPurchaseProjectParticipant> result=tPurchaseProjectParticipantMapper.selectByExample(criteria);
+        //获取自己是负责人的项目
+        List<TPurchaseProjectParticipantPermission> result=tPurchaseProjectParticipantPermissionMapper.selectByExample(criteria);
         List<listMonitorVO> voList=new ArrayList<>();
-        for(TPurchaseProjectParticipant entity:result){
-            //获取参与的项目列表
-            TPurchaseProjectParticipantPermission permission =tPurchaseProjectParticipantPermissionMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
-            //获取自己是负责人的项目
-            if(permission.getParticipantPermission()==ParticipantPermissionEnum.PERSON_LIABLE.getCode()){
+        for(TPurchaseProjectParticipantPermission entity:result){
                 listMonitorVO vo =new listMonitorVO();
                 TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
                 BeanUtils.copyProperties(tPurchaseProjectBasicInfo,vo);
                 vo.setPurchaseProjectId(entity.getPurchaseProjectId());
                 voList.add(vo);
-            }
         }
         return Result.success(voList);
     }

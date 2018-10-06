@@ -225,6 +225,316 @@ public class TPurchaseProjectParticipantPermissionCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdEqualTo(Long value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualTo(Long value) {
+            addCriterion("user_id <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThan(Long value) {
+            addCriterion("user_id >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("user_id >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThan(Long value) {
+            addCriterion("user_id <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualTo(Long value) {
+            addCriterion("user_id <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIn(List<Long> values) {
+            addCriterion("user_id in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotIn(List<Long> values) {
+            addCriterion("user_id not in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdBetween(Long value1, Long value2) {
+            addCriterion("user_id between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotBetween(Long value1, Long value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeIsNull() {
+            addCriterion("participant_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeIsNotNull() {
+            addCriterion("participant_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeEqualTo(Integer value) {
+            addCriterion("participant_type =", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeNotEqualTo(Integer value) {
+            addCriterion("participant_type <>", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeGreaterThan(Integer value) {
+            addCriterion("participant_type >", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("participant_type >=", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeLessThan(Integer value) {
+            addCriterion("participant_type <", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("participant_type <=", value, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeIn(List<Integer> values) {
+            addCriterion("participant_type in", values, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeNotIn(List<Integer> values) {
+            addCriterion("participant_type not in", values, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeBetween(Integer value1, Integer value2) {
+            addCriterion("participant_type between", value1, value2, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andParticipantTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("participant_type not between", value1, value2, "participantType");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateIsNull() {
+            addCriterion("action_state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateIsNotNull() {
+            addCriterion("action_state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateEqualTo(Integer value) {
+            addCriterion("action_state =", value, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateNotEqualTo(Integer value) {
+            addCriterion("action_state <>", value, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateGreaterThan(Integer value) {
+            addCriterion("action_state >", value, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("action_state >=", value, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateLessThan(Integer value) {
+            addCriterion("action_state <", value, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateLessThanOrEqualTo(Integer value) {
+            addCriterion("action_state <=", value, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateIn(List<Integer> values) {
+            addCriterion("action_state in", values, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateNotIn(List<Integer> values) {
+            addCriterion("action_state not in", values, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateBetween(Integer value1, Integer value2) {
+            addCriterion("action_state between", value1, value2, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andActionStateNotBetween(Integer value1, Integer value2) {
+            addCriterion("action_state not between", value1, value2, "actionState");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeIsNull() {
+            addCriterion("step_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeIsNotNull() {
+            addCriterion("step_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeEqualTo(String value) {
+            addCriterion("step_type =", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeNotEqualTo(String value) {
+            addCriterion("step_type <>", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeGreaterThan(String value) {
+            addCriterion("step_type >", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("step_type >=", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeLessThan(String value) {
+            addCriterion("step_type <", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeLessThanOrEqualTo(String value) {
+            addCriterion("step_type <=", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeLike(String value) {
+            addCriterion("step_type like", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeNotLike(String value) {
+            addCriterion("step_type not like", value, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeIn(List<String> values) {
+            addCriterion("step_type in", values, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeNotIn(List<String> values) {
+            addCriterion("step_type not in", values, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeBetween(String value1, String value2) {
+            addCriterion("step_type between", value1, value2, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepTypeNotBetween(String value1, String value2) {
+            addCriterion("step_type not between", value1, value2, "stepType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdIsNull() {
+            addCriterion("purchase_project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdIsNotNull() {
+            addCriterion("purchase_project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdEqualTo(Long value) {
+            addCriterion("purchase_project_id =", value, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdNotEqualTo(Long value) {
+            addCriterion("purchase_project_id <>", value, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdGreaterThan(Long value) {
+            addCriterion("purchase_project_id >", value, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_id >=", value, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdLessThan(Long value) {
+            addCriterion("purchase_project_id <", value, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdLessThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_id <=", value, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdIn(List<Long> values) {
+            addCriterion("purchase_project_id in", values, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdNotIn(List<Long> values) {
+            addCriterion("purchase_project_id not in", values, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_id between", value1, value2, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseProjectIdNotBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_id not between", value1, value2, "purchaseProjectId");
+            return (Criteria) this;
+        }
+
         public Criteria andParticipantPermissionIsNull() {
             addCriterion("participant_permission is null");
             return (Criteria) this;

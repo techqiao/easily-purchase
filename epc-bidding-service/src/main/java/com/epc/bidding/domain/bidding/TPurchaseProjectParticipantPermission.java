@@ -8,6 +8,16 @@ public class TPurchaseProjectParticipantPermission implements Serializable {
 
     private Long participantId;
 
+    private Long userId;
+
+    private Integer participantType;
+
+    private Integer actionState;
+
+    private String stepType;
+
+    private Long purchaseProjectId;
+
     private String participantPermission;
 
     private Long operateId;
@@ -36,6 +46,46 @@ public class TPurchaseProjectParticipantPermission implements Serializable {
 
     public void setParticipantId(Long participantId) {
         this.participantId = participantId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Integer getParticipantType() {
+        return participantType;
+    }
+
+    public void setParticipantType(Integer participantType) {
+        this.participantType = participantType;
+    }
+
+    public Integer getActionState() {
+        return actionState;
+    }
+
+    public void setActionState(Integer actionState) {
+        this.actionState = actionState;
+    }
+
+    public String getStepType() {
+        return stepType;
+    }
+
+    public void setStepType(String stepType) {
+        this.stepType = stepType == null ? null : stepType.trim();
+    }
+
+    public Long getPurchaseProjectId() {
+        return purchaseProjectId;
+    }
+
+    public void setPurchaseProjectId(Long purchaseProjectId) {
+        this.purchaseProjectId = purchaseProjectId;
     }
 
     public String getParticipantPermission() {
@@ -94,6 +144,11 @@ public class TPurchaseProjectParticipantPermission implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", participantId=").append(participantId);
+        sb.append(", userId=").append(userId);
+        sb.append(", participantType=").append(participantType);
+        sb.append(", actionState=").append(actionState);
+        sb.append(", stepType=").append(stepType);
+        sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", participantPermission=").append(participantPermission);
         sb.append(", operateId=").append(operateId);
         sb.append(", creator=").append(creator);

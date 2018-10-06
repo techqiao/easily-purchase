@@ -4,6 +4,11 @@
   <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="participant_id" property="participantId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="participant_type" property="participantType" jdbcType="INTEGER" />
+    <result column="action_state" property="actionState" jdbcType="INTEGER" />
+    <result column="step_type" property="stepType" jdbcType="VARCHAR" />
+    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
     <result column="participant_permission" property="participantPermission" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -70,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, participant_id, participant_permission, operate_id, creator, create_at, update_at, 
-    is_deleted
+    id, participant_id, user_id, participant_type, action_state, step_type, purchase_project_id, 
+    participant_permission, operate_id, creator, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermissionCriteria" >
     select
@@ -107,12 +112,16 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_purchase_project_participant_permission (participant_id, participant_permission, 
-      operate_id, creator, create_at, 
-      update_at, is_deleted)
-    values (#{participantId,jdbcType=BIGINT}, #{participantPermission,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+    insert into t_purchase_project_participant_permission (participant_id, user_id, participant_type, 
+      action_state, step_type, purchase_project_id, 
+      participant_permission, operate_id, creator, 
+      create_at, update_at, is_deleted
+      )
+    values (#{participantId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{participantType,jdbcType=INTEGER}, 
+      #{actionState,jdbcType=INTEGER}, #{stepType,jdbcType=VARCHAR}, #{purchaseProjectId,jdbcType=BIGINT}, 
+      #{participantPermission,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -122,6 +131,21 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="participantId != null" >
         participant_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="participantType != null" >
+        participant_type,
+      </if>
+      <if test="actionState != null" >
+        action_state,
+      </if>
+      <if test="stepType != null" >
+        step_type,
+      </if>
+      <if test="purchaseProjectId != null" >
+        purchase_project_id,
       </if>
       <if test="participantPermission != null" >
         participant_permission,
@@ -145,6 +169,21 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="participantId != null" >
         #{participantId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="participantType != null" >
+        #{participantType,jdbcType=INTEGER},
+      </if>
+      <if test="actionState != null" >
+        #{actionState,jdbcType=INTEGER},
+      </if>
+      <if test="stepType != null" >
+        #{stepType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseProjectId != null" >
+        #{purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="participantPermission != null" >
         #{participantPermission,jdbcType=VARCHAR},
@@ -181,6 +220,21 @@
       <if test="record.participantId != null" >
         participant_id = #{record.participantId,jdbcType=BIGINT},
       </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.participantType != null" >
+        participant_type = #{record.participantType,jdbcType=INTEGER},
+      </if>
+      <if test="record.actionState != null" >
+        action_state = #{record.actionState,jdbcType=INTEGER},
+      </if>
+      <if test="record.stepType != null" >
+        step_type = #{record.stepType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaseProjectId != null" >
+        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+      </if>
       <if test="record.participantPermission != null" >
         participant_permission = #{record.participantPermission,jdbcType=VARCHAR},
       </if>
@@ -208,6 +262,11 @@
     update t_purchase_project_participant_permission
     set id = #{record.id,jdbcType=BIGINT},
       participant_id = #{record.participantId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      participant_type = #{record.participantType,jdbcType=INTEGER},
+      action_state = #{record.actionState,jdbcType=INTEGER},
+      step_type = #{record.stepType,jdbcType=VARCHAR},
+      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       participant_permission = #{record.participantPermission,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -223,6 +282,21 @@
     <set >
       <if test="participantId != null" >
         participant_id = #{participantId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="participantType != null" >
+        participant_type = #{participantType,jdbcType=INTEGER},
+      </if>
+      <if test="actionState != null" >
+        action_state = #{actionState,jdbcType=INTEGER},
+      </if>
+      <if test="stepType != null" >
+        step_type = #{stepType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseProjectId != null" >
+        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="participantPermission != null" >
         participant_permission = #{participantPermission,jdbcType=VARCHAR},
@@ -248,6 +322,11 @@
   <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
     update t_purchase_project_participant_permission
     set participant_id = #{participantId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      participant_type = #{participantType,jdbcType=INTEGER},
+      action_state = #{actionState,jdbcType=INTEGER},
+      step_type = #{stepType,jdbcType=VARCHAR},
+      purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       participant_permission = #{participantPermission,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},

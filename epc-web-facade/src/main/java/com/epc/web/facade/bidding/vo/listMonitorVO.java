@@ -10,7 +10,6 @@ import java.util.Date;
 @Data
 @ApiModel("监管项目列表")
 public class listMonitorVO implements Serializable {
-
     private static final long serialVersionUID = -7424820334281892255L;
     @ApiModelProperty("项目名称")
     private String projectName;
@@ -24,7 +23,7 @@ public class listMonitorVO implements Serializable {
     private Date purchaseEndTime;
     @ApiModelProperty("采购方式")
     private String purchaseMode;
-    @ApiModelProperty("采购状态")
+    @ApiModelProperty("采购状态(0:进行中，1：结束)")
     private Integer isEnd;
 
 }

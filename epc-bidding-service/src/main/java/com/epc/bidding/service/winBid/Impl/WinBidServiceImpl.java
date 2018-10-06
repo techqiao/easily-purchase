@@ -6,6 +6,7 @@ import com.epc.bidding.service.winBid.WinBidService;
 import com.epc.common.Result;
 import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.ParticipantPermissionEnum;
 import com.epc.web.facade.bidding.handle.HandleWinBid;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -137,8 +139,12 @@ public class WinBidServiceImpl implements WinBidService {
             if (!CollectionUtils.isEmpty(participantList)) {
                 //获取采购项目经办人
                 for (TPurchaseProjectParticipant pantEntity : participantList) {
-                    List<TPurchaseProjectParticipantPermission> permissions = tPurchaseProjectParticipantPermissionMapper.getAgencyInfo(pantEntity.getId());
-                    if (!CollectionUtils.isEmpty(permissions)) {
+                    TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
+                    TPurchaseProjectParticipantPermissionCriteria.Criteria cubCriteria=criteria.createCriteria();
+                    cubCriteria.andParticipantIdEqualTo(pantEntity.getId());
+                    cubCriteria.andParticipantPermissionEqualTo(ParticipantPermissionEnum.AGENT.getCode());
+                    List<TPurchaseProjectParticipantPermission> permissions = tPurchaseProjectParticipantPermissionMapper.selectByExample(criteria);
+                    if (permissions.size()>0) {
                         entity.setAgencyName(pantEntity.getUserName());
                         entity.setAgencyPhone(pantEntity.getUserPhone());
                         break;

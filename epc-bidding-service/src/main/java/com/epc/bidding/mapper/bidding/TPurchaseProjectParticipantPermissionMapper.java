@@ -4,7 +4,6 @@ import com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission;
 import com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermissionCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TPurchaseProjectParticipantPermissionMapper {
@@ -31,7 +30,4 @@ public interface TPurchaseProjectParticipantPermissionMapper {
     int updateByPrimaryKeySelective(TPurchaseProjectParticipantPermission record);
 
     int updateByPrimaryKey(TPurchaseProjectParticipantPermission record);
-
-    @Select(value = "SELECT * from t_purchase_project_participant_permission where 1=1 and participant_id='' and is_deleted=0")
-    List<TPurchaseProjectParticipantPermission> getAgencyInfo(Long id);
 }

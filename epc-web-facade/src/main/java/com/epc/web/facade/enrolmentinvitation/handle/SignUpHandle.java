@@ -1,5 +1,6 @@
 package com.epc.web.facade.enrolmentinvitation.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -33,4 +34,13 @@ public class SignUpHandle implements Serializable {
      * 供应商ID
      */
     private Long supplierId;
+    /**
+     * 标段id列表拼接
+     */
+    private String  bidsId;
+    /**
+     * 标段名称列表拼接
+     */
+    private String  bidsName;
+
 }

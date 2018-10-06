@@ -5,6 +5,8 @@ import com.epc.tendering.service.service.enrolmentinvitation.EnrolmentInvitation
 import com.epc.web.facade.enrolmentinvitation.FacadeEnrolmentInvitation;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
+import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
+import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,4 +43,24 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
     public Result invitation(@RequestBody InvitationHandle invitationHandle) {
         return enrolmentInvitationService.invitation(invitationHandle);
     }
+
+    /**
+     * 供应商查询邀请列表
+     * @param invitationForSupplierDTO
+     * @return
+     */
+    @Override
+    public Result invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO){
+        return enrolmentInvitationService.invitationListForSupplier(invitationForSupplierDTO);
+
+    }
+
+
+    @Override
+    public Result updateInvitation(@RequestBody UpdateInvitation updateInvitation){
+        return enrolmentInvitationService.updateInvitation(updateInvitation);
+
+    }
+
+
 }

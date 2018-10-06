@@ -10,6 +10,12 @@ public class BInvitation implements Serializable {
 
     private Long procurementProjectId;
 
+    private String bidsId;
+
+    private String bidsName;
+
+    private String content;
+
     private Long purchaserId;
 
     private Long supplierId;
@@ -44,6 +50,30 @@ public class BInvitation implements Serializable {
 
     public void setProcurementProjectId(Long procurementProjectId) {
         this.procurementProjectId = procurementProjectId;
+    }
+
+    public String getBidsId() {
+        return bidsId;
+    }
+
+    public void setBidsId(String bidsId) {
+        this.bidsId = bidsId == null ? null : bidsId.trim();
+    }
+
+    public String getBidsName() {
+        return bidsName;
+    }
+
+    public void setBidsName(String bidsName) {
+        this.bidsName = bidsName == null ? null : bidsName.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public Long getPurchaserId() {
@@ -95,6 +125,9 @@ public class BInvitation implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", projectId=").append(projectId);
         sb.append(", procurementProjectId=").append(procurementProjectId);
+        sb.append(", bidsId=").append(bidsId);
+        sb.append(", bidsName=").append(bidsName);
+        sb.append(", content=").append(content);
         sb.append(", purchaserId=").append(purchaserId);
         sb.append(", supplierId=").append(supplierId);
         sb.append(", createAt=").append(createAt);

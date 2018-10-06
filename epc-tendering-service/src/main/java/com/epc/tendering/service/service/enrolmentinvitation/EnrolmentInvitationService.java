@@ -3,6 +3,8 @@ package com.epc.tendering.service.service.enrolmentinvitation;
 import com.epc.common.Result;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
+import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
+import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 
 /**
  * <p>Description : easilys
@@ -25,4 +27,23 @@ public interface EnrolmentInvitationService {
      * @return
      */
     Result invitation(InvitationHandle invitationHandle);
+
+
+
+    /**
+     * 供应商查询邀请列表
+     * @param invitationForSupplierDTO
+     * @return
+     */
+
+    Result invitationListForSupplier(InvitationForSupplierDTO invitationForSupplierDTO);
+
+
+    /**
+     * 确认/拒绝
+     * @param updateInvitation
+     * @return
+     */
+    Result updateInvitation(UpdateInvitation updateInvitation);
+
 }

@@ -3,6 +3,8 @@ package com.epc.web.facade.enrolmentinvitation;
 import com.epc.common.Result;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
+import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
+import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,7 +21,7 @@ public interface FacadeEnrolmentInvitation {
      * @param signUpHandle
      * @return
      */
-    @PostMapping(value = "signUp",consumes = "application/json,charset=UTF-8")
+    @PostMapping(value = "signUp",consumes = "application/json;charset=UTF-8")
     Result signUp(@RequestBody SignUpHandle signUpHandle);
 
     /**
@@ -27,6 +29,23 @@ public interface FacadeEnrolmentInvitation {
      * @param invitationHandle
      * @return
      */
-    @PostMapping(value ="invitation",consumes = "application/json,charset=UTF-8")
+    @PostMapping(value ="invitation",consumes = "application/json;charset=UTF-8")
     Result invitation(@RequestBody InvitationHandle invitationHandle);
+
+    /**
+     * 供应商查询邀请列表
+     * @param invitationForSupplierDTO
+     * @return
+     */
+    @PostMapping(value ="invitationListForSupplier",consumes = "application/json;charset=UTF-8")
+    Result invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO);
+
+
+    /**
+     * 同意/拒绝 邀请
+     * @param updateInvitation
+     * @return
+     */
+    @PostMapping(value ="updateInvitation",consumes = "application/json;charset=UTF-8")
+    Result updateInvitation(@RequestBody UpdateInvitation updateInvitation);
 }

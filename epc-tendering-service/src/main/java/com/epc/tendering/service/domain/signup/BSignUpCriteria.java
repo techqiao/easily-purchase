@@ -285,63 +285,143 @@ public class BSignUpCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeIsNull() {
-            addCriterion("sign_up_type is null");
+        public Criteria andBidsIdIsNull() {
+            addCriterion("bids_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeIsNotNull() {
-            addCriterion("sign_up_type is not null");
+        public Criteria andBidsIdIsNotNull() {
+            addCriterion("bids_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeEqualTo(Integer value) {
-            addCriterion("sign_up_type =", value, "signUpType");
+        public Criteria andBidsIdEqualTo(String value) {
+            addCriterion("bids_id =", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeNotEqualTo(Integer value) {
-            addCriterion("sign_up_type <>", value, "signUpType");
+        public Criteria andBidsIdNotEqualTo(String value) {
+            addCriterion("bids_id <>", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeGreaterThan(Integer value) {
-            addCriterion("sign_up_type >", value, "signUpType");
+        public Criteria andBidsIdGreaterThan(String value) {
+            addCriterion("bids_id >", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sign_up_type >=", value, "signUpType");
+        public Criteria andBidsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("bids_id >=", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeLessThan(Integer value) {
-            addCriterion("sign_up_type <", value, "signUpType");
+        public Criteria andBidsIdLessThan(String value) {
+            addCriterion("bids_id <", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("sign_up_type <=", value, "signUpType");
+        public Criteria andBidsIdLessThanOrEqualTo(String value) {
+            addCriterion("bids_id <=", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeIn(List<Integer> values) {
-            addCriterion("sign_up_type in", values, "signUpType");
+        public Criteria andBidsIdLike(String value) {
+            addCriterion("bids_id like", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeNotIn(List<Integer> values) {
-            addCriterion("sign_up_type not in", values, "signUpType");
+        public Criteria andBidsIdNotLike(String value) {
+            addCriterion("bids_id not like", value, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeBetween(Integer value1, Integer value2) {
-            addCriterion("sign_up_type between", value1, value2, "signUpType");
+        public Criteria andBidsIdIn(List<String> values) {
+            addCriterion("bids_id in", values, "bidsId");
             return (Criteria) this;
         }
 
-        public Criteria andSignUpTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("sign_up_type not between", value1, value2, "signUpType");
+        public Criteria andBidsIdNotIn(List<String> values) {
+            addCriterion("bids_id not in", values, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdBetween(String value1, String value2) {
+            addCriterion("bids_id between", value1, value2, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdNotBetween(String value1, String value2) {
+            addCriterion("bids_id not between", value1, value2, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameIsNull() {
+            addCriterion("bids_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameIsNotNull() {
+            addCriterion("bids_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameEqualTo(String value) {
+            addCriterion("bids_name =", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameNotEqualTo(String value) {
+            addCriterion("bids_name <>", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameGreaterThan(String value) {
+            addCriterion("bids_name >", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameGreaterThanOrEqualTo(String value) {
+            addCriterion("bids_name >=", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameLessThan(String value) {
+            addCriterion("bids_name <", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameLessThanOrEqualTo(String value) {
+            addCriterion("bids_name <=", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameLike(String value) {
+            addCriterion("bids_name like", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameNotLike(String value) {
+            addCriterion("bids_name not like", value, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameIn(List<String> values) {
+            addCriterion("bids_name in", values, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameNotIn(List<String> values) {
+            addCriterion("bids_name not in", values, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameBetween(String value1, String value2) {
+            addCriterion("bids_name between", value1, value2, "bidsName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsNameNotBetween(String value1, String value2) {
+            addCriterion("bids_name not between", value1, value2, "bidsName");
             return (Criteria) this;
         }
 

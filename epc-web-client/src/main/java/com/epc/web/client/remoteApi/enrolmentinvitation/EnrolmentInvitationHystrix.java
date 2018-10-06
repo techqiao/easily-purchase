@@ -4,6 +4,8 @@ import com.epc.common.Result;
 import com.epc.web.facade.enrolmentinvitation.FacadeEnrolmentInvitation;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
+import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
+import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 
 /**
  * <p>Description : easilys
@@ -21,4 +23,15 @@ public class EnrolmentInvitationHystrix implements FacadeEnrolmentInvitation {
     public Result invitation(InvitationHandle invitationHandle) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result invitationListForSupplier(InvitationForSupplierDTO invitationForSupplierDTO) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result updateInvitation(UpdateInvitation updateInvitation) {
+        return Result.hystrixError();
+    }
+
 }

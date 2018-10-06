@@ -1,13 +1,19 @@
 package com.epc.bidding.service.monitoring.FileMonitoring.impl;
 
-import com.epc.bidding.domain.bidding.BMonitoringFile;
-import com.epc.bidding.domain.bidding.BMonitoringFileCriteria;
+import com.epc.bidding.domain.bidding.*;
 import com.epc.bidding.mapper.bidding.BMonitoringFileMapper;
+import com.epc.bidding.mapper.bidding.TPurchaseProjectBasicInfoMapper;
+import com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantMapper;
+import com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.bidding.service.monitoring.FileMonitoring.FileMonitoringService;
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
+import com.epc.common.constants.ParticipantPermissionEnum;
 import com.epc.web.facade.bidding.handle.HandleMonitoringFile;
 import com.epc.web.facade.bidding.query.monitor.file.QueryMonitoringFileDTO;
+import com.epc.web.facade.bidding.query.monitor.list.QueryListMonitor;
 import com.epc.web.facade.bidding.vo.MonitorFileVO;
+import com.epc.web.facade.bidding.vo.listMonitorVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +34,12 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
     final private Logger LOGGER=LoggerFactory.getLogger(FileMonitoringServiceImpl.class);
     @Autowired
     BMonitoringFileMapper bMonitoringFileMapper;
+    @Autowired
+    TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+    @Autowired
+    TPurchaseProjectParticipantMapper tPurchaseProjectParticipantMapper;
+    @Autowired
+    TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
 
     /**
      * 监控文件列表
@@ -69,6 +81,7 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
                     vo.setFileType("合同");
                     break;
                 default:vo.setFileType("");
+                    break;
             }
             voList.add(vo);
         }
@@ -94,4 +107,34 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
         }
         return  Result.success(true);
     }
+
+    /**
+     * 查询监控项目列表
+     * @param queryListMonitor
+     * @return
+     */
+    @Override
+    public Result<List<listMonitorVO>> listMonitor(QueryListMonitor queryListMonitor){
+        TPurchaseProjectParticipantCriteria criteria=new TPurchaseProjectParticipantCriteria();
+        TPurchaseProjectParticipantCriteria.Criteria newCriteria=criteria.createCriteria();
+        newCriteria.andUserIdEqualTo(queryListMonitor.getSupplier());
+        newCriteria.andUserAgencyIdEqualTo(queryListMonitor.getBossId());
+        newCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        List<TPurchaseProjectParticipant> result=tPurchaseProjectParticipantMapper.selectByExample(criteria);
+        List<listMonitorVO> voList=new ArrayList<>();
+        for(TPurchaseProjectParticipant entity:result){
+            //获取参与的项目列表
+            TPurchaseProjectParticipantPermission permission =tPurchaseProjectParticipantPermissionMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
+            //获取自己是负责人的项目
+            if(permission.getParticipantPermission()==ParticipantPermissionEnum.PERSON_LIABLE.getCode()){
+                listMonitorVO vo =new listMonitorVO();
+                TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
+                BeanUtils.copyProperties(tPurchaseProjectBasicInfo,vo);
+                vo.setPurchaseProjectId(entity.getPurchaseProjectId());
+                voList.add(vo);
+            }
+        }
+        return Result.success(voList);
+    }
+
 }

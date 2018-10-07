@@ -174,20 +174,14 @@
     </selectKey>
     insert into t_purchaser_expert
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cellphone != null">
-        cellphone,
-      </if>
-      <if test="password != null">
-        password,
+      <if test="createrId != null">
+        creater_id,
       </if>
       <if test="state != null">
         state,
       </if>
       <if test="expertId != null">
         expert_id,
-      </if>
-      <if test="expertName != null">
-        expert_name,
       </if>
       <if test="purchaserId != null">
         purchaser_id,
@@ -206,11 +200,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cellphone != null">
-        #{cellphone,jdbcType=CHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=CHAR},
+      <if test="createrId != null">
+        #{createrId,jdbcType=INTEGER},
       </if>
       <if test="state != null">
         #{state,jdbcType=INTEGER},
@@ -218,9 +209,7 @@
       <if test="expertId != null">
         #{expertId,jdbcType=BIGINT},
       </if>
-      <if test="expertName != null">
-        #{expertName,jdbcType=VARCHAR},
-      </if>
+
       <if test="purchaserId != null">
         #{purchaserId,jdbcType=CHAR},
       </if>

@@ -38,10 +38,10 @@ public class BiddingMoneyPayController extends BaseController {
 
     @ApiOperation(value = "获取保证金支付列表",tags = "获取保证金支付列表")
     @PostMapping(value = "getMoneyPayList", consumes = "application/json; charset=UTF-8")
-    public Result<List<GuarantyListVo>> getMoneyPayList(@RequestBody ClientMoneyPayDTO dto){
+    public Result<List<MoneyPayVO>> getMoneyPayList(@RequestBody ClientMoneyPayDTO dto){
         QueryMoneyPayDTO queryMoneyPayDTO=new QueryMoneyPayDTO();
         BeanUtils.copyProperties(dto,queryMoneyPayDTO);
-      //  queryMoneyPayDTO.setOperateId(getLoginUser().getUserId());
+        queryMoneyPayDTO.setOperateId(getLoginUser().getUserId());
         queryMoneyPayDTO.setOperateId(1L);
         return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
@@ -62,7 +62,8 @@ public class BiddingMoneyPayController extends BaseController {
         HandleFilePay handleFilePay=new HandleFilePay();
         BeanUtils.copyProperties(handle,handleFilePay);
         handleFilePay.setCreator(getLoginUser().getName());
-//        handle.setOperateId(getLoginUser().getUserId());
+        handle.setOperateId(getLoginUser().getUserId());
+        handle.setOperateId(1L);
         return moneyPayClient.insertPurchaseProjectFilePay(handleFilePay);
     }
 

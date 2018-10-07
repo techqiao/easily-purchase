@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TServiceMoneyPayRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TServiceMoneyPayRecord" >
+<mapper namespace="com.epc.bidding.mapper.TServiceMoneyPayRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TServiceMoneyPayRecord" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="money_pay_id" property="moneyPayId" jdbcType="BIGINT" />
     <result column="operater_id" property="operaterId" jdbcType="BIGINT" />
@@ -74,7 +74,7 @@
     id, money_pay_id, operater_id, operater_name, guarantee_payment_real, creator, create_at, 
     update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecordCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecordCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -98,13 +98,13 @@
     delete from t_service_money_pay_record
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecordCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecordCriteria" >
     delete from t_service_money_pay_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecord" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecord" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -115,7 +115,7 @@
       #{guaranteePaymentReal,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecord" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecord" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -173,7 +173,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecordCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecordCriteria" resultType="java.lang.Integer" >
     select count(*) from t_service_money_pay_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -229,7 +229,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecord" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecord" >
     update t_service_money_pay_record
     <set >
       <if test="moneyPayId != null" >
@@ -259,7 +259,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecord" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecord" >
     update t_service_money_pay_record
     set money_pay_id = #{moneyPayId,jdbcType=BIGINT},
       operater_id = #{operaterId,jdbcType=BIGINT},
@@ -271,7 +271,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TServiceMoneyPayRecordCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TServiceMoneyPayRecordCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

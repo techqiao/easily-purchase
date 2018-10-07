@@ -11,6 +11,7 @@
         <result column="agency_id" property="agencyId" jdbcType="BIGINT"/>
         <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
         <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR"/>
+        <result column="company_address" property="companyAddress" jdbcType="CHAR"/>
         <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR"/>
         <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR"/>
         <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
@@ -179,6 +180,9 @@
             <if test="agencyId != null">
                 agency_id,
             </if>
+            <if test="companyAddress != null">
+                company_address,
+            </if>
             <if test="companyName != null">
                 company_name,
             </if>
@@ -204,6 +208,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="agencyId != null">
                 #{agencyId,jdbcType=BIGINT},
+            </if>
+            <if test="companyAddress != null">
+                #{companyAddress,jdbcType=BIGINT},
             </if>
             <if test="companyName != null">
                 #{companyName,jdbcType=VARCHAR},

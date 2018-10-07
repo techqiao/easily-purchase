@@ -10,6 +10,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.controller.BaseController;
 import com.epc.web.service.domain.supplier.TTenderMessage;
 import com.epc.web.service.service.supplier.SupplierService;
@@ -192,8 +193,8 @@ public class SupplierController extends BaseController implements FacadeTSupplie
     @Override
     public Result<Map<String, Object>> querySupplierProject(@RequestBody QuerywithPageHandle querywithPageHandle) {
         PageHelper.startPage(querywithPageHandle.getPageNum(),querywithPageHandle.getPageSize());
-            Result<List<TTenderMessage>> listResult = supplierService.querySupplierProject(querywithPageHandle);
-        PageInfo<TTenderMessage> pageInfo = new PageInfo<>(listResult.getData());
+        Result<List<TenderMessageVO>> listResult= supplierService.querySupplierProject(querywithPageHandle);
+        PageInfo<TenderMessageVO> pageInfo = new PageInfo<>(listResult.getData());
         return Result.success(getDataTable(pageInfo));
     }
 }

@@ -1,12 +1,15 @@
 package com.epc.bidding.service.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
 import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
+import com.epc.web.facade.bidding.query.schedule.HandleProjectSchedule;
+import com.epc.web.facade.bidding.query.schedule.QueryProjectSchedule;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
@@ -31,19 +34,12 @@ public interface BiddingService {
      */
     Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail,Boolean isPay);
 
-
-
-
-
-
-
     /**
      * 查看 答疑列表
      * @param queryAnswerQuestionDTO
      * @return
      */
     Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
-
 
     /**
      * 新增一条问题
@@ -52,10 +48,6 @@ public interface BiddingService {
      */
     Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion);
 
-
-
-
-
     /**
      * 查询供应商是否支付下载招标文件金额
      * @return
@@ -63,15 +55,11 @@ public interface BiddingService {
     Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto);
 
     /**
-     * 文件上传
-     * @param handlePretriaFile
+     * 投标上传
+     * @param handleNotice
      * @return
      */
-    Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile) ;
-
-
-
-
+     Result<Boolean> insertNotice(HandleNotice handleNotice);
 
     /**
      * 预审信息 修改/删除
@@ -86,4 +74,5 @@ public interface BiddingService {
      * @return
      */
     Result<PretrialMessageVO> getTPretrialMessage(HandlePretriaFile handlePretriaFile);
-}
+
+    }

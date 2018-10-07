@@ -59,9 +59,9 @@ public class HandleAgnecy implements Serializable{
      */
     private List<Attachement> atts;
     /**
-     * 来源
+     * 公司地址
      */
-    private String source;
+    private String companyAddress;
 
 
 

@@ -10,6 +10,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.domain.supplier.TTenderMessage;
 
 import java.util.List;
@@ -128,7 +129,7 @@ public interface SupplierService {
      * @param querywithPageHandle
      * @return
      */
-    Result<List<TTenderMessage>>  querySupplierProject(QuerywithPageHandle querywithPageHandle);
+    Result<List<TenderMessageVO>>  querySupplierProject(QuerywithPageHandle querywithPageHandle);
 
 
 }

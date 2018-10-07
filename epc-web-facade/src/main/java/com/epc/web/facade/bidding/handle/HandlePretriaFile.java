@@ -26,6 +26,8 @@ public class HandlePretriaFile implements Serializable {
 
     private String content;
 
+    private Long  isDelete;
+
     private List<BasePretriaFile> filePathList;
 
 }

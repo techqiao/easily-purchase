@@ -5,6 +5,7 @@ import com.epc.administration.facade.supplier.handle.*;
 import com.epc.administration.facade.supplier.vo.AttachmentVO;
 import com.epc.administration.facade.supplier.vo.SupplierAttachmentVO;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
+import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
@@ -14,6 +15,7 @@ import com.epc.platform.service.domain.supplier.*;
 import com.epc.platform.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.platform.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.platform.service.mapper.supplier.TSupplierDetailInfoMapper;
+import com.epc.platform.service.mapper.supplier.TWinBidMapper;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.supplier.SupplierService;
 import org.slf4j.Logger;
@@ -43,6 +45,8 @@ public class SupplierServiceImpl  implements SupplierService {
     private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired
     private TSupplierAttachmentMapper tSupplierAttachmentMapper;
+    @Autowired
+    private TWinBidMapper tWinBidMapper;
 
     /**
      * 新增供应商基本信息
@@ -126,7 +130,7 @@ public class SupplierServiceImpl  implements SupplierService {
             //完善信息完成后 更新信息状态至已提交
             TSupplierBasicInfo tSupplierBasicInfo =new TSupplierBasicInfo();
             tSupplierBasicInfo.setId(supplierHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
@@ -284,8 +288,23 @@ public class SupplierServiceImpl  implements SupplierService {
      * @return
      */
     @Override
-    public Result supplierReviewWinningBid(QueryDetailIfo queryDetailIfo) {
-        return Result.success();
+    public Result<List<TWinBidVO>> supplierReviewWinningBid(QueryDetailIfo queryDetailIfo) {
+        List<TWinBidVO> tWinBidVOList = new ArrayList<>();
+        TWinBidVO tWinBidVO = new TWinBidVO();
+        TWinBidCriteria tWinBidCriteria= new TWinBidCriteria();
+        tWinBidCriteria.setOrderByClause("id desc");
+        List<TWinBid> tWinBids = tWinBidMapper.selectByExample(tWinBidCriteria);
+        List<Long> supplierIds = new ArrayList<>();
+        for (TWinBid tWinBid : tWinBids) {
+            tWinBidVO.setCreateAt(tWinBid.getCreateAt());
+            tWinBidVO.setProcurementProjectName(tWinBid.getProcurementProjectName());
+            TSupplierDetailInfoCriteria tSupplierDetailInfoCriteria = new TSupplierDetailInfoCriteria();
+            tSupplierDetailInfoCriteria.createCriteria().andSupplierIdEqualTo(tWinBid.getSupplierId());
+            List<TSupplierDetailInfo> tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(tSupplierDetailInfoCriteria);
+            tWinBidVO.setSupplierName(tSupplierDetailInfos.get(0).getCompanyName());
+            tWinBidVOList.add(tWinBidVO);
+        }
+        return Result.success(tWinBidVOList);
     }
 
     /**
@@ -295,7 +314,9 @@ public class SupplierServiceImpl  implements SupplierService {
      */
     @Override
     public Result supplierReviewRewardAndPunishment(QueryDetailIfo queryDetailIfo) {
+
         return null;
+
     }
 
     /**
@@ -306,5 +327,16 @@ public class SupplierServiceImpl  implements SupplierService {
     @Override
     public Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo) {
         return null;
+
     }
+    /**
+     * 根据ID 查供应商考评 履约记录详情
+     * @param id
+     * @return
+     */
+    @Override
+    public Result supplierReviewRecordOfPerformanceDetail(Long id) {
+        return null;
+    }
+
 }

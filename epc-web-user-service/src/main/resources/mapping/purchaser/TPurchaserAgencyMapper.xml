@@ -3,9 +3,9 @@
 <mapper namespace="com.epc.web.service.mapper.purchaser.TPurchaserAgencyMapper" >
   <resultMap id="BaseResultMap" type="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
     <id column="id" property="id" jdbcType="BIGINT" />
-
     <result column="state" property="state" jdbcType="INTEGER" />
-
+    <result column="agency_id" property="agencyId" jdbcType="BIGINT"/>
+    <result column="creater_id" property="createrId" jdbcType="BIGINT"/>
     <result column="purchaser_id" property="purchaserId" jdbcType="CHAR" />
     <result column="source" property="source" jdbcType="CHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -126,29 +126,15 @@
     </selectKey>
     insert into t_purchaser_agency
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="cellphone != null" >
-        cellphone,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
+
       <if test="state != null" >
         state,
       </if>
-      <if test="supplierId != null" >
-        supplier_id,
+      <if test="agencyId != null" >
+        agency_id,
       </if>
-      <if test="supplierName != null" >
-        supplier_name,
-      </if>
-      <if test="uniformCreditCode != null" >
-        uniform_credit_code,
-      </if>
-      <if test="publicBankName != null" >
-        public_bank_name,
-      </if>
-      <if test="publicBanAccountNumber != null" >
-        public_ban_account_number,
+      <if test="createrId != null" >
+        creater_id,
       </if>
       <if test="purchaserId != null" >
         purchaser_id,
@@ -159,6 +145,7 @@
       <if test="createAt != null" >
         create_at,
       </if>
+
       <if test="updateAt != null" >
         update_at,
       </if>
@@ -167,33 +154,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="cellphone != null" >
-        #{cellphone,jdbcType=CHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=CHAR},
-      </if>
+
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
       </if>
-      <if test="supplierId != null" >
-        #{supplierId,jdbcType=BIGINT},
+      <if test="agencyId != null" >
+        #{agencyId,jdbcType=BIGINT},
       </if>
-      <if test="supplierName != null" >
-        #{supplierName,jdbcType=VARCHAR},
-      </if>
-      <if test="uniformCreditCode != null" >
-        #{uniformCreditCode,jdbcType=VARCHAR},
-      </if>
-      <if test="publicBankName != null" >
-        #{publicBankName,jdbcType=VARCHAR},
-      </if>
-      <if test="publicBanAccountNumber != null" >
-        #{publicBanAccountNumber,jdbcType=VARCHAR},
+      <if test="createrId != null" >
+        #{createrId,jdbcType=BIGINT},
       </if>
       <if test="purchaserId != null" >
         #{purchaserId,jdbcType=CHAR},
       </if>
+
       <if test="source != null" >
         #{source,jdbcType=CHAR},
       </if>

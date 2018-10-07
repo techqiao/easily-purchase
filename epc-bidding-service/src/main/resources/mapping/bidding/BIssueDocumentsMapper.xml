@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.BIssueDocumentsMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BIssueDocuments" >
+<mapper namespace="com.epc.bidding.mapper.BIssueDocumentsMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.BIssueDocuments" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="auditor_id" property="auditorId" jdbcType="BIGINT" />
@@ -16,7 +16,7 @@
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="BIT" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.bidding.BIssueDocuments" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.BIssueDocuments" extends="BaseResultMap" >
     <result column="announcement_content" property="announcementContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -84,7 +84,7 @@
   <sql id="Blob_Column_List" >
     announcement_content
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BIssueDocumentsCriteria" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.BIssueDocumentsCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -100,7 +100,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BIssueDocumentsCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BIssueDocumentsCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -126,13 +126,13 @@
     delete from b_issue_documents
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.BIssueDocumentsCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.BIssueDocumentsCriteria" >
     delete from b_issue_documents
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BIssueDocuments" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.BIssueDocuments" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -147,7 +147,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT}, 
       #{announcementContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BIssueDocuments" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.BIssueDocuments" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -235,7 +235,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.BIssueDocumentsCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.BIssueDocumentsCriteria" resultType="java.lang.Integer" >
     select count(*) from b_issue_documents
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -330,7 +330,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BIssueDocuments" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.BIssueDocuments" >
     update b_issue_documents
     <set >
       <if test="procurementProjectId != null" >
@@ -375,7 +375,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BIssueDocuments" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.bidding.domain.BIssueDocuments" >
     update b_issue_documents
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       auditor_id = #{auditorId,jdbcType=BIGINT},
@@ -392,7 +392,7 @@
       announcement_content = #{announcementContent,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BIssueDocuments" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.BIssueDocuments" >
     update b_issue_documents
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       auditor_id = #{auditorId,jdbcType=BIGINT},
@@ -408,7 +408,7 @@
       is_deleted = #{isDeleted,jdbcType=BIT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BIssueDocumentsCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.BIssueDocumentsCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
     select
     <if test="distinct" >
       distinct
@@ -424,7 +424,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BIssueDocumentsCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BIssueDocumentsCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

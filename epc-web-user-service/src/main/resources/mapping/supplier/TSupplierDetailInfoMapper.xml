@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, supplier_id, company_name, uniform_credit_code, public_bank_name, public_ban_account_number, 
+    id, supplier_id, company_name, uniform_credit_code, public_bank_name, public_ban_account_number,
     create_at, update_at, is_deleted, company_address
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.supplier.TSupplierDetailInfoCriteria" >
@@ -90,7 +90,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_supplier_detail_info
     where id = #{id,jdbcType=BIGINT}
@@ -109,13 +109,13 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_supplier_detail_info (supplier_id, company_name, uniform_credit_code, 
-      public_bank_name, public_ban_account_number, 
-      create_at, update_at, is_deleted, 
+    insert into t_supplier_detail_info (supplier_id, company_name, uniform_credit_code,
+      public_bank_name, public_ban_account_number,
+      create_at, update_at, is_deleted,
       company_address)
-    values (#{supplierId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{uniformCreditCode,jdbcType=VARCHAR}, 
-      #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
+    values (#{supplierId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{uniformCreditCode,jdbcType=VARCHAR},
+      #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER},
       #{companyAddress,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.web.service.domain.supplier.TSupplierDetailInfo" >
@@ -305,30 +305,31 @@
 
 
   <!--wenlin-->
-  <select id="selectTSupplierDetailInfoBySupplierId"
-          resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM t_supplier_detail_info
-    WHERE supplier_id = #{supplierId}
-  </select>
+    <select id="selectTSupplierDetailInfoBySupplierId"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_supplier_detail_info
+        WHERE supplier_id = #{supplierId}
+    </select>
+    <select id="selectSupplierByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo"
+            parameterType="com.epc.web.facade.purchaser.dto.QuerySupplierDto">
+        SELECT t_supplier_detail_info.supplier_id AS supplierId,t_supplier_detail_info.company_name AS companyName
+        ,t_supplier_detail_info.create_at AS createAt
+        FROM t_supplier_detail_info LEFT JOIN t_purchaser_supplier ON t_supplier_detail_info.supplier_id
+        =t_purchaser_supplier.supplier_id
+        <where>
+            t_purchaser_supplier.purchaser_id =#{purchaserId}
+            <if test="name!=null">
+                AND `name` Like '%'#{name}'%'
+            </if>
+            <if test="supplierId!=null">
+                AND supplier_id =#{supplierId}
+            </if>
+        </where>
 
-  <select id="selectSupplierByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo"
-          parameterType="com.epc.web.facade.purchaser.dto.QuerySupplierDto">
-    SELECT t_supplier_detail_info.supplier_id AS supplierId,t_supplier_detail_info.company_name AS companyName
-    ,t_supplier_detail_info.create_at AS createAt
-    FROM t_supplier_detail_info LEFT JOIN t_purchaser_supplier ON t_supplier_detail_info.supplier_id
-    =t_purchaser_supplier.supplier_id
-    <where>
-      t_purchaser_supplier.purchaser_id =#{purchaserId}
-      <if test="name!=null">
-        AND `name` Like '%'#{name}'%'
-      </if>
-      <if test="supplierId!=null">
-        AND supplier_id =#{supplierId}
-      </if>
-    </where>
-  </select>
+    </select>
+
 
 
 </mapper>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TPurchaseProjectBasicInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+<mapper namespace="com.epc.bidding.mapper.TPurchaseProjectBasicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="purchase_project_name" property="purchaseProjectName" jdbcType="VARCHAR" />
     <result column="purchase_project_code" property="purchaseProjectCode" jdbcType="VARCHAR" />
@@ -18,6 +18,7 @@
     <result column="purchase_project_status" property="purchaseProjectStatus" jdbcType="VARCHAR" />
     <result column="is_adjust" property="isAdjust" jdbcType="INTEGER" />
     <result column="is_other_agency" property="isOtherAgency" jdbcType="INTEGER" />
+    <result column="is_end" property="isEnd" jdbcType="INTEGER" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -86,9 +87,9 @@
     id, project_id, project_name, purchase_project_name, purchase_project_code, purchase_start_time, 
     purchase_end_time, is_state_designation, purchase_project_budgetary_amount, purchase_mode, 
     purchase_category, purchase_type, purchase_range, purchase_project_status, is_adjust, 
-    is_other_agency, operate_id, creator, create_at, update_at, is_deleted
+    is_other_agency, is_end, operate_id, creator, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -112,13 +113,13 @@
     delete from t_purchase_project_basic_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" >
     delete from t_purchase_project_basic_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -128,18 +129,20 @@
       purchase_project_budgetary_amount, purchase_mode, 
       purchase_category, purchase_type, purchase_range, 
       purchase_project_status, is_adjust, is_other_agency, 
-      operate_id, creator, create_at, 
-      update_at, is_deleted)
-    values (#{projectId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{purchaseProjectName,jdbcType=VARCHAR}, 
+      is_end, operate_id, creator, 
+      create_at, update_at, is_deleted
+      )
+    values (#{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, #{purchaseProjectName,jdbcType=VARCHAR}, 
       #{purchaseProjectCode,jdbcType=VARCHAR}, #{purchaseStartTime,jdbcType=TIMESTAMP}, 
       #{purchaseEndTime,jdbcType=TIMESTAMP}, #{isStateDesignation,jdbcType=INTEGER}, 
       #{purchaseProjectBudgetaryAmount,jdbcType=DECIMAL}, #{purchaseMode,jdbcType=VARCHAR}, 
       #{purchaseCategory,jdbcType=VARCHAR}, #{purchaseType,jdbcType=VARCHAR}, #{purchaseRange,jdbcType=INTEGER}, 
       #{purchaseProjectStatus,jdbcType=VARCHAR}, #{isAdjust,jdbcType=INTEGER}, #{isOtherAgency,jdbcType=INTEGER}, 
-      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+      #{isEnd,jdbcType=INTEGER}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -190,6 +193,9 @@
       <if test="isOtherAgency != null" >
         is_other_agency,
       </if>
+      <if test="isEnd != null" >
+        is_end,
+      </if>
       <if test="operateId != null" >
         operate_id,
       </if>
@@ -208,7 +214,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="projectId != null" >
-        #{projectId,jdbcType=VARCHAR},
+        #{projectId,jdbcType=BIGINT},
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
@@ -252,6 +258,9 @@
       <if test="isOtherAgency != null" >
         #{isOtherAgency,jdbcType=INTEGER},
       </if>
+      <if test="isEnd != null" >
+        #{isEnd,jdbcType=INTEGER},
+      </if>
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
       </if>
@@ -269,7 +278,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" resultType="java.lang.Integer" >
     select count(*) from t_purchase_project_basic_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -282,7 +291,7 @@
         id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=VARCHAR},
+        project_id = #{record.projectId,jdbcType=BIGINT},
       </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
@@ -326,6 +335,9 @@
       <if test="record.isOtherAgency != null" >
         is_other_agency = #{record.isOtherAgency,jdbcType=INTEGER},
       </if>
+      <if test="record.isEnd != null" >
+        is_end = #{record.isEnd,jdbcType=INTEGER},
+      </if>
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
@@ -349,7 +361,7 @@
   <update id="updateByExample" parameterType="map" >
     update t_purchase_project_basic_info
     set id = #{record.id,jdbcType=BIGINT},
-      project_id = #{record.projectId,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=BIGINT},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
       purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
@@ -364,6 +376,7 @@
       purchase_project_status = #{record.purchaseProjectStatus,jdbcType=VARCHAR},
       is_adjust = #{record.isAdjust,jdbcType=INTEGER},
       is_other_agency = #{record.isOtherAgency,jdbcType=INTEGER},
+      is_end = #{record.isEnd,jdbcType=INTEGER},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -373,11 +386,11 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     update t_purchase_project_basic_info
     <set >
       <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=VARCHAR},
+        project_id = #{projectId,jdbcType=BIGINT},
       </if>
       <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
@@ -421,6 +434,9 @@
       <if test="isOtherAgency != null" >
         is_other_agency = #{isOtherAgency,jdbcType=INTEGER},
       </if>
+      <if test="isEnd != null" >
+        is_end = #{isEnd,jdbcType=INTEGER},
+      </if>
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
@@ -439,9 +455,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     update t_purchase_project_basic_info
-    set project_id = #{projectId,jdbcType=VARCHAR},
+    set project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
       purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
       purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
@@ -456,6 +472,7 @@
       purchase_project_status = #{purchaseProjectStatus,jdbcType=VARCHAR},
       is_adjust = #{isAdjust,jdbcType=INTEGER},
       is_other_agency = #{isOtherAgency,jdbcType=INTEGER},
+      is_end = #{isEnd,jdbcType=INTEGER},
       operate_id = #{operateId,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -463,7 +480,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

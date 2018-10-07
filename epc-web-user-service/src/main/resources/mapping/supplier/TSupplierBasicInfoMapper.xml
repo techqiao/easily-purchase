@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, cellphone, password, supplier_id, inviter_type, inviter_id, inviter_company_id, 
+    id, name, cellphone, password, supplier_id, inviter_type, inviter_id, inviter_company_id,
     state, role, create_at, update_at, is_forbidden, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria" >
@@ -94,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_supplier_basic_info
     where id = #{id,jdbcType=BIGINT}
@@ -113,15 +113,15 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_supplier_basic_info (name, cellphone, password, 
-      supplier_id, inviter_type, inviter_id, 
-      inviter_company_id, state, role, 
-      create_at, update_at, is_forbidden, 
+    insert into t_supplier_basic_info (name, cellphone, password,
+      supplier_id, inviter_type, inviter_id,
+      inviter_company_id, state, role,
+      create_at, update_at, is_forbidden,
       is_deleted)
-    values (#{name,jdbcType=VARCHAR}, #{cellphone,jdbcType=CHAR}, #{password,jdbcType=CHAR}, 
-      #{supplierId,jdbcType=BIGINT}, #{inviterType,jdbcType=INTEGER}, #{inviterId,jdbcType=BIGINT}, 
-      #{inviterCompanyId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{role,jdbcType=INTEGER}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isForbidden,jdbcType=INTEGER}, 
+    values (#{name,jdbcType=VARCHAR}, #{cellphone,jdbcType=CHAR}, #{password,jdbcType=CHAR},
+      #{supplierId,jdbcType=BIGINT}, #{inviterType,jdbcType=INTEGER}, #{inviterId,jdbcType=BIGINT},
+      #{inviterCompanyId,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{role,jdbcType=INTEGER},
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isForbidden,jdbcType=INTEGER},
       #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.web.service.domain.supplier.TSupplierBasicInfo" >
@@ -367,54 +367,50 @@
 
 
   <!--winlin-->
-  <select id="selectBossBasicInfoByPurchaserIdAndRole"
-          resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
-    FROM t_supplier_basic_info
-    WHERE supplier_id =#{supplierId}
-    AND role =#{roleCorporation}
-  </select>
-
-  <select id="login" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM t_supplier_basic_info
-    WHERE cellphone=#{cellphone}
-    AND password=#{pwd}
-  </select>
-
-  <insert id="registerUser">
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    INSERT INTO t_supplier_basic_info
-    (cellphone,password,`name`,create_at,update_at,state,role)
-    VALUES
-    (#{cellphone},#{pwd},#{name},#{dates},#{dates},2,0)
-  </insert>
-
-  <select id="selectSupplierBasicByNameAndCell"
-          resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM t_supplier_basic_info
-    WHERE `name` = #{name}
-    AND cellphone =#{cellphone}
-  </select>
-
-  <select id="selectSupplierBasicByCell" resultType="com.epc.web.service.domain.supplier.TSupplierBasicInfo">
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM t_supplier_basic_info
-    WHERE cellphone=#{cell}
-  </select>
-
-  <update id="updateSupplierPassword" parameterType="com.epc.web.facade.loginuser.dto.ModifyUser">
-    UPDATE  t_supplier_basic_info
-    SET password =#{newPassword}
-    WHERE cellphone =#{cellphone}
-  </update>
+    <select id="login" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_supplier_basic_info
+        WHERE cellphone=#{cellphone}
+        AND password=#{pwd}
 
 
+    </select>
+    <select id="selectSupplierBasicByNameAndCell"
+            resultMap="BaseResultMap">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_supplier_basic_info
+        WHERE `name` = #{name}
+        AND cellphone =#{cellphone}
+    </select>
+    <select id="selectBasicInfo" resultType="com.epc.web.facade.agency.vo.AgencySupplierVo">
+        SELECT detail.supplier_id AS supplierId ,detail.company_name AS companyName ,detail.create_at AS createAt
+        FROM t_supplier_detail_info detail LEFT JOIN t_supplier_basic_info basic ON detail.supplier_id =
+        basic.supplier_id
+        <where>
+            basic.agency_id =#{id}
+            <if test="id!=null">
+                AND supplier_id = #{supplierId}
+            </if>
+            <if test="fuzzyName!=null">
+                AND companyName LIKE '%'#{fuzzyName}'%'
+            </if>
+        </where>
+    </select>
+    <select id="selectSupplierBasicByCell" resultType="com.epc.web.service.domain.supplier.TSupplierBasicInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_supplier_basic_info
+        WHERE cellphone=#{cell}
+    </select>
+    <select id="selectBossBasicInfoByPurchaserIdAndRole"
+            resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_supplier_basic_info
+        WHERE supplier_id =#{supplierId}
+        AND role =#{roleCorporation}
+    </select>
 
 </mapper>

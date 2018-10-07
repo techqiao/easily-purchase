@@ -1,13 +1,10 @@
 package com.epc.web.service.service.impl.purchaser;
 
-import com.epc.common.util.MD5Util;
-import com.google.common.collect.Lists;
-
-
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.common.util.MD5Util;
 import com.epc.web.facade.agency.handle.Attachement;
 import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.dto.*;
@@ -18,6 +15,7 @@ import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyDetailInfo;
 import com.epc.web.service.domain.expert.TExpertAttachment;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
+import com.epc.web.service.domain.expert.TExpertDetailInfo;
 import com.epc.web.service.domain.purchaser.*;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
@@ -27,13 +25,13 @@ import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
 import com.epc.web.service.mapper.agency.TAgencyDetailInfoMapper;
 import com.epc.web.service.mapper.expert.TExpertAttachmentMapper;
 import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
+import com.epc.web.service.mapper.expert.TExpertDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.*;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.codehaus.jackson.node.POJONode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -84,6 +82,8 @@ public class PurchaserServiceImpl implements PurchaserService {
 
     @Autowired
     TExpertAttachmentMapper tExpertAttachmentMapper;
+    @Autowired
+    TExpertDetailInfoMapper tExpertDetailInfoMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PurchaserServiceImpl.class);
 
@@ -107,9 +107,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         //返回该供应商信息
         TSupplierBasicInfo basicInfo = null;
         try {
-            basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
-        }catch(Exception e){
-            LOGGER.error("查询错误:Exception:{}",e);
+            basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByCell(cellphone);
+        } catch (Exception e) {
+            LOGGER.error("查询错误:Exception:{}", e);
             return Result.error("用户名错误,请检查后重新输入!");
         }
         //判断状态
@@ -122,7 +122,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 Long supplierId = basicInfo.getSupplierId();
                 //从页面传入
                 TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
-                purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId());
+                purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId().intValue());
                 purchaserSupplier.setSource(Const.SOURCE.PUBLICS);
                 purchaserSupplier.setCreateAt(basicInfo.getCreateAt());
                 purchaserSupplier.setUpdateAt(basicInfo.getUpdateAt());
@@ -147,13 +147,15 @@ public class PurchaserServiceImpl implements PurchaserService {
             //供应商不存在的时候抽取handleSupplier的字段添加
             TPurchaserSupplier purchaserSupplier = new TPurchaserSupplier();
             //采购人数据库
-            purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId());
+            purchaserSupplier.setOperateId((int) handleSupplier.getOperatorId().intValue());
             purchaserSupplier.setSource(Const.SOURCE.PRIVATES);
             purchaserSupplier.setCreateAt(new Date());
             purchaserSupplier.setUpdateAt(new Date());
             purchaserSupplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
-            purchaserSupplier.setState(Const.STATE.COMMITTED);
+            purchaserSupplier.setState(Const.STATE.REGISTERED);
+            purchaserSupplier.setOperateId(handleSupplier.getOperatorId().intValue());
+            purchaserSupplier.setPurchaserId(handleSupplier.getPurcharseId());
 
 
             //供应商详情数据库
@@ -175,8 +177,8 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             basicInfo.setInviterId(handleSupplier.getOperatorId());
-            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId());
-            basicInfo.setState(Const.STATE.COMMITTED);
+            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId().intValue());
+            basicInfo.setState(Const.STATE.REGISTERED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             basicInfo.setCreateAt(new Date());
             basicInfo.setUpdateAt(new Date());
@@ -234,32 +236,42 @@ public class PurchaserServiceImpl implements PurchaserService {
         //以及经办人id
         String name = handleExpert.getName();
         String cellphone = handleExpert.getCellPhone();
-        TExpertBasicInfo basicInfo = tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(name, cellphone);
+        TExpertBasicInfo basicInfo = null;
+        TPurchaserExpert purchaserExpert = null;
+        TPurchaserDetailInfo tPurchaserDetailInfo =null;
+        try {
+            basicInfo = tExpertBasicInfoMapper.selectExpertCellPhone(cellphone);
+        } catch (Exception e) {
+            LOGGER.error("新增专家失败Exception:{}", e);
+            return Result.error("新增失败");
+        }
         if (basicInfo != null) {
             //专家的审核状态
             int state = basicInfo.getState();
-            TPurchaserExpert purchaserExpert = tPurchaserExpertMapper.selectExpertByNameAndCellPhone(name, cellphone);
-            if (purchaserExpert != null) {
-                return Result.error("专家:" + handleExpert.getName() + "已存在");
-            } else {
-                TPurchaserExpert tPurchaserExpert = new TPurchaserExpert();
-                tPurchaserExpert.setState(state);
-                tPurchaserExpert.setExpertId(basicInfo.getId());
-                tPurchaserExpert.setPurchaserId(handleExpert.getPurchaserId() + "");
-                tPurchaserExpert.setSource(Const.SOURCE.PUBLICS);
-                tPurchaserExpert.setCreateAt(new Date());
-                tPurchaserExpert.setUpdateAt(new Date());
-                tPurchaserExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                List<Attachement> list = handleExpert.getAtts();
-                try {
+            Long expertId = basicInfo.getId();
+            try {
+                purchaserExpert = tPurchaserExpertMapper.selectExpertByExpertId(expertId);
+                if (purchaserExpert != null) {
+                    return Result.error("专家:" + handleExpert.getName() + "已存在");
+                } else {
+                    TPurchaserExpert tPurchaserExpert = new TPurchaserExpert();
+                    tPurchaserExpert.setState(state);
+                    tPurchaserExpert.setExpertId(basicInfo.getId());
+                    tPurchaserExpert.setPurchaserId(handleExpert.getPurchaserId() + "");
+                    tPurchaserExpert.setSource(Const.SOURCE.PUBLICS);
+                    tPurchaserExpert.setCreaterId(handleExpert.getOperatorId());
+                    tPurchaserExpert.setCreateAt(new Date());
+                    tPurchaserExpert.setUpdateAt(new Date());
+                    tPurchaserExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+                    List<Attachement> list = handleExpert.getAtts();
                     //添加信息
                     tPurchaserExpertMapper.insertSelective(tPurchaserExpert);
-                } catch (Exception e) {
-                    //捕获异常回滚
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    LOGGER.error("采购人同步专家失败", e);
-                    return Result.error("采购人同步专家失败");
                 }
+            } catch (Exception e) {
+                //捕获异常回滚
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                LOGGER.error("采购人同步专家失败", e);
+                return Result.error("采购人同步专家失败");
             }
         } else {
             //公库新增
@@ -279,15 +291,16 @@ public class PurchaserServiceImpl implements PurchaserService {
             pojo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             pojo.setInviterId(handleExpert.getOperatorId());
             pojo.setInviterCompanyId(handleExpert.getPurchaserId().intValue());
-            pojo.setState(Const.STATE.COMMITTED);
+            pojo.setState(Const.STATE.REGISTERED);
             pojo.setCreateAt(new Date());
             pojo.setUpdateAt(new Date());
             pojo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
             pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
+
             //私库新增
             TPurchaserExpert operator = new TPurchaserExpert();
-            operator.setState(Const.STATE.COMMITTED);
+            operator.setState(Const.STATE.REGISTERED);
             operator.setPurchaserId(handleExpert.getPurchaserId() + "");
             operator.setCreaterId(handleExpert.getOperatorId());
             operator.setSource(Const.SOURCE.PRIVATES);
@@ -297,16 +310,31 @@ public class PurchaserServiceImpl implements PurchaserService {
             //附件信息
             List<Attachement> list = handleExpert.getAtts();
             try {
+                tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(handleExpert.getPurchaserId());
                 tExpertBasicInfoMapper.insertSelective(pojo);
                 //得到专家基本信心信息的id存入关联表中
                 Long expertId = pojo.getId();
                 operator.setExpertId(expertId);
+                if(tPurchaserDetailInfo!=null){
+                    TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+                    tExpertDetailInfo.setExpertId(expertId);
+                    tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
+                    tExpertDetailInfo.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
+                    tExpertDetailInfo.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
+                    tExpertDetailInfo.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
+                    tExpertDetailInfo.setPublicBanAccountNumber(tPurchaserDetailInfo.getPublicBanAccountNumber());
+                    tExpertDetailInfo.setCreateAt(date);
+                    tExpertDetailInfo.setUpdateAt(date);
+                    tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
+                }
                 tPurchaserExpertMapper.insertSelective(operator);
                 if (!CollectionUtils.isEmpty(list)) {
                     for (Attachement att : list) {
                         TExpertAttachment expertAttachment = new TExpertAttachment();
                         BeanUtils.copyProperties(att, expertAttachment);
                         expertAttachment.setExpertId(expertId);
+                        expertAttachment.setCreateAt(date);
+                        expertAttachment.setUpdateAt(date);
                         tExpertAttachmentMapper.insertSelective(expertAttachment);
                     }
                 }
@@ -333,7 +361,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         //先查询是否存在,不存在添加私库
         String name = handleAgnecy.getName();
         String cellphone = handleAgnecy.getCellphone();
-        TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+        TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
         if (basicInfo != null) {
             int state = basicInfo.getState();
             int role = basicInfo.getRole();
@@ -381,7 +409,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setInviterId(handleAgnecy.getOperatorId());
             //采购人公司id
             basicInfo.setInviterCompanyId((int) handleAgnecy.getCompanyId());
-            basicInfo.setState(Const.STATE.COMMITTED);
+            basicInfo.setState(Const.STATE.REGISTERED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             //指定默认密码
             basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
@@ -396,6 +424,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             detailInfo.setUniformCreditCode(handleAgnecy.getUniformCreditCode());
             detailInfo.setPublicBankName(handleAgnecy.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleAgnecy.getPublicBankCount());
+            detailInfo.setCompanyAddress(handleAgnecy.getCompanyAddress());
             detailInfo.setCreateAt(new Date());
             detailInfo.setUpdateAt(new Date());
 
@@ -406,11 +435,13 @@ public class PurchaserServiceImpl implements PurchaserService {
             agency.setCreateAt(new Date());
             agency.setUpdateAt(new Date());
             agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-            agency.setState(Const.STATE.COMMITTED);
+            agency.setState(Const.STATE.REGISTERED);
             agency.setPurchaserId(handleAgnecy.getCompanyId() + "");
             agency.setSource(Const.SOURCE.PRIVATES);
+
             agency.setCreateAt(new Date());
             agency.setUpdateAt(new Date());
+
             try {
                 //提交到 数据库
                 tAgencyBasicInfoMapper.insertSelective(basicInfo);
@@ -431,6 +462,8 @@ public class PurchaserServiceImpl implements PurchaserService {
                         TAgencyAttachment attachment = new TAgencyAttachment();
                         BeanUtils.copyProperties(att, attachment);
                         attachment.setAgencyId(agencyId);
+                        attachment.setCreateAt(new Date());
+                        attachment.setUpdateAt(new Date());
                         tAgencyAttachmentMapper.insertSelective(attachment);
                     }
                 }
@@ -461,10 +494,15 @@ public class PurchaserServiceImpl implements PurchaserService {
         //先查询是否存在,不存在添加私库
         String name = handleOperator.getName();
         String phone = handleOperator.getCellPhone();
-        TPurchaserBasicInfo basicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, phone);
-
-        if (basicInfo != null) {
-            return Result.error("员工:" + handleOperator.getName() + "已存在");
+        TPurchaserBasicInfo basicInfo = null;
+        try {
+            basicInfo = tPurchaserBasicInfoMapper.selectPurchaserBasicInfoByCell(phone);
+            if (basicInfo != null) {
+                return Result.error("员工:" + handleOperator.getCellPhone() + "已存在");
+            }
+        } catch (Exception e) {
+            LOGGER.error("新增采购人员失败:{}", e);
+            return Result.error("新增采购人员失败!");
         }
         TPurchaserBasicInfo pojo = new TPurchaserBasicInfo();
         pojo.setName(handleOperator.getName());
@@ -523,10 +561,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         basicInfo.setInviterId(Const.INVITER_TYPE.PLATFORM_ID);
         basicInfo.setInviterCompanyId(Const.INVITER_TYPE.PLATFORM_ID);
         basicInfo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
-        basicInfo.setState(Const.STATE.COMMITTED);
+        basicInfo.setState(Const.STATE.REGISTERED);
         basicInfo.setRole(Const.Role.ROLE_CORPORATION);
         basicInfo.setCreateAt(date);
         basicInfo.setUpdateAt(date);
+        basicInfo.setPassword(Const.DEFAULT_PASSWORD.PASSWORD);
         basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         //分装添加的条件,和跟新对象,添加数据到数据库三张表,t_purchaser_basic_info,t_purchaser_detail_info,t_purchaser_attachment
         TPurchaserDetailInfo detailInfo = new TPurchaserDetailInfo();
@@ -1503,7 +1542,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         try {
             if (tPurchaserExpert == null) {
                 tPurchaserExpert = new TPurchaserExpert();
-                tPurchaserExpert.setState(Const.STATE.COMMITTED);
+                tPurchaserExpert.setState(Const.STATE.REGISTERED);
                 tPurchaserExpert.setExpertId(expertId);
                 tPurchaserExpert.setPurchaserId(basicInfo.getInviterCompanyId() + "");
                 tPurchaserExpert.setCreaterId(basicInfo.getInviterId());

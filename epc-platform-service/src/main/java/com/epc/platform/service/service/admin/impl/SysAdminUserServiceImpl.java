@@ -75,6 +75,9 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return Result.success(resultMap);
     }
 
+    public static void main(String[] args) {
+        System.out.println(MD5Util.MD5EncodeUtf8("root"));
+    }
     /**
      * 根据name查找用户信息
      * @param userName

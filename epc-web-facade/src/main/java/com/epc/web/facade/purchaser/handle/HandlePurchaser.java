@@ -20,28 +20,18 @@ public class HandlePurchaser {
     /**
      * 采购人机构id
      */
-    @ApiModelProperty(value = "采购人机构id")
-    @NotEmpty(message = "HandlePurchaser.id.null")
+
     private long purchaserId;
     /**
      * 采购人员工姓名
      */
-    @ApiModelProperty(value = "采购人姓名")
-    @NotEmpty(message = "HandlePurchaser.name.null")
+
     private String name;
-    /**
-     * 公司名称
-     */
-    private String companyName;
 
     /**
      * 手机号
      */
     private String cellPhone;
-    /**
-     * 密码
-     */
-    private String password;
     /**
      * 用户角色
      */

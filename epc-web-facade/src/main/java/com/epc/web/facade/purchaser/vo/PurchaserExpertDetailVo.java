@@ -20,5 +20,22 @@ public class PurchaserExpertDetailVo implements Serializable {
 
     private String otherInformation;
 
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
+    /**
+     * 专家公司
+     */
+    private String company;
+
     private List<Attachement> atts;
 }

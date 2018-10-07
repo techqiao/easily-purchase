@@ -317,4 +317,10 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectDetaiInfoByExpertInfo" resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM t_expert_detail_info
+      WHERE expert_id =#{expertId}
+    </select>
 </mapper>

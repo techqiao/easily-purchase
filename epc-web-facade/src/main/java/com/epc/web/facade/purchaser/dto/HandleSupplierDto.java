@@ -12,23 +12,23 @@ import java.util.List;
 @Data
 public class HandleSupplierDto implements Serializable {
     private static final long serialVersionUID = 2913360236029186982L;
-    /**
-     * 采购人id
-     */
-    private Long purcharseId;
-    /**
-     * supplierId供货商id
-     */
-
-    private Long supplierId;
+//    /**
+//     * 采购人id
+//     */
+//    private Long purcharseId;
+//    /**
+//     * supplierId供货商id
+//     */
+//
+//    private Long supplierId;
     /**
      * 手机号
      */
     private String cellphone;
-    /**
-     * 密码
-     */
-    private String password;
+//    /**
+//     * 密码
+//     */
+//    private String password;
 
     /**
      * 法人姓名
@@ -76,10 +76,10 @@ public class HandleSupplierDto implements Serializable {
      * 附件list
      */
     private List<Attachement> atts;
-    /**
-     * 来源
-     */
-    private String source;
+//    /**
+//     * 来源
+//     */
+//    private String source;
     /**
      * 公司地址
      */

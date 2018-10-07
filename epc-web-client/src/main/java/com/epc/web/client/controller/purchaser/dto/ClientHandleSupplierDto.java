@@ -18,11 +18,11 @@ public class ClientHandleSupplierDto implements Serializable {
      */
     @ApiModelProperty(value = "供货商手机")
     private String cellphone;
-    /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码")
-    private String password;
+//    /**
+//     * 密码
+//     */
+//    @ApiModelProperty(value = "密码")
+//    private String password;
 
     /**
      * 法人姓名

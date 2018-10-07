@@ -61,6 +61,10 @@ public class ClientHandleExpertDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date circularDt;
     /**
+     * 通知结束时间
+     */
+    private Date circularDtEnd;
+    /**
      * 通知方式
      */
     @ApiModelProperty(value = "通知方式")

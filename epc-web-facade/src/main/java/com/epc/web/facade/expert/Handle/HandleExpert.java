@@ -42,6 +42,8 @@ public class HandleExpert {
     @ApiModelProperty(value = "通知时间")
     @NotEmpty(message = "HandleExpert.circularDt.null")
     private Date circularDt;
+    @ApiModelProperty(value = "截止时间")
+    private Date circularDtEnd;
     @ApiModelProperty(value = "通知方式")
     @NotEmpty(message = "HandleExpert.circularMethod.null")
     private String circularMethod;

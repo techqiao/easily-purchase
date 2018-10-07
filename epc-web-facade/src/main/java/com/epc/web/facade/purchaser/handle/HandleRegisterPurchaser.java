@@ -48,6 +48,18 @@ public class HandleRegisterPurchaser implements Serializable{
      */
     private long OperatorId;
     /**
+     * 营业执照
+     */
+    private String businessLicense;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
      * 附件list
      */
     protected List<Attachement> atts;

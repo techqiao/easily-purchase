@@ -14,6 +14,7 @@
         <result column="positional" property="positional" jdbcType="CHAR"/>
         <result column="level" property="level" jdbcType="CHAR"/>
         <result column="circular_dt" property="circularDt" jdbcType="TIMESTAMP"/>
+        <result column="circular_dt_end" property="circularDtEnd" jdbcType="TIMESTAMP"/>
         <result column="circular_method" property="circularMethod" jdbcType="CHAR"/>
         <result column="other_information" property="otherInformation" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="CHAR"/>

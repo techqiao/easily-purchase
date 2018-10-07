@@ -327,7 +327,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TOperatorBasicInfo operatorBasicInfo = tOperatorBasicInfoMapper.selectByNameAndCellphone(name, cellphone);
+            TOperatorBasicInfo operatorBasicInfo = tOperatorBasicInfoMapper.selectByCellphone(cellphone);
             if (operatorBasicInfo == null) {
                 return Result.success(tOperatorBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -352,7 +352,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, cellphone);
+            TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectPurchaserBasicInfoByCell(cellphone);
             if (tPurchaserBasicInfo == null) {
                 return Result.success(tPurchaserBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -377,7 +377,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+            TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
             if (basicInfo == null) {
                 return Result.success(tAgencyBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -402,7 +402,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
+            TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByCell(cellphone);
             if (tSupplierBasicInfo == null) {
                 return Result.success(tSupplierBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -427,7 +427,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(name, cellphone);
+            TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectExpertCellPhone(cellphone);
             if (tExpertBasicInfo == null) {
                 return Result.success(tExpertBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {

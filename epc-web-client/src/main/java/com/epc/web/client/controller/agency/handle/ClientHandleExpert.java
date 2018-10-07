@@ -51,6 +51,12 @@ public class ClientHandleExpert implements Serializable {
 
     @ApiModelProperty(value = "其他信息")
     private String otherInformation;
+
+    @ApiModelProperty(value = "身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "身份证反面照片url")
+    private String legalIdCardOther;
+
     @ApiModelProperty(value = "附件信息")
     private List<ClientAttachement> atts;
 

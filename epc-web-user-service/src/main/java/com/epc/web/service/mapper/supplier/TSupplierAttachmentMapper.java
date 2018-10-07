@@ -36,4 +36,6 @@ public interface TSupplierAttachmentMapper {
     List<TSupplierAttachment> selectAttachmentBySupplierId(Long supplierId);
 
 
+    int deleteAttachaments(List<TSupplierAttachment> attachments);
+
 }

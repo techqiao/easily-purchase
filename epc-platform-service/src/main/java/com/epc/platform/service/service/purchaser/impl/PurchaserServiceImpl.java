@@ -131,7 +131,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tPurchaserDetailInfoMapper.updateByExampleSelective(tPurchaserDetailInfo, tPurchaserDetailInfoCriteria);
                 TPurchaserAttachmentCriteria tPurchaserAttachmentCriteria = new TPurchaserAttachmentCriteria();
                 tPurchaserAttachmentCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
-                //经办人(采购人员工)手持身份证正面照片url
+                //手持身份证正面照片url
                 attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
                 attachment.setCertificateFilePath(purchaserHandle.getLegalIdCardPositive());
                 tPurchaserAttachmentMapper.updateByExample(attachment,tPurchaserAttachmentCriteria);

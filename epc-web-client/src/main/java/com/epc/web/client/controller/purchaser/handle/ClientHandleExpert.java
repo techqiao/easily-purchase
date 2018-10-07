@@ -52,6 +52,10 @@ public class ClientHandleExpert {
     /**
      * 专家附件
      */
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    private String legalIdCardOther;
     @ApiModelProperty(value = "附件")
     private List<ClientAttachement> atts;
 

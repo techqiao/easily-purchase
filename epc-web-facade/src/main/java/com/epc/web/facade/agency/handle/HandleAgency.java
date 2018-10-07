@@ -52,6 +52,22 @@ public class HandleAgency implements Serializable {
      */
     private String publicBanAccountNumber;
     /**
+     * 营业执照
+     */
+    private String businessLicense;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 授权书
+     */
+    private String certificateOfAuthorization;
+    /**
      * 附件信息
      */
     private List<Attachement> atts;

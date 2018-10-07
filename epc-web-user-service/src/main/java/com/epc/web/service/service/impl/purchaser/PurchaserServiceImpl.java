@@ -1,6 +1,7 @@
 package com.epc.web.service.service.impl.purchaser;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
@@ -155,7 +156,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
             purchaserSupplier.setState(Const.STATE.REGISTERED);
             purchaserSupplier.setOperateId(handleSupplier.getOperatorId().intValue());
-            purchaserSupplier.setPurchaserId(handleSupplier.getPurcharseId());
+            purchaserSupplier.setPurchaserId(handleSupplier.getCompanyId());
 
 
             //供应商详情数据库
@@ -194,18 +195,40 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tSupplierBasicInfoMapper.insertSelective(basicInfo);
                 //得到生成的id更新表单数据
                 Long supplierId = basicInfo.getId();
+                //更显更新时间
+                Date date = new Date();
                 basicInfo.setSupplierId(supplierId);
                 tSupplierBasicInfoMapper.updateByPrimaryKey(basicInfo);
                 purchaserSupplier.setSupplierId(supplierId);
                 tPurchaserSupplierMapper.insertSelective(purchaserSupplier);
                 detailInfo.setSupplierId(supplierId);
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
+
+                TSupplierAttachment attachment = new TSupplierAttachment();
+                attachment.setSupplierId(supplierId);
+                attachment.setCreateAt(date);
+                attachment.setUpdateAt(date);
+                attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+                //添加身份证正面
+                attachment.setCertificateFilePath(handleSupplier.getLegalIdCardPositive());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                //法人身份证反面照片url
+                attachment.setCertificateFilePath(handleSupplier.getLegalIdCardOther());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                //营业执照照片url
+                attachment.setCertificateFilePath(handleSupplier.getBusinessLicense());
+                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
                 if (!CollectionUtils.isEmpty(atts)) {
                     for (Attachement att : atts) {
-                        TSupplierAttachment attachment = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachment);
-                        attachment.setSupplierId(supplierId);
-                        tSupplierAttachmentMapper.insertSelective(attachment);
+                        TSupplierAttachment attachmen = new TSupplierAttachment();
+                        BeanUtils.copyProperties(att, attachmen);
+                        attachmen.setSupplierId(supplierId);
+                        attachmen.setCreateAt(date);
+                        attachmen.setUpdateAt(date);
+                        tSupplierAttachmentMapper.insertSelective(attachmen);
                     }
                 }
             } catch (Exception e) {
@@ -328,6 +351,19 @@ public class PurchaserServiceImpl implements PurchaserService {
                     tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
                 }
                 tPurchaserExpertMapper.insertSelective(operator);
+                TExpertAttachment attachment = new TExpertAttachment();
+                attachment.setExpertId(expertId);
+                attachment.setCreateAt(new Date());
+                attachment.setUpdateAt(new Date());
+                attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+                //上传身份证正面
+                attachment.setCertificateFilePath(handleExpert.getLegalIdCardPositive());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                tExpertAttachmentMapper.insertSelective(attachment);
+                //上传身份证反面
+                attachment.setCertificateFilePath(handleExpert.getLegalIdCardOther());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                tExpertAttachmentMapper.insertSelective(attachment);
                 if (!CollectionUtils.isEmpty(list)) {
                     for (Attachement att : list) {
                         TExpertAttachment expertAttachment = new TExpertAttachment();
@@ -448,6 +484,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 //得到公库生成的agencyId
                 Long agencyId = basicInfo.getId();
                 basicInfo.setAgencyId(agencyId);
+                Date date = new Date();
                 tAgencyBasicInfoMapper.updateByPrimaryKey(basicInfo);
                 //id设如私库中
                 agency.setAgencyId(agencyId);
@@ -455,6 +492,23 @@ public class PurchaserServiceImpl implements PurchaserService {
                 detailInfo.setAgencyId(agencyId);
                 tAgencyDetailInfoMapper.insertSelective(detailInfo);
                 tPurchaserAgencyMapper.insertSelective(agency);
+                TAgencyAttachment attachments = new TAgencyAttachment();
+                attachments.setCreateAt(date);
+                attachments.setUpdateAt(date);
+                attachments.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+                attachments.setAgencyId(agencyId);
+                //法人身份证反面照片url
+                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                attachments.setCertificateFilePath(handleAgnecy.getLegalIdCardOther());
+                tAgencyAttachmentMapper.insertSelective(attachments);
+                //法人身份证正面照片url
+                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                attachments.setCertificateFilePath(handleAgnecy.getLegalIdCardPositive());
+                tAgencyAttachmentMapper.insertSelective(attachments);
+                //营业执照照片url
+                attachments.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                attachments.setCertificateFilePath(handleAgnecy.getBusinessLicense());
+                tAgencyAttachmentMapper.insertSelective(attachments);
                 //附件信息
                 List<Attachement> list = handleAgnecy.getAtts();
                 if (!CollectionUtils.isEmpty(list)) {
@@ -546,13 +600,13 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
         String name = handlePurchaser.getName();
         String cellphone = handlePurchaser.getCellphone();
-        TPurchaserBasicInfo basicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, cellphone);
-
+        Long purchaserId = handlePurchaser.getPurchaseId();
+        TPurchaserBasicInfo basicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(purchaserId);
         if (basicInfo == null) {
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "没有供应商的注册信息");
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "没有采购人的注册信息");
         }
         //获得purchaser的id
-        Long purchaserId = basicInfo.getId();
+        //Long purchaserId = basicInfo.getId();
         //设置更新时间和t_purchaser_detail_info,t_purchaser_attachment的创建时间
         Date date = new Date();
         //补全信息
@@ -565,7 +619,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         basicInfo.setRole(Const.Role.ROLE_CORPORATION);
         basicInfo.setCreateAt(date);
         basicInfo.setUpdateAt(date);
-        basicInfo.setPassword(Const.DEFAULT_PASSWORD.PASSWORD);
         basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         //分装添加的条件,和跟新对象,添加数据到数据库三张表,t_purchaser_basic_info,t_purchaser_detail_info,t_purchaser_attachment
         TPurchaserDetailInfo detailInfo = new TPurchaserDetailInfo();
@@ -577,13 +630,36 @@ public class PurchaserServiceImpl implements PurchaserService {
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
-        //附件信息
-        List<Attachement> list = handlePurchaser.getAtts();
-
+        //身份证相关信息
+        TPurchaserAttachment attachment = new TPurchaserAttachment();
+        attachment.setPurchaserId(purchaserId);
+        attachment.setUpdateAt(date);
+        attachment.setCreateAt(date);
         try {
+            //修该基本信息
             tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(basicInfo);
-            tPurchaserDetailInfoMapper.insertSelective(detailInfo);
+            //修改详细信息
+            TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaserId);
+            if(tPurchaserDetailInfo==null) {
+                tPurchaserDetailInfoMapper.insertSelective(detailInfo);
+            }else{
+                detailInfo.setId(tPurchaserDetailInfo.getId());
+                tPurchaserDetailInfoMapper.updateByPrimaryKey(detailInfo);
+            }
+            //身份证正面照片url
+            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            attachment.setCertificateFilePath(handlePurchaser.getLegalIdCardPositive());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+            //法人身份证反面照片url
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateFilePath(handlePurchaser.getLegalIdCardOther());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+            //营业执照照片url
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateFilePath(handlePurchaser.getBusinessLicense());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+            //附件信息
+            List<Attachement> list = handlePurchaser.getAtts();
             if (!CollectionUtils.isEmpty(list)) {
                 for (Attachement att : list) {
                     TPurchaserAttachment at = new TPurchaserAttachment();
@@ -695,9 +771,9 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
         //代理机构的id
         Long agencyId = basicInfo.getId();
-        TPurchaserAgency agency = tPurchaserAgencyMapper.selectAgencyByAgencyId(agencyId);
-        TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
         try {
+            TPurchaserAgency agency = tPurchaserAgencyMapper.selectAgencyByAgencyId(agencyId);
+            TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
             if (agency == null) {
                 agency = new TPurchaserAgency();
                 //agency.setId(0L);

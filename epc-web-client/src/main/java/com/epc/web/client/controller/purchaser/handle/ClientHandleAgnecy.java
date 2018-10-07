@@ -51,6 +51,12 @@ public class ClientHandleAgnecy implements Serializable {
     /**
      * 附件list
      */
+    @ApiModelProperty(value = "营业执照照片url")
+    private String businessLicense;
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    private String legalIdCardOther;
     @ApiModelProperty(value = "附件")
     private List<ClientAttachement> atts;
     /**

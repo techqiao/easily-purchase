@@ -56,6 +56,22 @@ public class AgencySupplierDto implements Serializable {
      */
     private long companyId;
     /**
+     * 营业执照
+     */
+    private String businessLicense;
+    /**
+     * 身份证政面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 授权书
+     */
+    private String certificateOfAuthorization;
+    /**
      * 附件list
      */
     private List<Attachement> atts;

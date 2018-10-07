@@ -4,18 +4,18 @@ import com.epc.web.facade.operator.handle.Attachment;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
-@Data
-public class OperatorBasicInfoVO implements Serializable {
 
-    private static final long serialVersionUID = -8975043822639313264L;
+@Data
+public class OperatorBasicVO implements Serializable {
+    private static final long serialVersionUID = 2041338696895334089L;
+
 
     /**
      * 主键ID
      */
-    private Long id;
+//    private Long id;
 
     /**
      * 手机号
@@ -27,9 +27,6 @@ public class OperatorBasicInfoVO implements Serializable {
      */
     private String name;
 
-
-    private Integer state;
-    private Integer isForbidden;
 
     /**
      * 用户角色:0-法人,1-管理员,2-普通员工
@@ -49,14 +46,14 @@ public class OperatorBasicInfoVO implements Serializable {
 
     private Long operatorId;
 
-//    private String companyName;
-//
-//    private String uniformCreditCode;
-//
-//    private String publicBankName;
-//
-//    private String publicBanAccountNumber;
+    private String companyName;
 
-//    private List<Attachment> atts;
+    private String uniformCreditCode;
+
+    private String publicBankName;
+
+    private String publicBanAccountNumber;
+
+    private List<Attachment> atts;
 
 }

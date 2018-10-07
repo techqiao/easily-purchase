@@ -1,10 +1,10 @@
 package com.epc.bidding.service.monitoring.impl;
 
-import com.epc.bidding.domain.bidding.*;
-import com.epc.bidding.mapper.bidding.BMonitoringFileMapper;
-import com.epc.bidding.mapper.bidding.TPurchaseProjectBasicInfoMapper;
-import com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantMapper;
-import com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantPermissionMapper;
+import com.epc.bidding.domain.*;
+import com.epc.bidding.mapper.BMonitoringFileMapper;
+import com.epc.bidding.mapper.TPurchaseProjectBasicInfoMapper;
+import com.epc.bidding.mapper.TPurchaseProjectParticipantMapper;
+import com.epc.bidding.mapper.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.bidding.service.monitoring.FileMonitoringService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,10 +125,13 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
         //获取自己是负责人的项目
         List<TPurchaseProjectParticipantPermission> result=tPurchaseProjectParticipantPermissionMapper.selectByExample(criteria);
         List<listMonitorVO> voList=new ArrayList<>();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for(TPurchaseProjectParticipantPermission entity:result){
                 listMonitorVO vo =new listMonitorVO();
                 TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
                 BeanUtils.copyProperties(tPurchaseProjectBasicInfo,vo);
+                vo.setPurchaseStartTime(sdf.format(tPurchaseProjectBasicInfo.getPurchaseStartTime()));
+                vo.setPurchaseEndTime(sdf.format(tPurchaseProjectBasicInfo.getPurchaseEndTime()));
                 vo.setPurchaseProjectId(entity.getPurchaseProjectId());
                 voList.add(vo);
         }

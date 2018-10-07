@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantPermissionMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
+<mapper namespace="com.epc.bidding.mapper.TPurchaseProjectParticipantPermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TPurchaseProjectParticipantPermission" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="participant_id" property="participantId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -78,7 +78,7 @@
     id, participant_id, user_id, participant_type, action_state, step_type, purchase_project_id, 
     participant_permission, operate_id, creator, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermissionCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermissionCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -102,13 +102,13 @@
     delete from t_purchase_project_participant_permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermissionCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermissionCriteria" >
     delete from t_purchase_project_participant_permission
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermission" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -123,7 +123,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermission" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -205,7 +205,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermissionCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermissionCriteria" resultType="java.lang.Integer" >
     select count(*) from t_purchase_project_participant_permission
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -277,7 +277,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermission" >
     update t_purchase_project_participant_permission
     <set >
       <if test="participantId != null" >
@@ -319,7 +319,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermission" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermission" >
     update t_purchase_project_participant_permission
     set participant_id = #{participantId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -335,7 +335,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectParticipantPermissionCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectParticipantPermissionCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

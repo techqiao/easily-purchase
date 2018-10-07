@@ -1,8 +1,8 @@
 package com.epc.bidding.service.advanceNotice.impl;
 
-import com.epc.bidding.domain.bidding.TBiddingPreview;
-import com.epc.bidding.domain.bidding.TBiddingPreviewCriteria;
-import com.epc.bidding.mapper.bidding.TBiddingPreviewMapper;
+import com.epc.bidding.domain.TBiddingPreview;
+import com.epc.bidding.domain.TBiddingPreviewCriteria;
+import com.epc.bidding.mapper.TBiddingPreviewMapper;
 import com.epc.bidding.service.advanceNotice.AdvanceNoticeService;
 import com.epc.common.Result;
 import com.epc.common.constants.BiddingPreviewStatusEnum;

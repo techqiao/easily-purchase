@@ -1,8 +1,8 @@
 package com.epc.bidding.service.bidding.impl;
 
 
-import com.epc.bidding.domain.bidding.*;
-import com.epc.bidding.mapper.bidding.*;
+import com.epc.bidding.domain.*;
+import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -15,8 +15,6 @@ import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
-import com.epc.web.facade.bidding.query.schedule.HandleProjectSchedule;
-import com.epc.web.facade.bidding.query.schedule.QueryProjectSchedule;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
@@ -432,48 +430,4 @@ public class BiddingServiceimpl implements BiddingService {
         return Result.success();
     }
 
-/***************************************************环节步骤*************************************************/
-
-/**
-     * 根据bid 和 用户类型 判断标段
-     * @param dto
-     * @return
-     */
-    @Override
-    public Result<String> queryProjectSchedule(QueryProjectSchedule dto){
-        TProjectBidProcedureCriteria criteria=new TProjectBidProcedureCriteria();
-        TProjectBidProcedureCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andProjectIdEqualTo(dto.getPurchaseProjectId());
-        cubCriteria.andOperateTypeEqualTo("supplier");
-        criteria.setOrderByClause("create_at desc");
-        List<TProjectBidProcedure> result=tProjectBidProcedureMapper.selectByExample(criteria);
-        if(result.size()>0){
-            return  Result.success(result.get(0).getProcedureName());
-        }else{
-            return Result.success(null);
-        }
-    }
-
-    /**
-     * 环节插入
-     * @param dto
-     * @return
-     */
-    @Override
-    @Transactional(rollbackFor =Exception.class )
-    public Result<Boolean> insertProjectSchedule(HandleProjectSchedule dto) {
-        TProjectBidProcedure entity = new TProjectBidProcedure();
-        BeanUtils.copyProperties(dto, entity);
-        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        entity.setCreateAt(new Date());
-        entity.setUpdateAt(new Date());
-        try {
-            tProjectBidProcedureMapper.insertSelective(entity);
-        } catch (Exception e) {
-            LOGGER.error("insertProjectSchedule_" + entity.toString() + "_" + e.getMessage(), e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error();
-        }
-        return Result.success(true);
-    }
 }

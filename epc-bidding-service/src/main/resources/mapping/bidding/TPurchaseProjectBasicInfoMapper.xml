@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TPurchaseProjectBasicInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+<mapper namespace="com.epc.bidding.mapper.TPurchaseProjectBasicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
@@ -89,7 +89,7 @@
     purchase_category, purchase_type, purchase_range, purchase_project_status, is_adjust, 
     is_other_agency, is_end, operate_id, creator, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -113,13 +113,13 @@
     delete from t_purchase_project_basic_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" >
     delete from t_purchase_project_basic_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -142,7 +142,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -278,7 +278,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" resultType="java.lang.Integer" >
     select count(*) from t_purchase_project_basic_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -386,7 +386,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     update t_purchase_project_basic_info
     <set >
       <if test="projectId != null" >
@@ -455,7 +455,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfo" >
     update t_purchase_project_basic_info
     set project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
@@ -480,7 +480,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPurchaseProjectBasicInfoCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectBasicInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

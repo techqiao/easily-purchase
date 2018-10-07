@@ -1,7 +1,7 @@
 package com.epc.bidding.service.winBid.Impl;
 
-import com.epc.bidding.domain.bidding.*;
-import com.epc.bidding.mapper.bidding.*;
+import com.epc.bidding.domain.*;
+import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.winBid.WinBidService;
 import com.epc.common.Result;
 import com.epc.common.constants.AnnouncementProcessStatusEnum;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

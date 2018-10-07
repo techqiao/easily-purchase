@@ -1,18 +1,18 @@
 package com.epc.web.facade.supplier;
 
 import com.epc.common.Result;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -39,16 +39,16 @@ public interface FacadeTSupplierBasicInfoService {
     /**0.5
      * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
      */
-    @PostMapping(value="public/addPasswordSupplierLogin",consumes = "application/json;charset=UTF-8")
-    Result<Boolean> addPasswordSupplierLogin(@RequestBody HandleSupplierDetail handleSupplierDetail);
+//    @PostMapping(value="public/addPasswordSupplierLogin",consumes = "application/json;charset=UTF-8")
+//    Result<Boolean> addPasswordSupplierLogin(@RequestBody HandleSupplierDetail handleSupplierDetail);
     /**1
      *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
      *      (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
      *      不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
      *      )
      */
-    @PostMapping(value = "addPasswordSupplier",consumes = "application/json;charset=UTF-8")
-    Result<Boolean> addPasswordSupplier(@RequestBody HandleSupplierDetail handleSupplierDetail);
+//    @PostMapping(value = "addPasswordSupplier",consumes = "application/json;charset=UTF-8")
+//    Result<Boolean> addPasswordSupplier(@RequestBody HandleSupplierDetail handleSupplierDetail);
 
     /**2
      *  完善供应商信息
@@ -67,8 +67,8 @@ public interface FacadeTSupplierBasicInfoService {
     /**4
      * 根据员工的id来查询基本信息
      */
-    @PostMapping(value = "findSupplierBasicById",consumes = "application/json;charset=UTF-8")
-    Result<SupplierBasicInfoVO> findSupplierBasicById(@RequestBody HandleSupplierId handleSupplierId);
+    @GetMapping(value = "findSupplierBasicById",consumes = "application/json;charset=UTF-8")
+    Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierBasicById handleFindSupplierBasicById);
 
     /**5
      *  供应商通过id修改员工
@@ -81,7 +81,13 @@ public interface FacadeTSupplierBasicInfoService {
      * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
      */
     @PostMapping(value = "findSupplierDetailByEmployee",consumes = "application/json;charset=UTF-8")
-    Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(@RequestBody HandleSupplierId handleSupplierId);
+    Result<RoleDetailInfo> findSupplierDetailByEmployee(HandleFindSupplierBasicById handleFindSupplierBasicById);
+
+    /**6.5  查看公司详情
+     * 管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）
+     */
+    @PostMapping(value = "/findSupplierByBossId",consumes = "application/json;charset=UTF-8")
+    Result<RoleDetailInfo> findSupplierByBossId(HandleFindSupplierBasicById handleFindSupplierBasicById);
 
     /**7
      * 根据电话来查找一条记录,返回一个真假值

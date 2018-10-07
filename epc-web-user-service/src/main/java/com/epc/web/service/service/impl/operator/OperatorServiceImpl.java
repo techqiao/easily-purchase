@@ -1,6 +1,7 @@
 package com.epc.web.service.service.impl.operator;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
@@ -9,17 +10,24 @@ import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
-import com.epc.web.facade.operator.vo.HandleFindOperatorAllByIdVO;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
+import com.epc.web.facade.operator.vo.OperatorBasicVO;
+import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
+import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
+import com.epc.web.facade.supplier.handle.QualificationCertificate;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 import com.epc.web.service.domain.operator.*;
 import com.epc.web.service.domain.purchaser.TPurchaserAttachment;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
+import com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
+import com.epc.web.service.domain.supplier.TSupplierBasicInfoCriteria;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
-import com.epc.web.service.mapper.operator.*;
+import com.epc.web.service.mapper.operator.TOperatorAttachmentMapper;
+import com.epc.web.service.mapper.operator.TOperatorBasicInfoMapper;
+import com.epc.web.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserAttachmentMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
@@ -45,10 +53,11 @@ import java.util.List;
 
 /**
  * 运营商服务
- * @author  donghuan
+ *
+ * @author donghuan
  */
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
+@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 public class OperatorServiceImpl implements OperatorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
 
@@ -83,20 +92,21 @@ public class OperatorServiceImpl implements OperatorService {
     private TSupplierAttachmentMapper tSupplierAttachmentMapper;
 
 
-    /**0
-     *  运营商注册(没有通过任何人拉取的，自己找到平台来注册的)
+    /**
+     * 0
+     * 运营商注册(没有通过任何人拉取的，自己找到平台来注册的)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> registerOperator(HandleOperator handleOperator) {
-        Date date=new Date();
+        Date date = new Date();
         //得到 电话 密码 姓名
         String cellphone = handleOperator.getCellphone();
-        String password=handleOperator.getPassword();
+        String password = handleOperator.getPassword();
         String name = handleOperator.getName();
         Integer systemRole = handleOperator.getSystemRole();
 
-        if(systemRole.intValue()!=Const.LOGIN_USER_TYPE.OPERATOR || StringUtils.isBlank(cellphone) || StringUtils.isBlank(password) || StringUtils.isBlank(name)){
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || StringUtils.isBlank(cellphone) || StringUtils.isBlank(password) || StringUtils.isBlank(name)) {
             return Result.success("请填写正确的参数");
         }
         //先查询 数据库中有没有这个电话，有就不能注册
@@ -105,9 +115,9 @@ public class OperatorServiceImpl implements OperatorService {
         subCriteria.andCellphoneEqualTo(cellphone);
         List<TOperatorBasicInfo> listTOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
 
-        if(CollectionUtils.isEmpty(listTOperatorBasicInfos)){
+        if (CollectionUtils.isEmpty(listTOperatorBasicInfos)) {
             //电话在数据 中不存在,可以注册
-            TOperatorBasicInfo tOperatorBasicInfo=new TOperatorBasicInfo();
+            TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
 
             tOperatorBasicInfo.setCellphone(cellphone);
             tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(password));
@@ -115,29 +125,29 @@ public class OperatorServiceImpl implements OperatorService {
             //短信验证
 
             //设置状态 为 完善中。。。
-            tOperatorBasicInfo.setState(Const.STATE.PERFECTING);
+            tOperatorBasicInfo.setState(Const.STATE_CODE.COMPLETING_INFO);
             //设置角色 为法人
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             //记录创建时间
             tOperatorBasicInfo.setCreateAt(date);
             tOperatorBasicInfo.setUpdateAt(date);
-            int i=0;
-            try{
-                i=tOperatorBasicInfoMapper.insertSelective(tOperatorBasicInfo);
+            int i = 0;
+            try {
+                i = tOperatorBasicInfoMapper.insertSelective(tOperatorBasicInfo);
                 //更新数据库， 将主键id设置与operator_id一样，因为是运营商注册，
                 tOperatorBasicInfo.setOperatorId(tOperatorBasicInfo.getId());
                 tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-                return Result.success(i>0);
-            }catch (BusinessException e){
-                LOGGER.error("[] tOperatorBasicInfoMapper.insertSelective : {运营商注册}",e);
+                return Result.success(i > 0);
+            } catch (BusinessException e) {
+                LOGGER.error("[] tOperatorBasicInfoMapper.insertSelective : {运营商注册}", e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-            }catch (Exception e){
-                LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {}",e);
+            } catch (Exception e) {
+                LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {}", e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(e.getMessage());
             }
-        }else{
+        } else {
             //如果依据电话能查出记录，就证明电话在数据库中存在
             //如果有电话，就请直接登陆
             return Result.success("数据库中有这个电话，不能注册，电话要唯一");
@@ -235,89 +245,106 @@ public class OperatorServiceImpl implements OperatorService {
 //    }
 
 
-    /**2
+    /**
+     * 2
      * 完善运营商信息
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> insertCompleteOperatorInfo(RoleDetailInfo roleDetailInfo){
-        //运营商法人id
+    public Result<Boolean> insertCompleteOperatorInfo(RoleDetailInfo roleDetailInfo) {
+        //运营商法人id（当前登陆人的id）
         Long supplierId = roleDetailInfo.getSupplierId();
-        Integer systemRole = roleDetailInfo.getSystemRole();
-        if(supplierId==null || systemRole.intValue()!=Const.INVITER_TYPE.OPERATOR){
-            return Result.success("[完善运营商信息] supplierId==null || systemRole.intValue()!=Const.INVITER_TYPE.OPERATOR : {条件异常}");
+        if(supplierId==null){
+            return Result.error("前端传入参数错误");
         }
-        Date date=new Date();
+        Date date = new Date();
         //完善详情表
-        TOperatorDetailInfo detailInfo=new TOperatorDetailInfo();
-        BeanUtils.copyProperties(roleDetailInfo,detailInfo);
+        TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
+        BeanUtils.copyProperties(roleDetailInfo, detailInfo);
         detailInfo.setOperatorId(supplierId);
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
 
-        try{
+        try {
             //插入运营商详情表
             tOperatorDetailInfoMapper.insertSelective(detailInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper.insertSelective : {}",e);
+        } catch (BusinessException e) {
+            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper.insertSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper.insertSelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[供应商完善信息] tOperatorDetailInfoMapper.insertSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
 
-
         //完善附件表
-        TOperatorAttachment attachment=new TOperatorAttachment();
-        List<Attachment> atts = roleDetailInfo.getAtts();
-        for(Attachment att:atts){
-            attachment.setOperatorId(supplierId);
-            attachment.setCreateAt(date);
-            attachment.setUpdateAt(date);
+        TOperatorAttachment attachment = new TOperatorAttachment();
+        attachment.setOperatorId(supplierId);
+        attachment.setCreateAt(date);
+        attachment.setUpdateAt(date);
+        try {
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
+            attachment.setCertificateFilePath(roleDetailInfo.getBusinessLicense());
+            attachment.setCertificateNumber(roleDetailInfo.getBusinessLicenseNumber());
+            tOperatorAttachmentMapper.insertSelective(attachment);
 
-            attachment.setCertificateFilePath(att.getCertificateFilePath());
-            attachment.setCertificateName(att.getCertificateName());
-            attachment.setCertificateNumber(att.getCertificateNumber());
-            attachment.setCertificateType(att.getCertificateType());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardPositive());
+            attachment.setCertificateNumber(roleDetailInfo.getLegalIdCardPositiveNumber());
+            tOperatorAttachmentMapper.insertSelective(attachment);
 
-            try{
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+            attachment.setCertificateFilePath(roleDetailInfo.getLegalIdCardOther());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+            attachment.setCertificateName(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getDesc());
+            attachment.setCertificateFilePath(roleDetailInfo.getCertificateOfAuthorization());
+            attachment.setCertificateNumber(roleDetailInfo.getCertificateOfAuthorizationNumber());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            attachment.setCertificateName(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc());
+            attachment.setCertificateFilePath(roleDetailInfo.getOperatorIdCardFront());
+            attachment.setCertificateNumber(roleDetailInfo.getOperatorIdCardFrontNumber());
+            tOperatorAttachmentMapper.insertSelective(attachment);
+
+            List<QualificationCertificate> listQcs = roleDetailInfo.getQcs();
+            for (QualificationCertificate qcs : listQcs) {
+                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+                attachment.setCertificateFilePath(qcs.getQualificationCertificate());
+                attachment.setCertificateNumber(qcs.getQualificationCertificateNumber());
                 tOperatorAttachmentMapper.insertSelective(attachment);
-            }catch (BusinessException e){
-                LOGGER.error("[供应商完善信息] tOperatorAttachmentMapper.insertSelective : {}",e);
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-            }catch (Exception e){
-                LOGGER.error("[供应商完善信息] tOperatorAttachmentMapper.insertSelective : {}",e);
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Result.error(e.getMessage());
             }
+        } catch (BusinessException e) {
+            LOGGER.error("[供应商完善信息] tOperatorAttachmentMapper.insertSelective : 异常信息e={}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        } catch (Exception e) {
+            LOGGER.error("[供应商完善信息] tOperatorAttachmentMapper.insertSelective : 异常信息e={}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
         }
 
-        try{
+        try {
             //将运营商主表中的basic信息更新
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(supplierId);
             //设置更新日期
             tOperatorBasicInfo.setUpdateAt(date);
-            //信息完善完成后，将状态改为 （state 2） 已提交
+            //信息完善完成后，将状态改为 （state 3） 审核中
             tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
-            //查看basic表中的name有没有值，如果有，证明别人拉取进来的（因为拉取的时候要填入姓名，电话，而自己注册则直接通过手机号就可以）；如果没有，就证明是自己注册的
-//            String name = roleDetailInfo.getName();
-//            System.out.println("当前完善信息法人的名字:"+name);
-//            if(StringUtils.isBlank(tOperatorBasicInfo.getName())){
-                //如果为空,就是自己注册。就要对basic表进行相关的填写
-//                tOperatorBasicInfo.setName(name);
-//                System.out.println("name名字为空 ，完善你的名字，ok "+name);
-//            }
-            //如果不为空，就只需要更改状态,以及更新时间就可以
             tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[供应商完善信息] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
+        } catch (BusinessException e) {
+            LOGGER.error("[供应商完善信息] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[供应商完善信息] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[供应商完善信息] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
@@ -325,12 +352,11 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
 
-
-
     //--------------------------平台审核通过之后----------------------------------
 
 
-    /**3
+    /**
+     * 3
      * 运营商增加一个员工
      */
     @Override
@@ -338,30 +364,27 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<Boolean> createOperatorEmployee(HandleOperatorAddEmployee handleOperatorAddEmployee) {
 
         //得到当前操作者的id，然后得到法人id
-        Long id=handleOperatorAddEmployee.getId();
         Integer systemRole = handleOperatorAddEmployee.getSystemRole();
         Integer loginRole = handleOperatorAddEmployee.getLoginRole();
-
-        if(id==null || systemRole.intValue()!=Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue()==Const.Role.ROLE_CUSTOMER) {  // 不是运营商 ,或者是 员工
-            return Result.success("[运营商增加一个员工] id==null : {条件异常}");
+        Long bossId = handleOperatorAddEmployee.getBossId();
+        // 不是运营商 ,或者是 员工
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.success("角色不匹配，无相关权限");
         }
 
-        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        Long operatorId = tOperatorBasicInfo.getOperatorId();
-
-        Date date =new Date();
+        Date date = new Date();
         // 创建数据库插入对象
-        String name=handleOperatorAddEmployee.getName();
-        String password=handleOperatorAddEmployee.getPassword();
+        String name = handleOperatorAddEmployee.getName();
+        String password = handleOperatorAddEmployee.getPassword();
         String cellphone = handleOperatorAddEmployee.getCellphone();
         Integer role = handleOperatorAddEmployee.getRole();
-        if(StringUtils.isBlank(name) && StringUtils.isBlank(password) && StringUtils.isBlank(cellphone) && role==null) {
-            return Result.error("[运营商增加一个员工] StringUtils.isBlank(name) && StringUtils.isBlank(password) && StringUtils.isBlank(cellphone) && role==null ：{传入参数异常}");
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(password) || StringUtils.isBlank(cellphone) || role == null) {
+            return Result.success("[运营商增加一个员工] StringUtils.isBlank(name) && StringUtils.isBlank(password) && StringUtils.isBlank(cellphone) && role==null ：{传入参数异常}");
         }
         //实例化一个与数据库映射对象
-        TOperatorBasicInfo pojo=new TOperatorBasicInfo();
+        TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         //将页面的数据来封装到对象中
-        pojo.setOperatorId(operatorId);
+        pojo.setOperatorId(bossId);
         pojo.setName(name);
         pojo.setPassword(MD5Util.MD5EncodeUtf8(password));
         pojo.setCellphone(cellphone);
@@ -369,84 +392,97 @@ public class OperatorServiceImpl implements OperatorService {
         pojo.setState(Const.STATE.AUDIT_SUCCESS);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        try{
-            return Result.success(tOperatorBasicInfoMapper.insertSelective(pojo)>0);
-        }catch (BusinessException e){
-            LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {运营商添加员工}",e);
+        try {
+            return Result.success(tOperatorBasicInfoMapper.insertSelective(pojo) > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {运营商添加员工}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("tOperatorBasicInfoMapper.insertSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.success(e.getMessage());
         }
     }
 
-    /**4
-     * 依据id查询已经登陆的个人基本信息
+    /**
+     * 4
+     * 依据id查询已经登陆的个人信息(如果是法人，管理员，员工)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<OperatorBasicInfoVO> findByName(HandleOperatorId handleOperatorId) {
-        Long id=handleOperatorId.getId();
-        if(id==null) {
-            return Result.error("用户id为空");
+    public Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId) {
+        Long loginId = handleOperatorId.getLoginId();
+//        Long bossId = handleOperatorId.getBossId();
+        Integer systemRole = handleOperatorId.getSystemRole();
+        Integer loginRole = handleOperatorId.getLoginRole();
+        // 不是运营商 ,或者是 员工
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.success("角色不匹配，无相关权限");
         }
-        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        OperatorBasicInfoVO vo=new OperatorBasicInfoVO();
-        //格式化时间
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-        vo.setCreateAt(format.format(tOperatorBasicInfo.getCreateAt()));
-        vo.setUpdateAt(format.format(tOperatorBasicInfo.getUpdateAt()));
-        //将对象copy
-        BeanUtils.copyProperties(tOperatorBasicInfo,vo);
+        OperatorBasicVO vo = new OperatorBasicVO();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        if (loginRole.intValue() != Const.Role.ROLE_CORPORATION) {
+            //管理员与员工,只查看基本信息
+            TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(loginId);
+            BeanUtils.copyProperties(tOperatorBasicInfo, vo);
+            vo.setCreateAt(format.format(tOperatorBasicInfo.getCreateAt()));
+            vo.setUpdateAt(format.format(tOperatorBasicInfo.getUpdateAt()));
+            return Result.success(vo);
+        }
+
+        //法人 查询附件及详情及基本信息
+        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(loginId);
+        BeanUtils.copyProperties(tOperatorBasicInfo, vo);
+
+        TOperatorDetailInfoCriteria criteria = new TOperatorDetailInfoCriteria();
+        TOperatorDetailInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andOperatorIdEqualTo(loginId);
+        List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(criteria);
+        if (CollectionUtils.isEmpty(tOperatorDetailInfos)) {
+            return Result.error("没有公司详情信息");
+        }
+        BeanUtils.copyProperties(tOperatorDetailInfos.get(0), vo);
+
+        TOperatorAttachmentCriteria criteria1 = new TOperatorAttachmentCriteria();
+        TOperatorAttachmentCriteria.Criteria criteria2 = criteria1.createCriteria();
+        criteria2.andOperatorIdEqualTo(loginId);
+        List<TOperatorAttachment> tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(criteria1);
+        if (CollectionUtils.isEmpty(tOperatorAttachments)) {
+            return Result.error("无附件信息");
+        }
+        List<Attachment> listAtts = vo.getAtts();
+        for (TOperatorAttachment att : tOperatorAttachments) {
+            Attachment a = new Attachment();
+            BeanUtils.copyProperties(att, a);
+            listAtts.add(a);
+        }
+        vo.setAtts(listAtts);
         return Result.success(vo);
     }
 
-    /**4.5
-     *  依据当前 id 来查询你的个人信息(以当前人的id和各种role来判断查询具体的哪几张表)
-     */
-    public Result<HandleFindOperatorAllByIdVO> findOperatorAllById(HandleOperatorRole handleOperatorRole){
 
-        Long id = handleOperatorRole.getId();
-        Integer role = handleOperatorRole.getRole();
-
-        if(id==null || role==null){
-            return Result.error("[运营商查询个人信息] id==null || role==null ：{参数异常}");
-        }
-        HandleFindOperatorAllByIdVO vo=new HandleFindOperatorAllByIdVO();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-
-        switch (role){
-            case Const.Role.ROLE_CORPORATION:
-
-                break;
-            //是管理员
-            case Const.Role.ROLE_ADMIN:
-                TOperatorBasicInfo tOperatorBasicInfo1 = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-                BeanUtils.copyProperties(tOperatorBasicInfo1,vo);
-
-                return Result.success(vo);
-            //是员工
-            case Const.Role.ROLE_CUSTOMER:
-                TOperatorBasicInfo tOperatorBasicInfo2 = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-                BeanUtils.copyProperties(tOperatorBasicInfo2,vo);
-                return Result.success(vo);
-        }
-
-        return null;
-    }
-
-    /**5
+    /**
+     * 5
      * 通过员工id来修改员工信息
+     * 对于员工来说，不让其修改个人信息，怕改了，管理员与法人识别有困难，但是可以通过手机号改掉自己的密码
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> updateOperatorEmployeeById(HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById) {
-        //得出员工的id
-        Long id=handleOperatorUpdateEmployeeById.getId();
-        if(id==null){
-            return Result.error("[运营商修改员工信息] id==null : {参数异常}");
+    public Result<Boolean> updateOperatorEmployeeById(HandleOperatorUpdateEmployeeById
+                                                              handleOperatorUpdateEmployeeById) {
+        //得出登陆人的信息
+
+        Integer systemRole = handleOperatorUpdateEmployeeById.getSystemRole();
+        Integer loginRole = handleOperatorUpdateEmployeeById.getLoginRole();
+
+        // 是员工，或者不是运营商
+        if (loginRole == Const.Role.ROLE_CUSTOMER || systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.success("角色不匹配，无相关权限");
+        }
+        Long id = handleOperatorUpdateEmployeeById.getId();
+        if (id == null) {
+            return Result.success("获取员工id失败");
         }
         //通过id来查询出一条员工对象信息
         TOperatorBasicInfo pojo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
@@ -463,15 +499,15 @@ public class OperatorServiceImpl implements OperatorService {
         //是否禁用
         pojo.setIsForbidden(handleOperatorUpdateEmployeeById.getIsForbidden());
         pojo.setUpdateAt(new Date());
-        try{
+        try {
             //更新员工信息
-            return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(pojo)>0);
-        }catch (BusinessException e){
-            LOGGER.error("tOperatorBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(pojo) > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("tOperatorBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("tOperatorBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+        } catch (Exception e) {
+            LOGGER.error("tOperatorBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
@@ -481,59 +517,71 @@ public class OperatorServiceImpl implements OperatorService {
      * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
      */
 
-    /**7
+    /**
+     * 7
      * 根据电话来查找一条记录,返回一个真假值
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> findOperatorRecordByCellphone(HandleOperatorCellphone handleOperatorCellphone){
-        String cellphone=handleOperatorCellphone.getCellphone();
+    public Result<Boolean> findOperatorRecordByCellphone(HandleOperatorCellphone handleOperatorCellphone) {
+        Integer systemRole = handleOperatorCellphone.getSystemRole();
+        Integer loginRole = handleOperatorCellphone.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.success("角色不匹配，无相关权限");
+        }
+        String cellphone = handleOperatorCellphone.getCellphone();
 //        System.out.println("电话 cellphone==="+cellphone);
-        if(StringUtils.isNotBlank(cellphone)){
-            TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+        if (StringUtils.isNotBlank(cellphone)) {
+            TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
             TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
             subCriteria.andCellphoneEqualTo(cellphone);
             List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-            if(!CollectionUtils.isEmpty(tOperatorBasicInfos)){
+            if (!CollectionUtils.isEmpty(tOperatorBasicInfos)) {
                 return Result.success(true);
-            }else{
-                return Result.success(false);
+            } else {
+                return Result.success("电话查不到");
             }
-        }else{
-            return Result.success(false);
+        } else {
+            return Result.success("电话为空");
         }
     }
 
-    /**8
+    /**
+     * 8
      * 依据电话来删除一个员工,只是改变is_deleted 为1
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> deleteOperatorEmployeeByCellphone(HandleOperatorCellphone handleOperatorCellphone){
+    public Result<Boolean> deleteOperatorEmployeeByCellphone(HandleOperatorCellphone handleOperatorCellphone) {
+        Integer systemRole = handleOperatorCellphone.getSystemRole();
+        Integer loginRole = handleOperatorCellphone.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.error("角色不匹配，无相关权限");
+        }
+
         String cellphone = handleOperatorCellphone.getCellphone();
         Integer isDeleted = handleOperatorCellphone.getIsDeleted();
-
-        if(StringUtils.isBlank(cellphone) || isDeleted==null) {
-            return Result.error("[依据电话来删除一个员工] StringUtils.isBlank(cellphone) && isDeleted==null : {参数异常}");
+        if (StringUtils.isBlank(cellphone) || isDeleted == null) {
+            return Result.success("[依据电话来删除一个员工] StringUtils.isBlank(cellphone) && isDeleted==null : {前端传入参数异常}");
         }
-        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+        TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andCellphoneEqualTo(cellphone);
 
         //先看这个电话是否在数据中存在
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
 
-        TOperatorBasicInfo tOperatorBasicInfo=tOperatorBasicInfos.get(0);
+        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfos.get(0);
         tOperatorBasicInfo.setIsDeleted(isDeleted);
         tOperatorBasicInfo.setUpdateAt(new Date());
         try {
-            return Result.success(tOperatorBasicInfoMapper.updateByExampleSelective(tOperatorBasicInfo,criteria)>0);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商依据电话来删除一个员工] tOperatorBasicInfoMapper.updateByExampleSelective : {}",e);
+            return Result.success(tOperatorBasicInfoMapper.updateByExampleSelective(tOperatorBasicInfo, criteria) > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商依据电话来删除一个员工] tOperatorBasicInfoMapper.updateByExampleSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商依据电话来删除一个员工] tOperatorBasicInfoMapper.updateByExampleSelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商依据电话来删除一个员工] tOperatorBasicInfoMapper.updateByExampleSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
@@ -545,23 +593,31 @@ public class OperatorServiceImpl implements OperatorService {
      */
 
 
-    /**10
+    /**
+     * 10
      * 依据id来删除一个员工,只是改变is_deleted 为1
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> deleteOperatorEmployeeById(HandleOperatorIdAndIsDeleted handleOperatorIdAndIsDeleted) {
+
+        Integer systemRole = handleOperatorIdAndIsDeleted.getSystemRole();
+        Integer loginRole = handleOperatorIdAndIsDeleted.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.error("角色不匹配，无相关权限");
+        }
+
         Long id = handleOperatorIdAndIsDeleted.getId();
         Integer isDeleted = handleOperatorIdAndIsDeleted.getIsDeleted();
         if (id == null || isDeleted == null) {
-            return Result.error("[运营商依据id删除员工] id != null && isDeleted!=null : {参数异常}");
+            return Result.error("[运营商依据id删除员工] id != null || isDeleted!=null : {前端传入参数异常}");
         }
         try {
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
             tOperatorBasicInfo.setIsDeleted(isDeleted);
             tOperatorBasicInfo.setUpdateAt(new Date());
             tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-
+            return Result.success(true);
         } catch (BusinessException e) {
             LOGGER.error("[运营商依据id来删除一个员工] tOperatorBasicInfoMapper.updateByExample : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -571,153 +627,175 @@ public class OperatorServiceImpl implements OperatorService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-        return Result.success(true);
     }
 
-    /**11
+    /**
+     * 11
      * 根据用户id来修改他的role 用户角色:0-法人,1-管理员,2-普通员工'
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateOperatorEmployeeRoleById(HandleOperatorRole handleOperatorRole) {
-        Long id=handleOperatorRole.getId();
-        Integer role = handleOperatorRole.getRole();
-        if(id==null || role==null){
-            return Result.error("[根据用户id来修改他的role] id==null || role==null : {参数异常}");
+        Integer systemRole = handleOperatorRole.getSystemRole();
+        Integer loginRole = handleOperatorRole.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() != Const.Role.ROLE_CORPORATION) {
+            return Result.error("角色不匹配，无相关权限");
         }
-        try{
+
+        Long id = handleOperatorRole.getId();
+        Integer role = handleOperatorRole.getRole();
+        if (id == null || role == null) {
+            return Result.error("[根据用户id来修改他的role] id==null || role==null : {前端传入参数异常}");
+        }
+        try {
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
             tOperatorBasicInfo.setRole(role);
             tOperatorBasicInfo.setUpdateAt(new Date());
             int i = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-            return Result.success(i>0);
-        }catch (BusinessException e){
-            LOGGER.error("[根据用户id来修改他的role] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
+            return Result.success(i > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("[根据用户id来修改他的role] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[根据用户id来修改他的role] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[根据用户id来修改他的role] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
 
-    /**12
-     *  通过id来改变员工是否禁用
+    /**
+     * 12
+     * 通过id来改变员工是否禁用
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> updateOperatorEmployeeByisDeleted(HandleOperatorIdAndIsForbidden handleOperatorIdAndIsForbidden){
+    public Result<Boolean> updateOperatorEmployeeByisDeleted(HandleOperatorIdAndIsForbidden
+                                                                     handleOperatorIdAndIsForbidden) {
+        Integer systemRole = handleOperatorIdAndIsForbidden.getSystemRole();
+        Integer loginRole = handleOperatorIdAndIsForbidden.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.error("角色不匹配，无相关权限");
+        }
+
         Long id = handleOperatorIdAndIsForbidden.getId();
         Integer isForbidden = handleOperatorIdAndIsForbidden.getIsForbidden();
-        if(id==null || isForbidden==null){
-            return Result.error("[运营商通过id来改变员工是否禁用] id==null || isForbidden==null : {条件异常}");
+        if (id == null || isForbidden == null) {
+            return Result.error("[运营商通过id来改变员工是否禁用] id==null || isForbidden==null : {前端传入参数异常}");
         }
-        try{
+        try {
             TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
             tOperatorBasicInfo.setIsForbidden(handleOperatorIdAndIsForbidden.getIsForbidden());
             int i = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-            return Result.success(i>0);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商通过id来改变员工是否禁用] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
+            return Result.success(i > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商通过id来改变员工是否禁用] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商通过id来改变员工是否禁用] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商通过id来改变员工是否禁用] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
 
-    /**13
+    /**
+     * 13
      * 运营商忘记密码
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> forgetPassword(HandleOperatorForgetPassword handleOperatorForgetPassword) {
 
-        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+        Integer systemRole = handleOperatorForgetPassword.getSystemRole();
+//        Integer loginRole = handleOperatorForgetPassword.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.error("登陆角色不匹配，确认是运营商吗？");
+        }
+
+        TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //通过手机号查询 数据库中有没有，确实有这个人，才能更改密码
-        String cellphone=handleOperatorForgetPassword.getCellphone();
+        String cellphone = handleOperatorForgetPassword.getCellphone();
         //拿到输入新的密码
-        String newPassword=handleOperatorForgetPassword.getPassword();
-        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(newPassword)){
-            return Result.error("[运营商忘记密码] StringUtils.isBlank(cellphone) || StringUtils.isBlank(newPassword) : {参数异常}");
+        String newPassword = handleOperatorForgetPassword.getPassword();
+        if (StringUtils.isBlank(cellphone) || StringUtils.isBlank(newPassword)) {
+            return Result.error("[运营商忘记密码] StringUtils.isBlank(cellphone) || StringUtils.isBlank(newPassword) : {前端传入参数异常}");
         }
         subCriteria.andCellphoneEqualTo(cellphone);
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
 //        System.out.println("通过电话查询出来的对象有多少个   =="+tOperatorBasicInfos.size());
-        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-            return Result.error("[运营商忘记密码] tOperatorBasicInfoMapper.selectByExample : {条件异常，查询结果是空}");
+        if (CollectionUtils.isEmpty(tOperatorBasicInfos)) {
+            return Result.error("请确认你的电话已经在平台注册，查询结果是空");
         }
         TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfos.get(0);
         //重新设置密码,更新数据库中的这条记录中的密码
         tOperatorBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(newPassword));
         tOperatorBasicInfo.setUpdateAt(new Date());
-        try{
+        try {
             tOperatorBasicInfoMapper.updateByExampleSelective(tOperatorBasicInfo, criteria);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商忘记密码] tOperatorBasicInfoMapper.updateByExample : {}",e);
+            return Result.success(true);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商忘记密码] tOperatorBasicInfoMapper.updateByExample : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商忘记密码] tOperatorBasicInfoMapper.updateByExample : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商忘记密码] tOperatorBasicInfoMapper.updateByExample : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-        return Result.success(true);
     }
 
-    /**14
+    /**
+     * 14
      * 根据员工的名字,角色，是否禁用
-     *     来匹配出符合条件的员工返回一个list：
+     * 来匹配出符合条件的员工返回一个list：
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(HandleOperatorFindAllByName handleOperatorFindAllByName) {
-        Long id=handleOperatorFindAllByName.getId();
+    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(HandleOperatorFindAllByName
+                                                                              handleOperatorFindAllByName) {
+        Long bossId = handleOperatorFindAllByName.getBossId();
+        Integer systemRole = handleOperatorFindAllByName.getSystemRole();
+        Integer loginRole = handleOperatorFindAllByName.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.error("角色不匹配，无相关权限");
+        }
+
+        //  前端 传输来的数据
         //名字
-        String name=handleOperatorFindAllByName.getName();
+        String name = handleOperatorFindAllByName.getName();
         //是否禁用
         Integer isForbidden = handleOperatorFindAllByName.getIsForbidden();
         //角色是管理员，还是员工
         Integer role = handleOperatorFindAllByName.getRole();
-        if(id==null){
-            return Result.error("[运营商查询员工列表] id==null : {参数异常}");
-        }
-        //根据当前操作人的id来得到法人id (因为你所有的查询列表都是基于法人id员工之下)
-        TOperatorBasicInfo basic = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        Long operatorId = basic.getOperatorId();
 
         //给出查询的条件，查询出符合条件的员工列表
-        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
+        TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //注意，is_deleted 为0 （存在） 的
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        subCriteria.andOperatorIdEqualTo(operatorId);
-        if(role!=null){
+        subCriteria.andOperatorIdEqualTo(bossId);
+        if (role != null) {
             subCriteria.andRoleEqualTo(role);
         }
-        if(isForbidden!=null){
+        if (isForbidden != null) {
             subCriteria.andIsForbiddenEqualTo(isForbidden);
         }
-        if(StringUtils.isNotBlank(name)){
-            subCriteria.andNameLike("%"+name+"%");
+        if (StringUtils.isNotBlank(name)) {
+            subCriteria.andNameLike("%" + name + "%");
         }
 
         //得到符合条件的结果
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
 
         //装入容器
-        List<OperatorBasicInfoVO> listVO=new ArrayList<OperatorBasicInfoVO>();
-        for(TOperatorBasicInfo single:tOperatorBasicInfos){
-            OperatorBasicInfoVO vo=new OperatorBasicInfoVO();
-            BeanUtils.copyProperties(single,vo);
-            /**
-             * 设置时间为格式化后的
-             */
-            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        List<OperatorBasicInfoVO> listVO = new ArrayList<OperatorBasicInfoVO>();
+        //设置时间为格式化后的
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        for (TOperatorBasicInfo single : tOperatorBasicInfos) {
+            OperatorBasicInfoVO vo = new OperatorBasicInfoVO();
+            BeanUtils.copyProperties(single, vo);
             vo.setCreateAt(format.format(single.getCreateAt()));
             vo.setUpdateAt(format.format(single.getUpdateAt()));
             listVO.add(vo);
@@ -725,66 +803,75 @@ public class OperatorServiceImpl implements OperatorService {
         return Result.success(listVO);
     }
 
-    /**15
-     *  运营商新增采购人（包括完善信息）
+    /**
+     * 15
+     * 运营商新增采购人（第2步：完善信息）
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> createPurchaseByOperator(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator){
-
-        //得到电话 姓名  当前运营商的主键id
-        String cellphone=handleCreatePurchaserByOperator.getCellphone();
-        String name=handleCreatePurchaserByOperator.getName();
-        Long id=handleCreatePurchaserByOperator.getId();
-
-        if(id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-            return Result.error("[运营商新增采购人]  id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常} ");
+    public Result<Boolean> createPurchaseByOperator(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
+        Integer systemRole = handleCreatePurchaserByOperator.getSystemRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.error("角色不匹配，无相关权限");
         }
-        Date date = new Date();
 
-        //先查出自己的法人id
-        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        Long operatorId = tOperatorBasicInfo.getOperatorId();
-
-        //创建TPurchaserBasicInfo表对象，添加信息
-        TPurchaserBasicInfo tPurchaserBasicInfo=new TPurchaserBasicInfo();
-        tPurchaserBasicInfo.setCellphone(cellphone);
-        tPurchaserBasicInfo.setName(name);
-        //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
-        tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
-        //邀请人id
-        tPurchaserBasicInfo.setInviterId(id.intValue());
-        //邀请机构 id
-        tPurchaserBasicInfo.setInviterCompanyId(operatorId.intValue());
-        //设置状态，已注册
-        tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
-        //邀请人角色
-        tPurchaserBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
-
-        tPurchaserBasicInfo.setCreateAt(date);
-        tPurchaserBasicInfo.setUpdateAt(date);
-
-        //此id, 采购basic表中的主键id,同时也是采购法人purchaser_id
-        Long purchaserId=null;
-        try{
-            tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo);
-            //将采购这张basic表中的主键id设置到purcheser_id上（同时是员工，也是采购法人）
-            purchaserId = tPurchaserBasicInfo.getId();
-            tPurchaserBasicInfo.setPurchaserId(purchaserId);
-            tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
+//        //得到电话 姓名
+//        String cellphone=handleCreatePurchaserByOperator.getCellphone();
+//        String name=handleCreatePurchaserByOperator.getName();
+//
+//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+//            return Result.error("[运营商新增采购人] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {前端传入参数异常} ");
+//        }
+//        Date date = new Date();
+//
+//        //创建TPurchaserBasicInfo表对象，添加信息
+//        TPurchaserBasicInfo tPurchaserBasicInfo=new TPurchaserBasicInfo();
+//        tPurchaserBasicInfo.setCellphone(cellphone);
+//        tPurchaserBasicInfo.setName(name);
+//        //设置默认密码(epc1688)
+//        tPurchaserBasicInfo.setPassword(MD5Util.MD5EncodeUtf8("epc1688"));
+//        //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
+//        tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
+//        //邀请人id
+//        tPurchaserBasicInfo.setInviterId(bossId.intValue());
+//        //邀请机构 id
+//        tPurchaserBasicInfo.setInviterCompanyId(bossId.intValue());
+//        //设置状态，已注册
+//        tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
+//        //邀请人角色
+//        tPurchaserBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+//
+//        tPurchaserBasicInfo.setCreateAt(date);
+//        tPurchaserBasicInfo.setUpdateAt(date);
+//
+//        //此id, 采购basic表中的主键id,同时也是采购法人purchaser_id
+//        Long purchaserId=null;
+//        try{
+//            tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo);
+//            //将采购这张basic表中的主键id设置到purcheser_id上（同时是员工，也是采购法人）
+//            purchaserId = tPurchaserBasicInfo.getId();
+//            tPurchaserBasicInfo.setPurchaserId(purchaserId);
+//            tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo);
+//        }catch (BusinessException e){
+//            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+//        }catch (Exception e){
+//            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(e.getMessage());
+//        }
 
         //添加详情表信息
-        TPurchaserDetailInfo tPurchaserDetailInfo=new TPurchaserDetailInfo();
-        tPurchaserDetailInfo.setPurchaserId(purchaserId);
+
+        //当前 添加的这个采购人id
+        //当前的采购人id
+        Long id = handleCreatePurchaserByOperator.getId();
+        if (id == null) {
+            return Result.error("当前你添加的这个采购人id为空");
+        }
+        TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
+        tPurchaserDetailInfo.setPurchaserId(id);
         //公司名字
         tPurchaserDetailInfo.setCompanyName(handleCreatePurchaserByOperator.getCompanyName());
         //统一信用代码
@@ -793,18 +880,20 @@ public class OperatorServiceImpl implements OperatorService {
         tPurchaserDetailInfo.setPublicBankName(handleCreatePurchaserByOperator.getPublicBankName());
         //对公银行账号
         tPurchaserDetailInfo.setPublicBanAccountNumber(handleCreatePurchaserByOperator.getPublicBanAccountNumber());
+        //地址没填
 
+        Date date = new Date();
         tPurchaserDetailInfo.setCreateAt(date);
         tPurchaserDetailInfo.setUpdateAt(date);
 
-        try{
+        try {
             tPurchaserDetailInfoMapper.insertSelective(tPurchaserDetailInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商添加采购人] tPurchaserDetailInfoMapper.insertSelective : {}",e);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserDetailInfoMapper.insertSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商添加采购人] tPurchaserDetailInfoMapper.insertSelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserDetailInfoMapper.insertSelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
@@ -813,155 +902,208 @@ public class OperatorServiceImpl implements OperatorService {
         List<Attachment> atts = handleCreatePurchaserByOperator.getAtts();
 
         //添加附件表信息
-        TPurchaserAttachment tPurchaserAttachment=new TPurchaserAttachment();
+        TPurchaserAttachment tPurchaserAttachment = new TPurchaserAttachment();
         //完善附件表
-        for(Attachment att:atts){
+        for (Attachment att : atts) {
             tPurchaserAttachment.setCertificateType(att.getCertificateType());
             tPurchaserAttachment.setCertificateFilePath(att.getCertificateFilePath());
             tPurchaserAttachment.setCertificateName(att.getCertificateName());
             tPurchaserAttachment.setCertificateNumber(att.getCertificateNumber());
-            tPurchaserAttachment.setPurchaserId(purchaserId);
+            tPurchaserAttachment.setPurchaserId(id);
             tPurchaserAttachment.setCreateAt(date);
             tPurchaserAttachment.setUpdateAt(date);
             try {
                 tPurchaserAttachmentMapper.insertSelective(tPurchaserAttachment);
-            }catch (BusinessException e){
-                LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}",e);
+            } catch (BusinessException e) {
+                LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}", e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-            }catch (Exception e){
-                LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}",e);
+            } catch (Exception e) {
+                LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}", e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(e.getMessage());
             }
         }
-        return  Result.success(true);
+
+        //完善完 详情表，附件表，就要将采购主表状态改成 审核中,并设置最新时间
+        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(id);
+        //审核 中
+        tPurchaserBasicInfo.setState(Const.STATE_CODE.CHECKING);
+        tPurchaserBasicInfo.setUpdateAt(date);
+        try {
+            tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        } catch (Exception e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
+        }
+        return Result.success(true);
     }
 
-    /**15.5
-     *  查看自己拉的采购人列表,查看采购人的信息
-     *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
-     */
-    public Result lookPurchaserByOperatorId(){
-        return null;
-    }
-
-    /**16
-     *  运营商新增采购人（不包括完善信息，只填写姓名，电话）
+    /**
+     * 15.5
+     * <p>
+     * 查看当前登陆人拉的采购人列表list
+     * 参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> createPurchaseByOperatorSimple(HandleOperatorCreateSupplier handleOperatorCreateSupplier){
+    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
+        //当前登陆人的id
+        Long id = handleOperatorLoginInfo.getId();
+        Integer bossId = handleOperatorLoginInfo.getBossId();
+        Integer systemRole = handleOperatorLoginInfo.getSystemRole();
+
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.success("平台角色不匹配");
+        }
+        TPurchaserBasicInfoCriteria criteria = new TPurchaserBasicInfoCriteria();
+        TPurchaserBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        //匹配邀请人id
+        subCriteria.andInviterIdEqualTo(id);
+        //匹配bossid
+        subCriteria.andInviterCompanyIdEqualTo(bossId);
+        //邀请人类型
+        subCriteria.andInviterTypeEqualTo(systemRole);
+        List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(criteria);
+        List<TPurchaserBasicInfoVO> listVo = new ArrayList<TPurchaserBasicInfoVO>();
+        if (CollectionUtils.isEmpty(tPurchaserBasicInfos)) {
+            return Result.success("你还没有邀请过采购人");
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        for (TPurchaserBasicInfo single : tPurchaserBasicInfos) {
+            TPurchaserBasicInfoVO vo = new TPurchaserBasicInfoVO();
+            BeanUtils.copyProperties(single, vo);
+            vo.setCreateAt(format.format(single.getCreateAt()));
+            listVo.add(vo);
+        }
+        return Result.success(listVo);
+    }
+
+
+    /**
+     * 16
+     * 运营商新增采购人（第1步：不包括完善信息，只填写姓名，电话，及默认密码epc1688）
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> createPurchaseByOperatorSimple(HandleOperatorCreateSupplier handleOperatorCreateSupplier) {
+        Long bossId = handleOperatorCreateSupplier.getBossId();
+        Long id = handleOperatorCreateSupplier.getId();
+        Integer systemRole = handleOperatorCreateSupplier.getSystemRole();
+        Integer loginRole = handleOperatorCreateSupplier.getLoginRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.error("平台角色不匹配");
+        }
 
         //得到电话 姓名  当前运营商的主键id
-        String cellphone=handleOperatorCreateSupplier.getCellphone();
-        String name=handleOperatorCreateSupplier.getName();
-        Long id=handleOperatorCreateSupplier.getId();
+        String cellphone = handleOperatorCreateSupplier.getCellphone();
+        String name = handleOperatorCreateSupplier.getName();
 
-        if(id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-            return Result.error("[运营商新增采购人]  id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常} ");
+        if (StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+            return Result.error("[运营商新增采购人]  StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {前端传入参数异常} ");
         }
         Date date = new Date();
 
-        //先查出自己的法人id
-        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        Long operatorId = tOperatorBasicInfo.getOperatorId();
-
         //创建TPurchaserBasicInfo表对象，添加信息，插入一条数据
-        TPurchaserBasicInfo tPurchaserBasicInfo=new TPurchaserBasicInfo();
+        TPurchaserBasicInfo tPurchaserBasicInfo = new TPurchaserBasicInfo();
         tPurchaserBasicInfo.setCellphone(cellphone);
         tPurchaserBasicInfo.setName(name);
+        tPurchaserBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
         //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
-        tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
+        tPurchaserBasicInfo.setInviterType(systemRole);
         //邀请人id
         tPurchaserBasicInfo.setInviterId(id.intValue());
         //邀请机构 id
-        tPurchaserBasicInfo.setInviterCompanyId(operatorId.intValue());
-        //设置状态，已注册
-        tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
+        tPurchaserBasicInfo.setInviterCompanyId(bossId.intValue());
+        //设置状态，已拉取
+        tPurchaserBasicInfo.setState(Const.STATE_CODE.PULLING);
         //邀请人角色
-        tPurchaserBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+        tPurchaserBasicInfo.setRole(loginRole);
         tPurchaserBasicInfo.setCreateAt(date);
         tPurchaserBasicInfo.setUpdateAt(date);
 
         //此id, 采购basic表中的主键id,同时也是采购法人purchaser_id
-        Long purchaserId=null;
-        try{
-            tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo);
+        Long purchaserId = null;
+        int i = 0;
+        try {
+            i = tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo);
             //将采购这张basic表中的主键id设置到purcheser_id上（同时是员工，也是采购法人）
             purchaserId = tPurchaserBasicInfo.getId();
             tPurchaserBasicInfo.setPurchaserId(purchaserId);
             tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
+            return Result.success(i > 0);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-        return  Result.success(true);
     }
 
-    /**16.5
-     *  查看自己拉的供应商列表,查看供应商信息
-     *
-     */
 
-
-    /**17
-     *  运营商新增供应商  (不包括完善信息,只填 姓名、电话)
+    /**
+     * 17
+     * 运营商新增供应商  (第1步：不包括完善信息，只填写姓名，电话，及默认密码epc1688)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> operatorCreateSupplierSimple(HandleOperatorCreateSupplier handleOperatorCreateSupplier){
-
-        //  运营商操作人id
+    public Result<Boolean> operatorCreateSupplierSimple(HandleOperatorCreateSupplier handleOperatorCreateSupplier) {
         Long id = handleOperatorCreateSupplier.getId();
-        String cellphone = handleOperatorCreateSupplier.getCellphone();
-        String name=handleOperatorCreateSupplier.getName();
-        if(id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)){
-            return Result.error("[运营商新增供应商] id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+        Long bossId = handleOperatorCreateSupplier.getBossId();
+        Integer loginRole = handleOperatorCreateSupplier.getLoginRole();
+        Integer systemRole = handleOperatorCreateSupplier.getSystemRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.error("平台角色不匹配");
         }
-        Date date=new Date();
 
-        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        //  得到当前 运营商法人id
-        Long operatorId = tOperatorBasicInfo.getOperatorId();
+        String cellphone = handleOperatorCreateSupplier.getCellphone();
+        String name = handleOperatorCreateSupplier.getName();
+        if (StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+            return Result.error("[运营商新增供应商] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {前端传入参数异常}");
+        }
+        Date date = new Date();
 
         /**
          * 创建供应商基本表信息   t_supplier_basic_info
          */
-        TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
+        TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
         tSupplierBasicInfo.setName(name);
         tSupplierBasicInfo.setCellphone(cellphone);
+        tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
         //邀请人类型 运营商
-        tSupplierBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
+        tSupplierBasicInfo.setInviterType(Const.LOGIN_USER_TYPE.OPERATOR);
         //邀请人id
         tSupplierBasicInfo.setInviterId(id);
         //邀请人机构 id
-        tSupplierBasicInfo.setInviterCompanyId(operatorId.intValue());
-        //已注册
-        tSupplierBasicInfo.setState(Const.STATE.REGISTERED);
+        tSupplierBasicInfo.setInviterCompanyId(bossId);
+        // stata 设为 拉取
+        tSupplierBasicInfo.setState(Const.STATE_CODE.PULLING);
         //法人
-        tSupplierBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+        tSupplierBasicInfo.setRole(loginRole);
         tSupplierBasicInfo.setCreateAt(date);
         tSupplierBasicInfo.setUpdateAt(date);
 
         //供应商法人id
-        Long supplierId=null;
+        Long supplierId = null;
         try {
             tSupplierBasicInfoMapper.insert(tSupplierBasicInfo);
             supplierId = tSupplierBasicInfo.getId();
             tSupplierBasicInfo.setSupplierId(supplierId);
             tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商新增供应商] tSupplierBasicInfoMapper.insert : {}",e);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商新增供应商] tSupplierBasicInfoMapper.insert : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商新增供应商] tSupplierBasicInfoMapper.insert : {}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商新增供应商] tSupplierBasicInfoMapper.insert : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
@@ -969,99 +1111,149 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
 
-    /**18
-     *  运营商新增供应商（包括完善信息）
+    /**
+     * 18
+     * 运营商新增供应商（第2步：完善信息）
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> operatorCreateSupplier(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator){
-        //当前运营商员工的id
-        Long id = handleCreatePurchaserByOperator.getId();
-        String cellphone = handleCreatePurchaserByOperator.getCellphone();
-        String name = handleCreatePurchaserByOperator.getName();
-        if(id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)){
-            return Result.error("[运营商新增供应商（包括完善信息）] id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+    public Result<Boolean> operatorCreateSupplier(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
+        Integer systemRole = handleCreatePurchaserByOperator.getSystemRole();
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.error("平台角色不匹配");
         }
-        Date date=new Date();
-        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-        //得到法人id
-        Long operatorId = tOperatorBasicInfo.getOperatorId();
 
-        //创建供应商基本信息对象
-        TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
-        tSupplierBasicInfo.setName(name);
-        tSupplierBasicInfo.setCellphone(cellphone);
-        tSupplierBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
-        tSupplierBasicInfo.setInviterId(id);
-        tSupplierBasicInfo.setInviterCompanyId(operatorId.intValue());
-        tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
-        tSupplierBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
-        tSupplierBasicInfo.setCreateAt(date);
-        tSupplierBasicInfo.setUpdateAt(date);
-        Long supplierId=null;
-        try {
-            tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
-            supplierId = tSupplierBasicInfo.getId();
-            tSupplierBasicInfo.setSupplierId(supplierId);
-            tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierBasicInfoMapper.insertSelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierBasicInfoMapper.insertSelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
+        //当前供应商商员工的id
+        Long id = handleCreatePurchaserByOperator.getId();
+
+//        String cellphone = handleCreatePurchaserByOperator.getCellphone();
+//        String name = handleCreatePurchaserByOperator.getName();
+//        if(id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)){
+//            return Result.error("[运营商新增供应商（包括完善信息）] id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+//        }
+//        Date date=new Date();
+//        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
+//        //得到法人id
+//        Long operatorId = tOperatorBasicInfo.getOperatorId();
+//
+//        //创建供应商基本信息对象
+//        TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
+//        tSupplierBasicInfo.setName(name);
+//        tSupplierBasicInfo.setCellphone(cellphone);
+//        tSupplierBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
+//        tSupplierBasicInfo.setInviterId(id);
+//        tSupplierBasicInfo.setInviterCompanyId(operatorId.intValue());
+//        tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+//        tSupplierBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
+//        tSupplierBasicInfo.setCreateAt(date);
+//        tSupplierBasicInfo.setUpdateAt(date);
+//        Long supplierId=null;
+//        try {
+//            tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
+//            supplierId = tSupplierBasicInfo.getId();
+//            tSupplierBasicInfo.setSupplierId(supplierId);
+//            tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
+//        }catch (BusinessException e){
+//            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierBasicInfoMapper.insertSelective : 异常信息e={}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+//        }catch (Exception e){
+//            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierBasicInfoMapper.insertSelective : 异常信息e={}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(e.getMessage());
+//        }
 
         //完善供应商详情表
-        TSupplierDetailInfo tSupplierDetailInfo=new TSupplierDetailInfo();
-        tSupplierDetailInfo.setSupplierId(supplierId);
+
+
+        TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
+        tSupplierDetailInfo.setSupplierId(id);
         tSupplierDetailInfo.setCompanyName(handleCreatePurchaserByOperator.getCompanyName());
         tSupplierDetailInfo.setUniformCreditCode(handleCreatePurchaserByOperator.getUniformCreditCode());
         tSupplierDetailInfo.setPublicBankName(handleCreatePurchaserByOperator.getPublicBankName());
         tSupplierDetailInfo.setPublicBanAccountNumber(handleCreatePurchaserByOperator.getPublicBanAccountNumber());
+        //公司地址
+
+        Date date = new Date();
         tSupplierDetailInfo.setCreateAt(date);
         tSupplierDetailInfo.setUpdateAt(date);
         try {
             tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
-        }catch (BusinessException e){
-            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierDetailInfoMapper.insertSelective : 异常信息e={}",e);
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierDetailInfoMapper.insertSelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierDetailInfoMapper.insertSelective : 异常信息e={}",e);
+        } catch (Exception e) {
+            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierDetailInfoMapper.insertSelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
 
         //完善供应商附件表
-        TSupplierAttachment tSupplierAttachment=new TSupplierAttachment();
+        TSupplierAttachment tSupplierAttachment = new TSupplierAttachment();
         List<Attachment> atts = handleCreatePurchaserByOperator.getAtts();
-        for(Attachment att:atts){
+        for (Attachment att : atts) {
             tSupplierAttachment.setCertificateFilePath(att.getCertificateFilePath());
             tSupplierAttachment.setCertificateName(att.getCertificateName());
             tSupplierAttachment.setCertificateNumber(att.getCertificateNumber());
             tSupplierAttachment.setCertificateType(att.getCertificateType());
 
-            tSupplierAttachment.setSupplierId(supplierId);
+            tSupplierAttachment.setSupplierId(id);
             tSupplierAttachment.setCreateAt(date);
             tSupplierAttachment.setUpdateAt(date);
             try {
                 tSupplierAttachmentMapper.insertSelective(tSupplierAttachment);
-            }catch (BusinessException e){
-                LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}",e);
+            } catch (BusinessException e) {
+                LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-            }catch (Exception e){
-                LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}",e);
+            } catch (Exception e) {
+                LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(e.getMessage());
             }
         }
-        return  Result.success(true);
+        return Result.success(true);
     }
 
+    /**
+     * 19
+     * 查看当前登陆者拉的供应商列表
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
+        //当前登陆人的id
+        Long id = handleOperatorLoginInfo.getId();
+        Integer bossId = handleOperatorLoginInfo.getBossId();
+        Integer systemRole = handleOperatorLoginInfo.getSystemRole();
+
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+            return Result.success("平台角色不匹配");
+        }
+        //匹配查找 供应商的条件
+        TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        //匹配邀请人id
+        subCriteria.andInviterIdEqualTo(id);
+        //匹配bossid
+        subCriteria.andInviterCompanyIdEqualTo(bossId.longValue());
+        //邀请人类型
+        subCriteria.andInviterTypeEqualTo(systemRole);
+        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+        List<TSupplierBasicInfoVO> listVo = new ArrayList<TSupplierBasicInfoVO>();
+        if (CollectionUtils.isEmpty(tSupplierBasicInfos)) {
+            return Result.success("你还没有邀请过供应商");
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        for (TSupplierBasicInfo single : tSupplierBasicInfos) {
+            TSupplierBasicInfoVO vo = new TSupplierBasicInfoVO();
+            BeanUtils.copyProperties(single, vo);
+            vo.setCreateAt(format.format(single.getCreateAt()));
+            listVo.add(vo);
+        }
+        return Result.success(listVo);
+    }
 
 
     /*-------------------------------------------------*/

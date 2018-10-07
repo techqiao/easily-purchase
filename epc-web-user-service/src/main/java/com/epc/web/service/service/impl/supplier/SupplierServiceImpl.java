@@ -1,6 +1,7 @@
 package com.epc.web.service.service.impl.supplier;
 
 import com.epc.common.Result;
+import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
@@ -10,7 +11,6 @@ import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
@@ -65,6 +65,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> registerSupplier(HandleSupplierDetail handleSupplierDetail) {
+
         Date date=new Date();
         //得到 电话 密码
         String cellphone = handleSupplierDetail.getCellphone();
@@ -98,7 +99,7 @@ public class SupplierServiceImpl implements SupplierService {
                     tSupplierBasicInfo.setUpdateAt(date);
                     //设置   邀请人类型 是平台的，因为这个电话没有在数据 库中存在
                     tSupplierBasicInfo.setInviterId(new Integer(10000000).longValue() );
-                    tSupplierBasicInfo.setInviterCompanyId(4);
+                    tSupplierBasicInfo.setInviterCompanyId(4L);
                     tSupplierBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
 
                     int i=0;
@@ -133,95 +134,95 @@ public class SupplierServiceImpl implements SupplierService {
     /**0.5
      * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
      */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail){
-
-        //得到电话 姓名
-        String cellphone=handleSupplierDetail.getCellphone();
-        String name=handleSupplierDetail.getName();
-        /**
-         *  依据电话查询数据库中有没有这样一条记录,并且数据库中密码这一项为空，是的就让其设置密码，将状态改成完善信息中
-         */
-        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-            //传入的电话为空，让其调用接口失败
-            return Result.error("[供应商注册] StringUtils.isNotBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-        }
-        subCriteria.andCellphoneEqualTo(cellphone);
-        subCriteria.andNameEqualTo(name);
-        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tSupplierBasicInfos)) {
-            return Result.success(false);
-        }
-        return Result.success(true);
-    }
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail){
+//
+//        //得到电话 姓名
+//        String cellphone=handleSupplierDetail.getCellphone();
+//        String name=handleSupplierDetail.getName();
+//        /**
+//         *  依据电话查询数据库中有没有这样一条记录,并且数据库中密码这一项为空，是的就让其设置密码，将状态改成完善信息中
+//         */
+//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
+//            //传入的电话为空，让其调用接口失败
+//            return Result.error("[供应商注册] StringUtils.isNotBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
+//        }
+//        subCriteria.andCellphoneEqualTo(cellphone);
+//        subCriteria.andNameEqualTo(name);
+//        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+//        if(CollectionUtils.isEmpty(tSupplierBasicInfos)) {
+//            return Result.success(false);
+//        }
+//        return Result.success(true);
+//    }
     /**1
      *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
      *      (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
      *      不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
      *      )
      */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail){
-        Date date=new Date();
-
-        //得到电话 姓名
-        String cellphone=handleSupplierDetail.getCellphone();
-        String name=handleSupplierDetail.getName();
-        /**
-         *  依据电话查询数据库中有没有这样一条记录,并且数据库中密码这一项为空，是的就让其设置密码，将状态改成完善信息中
-         */
-        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-        if(StringUtils.isBlank(cellphone)) {
-            //传入的电话为空，让其调用接口失败
-            return Result.error("[供应商注册] StringUtils.isNotBlank(cellphone) : {参数异常}");
-        }
-        subCriteria.andCellphoneEqualTo(cellphone);
-        subCriteria.andNameEqualTo(name);
-        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tSupplierBasicInfos)) {
-            return Result.error("[供应商注册] 数据库中没有这个电话，名字，必须由别人拉取，或者在平台自己注册");
-        }
-        //通过电话,名字 能查出这个数据在数据库中 存在
-        TSupplierBasicInfo operatorBasic = tSupplierBasicInfos.get(0);
-        //然后判断从数据库中查出的这条数据 密码项为空
-        String password = operatorBasic.getPassword();
-
-        if(StringUtils.isNotBlank(password)){
-            //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
-            //因为你的电话与名字可能某些人知道！！！
-            return Result.error("如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
-        }
-        //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
-        //设置一些表中必须的信息
-        String inputPassword = handleSupplierDetail.getPassword();
-        if(StringUtils.isBlank(inputPassword)){
-            return Result.error("密码传参异常");
-        }
-        operatorBasic.setPassword(MD5Util.MD5EncodeUtf8(inputPassword));
-        //完善中
-        operatorBasic.setState(Const.STATE.PERFECTING);
-        //最后修改更新时间
-        operatorBasic.setUpdateAt(date);
-        int i=0;
-        try{
-            //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息，并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
-            i=tSupplierBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
-            return Result.success(i>0);
-        }catch (BusinessException e){
-            LOGGER.error("[供应商注册] tSupplierBasicInfoMapper.updateByExampleSelective, 异常信息e={}" , e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[供应商注册] tSupplierBasicInfoMapper.updateByExampleSelective ： 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
-    }
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail){
+//        Date date=new Date();
+//
+//        //得到电话 姓名
+//        String cellphone=handleSupplierDetail.getCellphone();
+//        String name=handleSupplierDetail.getName();
+//        /**
+//         *  依据电话查询数据库中有没有这样一条记录,并且数据库中密码这一项为空，是的就让其设置密码，将状态改成完善信息中
+//         */
+//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+//        if(StringUtils.isBlank(cellphone)) {
+//            //传入的电话为空，让其调用接口失败
+//            return Result.error("[供应商注册] StringUtils.isNotBlank(cellphone) : {参数异常}");
+//        }
+//        subCriteria.andCellphoneEqualTo(cellphone);
+//        subCriteria.andNameEqualTo(name);
+//        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+//        if(CollectionUtils.isEmpty(tSupplierBasicInfos)) {
+//            return Result.error("[供应商注册] 数据库中没有这个电话，名字，必须由别人拉取，或者在平台自己注册");
+//        }
+//        //通过电话,名字 能查出这个数据在数据库中 存在
+//        TSupplierBasicInfo operatorBasic = tSupplierBasicInfos.get(0);
+//        //然后判断从数据库中查出的这条数据 密码项为空
+//        String password = operatorBasic.getPassword();
+//
+//        if(StringUtils.isNotBlank(password)){
+//            //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
+//            //因为你的电话与名字可能某些人知道！！！
+//            return Result.error("如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
+//        }
+//        //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
+//        //设置一些表中必须的信息
+//        String inputPassword = handleSupplierDetail.getPassword();
+//        if(StringUtils.isBlank(inputPassword)){
+//            return Result.error("密码传参异常");
+//        }
+//        operatorBasic.setPassword(MD5Util.MD5EncodeUtf8(inputPassword));
+//        //完善中
+//        operatorBasic.setState(Const.STATE.PERFECTING);
+//        //最后修改更新时间
+//        operatorBasic.setUpdateAt(date);
+//        int i=0;
+//        try{
+//            //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息，并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
+//            i=tSupplierBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
+//            return Result.success(i>0);
+//        }catch (BusinessException e){
+//            LOGGER.error("[供应商注册] tSupplierBasicInfoMapper.updateByExampleSelective, 异常信息e={}" , e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+//        }catch (Exception e){
+//            LOGGER.error("[供应商注册] tSupplierBasicInfoMapper.updateByExampleSelective ： 异常信息e={}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(e.getMessage());
+//        }
+//    }
 
     /**2
      *  完善供应商信息
@@ -229,13 +230,12 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
-        //供应商法人id
+        //登陆人的id(法人id)
         Long supplierId = roleDetailInfo.getSupplierId();
         if(supplierId==null){
-            return Result.error("[完善供应商信息] supplierId==null : {参数异常}");
+            return Result.error("前端传入参数问题");
         }
         Date date=new Date();
-
         //设置供应商详情表中的一些信息，并插入一条数据到detail
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
         BeanUtils.copyProperties(roleDetailInfo, tSupplierDetailInfo);
@@ -253,17 +253,12 @@ public class SupplierServiceImpl implements SupplierService {
             return Result.error(e.getMessage());
         }
 
+        List<QualificationCertificate> listQcs = roleDetailInfo.getQcs();
 
-        TSupplierAttachment attachment = new TSupplierAttachment();
-        List<Attachment> atts = roleDetailInfo.getAtts();
-        for(Attachment att:atts){
-            attachment.setSupplierId(supplierId);
-            attachment.setCreateAt(date);
-            attachment.setUpdateAt(date);
-            attachment.setCertificateNumber(att.getCertificateNumber());
-            attachment.setCertificateName(att.getCertificateName());
-            attachment.setCertificateFilePath(att.getCertificateFilePath());
-            attachment.setCertificateType(att.getCertificateType());
+        for(QualificationCertificate qc:listQcs){
+            TSupplierAttachment attachment = new TSupplierAttachment();
+            attachment.setCertificateFilePath(qc.getQualificationCertificate());
+            attachment.setCertificateNumber(qc.getQualificationCertificateNumber());
             try{
                 tSupplierAttachmentMapper.insertSelective(attachment);
             }catch (BusinessException e) {
@@ -280,13 +275,8 @@ public class SupplierServiceImpl implements SupplierService {
         TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(supplierId);
          //设置更新日期
         tSupplierBasicInfo.setUpdateAt(date);
-        //设置状态为（state）2:已提交     等待被平台审核，审核通过之后 将状态改为 审核通过
+        //设置状态为 3（审核中）
         tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
-        String name = tSupplierBasicInfo.getName();
-        if(StringUtils.isBlank(name)){
-            //如果为空,就是自己注册。就要对basic表进行相关的填写
-            tSupplierBasicInfo.setName(name);
-        }
         try{
             //将修改（增加）的数据更新到其中
             tSupplierBasicInfoMapper.updateByPrimaryKey(tSupplierBasicInfo);
@@ -310,14 +300,12 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> createSupplierEmployee(HandlerSupplierAddEmployee handlerSupplierAddEmployee) {
-        //得到当前操作人的用户id
-        Long userId = handlerSupplierAddEmployee.getSupplierId();
-        if(userId==null){
-            return Result.error("[供应商增加一个员工] userId==null : {参数异常}");
+        Integer systemRole = handlerSupplierAddEmployee.getSystemRole();
+        Long supplierId = handlerSupplierAddEmployee.getSupplierId();
+        Integer loginRole = handlerSupplierAddEmployee.getLoginRole();
+        if(systemRole.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("不是供应商或者是员工");
         }
-        //利用当前用户的id来查询出supplier_id
-        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(userId);
-        Long supplierId = tSupplierBasicInfo.getSupplierId();
 
         Date date=new Date();
         String name=handlerSupplierAddEmployee.getName();
@@ -326,7 +314,7 @@ public class SupplierServiceImpl implements SupplierService {
         Integer role = handlerSupplierAddEmployee.getRole();
 
         if(StringUtils.isBlank(name) || StringUtils.isBlank(cellphone) || StringUtils.isBlank(password) || role==null){
-            return Result.error("[供应商增加一个员工] StringUtils.isBlank(name) || StringUtils.isBlank(cellphone) || StringUtils.isBlank(password) || role==null ：{传入参数异常}");
+            return Result.error("前端传入参数异常");
         }
         // 创建数据库插入对象
         TSupplierBasicInfo pojo=new TSupplierBasicInfo();
@@ -365,11 +353,16 @@ public class SupplierServiceImpl implements SupplierService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleSupplierId handleSupplierId) {
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+        Integer systemRole = handleFindSupplierBasicById.getSystemRole();
+        Integer loginRole = handleFindSupplierBasicById.getLoginRole();
+        if(systemRole.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("平台角色不对，用户角色不对");
+        }
+        Long id = handleFindSupplierBasicById.getId();
         //得到supplierbasic表的id
-        Long id= handleSupplierId.getId();
         if(id==null) {
-            return Result.error("id!=null 条件有异常");
+            return Result.error("前端传递有问题");
         }
         TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
         //将时间格式化
@@ -390,6 +383,13 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
+        Integer systemRole = handlerUpdateSupplierEmployeeById.getSystemRole();
+        Integer loginRole = handlerUpdateSupplierEmployeeById.getLoginRole();
+        //必须是供应商，不是员工角色 来干这个事
+        if(systemRole.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("平台角色不对，用户角色不对");
+        }
+
         Long id = handlerUpdateSupplierEmployeeById.getId();
         if(id==null){
             return Result.error("[供应商通过id修改员工] id==null : {参数异常}");
@@ -422,28 +422,31 @@ public class SupplierServiceImpl implements SupplierService {
         }
     }
 
-    /**6
-     * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
+    /**6    查看个人信息
+     * 员工通过id来查询 个人信息   (分两种情况，是老板，不是老板。不需要前端 传任何数据，直接用登陆个人信息里面的id与role)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleSupplierId handleSupplierId) {
-        //得到员工的id
-        Long id=handleSupplierId.getId();
-        if(id==null){
-            return Result.error("[员工id来查询（公司法人supplier_id） 公司详情（包括附件）] id==null ： {条件异常}");
+    public Result<RoleDetailInfo> findSupplierDetailByEmployee(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+        Integer type = handleFindSupplierBasicById.getSystemRole();
+        Integer loginRole = handleFindSupplierBasicById.getLoginRole();
+        Long userId = handleFindSupplierBasicById.getId();
+
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER){
+            return Result.error("平台角色不对");
         }
-        TSupplierBasicInfo supplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
-        //得到法人supplier_id
-        Long supplierId = supplierBasicInfo.getSupplierId();
+        RoleDetailInfo vo=new RoleDetailInfo();
 
-        /**
-         * 然后在basic同一个表中将法人的名字，电话，状态，角色 ，创建时间，更新时间都查出来
-         * 因为supplier_id与id一样
-         */
+        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(userId);
+
+        //不是老板,是管理员或者是员工
+        if(loginRole.intValue()!=Const.Role.ROLE_CORPORATION){
+            BeanUtils.copyProperties(tSupplierBasicInfo,vo);
+            return Result.success(vo);
+        }
+
+        //是老板   用户id 就是 法人id
         //查出 法人的基本信息
-        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(supplierId);
-
         //依据员工的法人id来查询另外两张表，supplier_detail; supplier_attachment
 
         TSupplierAttachmentCriteria criteriaAtt=new TSupplierAttachmentCriteria();
@@ -452,8 +455,8 @@ public class SupplierServiceImpl implements SupplierService {
         TSupplierDetailInfoCriteria criteriaDetail=new TSupplierDetailInfoCriteria();
         TSupplierDetailInfoCriteria.Criteria subCriteriaDetail = criteriaDetail.createCriteria();
 
-        subCriteriaAtt.andSupplierIdEqualTo(supplierId);
-        subCriteriaDetail.andSupplierIdEqualTo(supplierId);
+        subCriteriaAtt.andSupplierIdEqualTo(userId);
+        subCriteriaDetail.andSupplierIdEqualTo(userId);
         //这里不能为空，因为殾已经能添加员工了，而且员工能来查看了，必须是 供应商各种资料已经通过审核，所以必须有内容
         TSupplierDetailInfo tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(criteriaDetail).get(0);
 
@@ -464,65 +467,52 @@ public class SupplierServiceImpl implements SupplierService {
 
         List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(criteriaAtt);
 
-        RoleDetailInfo roleDetailInfo=new RoleDetailInfo();
-        List<Attachment> atts = roleDetailInfo.getAtts();
+        List<QualificationCertificate> listQcs = vo.getQcs();
 
-        for(int i=0;i<tSupplierAttachments.size();i++){
-            tSupplierAttachments.get(i).setCertificateType(atts.get(i).getCertificateType());
-            tSupplierAttachments.get(i).setCertificateFilePath(atts.get(i).getCertificateFilePath());
-            tSupplierAttachments.get(i).setCertificateName(atts.get(i).getCertificateName());
-            tSupplierAttachments.get(i).setCertificateNumber(atts.get(i).getCertificateNumber());
+        for(TSupplierAttachment ts:tSupplierAttachments){
+            if(ts.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+                //营业执照照片url
+                vo.setBusinessLicense(ts.getCertificateFilePath());
+                vo.setBusinessLicenseNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode())){
+                //资质证书url
+                QualificationCertificate qualificationCertificate=new QualificationCertificate();
+                qualificationCertificate.setQualificationCertificate(ts.getCertificateFilePath());
+                qualificationCertificate.setQualificationCertificateNumber(ts.getCertificateNumber());
+                listQcs.add(qualificationCertificate);
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                //法人身份证正面照片url
+                vo.setLegalIdCardPositive(ts.getCertificateFilePath());
+                vo.setLegalIdCardPositiveNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                //法人身份证反面照片url
+                vo.setLegalIdCardOther(ts.getCertificateFilePath());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode())){
+                //经办人(运营商员工)手持身份证正面照片url
+                vo.setOperatorIdCardFront(ts.getCertificateFilePath());
+                vo.setOperatorIdCardFrontNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode())){
+                //带公章的授权书照片url
+                vo.setCertificateOfAuthorization(ts.getCertificateFilePath());
+                vo.setCertificateOfAuthorizationNumber(ts.getCertificateNumber());
+                continue;
+            }
         }
+//        测试
+        System.out.println(tSupplierDetailInfos.getSupplierId()+"\n"+tSupplierDetailInfos.getPublicBanAccountNumber()+"\n"+
+            tSupplierDetailInfos.getPublicBankName()+"\n"+tSupplierDetailInfos.getId()+"\n"+tSupplierDetailInfos.getCompanyName()
+        );
 
-
-//        for(TSupplierAttachment ts:tSupplierAttachments){
-//
-//
-//            if(ts.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
-//
-//                //营业执照照片url
-//                roleDetailInfo.setBusinessLicense(ts.getCertificateFilePath());
-//                roleDetailInfo.setBusinessLicenseNumber(ts.getCertificateNumber());
-//                continue;
-//            }
-//            if(ts.getCertificateType().equals(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode())){
-//                //资质证书url
-//                roleDetailInfo.setQualificationCertificate(ts.getCertificateFilePath());
-//                roleDetailInfo.setQualificationCertificateNumber(ts.getCertificateNumber());
-//                continue;
-//            }
-//            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
-//                //法人身份证正面照片url
-//                roleDetailInfo.setLegalIdCardPositive(ts.getCertificateFilePath());
-//                roleDetailInfo.setLegalIdCardPositiveNumber(ts.getCertificateNumber());
-//                continue;
-//            }
-//            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
-//                //法人身份证反面照片url
-//                roleDetailInfo.setLegalIdCardOther(ts.getCertificateFilePath());
-//                continue;
-//            }
-//            if(ts.getCertificateType().equals(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode())){
-//                //经办人(运营商员工)手持身份证正面照片url
-//                roleDetailInfo.setOperatorIdCardFront(ts.getCertificateFilePath());
-//                roleDetailInfo.setOperatorIdCardFrontNumber(ts.getCertificateNumber());
-//                continue;
-//            }
-//            if(ts.getCertificateType().equals(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode())){
-//                //带公章的授权书照片url
-//                roleDetailInfo.setCertificateOfAuthorization(ts.getCertificateFilePath());
-//                roleDetailInfo.setCertificateOfAuthorizationNumber(ts.getCertificateNumber());
-//                continue;
-//            }
-//        }
-        SupplierAttachmentAndDetailVO vo=new SupplierAttachmentAndDetailVO();
-        //测试
-//        System.out.println(tSupplierDetailInfos.getSupplierId()+"\n"+tSupplierDetailInfos.getPublicBanAccountNumber()+"\n"+
-//            tSupplierDetailInfos.getPublicBankName()+"\n"+tSupplierDetailInfos.getId()+"\n"+tSupplierDetailInfos.getCompanyName()
-//        );
-
-        //将附件的所有信息复制到返回类中
-        BeanUtils.copyProperties(roleDetailInfo,vo);
 
         //将依据supplier_id查询出来detail表中信息copy到返回类中
         BeanUtils.copyProperties(tSupplierDetailInfos,vo);
@@ -530,16 +520,114 @@ public class SupplierServiceImpl implements SupplierService {
         //将法人的基本信息复制到返回类中
         BeanUtils.copyProperties(tSupplierBasicInfo,vo);
 
-
         //创建时间与更新时间取的是basic表中的时间
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd E HH:mm:ss a");
-        String createAt = format.format(tSupplierBasicInfo.getCreateAt());
-        String updateAt=format.format(tSupplierBasicInfo.getUpdateAt());
-        vo.setCreateAt(createAt);
-        vo.setUpdateAt(updateAt);
+        vo.setCreateAt(format.format(tSupplierBasicInfo.getCreateAt()));
+        vo.setUpdateAt(format.format(tSupplierBasicInfo.getUpdateAt()));
 
         return Result.success(vo);
     }
+
+    /**6.5
+     * 管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<RoleDetailInfo> findSupplierByBossId(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+        Long bossId = handleFindSupplierBasicById.getId();
+        Integer type = handleFindSupplierBasicById.getSystemRole();
+        Integer loginRole = handleFindSupplierBasicById.getLoginRole();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CORPORATION){
+            return Result.error("角色不对");
+        }
+        /**
+         * 然后在basic同一个表中将法人的名字，电话，状态，角色 ，创建时间，更新时间都查出来
+         * 因为supplier_id与id一样
+         */
+        //查出 法人的基本信息
+        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(bossId);
+
+        //依据员工的法人id来查询另外两张表，supplier_detail; supplier_attachment
+
+        TSupplierAttachmentCriteria criteriaAtt=new TSupplierAttachmentCriteria();
+        TSupplierAttachmentCriteria.Criteria subCriteriaAtt = criteriaAtt.createCriteria();
+
+        TSupplierDetailInfoCriteria criteriaDetail=new TSupplierDetailInfoCriteria();
+        TSupplierDetailInfoCriteria.Criteria subCriteriaDetail = criteriaDetail.createCriteria();
+
+        subCriteriaAtt.andSupplierIdEqualTo(bossId);
+        subCriteriaDetail.andSupplierIdEqualTo(bossId);
+        //这里不能为空，因为殾已经能添加员工了，而且员工能来查看了，必须是 供应商各种资料已经通过审核，所以必须有内容
+        TSupplierDetailInfo tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(criteriaDetail).get(0);
+
+        //测试
+//        System.out.println(tSupplierDetailInfos.getSupplierId()+"\n"+tSupplierDetailInfos.getPublicBanAccountNumber()+"\n"+
+//            tSupplierDetailInfos.getPublicBankName()+"\n"+tSupplierDetailInfos.getId()+"\n"+tSupplierDetailInfos.getCompanyName()
+//        );
+
+        List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(criteriaAtt);
+
+        RoleDetailInfo vo=new RoleDetailInfo();
+        List<QualificationCertificate> listQcs = vo.getQcs();
+
+        for(TSupplierAttachment ts:tSupplierAttachments){
+            if(ts.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())){
+
+                //营业执照照片url
+                vo.setBusinessLicense(ts.getCertificateFilePath());
+                vo.setBusinessLicenseNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode())){
+                //资质证书url
+                QualificationCertificate qc=new QualificationCertificate();
+                qc.setQualificationCertificate(ts.getCertificateFilePath());
+                qc.setQualificationCertificateNumber(ts.getCertificateNumber());
+                listQcs.add(qc);
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
+                //法人身份证正面照片url
+                vo.setLegalIdCardPositive(ts.getCertificateFilePath());
+                vo.setLegalIdCardPositiveNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
+                //法人身份证反面照片url
+                vo.setLegalIdCardOther(ts.getCertificateFilePath());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode())){
+                //经办人(运营商员工)手持身份证正面照片url
+                vo.setOperatorIdCardFront(ts.getCertificateFilePath());
+                vo.setOperatorIdCardFrontNumber(ts.getCertificateNumber());
+                continue;
+            }
+            if(ts.getCertificateType().equals(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode())){
+                //带公章的授权书照片url
+                vo.setCertificateOfAuthorization(ts.getCertificateFilePath());
+                vo.setCertificateOfAuthorizationNumber(ts.getCertificateNumber());
+                continue;
+            }
+        }
+        //测试
+        System.out.println(tSupplierDetailInfos.getSupplierId()+"\n"+tSupplierDetailInfos.getPublicBanAccountNumber()+"\n"+
+            tSupplierDetailInfos.getPublicBankName()+"\n"+tSupplierDetailInfos.getId()+"\n"+tSupplierDetailInfos.getCompanyName()
+        );
+
+        //将依据supplier_id查询出来detail表中信息copy到返回类中
+        BeanUtils.copyProperties(tSupplierDetailInfos,vo);
+
+        //将法人的基本信息复制到返回类中
+        BeanUtils.copyProperties(tSupplierBasicInfo,vo);
+
+        //创建时间与更新时间取的是basic表中的时间
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd E HH:mm:ss a");
+        vo.setCreateAt(format.format(tSupplierBasicInfo.getCreateAt()));
+        vo.setUpdateAt(format.format(tSupplierBasicInfo.getUpdateAt()));
+        return Result.success(vo);
+    }
+
 
     /**7
      * 根据电话来查找一条记录,返回一个真假值
@@ -547,6 +635,12 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> findSupplierRecordByCellphone(HandleSupplierCellphone handleSupplierCellphone){
+        Integer type = handleSupplierCellphone.getType();
+        Integer loginRole = handleSupplierCellphone.getLoginRole();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("角色不对");
+        }
+
         String cellphone=handleSupplierCellphone.getCellphone();
 //        System.out.println("电话 cellphone==="+cellphone);
         if(StringUtils.isNotBlank(cellphone)){
@@ -571,10 +665,16 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<SupplierBasicInfoVO> findSupplierByCellphone(HandleSupplierCellphone handleSupplierCellphone) {
+        Integer type = handleSupplierCellphone.getType();
+        Integer loginRole = handleSupplierCellphone.getLoginRole();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("角色不对");
+        }
+
         String cellphone= handleSupplierCellphone.getCellphone();
 
         if(StringUtils.isBlank(cellphone)) {
-            return Result.error("StringUtils.isNotBlank(cellphone) : {参数异常}");
+            return Result.error("前端传入参数异常");
         }
 
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
@@ -605,6 +705,13 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateSupplierEmployeeByisDeleted(HandleSupplierIdAndIsForbidden handleSupplierIdAndIsForbidden){
+        Integer type = handleSupplierIdAndIsForbidden.getType();
+        Integer loginRole = handleSupplierIdAndIsForbidden.getLoginRole();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("角色不对");
+        }
+
+        //你要操作的员工id
         Long id=handleSupplierIdAndIsForbidden.getId();
         if(id==null){
             return Result.error("[通过员工id 只 修改员工的状态] id==null : {条件异常}");
@@ -630,6 +737,12 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> deleteSupplierEmployeeById(HandleSupplieIsDeleted handleSupplieIsDeleted) {
+        Integer type = handleSupplieIsDeleted.getType();
+        Integer loginRole = handleSupplieIsDeleted.getLoginRole();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("角色不对");
+        }
+
         Long id=handleSupplieIsDeleted.getId();
         Integer isDeleted = handleSupplieIsDeleted.getIsDeleted();
         if(id!=null && isDeleted!=null){
@@ -639,16 +752,16 @@ public class SupplierServiceImpl implements SupplierService {
                 int i = tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
                 return Result.success(i>0);
             }catch (BusinessException e){
-                LOGGER.error("[供应商删除依id删除一个员工] tSupplierBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+                LOGGER.error("[供应商依id删除一个员工] tSupplierBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
             }catch (Exception e){
-                LOGGER.error("[供应商删除依id删除一个员工] tSupplierBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+                LOGGER.error("[供应商依id删除一个员工] tSupplierBasicInfoMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error(e.getMessage());
             }
         }else{
-            return Result.error("[供应商删除依id删除一个员工] id!=null : {条件异常}");
+            return Result.error("前端传入数据异常}");
         }
     }
 
@@ -659,6 +772,12 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateSupplierEmployeeRoleById(HandleOperatorRole handleOperatorRole){
+        Integer type = handleOperatorRole.getSystemRole();
+        Integer loginRole = handleOperatorRole.getLoginRole();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("角色不对");
+        }
+
         Long id=handleOperatorRole.getId();
         Integer role = handleOperatorRole.getRole();
         if(id==null || role==null){
@@ -682,18 +801,18 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     /**12
-     * 通过id来修改对应的state  0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * 通过id来修改对应的state  1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过
      * @author donghuan
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateSupplierEmployeeStateById(HandleOperatorState handleOperatorState){
+
         Long id = handleOperatorState.getId();
         Integer state=handleOperatorState.getState();
 //        System.out.println("id + state==="+id+"   "+state);
         if(id==null || state==null){
-            LOGGER.error("[通过id来修改对应的state] id==null || state==null : {参数异常}");
-            return Result.error("[通过id来修改对应的state] id==null || state==null : {参数异常}");
+            return Result.error("前端传入参数异常");
         }
         try{
             TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
@@ -717,6 +836,10 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> forgetPasswordSupplier(HandleSupplierForgetPassword handleSupplierForgetPassword) {
+        Integer type = handleSupplierForgetPassword.getType();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER){
+            return Result.error("角色不匹配");
+        }
 
         //得到手机号,查询数据库中有没有这条数据
         String cellphone=handleSupplierForgetPassword.getCellphone();
@@ -738,9 +861,11 @@ public class SupplierServiceImpl implements SupplierService {
         //加密传过来的密码
         tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(newPassword));
         tSupplierBasicInfo.setUpdateAt(new Date());
+        int i=0;
         try{
             //将新密码更新到数据 库中
-            tSupplierBasicInfoMapper.updateByExampleSelective(tSupplierBasicInfo, criteria);
+            i=tSupplierBasicInfoMapper.updateByExampleSelective(tSupplierBasicInfo, criteria);
+            return Result.<Boolean>success(i>0);
         }catch (BusinessException e){
             LOGGER.error("[供应商忘记密码] tSupplierBasicInfoMapper.updateByExampleSelective : {}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -750,7 +875,6 @@ public class SupplierServiceImpl implements SupplierService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-        return Result.<Boolean>success(true);
     }
 
 
@@ -761,29 +885,26 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
+        Integer type = handleSupplierIdAndName.getType();
+        Integer loginRole = handleSupplierIdAndName.getLoginRole();
+        Long bossId = handleSupplierIdAndName.getBossId();
+        if(type.intValue()!=Const.LOGIN_USER_TYPE.SUPPLIER || loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("角色不匹配");
+        }
 
-        //得到操作者本人的id，查出来的是这个供应商底下的员工列表
-        Long id=handleSupplierIdAndName.getId();
         //获取输入的名字,来进行模糊查询
         String name=handleSupplierIdAndName.getName();
         //角色是管理员，员工
         Integer role = handleSupplierIdAndName.getRole();
         //是否禁用
         Integer isForbidden = handleSupplierIdAndName.getIsForbidden();
-        if(id==null){
-            return Result.error("[供应商查询员工列表] id==null  ：{参数异常}");
-        }
-        //依据操作者id来查出法人id
-        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
-        Long supplierId = tSupplierBasicInfo.getSupplierId();
-        System.out.println("当前用户=="+id+"==下的法人supplierId=="+supplierId);
 
         //给出查询的条件，查询出符合条件的员工
         TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //注意查出的是is_deleted是0（存在）的
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        subCriteria.andSupplierIdEqualTo(supplierId);
+        subCriteria.andSupplierIdEqualTo(bossId);
         if(role!=null){
             subCriteria.andRoleEqualTo(role);
         }

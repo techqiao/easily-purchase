@@ -8,6 +8,15 @@ import java.io.Serializable;
 public class HandleOperatorCellphone implements Serializable {
     private static final long serialVersionUID = 1834049633684570852L;
 
+
+    /**
+     *  是什么角色
+     */
+    private Integer systemRole;
+
+    // 登陆时的用户角色
+    private Integer loginRole;
+
     /**
      * 电话
      */

@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -122,8 +123,11 @@ public class WinBidServiceImpl implements WinBidService {
             TProjectBasicInfo tProjectBasicInfo = tProjectBasicInfoMapper.selectByPrimaryKey(handleWinBid.getProjectId());
             entity.setPurchaserName(tPurchaserDetailInfoMapper.selectName(tProjectBasicInfo.getPurchaserId()));
             BeanUtils.copyProperties(handleWinBid,entity);
+            entity.setProjectCode(tProjectBasicInfo.getProjectCode());
+            entity.setProjectName(tProjectBasicInfo.getProjectName());
             entity.setCreateAt(new Date());
             entity.setUpdateAt(new Date());
+            entity.setOperateId(handleWinBid.getPurchaserId());
             entity.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
             entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             //获取标段记录
@@ -133,27 +137,24 @@ public class WinBidServiceImpl implements WinBidService {
             TPurchaseProjectBasicInfo purchaseProjectBasicInfo = tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(handleWinBid.getProcurementProjectId());
             //判断是否委托代理机构(0否，1是)
             entity.setIsPowerAgency(purchaseProjectBasicInfo.getIsOtherAgency());
-            //采购项目人员参与人
-            List<TPurchaseProjectParticipant> participantList = tPurchaseProjectParticipantMapper.selectPersonList(handleWinBid.getProcurementProjectId());
-            if (!CollectionUtils.isEmpty(participantList)) {
-                //获取采购项目经办人
-                for (TPurchaseProjectParticipant pantEntity : participantList) {
-                    TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
-                    TPurchaseProjectParticipantPermissionCriteria.Criteria cubCriteria=criteria.createCriteria();
-                    cubCriteria.andParticipantIdEqualTo(pantEntity.getId());
-                    cubCriteria.andParticipantPermissionEqualTo(ParticipantPermissionEnum.AGENT.getCode());
-                    List<TPurchaseProjectParticipantPermission> permissions = tPurchaseProjectParticipantPermissionMapper.selectByExample(criteria);
-                    if (permissions.size()>0) {
-                        entity.setAgencyName(pantEntity.getUserName());
-                        entity.setAgencyPhone(pantEntity.getUserPhone());
-                        break;
-                    }
-                }
+            //采购项目人员经办人
+            TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
+            TPurchaseProjectParticipantPermissionCriteria.Criteria newCriteria=criteria.createCriteria();
+            newCriteria.andPurchaseProjectIdEqualTo(handleWinBid.getProcurementProjectId());
+            newCriteria.andParticipantPermissionEqualTo(ParticipantPermissionEnum.AGENT.getCode());
+            newCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+            List<TPurchaseProjectParticipantPermission> ppp=tPurchaseProjectParticipantPermissionMapper.selectByExample(criteria);
+            if(ppp.size()>0){
+                TPurchaseProjectParticipant pp=  tPurchaseProjectParticipantMapper.selectByPrimaryKey(ppp.get(0).getParticipantId());
+                entity.setAgencyName(pp.getUserName());
+                entity.setAgencyPhone(pp.getUserPhone());
             }
             try {
                 tWinBidNominateMapper.insertSelective(entity);
             }catch (Exception e){
-                LOGGER.error("insertTWinBidNominate Error");
+                LOGGER.error("insertTWinBidNominate_"+e.getMessage());
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
             }
             return Result.success(true);
     }

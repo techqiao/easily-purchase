@@ -32,4 +32,9 @@ public class HandleWinBid implements Serializable {
 
     private String threeCompanyname;
 
+    private Long purchaserId;
+
+    private Long BossId;
+
+
 }

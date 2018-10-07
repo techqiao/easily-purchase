@@ -32,6 +32,5 @@ public interface TPurchaseProjectParticipantMapper {
 
     int updateByPrimaryKey(TPurchaseProjectParticipant record);
 
-    @Select(value = "SELECT * FROM tt_purchase_project_participant WHERE 1 = 1 and purchase_project_id= #{procurementProjectId} and is_deleted=0")
-    List<TPurchaseProjectParticipant> selectPersonList(Long procurementProjectId);
+    List<TPurchaseProjectParticipant> getAgencyInfo(Long procurementProjectId);
 }

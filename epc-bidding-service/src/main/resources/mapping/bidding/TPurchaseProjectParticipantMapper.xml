@@ -332,4 +332,7 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="getAgencyInfo" resultType="com.epc.bidding.domain.TPurchaseProjectParticipant">
+   SELECT * FROM t_purchase_project_participant WHERE 1 = 1 and purchase_project_id= #{procurementProjectId} and is_deleted=0
+  </select>
 </mapper>

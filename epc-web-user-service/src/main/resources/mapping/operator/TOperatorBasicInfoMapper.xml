@@ -288,6 +288,7 @@
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
+
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.operator.TOperatorBasicInfo" >
     update t_operator_basic_info

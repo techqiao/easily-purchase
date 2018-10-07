@@ -125,7 +125,7 @@ public class OperatorServiceImpl implements OperatorService {
             //短信验证
 
             //设置状态 为 完善中。。。
-            tOperatorBasicInfo.setState(Const.STATE_CODE.COMPLETING_INFO);
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             //设置角色 为法人
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             //记录创建时间
@@ -928,7 +928,7 @@ public class OperatorServiceImpl implements OperatorService {
         //完善完 详情表，附件表，就要将采购主表状态改成 审核中,并设置最新时间
         TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(id);
         //审核 中
-        tPurchaserBasicInfo.setState(Const.STATE_CODE.CHECKING);
+        tPurchaserBasicInfo.setState(Const.STATE.COMMITTED);
         tPurchaserBasicInfo.setUpdateAt(date);
         try {
             tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo);
@@ -1021,7 +1021,7 @@ public class OperatorServiceImpl implements OperatorService {
         //邀请机构 id
         tPurchaserBasicInfo.setInviterCompanyId(bossId.intValue());
         //设置状态，已拉取
-        tPurchaserBasicInfo.setState(Const.STATE_CODE.PULLING);
+        tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
         //邀请人角色
         tPurchaserBasicInfo.setRole(loginRole);
         tPurchaserBasicInfo.setCreateAt(date);
@@ -1085,7 +1085,7 @@ public class OperatorServiceImpl implements OperatorService {
         //邀请人机构 id
         tSupplierBasicInfo.setInviterCompanyId(bossId);
         // stata 设为 拉取
-        tSupplierBasicInfo.setState(Const.STATE_CODE.PULLING);
+        tSupplierBasicInfo.setState(Const.STATE.REGISTERED);
         //法人
         tSupplierBasicInfo.setRole(loginRole);
         tSupplierBasicInfo.setCreateAt(date);

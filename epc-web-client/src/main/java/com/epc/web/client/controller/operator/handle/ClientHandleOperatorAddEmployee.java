@@ -21,9 +21,9 @@ public class ClientHandleOperatorAddEmployee {
     @NotEmpty(message = "ClientHandleOperatorAddEmployee.password.null")
     private String password;
 
-    @ApiModelProperty(value = "员工id(运营商id)")
-    @NotEmpty(message = "ClientHandleOperatorAddEmployee.id.null")
-    private Long id;
+//    @ApiModelProperty(value = "员工id(运营商id)")
+//    @NotEmpty(message = "ClientHandleOperatorAddEmployee.id.null")
+//    private Long id;
 
     @ApiModelProperty(value = "员工角色role")
     @NotEmpty(message = "ClientHandleOperatorAddEmployee.role.null")

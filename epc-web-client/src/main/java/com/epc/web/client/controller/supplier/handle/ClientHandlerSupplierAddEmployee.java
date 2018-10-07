@@ -19,12 +19,6 @@ import java.util.Date;
 public class ClientHandlerSupplierAddEmployee{
 
 
-    @ApiModelProperty(value = "供应商的id")
-    @NotEmpty(message = "ClientHandlerSupplierAddEmployee.supplierId.null")
-    private Long supplierId;
-
-    @ApiModelProperty(value = "供应商员工的状态")
-    private Integer state;
 
     @ApiModelProperty(value = "员工角色")
     @NotEmpty(message = "ClientHandlerSupplierAddEmployee.role.null")

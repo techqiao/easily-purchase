@@ -26,15 +26,7 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail) {
-        return Result.hystrixError();
-    }
 
-    @Override
-    public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail) {
-        return Result.hystrixError();
-    }
 
     @Override
     public Result<Boolean> insertCompleteSupplierInfo(RoleDetailInfo roleDetailInfo) {
@@ -47,9 +39,10 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleSupplierId handleSupplierId) {
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierBasicById handleFindSupplierBasicById) {
         return Result.hystrixError();
     }
+
 
     @Override
     public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
@@ -57,9 +50,15 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleSupplierId handleSupplierId) {
+    public Result<RoleDetailInfo> findSupplierDetailByEmployee(HandleFindSupplierBasicById handleFindSupplierBasicById) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result<RoleDetailInfo> findSupplierByBossId(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+        return Result.hystrixError();
+    }
+
 
     @Override
     public Result<Boolean> findSupplierRecordByCellphone(HandleSupplierCellphone handleSupplierCellphone) {

@@ -1,9 +1,11 @@
 package com.epc.web.facade.operator.vo;
 
+import com.epc.web.facade.operator.handle.Attachment;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class OperatorBasicInfoVO implements Serializable {
@@ -26,6 +28,9 @@ public class OperatorBasicInfoVO implements Serializable {
     private String name;
 
 
+    private Integer state;
+    private Integer isForbidden;
+
     /**
      * 用户角色:0-法人,1-管理员,2-普通员工
      */
@@ -41,9 +46,17 @@ public class OperatorBasicInfoVO implements Serializable {
      */
     private String updateAt;
 
-    /**
-     * 是否禁用
-     */
-    private Integer isForbidden;
+
+    private Long operatorId;
+
+//    private String companyName;
+//
+//    private String uniformCreditCode;
+//
+//    private String publicBankName;
+//
+//    private String publicBanAccountNumber;
+
+//    private List<Attachment> atts;
 
 }

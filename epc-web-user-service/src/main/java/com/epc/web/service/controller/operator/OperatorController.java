@@ -8,6 +8,9 @@ import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
+import com.epc.web.facade.operator.vo.OperatorBasicVO;
+import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
+import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 import com.epc.web.service.service.operator.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,7 @@ import java.util.List;
 
 
 /**
- * <p>Description : 运营商控制器
+ * <p>Description : 运营商服务
  * <p>Date : 2018-09-10  18:08
  */
 @RestController
@@ -39,20 +42,20 @@ public class OperatorController implements FacadeOperatorService {
     /**0.5
      * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
      */
-    @Override
-    public Result<Boolean> addPasswordOperatorLogin(@RequestBody HandleOperator handleOperator){
-        return operatorService.addPasswordOperatorLogin(handleOperator);
-    }
+//    @Override
+//    public Result<Boolean> addPasswordOperatorLogin(@RequestBody HandleOperator handleOperator){
+//        return operatorService.addPasswordOperatorLogin(handleOperator);
+//    }
     /**1
      *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
      *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
      *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
      *           )
      */
-    @Override
-    public Result<Boolean> addPasswordOperator(@RequestBody HandleOperator handleOperator){
-        return operatorService.addPasswordOperator(handleOperator);
-    }
+//    @Override
+//    public Result<Boolean> addPasswordOperator(@RequestBody HandleOperator handleOperator){
+//        return operatorService.addPasswordOperator(handleOperator);
+//    }
 
     /**2
      * 完善运营商信息
@@ -78,7 +81,7 @@ public class OperatorController implements FacadeOperatorService {
      * 依据id查询已经登陆的个人信息
      */
     @Override
-    public Result<OperatorBasicInfoVO> findByName(@RequestBody HandleOperatorId handleOperatorId){
+    public Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId){
         return operatorService.findByName(handleOperatorId);
     }
 
@@ -163,6 +166,16 @@ public class OperatorController implements FacadeOperatorService {
         return operatorService.createPurchaseByOperator(handleCreatePurchaserByOperator);
     }
 
+    /**15.5
+     *
+     *  查看当前登陆人拉的采购人列表list
+     *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
+     */
+    @Override
+    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo){
+        return operatorService.lookPurchaserList(handleOperatorLoginInfo);
+    }
+
     /**16
      *  运营商新增采购人（不包括完善信息，只填写姓名，电话）
      */
@@ -189,5 +202,12 @@ public class OperatorController implements FacadeOperatorService {
         return operatorService.operatorCreateSupplier(handleCreatePurchaserByOperator);
     }
 
+    /**19
+     *    查看当前登陆者拉的供应商列表
+     */
+    @Override
+    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo){
+        return operatorService.lookSupplierList(handleOperatorLoginInfo);
+    }
 
 }

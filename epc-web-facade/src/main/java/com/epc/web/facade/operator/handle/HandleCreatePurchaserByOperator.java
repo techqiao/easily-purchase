@@ -18,7 +18,23 @@ import java.util.List;
 public class HandleCreatePurchaserByOperator implements Serializable {
     private static final long serialVersionUID = 5221353786072352076L;
 
+
     //运营商员工id
+//    private Long id;
+    /**
+     *  是什么角色
+     */
+    private Integer systemRole;
+
+    // 登陆时的用户角色
+//    private Integer loginRole;
+
+    // 当前 登陆人的法人 id
+//    private Long bossId;
+
+
+
+    //当前添加的采购人id
     private Long id;
 
     //采购人姓名

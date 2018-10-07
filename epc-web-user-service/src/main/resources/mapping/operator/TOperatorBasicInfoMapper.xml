@@ -245,6 +245,7 @@
         </trim>
     </insert>
     <insert id="registerUser">
+
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>

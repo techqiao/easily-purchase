@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TProjectBidProcedureMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TProjectBidProcedure" >
+<mapper namespace="com.epc.bidding.mapper.TProjectBidProcedureMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TProjectBidProcedure" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
@@ -75,7 +75,7 @@
     id, project_id, purchase_project_id, bids_id, procedure_name, operate_type, creator, 
     create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedureCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TProjectBidProcedureCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -99,13 +99,13 @@
     delete from t_project_bid_procedure
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedureCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TProjectBidProcedureCriteria" >
     delete from t_project_bid_procedure
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedure" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TProjectBidProcedure" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -118,7 +118,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedure" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TProjectBidProcedure" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -182,7 +182,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedureCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TProjectBidProcedureCriteria" resultType="java.lang.Integer" >
     select count(*) from t_project_bid_procedure
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -242,7 +242,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedure" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TProjectBidProcedure" >
     update t_project_bid_procedure
     <set >
       <if test="projectId != null" >
@@ -275,7 +275,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedure" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TProjectBidProcedure" >
     update t_project_bid_procedure
     set project_id = #{projectId,jdbcType=BIGINT},
       purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
@@ -288,7 +288,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TProjectBidProcedureCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TProjectBidProcedureCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

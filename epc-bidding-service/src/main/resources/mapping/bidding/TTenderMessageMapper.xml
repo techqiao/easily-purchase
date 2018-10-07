@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.epc.bidding.mapper.bidding.TTenderMessageMapper">
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TTenderMessage">
+<mapper namespace="com.epc.bidding.mapper.TTenderMessageMapper">
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TTenderMessage">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="purchase_project_id" jdbcType="BIGINT" property="purchaseProjectId" />
     <result column="release_announcement_id" jdbcType="BIGINT" property="releaseAnnouncementId" />
@@ -80,7 +80,7 @@
     delegator, identit_card, bailment_path, bid_appendix, operate_id, create_at, update_at, 
     is_deleted
   </sql>
-  <select id="selectByExample" parameterType="com.epc.bidding.domain.bidding.TTenderMessageCriteria" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.epc.bidding.domain.TTenderMessageCriteria" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -104,13 +104,13 @@
     delete from t_tender_message
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TTenderMessageCriteria">
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TTenderMessageCriteria">
     delete from t_tender_message
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TTenderMessage">
+  <insert id="insert" parameterType="com.epc.bidding.domain.TTenderMessage">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -125,7 +125,7 @@
       #{bidAppendix,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TTenderMessage">
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TTenderMessage">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -213,7 +213,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TTenderMessageCriteria" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TTenderMessageCriteria" resultType="java.lang.Integer">
     select count(*) from t_tender_message
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -289,7 +289,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TTenderMessage">
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TTenderMessage">
     update t_tender_message
     <set>
       <if test="purchaseProjectId != null">
@@ -334,7 +334,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TTenderMessage">
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TTenderMessage">
     update t_tender_message
     set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
@@ -351,7 +351,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="selectByExampleWithRowbounds" parameterType="com.epc.bidding.domain.bidding.TTenderMessageCriteria" resultMap="BaseResultMap">
+  <select id="selectByExampleWithRowbounds" parameterType="com.epc.bidding.domain.TTenderMessageCriteria" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct

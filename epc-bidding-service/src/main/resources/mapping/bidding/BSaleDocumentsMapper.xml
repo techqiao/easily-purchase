@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.BSaleDocumentsMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BSaleDocuments" >
+<mapper namespace="com.epc.bidding.mapper.BSaleDocumentsMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.BSaleDocuments" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="auditor_id" property="auditorId" jdbcType="BIGINT" />
@@ -85,7 +85,7 @@
     clarification_problem_end_time, decryption_method, process_status, operate_id, create_at, 
     update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BSaleDocumentsCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -109,13 +109,13 @@
     delete from b_sale_documents
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.BSaleDocumentsCriteria" >
     delete from b_sale_documents
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.BSaleDocuments" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -134,7 +134,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.BSaleDocuments" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -246,7 +246,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.BSaleDocumentsCriteria" resultType="java.lang.Integer" >
     select count(*) from b_sale_documents
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -338,7 +338,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.BSaleDocuments" >
     update b_sale_documents
     <set >
       <if test="procurementProjectId != null" >
@@ -395,7 +395,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BSaleDocuments" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.BSaleDocuments" >
     update b_sale_documents
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       auditor_id = #{auditorId,jdbcType=BIGINT},
@@ -416,7 +416,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BSaleDocumentsCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BSaleDocumentsCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

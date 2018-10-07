@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TSupplierBasicInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TSupplierBasicInfo" >
+<mapper namespace="com.epc.bidding.mapper.TSupplierBasicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TSupplierBasicInfo" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="cellphone" property="cellphone" jdbcType="CHAR" />
@@ -78,7 +78,7 @@
     id, name, cellphone, password, supplier_id, inviter_type, inviter_id, inviter_company_id, 
     state, role, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfoCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TSupplierBasicInfoCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -102,13 +102,13 @@
     delete from t_supplier_basic_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfoCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TSupplierBasicInfoCriteria" >
     delete from t_supplier_basic_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfo" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TSupplierBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -123,7 +123,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfo" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TSupplierBasicInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -205,7 +205,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfoCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TSupplierBasicInfoCriteria" resultType="java.lang.Integer" >
     select count(*) from t_supplier_basic_info
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -277,7 +277,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TSupplierBasicInfo" >
     update t_supplier_basic_info
     <set >
       <if test="name != null" >
@@ -319,7 +319,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TSupplierBasicInfo" >
     update t_supplier_basic_info
     set name = #{name,jdbcType=VARCHAR},
       cellphone = #{cellphone,jdbcType=CHAR},
@@ -335,7 +335,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TSupplierBasicInfoCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TSupplierBasicInfoCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

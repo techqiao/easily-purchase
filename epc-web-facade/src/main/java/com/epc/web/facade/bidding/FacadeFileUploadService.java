@@ -17,15 +17,6 @@ public interface FacadeFileUploadService {
     @PostMapping(value = "updatePretrialFile", consumes = "application/json; charset=UTF-8")
     Result<Boolean> updatePretrialFile(@RequestBody HandlePretriaFile handlePretriaFile);
 
-    /**
-     * 新增预审信息
-     * @param handlePretriaFile
-     * @return
-     */
-    @PostMapping(value = "insertPretrialFile", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertPretrialFile(@RequestBody HandlePretriaFile handlePretriaFile);
-
-
         /**
          * 查看预审信息
          * @param handlePretriaFile
@@ -33,8 +24,6 @@ public interface FacadeFileUploadService {
          */
     @PostMapping(value = "getTPretrialMessage", consumes = "application/json; charset=UTF-8")
     Result<PretrialMessageVO> getTPretrialMessage(@RequestBody HandlePretriaFile handlePretriaFile);
-
-
 
     /**
      * 修改 投标信息

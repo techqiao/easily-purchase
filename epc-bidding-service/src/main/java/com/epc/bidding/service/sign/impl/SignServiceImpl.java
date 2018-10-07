@@ -1,10 +1,10 @@
 package com.epc.bidding.service.sign.impl;
 
-import com.epc.bidding.domain.bidding.TSupplierSign;
-import com.epc.bidding.domain.bidding.TTenderMessage;
-import com.epc.bidding.domain.bidding.TTenderMessageCriteria;
-import com.epc.bidding.mapper.bidding.TSupplierSignMapper;
-import com.epc.bidding.mapper.bidding.TTenderMessageMapper;
+import com.epc.bidding.domain.TSupplierSign;
+import com.epc.bidding.domain.TTenderMessage;
+import com.epc.bidding.domain.TTenderMessageCriteria;
+import com.epc.bidding.mapper.TSupplierSignMapper;
+import com.epc.bidding.mapper.TTenderMessageMapper;
 import com.epc.bidding.service.sign.SignService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;

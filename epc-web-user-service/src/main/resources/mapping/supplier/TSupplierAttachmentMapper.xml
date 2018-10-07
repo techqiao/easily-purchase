@@ -104,7 +104,6 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.web.service.domain.supplier.TSupplierAttachment" >
     <delete id="deleteAttachaments" parameterType="java.util.List">
       DELETE
       FROM t_supplier_attachment

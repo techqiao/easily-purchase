@@ -13,7 +13,16 @@ public class HandleOperatorUpdateEmployeeById implements Serializable {
 
     private static final long serialVersionUID = 7782843166198100959L;
     /**
-     * 要修改员工的id
+     *  是什么角色
+     */
+    private Integer systemRole;
+
+    // 登陆时的用户角色
+    private Integer loginRole;
+
+
+    /**
+     * 员工id(点哪个就是哪个)
      */
     private Long id;
 

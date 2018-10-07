@@ -22,6 +22,11 @@ public class HandleOperatorAddEmployee implements Serializable {
      */
     private Long loginId;
 
+    /**
+     * 法人id
+     */
+    private Long bossId;
+
 
     /**
      * 要添加的员工名字

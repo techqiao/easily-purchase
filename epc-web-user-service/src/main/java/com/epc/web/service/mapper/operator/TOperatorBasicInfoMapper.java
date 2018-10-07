@@ -1,6 +1,5 @@
 package com.epc.web.service.mapper.operator;
 
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.service.domain.operator.TOperatorBasicInfo;
 import com.epc.web.service.domain.operator.TOperatorBasicInfoCriteria;
@@ -35,6 +34,10 @@ public interface TOperatorBasicInfoMapper {
 
     int updateByPrimaryKey(TOperatorBasicInfo record);
 
+
+
+
+    /*wenlin*/
     TOperatorBasicInfo login(@Param("cellphone") String cellphone, @Param("pwd") String pwd);
 
     int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates") Date date);
@@ -48,4 +51,8 @@ public interface TOperatorBasicInfoMapper {
     TOperatorBasicInfo selectOperatorDetailByOperatorId(@Param("operatorId") Long operatorId, @Param("roleCorporation") int roleCorporation);
 
     boolean selectCountOperatorBasicByNameAndCellphone(@Param("name") String name, @Param("cellphone") String cellphone);
+
+
+
+
 }

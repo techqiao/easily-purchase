@@ -1,13 +1,16 @@
 package com.epc.web.facade.supplier.vo;
 
 import com.epc.web.facade.operator.handle.Attachment;
+import com.epc.web.facade.supplier.handle.QualificationCertificate;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class SupplierAttachmentAndDetailVO implements Serializable {
     private static final long serialVersionUID = 4416477502214082289L;
@@ -42,6 +45,7 @@ public class SupplierAttachmentAndDetailVO implements Serializable {
      * ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='供应商:审核所需详细信息';
      */
 
+    private Long id;
 
     //供应商法人ID
     private Long supplierId;
@@ -79,33 +83,32 @@ public class SupplierAttachmentAndDetailVO implements Serializable {
     //最后修改时间
     private String updateAt;
 
-    private List<Attachment> atts;
 
-
-//    //资质证书url
+    //资质证书url
 //    private String qualificationCertificate;
 //    private String qualificationCertificateNumber;
-//
-//    //营业执照照片url
-//    private String businessLicense;
-//    private String businessLicenseNumber;
-//
-//    //法人身份证正面照片url
-//    private String legalIdCardPositive;
-//    private String legalIdCardPositiveNumber;
-//
-//    //法人身份证反面照片url
-//    private String legalIdCardOther;
-//
-//    //带公章的授权书照片url
-//    private String certificateOfAuthorization;
-//    private String certificateOfAuthorizationNumber;
-//
-//    // 经办人(运营商员工)手持身份证正面照片url
-//    private String operatorIdCardFront;
-//    private String operatorIdCardFrontNumber;
 
+    //营业执照照片url
+    private String businessLicense;
+    private String businessLicenseNumber;
 
+    //法人身份证正面照片url
+    private String legalIdCardPositive;
+    private String legalIdCardPositiveNumber;
 
+    //法人身份证反面照片url
+    private String legalIdCardOther;
+
+    //带公章的授权书照片url
+    private String certificateOfAuthorization;
+    private String certificateOfAuthorizationNumber;
+
+    // 经办人(运营商员工)手持身份证正面照片url
+    private String operatorIdCardFront;
+    private String operatorIdCardFrontNumber;
+
+    private List<QualificationCertificate> qcs;
+
+    //    private List<Attachment> atts;
 
 }

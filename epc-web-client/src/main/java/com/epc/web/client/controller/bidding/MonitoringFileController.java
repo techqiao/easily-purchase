@@ -3,12 +3,15 @@ package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.web.client.controller.bidding.query.monitor.ClientListMonitor;
 import com.epc.web.client.controller.bidding.query.monitor.ClientMonitoringFileDTO;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.monitoring.MonitorFileClient;
 import com.epc.web.facade.bidding.handle.HandleMonitoringFile;
 import com.epc.web.facade.bidding.query.monitor.file.QueryMonitoringFileDTO;
+import com.epc.web.facade.bidding.query.monitor.list.QueryListMonitor;
 import com.epc.web.facade.bidding.vo.MonitorFileVO;
+import com.epc.web.facade.bidding.vo.listMonitorVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -34,9 +37,20 @@ public class MonitoringFileController extends BaseController {
     @Autowired
     MonitorFileClient monitorFileClient;
 
+    @ApiOperation(value = "监控项目列表")
+    @PostMapping(value = "listMonitor", consumes = "application/json; charset=UTF-8")
+    public Result<List<listMonitorVO>> listMonitor(@RequestBody ClientListMonitor clientListMonitor){
+        QueryListMonitor queryListMonitor=new QueryListMonitor();
+        BeanUtils.copyProperties(clientListMonitor,queryListMonitor);
+        queryListMonitor.setBossId(getLoginUser().getBossId());
+        queryListMonitor.setSupplier(getLoginUser().getUserId());
+        return  monitorFileClient.listMonitor(queryListMonitor);
+
+    }
+
     @ApiOperation(value = "文件监控列表")
     @PostMapping(value = "ListBMonitoringFile", consumes = "application/json; charset=UTF-8")
-    public  Result<List<MonitorFileVO>> ListBMonitoringFile(@RequestBody ClientMonitoringFileDTO dto){
+    public  Result<List<MonitorFileVO>> listBMonitoringFile(@RequestBody ClientMonitoringFileDTO dto){
         QueryMonitoringFileDTO queryMonitoringFileDTO=new QueryMonitoringFileDTO();
         BeanUtils.copyProperties(dto,queryMonitoringFileDTO);
         return  monitorFileClient.ListBMonitoringFile(queryMonitoringFileDTO);

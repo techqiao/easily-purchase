@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.tendering.service.mapper.purchaser.TProjectEmployeeRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="creater_id" property="createrId" jdbcType="BIGINT" />
+    <result column="creater_name" property="createrName" jdbcType="VARCHAR" />
+    <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
+    <result column="executive_id" property="executiveId" jdbcType="BIGINT" />
+    <result column="executive_name" property="executiveName" jdbcType="VARCHAR" />
+    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
+    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_name, creater_id, creater_name, purchaser_id, executive_id, executive_name, 
+    create_at, update_at
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_project_employee_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_project_employee_relation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_project_employee_relation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria" >
+    delete from t_project_employee_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_project_employee_relation (project_name, creater_id, creater_name, 
+      purchaser_id, executive_id, executive_name, 
+      create_at, update_at)
+    values (#{projectName,jdbcType=VARCHAR}, #{createrId,jdbcType=BIGINT}, #{createrName,jdbcType=VARCHAR}, 
+      #{purchaserId,jdbcType=BIGINT}, #{executiveId,jdbcType=BIGINT}, #{executiveName,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_project_employee_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="createrId != null" >
+        creater_id,
+      </if>
+      <if test="createrName != null" >
+        creater_name,
+      </if>
+      <if test="purchaserId != null" >
+        purchaser_id,
+      </if>
+      <if test="executiveId != null" >
+        executive_id,
+      </if>
+      <if test="executiveName != null" >
+        executive_name,
+      </if>
+      <if test="createAt != null" >
+        create_at,
+      </if>
+      <if test="updateAt != null" >
+        update_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=BIGINT},
+      </if>
+      <if test="createrName != null" >
+        #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaserId != null" >
+        #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="executiveId != null" >
+        #{executiveId,jdbcType=BIGINT},
+      </if>
+      <if test="executiveName != null" >
+        #{executiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria" resultType="java.lang.Integer" >
+    select count(*) from t_project_employee_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_project_employee_relation
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createrId != null" >
+        creater_id = #{record.createrId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createrName != null" >
+        creater_name = #{record.createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchaserId != null" >
+        purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.executiveId != null" >
+        executive_id = #{record.executiveId,jdbcType=BIGINT},
+      </if>
+      <if test="record.executiveName != null" >
+        executive_name = #{record.executiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createAt != null" >
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null" >
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_project_employee_relation
+    set id = #{record.id,jdbcType=BIGINT},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      creater_id = #{record.createrId,jdbcType=BIGINT},
+      creater_name = #{record.createrName,jdbcType=VARCHAR},
+      purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      executive_id = #{record.executiveId,jdbcType=BIGINT},
+      executive_name = #{record.executiveName,jdbcType=VARCHAR},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation" >
+    update t_project_employee_relation
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null" >
+        creater_id = #{createrId,jdbcType=BIGINT},
+      </if>
+      <if test="createrName != null" >
+        creater_name = #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaserId != null" >
+        purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      </if>
+      <if test="executiveId != null" >
+        executive_id = #{executiveId,jdbcType=BIGINT},
+      </if>
+      <if test="executiveName != null" >
+        executive_name = #{executiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null" >
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null" >
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation" >
+    update t_project_employee_relation
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      creater_id = #{createrId,jdbcType=BIGINT},
+      creater_name = #{createrName,jdbcType=VARCHAR},
+      purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      executive_id = #{executiveId,jdbcType=BIGINT},
+      executive_name = #{executiveName,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_project_employee_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -72,5 +72,16 @@ public class AgencyExpertDto implements Serializable {
     /**
      * 专家附件
      */
+
     private List<Attachement> atts;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+
+
 }

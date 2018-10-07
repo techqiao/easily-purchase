@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TWinBidNominateMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TWinBidNominate" >
+<mapper namespace="com.epc.bidding.mapper.TWinBidNominateMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TWinBidNominate" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
     <result column="purchaser_name" property="purchaserName" jdbcType="VARCHAR" />
@@ -97,7 +97,7 @@
     three_price, three_companyName, open_start, open_end, file_path, process_status, 
     operate_id, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidNominateCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TWinBidNominateCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -121,13 +121,13 @@
     delete from t_win_bid_nominate
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TWinBidNominateCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TWinBidNominateCriteria" >
     delete from t_win_bid_nominate
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TWinBidNominate" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TWinBidNominate" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -152,7 +152,7 @@
       #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TWinBidNominate" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TWinBidNominate" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -330,7 +330,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TWinBidNominateCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TWinBidNominateCriteria" resultType="java.lang.Integer" >
     select count(*) from t_win_bid_nominate
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -466,7 +466,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TWinBidNominate" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TWinBidNominate" >
     update t_win_bid_nominate
     <set >
       <if test="purchaserId != null" >
@@ -556,7 +556,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TWinBidNominate" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TWinBidNominate" >
     update t_win_bid_nominate
     set purchaser_id = #{purchaserId,jdbcType=BIGINT},
       purchaser_name = #{purchaserName,jdbcType=VARCHAR},
@@ -588,7 +588,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidNominateCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TWinBidNominateCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

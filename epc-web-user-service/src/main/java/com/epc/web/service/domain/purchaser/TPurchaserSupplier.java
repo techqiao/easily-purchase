@@ -8,7 +8,7 @@ import java.util.Date;
 public class TPurchaserSupplier implements Serializable {
     private Long id;
 
-
+    private Long purchaserId;
     private Integer state;
 
     private Long supplierId;

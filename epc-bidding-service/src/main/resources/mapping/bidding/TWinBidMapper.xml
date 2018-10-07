@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TWinBidMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TWinBid" >
+<mapper namespace="com.epc.bidding.mapper.TWinBidMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TWinBid" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
@@ -83,7 +83,7 @@
     bid_id, bid_name, bid_code, purchaser_id, purchaser_monety, file_path, supplier_id, 
     operate_id, process_status, create_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TWinBidCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -107,13 +107,13 @@
     delete from t_win_bid
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TWinBidCriteria" >
     delete from t_win_bid
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TWinBid" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -130,7 +130,7 @@
       #{supplierId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{processStatus,jdbcType=VARCHAR}, 
       #{createAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TWinBid" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -236,7 +236,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TWinBidCriteria" resultType="java.lang.Integer" >
     select count(*) from t_win_bid
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -324,7 +324,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TWinBid" >
     update t_win_bid
     <set >
       <if test="projectId != null" >
@@ -378,7 +378,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TWinBid" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TWinBid" >
     update t_win_bid
     set project_id = #{projectId,jdbcType=BIGINT},
       project_name = #{projectName,jdbcType=VARCHAR},
@@ -398,7 +398,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TWinBidCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TWinBidCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Date;
-
 @Data
 @ApiModel(value = "ClientHandleOperatorAddEmployee",description = "运营商增加员工")
 public class ClientHandleOperatorAddEmployee {
@@ -23,9 +21,9 @@ public class ClientHandleOperatorAddEmployee {
     @NotEmpty(message = "ClientHandleOperatorAddEmployee.password.null")
     private String password;
 
-    @ApiModelProperty(value = "员工id(运营商id)")
-    @NotEmpty(message = "ClientHandleOperatorAddEmployee.id.null")
-    private Long id;
+//    @ApiModelProperty(value = "员工id(运营商id)")
+//    @NotEmpty(message = "ClientHandleOperatorAddEmployee.id.null")
+//    private Long id;
 
     @ApiModelProperty(value = "员工角色role")
     @NotEmpty(message = "ClientHandleOperatorAddEmployee.role.null")

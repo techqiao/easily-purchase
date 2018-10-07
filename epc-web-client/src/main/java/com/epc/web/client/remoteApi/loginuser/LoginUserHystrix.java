@@ -3,12 +3,13 @@ package com.epc.web.client.remoteApi.loginuser;
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.FacadeLoginUserService;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 
 public class LoginUserHystrix implements FacadeLoginUserService {
     @Override
-    public Result login(LoginUser user) {
+    public Result login(Loginer user) {
         return Result.hystrixError();
     }
 

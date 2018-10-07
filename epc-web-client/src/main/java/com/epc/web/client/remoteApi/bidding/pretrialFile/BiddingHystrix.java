@@ -14,10 +14,6 @@ public  class BiddingHystrix implements FacadeFileUploadService {
         return Result.hystrixError();    }
 
     @Override
-    public Result<Boolean> insertPretrialFile(HandlePretriaFile handlePretriaFile) {
-        return Result.hystrixError();    }
-
-    @Override
     public Result<PretrialMessageVO> getTPretrialMessage(HandlePretriaFile handlePretriaFile) {
         return Result.hystrixError();    }
 

@@ -16,7 +16,7 @@ public class TPurchaserAgency implements Serializable {
      */
     private Integer state;
     /**
-     * 代理机构id
+     * 代理机构id,按数据库要求
      */
     private Long agencyId;
     /**

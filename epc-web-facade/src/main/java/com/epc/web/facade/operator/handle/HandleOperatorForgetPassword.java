@@ -14,6 +14,15 @@ import java.io.Serializable;
 public class HandleOperatorForgetPassword implements Serializable {
 
     private static final long serialVersionUID = 6631877071810068334L;
+
+    /**
+     *  是什么角色
+     */
+    private Integer systemRole;
+
+    // 登陆时的用户角色
+//    private Integer loginRole;
+
     /**
      * 输入的是注册时的手机号
      */

@@ -75,6 +75,14 @@ public class ClientAgencySupplierDto implements Serializable {
     /**
      * 附件list
      */
+    @ApiModelProperty(value = "营业执照照片url")
+    private String businessLicense;
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    private String legalIdCardOther;
+    @ApiModelProperty(value = "带公章的授权书照片url")
+    private String certificateOfAuthorization;
     @ApiModelProperty(value = "附件信息:证书身份证等")
     private List<ClientAttachement> atts;
 }

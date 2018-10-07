@@ -23,8 +23,8 @@ public class ClientHandleOperatorUpdateEmployeeById {
     private String cellphone;
 
 
-    @ApiModelProperty(value = "修改自己的密码")
-    private String password;
+//    @ApiModelProperty(value = "修改自己的密码")
+//    private String password;
 
     @ApiModelProperty(value = "是否禁用")
     private Integer isForbidden;

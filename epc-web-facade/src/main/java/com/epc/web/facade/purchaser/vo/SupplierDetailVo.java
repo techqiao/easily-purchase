@@ -1,6 +1,7 @@
 package com.epc.web.facade.purchaser.vo;
 
 import com.epc.web.facade.agency.handle.Attachement;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -49,4 +50,18 @@ public class SupplierDetailVo implements Serializable{
      * 资料集合
      */
     private List<Attachement> atts;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 营业执照
+     */
+    private String businessLicense;
+
+
 }

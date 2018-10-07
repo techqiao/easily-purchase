@@ -1,7 +1,7 @@
 package com.epc.bidding.service.moneyPay.impl;
 
-import com.epc.bidding.domain.bidding.*;
-import com.epc.bidding.mapper.bidding.*;
+import com.epc.bidding.domain.*;
+import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.moneyPay.MoneyPayService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;

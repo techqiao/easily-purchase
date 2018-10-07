@@ -1,12 +1,10 @@
 package com.epc.bidding.service.moneyPay;
 
-import com.epc.bidding.domain.bidding.BBidOpeningPay;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
 
 import java.util.List;

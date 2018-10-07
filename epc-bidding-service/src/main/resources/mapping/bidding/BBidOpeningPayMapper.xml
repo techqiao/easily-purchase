@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.BBidOpeningPayMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+<mapper namespace="com.epc.bidding.mapper.BBidOpeningPayMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.BBidOpeningPay" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="project_id" property="projectId" jdbcType="BIGINT" />
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
@@ -85,7 +85,7 @@
     payment_name, payment_account_number, payment_id, operate_id, create_at, update_at, 
     is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BBidOpeningPayCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -109,13 +109,13 @@
     delete from b_bid_opening_pay
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.BBidOpeningPayCriteria" >
     delete from b_bid_opening_pay
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.BBidOpeningPay" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -132,7 +132,7 @@
       #{paymentId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.BBidOpeningPay" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -244,7 +244,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.BBidOpeningPayCriteria" resultType="java.lang.Integer" >
     select count(*) from b_bid_opening_pay
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -336,7 +336,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.BBidOpeningPay" >
     update b_bid_opening_pay
     <set >
       <if test="projectId != null" >
@@ -393,7 +393,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPay" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.BBidOpeningPay" >
     update b_bid_opening_pay
     set project_id = #{projectId,jdbcType=BIGINT},
       procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
@@ -414,7 +414,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BBidOpeningPayCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BBidOpeningPayCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

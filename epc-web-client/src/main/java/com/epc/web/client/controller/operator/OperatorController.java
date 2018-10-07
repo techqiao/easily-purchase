@@ -5,7 +5,6 @@ import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.operator.handle.*;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorCellphone;
 import com.epc.web.client.controller.operator.query.ClientHandleOperatorFindAllByName;
-import com.epc.web.client.controller.operator.query.ClientHandleOperatorId;
 import com.epc.web.client.controller.supplier.handle.ClientRoleDetailInfo;
 import com.epc.web.client.remoteApi.operator.OperatorClient;
 import com.epc.web.facade.operator.handle.*;

@@ -119,7 +119,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser.setCompanyId(detailInfo.getOperatorId());
                 loginUser.setCompanyName(detailInfo.getCompanyName());
                 loginUser.setBossId(boss.getId());
-                return Result.success(loginUser);
             }
         }
         return this.loginBack(loginUser);
@@ -174,7 +173,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser3.setCompanyId(detailInfo3.getPurchaserId());
                 loginUser3.setCompanyName(detailInfo3.getCompanyName());
                 loginUser3.setBossId(boss3.getId());
-                return Result.success(loginUser3);
             }
         }
         return this.loginBack(loginUser3);
@@ -229,7 +227,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser1.setCompanyId(detailInfo1.getAgencyId());
                 loginUser1.setCompanyName(detailInfo1.getCompanyName());
                 loginUser1.setBossId(boss1.getId());
-                return Result.success(loginUser1);
             }
         }
         return this.loginBack(loginUser1);
@@ -284,7 +281,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser2.setCompanyId(detailInfo2.getSupplierId());
                 loginUser2.setCompanyName(detailInfo2.getCompanyName());
                 loginUser2.setBossId(boss2.getId());
-                return Result.success(loginUser2);
             }
         }
         return this.loginBack(loginUser2);

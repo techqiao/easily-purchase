@@ -1,4 +1,4 @@
-package com.epc.bidding.service.monitoring.FileMonitoring;
+package com.epc.bidding.service.monitoring;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleMonitoringFile;

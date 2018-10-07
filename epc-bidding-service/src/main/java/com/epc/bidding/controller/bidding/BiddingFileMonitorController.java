@@ -1,6 +1,6 @@
 package com.epc.bidding.controller.bidding;
 
-import com.epc.bidding.service.monitoring.FileMonitoring.FileMonitoringService;
+import com.epc.bidding.service.monitoring.FileMonitoringService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileMonitorService;
 import com.epc.web.facade.bidding.handle.HandleMonitoringFile;

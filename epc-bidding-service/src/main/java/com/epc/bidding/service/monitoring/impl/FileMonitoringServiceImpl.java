@@ -1,11 +1,11 @@
-package com.epc.bidding.service.monitoring.FileMonitoring.impl;
+package com.epc.bidding.service.monitoring.impl;
 
 import com.epc.bidding.domain.bidding.*;
 import com.epc.bidding.mapper.bidding.BMonitoringFileMapper;
 import com.epc.bidding.mapper.bidding.TPurchaseProjectBasicInfoMapper;
 import com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantMapper;
 import com.epc.bidding.mapper.bidding.TPurchaseProjectParticipantPermissionMapper;
-import com.epc.bidding.service.monitoring.FileMonitoring.FileMonitoringService;
+import com.epc.bidding.service.monitoring.FileMonitoringService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ParticipantPermissionEnum;

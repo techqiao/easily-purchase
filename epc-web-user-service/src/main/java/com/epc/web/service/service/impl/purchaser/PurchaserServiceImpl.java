@@ -181,7 +181,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             basicInfo.setInviterId(handleSupplier.getOperatorId());
-            basicInfo.setInviterCompanyId((int) handleSupplier.getCompanyId().intValue());
+            basicInfo.setInviterCompanyId( handleSupplier.getCompanyId());
             basicInfo.setState(Const.STATE.REGISTERED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             basicInfo.setCreateAt(date);

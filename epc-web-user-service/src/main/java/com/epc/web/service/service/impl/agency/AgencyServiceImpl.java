@@ -160,7 +160,7 @@ public class AgencyServiceImpl implements AgencyService {
         Integer forbidden = trustList.getEnableOrDisable();
         Long id = trustList.getId();
         if (forbidden == null || id == null) {
-            return Result.error("修改员工失败");
+            return Result.success("请传入有效的信息");
         }
         try {
             tAgencyBasicInfoMapper.updateAgencyForbbiden(id, forbidden);
@@ -185,14 +185,14 @@ public class AgencyServiceImpl implements AgencyService {
         //返回此专家
         TExpertBasicInfo info = null;
         try {
-            info = tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(expertName, cellphone);
+            info = tExpertBasicInfoMapper.selectExpertCellPhone(cellphone);
         } catch (Exception e) {
             LOGGER.error("新增专家信息Exception:{}", e);
             return Result.error("专家新增失败");
         }
         //专家存在判断状态
         if (null != info) {
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "专家已经存在无法重复添加");
+            return Result.success("专家已经存在无法重复添加");
         } else {
             //代理机构的id
             Long agencyId = Long.parseLong(handleExpert.getInvterCompanyId());
@@ -206,13 +206,13 @@ public class AgencyServiceImpl implements AgencyService {
             expertBasicInfo.setPositional(handleExpert.getPositional());
             expertBasicInfo.setLevel(handleExpert.getLevel());
             expertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
-            expertBasicInfo.setCircularDt(new Date());
+            expertBasicInfo.setCircularDt(date);
             expertBasicInfo.setCircularMethod(handleExpert.getCircularMethod());
             expertBasicInfo.setOtherInformation(handleExpert.getOtherInformation());
             expertBasicInfo.setInviterType(Const.INVITER_TYPE.PROXY);
             expertBasicInfo.setInviterId(handleExpert.getInviterid());
             expertBasicInfo.setInviterCompanyId(Integer.parseInt(handleExpert.getInvterCompanyId()));
-            expertBasicInfo.setState(Const.STATE.COMMITTED);
+            expertBasicInfo.setState(Const.STATE.REGISTERED);
             expertBasicInfo.setPassword(Const.DEFAULT_PASSWORD.PASSWORD);
             expertBasicInfo.setCreateAt(date);
             expertBasicInfo.setUpdateAt(date);
@@ -296,7 +296,7 @@ public class AgencyServiceImpl implements AgencyService {
         String cellphone = handleSupplier.getCellphone();
         TSupplierBasicInfo basicInfo = null;
         try {
-            basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
+            basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByCell(cellphone);
         } catch (Exception e) {
             LOGGER.error("新增供货商信息失败Exception:{}", e);
             return Result.error("新增供货商信息失败");
@@ -313,7 +313,7 @@ public class AgencyServiceImpl implements AgencyService {
             basicInfo.setCellphone(handleSupplier.getCellphone());
             basicInfo.setInviterType(Const.INVITER_TYPE.PROXY);
             basicInfo.setInviterId(handleSupplier.getInviterId());
-            basicInfo.setInviterCompanyId(handleSupplier.getInviterCompanyId());
+            basicInfo.setInviterCompanyId(handleSupplier.getInviterCompanyId().longValue());
             basicInfo.setState(Const.STATE.COMMITTED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             //默认密码

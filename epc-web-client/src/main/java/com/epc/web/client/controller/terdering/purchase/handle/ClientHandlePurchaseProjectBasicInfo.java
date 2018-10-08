@@ -24,8 +24,6 @@ public class ClientHandlePurchaseProjectBasicInfo {
     private String projectName;
     @ApiModelProperty(value = "采购项目名称")
     private String purchaseProjectName;
-    @ApiModelProperty(value = "采购项目编号")
-    private String purchaseProjectCode;
     @ApiModelProperty(value = "项目ID")
     @NotEmpty(message = "ClientHandlePurchaseProjectBasicInfo.purchaseProjectId.null")
     private Long projectId;

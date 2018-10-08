@@ -7,6 +7,7 @@ import com.epc.web.client.controller.terdering.preview.handle.ClientPreviewHandl
 import com.epc.web.client.controller.terdering.preview.query.ClientQueryPageDTO;
 import com.epc.web.client.controller.terdering.preview.query.ClientQueryPreviewOneDTO;
 import com.epc.web.client.remoteApi.terdering.preview.PreviewClient;
+import com.epc.web.facade.terdering.preview.dto.QueryPageDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
 import com.epc.web.facade.terdering.preview.handle.PreviewHandle;
 import io.swagger.annotations.Api;
@@ -44,6 +45,7 @@ public class PreviewController extends BaseController {
         BeanUtils.copyProperties(clientPreviewHandle, previewHandle);
         previewHandle.setCreator(getLoginUser().getName());
         previewHandle.setSetOperateId(getLoginUser().getUserId());
+        previewHandle.setPurchaserId(getLoginUser().getUserId());
         return previewClient.insertPreview(previewHandle);
     }
 
@@ -56,9 +58,9 @@ public class PreviewController extends BaseController {
     @ApiOperation("查询预告列表")
     @PostMapping(value = "selectPreview", consumes = "application/json;charset=UTF-8")
     public Result selectPreview(@RequestBody ClientQueryPageDTO clientQueryPageDTO) {
-        PagerParam pagerParam = new PagerParam();
-        BeanUtils.copyProperties(clientQueryPageDTO, pagerParam);
-        return previewClient.selectPreview(pagerParam);
+        QueryPageDTO QueryPageDTO = new QueryPageDTO();
+        BeanUtils.copyProperties(clientQueryPageDTO, QueryPageDTO);
+        return previewClient.selectPreview(QueryPageDTO);
     }
 
     /**

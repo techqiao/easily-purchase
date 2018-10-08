@@ -1,4 +1,4 @@
-package com.epc.web.client.controller.terdering.preview.query;
+package com.epc.web.facade.terdering.preview.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "ClientQueryPageDTO",description = "查询预告列表")
-public class ClientQueryPageDTO implements Serializable {
+public class QueryPageDTO implements Serializable {
 
     @ApiModelProperty(value = "当前页")
     private Integer page;

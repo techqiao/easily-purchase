@@ -34,7 +34,7 @@ import java.util.Map;
  */
 @Api(value = "采购项目服务", tags = {"采购项目服务"})
 @RestController
-@RequestMapping(value = "/purchase", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/purchaseProject", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PurchaseProjectBasicInfoController extends BaseController {
 
     @Autowired

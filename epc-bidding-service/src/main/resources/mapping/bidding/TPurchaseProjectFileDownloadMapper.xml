@@ -3,7 +3,7 @@
 <mapper namespace="com.epc.bidding.mapper.TPurchaseProjectFileDownloadMapper" >
   <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TPurchaseProjectFileDownload" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="purchas_project_id" property="purchasProjectId" jdbcType="BIGINT" />
+    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
     <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
     <result column="purchase_file_name" property="purchaseFileName" jdbcType="VARCHAR" />
     <result column="file_payment" property="filePayment" jdbcType="DECIMAL" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchas_project_id, purchaser_id, purchase_file_name, file_payment, operate_id, 
+    id, purchase_project_id, purchaser_id, purchase_file_name, file_payment, operate_id, 
     creator, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectFileDownloadCriteria" >
@@ -109,11 +109,11 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_purchase_project_file_download (purchas_project_id, purchaser_id, purchase_file_name, 
+    insert into t_purchase_project_file_download (purchase_project_id, purchaser_id, purchase_file_name, 
       file_payment, operate_id, creator, 
       create_at, update_at, is_deleted
       )
-    values (#{purchasProjectId,jdbcType=BIGINT}, #{purchaserId,jdbcType=BIGINT}, #{purchaseFileName,jdbcType=VARCHAR}, 
+    values (#{purchaseProjectId,jdbcType=BIGINT}, #{purchaserId,jdbcType=BIGINT}, #{purchaseFileName,jdbcType=VARCHAR}, 
       #{filePayment,jdbcType=DECIMAL}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
@@ -124,8 +124,8 @@
     </selectKey>
     insert into t_purchase_project_file_download
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="purchasProjectId != null" >
-        purchas_project_id,
+      <if test="purchaseProjectId != null" >
+        purchase_project_id,
       </if>
       <if test="purchaserId != null" >
         purchaser_id,
@@ -153,8 +153,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="purchasProjectId != null" >
-        #{purchasProjectId,jdbcType=BIGINT},
+      <if test="purchaseProjectId != null" >
+        #{purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="purchaserId != null" >
         #{purchaserId,jdbcType=BIGINT},
@@ -194,8 +194,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.purchasProjectId != null" >
-        purchas_project_id = #{record.purchasProjectId,jdbcType=BIGINT},
+      <if test="record.purchaseProjectId != null" >
+        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="record.purchaserId != null" >
         purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
@@ -229,7 +229,7 @@
   <update id="updateByExample" parameterType="map" >
     update t_purchase_project_file_download
     set id = #{record.id,jdbcType=BIGINT},
-      purchas_project_id = #{record.purchasProjectId,jdbcType=BIGINT},
+      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       purchase_file_name = #{record.purchaseFileName,jdbcType=VARCHAR},
       file_payment = #{record.filePayment,jdbcType=DECIMAL},
@@ -245,8 +245,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TPurchaseProjectFileDownload" >
     update t_purchase_project_file_download
     <set >
-      <if test="purchasProjectId != null" >
-        purchas_project_id = #{purchasProjectId,jdbcType=BIGINT},
+      <if test="purchaseProjectId != null" >
+        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="purchaserId != null" >
         purchaser_id = #{purchaserId,jdbcType=BIGINT},
@@ -277,7 +277,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TPurchaseProjectFileDownload" >
     update t_purchase_project_file_download
-    set purchas_project_id = #{purchasProjectId,jdbcType=BIGINT},
+    set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       purchaser_id = #{purchaserId,jdbcType=BIGINT},
       purchase_file_name = #{purchaseFileName,jdbcType=VARCHAR},
       file_payment = #{filePayment,jdbcType=DECIMAL},

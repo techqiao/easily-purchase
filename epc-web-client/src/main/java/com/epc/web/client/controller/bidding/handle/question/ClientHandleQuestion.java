@@ -3,6 +3,7 @@ package com.epc.web.client.controller.bidding.handle.question;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @author linzhixiang
@@ -12,6 +13,7 @@ import lombok.Data;
 public class ClientHandleQuestion {
 
     @ApiModelProperty(value = "采购项目ID")
+    @NotEmpty(message = "ClientHandleQuestion.procurementProjectId.null")
     private Long procurementProjectId;
     @ApiModelProperty("问题类别(公告-announcement,招标文件-bidFile,评标-bidEvaluation)")
     private String questionType;

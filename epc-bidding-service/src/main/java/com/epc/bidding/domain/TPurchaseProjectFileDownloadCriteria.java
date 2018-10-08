@@ -166,63 +166,63 @@ public class TPurchaseProjectFileDownloadCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdIsNull() {
-            addCriterion("purchas_project_id is null");
+        public Criteria andPurchaseProjectIdIsNull() {
+            addCriterion("purchase_project_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdIsNotNull() {
-            addCriterion("purchas_project_id is not null");
+        public Criteria andPurchaseProjectIdIsNotNull() {
+            addCriterion("purchase_project_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdEqualTo(Long value) {
-            addCriterion("purchas_project_id =", value, "purchasProjectId");
+        public Criteria andPurchaseProjectIdEqualTo(Long value) {
+            addCriterion("purchase_project_id =", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdNotEqualTo(Long value) {
-            addCriterion("purchas_project_id <>", value, "purchasProjectId");
+        public Criteria andPurchaseProjectIdNotEqualTo(Long value) {
+            addCriterion("purchase_project_id <>", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdGreaterThan(Long value) {
-            addCriterion("purchas_project_id >", value, "purchasProjectId");
+        public Criteria andPurchaseProjectIdGreaterThan(Long value) {
+            addCriterion("purchase_project_id >", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("purchas_project_id >=", value, "purchasProjectId");
+        public Criteria andPurchaseProjectIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_id >=", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdLessThan(Long value) {
-            addCriterion("purchas_project_id <", value, "purchasProjectId");
+        public Criteria andPurchaseProjectIdLessThan(Long value) {
+            addCriterion("purchase_project_id <", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdLessThanOrEqualTo(Long value) {
-            addCriterion("purchas_project_id <=", value, "purchasProjectId");
+        public Criteria andPurchaseProjectIdLessThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_id <=", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdIn(List<Long> values) {
-            addCriterion("purchas_project_id in", values, "purchasProjectId");
+        public Criteria andPurchaseProjectIdIn(List<Long> values) {
+            addCriterion("purchase_project_id in", values, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdNotIn(List<Long> values) {
-            addCriterion("purchas_project_id not in", values, "purchasProjectId");
+        public Criteria andPurchaseProjectIdNotIn(List<Long> values) {
+            addCriterion("purchase_project_id not in", values, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdBetween(Long value1, Long value2) {
-            addCriterion("purchas_project_id between", value1, value2, "purchasProjectId");
+        public Criteria andPurchaseProjectIdBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_id between", value1, value2, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectIdNotBetween(Long value1, Long value2) {
-            addCriterion("purchas_project_id not between", value1, value2, "purchasProjectId");
+        public Criteria andPurchaseProjectIdNotBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_id not between", value1, value2, "purchaseProjectId");
             return (Criteria) this;
         }
 

@@ -20,9 +20,9 @@ public class NoticeDetailVO implements Serializable {
     @ApiModelProperty("公告Id")
     private Long id;
     @ApiModelProperty("开始时间")
-    private Date biddingStart;
+    private String biddingStart;
     @ApiModelProperty("结束时间")
-    private Date biddingEnd;
+    private String biddingEnd;
     @ApiModelProperty("采购项目名称")
     private String procurementProjectName;
     @ApiModelProperty("招标方式")

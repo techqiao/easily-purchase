@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
+/**
+ * @author 01
+ */
 public interface ReviewExpertService {
 
     /**
      * 评审专家注册
      * @param userBasicInfo 基本信息
-     * @return
+     * @return Boolean
      */
     @PostMapping(value = "insertReviewExpertBasicInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertReviewExpertBasicInfo(@RequestBody UserBasicInfo userBasicInfo);
@@ -27,7 +30,7 @@ public interface ReviewExpertService {
     /**
      * 评审专家完善资料
      * @param reviewExpertHandle
-     * @return
+     * @return Boolean
      */
     @PostMapping(value = "insertReviewExpertDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertReviewExpertDetailInfo(@RequestBody ReviewExpertHandle reviewExpertHandle);
@@ -35,14 +38,14 @@ public interface ReviewExpertService {
     /**
      * 评审专家完善资料
      * @param reviewExpertHandle
-     * @return
+     * @return Boolean
      */
     @PostMapping(value = "updateReviewExpertDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> updateReviewExpertDetailInfo(@RequestBody ReviewExpertHandle reviewExpertHandle);
     /**
      * 删除评审专家资料
      * @param whereId
-     * @return
+     * @return Boolean
      */
     @GetMapping(value = "deleteReviewExpertDetailInfo" )
     Result<Boolean> deleteReviewExpertDetailInfo(@RequestParam("whereId") Long whereId);
@@ -50,7 +53,7 @@ public interface ReviewExpertService {
     /**
      * 根据id查询评审专家详情
      * @param whereId
-     * @return
+     * @return ExpertDetailVO
      */
     @GetMapping(value = "queryReviewExpertDetailInfo" )
     Result<ExpertDetailVO> queryReviewExpertDetailInfo(@RequestParam("whereId") Long whereId);
@@ -58,7 +61,7 @@ public interface ReviewExpertService {
     /**
      * 查询所有评审专家 分页展示
      * @param queryDetailIfo
-     * @return
+     * @return Result<Map<String, Object>>
      */
     @PostMapping(value = "selectAllExpertByPage" , consumes = "application/json; charset=UTF-8")
     Result<Map<String, Object>> selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo);
@@ -66,7 +69,7 @@ public interface ReviewExpertService {
     /**
      * 审核评审专家
      * @param examineExpertHandle
-     * @return
+     * @return Boolean
      */
     @PostMapping(value = "examineExpert" , consumes = "application/json; charset=UTF-8")
     Result<Boolean> examineExpert(@RequestBody ExamineExpertHandle examineExpertHandle);
@@ -74,7 +77,7 @@ public interface ReviewExpertService {
     /**
      * 启用锁定评审专家
      * @param expertForbiddenHandle
-     * @return
+     * @return Boolean
      */
     @PostMapping(value = "forbiddenExpertUser",consumes = "application/json;charset=UTF-8")
     Result<Boolean> forbiddenExpertUser(@RequestBody ExpertForbiddenHandle expertForbiddenHandle);

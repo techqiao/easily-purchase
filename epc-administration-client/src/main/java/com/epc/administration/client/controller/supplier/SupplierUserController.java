@@ -14,6 +14,7 @@ import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierAttachmentVO;
 import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 import io.swagger.annotations.Api;
@@ -71,7 +72,7 @@ public class SupplierUserController extends BaseController {
     }
     @ApiOperation(value = "供应商查询资料",notes = "供应商查询资料")
     @GetMapping(value = "querySupplierDetailInfo")
-    public Result querySupplierDetailInfo(@RequestParam("whereId") Long whereId) {
+    public Result<SupplierAttachmentVO> querySupplierDetailInfo(@RequestParam("whereId") Long whereId) {
         return supplierClient.querySupplierDetailInfo(whereId);
     }
 

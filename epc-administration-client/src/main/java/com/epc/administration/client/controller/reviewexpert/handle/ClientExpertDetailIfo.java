@@ -42,6 +42,9 @@ public class ClientExpertDetailIfo implements Serializable {
     @ApiModelProperty(value = "通知时间")
     @NotEmpty(message = "ClientExpertDetailIfo.circularDt.null")
     private Date circularDt;
+    @ApiModelProperty(value = "通知结束时间")
+    @NotEmpty(message = "ClientExpertDetailIfo.circularDtEnd.null")
+    private Date circularDtEnd;
     @ApiModelProperty(value = "通知方式")
     @NotEmpty(message = "ClientExpertDetailIfo.circularMethod.null")
     private String circularMethod;

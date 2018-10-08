@@ -15,8 +15,10 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,13 @@ public class ReviewExpertServiceImpl implements ExpertService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertExpertBasicInfo(UserBasicInfo userBasicInfo) {
+        TExpertBasicInfoCriteria tExpertBasicInfoCriteria = new TExpertBasicInfoCriteria();
+        tExpertBasicInfoCriteria.createCriteria().andCellphoneEqualTo(userBasicInfo.getCellphone());
+        List<TExpertBasicInfo> tExpertBasicInfos = tExpertBasicInfoMapper.selectByExample(tExpertBasicInfoCriteria);
+        if(!tExpertBasicInfos.isEmpty()){
+            return Result.success("用户已存在，请直接登录");
+        }
+
         TExpertBasicInfo pojo = new TExpertBasicInfo();
         pojo.setName(userBasicInfo.getUsername());
         pojo.setCellphone(userBasicInfo.getCellphone());
@@ -79,12 +88,10 @@ public class ReviewExpertServiceImpl implements ExpertService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
         TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
-        tExpertDetailInfo.setExpertId(reviewExpertHandle.getId());
-        tExpertDetailInfo.setCompanyName(reviewExpertHandle.getCompanyName());
+        BeanUtils.copyProperties(reviewExpertHandle,tExpertDetailInfo);
         tExpertDetailInfo.setCreateAt(new Date());
         tExpertDetailInfo.setUpdateAt(new Date());
         tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        tExpertDetailInfo.setCompanyAddress(reviewExpertHandle.getCompanyAddress());
         TExpertAttachment attachment = new TExpertAttachment();
         attachment.setExpertId(reviewExpertHandle.getId());
         attachment.setCreateAt(new Date());
@@ -117,16 +124,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             }
             //完善基本信息
             TExpertBasicInfo tExpertBasicInfo = new TExpertBasicInfo();
-            tExpertBasicInfo.setId(reviewExpertHandle.getId());
-            tExpertBasicInfo.setName(reviewExpertHandle.getName());
-            tExpertBasicInfo.setProfession(reviewExpertHandle.getProfession());
-            tExpertBasicInfo.setLevel(reviewExpertHandle.getLevel());
-            tExpertBasicInfo.setCellphone(reviewExpertHandle.getCellPhone());
-            tExpertBasicInfo.setCircularDt(reviewExpertHandle.getCircularDt());
-            tExpertBasicInfo.setCircularMethod(reviewExpertHandle.getCircularMethod());
-            tExpertBasicInfo.setOtherInformation(reviewExpertHandle.getOtherInformation());
-            tExpertBasicInfo.setWorkingYears(reviewExpertHandle.getWorkingYears());
-            tExpertBasicInfo.setPositional(reviewExpertHandle.getPositional());
+            BeanUtils.copyProperties(reviewExpertHandle,tExpertBasicInfo);
             tExpertBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
             tExpertBasicInfo.setUpdateAt(new Date());
             tExpertBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -148,12 +146,14 @@ public class ReviewExpertServiceImpl implements ExpertService {
      */
     @Override
     public Result<Boolean> updateReviewExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
-        TExpertDetailInfoCriteria  tExpertBasicInfoCriteria = new TExpertDetailInfoCriteria();
-        tExpertBasicInfoCriteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
+        TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+        BeanUtils.copyProperties(tExpertDetailInfo,reviewExpertHandle);
+        TExpertDetailInfoCriteria  tExpertDetailInfoCriteria = new TExpertDetailInfoCriteria();
+        tExpertDetailInfoCriteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
         TExpertAttachmentCriteria criteria = new TExpertAttachmentCriteria();
         criteria.createCriteria().andExpertIdEqualTo(reviewExpertHandle.getId());
         try {
-            tExpertDetailInfoMapper.deleteByExample(tExpertBasicInfoCriteria);
+            tExpertDetailInfoMapper.updateByExample(tExpertDetailInfo,tExpertDetailInfoCriteria);
             tExpertAttachmentMapper.deleteByExample(criteria);
            return this.insertExpertDetailInfo(reviewExpertHandle);
         } catch (Exception e) {
@@ -196,10 +196,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             List<TExpertDetailInfo> tExpertDetailInfos = tExpertDetailInfoMapper.selectByExample(criteria);
             if(tExpertDetailInfos.isEmpty()){
                 ExpertDetailVO expertDetailVO = new ExpertDetailVO();
-                expertDetailVO.setName(tExpertBasicInfo.getName());
-                expertDetailVO.setCellphone(tExpertBasicInfo.getCellphone());
-                expertDetailVO.setId(tExpertBasicInfo.getId());
-                expertDetailVO.setState(tExpertBasicInfo.getState());
+                BeanUtils.copyProperties(tExpertBasicInfo,expertDetailVO);
                 return Result.success(expertDetailVO);
             }
             TExpertDetailInfo tExpertDetailInfo = tExpertDetailInfos.get(0);
@@ -225,21 +222,9 @@ public class ReviewExpertServiceImpl implements ExpertService {
                 }
                 expertDetailVO.setAttachmentVOList(attachmentVOS);
             }
-            expertDetailVO.setId(tExpertBasicInfo.getId());
-            expertDetailVO.setName(tExpertBasicInfo.getName());
-            expertDetailVO.setCellphone(tExpertBasicInfo.getCellphone());
-            expertDetailVO.setProfession(tExpertBasicInfo.getProfession());
-            expertDetailVO.setPositional(tExpertBasicInfo.getPositional());
-            expertDetailVO.setLevel(tExpertBasicInfo.getLevel());
-            expertDetailVO.setIsIdle(tExpertBasicInfo.getIsIdle());
-            expertDetailVO.setCircularDt(tExpertBasicInfo.getCircularDt());
-            expertDetailVO.setCircularMethod(tExpertBasicInfo.getCircularMethod());
-            expertDetailVO.setOtherInformation(tExpertBasicInfo.getOtherInformation());
-            expertDetailVO.setState(tExpertBasicInfo.getState());
-            expertDetailVO.setCreateAt(tExpertBasicInfo.getCreateAt());
-            expertDetailVO.setCompanyAddress(tExpertDetailInfo.getCompanyAddress());
-            expertDetailVO.setWorkingYears(tExpertBasicInfo.getWorkingYears());
+            BeanUtils.copyProperties(tExpertBasicInfo,expertDetailVO);
             expertDetailVO.setCompanyName(tExpertDetailInfo.getCompanyName());
+            expertDetailVO.setCompanyAddress(tExpertDetailInfo.getCompanyAddress());
             return Result.success(expertDetailVO);
         } catch (BusinessException e) {
             LOGGER.error("BusinessException queryExpertDetailInfo : {}", e);
@@ -255,15 +240,15 @@ public class ReviewExpertServiceImpl implements ExpertService {
      * @return
      */
     @Override
-    public List<ReviewExpertVO> selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
+    public Result<List<ReviewExpertVO>> selectAllExpertByPage(QueryDetailIfo queryDetailIfo) {
         String where = queryDetailIfo.getWhere();
-        if(where!=null){
+        if(StringUtils.isNotBlank(where)){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
         }else{
             queryDetailIfo.setWhere(null);
         }
-        return  tExpertDetailInfoMapper.selectByPage(queryDetailIfo);
+        return Result.success(tExpertDetailInfoMapper.selectByPage(queryDetailIfo)) ;
 
     }
 

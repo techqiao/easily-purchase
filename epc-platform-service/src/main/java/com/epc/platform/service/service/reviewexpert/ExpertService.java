@@ -52,11 +52,11 @@ public interface ExpertService {
 
 
     /**
-     *
+     *查询所有评审专家 分页展示
      * @param queryDetailIfo
      * @return
      */
-    List<ReviewExpertVO> selectAllExpertByPage(QueryDetailIfo queryDetailIfo);
+    Result<List<ReviewExpertVO>> selectAllExpertByPage(QueryDetailIfo queryDetailIfo);
 
     /**
      * 审核评审专家

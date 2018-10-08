@@ -71,6 +71,7 @@ public class AgencyController extends BaseController {
                 return Result.error("请先完善个人信息!");
             }
             expert.setInvterCompanyId(clientLoginUser.getBossId() + "");
+            expert.setInviterid(clientLoginUser.getUserId());
             BeanUtils.copyProperties(handleExpert, expert);
             return agencyClient.insertExpert(expert);
         }
@@ -101,8 +102,6 @@ public class AgencyController extends BaseController {
         HandleAgency handleAgency=new HandleAgency();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if(null !=clientLoginUser) {
-            handleAgency.setName(clientLoginUser.getName());
-            handleAgency.setCellphone(clientLoginUser.getCellphone());
             BeanUtils.copyProperties(agency, handleAgency);
             return agencyClient.completeInfo(handleAgency);
         }
@@ -186,15 +185,15 @@ public class AgencyController extends BaseController {
      * @return:
      * @date:2018/9/21
      */
-    @ApiOperation(value = "代理机构完善供货商信息+供货商登录完善信息" )
+    @ApiOperation(value = "代理机构完善供货商信息" )
     @PostMapping(value = "/completeAgencySupInfo")
     public Result<Boolean> completeAgencySupInfo(@RequestBody ClientAgencySupplierDto supplierDto){
         AgencySupplierDto dto = new AgencySupplierDto();
         ClientLoginUser loginUser = super.getLoginUser();
         if (null!=loginUser) {
-            dto.setCellphone(loginUser.getCellphone());
-            dto.setName(dto.getName());
             BeanUtils.copyProperties(supplierDto, dto);
+            dto.setOperatorId(loginUser.getUserId());
+            dto.setAgencyId(loginUser.getBossId());
             return agencyClient.completeAgencySupInfo(dto);
         }
         return Result.success("请先登录,谢谢!",true);
@@ -213,8 +212,9 @@ public class AgencyController extends BaseController {
         AgencyExpertDto dto = new AgencyExpertDto();
         ClientLoginUser loginUser = super.getLoginUser();
         if (null!=loginUser){
-            dto.setCellphone(loginUser.getCellphone());
-            dto.setExpertName(loginUser.getName());
+            dto.setInviterId(loginUser.getUserId());
+            dto.setInviterCompanyId(loginUser.getBossId());
+            dto.setAgencyId(loginUser.getCompanyId());
             BeanUtils.copyProperties(expertDto, dto);
             return agencyClient.completeAgencyExpertInfo(dto);
         }

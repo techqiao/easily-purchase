@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -202,7 +203,8 @@ public class AgencyServiceImpl implements AgencyService {
             expertBasicInfo.setPositional(handleExpert.getPositional());
             expertBasicInfo.setLevel(handleExpert.getLevel());
             expertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
-            expertBasicInfo.setCircularDt(date);
+            expertBasicInfo.setCircularDt(handleExpert.getCircularDt());
+            expertBasicInfo.setCircularDtEnd(handleExpert.getCircularDtEnd());
             expertBasicInfo.setCircularMethod(handleExpert.getCircularMethod());
             expertBasicInfo.setOtherInformation(handleExpert.getOtherInformation());
             expertBasicInfo.setInviterType(Const.INVITER_TYPE.PROXY);
@@ -856,7 +858,7 @@ public class AgencyServiceImpl implements AgencyService {
         vo.setBossName(bossName);
         vo.setCompanyName(companyName);
 
-        return vo == null ? Result.success("没有相关员工信息") : Result.success("查询成功",vo);
+        return vo == null ? Result.success("没有相关员工信息") : Result.success("查询成功", vo);
     }
 
     /**
@@ -997,7 +999,7 @@ public class AgencyServiceImpl implements AgencyService {
     public Result<List<AgencySupplierVo>> querySupplierCriteria(SupplierDto supplierDto) {
         //封装查询条依据id和时间查询
         Long agencyId = supplierDto.getAgencyId();
-        if(agencyId==null){
+        if (agencyId == null) {
             return Result.success("请传入有效的信息");
         }
         //查询结果
@@ -1011,7 +1013,7 @@ public class AgencyServiceImpl implements AgencyService {
             return Result.error("没有符合条件的供货商");
         }
 
-        return CollectionUtils.isEmpty(supplierVos)?Result.success("没有相关员工的信息"): Result.success("查询成功", supplierVos);
+        return CollectionUtils.isEmpty(supplierVos) ? Result.success("没有相关员工的信息") : Result.success("查询成功", supplierVos);
     }
 
     /**
@@ -1032,11 +1034,11 @@ public class AgencyServiceImpl implements AgencyService {
             if (CollectionUtils.isEmpty(expertList)) {
                 return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "没有符合条件的专家");
             }
-        }catch (Exception e){
-            LOGGER.error("专家查询失败Exception{}",e);
+        } catch (Exception e) {
+            LOGGER.error("专家查询失败Exception{}", e);
             return Result.error("查询失败");
         }
-        return CollectionUtils.isEmpty(expertList)? Result.success("没有符合条件的专家"): Result.success("查询成功", expertList);
+        return CollectionUtils.isEmpty(expertList) ? Result.success("没有符合条件的专家") : Result.success("查询成功", expertList);
     }
 
     /**
@@ -1093,7 +1095,7 @@ public class AgencyServiceImpl implements AgencyService {
             }
             vo.setAtts(attachements);
         }
-        return vo == null ? Result.success("没有相关专家信息") : Result.success("查询成功",vo);
+        return vo == null ? Result.success("没有相关专家信息") : Result.success("查询成功", vo);
     }
 
     /**
@@ -1210,23 +1212,59 @@ public class AgencyServiceImpl implements AgencyService {
         String expertName = dto.getExpertName();
         String cellPhone = dto.getCellphone();
         //查询注册信息
-        TExpertBasicInfo info = tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(expertName, cellPhone);
-        if (info == null) {
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "没有该专家的注册信息");
-        }
-        List<Attachement> list = dto.getAtts();
+        TExpertBasicInfo info = null;
+        //代理机构的id
+        Long agencyId = dto.getAgencyId();
         try {
+            info = tExpertBasicInfoMapper.selectExpertCellPhone(cellPhone);
+            if (info == null) {
+                return Result.success("没有该专家的注册信息");
+            }
+        } catch (Exception e) {
+            LOGGER.error("完善代理机构专家信息失败Exception:{}", e);
+            return Result.error("完善代理机构信息失败");
+        }
+        try {
+            TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
+            if (tAgencyDetailInfo != null) {
+                TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+                tExpertDetailInfo.setExpertId(info.getId());
+                tExpertDetailInfo.setCompanyName(tAgencyDetailInfo.getCompanyName());
+                tExpertDetailInfo.setCompanyAddress(tAgencyDetailInfo.getCompanyAddress());
+                tExpertDetailInfo.setUniformCreditCode(tAgencyDetailInfo.getUniformCreditCode());
+                tExpertDetailInfo.setPublicBankName(tAgencyDetailInfo.getPublicBankName());
+                tExpertDetailInfo.setPublicBanAccountNumber(tAgencyDetailInfo.getPublicBanAccountNumber());
+                tExpertDetailInfo.setCreateAt(new Date());
+                tExpertDetailInfo.setUpdateAt(new Date());
+                tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
+            }
             //封装附件信息对象
+            TExpertAttachment attachment = new TExpertAttachment();
+            attachment.setExpertId(info.getId());
+            attachment.setCreateAt(new Date());
+            attachment.setUpdateAt(new Date());
+            attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            //上传身份证正面
+            attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            tExpertAttachmentMapper.insertSelective(attachment);
+            //上传身份证反面
+            attachment.setCertificateFilePath(dto.getLegalIdCardOther());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+            tExpertAttachmentMapper.insertSelective(attachment);
+            List<Attachement> list = dto.getAtts();
             if (!CollectionUtils.isEmpty(list)) {
-                //获得id
-                Long expertId = info.getId();
                 for (Attachement att : list) {
-                    TExpertAttachment attachment = new TExpertAttachment();
-                    BeanUtils.copyProperties(att, attachment);
-                    attachment.setExpertId(expertId);
-                    attachment.setCreateAt(new Date());
-                    attachment.setUpdateAt(new Date());
-                    tExpertAttachmentMapper.insertSelective(attachment);
+                    TExpertAttachment expertAttachment = new TExpertAttachment();
+                    BeanUtils.copyProperties(att, expertAttachment);
+                    expertAttachment.setExpertId(info.getId());
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+                    expertAttachment.setCreateAt(new Date());
+                    expertAttachment.setUpdateAt(new Date());
+                    tExpertAttachmentMapper.insertSelective(expertAttachment);
                 }
             }
         } catch (Exception e) {

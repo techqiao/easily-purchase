@@ -22,6 +22,8 @@ public class HandleExpert implements Serializable {
 
     private Date circularDt;
 
+    private Date circularDtEnd;
+
     private String circularMethod;
 
 

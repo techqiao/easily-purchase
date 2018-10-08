@@ -62,16 +62,16 @@ public class ClientAgencySupplierDto implements Serializable {
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
 
-    /**
-     * 操作人id
-     */
-    @ApiModelProperty(value = "操作人id")
-    private long OperatorId;
-    /**
-     * 操作人公司的id
-     */
-    @ApiModelProperty(value = "操作人公司id")
-    private long companyId;
+//    /**
+//     * 操作人id
+//     */
+//    @ApiModelProperty(value = "操作人id")
+//    private long OperatorId;
+//    /**
+//     * 操作人公司的id
+//     */
+//    @ApiModelProperty(value = "操作人公司id")
+//    private long companyId;
     /**
      * 附件list
      */
@@ -81,8 +81,6 @@ public class ClientAgencySupplierDto implements Serializable {
     private String legalIdCardPositive;
     @ApiModelProperty(value = "法人身份证反面照片url")
     private String legalIdCardOther;
-    @ApiModelProperty(value = "带公章的授权书照片url")
-    private String certificateOfAuthorization;
     @ApiModelProperty(value = "附件信息:证书身份证等")
     private List<ClientAttachement> atts;
 }

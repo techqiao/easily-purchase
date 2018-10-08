@@ -20,6 +20,10 @@ import java.util.List;
 public class ClientHandleAgency implements Serializable {
 
     private static final long serialVersionUID = 3451904421494723626L;
+
+
+    @ApiModelProperty(value = "代理机构的id")
+    private  Long agencyId;
     @ApiModelProperty(value = "代理商姓名")
     private String name;
 

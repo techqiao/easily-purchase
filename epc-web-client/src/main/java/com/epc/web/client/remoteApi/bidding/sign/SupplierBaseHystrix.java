@@ -1,16 +1,13 @@
 package com.epc.web.client.remoteApi.bidding.sign;
 
 import com.epc.common.Result;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.FacadeTSupplierBasicInfoService;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
-import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 
 import java.util.List;

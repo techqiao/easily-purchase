@@ -87,8 +87,8 @@ public class ReviewexpertController  extends BaseController implements ReviewExp
     @Override
     public Result<Map<String, Object>> selectAllExpertByPage(@RequestBody QueryDetailIfo queryDetailIfo) {
         PageHelper.startPage(queryDetailIfo.getPageNum(),queryDetailIfo.getPageSize());
-        List<ReviewExpertVO> reviewExpertVOS = expertService.selectAllExpertByPage(queryDetailIfo);
-        PageInfo<ReviewExpertVO> pageInfo = new PageInfo<>(reviewExpertVOS);
+        Result<List<ReviewExpertVO>> listResult = expertService.selectAllExpertByPage(queryDetailIfo);
+        PageInfo<ReviewExpertVO> pageInfo = new PageInfo<>(listResult.getData());
         return Result.success(getDataTable(pageInfo));
     }
 

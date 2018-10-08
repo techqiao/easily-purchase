@@ -5,6 +5,7 @@ import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierAttachmentVO;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
@@ -14,6 +15,7 @@ import java.util.List;
 
 /**
  * 供应商接口
+ * @author luozhixin
  */
 public interface SupplierService {
 
@@ -39,16 +41,16 @@ public interface SupplierService {
     /**
      * 供应商资料删除
      * @param whereId
-     * @return
+     * @return Result
      */
     Result<Boolean> deleteSupplierDetailInfo( Long whereId);
 
     /**
      * 供应商资料查询
      * @param id
-     * @return
+     * @return Result
      */
-    Result querySupplierDetailInfo(Long id);
+    Result<SupplierAttachmentVO> querySupplierDetailInfo(Long id);
 
     /**
      * 查询所有供应商 分页展示

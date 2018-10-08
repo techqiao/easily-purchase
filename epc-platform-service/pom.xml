@@ -46,6 +46,11 @@
 			<artifactId>epc-mobile-facade</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.epc</groupId>
+			<artifactId>epc-web-facade</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>

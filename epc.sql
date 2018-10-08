@@ -561,7 +561,7 @@ CREATE TABLE `t_purchase_project_participant_permission` (
 	`user_id` BIGINT(11) NOT NULL COMMENT '参与者ID',
 	`participant_type` int(1) NOT NULL COMMENT '参与者类型 招标代理机构2 采购人4',
 	`action_state` int(1) DEFAULT '0' NOT NULL COMMENT '0:暂未到达此步 1待办 2已完成 -1 打回到此步',
-	`step_type` VARCHAR(64) NOT NULL COMMENT '流程步骤类型 用来区分是具体哪个流程步骤 发布公告 发布招标文件',
+	`step_type` VARCHAR(64) DEFAULT NULL COMMENT '流程步骤类型 用来区分是具体哪个流程步骤 发布公告 发布招标文件',
 	`purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
 	`participant_permission` VARCHAR(32) NOT NULL COMMENT '项目参与者权限 批复reply 经办agent 审核auditor 负责人person_liable' ,
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
@@ -1303,3 +1303,15 @@ CREATE TABLE `t_project_procedure` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目流程表';
 
+CREATE TABLE `sys_dictionary` (
+  `dict_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '字典主键',
+  `text` varchar(50) DEFAULT '' COMMENT '用于其他字段显示',
+  `value` varchar(50) DEFAULT '' COMMENT '字典value',
+  `path` varchar(50) DEFAULT '' COMMENT '路径枚举',
+  `seq` float unsigned zerofill DEFAULT NULL COMMENT '排序',
+  `type` varchar(20) DEFAULT '' COMMENT '字典分类',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  PRIMARY KEY (`dict_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='数据字典，使用 路径枚举策略';

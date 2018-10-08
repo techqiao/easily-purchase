@@ -2,6 +2,7 @@ package com.epc.web.facade.loginuser;
 
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface FacadeLoginUserService {
     @PostMapping(value = "login", consumes = "application/json; charset=UTF-8")
-    Result login(@RequestBody LoginUser user);
+    Result login(@RequestBody Loginer user);
 
     /**
      * @author :winlin

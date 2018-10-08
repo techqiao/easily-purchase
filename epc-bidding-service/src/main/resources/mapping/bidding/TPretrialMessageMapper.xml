@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TPretrialMessageMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TPretrialMessage" >
+<mapper namespace="com.epc.bidding.mapper.TPretrialMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TPretrialMessage" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="purchas_project_id" property="purchasProjectId" jdbcType="BIGINT" />
+    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
     <result column="release_announcement_id" property="releaseAnnouncementId" jdbcType="BIGINT" />
     <result column="company_id" property="companyId" jdbcType="BIGINT" />
-    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="operate_name" property="operateName" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,10 +73,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchas_project_id, release_announcement_id, company_id, operate_id, operate_name, 
-    status, create_at, update_at, is_deleted, content
+    id, purchase_project_id, release_announcement_id, company_id, status, content, operate_id, 
+    creator, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPretrialMessageCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPretrialMessageCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -100,33 +100,33 @@
     delete from t_pretrial_message
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TPretrialMessageCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TPretrialMessageCriteria" >
     delete from t_pretrial_message
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TPretrialMessage" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TPretrialMessage" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_pretrial_message (purchas_project_id, release_announcement_id, 
-      company_id, operate_id, operate_name, 
-      status, create_at, update_at, 
-      is_deleted, content)
-    values (#{purchasProjectId,jdbcType=BIGINT}, #{releaseAnnouncementId,jdbcType=BIGINT}, 
-      #{companyId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{operateName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR})
+    insert into t_pretrial_message (purchase_project_id, release_announcement_id, 
+      company_id, status, content, 
+      operate_id, creator, create_at, 
+      update_at, is_deleted)
+    values (#{purchaseProjectId,jdbcType=BIGINT}, #{releaseAnnouncementId,jdbcType=BIGINT}, 
+      #{companyId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TPretrialMessage" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TPretrialMessage" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into t_pretrial_message
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="purchasProjectId != null" >
-        purchas_project_id,
+      <if test="purchaseProjectId != null" >
+        purchase_project_id,
       </if>
       <if test="releaseAnnouncementId != null" >
         release_announcement_id,
@@ -134,14 +134,17 @@
       <if test="companyId != null" >
         company_id,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
       <if test="operateId != null" >
         operate_id,
       </if>
-      <if test="operateName != null" >
-        operate_name,
-      </if>
-      <if test="status != null" >
-        status,
+      <if test="creator != null" >
+        creator,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -152,13 +155,10 @@
       <if test="isDeleted != null" >
         is_deleted,
       </if>
-      <if test="content != null" >
-        content,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="purchasProjectId != null" >
-        #{purchasProjectId,jdbcType=BIGINT},
+      <if test="purchaseProjectId != null" >
+        #{purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="releaseAnnouncementId != null" >
         #{releaseAnnouncementId,jdbcType=BIGINT},
@@ -166,14 +166,17 @@
       <if test="companyId != null" >
         #{companyId,jdbcType=BIGINT},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="operateName != null" >
-        #{operateName,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -184,12 +187,9 @@
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TPretrialMessageCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TPretrialMessageCriteria" resultType="java.lang.Integer" >
     select count(*) from t_pretrial_message
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -201,8 +201,8 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.purchasProjectId != null" >
-        purchas_project_id = #{record.purchasProjectId,jdbcType=BIGINT},
+      <if test="record.purchaseProjectId != null" >
+        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="record.releaseAnnouncementId != null" >
         release_announcement_id = #{record.releaseAnnouncementId,jdbcType=BIGINT},
@@ -210,14 +210,17 @@
       <if test="record.companyId != null" >
         company_id = #{record.companyId,jdbcType=BIGINT},
       </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
-      <if test="record.operateName != null" >
-        operate_name = #{record.operateName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -228,9 +231,6 @@
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -239,25 +239,25 @@
   <update id="updateByExample" parameterType="map" >
     update t_pretrial_message
     set id = #{record.id,jdbcType=BIGINT},
-      purchas_project_id = #{record.purchasProjectId,jdbcType=BIGINT},
+      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       release_announcement_id = #{record.releaseAnnouncementId,jdbcType=BIGINT},
       company_id = #{record.companyId,jdbcType=BIGINT},
-      operate_id = #{record.operateId,jdbcType=BIGINT},
-      operate_name = #{record.operateName,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
-      content = #{record.content,jdbcType=VARCHAR}
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TPretrialMessage" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TPretrialMessage" >
     update t_pretrial_message
     <set >
-      <if test="purchasProjectId != null" >
-        purchas_project_id = #{purchasProjectId,jdbcType=BIGINT},
+      <if test="purchaseProjectId != null" >
+        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       </if>
       <if test="releaseAnnouncementId != null" >
         release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
@@ -265,14 +265,17 @@
       <if test="companyId != null" >
         company_id = #{companyId,jdbcType=BIGINT},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
       </if>
-      <if test="operateName != null" >
-        operate_name = #{operateName,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -283,27 +286,24 @@
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TPretrialMessage" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TPretrialMessage" >
     update t_pretrial_message
-    set purchas_project_id = #{purchasProjectId,jdbcType=BIGINT},
+    set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       release_announcement_id = #{releaseAnnouncementId,jdbcType=BIGINT},
       company_id = #{companyId,jdbcType=BIGINT},
-      operate_id = #{operateId,jdbcType=BIGINT},
-      operate_name = #{operateName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=INTEGER},
-      content = #{content,jdbcType=VARCHAR}
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TPretrialMessageCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPretrialMessageCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

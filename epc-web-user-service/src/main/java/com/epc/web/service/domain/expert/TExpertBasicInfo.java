@@ -27,7 +27,7 @@ public class TExpertBasicInfo implements Serializable {
 
     private Integer isIdle;
     private Date circularDt;
-
+    private Date circularDtEnd;
 
     private String circularMethod;
 

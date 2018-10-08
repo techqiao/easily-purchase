@@ -52,7 +52,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table schema="easily_purchase" tableName="t_project_basic_info" domainObjectName="TProjectBasicInfo">
+        <table schema="easily_purchase" tableName="t_tender_message" domainObjectName="TTenderMessage">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

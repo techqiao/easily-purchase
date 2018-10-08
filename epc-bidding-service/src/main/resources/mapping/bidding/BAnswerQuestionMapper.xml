@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.BAnswerQuestionMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.BAnswerQuestion" >
+<mapper namespace="com.epc.bidding.mapper.BAnswerQuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.BAnswerQuestion" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="questioner_id" property="questionerId" jdbcType="BIGINT" />
@@ -16,7 +16,7 @@
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" extends="BaseResultMap" >
     <result column="problem" property="problem" jdbcType="LONGVARCHAR" />
     <result column="answer" property="answer" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -85,7 +85,7 @@
   <sql id="Blob_Column_List" >
     problem, answer
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -101,7 +101,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -127,13 +127,13 @@
     delete from b_answer_question
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" >
     delete from b_answer_question
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -150,7 +150,7 @@
       #{isDeleted,jdbcType=INTEGER}, #{problem,jdbcType=LONGVARCHAR}, #{answer,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -244,7 +244,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" resultType="java.lang.Integer" >
     select count(*) from b_answer_question
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -343,7 +343,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" >
     update b_answer_question
     <set >
       <if test="procurementProjectId != null" >
@@ -391,7 +391,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionWithBLOBs" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" >
     update b_answer_question
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{questionerId,jdbcType=BIGINT},
@@ -409,7 +409,7 @@
       answer = #{answer,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestion" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.BAnswerQuestion" >
     update b_answer_question
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       questioner_id = #{questionerId,jdbcType=BIGINT},
@@ -425,7 +425,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
     select
     <if test="distinct" >
       distinct
@@ -441,7 +441,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.BAnswerQuestionCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

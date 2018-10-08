@@ -29,10 +29,9 @@ public interface BiddingService {
     /**
      *  查看公告详情 及 下载文件路径
      * @param queryNoticeDetail 公告详情
-     * @param isPay 是否支付
      * @return
      */
-    Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail,Boolean isPay);
+    Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail);
 
     /**
      * 查看 答疑列表
@@ -52,7 +51,7 @@ public interface BiddingService {
      * 查询供应商是否支付下载招标文件金额
      * @return
      */
-    Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto);
+    Boolean IsPayForProjectFile(QueryProgramPayDTO dto);
 
     /**
      * 投标上传
@@ -74,20 +73,5 @@ public interface BiddingService {
      * @return
      */
     Result<PretrialMessageVO> getTPretrialMessage(HandlePretriaFile handlePretriaFile);
-
-    /**
-     * 根据bid 和 用户类型 判断标段环节步骤
-     * @param dto
-     * @return
-     */
-    Result<String> queryProjectSchedule(QueryProjectSchedule dto);
-
-
-    /**
-     * 环节插入
-     * @param dto
-     * @return
-     */
-    Result<Boolean> insertProjectSchedule(HandleProjectSchedule dto);
 
     }

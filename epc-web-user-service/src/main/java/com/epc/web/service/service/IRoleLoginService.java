@@ -2,8 +2,10 @@ package com.epc.web.service.service;
 
 import com.epc.common.Result;
 import com.epc.web.facade.loginuser.dto.LoginUser;
+import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +30,25 @@ public interface IRoleLoginService {
       *@return: 返回详细信息
       *@date:2018/9/18
       */
-     Result<LoginUser> login (LoginUser user);
+    // Result<LoginUser> login (Loginer user);
+
+     public Result<LoginUser> operatorLogin(Loginer loginer);
+     public Result<LoginUser> purchaserLogin(Loginer loginer);
+     public Result<LoginUser> agencyLogin(Loginer loginer);
+     public Result<LoginUser>  supplierLogin(Loginer loginer);
+     public Result<LoginUser> expertLogin(Loginer loginer);
+
+     public Result<Boolean> registerOperator(RegisterUser registerUser);
+     public Result<Boolean> registerPurchaser(RegisterUser registerUser);
+     public Result<Boolean> registerAgency(RegisterUser registerUser);
+     public Result<Boolean> registerSupplier(RegisterUser registerUser);
+     public Result<Boolean> registerExpert(RegisterUser registerUser);
+
+     public Result<Boolean> modifyPasswordOperator(ModifyUser user);
+     public Result<Boolean> modifyPasswordSupplier(ModifyUser user);
+     public Result<Boolean> modifyPasswordAgency(ModifyUser user);
+     public Result<Boolean> modifyPasswordExpert(ModifyUser user);
+     public Result<Boolean> modifyPasswordPurchaser(ModifyUser user);
 
      /**
       *@author :winlin

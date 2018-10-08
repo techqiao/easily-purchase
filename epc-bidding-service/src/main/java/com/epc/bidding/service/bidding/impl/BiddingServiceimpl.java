@@ -1,11 +1,14 @@
 package com.epc.bidding.service.bidding.impl;
 
 
-import com.epc.bidding.domain.bidding.*;
-import com.epc.bidding.mapper.bidding.*;
+import com.epc.bidding.domain.*;
+import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.PretrialMessageEnum;
+import com.epc.common.constants.QuestionTypeEnum;
+import com.epc.common.util.DateTimeUtil;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleNotice;
@@ -15,8 +18,6 @@ import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
-import com.epc.web.facade.bidding.query.schedule.HandleProjectSchedule;
-import com.epc.web.facade.bidding.query.schedule.QueryProjectSchedule;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,6 +67,8 @@ public class BiddingServiceimpl implements BiddingService {
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     TTenderFileMapper tTenderFileMapper;
+
+    /*******************************************公告*******************************************************/
 
     /**
      * 查询公告列表（暂时不做黑名单）
@@ -104,15 +107,15 @@ public class BiddingServiceimpl implements BiddingService {
     /**
      * 查看公告详情
      * @param queryNoticeDetail
-     * @param isPay
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail,Boolean isPay) {
+    public Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail) {
         if(queryNoticeDetail.getNoticeId()==null){
             return Result.error("公告Id不能为空");
         }
 
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //根据公告ID查看详情
         BReleaseAnnouncement bReleaseAnnouncement = bReleaseAnnouncementMapper.selectByPrimaryKey(queryNoticeDetail.getNoticeId());
         NoticeDetailVO noticeDetailVO = new NoticeDetailVO();
@@ -120,14 +123,15 @@ public class BiddingServiceimpl implements BiddingService {
             return Result.success(null);
         }
         BeanUtils.copyProperties(bReleaseAnnouncement, noticeDetailVO);
-
+        noticeDetailVO.setBiddingStart(sdf.format(bReleaseAnnouncement.getBiddingStart()));
+        noticeDetailVO.setBiddingEnd(sdf.format(bReleaseAnnouncement.getBiddingEnd()));
         //未支付招标文件下载金，则不能下载，路径为空
-        if(isPay==false){
+        if(queryNoticeDetail.getIsPay()==false){
             noticeDetailVO.setBiddingDocumentsUrl(null);
         }
         return Result.success(noticeDetailVO);
     }
-
+/*******************************************问题********************************************************/
     /**
      * 查看 答疑列表
      * @param dto
@@ -144,10 +148,10 @@ public class BiddingServiceimpl implements BiddingService {
         if(StringUtils.isNotEmpty(dto.getQuestionType())){
             subCriteria.andQuestionTypeEqualTo(dto.getQuestionType());
         }
-        if(dto.getTypeId()>0){
+        if(dto.getTypeId()!=null && dto.getTypeId()>0){
             subCriteria.andTypeIdEqualTo(dto.getTypeId());
         }
-        if(dto.getQuestionerId()>0){
+        if(dto.getQuestionerId()!=null && dto.getQuestionerId()>0){
             subCriteria.andQuestionerIdEqualTo(dto.getQuestionerId());
         }
         if(StringUtils.isNotEmpty(dto.getQuestionerName())){
@@ -156,15 +160,18 @@ public class BiddingServiceimpl implements BiddingService {
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         criteria.setOrderByClause("create_at desc");
 
-        List<BAnswerQuestion> list=bAnswerQuestionMapper.selectByExampleWithRowbounds(criteria,dto.getRowBounds());
+        List<BAnswerQuestionWithBLOBs> list=bAnswerQuestionMapper.selectByExampleWithBLOBs(criteria);
         List<QueryAnswerQuestionListVO> returnList = new ArrayList<>();
         list.forEach(item -> {
             QueryAnswerQuestionListVO vo = new QueryAnswerQuestionListVO();
             BeanUtils.copyProperties(item, vo);
+            vo.setCreateAt(DateTimeUtil.dateToStr(item.getCreateAt()));
             returnList.add(vo);
         });
         return Result.success(returnList);
     }
+
+
 
     /**
      * 新增一条问题 (公告,招标文件，评标)
@@ -179,6 +186,8 @@ public class BiddingServiceimpl implements BiddingService {
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         entity.setCreateAt(new Date());
         entity.setUpdateAt(new Date());
+        entity.setOperateId(handleQuestion.getQuestionerId());
+        entity.setStatus(QuestionTypeEnum.WAIT_REPLY.getCode());
         try{
             bAnswerQuestionMapper.insertSelective(entity);
         }catch (Exception e){
@@ -189,6 +198,7 @@ public class BiddingServiceimpl implements BiddingService {
         return  Result.success(true);
     }
 
+/*******************************************投标文件记录********************************************************/
 
     /**
      * 投标文件记录(新增/修改/删除)
@@ -242,11 +252,12 @@ public class BiddingServiceimpl implements BiddingService {
         //新增 修改 投标文件（一条记录可以对应多个文件）
         for(BasePretriaFile file:list){
             TTenderFile tTenderFile=new TTenderFile();
-            tTenderFile.setTenderMessageId(file.getId());
+            tTenderFile.setTenderMessageId(entity.getId());
             tTenderFile.setFilePath(file.getFilePath());
             tTenderFile.setFileName(file.getFileName());
             tTenderFile.setCreateAt(new Date());
             tTenderFile.setUpdateAt(new Date());
+            tTenderFile.setOperateId(handleNotice.getOperateId());
             if(file.getId()!=null){
                 //文件id不为空则修改记录
                 try{
@@ -270,6 +281,7 @@ public class BiddingServiceimpl implements BiddingService {
         return Result.success();
     }
 
+/*******************************************预审文件记录********************************************************/
 
     /**
      * 预审文件记录 新增/更新/删除
@@ -281,8 +293,12 @@ public class BiddingServiceimpl implements BiddingService {
     public Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile) {
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
+        attachment.setCreateAt(new Date());
         attachment.setUpdateAt(new Date());
-        if(handlePretriaFile.getIsDelete()==1 && handlePretriaFile.getId()!=null){
+        attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+        attachment.setStatus(PretrialMessageEnum.REVIEW.getCode());
+        attachment.setCreator(handlePretriaFile.getOperateName());
+        if(handlePretriaFile.getId()!=null && handlePretriaFile.getIsDelete()!=null && handlePretriaFile.getIsDelete()==1 ){
             try{
                 //删除
                 tPretrialMessageMapper.deleteByPrimaryKey(handlePretriaFile.getId());
@@ -324,6 +340,8 @@ public class BiddingServiceimpl implements BiddingService {
             tPretrialFile.setFileName(entity.getFileName());
             tPretrialFile.setCreateAt(new Date());
             tPretrialFile.setUpdateAt(new Date());
+            tPretrialFile.setOperateId(handlePretriaFile.getOperateId());
+            tPretrialFile.setCreator(handlePretriaFile.getOperateName());
             if(entity.getId()!=null && entity.getId()>0){
                 //文件id为空则修改原记录
                 try{
@@ -355,7 +373,7 @@ public class BiddingServiceimpl implements BiddingService {
     public Result<PretrialMessageVO>  getTPretrialMessage(HandlePretriaFile handlePretriaFile){
         TPretrialMessageCriteria criteria =new TPretrialMessageCriteria();
         TPretrialMessageCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andPurchasProjectIdEqualTo(handlePretriaFile.getPurchaseProjectId());
+        cubCriteria.andPurchaseProjectIdEqualTo(handlePretriaFile.getPurchaseProjectId());
         cubCriteria.andReleaseAnnouncementIdEqualTo(handlePretriaFile.getReleaseAnnouncementId());
         cubCriteria.andCompanyIdEqualTo(handlePretriaFile.getCompanyId());
         //获取预审信息
@@ -389,21 +407,21 @@ public class BiddingServiceimpl implements BiddingService {
      */
 
     @Override
-    public Result<Boolean> IsPayForProjectFile(QueryProgramPayDTO dto){
+    public Boolean IsPayForProjectFile(QueryProgramPayDTO dto){
         final TPurchaseProjectFileDownloadCriteria criteria=new TPurchaseProjectFileDownloadCriteria();
         final TPurchaseProjectFileDownloadCriteria.Criteria subCriteria=criteria.createCriteria();
-        subCriteria.andPurchasProjectIdEqualTo(dto.getProcurementProjectId());
+        subCriteria.andPurchaseProjectIdEqualTo(dto.getProcurementProjectId());
         subCriteria.andPurchaserIdEqualTo(dto.getPurchaserId());
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         //根据采购项目Id 查询招标文件
         List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
         if(list.size()==0){
             LOGGER.error("尚未发布招标文件");
-            return Result.success(null);
+            return false;
         }
         //获取招标文件ID
         Long fileId=list.get(0).getId();
-        BigDecimal money=list.get(0).getFilePayment();
+       // BigDecimal money=list.get(0).getFilePayment();
         //根据招标文件ID 和 下载机构id 查询是否付费
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
@@ -414,59 +432,16 @@ public class BiddingServiceimpl implements BiddingService {
         //未查询到支付记录
         if(payList.size()==0){
             LOGGER.error("未找到支付记录");
-            return   Result.success(false);
+            return false;
         }else{
             //第一次支付，暂时不考虑多次
-            BigDecimal realPay= payList.get(0).getFilePaymentReal();
+           /* BigDecimal realPay= payList.get(0).getFilePaymentReal();
             //compareTo  -1:<   0:=   1:>
             if(money.compareTo(realPay)>-1){
                 Result.success(true);
-            }
-        }
-        return Result.success();
-    }
-
-
-    /**
-     * 根据bid 和 用户类型 判断标段环节步骤
-     * @param dto
-     * @return
-     */
-    @Override
-    public Result<String> queryProjectSchedule(QueryProjectSchedule dto){
-        TProjectBidProcedureCriteria criteria=new TProjectBidProcedureCriteria();
-        TProjectBidProcedureCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andProjectIdEqualTo(dto.getPurchaseProjectId());
-        cubCriteria.andOperateTypeEqualTo("supplier");
-        criteria.setOrderByClause("create_at desc");
-        List<TProjectBidProcedure> result=tProjectBidProcedureMapper.selectByExample(criteria);
-        if(result.size()>0){
-            return  Result.success(result.get(0).getProcedureName());
-        }else{
-            return Result.success(null);
+            }*/
+            return true;
         }
     }
 
-    /**
-     * 环节插入
-     * @param dto
-     * @return
-     */
-    @Override
-    @Transactional(rollbackFor =Exception.class )
-    public Result<Boolean> insertProjectSchedule(HandleProjectSchedule dto) {
-        TProjectBidProcedure entity = new TProjectBidProcedure();
-        BeanUtils.copyProperties(dto, entity);
-        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        entity.setCreateAt(new Date());
-        entity.setUpdateAt(new Date());
-        try {
-            tProjectBidProcedureMapper.insertSelective(entity);
-        } catch (Exception e) {
-            LOGGER.error("insertProjectSchedule_" + entity.toString() + "_" + e.getMessage(), e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error();
-        }
-        return Result.success(true);
-    }
 }

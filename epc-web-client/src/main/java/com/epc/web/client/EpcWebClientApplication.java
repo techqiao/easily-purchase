@@ -16,5 +16,4 @@ public class EpcWebClientApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(EpcWebClientApplication.class).web(true).run(args);
 	}
-
 }

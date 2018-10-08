@@ -3,20 +3,16 @@ package com.epc.web.client.controller.supplier;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
-import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorRole;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorState;
 import com.epc.web.client.controller.supplier.handle.*;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierCellphone;
-import com.epc.web.client.controller.supplier.query.ClientHandleSupplierId;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierIdAndName;
 import com.epc.web.client.remoteApi.supplier.SupplierClient;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
 import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
-import com.epc.web.facade.supplier.query.HandleSupplierId;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
@@ -58,13 +54,13 @@ public class TSupplierBasicInfoController extends BaseController {
     }
 
 
-    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
-    @PostMapping(value="public/addPasswordSupplierLogin")
-    public Result<Boolean> addPasswordSupplierLogin(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
-        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
-        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
-        return supplierClient.addPasswordSupplierLogin(handleSupplierDetail);
-    }
+//    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
+//    @PostMapping(value="public/addPasswordSupplierLogin")
+//    public Result<Boolean> addPasswordSupplierLogin(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
+//        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
+//        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
+//        return supplierClient.addPasswordSupplierLogin(handleSupplierDetail);
+//    }
 
     /**1
      *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
@@ -72,13 +68,13 @@ public class TSupplierBasicInfoController extends BaseController {
      *      不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
      *      )
      */
-    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
-    @PostMapping(value="public/addPasswordSupplier")
-    public Result<Boolean> addPasswordSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
-        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
-        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
-        return supplierClient.addPasswordSupplier(handleSupplierDetail);
-    }
+//    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
+//    @PostMapping(value="public/addPasswordSupplier")
+//    public Result<Boolean> addPasswordSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
+//        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
+//        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
+//        return supplierClient.addPasswordSupplier(handleSupplierDetail);
+//    }
 
     /**2
      *  完善供应商信息
@@ -101,6 +97,15 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> createSupplierEmployee(@RequestBody ClientHandlerSupplierAddEmployee clientHandlerSupplierAddEmployee){
         HandlerSupplierAddEmployee handlerSupplierAddEmployee=new HandlerSupplierAddEmployee();
         BeanUtils.copyProperties(clientHandlerSupplierAddEmployee,handlerSupplierAddEmployee);
+        Long bossId = getLoginUser().getBossId();
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(bossId==null || type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handlerSupplierAddEmployee.setSystemRole(type);
+        handlerSupplierAddEmployee.setSupplierId(bossId);
+        handlerSupplierAddEmployee.setLoginRole(loginRole);
         return supplierClient.createSupplierEmployee(handlerSupplierAddEmployee);
     }
 
@@ -108,11 +113,21 @@ public class TSupplierBasicInfoController extends BaseController {
      * 根据员工的id来查询基本信息
      */
     @ApiOperation(value = "4:根据员工的id来查询基本信息",notes = "donghuan")
-    @PostMapping(value = "/findSupplierBasicById")
-    public Result<SupplierBasicInfoVO> findSupplierBasicById(@RequestBody ClientHandleSupplierId clientHandleSupplierId){
-        HandleSupplierId handleSupplierId=new HandleSupplierId();
-        BeanUtils.copyProperties(clientHandleSupplierId,handleSupplierId);
-        return supplierClient.findSupplierBasicById(handleSupplierId);
+    @GetMapping(value = "/findSupplierBasicById")
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(@RequestParam(value = "id") Long id){
+        HandleFindSupplierBasicById handleFindSupplierBasicById=new HandleFindSupplierBasicById();
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        if(id==null){
+            return Result.success("前端传入id为空");
+        }
+        handleFindSupplierBasicById.setId(id);
+        handleFindSupplierBasicById.setLoginRole(loginRole);
+        handleFindSupplierBasicById.setSystemRole(type);
+        return supplierClient.findSupplierBasicById(handleFindSupplierBasicById);
     }
 
     /**5
@@ -124,18 +139,52 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> updateSupplierEmployeeById(@RequestBody ClientHandlerUpdateSupplierEmployeeById clientHandlerUpdateSupplierEmployeeById){
         HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById=new HandlerUpdateSupplierEmployeeById();
         BeanUtils.copyProperties(clientHandlerUpdateSupplierEmployeeById,handlerUpdateSupplierEmployeeById);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handlerUpdateSupplierEmployeeById.setSystemRole(type);
+        handlerUpdateSupplierEmployeeById.setLoginRole(loginRole);
         return supplierClient.updateSupplierEmployeeById(handlerUpdateSupplierEmployeeById);
     }
 
-    /**6
-     * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
+    /**6 查看个人信息
+     * 员工通过id来查询 个人信息   (分两种情况，是老板，不是老板。不需要前端 传任何数据，直接用登陆个人信息里面的id与role)
      */
-    @ApiOperation(value = "6:员工id来查询（公司法人supplier_id）公司详情（包括附件）",notes = "donghuan")
+    @ApiOperation(value = "员工id来查询（公司法人supplier_id）公司详情（包括附件）--6",notes = "donghuan")
     @PostMapping(value = "/findSupplierDetailByEmployee")
-    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(@RequestBody ClientHandleSupplierId clientHandleSupplierId) {
-        HandleSupplierId handleSupplierId=new HandleSupplierId();
-        BeanUtils.copyProperties(clientHandleSupplierId,handleSupplierId);
-        return supplierClient.findSupplierDetailByEmployee(handleSupplierId);
+    public Result<RoleDetailInfo> findSupplierDetailByEmployee() {
+        HandleFindSupplierBasicById handleFindSupplierBasicById=new HandleFindSupplierBasicById();
+        Long userId = getLoginUser().getUserId();
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(userId==null || type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleFindSupplierBasicById.setId(userId);
+        handleFindSupplierBasicById.setSystemRole(type);
+        handleFindSupplierBasicById.setLoginRole(loginRole);
+        return supplierClient.findSupplierDetailByEmployee(handleFindSupplierBasicById);
+    }
+
+    /**6.5  查看公司详情
+     * 管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）
+     */
+    @ApiOperation(value = "管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）--6.5",notes = "donghuan")
+    @PostMapping(value = "/findSupplierByBossId")
+    public Result<RoleDetailInfo> findSupplierByBossId(){
+        HandleFindSupplierBasicById handleFindSupplierBasicById=new HandleFindSupplierBasicById();
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        Long bossId= getLoginUser().getBossId();
+        if(type==null || loginRole==null || bossId==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleFindSupplierBasicById.setId(bossId);
+        handleFindSupplierBasicById.setSystemRole(type);
+        handleFindSupplierBasicById.setLoginRole(loginRole);
+        return supplierClient.findSupplierByBossId(handleFindSupplierBasicById);
     }
 
     /**7
@@ -146,6 +195,13 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> findSupplierRecordByCellphone(@RequestBody ClientHandleSupplierCellphone clientHandleSupplierCellphone){
         HandleSupplierCellphone handleSupplierCellphone=new HandleSupplierCellphone();
         BeanUtils.copyProperties(clientHandleSupplierCellphone,handleSupplierCellphone);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleSupplierCellphone.setType(type);
+        handleSupplierCellphone.setLoginRole(loginRole);
         return supplierClient.findSupplierRecordByCellphone(handleSupplierCellphone);
     }
 
@@ -157,6 +213,13 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<SupplierBasicInfoVO> findSupplierByCellphone(@RequestBody ClientHandleSupplierCellphone clientHandleSupplierCellphone){
         HandleSupplierCellphone handleSupplierCellphone=new HandleSupplierCellphone();
         BeanUtils.copyProperties(clientHandleSupplierCellphone,handleSupplierCellphone);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleSupplierCellphone.setType(type);
+        handleSupplierCellphone.setLoginRole(loginRole);
         return supplierClient.findSupplierByCellphone(handleSupplierCellphone);
     }
 
@@ -168,6 +231,13 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> updateSupplierEmployeeByisDeleted(@RequestBody ClientHandleSupplierIdAndIsForbidden clientHandleSupplierIdAndIsForbidden){
         HandleSupplierIdAndIsForbidden handleSupplierIdAndIsForbidden=new HandleSupplierIdAndIsForbidden();
         BeanUtils.copyProperties(clientHandleSupplierIdAndIsForbidden,handleSupplierIdAndIsForbidden);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleSupplierIdAndIsForbidden.setType(type);
+        handleSupplierIdAndIsForbidden.setLoginRole(loginRole);
         return supplierClient.updateSupplierEmployeeByisDeleted(handleSupplierIdAndIsForbidden);
     }
 
@@ -179,6 +249,13 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> clientHandleSupplierIdAndIsForbidden(@RequestBody ClientHandleSupplieIsDeleted clientHandleSupplieIsDeleted){
         HandleSupplieIsDeleted handleSupplieIsDeleted=new HandleSupplieIsDeleted();
         BeanUtils.copyProperties(clientHandleSupplieIsDeleted,handleSupplieIsDeleted);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleSupplieIsDeleted.setType(type);
+        handleSupplieIsDeleted.setLoginRole(loginRole);
         return supplierClient.deleteSupplierEmployeeById(handleSupplieIsDeleted);
     }
 
@@ -191,6 +268,13 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> updateSupplierEmployeeRoleById(@RequestBody ClientHandleOperatorRole clientHandleOperatorRole){
         HandleOperatorRole handleOperatorRole=new HandleOperatorRole();
         BeanUtils.copyProperties(clientHandleOperatorRole,handleOperatorRole);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        if(type==null || loginRole==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleOperatorRole.setSystemRole(type);
+        handleOperatorRole.setLoginRole(loginRole);
         return supplierClient.updateSupplierEmployeeRoleById(handleOperatorRole);
     }
 
@@ -226,6 +310,15 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody ClientHandleSupplierIdAndName clientHandleSupplierIdAndName){
         HandleSupplierIdAndName handleSupplierIdAndName=new HandleSupplierIdAndName();
         BeanUtils.copyProperties(clientHandleSupplierIdAndName,handleSupplierIdAndName);
+        Integer type = getLoginUser().getType();
+        Integer loginRole = getLoginUser().getLoginRole();
+        Long bossId = getLoginUser().getBossId();
+        if(type==null || loginRole==null || bossId==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleSupplierIdAndName.setType(type);
+        handleSupplierIdAndName.setLoginRole(loginRole);
+        handleSupplierIdAndName.setBossId(bossId);
         return supplierClient.querySupplierEmployeeAll(handleSupplierIdAndName);
     }
 

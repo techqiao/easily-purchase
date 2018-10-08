@@ -66,11 +66,12 @@ public class Const {
     }
 
     public interface STATE {
-        int REGISTERED = 0;
-        int PERFECTING = 1;
-        int COMMITTED = 2;
-        int AUDIT_SUCCESS = 3;
-        int AUDIT_FAILD = 4;
+        int REGISTERED = 1;//拉取
+        int PERFECTING = 2;//资料完善中
+        int COMMITTED = 3;//审核中
+        int FORBIDDEN =4;//禁用
+        int AUDIT_SUCCESS = 5;//审核通过
+        int AUDIT_FAILD = 6;//审核失败
     }
 
     public interface RESOURCE_TYPE {
@@ -127,6 +128,7 @@ public class Const {
     }
 
 
+
     public interface ACTION_STATE{
         //暂未到达此步
         int NOT_ARRIVING=0;
@@ -156,5 +158,12 @@ public class Const {
         String NOT_TRUST="black_list";
     }
 
+    public interface STATE_CODE{
+        int  PULLING =1;//拉取
+        int  COMPLETING_INFO =2;//完善信息
+        int CHECKING =3;//审核中
+        int FORBIDDEN =4;//禁用
+        int AUDIT_SUCCESS=5;//审核通过
+    }
 
 }

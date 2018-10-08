@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.bidding.TBiddingPreviewMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.bidding.TBiddingPreview" >
+<mapper namespace="com.epc.bidding.mapper.TBiddingPreviewMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TBiddingPreview" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
@@ -78,7 +78,7 @@
     id, project_code, project_name, project_id, preview_title, preview_memo, purchaser_id, 
     status, operate_id, creator, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TBiddingPreviewCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TBiddingPreviewCriteria" >
     select
     <if test="distinct" >
       distinct
@@ -102,13 +102,13 @@
     delete from t_bidding_preview
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.bidding.TBiddingPreviewCriteria" >
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TBiddingPreviewCriteria" >
     delete from t_bidding_preview
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.bidding.TBiddingPreview" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.TBiddingPreview" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -123,7 +123,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.bidding.TBiddingPreview" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TBiddingPreview" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -205,7 +205,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.bidding.TBiddingPreviewCriteria" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.epc.bidding.domain.TBiddingPreviewCriteria" resultType="java.lang.Integer" >
     select count(*) from t_bidding_preview
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -277,7 +277,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.bidding.TBiddingPreview" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TBiddingPreview" >
     update t_bidding_preview
     <set >
       <if test="projectCode != null" >
@@ -319,7 +319,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.bidding.TBiddingPreview" >
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TBiddingPreview" >
     update t_bidding_preview
     set project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
@@ -335,7 +335,7 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.bidding.TBiddingPreviewCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TBiddingPreviewCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct

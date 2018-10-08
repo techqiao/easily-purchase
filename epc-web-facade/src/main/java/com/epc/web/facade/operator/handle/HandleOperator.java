@@ -21,6 +21,11 @@ public class HandleOperator implements Serializable {
     private static final long serialVersionUID = -1601501922746938L;
 
     /**
+     *  是什么角色
+     */
+    private Integer systemRole;
+
+    /**
      * 员工姓名
      */
     private String name;
@@ -35,7 +40,7 @@ public class HandleOperator implements Serializable {
      */
     private String password;
 
-    private String token;
+//    private String token;
 
 
 

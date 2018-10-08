@@ -9,11 +9,11 @@ import java.io.Serializable;
  * @author 01
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginUser implements Serializable {
 
     private static final long serialVersionUID = 1652716944499144386L;
     private String name;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private String cellphone;
     private Integer type;
@@ -23,5 +23,6 @@ public class LoginUser implements Serializable {
     private String companyName;
     private Long companyId;
     private Integer loginRole;
+    private Integer state;
 
 }

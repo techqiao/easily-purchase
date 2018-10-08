@@ -61,6 +61,10 @@ public class ClientHandleExpertDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date circularDt;
     /**
+     * 通知结束时间
+     */
+    private Date circularDtEnd;
+    /**
      * 通知方式
      */
     @ApiModelProperty(value = "通知方式")
@@ -94,6 +98,11 @@ public class ClientHandleExpertDto implements Serializable {
     /**
      * 专家附件
      */
+
+    @ApiModelProperty(value = "法人身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "法人身份证反面照片url")
+    private String legalIdCardOther;
     @ApiModelProperty(value = "专家附件 如身份证等")
     private List<ClientAttachement> atts;
 }

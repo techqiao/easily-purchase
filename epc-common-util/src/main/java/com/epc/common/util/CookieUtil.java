@@ -22,8 +22,10 @@ public class CookieUtil {
 
 
     public static String readLoginToken(HttpServletRequest request){
-        String header ="EPC_PRIVATE_"+ request.getHeader(COOKIE_NAME);
-        if(header!=null){
+
+        String header = request.getHeader(COOKIE_NAME);
+        if(header != null){
+            header += "EPC_PRIVATE_";
             String jsonString = RedisShardedPoolUtil.get(header);
             return jsonString;
         }

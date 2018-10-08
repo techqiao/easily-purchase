@@ -11,6 +11,7 @@ import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServiceBackVO;
 import com.epc.web.facade.bidding.vo.ServicePayVO;
 import com.epc.web.facade.bidding.vo.newGuaranteeVO;
 import org.slf4j.Logger;
@@ -221,4 +222,45 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         }
         return Result.success(voList);
     }
+
+    /**
+     * 保证金退还列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<ServiceBackVO>> getGuarantyBackPayList(QueryMoneyPayRecordDTO dto){
+        //根据采购项目id 和 公司id 查询保证金支付列表
+        BBidOpeningPayCriteria criteria =new BBidOpeningPayCriteria();
+        BBidOpeningPayCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andProcurementProjectIdEqualTo(dto.getPurchaseProjectId());
+        cubCriteria.andTendererCompanyIdEqualTo(dto.getCompanyId());
+        criteria.setOrderByClause("create_at desc");
+        List<ServiceBackVO> voList=new ArrayList<>();
+
+        List<BBidOpeningPay> result=bBidOpeningPayMapper.selectByExample(criteria);
+        for(BBidOpeningPay entity:result){
+            ServiceBackVO vo= new ServiceBackVO();
+            //获取项目详情
+            TProjectBasicInfo projectBasicInfo=tProjectBasicInfoMapper.selectByPrimaryKey(entity.getProjectId());
+            vo.setProjectCode(projectBasicInfo.getProjectCode());
+            vo.setProjectName(projectBasicInfo.getProjectName());
+            //获取标段
+            TPurchaseProjectBids  purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
+            vo.setBidCode(purchaseProjectBids.getBidCode());
+            vo.setBidName(purchaseProjectBids.getBidName());
+            //标段保证金详情
+            BBidsGuaranteeAmount bidsGuaranteeAmount=bBidsGuaranteeAmountMapper.selectByPrimaryKey(entity.getBidsGuaranteeAmountId());
+            vo.setBidMoney(bidsGuaranteeAmount.getTenderGuaranteeAmount());
+            //支付详情信息
+            if(entity.getIsBack().equals(0)){
+                vo.setStatus("未退还");
+            }else  if(entity.getIsBack().equals(1)){
+                vo.setStatus("已退还");
+            }
+            voList.add(vo);
+        }
+        return Result.success(voList);
+    }
+
 }

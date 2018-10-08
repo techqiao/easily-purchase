@@ -7,6 +7,7 @@ import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServiceBackVO;
 import com.epc.web.facade.bidding.vo.ServicePayVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,4 +49,13 @@ public interface FacadeMoneyPayService {
     @PostMapping(value = "insertGuaranteeAmountPay", consumes = "application/json; charset=UTF-8")
     Result<Boolean> insertGuaranteeAmountPay(@RequestBody HandleGuaranteeAmountPay handle);
 
-    }
+
+    /**
+     * 保证金退还列表
+     * @param dto
+     * @return
+     */
+    @PostMapping(value = "getGuarantyBackPayList", consumes = "application/json; charset=UTF-8")
+    Result<List<ServiceBackVO>> getGuarantyBackPayList(@RequestBody QueryMoneyPayRecordDTO dto);
+
+}

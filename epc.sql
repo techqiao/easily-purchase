@@ -761,6 +761,7 @@ CREATE TABLE `b_bid_opening_pay` (
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_back` INT(1) DEFAULT '0' COMMENT '是否退款: 0-否,1-是',
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:开标 ';

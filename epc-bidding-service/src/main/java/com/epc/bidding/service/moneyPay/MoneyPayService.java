@@ -6,6 +6,7 @@ import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServiceBackVO;
 import com.epc.web.facade.bidding.vo.ServicePayVO;
 
 import java.util.List;
@@ -42,4 +43,10 @@ public interface MoneyPayService {
      */
      Result<Boolean> insertGuaranteeAmountPay(HandleGuaranteeAmountPay handle);
 
-    }
+    /**
+     * 保证金退还列表
+     * @param dto
+     * @return
+     */
+    Result<List<ServiceBackVO>> getGuarantyBackPayList(QueryMoneyPayRecordDTO dto);
+}

@@ -11,6 +11,7 @@ import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServiceBackVO;
 import com.epc.web.facade.bidding.vo.ServicePayVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,6 +58,19 @@ public class BiddingMoneyPayController extends BaseController {
         queryMoneyPayRecordDTO.setOperaterName(getLoginUser().getName());
         queryMoneyPayRecordDTO.setCompanyId(getLoginUser().getBossId());
         return moneyPayClient.IsPayForServiceMoney(queryMoneyPayRecordDTO);
+    }
+
+
+    @ApiOperation(value = "投标保证金退还列表",tags = "投标保证金退还列表")
+    @PostMapping(value = "getGuarantyBackPayList", consumes = "application/json; charset=UTF-8")
+    public Result<List<ServiceBackVO>> getGuarantyBackPayList(@RequestBody ClientMoneyPayRecordDTO dto){
+        QueryMoneyPayRecordDTO queryMoneyPayRecordDTO=new QueryMoneyPayRecordDTO();
+        BeanUtils.copyProperties(dto,queryMoneyPayRecordDTO);
+        queryMoneyPayRecordDTO.setOperaterId(getLoginUser().getUserId());
+        queryMoneyPayRecordDTO.setOperaterName(getLoginUser().getName());
+        queryMoneyPayRecordDTO.setCompanyId(getLoginUser().getBossId());
+        return moneyPayClient.getGuarantyBackPayList(queryMoneyPayRecordDTO);
+
     }
 
 

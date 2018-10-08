@@ -9,6 +9,7 @@ import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServiceBackVO;
 import com.epc.web.facade.bidding.vo.ServicePayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,5 +63,11 @@ public class BiddingMoneyPayController implements FacadeMoneyPayService {
     public Result<Boolean> insertGuaranteeAmountPay(@RequestBody HandleGuaranteeAmountPay handle) {
         return moneyPayService.insertGuaranteeAmountPay(handle);
     }
+
+    @Override
+    public Result<List<ServiceBackVO>> getGuarantyBackPayList(@RequestBody QueryMoneyPayRecordDTO dto) {
+        return moneyPayService.getGuarantyBackPayList(dto);
+    }
+
 
 }

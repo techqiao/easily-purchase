@@ -125,7 +125,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
             //完善基本信息
             TExpertBasicInfo tExpertBasicInfo = new TExpertBasicInfo();
             BeanUtils.copyProperties(reviewExpertHandle,tExpertBasicInfo);
-            tExpertBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tExpertBasicInfo.setState(Const.STATE.COMMITTED);
             tExpertBasicInfo.setUpdateAt(new Date());
             tExpertBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             return Result.success(tExpertBasicInfoMapper.updateByPrimaryKeySelective(tExpertBasicInfo)>0);

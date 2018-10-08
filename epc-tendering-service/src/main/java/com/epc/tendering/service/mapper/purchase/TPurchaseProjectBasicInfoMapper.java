@@ -36,7 +36,7 @@ public interface TPurchaseProjectBasicInfoMapper {
 
     int updateByPrimaryKey(TPurchaseProjectBasicInfo record);
 
-    @Select("select t.purchase_project_status from t_purchase_project_basic_info where id=#{id}")
+    @Select("select t.purchase_project_status from t_purchase_project_basic_info t where id=#{id}")
     @ResultType(String.class)
     String getPurchaseProjectStatusById(Long id);
 

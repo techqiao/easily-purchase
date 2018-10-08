@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.preview;
 
 import com.epc.common.PagerParam;
 import com.epc.common.Result;
+import com.epc.web.facade.terdering.preview.dto.QueryPageDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
 import com.epc.web.facade.terdering.preview.handle.PreviewHandle;
@@ -31,11 +32,11 @@ public interface PreviewService {
 
     /**
      * 查询预告列表
-     * @param pagerParam
+     * @param queryPageDTO
      * @return
      */
     @PostMapping("selectPreview")
-    Result selectPreview(@RequestBody PagerParam pagerParam);
+    Result selectPreview(@RequestBody QueryPageDTO queryPageDTO);
 
     /**
      * 详情

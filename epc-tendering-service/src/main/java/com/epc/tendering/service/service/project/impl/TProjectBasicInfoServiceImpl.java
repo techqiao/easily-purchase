@@ -17,6 +17,7 @@ import com.epc.web.facade.terdering.project.handle.*;
 import com.epc.web.facade.terdering.project.query.QueryPurchaserEmployeeIdAndRole;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
 import com.epc.web.facade.terdering.project.vo.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,11 +60,9 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
     public Result<Boolean> handleProjectBasicInfo(HandleProjectBasicInfo handleProjectBasicInfo) {
         TProjectBasicInfo pojo = new TProjectBasicInfo();
         BeanUtils.copyProperties(handleProjectBasicInfo, pojo);
-        pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        pojo.setCreateAt(new Date());
-        pojo.setUpdateAt(new Date());
         try {
             if(pojo.getId() == null){
+                pojo.setTotalProjectInvestment(new BigDecimal(handleProjectBasicInfo.getTotalProjectInvestment()));
                 pojo.setProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                 return Result.success(tProjectBasicInfoMapper.insertSelective(pojo) > 0);
             }else {
@@ -357,6 +357,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
             return Result.success(null);
         }
         BeanUtils.copyProperties(tProjectBasicInfo, projectDetailInfoVO);
+        projectDetailInfoVO.setCompanyName(tPurchaserBasicInfoMapper.getCompanyNameByPurchaserId(tProjectBasicInfo.getPurchaserId()));
         return Result.success(projectDetailInfoVO);
     }
 
@@ -377,11 +378,13 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
             subCriteria.andPurchaserIdEqualTo(queryProjectInfoDTO.getPurchaserId());
         }
         criteria.setOrderByClause("id desc");
-        List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExampleWithRowbounds(criteria, queryProjectInfoDTO.getRowBounds());
+        List<TProjectBasicInfo> tProjectBasicInfoList = tProjectBasicInfoMapper.selectByExample(criteria);
         List<ProjectBasicInfoVO> returnList = new ArrayList<>();
         tProjectBasicInfoList.forEach(item -> {
             ProjectBasicInfoVO projectBasicInfoVO = new ProjectBasicInfoVO();
             BeanUtils.copyProperties(item, projectBasicInfoVO);
+            projectBasicInfoVO.setName(item.getCreator());
+            projectBasicInfoVO.setCompanyName(tPurchaserBasicInfoMapper.getCompanyNameByPurchaserId(item.getPurchaserId()));
             returnList.add(projectBasicInfoVO);
         });
         return Result.success(returnList);

@@ -50,4 +50,16 @@ public class AgencySupplierVo implements Serializable {
      * 供应商id
      */
     private Long supplierId;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 营业执照
+     */
+    private String businessLicense;
 }

@@ -1,6 +1,5 @@
 package com.epc.web.service.mapper.agency;
 
-import com.epc.web.facade.agency.handle.Attachement;
 import com.epc.web.service.domain.agency.TAgencyAttachment;
 import com.epc.web.service.domain.agency.TAgencyAttachmentCriteria;
 import org.apache.ibatis.annotations.Param;

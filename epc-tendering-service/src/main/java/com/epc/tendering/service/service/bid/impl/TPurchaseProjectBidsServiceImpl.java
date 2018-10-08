@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.common.util.GeneratorCodeUtil;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBids;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBidsCriteria;
 import com.epc.tendering.service.mapper.bid.TPurchaseProjectBidsMapper;
@@ -43,6 +44,7 @@ public class TPurchaseProjectBidsServiceImpl implements TPurchaseProjectBidsServ
                 pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 pojo.setCreateAt(new Date());
                 pojo.setUpdateAt(new Date());
+                pojo.setBidCode(GeneratorCodeUtil.GeneratorProjectCode());
                 try {
                     return Result.success(tPurchaseProjectBidsMapper.insertSelective(pojo) > 0);
                 } catch (Exception e) {

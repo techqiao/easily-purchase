@@ -25,9 +25,9 @@ public class ClientHandleExpert {
     @ApiModelProperty(value = "手机号")
     @NotEmpty(message = "HandleOperator.cellPhone.null")
     private String cellPhone;
-    @ApiModelProperty(value = "密码")
-    @NotEmpty(message = "HandleOperator.passWord.null")
-    private String passWord;
+//    @ApiModelProperty(value = "密码")
+//    @NotEmpty(message = "HandleOperator.passWord.null")
+//    private String passWord;
     @ApiModelProperty(value = "专家姓名")
     @NotEmpty(message = "HandleExpert.name.null")
     private String name;
@@ -43,6 +43,9 @@ public class ClientHandleExpert {
     @ApiModelProperty(value = "通知时间")
     @NotEmpty(message = "HandleExpert.circularDt.null")
     private Date circularDt;
+    @ApiModelProperty(value = "通知时间")
+    @NotEmpty(message = "HandleExpert.circularDtEnd.null")
+    private Date circularDtEnd;
     @ApiModelProperty(value = "通知方式")
     @NotEmpty(message = "HandleExpert.circularMethod.null")
     private String circularMethod;

@@ -20,9 +20,9 @@ public class ClientQuerySupplierDto implements Serializable{
     @ApiModelProperty(value = "供货商公司")
     private String name;
 
-    /**
-     * 采购人id
-     */
-    @ApiModelProperty(value = "采购人id")
-    private Long purchaserId;
+//    /**
+//     * 采购人id
+//     */
+//    @ApiModelProperty(value = "采购人id")
+//    private Long purchaserId;
 }

@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.tendering.service.domain.purchaser.TPurchaserBasicInfoCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TPurchaserBasicInfoMapper {
@@ -30,4 +31,7 @@ public interface TPurchaserBasicInfoMapper {
     int updateByPrimaryKeySelective(TPurchaserBasicInfo record);
 
     int updateByPrimaryKey(TPurchaserBasicInfo record);
+
+    @Select("Select t.company_name from t_purchaser_detail_info t where t.purchaser_id =#{purchaser_id}")
+    String getCompanyNameByPurchaserId(Long purchaser_id);
 }

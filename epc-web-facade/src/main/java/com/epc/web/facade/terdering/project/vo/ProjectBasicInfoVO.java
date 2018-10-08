@@ -1,5 +1,6 @@
 package com.epc.web.facade.terdering.project.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 @ApiModel(value = "ProjectBasicInfoVO",description = "项目基本属性类")
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProjectBasicInfoVO implements Serializable {
     private static final long serialVersionUID = -7927885060974519522L;
     @ApiModelProperty(value = "主键ID")

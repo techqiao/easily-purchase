@@ -25,7 +25,7 @@ public class CookieUtil {
 
         String header = request.getHeader(COOKIE_NAME);
         if(header != null){
-            header += "EPC_PRIVATE_";
+            header = "EPC_PRIVATE_"+header;
             String jsonString = RedisShardedPoolUtil.get(header);
             return jsonString;
         }

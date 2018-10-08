@@ -1,6 +1,7 @@
 package com.epc.common;
 
 import com.epc.common.constants.ErrorMessagesEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -13,8 +14,7 @@ import java.io.Serializable;
  * <p>Date : 2018/9/9/009 18:07
  * <p>@author : wjq
  */
-@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
-//保证序列化json的时候,如果是null的对象,key也会消失
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(value = "返回数据（Json）对象", description = "接口返回数据对象", discriminator = "吴江桥")
 public class Result<T> implements Serializable {
 

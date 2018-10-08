@@ -35,6 +35,11 @@ public class AgencyExpertDto implements Serializable {
     private Long agencyId;
 
     /**
+     * 专家id
+     */
+    private Long expertId;
+
+    /**
      * 手机
      */
     private String cellphone;

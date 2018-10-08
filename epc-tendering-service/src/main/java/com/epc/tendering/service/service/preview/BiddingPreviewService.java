@@ -2,6 +2,7 @@ package com.epc.tendering.service.service.preview;
 
 import com.epc.common.PagerParam;
 import com.epc.common.Result;
+import com.epc.web.facade.terdering.preview.dto.QueryPageDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryPreviewDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
 import com.epc.web.facade.terdering.preview.handle.PreviewHandle;
@@ -25,10 +26,10 @@ public interface BiddingPreviewService {
 
     /**
      * 查询所有分页展示
-     * @param pagerParam
+     * @param queryPageDTO
      * @return
      */
-    Result selectPreview(PagerParam pagerParam);
+    Result selectPreview(QueryPageDTO queryPageDTO);
 
     /**
      * 详情

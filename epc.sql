@@ -563,7 +563,7 @@ CREATE TABLE `t_purchase_project_participant_permission` (
 	`action_state` int(1) DEFAULT '0' NOT NULL COMMENT '0:暂未到达此步 1待办 2已完成 -1 打回到此步',
 	`step_type` VARCHAR(64) DEFAULT NULL COMMENT '流程步骤类型 用来区分是具体哪个流程步骤 发布公告 发布招标文件',
 	`purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
-	`participant_permission` VARCHAR(32) NOT NULL COMMENT '项目参与者权限 批复reply 经办agent 审核auditor 负责人person_liable' ,
+	`participant_permission` VARCHAR(32) NOT NULL COMMENT '项目参与者权限 批复reply 经办agent 审核auditing 负责人person_liable' ,
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',

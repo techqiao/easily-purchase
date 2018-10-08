@@ -15,6 +15,8 @@ import com.epc.tendering.service.mapper.announcement.BReleaseAnnouncementMapper;
 import com.epc.tendering.service.mapper.bid.TWinBidNominateMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.tendering.service.mapper.preview.TBiddingPreviewMapper;
+import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
+import com.epc.tendering.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.tendering.service.service.announcement.AnnouncementService;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
@@ -47,6 +49,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
     @Autowired
     private TBiddingPreviewMapper tBiddingPreviewMapper;
+    @Autowired
+    private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
     @Override
     public Result<Boolean> insertAnnouncement(HandleAnnouncement handleAnnouncement) {
         BReleaseAnnouncement bReleaseAnnouncement = new BReleaseAnnouncement();
@@ -69,10 +73,12 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         BReleaseAnnouncement bReleaseAnnouncement = new BReleaseAnnouncement();
         bReleaseAnnouncement.setId(handleAnnouncementStatus.getId());
         bReleaseAnnouncement.setUpdateAt(new Date());
+        handleAnnouncementStatus.setIsOtherAgency(tPurchaseProjectBasicInfoMapper.getIsOtherAgency(handleAnnouncementStatus.getId()));
+        handleAnnouncementStatus.setPurchaseProjectId(bReleaseAnnouncementMapper.getProcurementProjectId(handleAnnouncementStatus.getId()));
         //当前状态为未提交 --> 待审核  提交公告等待审核
         if(handleAnnouncementStatus.getProcessStatus().equals(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode())){
             //公告状态待审核
-            bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.AUDITING.getCode());
+            bReleaseAnnouncement.setProcessStatus(AnnouncementProcessStatusEnum.AUDITING.getCode());
             //将 审核 步骤的负责人流程状态更新为  待办
             updateActionState(handleAnnouncementStatus,Const.ACTION_STATE.NEED_DEAL,AnnouncementProcessStatusEnum.AUDITING.getCode());
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
@@ -85,7 +91,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             //将 批复 步骤的负责人流程状态更新为 待办
             updateActionState(handleAnnouncementStatus,Const.ACTION_STATE.NEED_DEAL,AnnouncementProcessStatusEnum.REPLY.getCode());
             //待批复
-            bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.REPLY.getCode());
+            bReleaseAnnouncement.setProcessStatus(AnnouncementProcessStatusEnum.REPLY.getCode());
             bReleaseAnnouncement.setAuditorId(handleAnnouncementStatus.getOperateId());
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
@@ -95,7 +101,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             //将 审核 步骤的负责人流程状态更新为  未到此步
             updateActionState(handleAnnouncementStatus,Const.ACTION_STATE.NOT_ARRIVING,AnnouncementProcessStatusEnum.AUDITING.getCode());
             //公告状态待提交
-            bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
+            bReleaseAnnouncement.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
         // 审核通过 当前状态为待批复-->待发布  审核通过 公告变成待发布
@@ -107,7 +113,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             updateActionState(handleAnnouncementStatus,Const.ACTION_STATE.NEED_DEAL,AnnouncementProcessStatusEnum.AGENT.getCode());
             //待发布
             bReleaseAnnouncement.setRepliesId(handleAnnouncementStatus.getOperateId());
-            bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.WAIT_RELEASE.getCode());
+            bReleaseAnnouncement.setProcessStatus(AnnouncementProcessStatusEnum.WAIT_RELEASE.getCode());
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
         // 审核不通过 当前状态为待批复-->待审核  审核不通过 公告变成待审核
@@ -119,7 +125,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             updateActionState(handleAnnouncementStatus,Const.ACTION_STATE.PURCHASER,AnnouncementProcessStatusEnum.AUDITING.getCode());
             //待审核
             bReleaseAnnouncement.setRepliesId(handleAnnouncementStatus.getOperateId());
-            bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.AUDITING.getCode());
+            bReleaseAnnouncement.setProcessStatus(AnnouncementProcessStatusEnum.AUDITING.getCode());
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
         // 经办人同意发布 当前状态待发布-->已发布
@@ -129,7 +135,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
             updateActionState(handleAnnouncementStatus,Const.ACTION_STATE.COMPLETE,AnnouncementProcessStatusEnum.AGENT.getCode());
             //已发布
             bReleaseAnnouncement.setOperateId(handleAnnouncementStatus.getOperateId());
-            bReleaseAnnouncement.setAnnouncementContent(AnnouncementProcessStatusEnum.RELEASED.getCode());
+            bReleaseAnnouncement.setProcessStatus(AnnouncementProcessStatusEnum.RELEASED.getCode());
             return Result.success(bReleaseAnnouncementMapper.updateByPrimaryKeySelective(bReleaseAnnouncement) > 0);
         }
         return Result.success();
@@ -146,7 +152,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         permission.setUserId(handleAnnouncementStatus.getOperateId());
         permission.setPurchaseProjectId(handleAnnouncementStatus.getPurchaseProjectId());
         permission.setActionState(actionState);
-        permission.setParticipantPermission(AnnouncementProcessStatusEnum.AUDITING.getCode());
+        permission.setParticipantPermission(participantPermission);
         if(handleAnnouncementStatus.getIsOtherAgency().equals(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY)){
             permission.setParticipantType(Const.LOGIN_USER_TYPE.PURCHASER);
         }else{

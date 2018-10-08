@@ -1,5 +1,6 @@
 package com.epc.web.facade.terdering.announcement.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -39,6 +40,14 @@ public class HandleAnnouncement {
      * 招标公告结束时间
      */
     private Date biddingEnd;
+    /**
+     * 澄清开始时间
+     */
+    private Date defecationStart;
+    /**
+     * 澄清结束时间
+     */
+    private Date defecationEnd;
     /**
      * 公告评语
      */

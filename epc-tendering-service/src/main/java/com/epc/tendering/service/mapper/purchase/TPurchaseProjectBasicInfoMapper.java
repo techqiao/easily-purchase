@@ -48,4 +48,8 @@ public interface TPurchaseProjectBasicInfoMapper {
     @ResultType(PublicityVO.class)
     PublicityVO getDetailInfoById(Long id);
 
+    @Select("select t.is_other_agency from t_purchase_project_basic_info t left join b_release_announcement b" +
+            " on b.procurement_project_id=t.id where b.id =#{id}")
+    int getIsOtherAgency(Long id);
+
 }

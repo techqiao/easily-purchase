@@ -62,8 +62,6 @@ public class BiddingServiceimpl implements BiddingService {
     @Autowired
     TTenderMessageMapper tTenderMessageMapper;
     @Autowired
-    TProjectBidProcedureMapper tProjectBidProcedureMapper;
-    @Autowired
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     TTenderFileMapper tTenderFileMapper;

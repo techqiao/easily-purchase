@@ -1,17 +1,14 @@
 package com.epc.web.service.mapper.agency;
 
 import com.epc.web.facade.agency.dto.AgencyEmployeeDto;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyBasicInfoCriteria;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.Date;
 import java.util.List;
-
-import com.epc.web.service.domain.expert.TExpertBasicInfo;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
 public interface TAgencyBasicInfoMapper {
     int countByExample(TAgencyBasicInfoCriteria example);

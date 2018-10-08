@@ -32,9 +32,9 @@ public class ClientHandlePurchaserDto implements Serializable {
      */
     @ApiModelProperty(value = "用户角色")
     private Integer role;
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "跟新时间")
-    private Date updateAt;
+//    /**
+//     * 更新时间
+//     */
+//    @ApiModelProperty(value = "跟新时间")
+//    private Date updateAt;
 }

@@ -33,6 +33,7 @@ import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -748,15 +749,57 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
             }
             //附件信息
-            List<TSupplierAttachment> tAgencyAttachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
-            if (CollectionUtils.isEmpty(tAgencyAttachments)) {
+            //附件新增
+            TSupplierAttachment attachment = new TSupplierAttachment();
+            attachment.setSupplierId(supplierId);
+            attachment.setCreateAt(new Date());
+            attachment.setUpdateAt(new Date());
+            attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+
+            List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
+            if (CollectionUtils.isEmpty(attachments)) {
+                //添加身份证正面
+                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                //法人身份证反面照片url
+                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                //营业执照照片url
+                attachment.setCertificateFilePath(dto.getBusinessLicense());
+                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
                 List<Attachement> list = dto.getAtts();
                 if (!CollectionUtils.isEmpty(list)) {
                     for (Attachement att : list) {
-                        TSupplierAttachment attachment = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachment);
-                        attachment.setSupplierId(supplierId);
-                        tSupplierAttachmentMapper.insertSelective(attachment);
+                        TSupplierAttachment attachmen = new TSupplierAttachment();
+                        BeanUtils.copyProperties(att, attachmen);
+                        attachmen.setSupplierId(supplierId);
+                        tSupplierAttachmentMapper.insertSelective(attachmen);
+                    }
+                }
+            } else {
+                tSupplierAttachmentMapper.deleteAttachaments(attachments);
+                //添加身份证正面
+                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                //法人身份证反面照片url
+                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                //营业执照照片url
+                attachment.setCertificateFilePath(dto.getBusinessLicense());
+                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                tSupplierAttachmentMapper.insertSelective(attachment);
+                List<Attachement> list = dto.getAtts();
+                if (!CollectionUtils.isEmpty(list)) {
+                    for (Attachement att : list) {
+                        TSupplierAttachment attachmen = new TSupplierAttachment();
+                        BeanUtils.copyProperties(att, attachmen);
+                        attachmen.setSupplierId(supplierId);
+                        tSupplierAttachmentMapper.insertSelective(attachmen);
                     }
                 }
             }
@@ -783,7 +826,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         //查询注册信息
         String name = dto.getName();
         String cellphone = dto.getCellphone();
-        TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+        TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
         if (basicInfo == null) {
             return Result.error("没有该代理机构的注册信息");
         }
@@ -820,13 +863,37 @@ public class PurchaserServiceImpl implements PurchaserService {
             //附件信息
             List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
             if (CollectionUtils.isEmpty(tAgencyAttachments)) {
+                TAgencyAttachment attachment = new TAgencyAttachment();
+                attachment.setAgencyId(agencyId);
+                attachment.setCreateAt(new Date());
+                attachment.setUpdateAt(new Date());
+                attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+                //添加身份证正面
+                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+                tAgencyAttachmentMapper.insertSelective(attachment);
+                //法人身份证反面照片url
+                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
+                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+                tAgencyAttachmentMapper.insertSelective(attachment);
+                //营业执照照片url
+                attachment.setCertificateFilePath(dto.getBusinessLicense());
+                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
+                tAgencyAttachmentMapper.insertSelective(attachment);
                 List<Attachement> list = dto.getAtts();
                 if (!CollectionUtils.isEmpty(list)) {
                     for (Attachement att : list) {
-                        TAgencyAttachment attachment = new TAgencyAttachment();
-                        BeanUtils.copyProperties(att, attachment);
-                        attachment.setAgencyId(agencyId);
-                        tAgencyAttachmentMapper.insertSelective(attachment);
+                        TAgencyAttachment at = new TAgencyAttachment();
+                        BeanUtils.copyProperties(att, at);
+                        at.setAgencyId(agencyId);
+                        at.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                        at.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+                        at.setCreateAt(new Date());
+                        at.setUpdateAt(new Date());
+                        tAgencyAttachmentMapper.insertSelective(at);
                     }
                 }
             }
@@ -1163,7 +1230,10 @@ public class PurchaserServiceImpl implements PurchaserService {
         //法人基本信息
         TPurchaserBasicInfo boss = null;
         //机构id
-        Long purchaseId = null;
+        Long purchaseId = employeeDto.getPurchaseId();
+        if(purchaseId==null){
+            return Result.success("请传入有效的信息!");
+        }
         //返回对象的集合
         List<PurchaserEmplyeeVo> list = new ArrayList<>();
         try {
@@ -1172,10 +1242,13 @@ public class PurchaserServiceImpl implements PurchaserService {
                 return Result.error("没有符合此条件的员工");
             }
             //获得自己机构的id
-            purchaseId = employeeDto.getPurchaseId();
+
             tPurchaserDetail = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaseId);
             Integer role = Const.Role.ROLE_CORPORATION;
             boss = tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaseId, role);
+            if(tPurchaserDetail==null||boss==null){
+                return Result.success("公司信息不完善");
+            }
             String companyName = tPurchaserDetail.getCompanyName();
             String bossName = boss.getName();
             String companyId = tPurchaserDetail.getId().toString();

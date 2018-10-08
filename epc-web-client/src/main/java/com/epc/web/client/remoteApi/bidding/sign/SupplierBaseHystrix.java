@@ -21,15 +21,6 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail) {
-        return null;
-    }
-
-    @Override
-    public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail) {
-        return Result.hystrixError();
-    }
 
 //    @Override
 //    public Result<Boolean> deleteSupplierEmployeeById(HandleFindSupplierByInfo handleFindSupplierByInfo) {
@@ -58,7 +49,7 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
 
     @Override
     public Result<Boolean> forgetPasswordSupplier(HandleSupplierForgetPassword handleSupplierForgetPassword) {
-        return null;
+        return Result.hystrixError();
     }
 //
 //    @Override
@@ -83,7 +74,7 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
 
     @Override
     public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
-        return null;
+        return Result.hystrixError();
     }
 
     @Override
@@ -91,17 +82,23 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
         return Result.hystrixError();    }
 
     @Override
-    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleSupplierId handleSupplierId) {
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierBasicById handleFindSupplierBasicById) {
         return Result.hystrixError();
     }
+
 
     @Override
     public Result<Boolean> updateSupplierEmployeeById(HandlerUpdateSupplierEmployeeById handlerUpdateSupplierEmployeeById) {
         return Result.hystrixError();    }
 
     @Override
-    public Result<SupplierAttachmentAndDetailVO> findSupplierDetailByEmployee(HandleSupplierId handleSupplierId) {
-        return Result.hystrixError();
+    public Result<RoleDetailInfo> findSupplierDetailByEmployee(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+        return null;
+    }
+
+    @Override
+    public Result<RoleDetailInfo> findSupplierByBossId(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+        return null;
     }
 
     @Override

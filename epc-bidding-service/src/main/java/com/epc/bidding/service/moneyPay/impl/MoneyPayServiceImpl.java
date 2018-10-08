@@ -102,6 +102,7 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         TServiceMoneyPayCriteria.Criteria cubCriteria=criteria.createCriteria();
         cubCriteria.andCompanyIdEqualTo(dto.getCompanyId());
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        cubCriteria.andProcurementProjectIdEqualTo(dto.getPurchaseProjectId());
         List<TServiceMoneyPay> result=tServiceMoneyPayMapper.selectByExample(criteria);
         List<MoneyPayVO> voList=new ArrayList<>();
         for(TServiceMoneyPay entity:result){

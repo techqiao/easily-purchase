@@ -3,7 +3,9 @@ package com.epc.common.constants;
 public enum QuestionTypeEnum {
     ANNOUNCEMENT("announcement","公告"),
     BID_FILE("bidFile","招标文件"),
-    BID_EVALUATION("bidEvaluation","评标");
+    BID_EVALUATION("bidEvaluation","评标"),
+    WAIT_REPLY("wait_reply","待回复"),
+    REPLIED("replied","已回复");
 
     private String code;
     private String desc;

@@ -365,6 +365,136 @@ public class TPretrialFileCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andOperateIdIsNull() {
+            addCriterion("operate_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdIsNotNull() {
+            addCriterion("operate_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdEqualTo(Long value) {
+            addCriterion("operate_id =", value, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdNotEqualTo(Long value) {
+            addCriterion("operate_id <>", value, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdGreaterThan(Long value) {
+            addCriterion("operate_id >", value, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("operate_id >=", value, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdLessThan(Long value) {
+            addCriterion("operate_id <", value, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdLessThanOrEqualTo(Long value) {
+            addCriterion("operate_id <=", value, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdIn(List<Long> values) {
+            addCriterion("operate_id in", values, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdNotIn(List<Long> values) {
+            addCriterion("operate_id not in", values, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdBetween(Long value1, Long value2) {
+            addCriterion("operate_id between", value1, value2, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOperateIdNotBetween(Long value1, Long value2) {
+            addCriterion("operate_id not between", value1, value2, "operateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNull() {
+            addCriterion("creator is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("creator is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("creator =", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("creator <>", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("creator >", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("creator >=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("creator <", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("creator <=", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorLike(String value) {
+            addCriterion("creator like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("creator not like", value, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("creator in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("creator not in", values, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("creator between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("creator not between", value1, value2, "creator");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateAtIsNull() {
             addCriterion("create_at is null");
             return (Criteria) this;

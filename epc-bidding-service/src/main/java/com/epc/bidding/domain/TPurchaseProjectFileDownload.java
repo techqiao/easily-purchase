@@ -7,7 +7,7 @@ import java.util.Date;
 public class TPurchaseProjectFileDownload implements Serializable {
     private Long id;
 
-    private Long purchasProjectId;
+    private Long purchaseProjectId;
 
     private Long purchaserId;
 
@@ -35,12 +35,12 @@ public class TPurchaseProjectFileDownload implements Serializable {
         this.id = id;
     }
 
-    public Long getPurchasProjectId() {
-        return purchasProjectId;
+    public Long getPurchaseProjectId() {
+        return purchaseProjectId;
     }
 
-    public void setPurchasProjectId(Long purchasProjectId) {
-        this.purchasProjectId = purchasProjectId;
+    public void setPurchaseProjectId(Long purchaseProjectId) {
+        this.purchaseProjectId = purchaseProjectId;
     }
 
     public Long getPurchaserId() {
@@ -114,7 +114,7 @@ public class TPurchaseProjectFileDownload implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", purchasProjectId=").append(purchasProjectId);
+        sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", purchaserId=").append(purchaserId);
         sb.append(", purchaseFileName=").append(purchaseFileName);
         sb.append(", filePayment=").append(filePayment);

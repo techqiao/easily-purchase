@@ -38,6 +38,6 @@ public class AdvanceNoticeDetailVO implements Serializable {
     private String creator;
 
     @ApiModelProperty("创建时间")
-    private Date createAt;
+    private String createAt;
 
 }

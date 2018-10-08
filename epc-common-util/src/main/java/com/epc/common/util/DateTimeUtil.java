@@ -30,6 +30,14 @@ public class DateTimeUtil {
     return dateTime.toString(formatStr);
   }
 
+  public static String dateToStr(Date date) {
+    if (date == null) {
+      return org.apache.commons.lang.StringUtils.EMPTY;
+    }
+    DateTime dateTime = new DateTime(date);
+    return dateTime.toString(STANDARD_FORMAT);
+  }
+
   public static Date strToDate(String dateTimeStr) {
     DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(STANDARD_FORMAT);
     DateTime dateTime = dateTimeFormatter.parseDateTime(dateTimeStr);

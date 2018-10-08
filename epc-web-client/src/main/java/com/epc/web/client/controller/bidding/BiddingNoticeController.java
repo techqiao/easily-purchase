@@ -51,9 +51,10 @@ public class BiddingNoticeController {
         //判断下载文件是否已支付（true:支付）
         QueryProgramPayDTO queryProgramPayDTO=new QueryProgramPayDTO();
         BeanUtils.copyProperties(dto.getClientFilePay(),queryProgramPayDTO);
-        Boolean isPay=noticeClient.isPayForProjectFile(queryProgramPayDTO).getData();
+        Boolean isPay=noticeClient.isPayForProjectFile(queryProgramPayDTO);
+        queryNoticeDetail.setIsPay(isPay);
         if(isPay!=null){
-            return  noticeClient.getNoticeDetail(queryNoticeDetail,isPay);
+            return  noticeClient.getNoticeDetail(queryNoticeDetail);
         }else{
             return Result.error("尚未发布招标文件");
         }

@@ -9,8 +9,7 @@ public enum AnnouncementEnum {
     //资格预审公告
     RELEASE("release","招标公告"),
     BID_CANDIDATE_PUBLICITY("bid_candidate_publicity","中标候选人公示"),
-    BID_RESULT_PUBLICITY("bid_result_publicity","中标结果公示")
-    ;
+    BID_RESULT_PUBLICITY("bid_result_publicity","中标结果公示");
     private String code;
     private String desc;
 

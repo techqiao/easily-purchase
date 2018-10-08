@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +69,13 @@ public class AdvanceNoticeServiceImpl implements AdvanceNoticeService {
     @Override
     public Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(Long id) {
         TBiddingPreview entity=tBiddingPreviewMapper.selectByPrimaryKey(id);
+        if(entity==null){
+            return Result.success(null);
+        }
         AdvanceNoticeDetailVO vo= new AdvanceNoticeDetailVO();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         BeanUtils.copyProperties(entity,vo);
+        vo.setCreateAt(sdf.format(entity.getCreateAt()));
         return Result.success(vo);
     }
 }

@@ -42,7 +42,6 @@ public class BiddingMoneyPayController extends BaseController {
         QueryMoneyPayDTO queryMoneyPayDTO=new QueryMoneyPayDTO();
         BeanUtils.copyProperties(dto,queryMoneyPayDTO);
         queryMoneyPayDTO.setOperateId(getLoginUser().getUserId());
-        queryMoneyPayDTO.setOperateId(1L);
         return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
 

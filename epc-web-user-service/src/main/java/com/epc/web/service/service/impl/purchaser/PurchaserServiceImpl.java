@@ -1516,6 +1516,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         vo.setPublicBankName(detailInfo.getPublicBankName());
         vo.setPublicBankCount(detailInfo.getPublicBanAccountNumber());
         vo.setCellphone(basicInfo.getCellphone());
+        vo.setName(basicInfo.getName());
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TAgencyAttachment attachment : attachments) {
@@ -1538,7 +1539,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
             vo.setAtts(list);
         }
-        return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功");
+        return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功",vo);
     }
 
 //    /**

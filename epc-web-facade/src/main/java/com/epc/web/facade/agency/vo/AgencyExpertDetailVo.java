@@ -21,5 +21,13 @@ public class AgencyExpertDetailVo implements Serializable {
 
     private String otherInformation;
 
+    private String company;
+
+    private String companyAddress;
+
+    private String legalIdCardOther;
+
+    private String legalIdCardPositive;
+
     private List<Attachement> atts;
 }

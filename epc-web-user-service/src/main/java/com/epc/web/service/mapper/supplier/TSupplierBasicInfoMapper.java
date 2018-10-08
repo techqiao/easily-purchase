@@ -1,5 +1,6 @@
 package com.epc.web.service.mapper.supplier;
 
+import com.epc.web.facade.agency.dto.SupplierDto;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
@@ -42,7 +43,7 @@ public interface TSupplierBasicInfoMapper {
 
     TSupplierBasicInfo selectSupplierBasicByNameAndCell(@Param("name") String name, @Param("cellphone") String cellphone);
 
-    List<AgencySupplierVo> selectBasicInfo(@Param("id") Long agencyId, @Param("fuzzyName") String fuzzyName, @Param("supplierId") Long supplierId);
+    List<AgencySupplierVo> selectBasicInfo(SupplierDto supplierDto);
 
     int registerUser(@Param("cellphone") String cellphone, @Param("pwd") String pwd, @Param("name") String name, @Param("dates")Date date);
 

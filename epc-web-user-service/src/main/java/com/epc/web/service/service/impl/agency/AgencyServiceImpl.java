@@ -1,28 +1,23 @@
 package com.epc.web.service.service.impl.agency;
 
-import com.epc.common.constants.AttachmentEnum;
-import com.epc.web.facade.agency.dto.*;
-import com.epc.web.facade.purchaser.dto.QueryDto;
-import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
-import com.epc.web.service.domain.expert.TExpertDetailInfo;
-import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
-import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
-import com.epc.web.service.mapper.expert.TExpertDetailInfoMapper;
-import com.google.common.collect.Lists;
-
 import com.epc.common.Result;
+import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.util.MD5Util;
+import com.epc.web.facade.agency.dto.*;
 import com.epc.web.facade.agency.handle.*;
 import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
 import com.epc.web.facade.agency.vo.AgencyExpertDetailVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
+import com.epc.web.facade.operator.handle.Attachment;
+import com.epc.web.facade.purchaser.dto.QueryDto;
 import com.epc.web.facade.purchaser.handle.HandleTrustList;
 import com.epc.web.service.domain.agency.*;
 import com.epc.web.service.domain.expert.TExpertAttachment;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
+import com.epc.web.service.domain.expert.TExpertDetailInfo;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
@@ -33,12 +28,12 @@ import com.epc.web.service.mapper.agency.TAgencySupplierMapper;
 import com.epc.web.service.mapper.expert.TAgencyExpertMapper;
 import com.epc.web.service.mapper.expert.TExpertAttachmentMapper;
 import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
+import com.epc.web.service.mapper.expert.TExpertDetailInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.agency.AgencyService;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +106,7 @@ public class AgencyServiceImpl implements AgencyService {
         String cellphone = handleEmployee.getCellphone();
         TAgencyBasicInfo basicInfo = null;
         try {
-            basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+            basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
             if (basicInfo != null) {
                 return Result.error("员工" + handleEmployee.getName() + "已经存在，重复添加错误！");
             }
@@ -247,11 +243,13 @@ public class AgencyServiceImpl implements AgencyService {
                 attachments.setUpdateAt(date);
                 attachments.setCreateAt(date);
                 //身份证正面照片url
-                attachments.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
                 attachments.setCertificateFilePath(handleExpert.getLegalIdCardPositive());
                 tExpertAttachmentMapper.insertSelective(attachments);
-                //法人身份证反面照片url
+                //身份证反面照片url
                 attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
                 attachments.setCertificateFilePath(handleExpert.getLegalIdCardOther());
                 tExpertAttachmentMapper.insertSelective(attachments);
                 //附件信息入库
@@ -260,6 +258,8 @@ public class AgencyServiceImpl implements AgencyService {
                         TExpertAttachment attachment = new TExpertAttachment();
                         BeanUtils.copyProperties(att, attachment);
                         attachment.setExpertId(expertId);
+                        attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                        attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
                         attachment.setCreateAt(date);
                         attachment.setUpdateAt(date);
                         tExpertAttachmentMapper.insertSelective(attachment);
@@ -277,14 +277,7 @@ public class AgencyServiceImpl implements AgencyService {
 
     /**
      * @Author :winlin
-     * @Description :新增供应商信息t_agency_supplier和t_suppiler_basic_info和t_supplier_detail_info添加信息
-     * 1.代理商根据获得的信息完善三张表,信息完善直接提交平台审核,审核通过后代理商私库能看到所有供应商信息
-     * 2.信息不完善,供货商登录页完善,提交平台审核
-     * 3.跟新状态又数据库负责
-     * 4.步骤
-     * 1.根据供货商的手机号,姓名查询信息,
-     * 2.有这个供货商依据状态来决定是否跟新数据私库
-     * 3.没有依据1.2.3跟新状态
+     * @Description :新增供应商信息
      * HnandleSupplier需要的字段
      * name cellphone,password
      * @Date:2018/9/13
@@ -303,7 +296,7 @@ public class AgencyServiceImpl implements AgencyService {
         }
         //判断状态
         if (basicInfo != null) {
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE.getErrCode(), "该供应商信息已存在");
+            return Result.success("该供应商信息已存在");
         } else {
             //操作时间
             Date date = new Date();
@@ -328,8 +321,8 @@ public class AgencyServiceImpl implements AgencyService {
             detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
             detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleSupplier.getPublicBanAccountNumber());
-            detailInfo.setCreateAt(new Date());
-            detailInfo.setUpdateAt(new Date());
+            detailInfo.setCreateAt(date);
+            detailInfo.setUpdateAt(date);
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             try {
                 tSupplierBasicInfoMapper.insertSelective(basicInfo);
@@ -346,15 +339,18 @@ public class AgencyServiceImpl implements AgencyService {
                 attachments.setUpdateAt(date);
                 attachments.setCreateAt(date);
                 //身份证正面照片url
-                attachments.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
                 attachments.setCertificateFilePath(handleSupplier.getLegalIdCardPositive());
                 tSupplierAttachmentMapper.insertSelective(attachments);
                 //法人身份证反面照片url
                 attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
                 attachments.setCertificateFilePath(handleSupplier.getLegalIdCardOther());
                 tSupplierAttachmentMapper.insertSelective(attachments);
                 //营业执照照片url
                 attachments.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+                attachments.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
                 attachments.setCertificateFilePath(handleSupplier.getBusinessLicense());
                 tSupplierAttachmentMapper.insertSelective(attachments);
                 //附件信息
@@ -364,6 +360,8 @@ public class AgencyServiceImpl implements AgencyService {
                         TSupplierAttachment attachment = new TSupplierAttachment();
                         BeanUtils.copyProperties(att, attachment);
                         attachment.setSupplierId(supplierId);
+                        attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                        attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
                         attachment.setCreateAt(date);
                         attachment.setUpdateAt(date);
                         tSupplierAttachmentMapper.insertSelective(attachment);
@@ -562,11 +560,13 @@ public class AgencyServiceImpl implements AgencyService {
         String cellphone = agency.getCellphone();
         TAgencyBasicInfo basicInfo = null;
         Long agencyId = agency.getAgencyId();
+        if (agencyId == null) {
+            return Result.success("请传入有效的信息");
+        }
         try {
             basicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(agencyId);
-
             if (basicInfo == null) {
-                return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "没有代理机构的注册信息");
+                return Result.success("没有代理机构的注册信息");
             }
         } catch (Exception e) {
             LOGGER.error("代理机构完善信息失败Exception:{}", e);
@@ -607,11 +607,33 @@ public class AgencyServiceImpl implements AgencyService {
                 detailInfo.setId(detail.getId());
                 tAgencyDetailInfoMapper.updateByPrimaryKeySelective(detailInfo);
             }
+            TAgencyAttachment attachment = new TAgencyAttachment();
+            attachment.setAgencyId(agencyId);
+            attachment.setCreateAt(date);
+            attachment.setUpdateAt(date);
+            attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
+            //添加身份证正面
+            attachment.setCertificateFilePath(agency.getLegalIdCardPositive());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            tAgencyAttachmentMapper.insertSelective(attachment);
+            //法人身份证反面照片url
+            attachment.setCertificateFilePath(agency.getLegalIdCardOther());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+            tAgencyAttachmentMapper.insertSelective(attachment);
+            //营业执照照片url
+            attachment.setCertificateFilePath(agency.getBusinessLicense());
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
+            tAgencyAttachmentMapper.insertSelective(attachment);
             if (!CollectionUtils.isEmpty(list)) {
                 for (Attachement att : list) {
                     TAgencyAttachment at = new TAgencyAttachment();
                     BeanUtils.copyProperties(att, at);
                     at.setAgencyId(agencyId);
+                    at.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    at.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
                     at.setCreateAt(date);
                     at.setUpdateAt(date);
                     tAgencyAttachmentMapper.insertSelective(at);
@@ -689,41 +711,46 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public Result<List<AgencyEmployeeVo>> queryEmployee(AgencyEmployeeDto employee) {
-        //获得公司的id
-        Long agencyId = employee.getAgencyId();
-        //查找符合条件的员工
-        List<TAgencyBasicInfo> basicInfos = null;
-        //返回公司的详细信息,依据agencyId查询
-        TAgencyDetailInfo detailInfo = null;
+        //所有符合条件的员工
+        List<TAgencyBasicInfo> tAgencyBasicInfos = null;
+        //公司详细信息
+        TAgencyDetailInfo tAgencyDetail = null;
+        //法人基本信息
+        TAgencyBasicInfo boss = null;
+        //机构id
+        Long agencyId = null;
+        //返回对象的集合
+        List<AgencyEmployeeVo> list = new ArrayList<>();
         try {
-            basicInfos = tAgencyBasicInfoMapper.selectEmployee(employee);
-            detailInfo = tAgencyDetailInfoMapper.selectByPrimaryKey(agencyId);
+            tAgencyBasicInfos = tAgencyBasicInfoMapper.selectEmployee(employee);
+            if (CollectionUtils.isEmpty(tAgencyBasicInfos)) {
+                return Result.error("没有符合此条件的员工");
+            }
+            //获得自己机构的id
+            agencyId = employee.getAgencyId();
+            tAgencyDetail = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
+            Integer role = Const.Role.ROLE_CORPORATION;
+            boss = tAgencyBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(agencyId, role);
+            String companyName = tAgencyDetail.getCompanyName();
+            String bossName = boss.getName();
+            String companyId = tAgencyDetail.getId().toString();
+            //拼装信息
+            for (TAgencyBasicInfo tAgencyBasicInfo : tAgencyBasicInfos) {
+                AgencyEmployeeVo vo = new AgencyEmployeeVo();
+                vo.setUserId(tAgencyBasicInfo.getId().toString());
+                vo.setUserName(tAgencyBasicInfo.getName());
+                vo.setCellphone(tAgencyBasicInfo.getCellphone());
+                vo.setCompanyId(companyId);
+                vo.setBossName(bossName);
+                vo.setCompanyName(companyName);
+                list.add(vo);
+            }
         } catch (Exception e) {
-            LOGGER.error("员工信息查询失败Exception:{}", e);
-            return Result.error("员工信息查询失败");
+            LOGGER.error("条件查询员工失败Exception:{}", e);
+            return Result.error("条件查询员工失败");
         }
-        //员工由管理员和法人添加必须有detail信息
-        if (CollectionUtils.isEmpty(basicInfos) || detailInfo == null) {
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "查询员工信息失败");
-        }
-        //获得代理机构法人的id
-        Long bossId = detailInfo.getAgencyId();
-        TAgencyBasicInfo boss = tAgencyBasicInfoMapper.selectByPrimaryKey(bossId);
-        //封装信息
-        List<AgencyEmployeeVo> employees = new ArrayList<>();
-        //找到老板的名字
-        String bossName = boss.getName();
-        for (TAgencyBasicInfo basicInfo : basicInfos) {
-            AgencyEmployeeVo vo = new AgencyEmployeeVo();
-            vo.setUserId(basicInfo.getId().toString());
-            vo.setUserName(basicInfo.getName());
-            vo.setCellphone(basicInfo.getCellphone());
-            vo.setCompanyId(basicInfo.getAgencyId().toString());
-            vo.setCompanyName(detailInfo.getCompanyName());
-            vo.setBossName(bossName);
-            employees.add(vo);
-        }
-        return Result.success("查询成功", employees);
+        return CollectionUtils.isEmpty(list) ? Result.success("没有相关员工的信息") : Result.success("查询成功", list);
+
     }
 
     /**
@@ -787,40 +814,49 @@ public class AgencyServiceImpl implements AgencyService {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public Result queryEmployeeById(QueryDto dto) {
         Long id = dto.getId();
+        if (id == null) {
+            return Result.success("请输入有效的信息");
+        }
         //依据id查询所有的对应的信息t_purchaser_basic_info
-        TAgencyBasicInfo tPurchaserBasicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(id);
-        if (tPurchaserBasicInfo == null) {
-            return Result.error("没有此id的员工");
+        TAgencyBasicInfo tAgencyBasicInfo = null;
+        try {
+            tAgencyBasicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(id);
+            if (tAgencyBasicInfo == null) {
+                return Result.success("没有此id的员工");
+            }
+        } catch (Exception e) {
+            LOGGER.error("查询失败Exception:{}", e);
+            return Result.error("查询失败");
         }
         //获得自己机构的id
-        Long agencyId = tPurchaserBasicInfo.getAgencyId();
+        Long agencyId = tAgencyBasicInfo.getAgencyId();
         //依据id查询所有的对应的信息t_purchaser_detail_info
-        TAgencyDetailInfo tPurchaserDetail = null;
+        TAgencyDetailInfo tAgencyDetail = null;
         TAgencyBasicInfo boss = null;
         try {
-            tPurchaserDetail = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
-            if (tPurchaserDetail == null) {
+            tAgencyDetail = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
+            if (tAgencyDetail == null) {
                 return Result.success("没有此id的员工");
             }
             boss = tAgencyBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(agencyId, Const.Role.ROLE_CORPORATION);
         } catch (Exception e) {
             LOGGER.error("没有此id相关信息Exception:{}", e);
-            return Result.success("没有相关员工的信息", true);
+            return Result.error("查询失败");
         }
         //获得老板name和公司name
-        String companyName = tPurchaserDetail.getCompanyName();
+        String companyName = tAgencyDetail.getCompanyName();
         String bossName = boss.getName();
-        String companyId = tPurchaserDetail.getId().toString();
+        String companyId = tAgencyDetail.getId().toString();
         //拼装信息
         AgencyEmployeeVo vo = new AgencyEmployeeVo();
-        vo.setUserId(tPurchaserBasicInfo.getId().toString());
-        vo.setUserName(tPurchaserBasicInfo.getName());
-        vo.setCellphone(tPurchaserBasicInfo.getCellphone());
+        vo.setUserId(tAgencyBasicInfo.getId().toString());
+        vo.setUserName(tAgencyBasicInfo.getName());
+        vo.setCellphone(tAgencyBasicInfo.getCellphone());
         vo.setCompanyId(companyId);
         vo.setBossName(bossName);
         vo.setCompanyName(companyName);
 
-        return Result.success("查询成功", vo);
+        return vo == null ? Result.success("没有相关员工信息") : Result.success("查询成功",vo);
     }
 
     /**
@@ -832,43 +868,57 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     public Result<AgencySupplierVo> queryAgencySupplierDetail(QueryDto dto) {
-        Long supplierId = dto.getId();
-        if (supplierId != null) {
-            TSupplierBasicInfo basicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(supplierId);
-            if (basicInfo != null) {
-                TSupplierDetailInfo detailInfo = null;
-                List<TSupplierAttachment> list = null;
-                try {
-                    detailInfo = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(supplierId);
-                    list = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
-                } catch (Exception e) {
-                    LOGGER.error("查询供应商信息失败exception:{}", e);
-                    return Result.error("查询供应商失败");
-                }
-                if (!CollectionUtils.isEmpty(list) && detailInfo != null) {
-                    AgencySupplierVo vo = new AgencySupplierVo();
-                    vo.setEmployeeName(basicInfo.getName());
-                    vo.setCompanyName(detailInfo.getCompanyName());
-                    vo.setCreateAt(detailInfo.getCreateAt());
-                    vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
-                    vo.setPublicBankName(detailInfo.getPublicBankName());
-                    vo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
-                    vo.setCellphone(basicInfo.getCellphone());
-                    List<Attachement> attachments = new ArrayList<>();
-                    for (TSupplierAttachment attachment : list) {
-                        Attachement att = new Attachement();
-                        BeanUtils.copyProperties(attachment, att);
-                        att.setTypeId(attachment.getSupplierId() + "");
-                        attachments.add(att);
-                    }
-                    vo.setAtts(attachments);
-                    vo.setSupplierId(detailInfo.getSupplierId());
-                    return Result.success("查询成功", vo);
-                }
-            }
-            return Result.success("没有相关供应商信息");
+        Long id = dto.getId();
+        if (id == null) {
+            return Result.error("请传入有效的id");
         }
-        return Result.success("没有相关供应商信息");
+        TSupplierDetailInfo detailInfo = null;
+        TSupplierBasicInfo basicInfo = null;
+        List<TSupplierAttachment> attachments = null;
+        try {
+            detailInfo = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(id);
+            basicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
+            if (detailInfo == null || basicInfo == null) {
+                return Result.error("没有此供货商信息");
+            }
+            attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(id);
+        } catch (Exception e) {
+            LOGGER.error("查询供货商详细信息失败Exception:{}", e);
+            return Result.error("查询供货商详细信息失败");
+        }
+        //封装返回信息
+        AgencySupplierVo vo = new AgencySupplierVo();
+        vo.setSupplierId(id);
+        vo.setCompanyName(detailInfo.getCompanyName());
+        vo.setCreateAt(basicInfo.getCreateAt());
+        vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
+        vo.setPublicBankName(detailInfo.getPublicBankName());
+        vo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
+        vo.setCellphone(basicInfo.getCellphone());
+
+        if (!CollectionUtils.isEmpty(attachments)) {
+            List<Attachement> list = new ArrayList<>();
+            for (TSupplierAttachment attachment : attachments) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER)) {
+                    vo.setLegalIdCardOther(attachment.getCertificateFilePath());
+                    continue;
+                }
+                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE)) {
+                    vo.setLegalIdCardPositive(attachment.getCertificateFilePath());
+                    continue;
+                }
+                if (attachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE)) {
+                    vo.setBusinessLicense(attachment.getCertificateFilePath());
+                    continue;
+                }
+                Attachement att = new Attachement();
+                BeanUtils.copyProperties(attachment, att);
+                att.setTypeId(attachment.getSupplierId().toString());
+                list.add(att);
+            }
+            vo.setAtts(list);
+        }
+        return vo == null ? Result.success("没有相关供货商的信息") : Result.success("查询成功", vo);
     }
 
     /**
@@ -881,11 +931,13 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     public Result<Boolean> updateEmployeeBy(HandleEmployee employee) {
         //依据传过来的信息查询员工name和电话查询
-        String name = employee.getName();
         String cellphone = employee.getCellphone();
+        if (StringUtils.isEmpty(cellphone)) {
+            return Result.success("请传入有用的信息");
+        }
         TAgencyBasicInfo basicInfo = null;
         try {
-            basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+            basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
             if (basicInfo == null) {
                 return Result.success("没有该员工的信息");
             }
@@ -922,7 +974,7 @@ public class AgencyServiceImpl implements AgencyService {
         Integer role = trustList.getRole();
         Long id = trustList.getId();
         if (role == null || id == null) {
-            return Result.error("修改员工角色失败");
+            return Result.success("请传入有效的信息");
         }
         try {
             tAgencyBasicInfoMapper.updateAgencyEmployeeRoleById(id, role);
@@ -945,12 +997,13 @@ public class AgencyServiceImpl implements AgencyService {
     public Result<List<AgencySupplierVo>> querySupplierCriteria(SupplierDto supplierDto) {
         //封装查询条依据id和时间查询
         Long agencyId = supplierDto.getAgencyId();
-        String fuzzyName = supplierDto.getCompanyName();
-        Long supplierId = supplierDto.getSupplierId();
+        if(agencyId==null){
+            return Result.success("请传入有效的信息");
+        }
         //查询结果
         List<AgencySupplierVo> supplierVos = null;
         try {
-            supplierVos = tSupplierBasicInfoMapper.selectBasicInfo(agencyId, fuzzyName, supplierId);
+            supplierVos = tSupplierBasicInfoMapper.selectBasicInfo(supplierDto);
         } catch (Exception e) {
             LOGGER.error("条件查询供货商Exception:{}", e);
         }
@@ -958,7 +1011,7 @@ public class AgencyServiceImpl implements AgencyService {
             return Result.error("没有符合条件的供货商");
         }
 
-        return Result.success("查询成功", supplierVos);
+        return CollectionUtils.isEmpty(supplierVos)?Result.success("没有相关员工的信息"): Result.success("查询成功", supplierVos);
     }
 
     /**
@@ -973,11 +1026,17 @@ public class AgencyServiceImpl implements AgencyService {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public Result<List<AgencyExpertVo>> queryExpertCriteria(ExpertDto expertDto) {
 
-        List<AgencyExpertVo> expertList = tExpertBasicInfoMapper.selectExpertByCriteria(expertDto);
-        if (CollectionUtils.isEmpty(expertList)) {
-            return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "没有符合条件的专家");
+        List<AgencyExpertVo> expertList = null;
+        try {
+            expertList = tExpertBasicInfoMapper.selectExpertByCriteria(expertDto);
+            if (CollectionUtils.isEmpty(expertList)) {
+                return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "没有符合条件的专家");
+            }
+        }catch (Exception e){
+            LOGGER.error("专家查询失败Exception{}",e);
+            return Result.error("查询失败");
         }
-        return Result.success("查询成功", expertList);
+        return CollectionUtils.isEmpty(expertList)? Result.success("没有符合条件的专家"): Result.success("查询成功", expertList);
     }
 
     /**
@@ -988,30 +1047,53 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     public Result<AgencyExpertDetailVo> queryExpertDetailById(QueryDto dto) {
         Long expertId = dto.getId();
-        if (expertId != null) {
-            TExpertBasicInfo basicInfo = tExpertBasicInfoMapper.selectByPrimaryKey(expertId);
-            if (basicInfo != null) {
-                List<TExpertAttachment> list = tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
-                if (!CollectionUtils.isEmpty(list)) {
-                    AgencyExpertDetailVo vo = new AgencyExpertDetailVo();
-                    vo.setName(basicInfo.getName());
-                    vo.setCellphone(basicInfo.getCellphone());
-                    vo.setProfession(basicInfo.getProfession());
-                    vo.setPositional(basicInfo.getPositional());
-                    vo.setLevel(basicInfo.getLevel());
-                    vo.setOtherInformation(basicInfo.getOtherInformation());
-                    List<Attachement> attachements = new ArrayList<>();
-                    for (TExpertAttachment att : list) {
-                        Attachement attt = new Attachement();
-                        BeanUtils.copyProperties(att, attt);
-                        attachements.add(attt);
-                    }
-                    vo.setAtts(attachements);
-                    return Result.success("查询成功", vo);
-                }
-            }
+        AgencyExpertDetailVo vo = new AgencyExpertDetailVo();
+        if (expertId == null) {
+            return Result.error("请传入有效的id");
         }
-        return Result.error(ErrorMessagesEnum.SELECT_FAILURE.getErrCode(), "查询失败");
+        TExpertBasicInfo basicInfo = null;
+        TExpertDetailInfo detailInfo = null;
+        List<TExpertAttachment> list = null;
+        try {
+            basicInfo = tExpertBasicInfoMapper.selectByPrimaryKey(expertId);
+            detailInfo = tExpertDetailInfoMapper.selectDetaiInfoByExpertInfo(expertId);
+            if (basicInfo == null) {
+                return Result.error("没有专家信息");
+            }
+            vo.setName(basicInfo.getName());
+            vo.setCellphone(basicInfo.getCellphone());
+            vo.setProfession(basicInfo.getProfession());
+            vo.setPositional(basicInfo.getPositional());
+            vo.setLevel(basicInfo.getLevel());
+            vo.setOtherInformation(basicInfo.getOtherInformation());
+            if (detailInfo != null) {
+                vo.setCompanyAddress(detailInfo.getCompanyAddress());
+                vo.setCompany(detailInfo.getCompanyName());
+            }
+            //附件信息
+            list = tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
+        } catch (Exception e) {
+            LOGGER.error("查询专家详细信息失败Exception:{}", e);
+            return Result.error("查询失败");
+        }
+        if (!CollectionUtils.isEmpty(list)) {
+            List<Attachement> attachements = new ArrayList<>();
+            for (TExpertAttachment att : list) {
+                if (att.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER)) {
+                    vo.setLegalIdCardOther(att.getCertificateFilePath());
+                    continue;
+                }
+                if (att.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE)) {
+                    vo.setLegalIdCardPositive(att.getCertificateFilePath());
+                    continue;
+                }
+                Attachement attt = new Attachement();
+                BeanUtils.copyProperties(att, attt);
+                attachements.add(attt);
+            }
+            vo.setAtts(attachements);
+        }
+        return vo == null ? Result.success("没有相关专家信息") : Result.success("查询成功",vo);
     }
 
     /**
@@ -1026,7 +1108,7 @@ public class AgencyServiceImpl implements AgencyService {
     public Result<Boolean> completeAgencySupInfo(AgencySupplierDto dto) {
         String name = dto.getName();
         String cellphone = dto.getCellphone();
-        TSupplierBasicInfo basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
+        TSupplierBasicInfo basicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByCell(cellphone);
         if (basicInfo == null) {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "没有符合条件的供应商");
         }

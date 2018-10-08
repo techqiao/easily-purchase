@@ -15,7 +15,7 @@ public class HandleQuestion implements Serializable {
      */
     private String questionType;
     /**
-     * 问题Id
+     * 记录Id
      */
     private Long typeId;
     /**

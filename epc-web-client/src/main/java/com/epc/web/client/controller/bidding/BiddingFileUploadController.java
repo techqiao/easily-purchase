@@ -34,12 +34,13 @@ public class BiddingFileUploadController extends BaseController {
 
     @ApiOperation(value = "新增/更新/删除  预审信息")
     @PostMapping(value="/updatePretrialFile")
-    public Result<Boolean> updatePretrialFile(ClientHandleFileUpload clientHandleFileUpload) {
+    public Result<Boolean> updatePretrialFile(@RequestBody ClientHandleFileUpload clientHandleFileUpload) {
         HandlePretriaFile handlePretriaFile=new HandlePretriaFile();
         BeanUtils.copyProperties(clientHandleFileUpload,handlePretriaFile);
         handlePretriaFile.setOperateId(getLoginUser().getUserId());
         handlePretriaFile.setOperateName(getLoginUser().getName());
-        handlePretriaFile.setCompanyId(getLoginUser().getCompanyId());
+        handlePretriaFile.setCompanyId(getLoginUser().getBossId());
+        handlePretriaFile.setCompanyName(getLoginUser().getBossName());
         return biddingClient.updatePretrialFile(handlePretriaFile);
     }
 
@@ -49,7 +50,8 @@ public class BiddingFileUploadController extends BaseController {
         HandleNotice handleNotice=new HandleNotice();
         BeanUtils.copyProperties(dto,handleNotice);
         handleNotice.setOperateId(getLoginUser().getUserId());
-        handleNotice.setCompanyId(getLoginUser().getCompanyId());
+        handleNotice.setCompanyId(getLoginUser().getBossId());
+        handleNotice.setCompanyName(getLoginUser().getBossName());
         handleNotice.setIp(request.getRemoteHost());
         return biddingClient.updateNotice(handleNotice);
 

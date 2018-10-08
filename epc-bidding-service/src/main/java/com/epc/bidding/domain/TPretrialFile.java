@@ -12,6 +12,10 @@ public class TPretrialFile implements Serializable {
 
     private String fileName;
 
+    private Long operateId;
+
+    private String creator;
+
     private Date createAt;
 
     private Date updateAt;
@@ -52,6 +56,22 @@ public class TPretrialFile implements Serializable {
         this.fileName = fileName == null ? null : fileName.trim();
     }
 
+    public Long getOperateId() {
+        return operateId;
+    }
+
+    public void setOperateId(Long operateId) {
+        this.operateId = operateId;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
     public Date getCreateAt() {
         return createAt;
     }
@@ -86,6 +106,8 @@ public class TPretrialFile implements Serializable {
         sb.append(", pretrialMessageId=").append(pretrialMessageId);
         sb.append(", filePath=").append(filePath);
         sb.append(", fileName=").append(fileName);
+        sb.append(", operateId=").append(operateId);
+        sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

@@ -30,12 +30,13 @@ public  class NoticeHystrix implements FacadeNoticeService {
     }
 
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(QueryNoticeDetail queryNoticeDetail, Boolean isPay) {
+    public Result<NoticeDetailVO> getNoticeDetail(QueryNoticeDetail queryNoticeDetail) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result<Boolean> isPayForProjectFile(QueryProgramPayDTO dto) {
-        return Result.hystrixError();
+    public Boolean isPayForProjectFile(QueryProgramPayDTO dto) {
+        return null;
     }
+
 }

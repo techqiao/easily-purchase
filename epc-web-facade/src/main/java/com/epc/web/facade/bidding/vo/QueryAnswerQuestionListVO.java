@@ -29,8 +29,10 @@ public class QueryAnswerQuestionListVO implements Serializable {
     @ApiModelProperty("问题")
     private String problem;
 
-    @ApiModelProperty("问题")
-    private Date createAt;
+    @ApiModelProperty(" 回答")
+    private String answer;
 
+    @ApiModelProperty("创建时间")
+    private String createAt;
 
 }

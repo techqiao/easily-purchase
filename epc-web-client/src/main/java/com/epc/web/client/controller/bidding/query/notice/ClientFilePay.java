@@ -21,6 +21,4 @@ public class ClientFilePay {
     private Long purchaserId;
     @ApiModelProperty(value = "下载机构ID")
     private Long companyId;
-    @ApiModelProperty(value = "应付下载金额")
-    private BigDecimal money;
 }

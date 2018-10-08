@@ -44,12 +44,11 @@ public class BiddingNoticeController implements FacadeNoticeService {
     /**
      * 根据Id查看招标公告详情 及 附件路径
      * @param queryNoticeDetail
-     * @param isPay
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(@RequestParam("queryNoticeDetail") QueryNoticeDetail queryNoticeDetail,@RequestParam("isPay") Boolean isPay) {
-        return biddingService.findByNoticeId(queryNoticeDetail,isPay);
+    public Result<NoticeDetailVO> getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
+        return biddingService.findByNoticeId(queryNoticeDetail);
     }
 
 
@@ -60,7 +59,7 @@ public class BiddingNoticeController implements FacadeNoticeService {
      */
 
     @Override
-    public Result<Boolean> isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
+    public Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
         return biddingService.IsPayForProjectFile(dto);
     }
 

@@ -20,6 +20,8 @@ public class HandlePretriaFile implements Serializable {
 
     private Long companyId;
 
+    private String companyName;
+
     private Long operateId;
 
     private String operateName;

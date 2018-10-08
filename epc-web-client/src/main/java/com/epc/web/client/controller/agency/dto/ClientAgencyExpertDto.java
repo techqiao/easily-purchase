@@ -87,6 +87,11 @@ public class ClientAgencyExpertDto implements Serializable {
     /**
      * 专家附件
      */
+
+    @ApiModelProperty(value = "身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "身份证反面照片url")
+    private String legalIdCardOther;
     @ApiModelProperty(value = "附件信息,身份证,证书等")
     private List<ClientAttachement> atts;
 

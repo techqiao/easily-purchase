@@ -14,6 +14,8 @@ public class HandleSupplierForgetPassword implements Serializable {
 
     private static final long serialVersionUID = -5061533612458075858L;
 
+    private Integer type;
+
     /**
      * 输入的是注册时的手机号
      */

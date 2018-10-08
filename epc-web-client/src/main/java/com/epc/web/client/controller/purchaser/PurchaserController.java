@@ -420,14 +420,14 @@ public class PurchaserController extends BaseController {
     @PostMapping(value = "/clientupdatePurchaserDetail")
     Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandleRegisterPurchaser handlePurchaser) {
         HandleRegisterPurchaser handleRegisterPurchaser = new HandleRegisterPurchaser();
-        ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null!=clientLoginUser){
-            handleRegisterPurchaser.setCellphone(clientLoginUser.getCellphone());
-            handleRegisterPurchaser.setName(clientLoginUser.getName());
+//        ClientLoginUser clientLoginUser = super.getLoginUser();
+//        if(null!=clientLoginUser){
+//            handleRegisterPurchaser.setCellphone(clientLoginUser.getCellphone());
+//            handleRegisterPurchaser.setName(clientLoginUser.getName());
             BeanUtils.copyProperties(handlePurchaser, handleRegisterPurchaser);
             return purchaserClient.updatePurchaserDetail(handleRegisterPurchaser);
-        }
-        return Result.success("请先登录",true);
+//        }
+//        return Result.success("请先登录",true);
     }
 
     ;

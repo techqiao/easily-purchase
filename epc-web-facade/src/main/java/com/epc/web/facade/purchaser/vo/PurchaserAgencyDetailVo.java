@@ -41,6 +41,19 @@ public class PurchaserAgencyDetailVo implements Serializable{
      * 对公银行账号
      */
     private String publicBankCount;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 营业执照
+     */
+    private String businessLicense;
+
 
     /**
      * 附件list

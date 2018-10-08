@@ -35,5 +35,20 @@ public class HandleExpert implements Serializable {
 
     private String otherInformation;
 
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
+     * 授权书
+     */
+    private String certificateOfAuthorization;
+    /**
+     * 附件
+     */
     private List<Attachement> atts;
 }

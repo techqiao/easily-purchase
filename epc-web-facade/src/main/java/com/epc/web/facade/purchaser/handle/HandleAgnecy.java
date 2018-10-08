@@ -9,7 +9,7 @@ import java.util.List;
 
 @ApiModel(value = "HandleAgnecy", description = "录入代理机构")
 @Data
-public class HandleAgnecy implements Serializable{
+public class HandleAgnecy implements Serializable {
     private static final long serialVersionUID = -319658786687249313L;
 
     /**
@@ -55,6 +55,18 @@ public class HandleAgnecy implements Serializable{
      */
     private long companyId;
     /**
+     * 营业执照
+     */
+    private String businessLicense;
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
+    /**
      * 附件list
      */
     private List<Attachement> atts;
@@ -62,7 +74,6 @@ public class HandleAgnecy implements Serializable{
      * 公司地址
      */
     private String companyAddress;
-
 
 
 //    @ApiModelProperty(value = "采购人Id")

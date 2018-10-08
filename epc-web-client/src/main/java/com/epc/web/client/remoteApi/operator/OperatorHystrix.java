@@ -7,6 +7,9 @@ import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
 import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
+import com.epc.web.facade.operator.vo.OperatorBasicVO;
+import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
+import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 
 import java.util.List;
@@ -24,15 +27,6 @@ public class OperatorHystrix implements FacadeOperatorService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<Boolean> addPasswordOperatorLogin(HandleOperator handleOperator) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<Boolean> addPasswordOperator(HandleOperator handleOperator) {
-        return Result.hystrixError();
-    }
 
     @Override
     public Result<Boolean> insertCompleteOperatorInfo(RoleDetailInfo roleDetailInfo) {
@@ -45,9 +39,10 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<OperatorBasicInfoVO> findByName(HandleOperatorId handleOperatorId) {
+    public Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId) {
         return Result.hystrixError();
     }
+
 
     @Override
     public Result<Boolean> updateOperatorEmployeeById(HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById) {
@@ -95,6 +90,11 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
+    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> createPurchaseByOperatorSimple(HandleOperatorCreateSupplier handleOperatorCreateSupplier) {
         return Result.hystrixError();
     }
@@ -106,6 +106,11 @@ public class OperatorHystrix implements FacadeOperatorService {
 
     @Override
     public Result<Boolean> operatorCreateSupplier(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
         return Result.hystrixError();
     }
 }

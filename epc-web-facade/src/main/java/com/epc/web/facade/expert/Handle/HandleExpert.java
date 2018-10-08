@@ -42,12 +42,18 @@ public class HandleExpert {
     @ApiModelProperty(value = "通知时间")
     @NotEmpty(message = "HandleExpert.circularDt.null")
     private Date circularDt;
+    @ApiModelProperty(value = "截止时间")
+    private Date circularDtEnd;
     @ApiModelProperty(value = "通知方式")
     @NotEmpty(message = "HandleExpert.circularMethod.null")
     private String circularMethod;
     @ApiModelProperty(value = "其他信息")
     @NotEmpty(message = "HandleExpert.otherInformation.null")
     private String otherInformation;
+    @ApiModelProperty(value = "身份证正面照片url")
+    private String legalIdCardPositive;
+    @ApiModelProperty(value = "身份证反面照片url")
+    private String legalIdCardOther;
     /**
      * 专家附件
      */

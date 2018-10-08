@@ -26,7 +26,7 @@ public class PurchaserExpertVo implements Serializable {
     private String level;
 
     /**
-     * 专家编号
+     * 专家编号就是专家id
      */
     private Long serialNum;
 }

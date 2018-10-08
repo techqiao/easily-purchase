@@ -14,14 +14,16 @@ public class HandlerSupplierAddEmployee implements Serializable{
     private static final long serialVersionUID = -2240760593421147556L;
 
     /**
-     * 供应商的id
+     * 从当前操作人当中取出
+     * 供应商的法人id
      */
     private Long supplierId;
+    //当前登陆人的平台平台角色
+    private Integer systemRole;
+    //登陆人的用户角色
+    private Integer loginRole;
 
-    /**
-     * 供应商员工的状态
-     */
-    private Integer state;
+
 
     /**
      * 员工角色

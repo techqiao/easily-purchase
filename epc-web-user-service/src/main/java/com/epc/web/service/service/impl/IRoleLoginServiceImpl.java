@@ -119,7 +119,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser.setCompanyId(detailInfo.getOperatorId());
                 loginUser.setCompanyName(detailInfo.getCompanyName());
                 loginUser.setBossId(boss.getId());
-                return Result.success(loginUser);
             }
         }
         return this.loginBack(loginUser);
@@ -174,7 +173,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser3.setCompanyId(detailInfo3.getPurchaserId());
                 loginUser3.setCompanyName(detailInfo3.getCompanyName());
                 loginUser3.setBossId(boss3.getId());
-                return Result.success(loginUser3);
             }
         }
         return this.loginBack(loginUser3);
@@ -229,7 +227,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser1.setCompanyId(detailInfo1.getAgencyId());
                 loginUser1.setCompanyName(detailInfo1.getCompanyName());
                 loginUser1.setBossId(boss1.getId());
-                return Result.success(loginUser1);
             }
         }
         return this.loginBack(loginUser1);
@@ -284,7 +281,6 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 loginUser2.setCompanyId(detailInfo2.getSupplierId());
                 loginUser2.setCompanyName(detailInfo2.getCompanyName());
                 loginUser2.setBossId(boss2.getId());
-                return Result.success(loginUser2);
             }
         }
         return this.loginBack(loginUser2);
@@ -327,7 +323,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TOperatorBasicInfo operatorBasicInfo = tOperatorBasicInfoMapper.selectByNameAndCellphone(name, cellphone);
+            TOperatorBasicInfo operatorBasicInfo = tOperatorBasicInfoMapper.selectByCellphone(cellphone);
             if (operatorBasicInfo == null) {
                 return Result.success(tOperatorBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -352,7 +348,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectBasicInfoByNameAndPhone(name, cellphone);
+            TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectPurchaserBasicInfoByCell(cellphone);
             if (tPurchaserBasicInfo == null) {
                 return Result.success(tPurchaserBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -377,7 +373,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphoneAndName(name, cellphone);
+            TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
             if (basicInfo == null) {
                 return Result.success(tAgencyBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -402,7 +398,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByNameAndCell(name, cellphone);
+            TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByCell(cellphone);
             if (tSupplierBasicInfo == null) {
                 return Result.success(tSupplierBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {
@@ -427,7 +423,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         //注册时间
         Date date = new Date();
         try {
-            TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectExpertByNameAndCellPhone(name, cellphone);
+            TExpertBasicInfo tExpertBasicInfo = tExpertBasicInfoMapper.selectExpertCellPhone(cellphone);
             if (tExpertBasicInfo == null) {
                 return Result.success(tExpertBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
             } else {

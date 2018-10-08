@@ -8,6 +8,10 @@ import java.io.Serializable;
 public class HandleSupplierIdAndIsForbidden implements Serializable {
     private static final long serialVersionUID = 8414946572797980644L;
 
+    private Integer type;
+    private Integer loginRole;
+
+
     //员工id
     private Long id;
 

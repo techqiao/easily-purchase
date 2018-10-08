@@ -55,24 +55,39 @@ public class ClientPurchaserHandleSupplierDto implements Serializable {
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
 
+//    /**
+//     * 操作人id
+//     */
+//    @ApiModelProperty(value = "操作人id")
+//    private long OperatorId;
+//    /**
+//     * 操作人公司的id
+//     */
+//    @ApiModelProperty(value = "操作人公司id")
+//    private long companyId;
     /**
-     * 操作人id
+     * 营业执照
      */
-    @ApiModelProperty(value = "操作人id")
-    private long OperatorId;
+    @ApiModelProperty(value = "营业执照")
+    private String businessLicense;
     /**
-     * 操作人公司的id
+     * 身份证正面
      */
-    @ApiModelProperty(value = "操作人公司id")
-    private long companyId;
+    @ApiModelProperty(value = "身份证正面")
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    @ApiModelProperty(value = "身份证反面")
+    private String legalIdCardOther;
     /**
      * 附件list
      */
     @ApiModelProperty(value = "附件")
     protected List<ClientAttachement> atts;
-    /**
-     * 来源
-     */
-    @ApiModelProperty(value = "客户来源")
-    private String source;
+//    /**
+//     * 来源
+//     */
+//    @ApiModelProperty(value = "客户来源")
+//    private String source;
 }

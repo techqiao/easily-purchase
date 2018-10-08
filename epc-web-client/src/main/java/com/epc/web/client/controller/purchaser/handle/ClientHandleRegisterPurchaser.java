@@ -64,6 +64,11 @@ public class ClientHandleRegisterPurchaser implements Serializable {
     @ApiModelProperty(value = "操作人id")
     private long OperatorId;
     /**
+     * 公司地址
+     */
+    @ApiModelProperty(value="公司地址")
+    private String companyAddress;
+    /**
      * 附件list
      */
     @ApiModelProperty(value = "营业执照照片url")

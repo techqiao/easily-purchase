@@ -180,7 +180,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             basicInfo.setInviterId(handleSupplier.getOperatorId());
-            basicInfo.setInviterCompanyId( handleSupplier.getCompanyId());
+            basicInfo.setInviterCompanyId(handleSupplier.getCompanyId());
             basicInfo.setState(Const.STATE.REGISTERED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             basicInfo.setCreateAt(date);
@@ -608,16 +608,16 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updatePurchaserDetail(HandleRegisterPurchaser handlePurchaser) {
         Long purchaserId = handlePurchaser.getPurchaseId();
-        if(purchaserId==null){
+        if (purchaserId == null) {
             return Result.success("请传入有效的信息");
         }
-        TPurchaserBasicInfo basicInfo =  null;
+        TPurchaserBasicInfo basicInfo = null;
         try {
             basicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(purchaserId);
             if (basicInfo == null) {
                 return Result.success("没有采购人的注册信息");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.error("完善采购人信息失败Exception:{}", e);
             return Result.error("完善信息失败");
         }
@@ -641,6 +641,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         detailInfo.setUniformCreditCode(handlePurchaser.getUniformCreditCode());
         detailInfo.setPublicBankName(handlePurchaser.getPublicBankName());
         detailInfo.setPublicBanAccountNumber(handlePurchaser.getPublicBankCount());
+        detailInfo.setCompanyName(handlePurchaser.getCompanyAddress());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -826,13 +827,14 @@ public class PurchaserServiceImpl implements PurchaserService {
         //查询注册信息
         String name = dto.getName();
         String cellphone = dto.getCellphone();
-        TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
-        if (basicInfo == null) {
-            return Result.error("没有该代理机构的注册信息");
-        }
-        //代理机构的id
-        Long agencyId = basicInfo.getId();
         try {
+            TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectByPrimaryKey(dto.getAgencyId());
+            if (basicInfo == null) {
+                return Result.success("没有代理机构的注册信息");
+            }
+            //代理机构的id
+            Long agencyId = dto.getAgencyId();
+
             TPurchaserAgency agency = tPurchaserAgencyMapper.selectAgencyByAgencyId(agencyId);
             TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
             if (agency == null) {
@@ -1210,7 +1212,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         vo.setBossName(bossName);
         vo.setCompanyName(companyName);
 
-        return vo==null?Result.success("没有符合要求的员工"):Result.success("查询成功", vo);
+        return vo == null ? Result.success("没有符合要求的员工") : Result.success("查询成功", vo);
     }
 
     /**
@@ -1231,7 +1233,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserBasicInfo boss = null;
         //机构id
         Long purchaseId = employeeDto.getPurchaseId();
-        if(purchaseId==null){
+        if (purchaseId == null) {
             return Result.success("请传入有效的信息!");
         }
         //返回对象的集合
@@ -1246,7 +1248,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             tPurchaserDetail = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaseId);
             Integer role = Const.Role.ROLE_CORPORATION;
             boss = tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaseId, role);
-            if(tPurchaserDetail==null||boss==null){
+            if (tPurchaserDetail == null || boss == null) {
                 return Result.success("公司信息不完善");
             }
             String companyName = tPurchaserDetail.getCompanyName();
@@ -1312,7 +1314,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         if (CollectionUtils.isEmpty(supplierVos)) {
             return Result.success("供应商不存在或信息不完全");
         }
-        return CollectionUtils.isEmpty(supplierVos)?Result.success("没有符合要求的员工"):Result.success("查询成功", supplierVos);
+        return CollectionUtils.isEmpty(supplierVos) ? Result.success("没有符合要求的员工") : Result.success("查询成功", supplierVos);
     }
 
 //    /**
@@ -1522,7 +1524,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
             vo.setAtts(list);
         }
-        return vo==null? Result.success("没有相关供货商的信息") : Result.success("查询成功", vo);
+        return vo == null ? Result.success("没有相关供货商的信息") : Result.success("查询成功", vo);
     }
 
     @Override
@@ -1574,7 +1576,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
             vo.setAtts(attachements);
         }
-        return vo == null ? Result.success("没有相关专家信息") : Result.success("查询成功",vo);
+        return vo == null ? Result.success("没有相关专家信息") : Result.success("查询成功", vo);
     }
 
 
@@ -1629,7 +1631,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
             vo.setAtts(list);
         }
-        return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功",vo);
+        return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功", vo);
     }
 
 //    /**
@@ -1804,7 +1806,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
             //采购人公司的详细信息
             TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(dto.getPuchaserId());
-            if(tPurchaserDetailInfo!=null){
+            if (tPurchaserDetailInfo != null) {
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
                 tExpertDetailInfo.setExpertId(expertId);
                 tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
@@ -2103,7 +2105,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateTrustListForSupplier(HandleTrustList trustList) {
-        if (trustList == null||StringUtils.isEmpty(trustList.getTrustOrNot())||StringUtils.isEmpty(trustList.getId())) {
+        if (trustList == null || StringUtils.isEmpty(trustList.getTrustOrNot()) || StringUtils.isEmpty(trustList.getId())) {
             return Result.error("请传入有效的修改信息");
         }
         try {
@@ -2126,7 +2128,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> updateTrustListForAgency(HandleTrustList trustList) {
-        if (trustList == null||StringUtils.isEmpty(trustList.getTrustOrNot())||StringUtils.isEmpty(trustList.getId())) {
+        if (trustList == null || StringUtils.isEmpty(trustList.getTrustOrNot()) || StringUtils.isEmpty(trustList.getId())) {
             return Result.error("请传入有效的修改信息");
         }
         try {

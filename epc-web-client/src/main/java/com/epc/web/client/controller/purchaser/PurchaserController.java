@@ -35,13 +35,13 @@ public class PurchaserController extends BaseController {
     Result<Boolean> createPurchaserUserInfo(@RequestBody ClientHandlePurchaser handleEmployee) {
         ClientLoginUser loginUser = super.getLoginUser();
         if (null != loginUser) {
-            if(!StringUtils.isEmpty(loginUser.getBossId())) {
+//            if(!StringUtils.isEmpty(loginUser.getBossId())) {
                 HandlePurchaser purchaser = new HandlePurchaser();
                 BeanUtils.copyProperties(handleEmployee, purchaser);
                 purchaser.setPurchaserId(loginUser.getCompanyId());
                 return purchaserClient.createPurchaserUserInfo(purchaser);
-            }
-            return Result.success("请先完善信息");
+//            }
+//            return Result.success("请先完善信息");
         }
         return Result.success("请先登录", true);
 
@@ -124,9 +124,9 @@ public class PurchaserController extends BaseController {
         BeanUtils.copyProperties(employeeDto, dto);
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if (null != clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             dto.setPurchaseId(clientLoginUser.getCompanyId());
             return purchaserClient.queryEmplyee(dto);
         }
@@ -147,9 +147,9 @@ public class PurchaserController extends BaseController {
         HandleExpert handleExpert1 = new HandleExpert();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if (null != clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             handleExpert1.setOperatorId(clientLoginUser.getUserId());
             handleExpert1.setPurchaserId(clientLoginUser.getBossId());
             BeanUtils.copyProperties(handleExpert, handleExpert1);
@@ -173,9 +173,9 @@ public class PurchaserController extends BaseController {
         HandleExpertDto handleExpertDto = new HandleExpertDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if (null != clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getName())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getName())) {
+//                return Result.error("请先完善信息!");
+//            }
             handleExpertDto.setPuchaserId(clientLoginUser.getCompanyId());
             BeanUtils.copyProperties(expertDto, handleExpertDto);
             return purchaserClient.completePurchaserExpertInfo(handleExpertDto);
@@ -239,9 +239,9 @@ public class PurchaserController extends BaseController {
         HandleAgnecy agnecy = new HandleAgnecy();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if (null != clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             agnecy.setOperatorId(clientLoginUser.getUserId());
             agnecy.setCompanyId(clientLoginUser.getBossId());
             BeanUtils.copyProperties(handleAgnecy, agnecy);
@@ -304,9 +304,9 @@ public class PurchaserController extends BaseController {
         QueryAgencyDto queryAgencyDto = new QueryAgencyDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if(null!=clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             queryAgencyDto.setPurchaserId(clientLoginUser.getBossId());
             BeanUtils.copyProperties(agencyDto, queryAgencyDto);
             return purchaserClient.queryAgenciesByCriteria(queryAgencyDto);
@@ -329,9 +329,9 @@ public class PurchaserController extends BaseController {
         HandleSupplierDto handleSupplierDto = new HandleSupplierDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if(null!=clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             handleSupplierDto.setOperatorId(clientLoginUser.getUserId());
             handleSupplierDto.setCompanyId(clientLoginUser.getBossId());
             BeanUtils.copyProperties(handleOperator, handleSupplierDto);
@@ -354,9 +354,9 @@ public class PurchaserController extends BaseController {
         PurchaserHandleSupplierDto purchaserHandleSupplierDto = new PurchaserHandleSupplierDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if(null !=clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             BeanUtils.copyProperties(dto, purchaserHandleSupplierDto);
             purchaserHandleSupplierDto.setOperatorId(clientLoginUser.getUserId());
             purchaserHandleSupplierDto.setCompanyId(clientLoginUser.getCompanyId());
@@ -397,9 +397,9 @@ public class PurchaserController extends BaseController {
         QuerySupplierDto querySupplierDto = new QuerySupplierDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
         if(null!=clientLoginUser) {
-            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-                return Result.error("请先完善信息!");
-            }
+//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
+//                return Result.error("请先完善信息!");
+//            }
             querySupplierDto.setPurchaserId(clientLoginUser.getBossId());
             BeanUtils.copyProperties(supplierDto, querySupplierDto);
             return purchaserClient.querySupplierByCriterias(querySupplierDto);

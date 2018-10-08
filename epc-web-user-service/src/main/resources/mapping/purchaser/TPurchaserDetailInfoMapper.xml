@@ -328,6 +328,7 @@
       <if test="companyName != null">
         company_name = #{companyName,jdbcType=VARCHAR},
       </if>
+
       <if test="uniformCreditCode != null">
         uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
       </if>

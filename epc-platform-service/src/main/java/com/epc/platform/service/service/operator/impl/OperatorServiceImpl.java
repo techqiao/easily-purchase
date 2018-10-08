@@ -71,7 +71,7 @@ public class OperatorServiceImpl implements OperatorService {
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        pojo.setState(Const.STATE.REGISTERED);
+        pojo.setState(Const.STATE.COMMITTED);
         SysAdminUserOperator sysAdminUserOperator = new SysAdminUserOperator();
         sysAdminUserOperator.setAdminUserId(pojo.getId());
         sysAdminUserOperator.setAdminUserName(pojo.getName());
@@ -112,13 +112,10 @@ public class OperatorServiceImpl implements OperatorService {
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
-
         TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
         tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
-
         TOperatorAttachmentCriteria tOperatorAttachmentCriteria = new TOperatorAttachmentCriteria();
         tOperatorAttachmentCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
-
         try {
             List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria);
             //没有就新增 未通过重填就修改
@@ -162,7 +159,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
             tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
-            tOperatorBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
@@ -236,7 +233,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
             tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
-            tOperatorBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);

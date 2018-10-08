@@ -20,14 +20,16 @@ public class ClientHandleBidsBasicInfo {
     private Long purchaseProjectId;
     @ApiModelProperty(value = "采购项目名称")
     private String purchaseProjectName;
+    @ApiModelProperty(value = "采购项目编号")
+    private String purchaseProjectCode;
     @ApiModelProperty(value = "项目ID")
     private Long projectId;
     @ApiModelProperty(value = "项目名称")
     private String projectName;
+    @ApiModelProperty(value = "项目编号")
+    private String projectCode;
     @ApiModelProperty(value = "采购方式")
     private String purchaseMode;
-    @ApiModelProperty(value = "标段编号")
-    private String bidCode;
     @ApiModelProperty(value = "标段名称")
     private String bidName;
     @ApiModelProperty(value = "预算金额")

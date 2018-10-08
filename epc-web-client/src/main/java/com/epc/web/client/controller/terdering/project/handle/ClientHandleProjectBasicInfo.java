@@ -14,8 +14,6 @@ import lombok.Data;
 public class ClientHandleProjectBasicInfo {
     @ApiModelProperty(value = "主键ID 修改时传")
     private Long id;
-    @ApiModelProperty(value = "项目编号")
-    private String projectCode;
     @ApiModelProperty(value = "项目名称")
     private String projectName;
     @ApiModelProperty(value = "项目描述")

@@ -21,7 +21,7 @@ public class BBidOpeningPay implements Serializable {
 
     private String tendererName;
 
-    private Long tendererCompanyName;
+    private String tendererCompanyName;
 
     private Date amountMoneyTime;
 
@@ -107,12 +107,12 @@ public class BBidOpeningPay implements Serializable {
         this.tendererName = tendererName == null ? null : tendererName.trim();
     }
 
-    public Long getTendererCompanyName() {
+    public String getTendererCompanyName() {
         return tendererCompanyName;
     }
 
-    public void setTendererCompanyName(Long tendererCompanyName) {
-        this.tendererCompanyName = tendererCompanyName;
+    public void setTendererCompanyName(String tendererCompanyName) {
+        this.tendererCompanyName = tendererCompanyName == null ? null : tendererCompanyName.trim();
     }
 
     public Date getAmountMoneyTime() {

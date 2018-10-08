@@ -6,6 +6,7 @@ import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServicePayVO;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public interface MoneyPayService {
      Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto);
 
     /**
-     * 查询是否支付服务费
+     * 缴纳中标 服务费列表
      * @param dto
      * @return
      */
-     Result<Boolean> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto);
+    Result<List<ServicePayVO>> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto);
 
     /**
      * 平台插入下载金额支付记录

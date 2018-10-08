@@ -6,8 +6,8 @@ import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServicePayVO;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class MoneyPayHystrix implements FacadeMoneyPayService {
         return Result.hystrixError();    }
 
     @Override
-    public Result<Boolean> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto) {
+    public Result<List<ServicePayVO>> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto) {
         return Result.hystrixError();
     }
 

@@ -10,7 +10,7 @@
     <result column="tenderer_id" property="tendererId" jdbcType="BIGINT" />
     <result column="tenderer_company_id" property="tendererCompanyId" jdbcType="BIGINT" />
     <result column="tenderer_name" property="tendererName" jdbcType="VARCHAR" />
-    <result column="tenderer_company_name" property="tendererCompanyName" jdbcType="BIGINT" />
+    <result column="tenderer_company_name" property="tendererCompanyName" jdbcType="VARCHAR" />
     <result column="amount_money_time" property="amountMoneyTime" jdbcType="TIMESTAMP" />
     <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
     <result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
@@ -127,7 +127,7 @@
       update_at, is_deleted)
     values (#{projectId,jdbcType=BIGINT}, #{procurementProjectId,jdbcType=BIGINT}, #{bidId,jdbcType=BIGINT}, 
       #{bidsGuaranteeAmountId,jdbcType=BIGINT}, #{tendererId,jdbcType=BIGINT}, #{tendererCompanyId,jdbcType=BIGINT}, 
-      #{tendererName,jdbcType=VARCHAR}, #{tendererCompanyName,jdbcType=BIGINT}, #{amountMoneyTime,jdbcType=TIMESTAMP}, 
+      #{tendererName,jdbcType=VARCHAR}, #{tendererCompanyName,jdbcType=VARCHAR}, #{amountMoneyTime,jdbcType=TIMESTAMP}, 
       #{amountMoney,jdbcType=DECIMAL}, #{paymentName,jdbcType=VARCHAR}, #{paymentAccountNumber,jdbcType=VARCHAR}, 
       #{paymentId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
@@ -213,7 +213,7 @@
         #{tendererName,jdbcType=VARCHAR},
       </if>
       <if test="tendererCompanyName != null" >
-        #{tendererCompanyName,jdbcType=BIGINT},
+        #{tendererCompanyName,jdbcType=VARCHAR},
       </if>
       <if test="amountMoneyTime != null" >
         #{amountMoneyTime,jdbcType=TIMESTAMP},
@@ -278,7 +278,7 @@
         tenderer_name = #{record.tendererName,jdbcType=VARCHAR},
       </if>
       <if test="record.tendererCompanyName != null" >
-        tenderer_company_name = #{record.tendererCompanyName,jdbcType=BIGINT},
+        tenderer_company_name = #{record.tendererCompanyName,jdbcType=VARCHAR},
       </if>
       <if test="record.amountMoneyTime != null" >
         amount_money_time = #{record.amountMoneyTime,jdbcType=TIMESTAMP},
@@ -322,7 +322,7 @@
       tenderer_id = #{record.tendererId,jdbcType=BIGINT},
       tenderer_company_id = #{record.tendererCompanyId,jdbcType=BIGINT},
       tenderer_name = #{record.tendererName,jdbcType=VARCHAR},
-      tenderer_company_name = #{record.tendererCompanyName,jdbcType=BIGINT},
+      tenderer_company_name = #{record.tendererCompanyName,jdbcType=VARCHAR},
       amount_money_time = #{record.amountMoneyTime,jdbcType=TIMESTAMP},
       amount_money = #{record.amountMoney,jdbcType=DECIMAL},
       payment_name = #{record.paymentName,jdbcType=VARCHAR},
@@ -361,7 +361,7 @@
         tenderer_name = #{tendererName,jdbcType=VARCHAR},
       </if>
       <if test="tendererCompanyName != null" >
-        tenderer_company_name = #{tendererCompanyName,jdbcType=BIGINT},
+        tenderer_company_name = #{tendererCompanyName,jdbcType=VARCHAR},
       </if>
       <if test="amountMoneyTime != null" >
         amount_money_time = #{amountMoneyTime,jdbcType=TIMESTAMP},
@@ -402,7 +402,7 @@
       tenderer_id = #{tendererId,jdbcType=BIGINT},
       tenderer_company_id = #{tendererCompanyId,jdbcType=BIGINT},
       tenderer_name = #{tendererName,jdbcType=VARCHAR},
-      tenderer_company_name = #{tendererCompanyName,jdbcType=BIGINT},
+      tenderer_company_name = #{tendererCompanyName,jdbcType=VARCHAR},
       amount_money_time = #{amountMoneyTime,jdbcType=TIMESTAMP},
       amount_money = #{amountMoney,jdbcType=DECIMAL},
       payment_name = #{paymentName,jdbcType=VARCHAR},

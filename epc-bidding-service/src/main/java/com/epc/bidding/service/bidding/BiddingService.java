@@ -34,20 +34,6 @@ public interface BiddingService {
     Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail);
 
     /**
-     * 查看 答疑列表
-     * @param queryAnswerQuestionDTO
-     * @return
-     */
-    Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO);
-
-    /**
-     * 新增一条问题
-     * @param handleQuestion
-     * @return
-     */
-    Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion);
-
-    /**
      * 查询供应商是否支付下载招标文件金额
      * @return
      */

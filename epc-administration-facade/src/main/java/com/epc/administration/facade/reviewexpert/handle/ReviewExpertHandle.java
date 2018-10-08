@@ -29,6 +29,8 @@ public class ReviewExpertHandle implements Serializable {
     private Integer workingYears;
     @ApiModelProperty(value = "通知时间")
     private Date circularDt;
+    @ApiModelProperty(value = "通知结束时间")
+    private Date circularDtEnd;
     @ApiModelProperty(value = "通知方式")
     private String circularMethod;
     @ApiModelProperty(value = "其他信息")

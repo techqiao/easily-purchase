@@ -27,6 +27,10 @@ public class HandlePurchaseProjectBasicInfo implements Serializable {
      */
     private String projectName;
     /**
+     * 项目ID
+     */
+    private Long projectId;
+    /**
      * 采购项目ID
      */
     private Long purchaseProjectId;

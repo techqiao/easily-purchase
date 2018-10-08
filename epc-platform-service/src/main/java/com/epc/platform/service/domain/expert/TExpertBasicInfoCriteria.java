@@ -74,7 +74,7 @@ public class TExpertBasicInfoCriteria {
     }
 
     /**
-     * t_expert_basic_info 2018-10-03
+     * t_expert_basic_info 2018-10-08
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -777,6 +777,66 @@ public class TExpertBasicInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andCircularDtEndIsNull() {
+            addCriterion("circular_dt_end is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndIsNotNull() {
+            addCriterion("circular_dt_end is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndEqualTo(Date value) {
+            addCriterion("circular_dt_end =", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndNotEqualTo(Date value) {
+            addCriterion("circular_dt_end <>", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndGreaterThan(Date value) {
+            addCriterion("circular_dt_end >", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndGreaterThanOrEqualTo(Date value) {
+            addCriterion("circular_dt_end >=", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndLessThan(Date value) {
+            addCriterion("circular_dt_end <", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndLessThanOrEqualTo(Date value) {
+            addCriterion("circular_dt_end <=", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndIn(List<Date> values) {
+            addCriterion("circular_dt_end in", values, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndNotIn(List<Date> values) {
+            addCriterion("circular_dt_end not in", values, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndBetween(Date value1, Date value2) {
+            addCriterion("circular_dt_end between", value1, value2, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndNotBetween(Date value1, Date value2) {
+            addCriterion("circular_dt_end not between", value1, value2, "circularDtEnd");
+            return (Criteria) this;
+        }
+
         public Criteria andCircularMethodIsNull() {
             addCriterion("circular_method is null");
             return (Criteria) this;
@@ -1402,7 +1462,7 @@ public class TExpertBasicInfoCriteria {
      * 描述:t_expert_basic_info表的实体类
      * @version
      * @author:  01
-     * @创建时间: 2018-10-03
+     * @创建时间: 2018-10-08
      */
     public static class Criteria extends GeneratedCriteria {
 
@@ -1412,7 +1472,7 @@ public class TExpertBasicInfoCriteria {
     }
 
     /**
-     * t_expert_basic_info 2018-10-03
+     * t_expert_basic_info 2018-10-08
      */
     public static class Criterion {
         private String condition;

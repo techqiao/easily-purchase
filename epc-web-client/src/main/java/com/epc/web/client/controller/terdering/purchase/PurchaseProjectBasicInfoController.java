@@ -8,6 +8,8 @@ import com.epc.web.client.controller.terdering.purchase.handle.ClientHandlePurch
 import com.epc.web.client.controller.terdering.purchase.vo.ClientQueryPurchaseBasicInfoVO;
 import com.epc.web.client.remoteApi.purchaser.PurchaserClient;
 import com.epc.web.client.remoteApi.terdering.purchase.PurchaseProjectClient;
+import com.epc.web.facade.purchaser.dto.QueryDto;
+import com.epc.web.facade.purchaser.vo.PurchaserAgencyDetailVo;
 import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
 import com.epc.web.facade.terdering.participant.handle.HandleParticipantBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +58,7 @@ public class PurchaseProjectBasicInfoController extends BaseController {
             //审核人ID
             Long auditorId = clientHandlePurchaseProjectBasicInfo.getAuditorId();
             //参与者集合
+            handlePurchaseProjectBasicInfoSub.setHandleParticipantBasicInfoList(new ArrayList<>());
             List<HandleParticipantBasicInfo> handleParticipantBasicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
             if (agentId != null) {
                 addUserRole(ParticipantPermissionEnum.AGENT.getCode(), agentId, handleParticipantBasicInfoList);
@@ -71,6 +75,7 @@ public class PurchaseProjectBasicInfoController extends BaseController {
         //全权委托代理机构
         else {
             //参与者集合
+            handlePurchaseProjectBasicInfoSub.setHandleParticipantBasicInfoList(new ArrayList<>());
             List<HandleParticipantBasicInfo> handleParticipantBasicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
             //批复人为项目经理即当前登录人(采购人)
             if (userId != null) {
@@ -79,11 +84,19 @@ public class PurchaseProjectBasicInfoController extends BaseController {
             //招标代理机构ID
             Long purchaserAgencyId = clientHandlePurchaseProjectBasicInfo.getPurchaserAgencyId();
             if ( purchaserAgencyId!= null) {
-                //TODO 招标代理机构 此处要查询代理机构相关联信息
                 HandleParticipantBasicInfo pojo = new HandleParticipantBasicInfo();
-                pojo.setUserAgencyId(purchaserAgencyId);
-                pojo.setType(ParticipantPermissionEnum.PERSON_LIABLE.getCode());
-                handleParticipantBasicInfoList.add(pojo);
+                QueryDto queryDto = new QueryDto();
+                queryDto.setId(purchaserAgencyId);
+                Result<PurchaserAgencyDetailVo> result = purchaserClient.queryAgencyDetailById(queryDto);
+                if(result.getData()!=null){
+                    pojo.setUserAgencyId(purchaserAgencyId);
+                    pojo.setType(ParticipantPermissionEnum.PERSON_LIABLE.getCode());
+                    pojo.setAgencyName(result.getData().getCompanyName());
+                    pojo.setUserPhone(result.getData().getCellphone());
+                    pojo.setUserName(result.getData().getName());
+                    pojo.setUserId(result.getData().getAgencyId());
+                    handleParticipantBasicInfoList.add(pojo);
+                }
             }
             return purchaseProjectClient.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfoSub);
         }
@@ -99,9 +112,16 @@ public class PurchaseProjectBasicInfoController extends BaseController {
      * @param handleParticipantBasicInfoList
      */
     private void addUserRole(String type, Long userId, List<HandleParticipantBasicInfo> handleParticipantBasicInfoList) {
-        PurchaserEmplyeeVo employeeVo = (PurchaserEmplyeeVo) purchaserClient.queryEmployee(userId).getData();
+        QueryDto dto = new QueryDto();
+        dto.setId(userId);
+        Result<PurchaserEmplyeeVo> purchaserEmployeeVoResult = purchaserClient.queryEmployeeDto(dto);
+        PurchaserEmplyeeVo employeeVo = purchaserEmployeeVoResult.getData();
         HandleParticipantBasicInfo pojo = new HandleParticipantBasicInfo();
-        BeanUtils.copyProperties(employeeVo, pojo);
+        pojo.setUserId(Long.parseLong(employeeVo.getUserId()));
+        pojo.setUserName(employeeVo.getUserName());
+        pojo.setUserPhone(employeeVo.getCellphone());
+        pojo.setUserAgencyId(Long.parseLong(employeeVo.getCompanyId()));
+        pojo.setAgencyName(employeeVo.getCompanyName());
         pojo.setType(type);
         handleParticipantBasicInfoList.add(pojo);
     }

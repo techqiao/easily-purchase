@@ -22,6 +22,7 @@ import com.epc.platform.service.service.purchaser.PurchaserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,12 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result insertPurchaserUserInfo(UserBasicInfo userBasicInfo) {
+        TPurchaserBasicInfoCriteria tPurchaserBasicInfoCriteria = new TPurchaserBasicInfoCriteria();
+        tPurchaserBasicInfoCriteria.createCriteria().andCellphoneEqualTo(userBasicInfo.getCellphone());
+        List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(tPurchaserBasicInfoCriteria);
+        if(!tPurchaserBasicInfos.isEmpty()){
+            return Result.success("用户已存在，请直接登录");
+        }
         TPurchaserBasicInfo tPurchaserBasicInfo = new TPurchaserBasicInfo();
         Date date = new Date();
         tPurchaserBasicInfo.setCellphone(userBasicInfo.getCellphone());
@@ -87,13 +94,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<Boolean> updatePurchaserDetailInfo(PurchaserHandle purchaserHandle) {
         Date date = new Date();
         TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
-        tPurchaserDetailInfo.setPurchaserId(purchaserHandle.getId());
-        tPurchaserDetailInfo.setCompanyName(purchaserHandle.getCompanyName());
-        tPurchaserDetailInfo.setCompanyAddress(purchaserHandle.getCompanyAddress());
-        tPurchaserDetailInfo.setUniformCreditCode(purchaserHandle.getUniformCreditCode());
-        tPurchaserDetailInfo.setPublicBankName(purchaserHandle.getPublicBankName());
-        tPurchaserDetailInfo.setPublicBanAccountNumber(purchaserHandle.getPublicBanAccountNumber());
-        tPurchaserDetailInfo.setExtendedField(purchaserHandle.getBusinessLicense());
+        BeanUtils.copyProperties(purchaserHandle,tPurchaserDetailInfo);
         tPurchaserDetailInfo.setUpdateAt(date);
         TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
         tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
@@ -175,13 +176,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<Boolean> insertPurchaserDetailInfo(PurchaserHandle purchaserHandle) {
         Date date = new Date();
         TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
-        tPurchaserDetailInfo.setPurchaserId(purchaserHandle.getId());
-        tPurchaserDetailInfo.setCompanyName(purchaserHandle.getCompanyName());
-        tPurchaserDetailInfo.setUniformCreditCode(purchaserHandle.getUniformCreditCode());
-        tPurchaserDetailInfo.setPublicBankName(purchaserHandle.getPublicBankName());
-        tPurchaserDetailInfo.setPublicBanAccountNumber(purchaserHandle.getPublicBanAccountNumber());
-        tPurchaserDetailInfo.setCompanyAddress(purchaserHandle.getCompanyAddress());
-        tPurchaserDetailInfo.setExtendedField(purchaserHandle.getBusinessLicense());
+        BeanUtils.copyProperties(purchaserHandle,tPurchaserDetailInfo);
         tPurchaserDetailInfo.setCreateAt(date);
         tPurchaserDetailInfo.setUpdateAt(date);
         //是否有重复数据判断条件
@@ -272,26 +267,13 @@ public class PurchaserServiceImpl implements PurchaserService {
             List<TPurchaserDetailInfo> tPurchaserDetailInfos = tPurchaserDetailInfoMapper.selectByExample(tPurchaserDetailInfoCriteria);
             if(tPurchaserDetailInfos.isEmpty()){
                 PurchaserDetailVO purchaserDetailVO = new PurchaserDetailVO();
-                purchaserDetailVO.setName(tPurchaserBasicInfo.getName());
-                purchaserDetailVO.setState(tPurchaserBasicInfo.getState());
-                purchaserDetailVO.setCellphone(tPurchaserBasicInfo.getCellphone());
+                BeanUtils.copyProperties(tPurchaserBasicInfo,purchaserDetailVO);
                 return Result.success(purchaserDetailVO);
             }
             TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfos.get(0);
             PurchaserDetailVO  purchaserDetailVO = new PurchaserDetailVO();
-            purchaserDetailVO.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
-
-            purchaserDetailVO.setCompanyName(tPurchaserDetailInfo.getCompanyName());
-            purchaserDetailVO.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
-            purchaserDetailVO.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
-            purchaserDetailVO.setPublicBanAccountNumber(tPurchaserDetailInfo.getPublicBanAccountNumber());
-
-            purchaserDetailVO.setCreateAt(tPurchaserBasicInfo.getCreateAt());
-            purchaserDetailVO.setIsDeleted(tPurchaserBasicInfo.getIsDeleted());
-            purchaserDetailVO.setCellphone(tPurchaserBasicInfo.getCellphone());
-            purchaserDetailVO.setState(tPurchaserBasicInfo.getState());
-            purchaserDetailVO.setName(tPurchaserBasicInfo.getName());
-
+            BeanUtils.copyProperties(tPurchaserDetailInfo,purchaserDetailVO);
+            BeanUtils.copyProperties(tPurchaserBasicInfo,purchaserDetailVO);
             TPurchaserAttachmentCriteria tPurchaserAttachmentCriteria = new TPurchaserAttachmentCriteria();
             tPurchaserAttachmentCriteria.createCriteria().andPurchaserIdEqualTo(id);
             List<TPurchaserAttachment> tPurchaserAttachments = tPurchaserAttachmentMapper.selectByExample(tPurchaserAttachmentCriteria);
@@ -307,8 +289,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                     purchaserDetailVO.setBusinessLicense(tPurchaserAttachment.getCertificateFilePath());
                 }else{
                     AttachmentVO attachmentVO = new AttachmentVO();
-                    attachmentVO.setCertificateName(tPurchaserAttachment.getCertificateName());
-                    attachmentVO.setCertificateFilePath(tPurchaserAttachment.getCertificateFilePath());
+                    BeanUtils.copyProperties(tPurchaserAttachment,attachmentVO);
                     attachmentVOS.add(attachmentVO);
                 }
             }

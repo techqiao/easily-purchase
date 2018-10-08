@@ -76,6 +76,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setPurchaseProjectStatus(PurchaseProjectStatusEnum.CREATED.getCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    purchaseProjectId = pojo.getId();
                     //指定采购项目参与者 经办人 审核人 批复人 负责人
                     addUserRole(isOtherAgency,basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
                 } else if (pojo.getId() != null &&
@@ -102,6 +103,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setIsOtherAgency(Const.IS_OTHER_AGENCY.IS_OTHER_AGENCY);
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    purchaseProjectId = pojo.getId();
                     //指定批复人
                     addUserRole(isOtherAgency,ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
                     //指定负责人
@@ -139,6 +141,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         criteria.createCriteria().andPurchaseProjectIdEqualTo(pojo.getId());
         List<TPurchaseProjectParticipant> tpppList = tPurchaseProjectParticipantMapper.selectByExample(criteria);
         deleteParticipantAndPermission(operateId, creator, tpppList);
+        //如果不刪除 采购项目
         if (pojo.getIsDeleted() != Const.IS_DELETED.IS_DELETED) {
             addUserRole(isOtherAgency,basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
         }
@@ -206,7 +209,6 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
      */
     private void addUserRole(Integer isOtherAgency,String type, List<HandleParticipantBasicInfo> basicInfoList, Long operateId, String creator, Long userId, Long purchaseProjectId) {
         TPurchaseProjectParticipant tppp = new TPurchaseProjectParticipant();
-        tppp.setPurchaseProjectId(purchaseProjectId);
         tppp.setUserId(userId);
         tppp.setOperateId(operateId);
         tppp.setCreator(creator);
@@ -225,6 +227,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                 BeanUtils.copyProperties(item, tppp);
             }
         }
+        tppp.setPurchaseProjectId(purchaseProjectId);
         //参与者
         tPurchaseProjectParticipantMapper.insertSelective(tppp);
         TPurchaseProjectParticipantPermission tpppp = new TPurchaseProjectParticipantPermission();
@@ -245,6 +248,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         //0:暂未到达此步 1待办 2已完成 -1 打回到此步
         tpppp.setActionState(0);
         tpppp.setPurchaseProjectId(purchaseProjectId);
+        tpppp.setUserId(userId);
         //分配权限
         tPurchaseProjectParticipantPermissionMapper.insertSelective(tpppp);
     }

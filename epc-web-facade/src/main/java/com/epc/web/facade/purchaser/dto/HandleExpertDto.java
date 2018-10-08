@@ -48,6 +48,8 @@ public class HandleExpertDto implements Serializable{
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date circularDt;
+
+    private Date circularDtEnd;
     /**
      * 通知方式
      */
@@ -81,6 +83,15 @@ public class HandleExpertDto implements Serializable{
      *密码
      */
     private String password;
+
+    /**
+     * 身份证正面
+     */
+    private String legalIdCardPositive;
+    /**
+     * 身份证反面
+     */
+    private String legalIdCardOther;
 
     /**
      * 来源

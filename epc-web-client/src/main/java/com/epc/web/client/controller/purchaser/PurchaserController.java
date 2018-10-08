@@ -177,6 +177,7 @@ public class PurchaserController extends BaseController {
             }
             handleExpertDto.setCellphone(clientLoginUser.getCellphone());
             handleExpertDto.setExpertName(clientLoginUser.getName());
+            handleExpertDto.setPuchaserId(clientLoginUser.getCompanyId());
             BeanUtils.copyProperties(expertDto, handleExpertDto);
             return purchaserClient.completePurchaserExpertInfo(handleExpertDto);
         }

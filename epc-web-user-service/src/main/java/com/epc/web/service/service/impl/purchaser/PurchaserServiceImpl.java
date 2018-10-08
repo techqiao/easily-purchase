@@ -1426,7 +1426,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         vo.setPublicBankName(detailInfo.getPublicBankName());
         vo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
         vo.setCellphone(basicInfo.getCellphone());
-
+        vo.setName(basicInfo.getName());
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TSupplierAttachment attachment : attachments) {
@@ -1533,6 +1533,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         vo.setPublicBankName(detailInfo.getPublicBankName());
         vo.setPublicBankCount(detailInfo.getPublicBanAccountNumber());
         vo.setCellphone(basicInfo.getCellphone());
+        vo.setName(basicInfo.getName());
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TAgencyAttachment attachment : attachments) {
@@ -1555,7 +1556,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             }
             vo.setAtts(list);
         }
-        return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功");
+        return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功",vo);
     }
 
 //    /**
@@ -1728,14 +1729,48 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tPurchaserExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 tPurchaserExpertMapper.insertSelective(tPurchaserExpert);
             }
+            //采购人公司的详细信息
+            TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(dto.getPuchaserId());
+            if(tPurchaserDetailInfo!=null){
+                TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+                tExpertDetailInfo.setExpertId(expertId);
+                tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
+                tExpertDetailInfo.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
+                tExpertDetailInfo.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
+                tExpertDetailInfo.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
+                tExpertDetailInfo.setPublicBanAccountNumber(tPurchaserDetailInfo.getPublicBanAccountNumber());
+                tExpertDetailInfo.setExtendedField(tPurchaserDetailInfo.getExtendedField());
+                tExpertDetailInfo.setCreateAt(new Date());
+                tExpertDetailInfo.setUpdateAt(new Date());
+                tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
+            }
             //封装附件信息对象
-            List<Attachement> atts = dto.getAtts();
-            if (!CollectionUtils.isEmpty(atts)) {
-                for (Attachement att : atts) {
-                    TExpertAttachment attachment = new TExpertAttachment();
-                    BeanUtils.copyProperties(att, attachment);
-                    attachment.setExpertId(expertId);
-                    tExpertAttachmentMapper.insertSelective(attachment);
+            TExpertAttachment attachment = new TExpertAttachment();
+            attachment.setExpertId(expertId);
+            attachment.setCreateAt(new Date());
+            attachment.setUpdateAt(new Date());
+            attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            //上传身份证正面
+            attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            tExpertAttachmentMapper.insertSelective(attachment);
+            //上传身份证反面
+            attachment.setCertificateFilePath(dto.getLegalIdCardOther());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+            tExpertAttachmentMapper.insertSelective(attachment);
+            List<Attachement> list = dto.getAtts();
+            if (!CollectionUtils.isEmpty(list)) {
+                for (Attachement att : list) {
+                    TExpertAttachment expertAttachment = new TExpertAttachment();
+                    BeanUtils.copyProperties(att, expertAttachment);
+                    expertAttachment.setExpertId(expertId);
+                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                    attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+                    expertAttachment.setCreateAt(new Date());
+                    expertAttachment.setUpdateAt(new Date());
+                    tExpertAttachmentMapper.insertSelective(expertAttachment);
                 }
             }
         } catch (Exception e) {

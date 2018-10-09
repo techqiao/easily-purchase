@@ -2,22 +2,28 @@ package com.epc.tendering.service.service.enrolmentinvitation.impl;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.util.DateTimeUtil;
+import com.epc.tendering.service.domain.bid.*;
+import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.signup.BInvitation;
 import com.epc.tendering.service.domain.signup.BInvitationCriteria;
 import com.epc.tendering.service.domain.signup.BSignUp;
-import com.epc.tendering.service.domain.supplier.TSupplierBasicInfo;
-import com.epc.tendering.service.domain.supplier.TSupplierDetailInfo;
-import com.epc.tendering.service.domain.supplier.TSupplierDetailInfoCriteria;
+import com.epc.tendering.service.domain.signup.BSignUpCriteria;
+import com.epc.tendering.service.mapper.bid.BBidOpeningPayMapper;
+import com.epc.tendering.service.mapper.bid.BBidsGuaranteeAmountMapper;
+import com.epc.tendering.service.mapper.bid.TPurchaseProjectBidsMapper;
+import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.signup.BInvitationMapper;
 import com.epc.tendering.service.mapper.signup.BSignUpMapper;
-import com.epc.tendering.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.enrolmentinvitation.EnrolmentInvitationService;
+import com.epc.web.facade.bidding.vo.PayListForAllVO;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
+import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +54,14 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
     private BInvitationMapper bInvitationMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+    @Autowired
+    BBidOpeningPayMapper bBidOpeningPayMapper;
+    @Autowired
+    BBidsGuaranteeAmountMapper bBidsGuaranteeAmountMapper;
+    @Autowired
+    TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+    @Autowired
+    TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     /**
      * * 供应商报名采购项目
      * @param signUpHandle
@@ -104,11 +119,11 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
         List<BInvitation> result=bInvitationMapper.selectByExample(criteria);
         List<BInvitationVO> voList=new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         for(BInvitation entity:result){
             BInvitationVO vo=new BInvitationVO();
             BeanUtils.copyProperties(entity,vo);
             String dateString = sdf.format(entity.getCreateAt());
+            vo.setId(entity.getId());
             vo.setCreateAt(dateString);
             vo.setSupplierName(invitationForSupplierDTO.getSupplierName());
             voList.add(vo);
@@ -142,5 +157,83 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
             signUp(signUpHandle);
         }
         return Result.success(true);
+    }
+
+    /**
+     * 供应商参与的采购项目标段列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<BSignUpVO>> queryInvitationList(InvitationForSupplierDTO dto){
+        BSignUpCriteria criteria=new BSignUpCriteria();
+        BSignUpCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andSupplierIdEqualTo(dto.getSupplierId());
+        cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        List<BSignUp> result= bSignUpMapper.selectByExample(criteria);
+        List<BSignUpVO> voList=new ArrayList<>();
+        for(BSignUp entity:result){
+            BSignUpVO vo=new BSignUpVO();
+            BeanUtils.copyProperties(entity,vo);
+            voList.add(vo);
+        }
+        return  Result.success(voList);
+    }
+
+    /**
+     * 供应商参与的采购项目 保证金支付列表
+     * @param newList
+     * @return
+     */
+    @Override
+    public Result<List<PayListForAllVO>> isPayForGuaranty(List<BSignUpVO> newList){
+        List<PayListForAllVO> voList=new ArrayList<>();
+        for(BSignUpVO list:newList){
+            //切分bid数组
+            String[] bidList=list.getBidsId().split(",");
+            for(String bidIdString:bidList){
+                Long bidId=Long.parseLong(bidIdString);
+                PayListForAllVO vo= new PayListForAllVO();
+                vo.setPayStatus("未支付");
+                //获取项目详情
+                TPurchaseProjectBasicInfo purchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(list.getProcurementProjectId());
+                if(purchaseProjectBasicInfo!=null){
+                    vo.setStartDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseStartTime()));
+                    vo.setEndDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseEndTime()));
+                }
+                //获取标段详情
+                TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(bidId);
+                if(purchaseProjectBids!=null){
+                    vo.setProjectCode(purchaseProjectBids.getProjectCode());
+                    vo.setProjectName(purchaseProjectBids.getProjectName());
+                    vo.setBidId(purchaseProjectBids.getId());
+                    vo.setBidName(purchaseProjectBids.getBidName());
+                }
+
+                BigDecimal money=null;
+                    //获取标段保证金金额
+                    BBidsGuaranteeAmountCriteria bBidsGuaranteeAmountCriteria=new BBidsGuaranteeAmountCriteria();
+                    BBidsGuaranteeAmountCriteria.Criteria cubBBidsGuaranteeAmountCriteria=bBidsGuaranteeAmountCriteria.createCriteria();
+                    cubBBidsGuaranteeAmountCriteria.andBidsIdEqualTo(bidId);
+                    List<BBidsGuaranteeAmount> result=bBidsGuaranteeAmountMapper.selectByExample(bBidsGuaranteeAmountCriteria);
+                    if(result.size()>0){
+                        money=result.get(0).getTenderGuaranteeAmount();
+                    }
+                    //查询保证金支付情况(以及比较金额大小)
+
+                    BBidOpeningPayCriteria criteria =new BBidOpeningPayCriteria();
+                    BBidOpeningPayCriteria.Criteria cubCriteria=criteria.createCriteria();
+                    cubCriteria.andBidIdEqualTo(bidId);
+                    cubCriteria.andTendererCompanyIdEqualTo(list.getSupplierId());
+                    List<BBidOpeningPay> openingPayList= bBidOpeningPayMapper.selectByExample(criteria);
+                    for(BBidOpeningPay pay:openingPayList){
+                        if(pay.getAmountMoney().compareTo(money)>-1){
+                            vo.setPayStatus("已支付");
+                        }
+                    }
+                voList.add(vo);
+            }
+        }
+        return Result.success(voList);
     }
 }

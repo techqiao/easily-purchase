@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -34,7 +35,7 @@ public class PretrialMessageController extends BaseController {
 
     @ApiOperation(value = "查询资格审查列表 审核要求暂时砍掉")
     @PostMapping(value="/getPretrialMessageList")
-    public Result<List<PretrialMessageVO>> getPretrialMessageList(@RequestBody ClientQueryMessageDTO clientQueryMessageDTO) {
+    public Result<Map<String, Object>> getPretrialMessageList(@RequestBody ClientQueryMessageDTO clientQueryMessageDTO) {
         QueryMessageDTO queryMessageDTO = new QueryMessageDTO();
         BeanUtils.copyProperties(clientQueryMessageDTO, queryMessageDTO);
         return pretrialMessageClient.getPretrialMessageList(queryMessageDTO);

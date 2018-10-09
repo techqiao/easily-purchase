@@ -36,7 +36,9 @@ public class ClientHandleSaleDocuments {
     private Date clarificationProblemEndTime;
     @ApiModelProperty(value = "解密方式 0 CA锁")
     private Integer decryptionMethod;
-    @ApiModelProperty(value = "状态 审核 auditing, 批复 reply, 待发布wait_release,已发布 released, 未提交not_submit, 失效invalid")
+    @ApiModelProperty(value = "状态 已发布 released, 未提交not_submit, 失效invalid")
     private String processStatus;
+    @ApiModelProperty(value = "是否删除 0存在 1删除")
+    private Integer isDeleted;
 
 }

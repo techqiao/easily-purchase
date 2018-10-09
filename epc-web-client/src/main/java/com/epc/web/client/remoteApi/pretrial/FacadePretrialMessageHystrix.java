@@ -7,6 +7,7 @@ import com.epc.web.facade.terdering.pretrial.query.QueryMessageDTO;
 import com.epc.web.facade.terdering.pretrial.vo.PretrialMessageVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class FacadePretrialMessageHystrix implements FacadePretrialMessageService {
     @Override
-    public Result<List<PretrialMessageVO>> getPretrialMessageList(QueryMessageDTO queryMessageDTO) {
+    public Result<Map<String, Object>> getPretrialMessageList(QueryMessageDTO queryMessageDTO) {
         return Result.hystrixError();
     }
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -22,7 +23,7 @@ public interface FacadePretrialMessageService {
      * @return
      */
     @PostMapping(value = "getPretrialMessageList", consumes = "application/json; charset=UTF-8")
-    Result<List<PretrialMessageVO>> getPretrialMessageList(@RequestBody QueryMessageDTO queryMessageDTO);
+    Result<Map<String, Object>> getPretrialMessageList(@RequestBody QueryMessageDTO queryMessageDTO);
 
     /**
      * 处理供应商是否通过资格审查

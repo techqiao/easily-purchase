@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TProjectBidProcedureCriteria {
+public class BExpertScoreReportCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TProjectBidProcedureCriteria() {
+    public BExpertScoreReportCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,123 +165,73 @@ public class TProjectBidProcedureCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdIsNull() {
-            addCriterion("project_id is null");
+        public Criteria andFilePathIsNull() {
+            addCriterion("file_path is null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdIsNotNull() {
-            addCriterion("project_id is not null");
+        public Criteria andFilePathIsNotNull() {
+            addCriterion("file_path is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdEqualTo(Long value) {
-            addCriterion("project_id =", value, "projectId");
+        public Criteria andFilePathEqualTo(String value) {
+            addCriterion("file_path =", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotEqualTo(Long value) {
-            addCriterion("project_id <>", value, "projectId");
+        public Criteria andFilePathNotEqualTo(String value) {
+            addCriterion("file_path <>", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdGreaterThan(Long value) {
-            addCriterion("project_id >", value, "projectId");
+        public Criteria andFilePathGreaterThan(String value) {
+            addCriterion("file_path >", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("project_id >=", value, "projectId");
+        public Criteria andFilePathGreaterThanOrEqualTo(String value) {
+            addCriterion("file_path >=", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLessThan(Long value) {
-            addCriterion("project_id <", value, "projectId");
+        public Criteria andFilePathLessThan(String value) {
+            addCriterion("file_path <", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdLessThanOrEqualTo(Long value) {
-            addCriterion("project_id <=", value, "projectId");
+        public Criteria andFilePathLessThanOrEqualTo(String value) {
+            addCriterion("file_path <=", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdIn(List<Long> values) {
-            addCriterion("project_id in", values, "projectId");
+        public Criteria andFilePathLike(String value) {
+            addCriterion("file_path like", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotIn(List<Long> values) {
-            addCriterion("project_id not in", values, "projectId");
+        public Criteria andFilePathNotLike(String value) {
+            addCriterion("file_path not like", value, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdBetween(Long value1, Long value2) {
-            addCriterion("project_id between", value1, value2, "projectId");
+        public Criteria andFilePathIn(List<String> values) {
+            addCriterion("file_path in", values, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andProjectIdNotBetween(Long value1, Long value2) {
-            addCriterion("project_id not between", value1, value2, "projectId");
+        public Criteria andFilePathNotIn(List<String> values) {
+            addCriterion("file_path not in", values, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectIdIsNull() {
-            addCriterion("purchase_project_id is null");
+        public Criteria andFilePathBetween(String value1, String value2) {
+            addCriterion("file_path between", value1, value2, "filePath");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectIdIsNotNull() {
-            addCriterion("purchase_project_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdEqualTo(Long value) {
-            addCriterion("purchase_project_id =", value, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdNotEqualTo(Long value) {
-            addCriterion("purchase_project_id <>", value, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdGreaterThan(Long value) {
-            addCriterion("purchase_project_id >", value, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("purchase_project_id >=", value, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdLessThan(Long value) {
-            addCriterion("purchase_project_id <", value, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdLessThanOrEqualTo(Long value) {
-            addCriterion("purchase_project_id <=", value, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdIn(List<Long> values) {
-            addCriterion("purchase_project_id in", values, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdNotIn(List<Long> values) {
-            addCriterion("purchase_project_id not in", values, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdBetween(Long value1, Long value2) {
-            addCriterion("purchase_project_id between", value1, value2, "purchaseProjectId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchaseProjectIdNotBetween(Long value1, Long value2) {
-            addCriterion("purchase_project_id not between", value1, value2, "purchaseProjectId");
+        public Criteria andFilePathNotBetween(String value1, String value2) {
+            addCriterion("file_path not between", value1, value2, "filePath");
             return (Criteria) this;
         }
 
@@ -345,213 +295,63 @@ public class TProjectBidProcedureCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameIsNull() {
-            addCriterion("procedure_name is null");
+        public Criteria andOperateIdIsNull() {
+            addCriterion("operate_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameIsNotNull() {
-            addCriterion("procedure_name is not null");
+        public Criteria andOperateIdIsNotNull() {
+            addCriterion("operate_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameEqualTo(String value) {
-            addCriterion("procedure_name =", value, "procedureName");
+        public Criteria andOperateIdEqualTo(Long value) {
+            addCriterion("operate_id =", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameNotEqualTo(String value) {
-            addCriterion("procedure_name <>", value, "procedureName");
+        public Criteria andOperateIdNotEqualTo(Long value) {
+            addCriterion("operate_id <>", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameGreaterThan(String value) {
-            addCriterion("procedure_name >", value, "procedureName");
+        public Criteria andOperateIdGreaterThan(Long value) {
+            addCriterion("operate_id >", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameGreaterThanOrEqualTo(String value) {
-            addCriterion("procedure_name >=", value, "procedureName");
+        public Criteria andOperateIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("operate_id >=", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameLessThan(String value) {
-            addCriterion("procedure_name <", value, "procedureName");
+        public Criteria andOperateIdLessThan(Long value) {
+            addCriterion("operate_id <", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameLessThanOrEqualTo(String value) {
-            addCriterion("procedure_name <=", value, "procedureName");
+        public Criteria andOperateIdLessThanOrEqualTo(Long value) {
+            addCriterion("operate_id <=", value, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameLike(String value) {
-            addCriterion("procedure_name like", value, "procedureName");
+        public Criteria andOperateIdIn(List<Long> values) {
+            addCriterion("operate_id in", values, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameNotLike(String value) {
-            addCriterion("procedure_name not like", value, "procedureName");
+        public Criteria andOperateIdNotIn(List<Long> values) {
+            addCriterion("operate_id not in", values, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameIn(List<String> values) {
-            addCriterion("procedure_name in", values, "procedureName");
+        public Criteria andOperateIdBetween(Long value1, Long value2) {
+            addCriterion("operate_id between", value1, value2, "operateId");
             return (Criteria) this;
         }
 
-        public Criteria andProcedureNameNotIn(List<String> values) {
-            addCriterion("procedure_name not in", values, "procedureName");
-            return (Criteria) this;
-        }
-
-        public Criteria andProcedureNameBetween(String value1, String value2) {
-            addCriterion("procedure_name between", value1, value2, "procedureName");
-            return (Criteria) this;
-        }
-
-        public Criteria andProcedureNameNotBetween(String value1, String value2) {
-            addCriterion("procedure_name not between", value1, value2, "procedureName");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeIsNull() {
-            addCriterion("operate_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeIsNotNull() {
-            addCriterion("operate_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeEqualTo(String value) {
-            addCriterion("operate_type =", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeNotEqualTo(String value) {
-            addCriterion("operate_type <>", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeGreaterThan(String value) {
-            addCriterion("operate_type >", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("operate_type >=", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeLessThan(String value) {
-            addCriterion("operate_type <", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeLessThanOrEqualTo(String value) {
-            addCriterion("operate_type <=", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeLike(String value) {
-            addCriterion("operate_type like", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeNotLike(String value) {
-            addCriterion("operate_type not like", value, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeIn(List<String> values) {
-            addCriterion("operate_type in", values, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeNotIn(List<String> values) {
-            addCriterion("operate_type not in", values, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeBetween(String value1, String value2) {
-            addCriterion("operate_type between", value1, value2, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperateTypeNotBetween(String value1, String value2) {
-            addCriterion("operate_type not between", value1, value2, "operateType");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNull() {
-            addCriterion("creator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIsNotNull() {
-            addCriterion("creator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorEqualTo(String value) {
-            addCriterion("creator =", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotEqualTo(String value) {
-            addCriterion("creator <>", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThan(String value) {
-            addCriterion("creator >", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
-            addCriterion("creator >=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThan(String value) {
-            addCriterion("creator <", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLessThanOrEqualTo(String value) {
-            addCriterion("creator <=", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorLike(String value) {
-            addCriterion("creator like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotLike(String value) {
-            addCriterion("creator not like", value, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorIn(List<String> values) {
-            addCriterion("creator in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotIn(List<String> values) {
-            addCriterion("creator not in", values, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorBetween(String value1, String value2) {
-            addCriterion("creator between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreatorNotBetween(String value1, String value2) {
-            addCriterion("creator not between", value1, value2, "creator");
+        public Criteria andOperateIdNotBetween(Long value1, Long value2) {
+            addCriterion("operate_id not between", value1, value2, "operateId");
             return (Criteria) this;
         }
 

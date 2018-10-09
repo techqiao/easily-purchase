@@ -1,12 +1,9 @@
 package com.epc.web.client.controller.supplier.handle;
 
 
-import com.epc.web.client.controller.operator.handle.ClientAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
 

@@ -606,52 +606,62 @@ public class BBidOpeningPayCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameEqualTo(Long value) {
+        public Criteria andTendererCompanyNameEqualTo(String value) {
             addCriterion("tenderer_company_name =", value, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameNotEqualTo(Long value) {
+        public Criteria andTendererCompanyNameNotEqualTo(String value) {
             addCriterion("tenderer_company_name <>", value, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameGreaterThan(Long value) {
+        public Criteria andTendererCompanyNameGreaterThan(String value) {
             addCriterion("tenderer_company_name >", value, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameGreaterThanOrEqualTo(Long value) {
+        public Criteria andTendererCompanyNameGreaterThanOrEqualTo(String value) {
             addCriterion("tenderer_company_name >=", value, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameLessThan(Long value) {
+        public Criteria andTendererCompanyNameLessThan(String value) {
             addCriterion("tenderer_company_name <", value, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameLessThanOrEqualTo(Long value) {
+        public Criteria andTendererCompanyNameLessThanOrEqualTo(String value) {
             addCriterion("tenderer_company_name <=", value, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameIn(List<Long> values) {
+        public Criteria andTendererCompanyNameLike(String value) {
+            addCriterion("tenderer_company_name like", value, "tendererCompanyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTendererCompanyNameNotLike(String value) {
+            addCriterion("tenderer_company_name not like", value, "tendererCompanyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTendererCompanyNameIn(List<String> values) {
             addCriterion("tenderer_company_name in", values, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameNotIn(List<Long> values) {
+        public Criteria andTendererCompanyNameNotIn(List<String> values) {
             addCriterion("tenderer_company_name not in", values, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameBetween(Long value1, Long value2) {
+        public Criteria andTendererCompanyNameBetween(String value1, String value2) {
             addCriterion("tenderer_company_name between", value1, value2, "tendererCompanyName");
             return (Criteria) this;
         }
 
-        public Criteria andTendererCompanyNameNotBetween(Long value1, Long value2) {
+        public Criteria andTendererCompanyNameNotBetween(String value1, String value2) {
             addCriterion("tenderer_company_name not between", value1, value2, "tendererCompanyName");
             return (Criteria) this;
         }
@@ -1153,6 +1163,66 @@ public class BBidOpeningPayCriteria {
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
             addCriterion("update_at not between", value1, value2, "updateAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackIsNull() {
+            addCriterion("is_back is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackIsNotNull() {
+            addCriterion("is_back is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackEqualTo(Integer value) {
+            addCriterion("is_back =", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackNotEqualTo(Integer value) {
+            addCriterion("is_back <>", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackGreaterThan(Integer value) {
+            addCriterion("is_back >", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_back >=", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackLessThan(Integer value) {
+            addCriterion("is_back <", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackLessThanOrEqualTo(Integer value) {
+            addCriterion("is_back <=", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackIn(List<Integer> values) {
+            addCriterion("is_back in", values, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackNotIn(List<Integer> values) {
+            addCriterion("is_back not in", values, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackBetween(Integer value1, Integer value2) {
+            addCriterion("is_back between", value1, value2, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_back not between", value1, value2, "isBack");
             return (Criteria) this;
         }
 

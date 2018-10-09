@@ -11,12 +11,8 @@ import lombok.Data;
 @ApiModel(value = "获取中标通知书",description = "获取中标通知书")
 @Data
 public class ClientWinBidLetter {
-    @ApiModelProperty(value = "项目Id")
-    private Long projectId;
+
     @ApiModelProperty(value = "采购项目Id")
     private Long procurementProjectId;
-    @ApiModelProperty(value = "标段Id")
-    private Long bidId;
-    @ApiModelProperty(value = "供应商Id")
-    private Long supplierId;
+
 }

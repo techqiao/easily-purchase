@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @ApiModel(value = "中标公告")
@@ -34,5 +35,11 @@ public class ClientWinBid implements Serializable {
     private BigDecimal threePrice;
     @ApiModelProperty(value = "第三中标人姓名")
     private String threeCompanyname;
+    @ApiModelProperty(value = "公示开始时间")
+    private Date openStart;
+    @ApiModelProperty(value = "公示结束时间")
+    private Date openEnd;
+    @ApiModelProperty(value = "中标公示文件路径")
+    private String filePath;
 
 }

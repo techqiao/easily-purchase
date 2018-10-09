@@ -1,4 +1,5 @@
 package com.epc.bidding.service.moneyPay.impl;
+import java.math.BigDecimal;
 
 import com.epc.bidding.domain.*;
 import com.epc.bidding.mapper.*;
@@ -10,6 +11,8 @@ import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.ServiceBackVO;
+import com.epc.web.facade.bidding.vo.ServicePayVO;
 import com.epc.web.facade.bidding.vo.newGuaranteeVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +46,10 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     BSaleDocumentsMapper bSaleDocumentsMapper;
     @Autowired
     TProjectBasicInfoMapper tProjectBasicInfoMapper;
+    @Autowired
+    TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+    @Autowired
+    TWinBidMapper tWinBidMapper;
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -98,18 +105,36 @@ public class MoneyPayServiceImpl implements MoneyPayService {
      */
    @Override
     public Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto){
-        TServiceMoneyPayCriteria criteria=new TServiceMoneyPayCriteria();
-        TServiceMoneyPayCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andCompanyIdEqualTo(dto.getCompanyId());
-        cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        cubCriteria.andProcurementProjectIdEqualTo(dto.getPurchaseProjectId());
-        List<TServiceMoneyPay> result=tServiceMoneyPayMapper.selectByExample(criteria);
-        List<MoneyPayVO> voList=new ArrayList<>();
-        for(TServiceMoneyPay entity:result){
-            MoneyPayVO vo=new MoneyPayVO();
-            BeanUtils.copyProperties(entity,vo);
-            voList.add(vo);
-        }
+
+       TPurchaseProjectBidsCriteria craters=new TPurchaseProjectBidsCriteria();
+       TPurchaseProjectBidsCriteria.Criteria cubCrater=craters.createCriteria();
+       cubCrater.andPurchaseProjectIdEqualTo(dto.getPurchaseProjectId());
+       cubCrater.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+       //查询采购项目Id 下的标段列表
+       List<TPurchaseProjectBids> bidsList=tPurchaseProjectBidsMapper.selectByExample(craters);
+       List<MoneyPayVO> voList=new ArrayList<>();
+
+       for(TPurchaseProjectBids bids:bidsList){
+           MoneyPayVO vo=new MoneyPayVO();
+           vo.setBidId(bids.getId());
+           vo.setBidName(bids.getBidName());
+           vo.setBidMoney(bids.getGuaranteePayment());
+           vo.setStatus("未支付");
+           //查询 标段下保证金支付记录
+           BBidOpeningPayCriteria criteria=new BBidOpeningPayCriteria();
+           BBidOpeningPayCriteria.Criteria cubCriteria=criteria.createCriteria();
+           cubCriteria.andTendererCompanyIdEqualTo(dto.getCompanyId());
+           cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+           cubCriteria.andBidIdEqualTo(bids.getId());
+           List<BBidOpeningPay> result=bBidOpeningPayMapper.selectByExample(criteria);
+           for(BBidOpeningPay entity:result){
+               //判断是否支付成功
+               if(entity.getAmountMoney()!=null && entity.getAmountMoney().compareTo(vo.getBidMoney())>-1){
+                   vo.setStatus("已支付");
+               }
+           }
+           voList.add(vo);
+       }
         return Result.success(voList);
     }
 
@@ -169,20 +194,73 @@ public class MoneyPayServiceImpl implements MoneyPayService {
          * @return
          */
     @Override
-    public Result<Boolean> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto){
-        TServiceMoneyPayRecordCriteria criteria=new TServiceMoneyPayRecordCriteria();
-        TServiceMoneyPayRecordCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andMoneyPayIdEqualTo(dto.getMoneyPayId());
-        cubCriteria.andOperaterIdEqualTo(dto.getOperaterId());
-        cubCriteria.andOperaterNameEqualTo(dto.getOperaterName());
-        cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        List<TServiceMoneyPayRecord> result =tServiceMoneyPayRecordMapper.selectByExample(criteria);
-        //compareTo 返回值 -1 小于 0 等于 1 大于
-        if(result.size()>0 && result.get(0).getGuaranteePaymentReal().compareTo(dto.getServiceMoney())>-1){
-            return Result.success(true);
-        }else{
-            return Result.error();
+    public Result<List<ServicePayVO>> IsPayForServiceMoney(QueryMoneyPayRecordDTO dto){
+        TWinBidCriteria bidCriteria=new TWinBidCriteria();
+        TWinBidCriteria.Criteria cubBidCriteria=bidCriteria.createCriteria();
+        cubBidCriteria.andProcurementProjectIdEqualTo(dto.getPurchaseProjectId());
+        cubBidCriteria.andSupplierIdEqualTo(dto.getCompanyId());
+        cubBidCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //查看 采购项目中,供应商中标记录列表
+        List<TWinBid> winBidList=tWinBidMapper.selectByExample(bidCriteria);
+        List<ServicePayVO> voList=new ArrayList<>();
+        for(TWinBid entity:winBidList){
+            TServiceMoneyPayCriteria payCriteria=new TServiceMoneyPayCriteria();
+            TServiceMoneyPayCriteria.Criteria cubPayCriteria=payCriteria.createCriteria();
+            cubPayCriteria.andBidIdEqualTo(entity.getBidId());
+            //获取 标段中标服务费详情
+            List<TServiceMoneyPay> moneyPayList=tServiceMoneyPayMapper.selectByExample(payCriteria);
+            for(TServiceMoneyPay result:moneyPayList){
+                ServicePayVO vo=new ServicePayVO();
+                BeanUtils.copyProperties(result,vo);
+                if(result.getStatus().equals(0)){
+                    vo.setStatus("未支付");
+                }else  if(result.getStatus().equals(1)){
+                    vo.setStatus("已支付");
+                }
+                voList.add(vo);
+            }
         }
+        return Result.success(voList);
+    }
+
+    /**
+     * 保证金退还列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<ServiceBackVO>> getGuarantyBackPayList(QueryMoneyPayRecordDTO dto){
+        //根据采购项目id 和 公司id 查询保证金支付列表
+        BBidOpeningPayCriteria criteria =new BBidOpeningPayCriteria();
+        BBidOpeningPayCriteria.Criteria cubCriteria=criteria.createCriteria();
+        cubCriteria.andProcurementProjectIdEqualTo(dto.getPurchaseProjectId());
+        cubCriteria.andTendererCompanyIdEqualTo(dto.getCompanyId());
+        criteria.setOrderByClause("create_at desc");
+        List<ServiceBackVO> voList=new ArrayList<>();
+
+        List<BBidOpeningPay> result=bBidOpeningPayMapper.selectByExample(criteria);
+        for(BBidOpeningPay entity:result){
+            ServiceBackVO vo= new ServiceBackVO();
+            //获取项目详情
+            TProjectBasicInfo projectBasicInfo=tProjectBasicInfoMapper.selectByPrimaryKey(entity.getProjectId());
+            vo.setProjectCode(projectBasicInfo.getProjectCode());
+            vo.setProjectName(projectBasicInfo.getProjectName());
+            //获取标段
+            TPurchaseProjectBids  purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
+            vo.setBidCode(purchaseProjectBids.getBidCode());
+            vo.setBidName(purchaseProjectBids.getBidName());
+            //标段保证金详情
+            BBidsGuaranteeAmount bidsGuaranteeAmount=bBidsGuaranteeAmountMapper.selectByPrimaryKey(entity.getBidsGuaranteeAmountId());
+            vo.setBidMoney(bidsGuaranteeAmount.getTenderGuaranteeAmount());
+            //支付详情信息
+            if(entity.getIsBack().equals(0)){
+                vo.setStatus("未退还");
+            }else  if(entity.getIsBack().equals(1)){
+                vo.setStatus("已退还");
+            }
+            voList.add(vo);
+        }
+        return Result.success(voList);
     }
 
 }

@@ -555,6 +555,66 @@ public class TProjectEmployeeRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andIsDeletedIsNull() {
+            addCriterion("is_deleted is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedIsNotNull() {
+            addCriterion("is_deleted is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedEqualTo(Integer value) {
+            addCriterion("is_deleted =", value, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedNotEqualTo(Integer value) {
+            addCriterion("is_deleted <>", value, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedGreaterThan(Integer value) {
+            addCriterion("is_deleted >", value, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_deleted >=", value, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedLessThan(Integer value) {
+            addCriterion("is_deleted <", value, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedLessThanOrEqualTo(Integer value) {
+            addCriterion("is_deleted <=", value, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedIn(List<Integer> values) {
+            addCriterion("is_deleted in", values, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedNotIn(List<Integer> values) {
+            addCriterion("is_deleted not in", values, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedBetween(Integer value1, Integer value2) {
+            addCriterion("is_deleted between", value1, value2, "isDeleted");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsDeletedNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_deleted not between", value1, value2, "isDeleted");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateAtIsNull() {
             addCriterion("create_at is null");
             return (Criteria) this;
@@ -672,6 +732,76 @@ public class TProjectEmployeeRelationCriteria {
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
             addCriterion("update_at not between", value1, value2, "updateAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesIsNull() {
+            addCriterion("notes is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesIsNotNull() {
+            addCriterion("notes is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesEqualTo(String value) {
+            addCriterion("notes =", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesNotEqualTo(String value) {
+            addCriterion("notes <>", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesGreaterThan(String value) {
+            addCriterion("notes >", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesGreaterThanOrEqualTo(String value) {
+            addCriterion("notes >=", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesLessThan(String value) {
+            addCriterion("notes <", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesLessThanOrEqualTo(String value) {
+            addCriterion("notes <=", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesLike(String value) {
+            addCriterion("notes like", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesNotLike(String value) {
+            addCriterion("notes not like", value, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesIn(List<String> values) {
+            addCriterion("notes in", values, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesNotIn(List<String> values) {
+            addCriterion("notes not in", values, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesBetween(String value1, String value2) {
+            addCriterion("notes between", value1, value2, "notes");
+            return (Criteria) this;
+        }
+
+        public Criteria andNotesNotBetween(String value1, String value2) {
+            addCriterion("notes not between", value1, value2, "notes");
             return (Criteria) this;
         }
     }

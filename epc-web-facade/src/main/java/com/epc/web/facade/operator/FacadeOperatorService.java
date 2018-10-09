@@ -72,7 +72,7 @@ public interface FacadeOperatorService {
      * 依据id查询已经登陆的个人信息
      */
     @PostMapping(value = "findByNameOperator",consumes = "application/json; charset=UTF-8")
-    Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId);
+    Result<OperatorBasicVO> findByName(@RequestBody HandleOperatorId handleOperatorId);
 
     /**5
      * 通过员工id来修改员工信息
@@ -143,7 +143,7 @@ public interface FacadeOperatorService {
      *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
      */
     @PostMapping(value = "lookPurchaserList",consumes = "application/json; charset=UTF-8")
-    Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo);
+    Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
 
     /**16
      *  运营商新增采购人（不包括完善信息，只填写姓名，电话）

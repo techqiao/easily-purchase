@@ -21,7 +21,7 @@ public class BBidOpeningPay implements Serializable {
 
     private String tendererName;
 
-    private Long tendererCompanyName;
+    private String tendererCompanyName;
 
     private Date amountMoneyTime;
 
@@ -38,6 +38,8 @@ public class BBidOpeningPay implements Serializable {
     private Date createAt;
 
     private Date updateAt;
+
+    private Integer isBack;
 
     private Integer isDeleted;
 
@@ -107,12 +109,12 @@ public class BBidOpeningPay implements Serializable {
         this.tendererName = tendererName == null ? null : tendererName.trim();
     }
 
-    public Long getTendererCompanyName() {
+    public String getTendererCompanyName() {
         return tendererCompanyName;
     }
 
-    public void setTendererCompanyName(Long tendererCompanyName) {
-        this.tendererCompanyName = tendererCompanyName;
+    public void setTendererCompanyName(String tendererCompanyName) {
+        this.tendererCompanyName = tendererCompanyName == null ? null : tendererCompanyName.trim();
     }
 
     public Date getAmountMoneyTime() {
@@ -179,6 +181,14 @@ public class BBidOpeningPay implements Serializable {
         this.updateAt = updateAt;
     }
 
+    public Integer getIsBack() {
+        return isBack;
+    }
+
+    public void setIsBack(Integer isBack) {
+        this.isBack = isBack;
+    }
+
     public Integer getIsDeleted() {
         return isDeleted;
     }
@@ -210,6 +220,7 @@ public class BBidOpeningPay implements Serializable {
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
+        sb.append(", isBack=").append(isBack);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append("]");
         return sb.toString();

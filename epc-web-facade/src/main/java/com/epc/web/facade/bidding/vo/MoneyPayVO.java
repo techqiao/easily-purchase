@@ -19,8 +19,6 @@ public class MoneyPayVO implements Serializable {
     private String bidName;
     @ApiModelProperty(value = "标段金额")
     private BigDecimal bidMoney;
-    @ApiModelProperty(value = "金额")
-    private BigDecimal serviceMoney;
     @ApiModelProperty(value = "状态")
-    private Integer status;
+    private String status;
 }

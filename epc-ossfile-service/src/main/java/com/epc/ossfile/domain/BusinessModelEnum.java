@@ -20,10 +20,9 @@ public enum BusinessModelEnum {
 
     public static String getModelValueByCode(String modelCode){
         for(BusinessModelEnum businessModel :BusinessModelEnum.values()){
-            if(businessModel.getModelCode().equals(modelCode)){
+            if(businessModel.getModelCode().equalsIgnoreCase(modelCode)){
                 return businessModel.getModelValue();
             }
-
         }
         return null;
     }

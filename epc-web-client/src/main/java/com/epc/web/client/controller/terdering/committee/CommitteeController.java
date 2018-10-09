@@ -2,6 +2,7 @@ package com.epc.web.client.controller.terdering.committee;
 
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.committee.handle.ClientCommittee;
 import com.epc.web.client.controller.terdering.committee.query.ClientExtractExpertList;
 import com.epc.web.client.remoteApi.terdering.committee.CommitteeClient;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 
-public class CommitteeController {
+public class CommitteeController extends BaseController {
 
     @Autowired
     private CommitteeClient committeeClient;
@@ -35,6 +36,7 @@ public class CommitteeController {
     Result<Long> createCommittee(@RequestBody ClientCommittee dto){
         HandleCommittee HandleCommittee=new HandleCommittee();
         BeanUtils.copyProperties(dto,HandleCommittee);
+        HandleCommittee.setOperateId(getLoginUser().getUserId());
         return  committeeClient.createCommittee(HandleCommittee);
     }
 
@@ -44,7 +46,8 @@ public class CommitteeController {
     Result<Boolean> createBAssessmentCommittee(@RequestBody  ClientExtractExpertList dto){
         QueryExtractExpertList queryExtractExpertList=new QueryExtractExpertList();
         BeanUtils.copyProperties(dto,queryExtractExpertList);
-       return committeeClient.createBAssessmentCommittee(queryExtractExpertList);
+        queryExtractExpertList.setOperateId(getLoginUser().getUserId());
+        return committeeClient.createBAssessmentCommittee(queryExtractExpertList);
     }
 
 

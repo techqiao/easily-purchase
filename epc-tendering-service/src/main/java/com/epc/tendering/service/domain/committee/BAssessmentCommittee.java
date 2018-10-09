@@ -18,7 +18,7 @@ public class BAssessmentCommittee implements Serializable {
 
     private Long repliesId;
 
-    private String processStatus;
+    private Integer processState;
 
     private Long operateId;
 
@@ -86,12 +86,12 @@ public class BAssessmentCommittee implements Serializable {
         this.repliesId = repliesId;
     }
 
-    public String getProcessStatus() {
-        return processStatus;
+    public Integer getProcessState() {
+        return processState;
     }
 
-    public void setProcessStatus(String processStatus) {
-        this.processStatus = processStatus == null ? null : processStatus.trim();
+    public void setProcessState(Integer processState) {
+        this.processState = processState;
     }
 
     public Long getOperateId() {
@@ -139,7 +139,7 @@ public class BAssessmentCommittee implements Serializable {
         sb.append(", ownerSpecialistsNumber=").append(ownerSpecialistsNumber);
         sb.append(", auditorId=").append(auditorId);
         sb.append(", repliesId=").append(repliesId);
-        sb.append(", processStatus=").append(processStatus);
+        sb.append(", processState=").append(processState);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

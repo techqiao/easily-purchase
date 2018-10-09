@@ -166,4 +166,11 @@ public class Const {
         int AUDIT_SUCCESS=5;//审核通过
     }
 
+    /**
+     * 专家状态
+     */
+    public  interface EXPERT_STATUS{
+        int BUSY=0;
+        int FREE=1;
+    }
 }

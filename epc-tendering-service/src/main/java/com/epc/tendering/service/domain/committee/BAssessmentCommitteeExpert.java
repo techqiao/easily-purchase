@@ -6,6 +6,10 @@ import java.util.Date;
 public class BAssessmentCommitteeExpert implements Serializable {
     private Long id;
 
+    private Long procurementProjectId;
+
+    private Long bidsId;
+
     private Long committeeBidId;
 
     private Date noticeTime;
@@ -34,6 +38,22 @@ public class BAssessmentCommitteeExpert implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getProcurementProjectId() {
+        return procurementProjectId;
+    }
+
+    public void setProcurementProjectId(Long procurementProjectId) {
+        this.procurementProjectId = procurementProjectId;
+    }
+
+    public Long getBidsId() {
+        return bidsId;
+    }
+
+    public void setBidsId(Long bidsId) {
+        this.bidsId = bidsId;
     }
 
     public Long getCommitteeBidId() {
@@ -123,6 +143,8 @@ public class BAssessmentCommitteeExpert implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", procurementProjectId=").append(procurementProjectId);
+        sb.append(", bidsId=").append(bidsId);
         sb.append(", committeeBidId=").append(committeeBidId);
         sb.append(", noticeTime=").append(noticeTime);
         sb.append(", noticeMode=").append(noticeMode);

@@ -81,7 +81,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         try {
             basicInfo = tOperatorBasicInfoMapper.login(cellphone, pwd);
             if (basicInfo == null) {
-                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                return Result.success("用户名不正确或密码不匹配");
             } else {
                 if (basicInfo.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser.setState(basicInfo.getState());
@@ -134,7 +134,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         try {
             basicinfo3 = tPurchaserBasicInfoMapper.login(cellphone, pwd);
             if (basicinfo3 == null) {
-                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                return Result.success("用户名不正确或密码不匹配");
             } else {
                 if (basicinfo3.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser3.setState(basicinfo3.getState());
@@ -188,7 +188,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         try {
             basicinfo1 = tAgencyBasicInfoMapper.login(cellphone, pwd);
             if (basicinfo1 == null) {
-                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                return Result.success("用户名不正确或密码不匹配");
             } else {
                 if (basicinfo1.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser1.setState(basicinfo1.getState());
@@ -243,7 +243,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         try {
             basicinfo2 = tSupplierBasicInfoMapper.login(cellphone, pwd);
             if (basicinfo2 == null) {
-                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                return Result.success("用户名不正确或密码不匹配");
             } else {
                 if (basicinfo2.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     loginUser2.setState(basicinfo2.getState());
@@ -295,7 +295,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         try {
             loginUser4 = tExpertBasicInfoMapper.login(cellphone, pwd);
             if (loginUser4 == null) {
-                return Result.error(ErrorMessagesEnum.LOGIN_USER_LOGIN_ERROR.getErrCode(), "登录失败");
+                return Result.success("用户名不正确或密码不匹配");
             } else {
                 if (loginUser4.getState() < Const.STATE_CODE.AUDIT_SUCCESS) {
                     return Result.success(loginUser4);
@@ -712,8 +712,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         if (loginUser != null) {
             String token = UUID.randomUUID().toString().replace("-", "");
             String tokens = "EPC_PRIVATE_" + token;
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("epc_token", token);
+            Map<String, Object> resultMap = new HashMap<String, Object>(16);
+            resultMap.put("epc-token", token);
             RedisShardedPoolUtil.setEx(tokens, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             return Result.success("登陆成功", resultMap);
         }

@@ -66,7 +66,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
             return Result.error("登录失败");
         }
         SysAdminUser sysAdminUser = sysAdminUsers.get(0);
-        Map<String,Object>  resultMap = new HashMap<String, Object>();
+        Map<String,Object>  resultMap = new HashMap<String, Object>(16);
         sysAdminUser.setPassword(null);
         resultMap.put("user",sysAdminUser);
         Tree<SysAdminResource> resource = getResource(sysAdminUser.getId());

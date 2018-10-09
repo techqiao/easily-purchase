@@ -47,4 +47,8 @@ public interface BReleaseAnnouncementMapper {
     @Select("select t.process_status from b_release_announcement where id=#{id}")
     @ResultType(String.class)
     String getProcessStatusById(Long id);
+
+    @Select("select procurement_project_id from b_release_announcement where id =#{id}")
+    Long getProcurementProjectId(Long id);
+
 }

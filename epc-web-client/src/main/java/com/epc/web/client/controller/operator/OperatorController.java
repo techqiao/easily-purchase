@@ -99,6 +99,7 @@ public class OperatorController extends BaseController {
         Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
         Long bossId = getLoginUser().getBossId();
+        System.out.println("-----"+type+"-----"+loginRole+"-----"+bossId);
         if(type==null || loginRole==null || bossId==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
@@ -142,6 +143,7 @@ public class OperatorController extends BaseController {
         if(userId==null || type==null || loginRole==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
+        System.out.println("type="+type+" loginRole="+loginRole+" userId="+userId);
         handleOperatorId.setLoginId(userId);
 //        handleOperatorId.setBossId(bossId);
         handleOperatorId.setSystemRole(type);
@@ -310,9 +312,9 @@ public class OperatorController extends BaseController {
      */
     @ApiOperation(value = "运营商新增采购人（第2步：完善信息）-15",notes = "donghuan")
     @PostMapping(value = "/createPurchaseByOperator")
-    public Result<Boolean> createPurchaseByOperator(@RequestBody ClientHandleCreatePurchaserByOperator clientHandleCreatePurchaserByOperator){
+    public Result<Boolean> createPurchaseByOperator(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo){
         HandleCreatePurchaserByOperator handleCreatePurchaserByOperator=new HandleCreatePurchaserByOperator();
-        BeanUtils.copyProperties(clientHandleCreatePurchaserByOperator,handleCreatePurchaserByOperator);
+        BeanUtils.copyProperties(clientRoleDetailInfo,handleCreatePurchaserByOperator);
         Integer type = getLoginUser().getType();
         if(type==null){
             return  Result.error("从redis中获取当前登陆用户信息 异常");

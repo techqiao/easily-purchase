@@ -305,6 +305,76 @@ public class TExpertBasicInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andPasswordIsNull() {
+            addCriterion("password is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordIsNotNull() {
+            addCriterion("password is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordEqualTo(String value) {
+            addCriterion("password =", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordNotEqualTo(String value) {
+            addCriterion("password <>", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordGreaterThan(String value) {
+            addCriterion("password >", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordGreaterThanOrEqualTo(String value) {
+            addCriterion("password >=", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordLessThan(String value) {
+            addCriterion("password <", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordLessThanOrEqualTo(String value) {
+            addCriterion("password <=", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordLike(String value) {
+            addCriterion("password like", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordNotLike(String value) {
+            addCriterion("password not like", value, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordIn(List<String> values) {
+            addCriterion("password in", values, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordNotIn(List<String> values) {
+            addCriterion("password not in", values, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordBetween(String value1, String value2) {
+            addCriterion("password between", value1, value2, "password");
+            return (Criteria) this;
+        }
+
+        public Criteria andPasswordNotBetween(String value1, String value2) {
+            addCriterion("password not between", value1, value2, "password");
+            return (Criteria) this;
+        }
+
         public Criteria andProfessionIsNull() {
             addCriterion("profession is null");
             return (Criteria) this;
@@ -515,6 +585,126 @@ public class TExpertBasicInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andWorkingYearsIsNull() {
+            addCriterion("working_years is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsIsNotNull() {
+            addCriterion("working_years is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsEqualTo(Integer value) {
+            addCriterion("working_years =", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsNotEqualTo(Integer value) {
+            addCriterion("working_years <>", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsGreaterThan(Integer value) {
+            addCriterion("working_years >", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("working_years >=", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsLessThan(Integer value) {
+            addCriterion("working_years <", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsLessThanOrEqualTo(Integer value) {
+            addCriterion("working_years <=", value, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsIn(List<Integer> values) {
+            addCriterion("working_years in", values, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsNotIn(List<Integer> values) {
+            addCriterion("working_years not in", values, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsBetween(Integer value1, Integer value2) {
+            addCriterion("working_years between", value1, value2, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkingYearsNotBetween(Integer value1, Integer value2) {
+            addCriterion("working_years not between", value1, value2, "workingYears");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleIsNull() {
+            addCriterion("is_idle is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleIsNotNull() {
+            addCriterion("is_idle is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleEqualTo(Integer value) {
+            addCriterion("is_idle =", value, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleNotEqualTo(Integer value) {
+            addCriterion("is_idle <>", value, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleGreaterThan(Integer value) {
+            addCriterion("is_idle >", value, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_idle >=", value, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleLessThan(Integer value) {
+            addCriterion("is_idle <", value, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleLessThanOrEqualTo(Integer value) {
+            addCriterion("is_idle <=", value, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleIn(List<Integer> values) {
+            addCriterion("is_idle in", values, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleNotIn(List<Integer> values) {
+            addCriterion("is_idle not in", values, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleBetween(Integer value1, Integer value2) {
+            addCriterion("is_idle between", value1, value2, "isIdle");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIdleNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_idle not between", value1, value2, "isIdle");
+            return (Criteria) this;
+        }
+
         public Criteria andCircularDtIsNull() {
             addCriterion("circular_dt is null");
             return (Criteria) this;
@@ -572,6 +762,66 @@ public class TExpertBasicInfoCriteria {
 
         public Criteria andCircularDtNotBetween(Date value1, Date value2) {
             addCriterion("circular_dt not between", value1, value2, "circularDt");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndIsNull() {
+            addCriterion("circular_dt_end is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndIsNotNull() {
+            addCriterion("circular_dt_end is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndEqualTo(Date value) {
+            addCriterion("circular_dt_end =", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndNotEqualTo(Date value) {
+            addCriterion("circular_dt_end <>", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndGreaterThan(Date value) {
+            addCriterion("circular_dt_end >", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndGreaterThanOrEqualTo(Date value) {
+            addCriterion("circular_dt_end >=", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndLessThan(Date value) {
+            addCriterion("circular_dt_end <", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndLessThanOrEqualTo(Date value) {
+            addCriterion("circular_dt_end <=", value, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndIn(List<Date> values) {
+            addCriterion("circular_dt_end in", values, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndNotIn(List<Date> values) {
+            addCriterion("circular_dt_end not in", values, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndBetween(Date value1, Date value2) {
+            addCriterion("circular_dt_end between", value1, value2, "circularDtEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andCircularDtEndNotBetween(Date value1, Date value2) {
+            addCriterion("circular_dt_end not between", value1, value2, "circularDtEnd");
             return (Criteria) this;
         }
 
@@ -715,76 +965,6 @@ public class TExpertBasicInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPasswordIsNull() {
-            addCriterion("password is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordIsNotNull() {
-            addCriterion("password is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordEqualTo(String value) {
-            addCriterion("password =", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordNotEqualTo(String value) {
-            addCriterion("password <>", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordGreaterThan(String value) {
-            addCriterion("password >", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordGreaterThanOrEqualTo(String value) {
-            addCriterion("password >=", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordLessThan(String value) {
-            addCriterion("password <", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordLessThanOrEqualTo(String value) {
-            addCriterion("password <=", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordLike(String value) {
-            addCriterion("password like", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordNotLike(String value) {
-            addCriterion("password not like", value, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordIn(List<String> values) {
-            addCriterion("password in", values, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordNotIn(List<String> values) {
-            addCriterion("password not in", values, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordBetween(String value1, String value2) {
-            addCriterion("password between", value1, value2, "password");
-            return (Criteria) this;
-        }
-
-        public Criteria andPasswordNotBetween(String value1, String value2) {
-            addCriterion("password not between", value1, value2, "password");
-            return (Criteria) this;
-        }
-
         public Criteria andInviterTypeIsNull() {
             addCriterion("inviter_type is null");
             return (Criteria) this;
@@ -915,52 +1095,52 @@ public class TExpertBasicInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdEqualTo(Long value) {
             addCriterion("inviter_company_id =", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdNotEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdNotEqualTo(Long value) {
             addCriterion("inviter_company_id <>", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdGreaterThan(Integer value) {
+        public Criteria andInviterCompanyIdGreaterThan(Long value) {
             addCriterion("inviter_company_id >", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdGreaterThanOrEqualTo(Long value) {
             addCriterion("inviter_company_id >=", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdLessThan(Integer value) {
+        public Criteria andInviterCompanyIdLessThan(Long value) {
             addCriterion("inviter_company_id <", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdLessThanOrEqualTo(Integer value) {
+        public Criteria andInviterCompanyIdLessThanOrEqualTo(Long value) {
             addCriterion("inviter_company_id <=", value, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdIn(List<Integer> values) {
+        public Criteria andInviterCompanyIdIn(List<Long> values) {
             addCriterion("inviter_company_id in", values, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdNotIn(List<Integer> values) {
+        public Criteria andInviterCompanyIdNotIn(List<Long> values) {
             addCriterion("inviter_company_id not in", values, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdBetween(Integer value1, Integer value2) {
+        public Criteria andInviterCompanyIdBetween(Long value1, Long value2) {
             addCriterion("inviter_company_id between", value1, value2, "inviterCompanyId");
             return (Criteria) this;
         }
 
-        public Criteria andInviterCompanyIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andInviterCompanyIdNotBetween(Long value1, Long value2) {
             addCriterion("inviter_company_id not between", value1, value2, "inviterCompanyId");
             return (Criteria) this;
         }
@@ -1142,6 +1322,66 @@ public class TExpertBasicInfoCriteria {
 
         public Criteria andUpdateAtNotBetween(Date value1, Date value2) {
             addCriterion("update_at not between", value1, value2, "updateAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenIsNull() {
+            addCriterion("is_forbidden is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenIsNotNull() {
+            addCriterion("is_forbidden is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenEqualTo(Integer value) {
+            addCriterion("is_forbidden =", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenNotEqualTo(Integer value) {
+            addCriterion("is_forbidden <>", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenGreaterThan(Integer value) {
+            addCriterion("is_forbidden >", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_forbidden >=", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenLessThan(Integer value) {
+            addCriterion("is_forbidden <", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenLessThanOrEqualTo(Integer value) {
+            addCriterion("is_forbidden <=", value, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenIn(List<Integer> values) {
+            addCriterion("is_forbidden in", values, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenNotIn(List<Integer> values) {
+            addCriterion("is_forbidden not in", values, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenBetween(Integer value1, Integer value2) {
+            addCriterion("is_forbidden between", value1, value2, "isForbidden");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsForbiddenNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_forbidden not between", value1, value2, "isForbidden");
             return (Criteria) this;
         }
 

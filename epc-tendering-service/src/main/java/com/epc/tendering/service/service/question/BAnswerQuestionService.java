@@ -45,7 +45,7 @@ public interface BAnswerQuestionService {
      * 中标公示
      * @return
      */
-    Result<List<WinBidVO>> getwinBids();
+    Result<List<WinBidVO>> getBidPublicity();
 
 
     /**

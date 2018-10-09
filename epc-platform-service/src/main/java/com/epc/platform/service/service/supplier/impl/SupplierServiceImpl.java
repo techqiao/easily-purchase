@@ -18,6 +18,7 @@ import com.epc.platform.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.platform.service.mapper.supplier.TWinBidMapper;
 import com.epc.platform.service.service.operator.impl.OperatorServiceImpl;
 import com.epc.platform.service.service.supplier.SupplierService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -56,14 +57,21 @@ public class SupplierServiceImpl  implements SupplierService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result insertSupplierUserInfo(UserBasicInfo userBasicInfo) {
+        TSupplierBasicInfoCriteria tSupplierBasicInfoCriteria = new TSupplierBasicInfoCriteria();
+        tSupplierBasicInfoCriteria.createCriteria().andCellphoneEqualTo(userBasicInfo.getCellphone());
+        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(tSupplierBasicInfoCriteria);
+        if(!tSupplierBasicInfos.isEmpty()){
+           return Result.success("用户已存在，请直接登录");
+        }
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
         BeanUtils.copyProperties(userBasicInfo,pojo);
         pojo.setName(userBasicInfo.getUsername());
+        pojo.setInviterId(userBasicInfo.getId());
         Date date = new Date();
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setInviterType(Const.INVITER_TYPE.PLATFORM);
-        pojo.setInviterId(userBasicInfo.getId());
+        pojo.setPassword(Const.PASSWORD.PASSWORD);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
         pojo.setState(Const.STATE.REGISTERED);
@@ -85,17 +93,12 @@ public class SupplierServiceImpl  implements SupplierService {
     @Transactional(rollbackFor = Exception.class)
     public Result insertSupplierDetailInfo(SupplierHandle supplierHandle) {
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
-        tSupplierDetailInfo.setSupplierId(supplierHandle.getId());
-        tSupplierDetailInfo.setCompanyName(supplierHandle.getCompanyName());
-        tSupplierDetailInfo.setUniformCreditCode(supplierHandle.getUniformCreditCode());
-        tSupplierDetailInfo.setPublicBankName(supplierHandle.getPublicBankName());
-        tSupplierDetailInfo.setCompanyAddress(supplierHandle.getCompanyAddress());
-        tSupplierDetailInfo.setPublicBanAccountNumber(supplierHandle.getPublicBanAccountNumber());
+        BeanUtils.copyProperties(supplierHandle,tSupplierDetailInfo);
         Date date = new Date();
         tSupplierDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tSupplierDetailInfo.setCreateAt(date);
         tSupplierDetailInfo.setUpdateAt(date);
-        List<AttachmentHandle> AttachmentHandles = supplierHandle.getAttachmentHandleList();
+        List<AttachmentHandle> attachmentHandles = supplierHandle.getAttachmentHandleList();
         try {
             tSupplierDetailInfoMapper.insertSelective(tSupplierDetailInfo);
             //经办人(运营商员工)手持身份证正面照片url
@@ -116,21 +119,20 @@ public class SupplierServiceImpl  implements SupplierService {
             attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
             tSupplierAttachmentMapper.insertSelective(attachment);
             //新增完善资料的资质证书
-            for (AttachmentHandle attachmentHandle : AttachmentHandles) {
+            for (AttachmentHandle attachmentHandle : attachmentHandles) {
                 TSupplierAttachment attachments = new TSupplierAttachment();
                 attachments.setSupplierId(supplierHandle.getId());
                 attachments.setCreateAt(date);
                 attachments.setUpdateAt(date);
                 attachments.setIsDeleted(Const.IS_DELETED.IS_DELETED);
                 attachments.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                attachments.setCertificateFilePath(attachmentHandle.getCertificateFilePath());
-                attachments.setCertificateName(attachmentHandle.getCertificateName());
+                BeanUtils.copyProperties(attachmentHandle,attachments);
                 tSupplierAttachmentMapper.insertSelective(attachments);
             }
             //完善信息完成后 更新信息状态至已提交
             TSupplierBasicInfo tSupplierBasicInfo =new TSupplierBasicInfo();
             tSupplierBasicInfo.setId(supplierHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {
@@ -166,7 +168,6 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
-
     /**
      * 删除供应商
      * @param
@@ -185,39 +186,29 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
-
     /**
      * 查询供应商基本信息
      * @param
      * @return
      */
     @Override
-    public Result querySupplierDetailInfo(Long id) {
+    public Result<SupplierAttachmentVO> querySupplierDetailInfo(Long id) {
         TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
         if(tSupplierBasicInfo==null){
             return Result.error("未找到该用户");
         }
         SupplierAttachmentVO supplierAttachmentVO = new SupplierAttachmentVO();
-        supplierAttachmentVO.setId(tSupplierBasicInfo.getId());
-        supplierAttachmentVO.setIsDeleted(tSupplierBasicInfo.getIsDeleted());
-        supplierAttachmentVO.setCellphone(tSupplierBasicInfo.getCellphone());
-        supplierAttachmentVO.setState(tSupplierBasicInfo.getState());
-        supplierAttachmentVO.setName(tSupplierBasicInfo.getName());
-        supplierAttachmentVO.setCreateAt(tSupplierBasicInfo.getCreateAt());
+        BeanUtils.copyProperties(tSupplierBasicInfo,supplierAttachmentVO);
         //如果没有完善信息
         if(tSupplierBasicInfo.getState()!=0){
             TSupplierDetailInfoCriteria criteria = new TSupplierDetailInfoCriteria();
             criteria.createCriteria().andSupplierIdEqualTo(id);
             List<TSupplierDetailInfo> tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(criteria);
             TSupplierDetailInfo tSupplierDetailInfo = tSupplierDetailInfos.get(0);
-            supplierAttachmentVO.setCompanyName(tSupplierDetailInfo.getCompanyName());
-            supplierAttachmentVO.setUniformCreditCode(tSupplierDetailInfo.getUniformCreditCode());
-            supplierAttachmentVO.setPublicBankName(tSupplierDetailInfo.getPublicBankName());
-            supplierAttachmentVO.setPublicBanAccountNumber(tSupplierDetailInfo.getPublicBanAccountNumber());
+            BeanUtils.copyProperties(tSupplierDetailInfo,supplierAttachmentVO);
             TSupplierAttachmentCriteria attachment= new TSupplierAttachmentCriteria();
             attachment.createCriteria().andSupplierIdEqualTo(tSupplierBasicInfo.getId());
             List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(attachment);
-
             List<AttachmentVO> attachmentVOS = new ArrayList<>();
             for (TSupplierAttachment tSupplierAttachment : tSupplierAttachments) {
                 if(tSupplierAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){
@@ -229,8 +220,7 @@ public class SupplierServiceImpl  implements SupplierService {
 
                 }else {
                     AttachmentVO attachmentVO = new AttachmentVO();
-                    attachmentVO.setCertificateFilePath(tSupplierAttachment.getCertificateFilePath());
-                    attachmentVO.setCertificateName(tSupplierAttachment.getCertificateName());
+                    BeanUtils.copyProperties(tSupplierAttachment,attachmentVO);
                     attachmentVOS.add(attachmentVO);
                 }
             }
@@ -248,7 +238,7 @@ public class SupplierServiceImpl  implements SupplierService {
     @Override
     public List<SupplierUserVO> selectAllSupplierByPage(QueryDetailIfo queryDetailIfo) {
         String where = queryDetailIfo.getWhere();
-        if(where!=null){
+        if(StringUtils.isNotBlank(where)){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
         }else{

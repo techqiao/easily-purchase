@@ -14,6 +14,10 @@ import java.util.List;
 @Data
 public class ClientHandleAgnecy implements Serializable {
     private static final long serialVersionUID = -5543183867560975179L;
+    /**
+     * 代理机构id
+     */
+    private Long agencyId;
 
     /**
      * 手机号

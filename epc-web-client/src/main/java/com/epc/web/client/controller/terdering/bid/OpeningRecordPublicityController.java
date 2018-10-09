@@ -47,7 +47,7 @@ public class OpeningRecordPublicityController extends BaseController {
     }
 
     @ApiOperation(value = "查询 发包方式 是否资格审查")
-    @GetMapping(value = "getPurchaseProjectBegin", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "getPurchaseProjectBegin")
     public Result<PurchaseProjectBeginVO> getPurchaseProjectBegin(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId){
         return openingRecordPublicityClient.getPurchaseProjectBegin(purchaseProjectId);
     }

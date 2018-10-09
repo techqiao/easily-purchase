@@ -2,10 +2,12 @@ package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.winBid.ClientWinBid;
+import com.epc.web.client.controller.bidding.handle.winBid.ClientWinBidFilePath;
 import com.epc.web.client.controller.bidding.query.winBid.ClientWinBidLetter;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.winBid.WinBidClient;
 import com.epc.web.facade.bidding.handle.HandleWinBid;
+import com.epc.web.facade.bidding.handle.HandleWinBidFilePath;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
@@ -37,19 +39,20 @@ public class BiddingWinBidController extends BaseController {
     public Result<List<WinBidLetterVO>> getWinBidLetter(@RequestBody ClientWinBidLetter dto){
         QueryWinBidLetterDTO queryWinBidLetterDTO=new QueryWinBidLetterDTO();
         BeanUtils.copyProperties(dto,queryWinBidLetterDTO);
+        queryWinBidLetterDTO.setSupplierId(getLoginUser().getBossId());
         return  winBidClient.getWinBidLetter(queryWinBidLetterDTO);
     }
 
 
     /**
      * 获取中标公示记录
-     * @param bidId
+     * @param purchaseProjectId
      * @return
      */
     @ApiOperation(value = "获取中标公示记录",tags = "获取中标公示记录")
     @GetMapping(value = "/getTWinBidNominate")
-    public  Result<TWinBidNominateVO> getTWinBidNominate(@RequestParam("bidId") Long bidId){
-        return  winBidClient.getTWinBidNominate(bidId);
+    public  Result<List<TWinBidNominateVO>> getTWinBidNominate(@RequestParam("purchaseProjectId") Long purchaseProjectId){
+        return  winBidClient.getTWinBidNominate(purchaseProjectId);
     }
 
 
@@ -68,5 +71,13 @@ public class BiddingWinBidController extends BaseController {
         return winBidClient.insertTWinBidNominate(handleWinBid);
     }
 
+   /*
+    @ApiOperation(value = "新增中标公示（文件路径）",tags = "新增中标公示（文件路径）")
+    @PostMapping(value = "/insertTWinBidNominateFilePath", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> insertTWinBidNominatePath(@RequestBody ClientWinBidFilePath clientWinBidFilePath) {
+        HandleWinBidFilePath handleWinBidFilePath=new HandleWinBidFilePath();
+        BeanUtils.copyProperties(clientWinBidFilePath,handleWinBidFilePath);
+        return winBidClient.insertTWinBidNominateFilePath(handleWinBidFilePath);
+    }*/
 
 }

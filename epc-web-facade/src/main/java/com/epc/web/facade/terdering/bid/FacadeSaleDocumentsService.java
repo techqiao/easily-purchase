@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface FacadeSaleDocumentsService {
 
     /**
-     * 发布|审核|批复|修改|删除 招标文件
+     * 新增|发布|修改|删除 招标文件
      * @param handDocuments
      * @return
      */

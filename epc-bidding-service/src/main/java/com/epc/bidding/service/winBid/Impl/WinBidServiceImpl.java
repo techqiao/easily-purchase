@@ -7,7 +7,9 @@ import com.epc.common.Result;
 import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ParticipantPermissionEnum;
+import com.epc.common.constants.ProcessStatusEnum;
 import com.epc.web.facade.bidding.handle.HandleWinBid;
+import com.epc.web.facade.bidding.handle.HandleWinBidFilePath;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
@@ -53,7 +55,7 @@ public class WinBidServiceImpl implements WinBidService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WinBidServiceImpl.class);
 
     /**
-     * 获取中标通知书列表
+     * 获取中标通知书列表（采购项目全部标段 / 单一标段）
      * @param dto
      * @return
      */
@@ -61,16 +63,19 @@ public class WinBidServiceImpl implements WinBidService {
     public Result<List<WinBidLetterVO>> getWinBidLetter(QueryWinBidLetterDTO dto){
         TWinBidCriteria criteria=new TWinBidCriteria();
         TWinBidCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andBidIdEqualTo(dto.getBidId());
-        cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
-        cubCriteria.andProjectIdEqualTo(dto.getProjectId());
+        if(dto.getBidId()!=null){
+            cubCriteria.andBidIdEqualTo(dto.getBidId());
+        }
+        if(dto.getProcurementProjectId()!=null){
+            cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
+        }
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         cubCriteria.andSupplierIdEqualTo(dto.getSupplierId());
+        cubCriteria.andProcessStatusEqualTo(ProcessStatusEnum.RELEASED.getCode());
         List<TWinBid> resultList= tWinBidMapper.selectByExample(criteria);
         if(resultList.size()==0){
             return Result.success(null);
         }
-
         List<WinBidLetterVO> voList=new ArrayList<>();
         for(TWinBid entity:resultList){
             WinBidLetterVO vo=new WinBidLetterVO();
@@ -81,33 +86,41 @@ public class WinBidServiceImpl implements WinBidService {
     }
 
     /**
-     * 查询中标公示记录
-     * @param bidId
+     * 查询中标公示列表
+     * @param purchaseProjectId
      * @return
      */
 
     @Override
-    public Result<TWinBidNominateVO> getTWinBidNominate(Long bidId){
+    public Result<List<TWinBidNominateVO>> getTWinBidNominate(Long purchaseProjectId){
+        if(purchaseProjectId==null){
+            Result.error("purchaseProjectId is not null");
+        }
         TWinBidNominateCriteria criteria=new TWinBidNominateCriteria();
         TWinBidNominateCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andBidIdEqualTo(bidId);
+        cubCriteria.andPurchaseProjectIdEqualTo(purchaseProjectId);
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        TWinBidNominateVO vo=new TWinBidNominateVO();
+        //大于开始时间
+        cubCriteria.andOpenStartLessThanOrEqualTo(new Date());
+        //小于结束时间
+        cubCriteria.andOpenEndGreaterThan(new Date());
+        List<TWinBidNominateVO> voList=new ArrayList<>();
         //查询中标公示提名表
         List<TWinBidNominate> result=tWinBidNominateMapper.selectByExample(criteria);
-        if(!CollectionUtils.isEmpty(result)){
-            TWinBidNominate entity =result.get(0);
-            BeanUtils.copyProperties(entity,vo);
-            //查询采购项目记录
-            TPurchaseProjectBasicInfo purchaseProjectBasicInfo= tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
-            vo.setProcurementProjectName(purchaseProjectBasicInfo.getPurchaseProjectName());
-            vo.setProcurementProjectCode(purchaseProjectBasicInfo.getPurchaseProjectCode());
-            vo.setPurchaseType(purchaseProjectBasicInfo.getPurchaseType());
-            vo.setPurchaseMode(purchaseProjectBasicInfo.getPurchaseMode());
-            return Result.success(vo);
-        }else{
-            return Result.success(null);
+        for(TWinBidNominate entity:result ){
+            TWinBidNominateVO vo=new TWinBidNominateVO();
+            if(!CollectionUtils.isEmpty(result)) {
+                BeanUtils.copyProperties(entity,vo);
+                //查询采购项目记录
+                TPurchaseProjectBasicInfo purchaseProjectBasicInfo = tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(purchaseProjectId);
+                vo.setProcurementProjectName(purchaseProjectBasicInfo.getPurchaseProjectName());
+                vo.setProcurementProjectCode(purchaseProjectBasicInfo.getPurchaseProjectCode());
+                vo.setPurchaseType(purchaseProjectBasicInfo.getPurchaseType());
+                vo.setPurchaseMode(purchaseProjectBasicInfo.getPurchaseMode());
+                voList.add(vo);
+            }
         }
+        return Result.success(voList);
     }
 
     /**
@@ -158,4 +171,30 @@ public class WinBidServiceImpl implements WinBidService {
             }
             return Result.success(true);
     }
+
+    /**
+     * 插入中标公示文件路径
+     * @param handleWinBidFilePath
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor =Exception.class)
+    public Result<Boolean> insertTWinBidNominateFilePath(HandleWinBidFilePath handleWinBidFilePath){
+        if(handleWinBidFilePath.getId()!=null){
+            TWinBidNominate entity= tWinBidNominateMapper.selectByPrimaryKey(handleWinBidFilePath.getId());
+            entity.setFilePath(handleWinBidFilePath.getFilePath());
+            try{
+                tWinBidNominateMapper.insertSelective(entity);
+            }catch (Exception e){
+                LOGGER.error("insertTWinBidNominateFilePath_"+entity.toString()+"_"+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                Result.error("insertTWinBidNominateFilePath insert fail");
+            }
+            return  Result.success(true);
+        }else{
+            Result.error("id is not null");
+            return  Result.error();
+        }
+    }
+
 }

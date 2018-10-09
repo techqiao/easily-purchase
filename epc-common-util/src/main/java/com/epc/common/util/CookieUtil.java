@@ -18,14 +18,14 @@ public class CookieUtil {
     private static final Logger log = LoggerFactory.getLogger(CookieUtil.class);
 
     private final static String COOKIE_DOMAIN = "epc.com";
-    private final static String COOKIE_NAME = "epc-token";
+    private final static String COOKIE_NAME = "epc_token";
 
 
     public static String readLoginToken(HttpServletRequest request){
 
         String header = request.getHeader(COOKIE_NAME);
         if(header != null){
-            header += "EPC_PRIVATE_";
+            header = "EPC_PRIVATE_"+header;
             String jsonString = RedisShardedPoolUtil.get(header);
             return jsonString;
         }

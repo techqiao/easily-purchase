@@ -37,12 +37,11 @@ public class TBidAnnouncementController implements FacadeBidAnnouncementService 
 
     /**
      * 根据标段查询 供应商投标报告
-     * @param queryBidAnnouncement
      * @return
      */
     @Override
-    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestBody QueryBidAnnouncement queryBidAnnouncement) {
-        return bidAnnouncementService.queryBidAnnouncement(queryBidAnnouncement);
+    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(Long bidId) {
+        return bidAnnouncementService.queryBidAnnouncement(bidId);
     }
 
 

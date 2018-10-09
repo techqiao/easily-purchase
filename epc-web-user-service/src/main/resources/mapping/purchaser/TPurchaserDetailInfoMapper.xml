@@ -13,6 +13,7 @@
     <result column="uniform_credit_code" jdbcType="VARCHAR" property="uniformCreditCode" />
     <result column="public_bank_name" jdbcType="VARCHAR" property="publicBankName" />
     <result column="public_ban_account_number" jdbcType="VARCHAR" property="publicBanAccountNumber" />
+    <result column="company_address" jdbcType="VARCHAR"  property="companyAddress" />
     <result column="extended_field" jdbcType="VARCHAR" property="extendedField" />
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
@@ -180,6 +181,9 @@
       <if test="companyName != null">
         company_name,
       </if>
+      <if test="companyAddress != null">
+        company_address,
+      </if>
       <if test="uniformCreditCode != null">
         uniform_credit_code,
       </if>
@@ -208,6 +212,9 @@
       </if>
       <if test="companyName != null">
         #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        #{companyAddress,jdbcType=VARCHAR},
       </if>
       <if test="uniformCreditCode != null">
         #{uniformCreditCode,jdbcType=VARCHAR},
@@ -321,6 +328,7 @@
       <if test="companyName != null">
         company_name = #{companyName,jdbcType=VARCHAR},
       </if>
+
       <if test="uniformCreditCode != null">
         uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
       </if>

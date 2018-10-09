@@ -8,7 +8,7 @@ package com.epc.common.constants;
 public enum ParticipantPermissionEnum {
     REPLY("reply","批复"),
     AGENT("agent","经办"),
-    AUDITOR("auditor","审核"),
+    AUDITOR("auditing","审核"),
     PERSON_LIABLE("person_liable","负责人")
     ;
     private String code;

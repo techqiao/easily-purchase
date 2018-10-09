@@ -15,7 +15,7 @@ public class HandleAgnecy implements Serializable {
     /**
      * 用于接受数据库生成的的id
      */
-    private Long supplierId;
+    private Long agencyId;
     /**
      * 手机号
      */

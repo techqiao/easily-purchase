@@ -3,16 +3,14 @@ package com.epc.bidding.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TProjectBidProcedure implements Serializable {
+public class TProjectProcedure implements Serializable {
     private Long id;
 
     private Long projectId;
 
     private Long purchaseProjectId;
 
-    private Long bidsId;
-
-    private String procedureName;
+    private String procedureCode;
 
     private String operateType;
 
@@ -21,6 +19,8 @@ public class TProjectBidProcedure implements Serializable {
     private Date createAt;
 
     private Date updateAt;
+
+    private Integer isEnd;
 
     private Integer isDeleted;
 
@@ -50,20 +50,12 @@ public class TProjectBidProcedure implements Serializable {
         this.purchaseProjectId = purchaseProjectId;
     }
 
-    public Long getBidsId() {
-        return bidsId;
+    public String getProcedureCode() {
+        return procedureCode;
     }
 
-    public void setBidsId(Long bidsId) {
-        this.bidsId = bidsId;
-    }
-
-    public String getProcedureName() {
-        return procedureName;
-    }
-
-    public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName == null ? null : procedureName.trim();
+    public void setProcedureCode(String procedureCode) {
+        this.procedureCode = procedureCode == null ? null : procedureCode.trim();
     }
 
     public String getOperateType() {
@@ -98,6 +90,14 @@ public class TProjectBidProcedure implements Serializable {
         this.updateAt = updateAt;
     }
 
+    public Integer getIsEnd() {
+        return isEnd;
+    }
+
+    public void setIsEnd(Integer isEnd) {
+        this.isEnd = isEnd;
+    }
+
     public Integer getIsDeleted() {
         return isDeleted;
     }
@@ -115,12 +115,12 @@ public class TProjectBidProcedure implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", projectId=").append(projectId);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
-        sb.append(", bidsId=").append(bidsId);
-        sb.append(", procedureName=").append(procedureName);
+        sb.append(", procedureCode=").append(procedureCode);
         sb.append(", operateType=").append(operateType);
         sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
+        sb.append(", isEnd=").append(isEnd);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append("]");
         return sb.toString();

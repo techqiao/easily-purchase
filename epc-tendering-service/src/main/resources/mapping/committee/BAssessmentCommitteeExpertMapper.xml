@@ -3,6 +3,8 @@
 <mapper namespace="com.epc.tendering.service.mapper.committee.BAssessmentCommitteeExpertMapper" >
   <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
     <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
+    <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
     <result column="committee_bid_id" property="committeeBidId" jdbcType="BIGINT" />
     <result column="notice_time" property="noticeTime" jdbcType="TIMESTAMP" />
     <result column="notice_mode" property="noticeMode" jdbcType="VARCHAR" />
@@ -73,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, committee_bid_id, notice_time, notice_mode, expert_area, expert_id, expert_name, 
-    operate_id, create_at, update_at, is_deleted
+    id, procurement_project_id, bids_id, committee_bid_id, notice_time, notice_mode, 
+    expert_area, expert_id, expert_name, operate_id, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpertCriteria" >
     select
@@ -110,14 +112,16 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_assessment_committee_expert (committee_bid_id, notice_time, notice_mode, 
-      expert_area, expert_id, expert_name, 
-      operate_id, create_at, update_at, 
-      is_deleted)
-    values (#{committeeBidId,jdbcType=BIGINT}, #{noticeTime,jdbcType=TIMESTAMP}, #{noticeMode,jdbcType=VARCHAR}, 
-      #{expertArea,jdbcType=VARCHAR}, #{expertId,jdbcType=BIGINT}, #{expertName,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+    insert into b_assessment_committee_expert (procurement_project_id, bids_id, committee_bid_id, 
+      notice_time, notice_mode, expert_area, 
+      expert_id, expert_name, operate_id, 
+      create_at, update_at, is_deleted
+      )
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, #{committeeBidId,jdbcType=BIGINT}, 
+      #{noticeTime,jdbcType=TIMESTAMP}, #{noticeMode,jdbcType=VARCHAR}, #{expertArea,jdbcType=VARCHAR}, 
+      #{expertId,jdbcType=BIGINT}, #{expertName,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -125,6 +129,12 @@
     </selectKey>
     insert into b_assessment_committee_expert
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="procurementProjectId != null" >
+        procurement_project_id,
+      </if>
+      <if test="bidsId != null" >
+        bids_id,
+      </if>
       <if test="committeeBidId != null" >
         committee_bid_id,
       </if>
@@ -157,6 +167,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="procurementProjectId != null" >
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsId != null" >
+        #{bidsId,jdbcType=BIGINT},
+      </if>
       <if test="committeeBidId != null" >
         #{committeeBidId,jdbcType=BIGINT},
       </if>
@@ -201,6 +217,12 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.procurementProjectId != null" >
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidsId != null" >
+        bids_id = #{record.bidsId,jdbcType=BIGINT},
+      </if>
       <if test="record.committeeBidId != null" >
         committee_bid_id = #{record.committeeBidId,jdbcType=BIGINT},
       </if>
@@ -239,6 +261,8 @@
   <update id="updateByExample" parameterType="map" >
     update b_assessment_committee_expert
     set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
       committee_bid_id = #{record.committeeBidId,jdbcType=BIGINT},
       notice_time = #{record.noticeTime,jdbcType=TIMESTAMP},
       notice_mode = #{record.noticeMode,jdbcType=VARCHAR},
@@ -256,6 +280,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
     update b_assessment_committee_expert
     <set >
+      <if test="procurementProjectId != null" >
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsId != null" >
+        bids_id = #{bidsId,jdbcType=BIGINT},
+      </if>
       <if test="committeeBidId != null" >
         committee_bid_id = #{committeeBidId,jdbcType=BIGINT},
       </if>
@@ -291,7 +321,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert" >
     update b_assessment_committee_expert
-    set committee_bid_id = #{committeeBidId,jdbcType=BIGINT},
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      bids_id = #{bidsId,jdbcType=BIGINT},
+      committee_bid_id = #{committeeBidId,jdbcType=BIGINT},
       notice_time = #{noticeTime,jdbcType=TIMESTAMP},
       notice_mode = #{noticeMode,jdbcType=VARCHAR},
       expert_area = #{expertArea,jdbcType=VARCHAR},

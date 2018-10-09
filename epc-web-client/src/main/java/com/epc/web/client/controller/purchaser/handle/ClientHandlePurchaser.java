@@ -20,12 +20,12 @@ import java.io.Serializable;
 @ApiModel(value = "ClientHandleCreatePurchaserByOperator", description = "采购人员信息")
 public class ClientHandlePurchaser implements Serializable {
     private static final long serialVersionUID = -2197056195533241604L;
-    /**
-     * 采购人机构id
-     */
-    @ApiModelProperty(value = "采购人机构id")
-    @NotEmpty(message = "ClientHandlePurchaser.purchaserId.null")
-    private long purchaserId;
+//    /**
+//     * 采购人机构id
+//     */
+//    @ApiModelProperty(value = "采购人机构id")
+//    @NotEmpty(message = "ClientHandlePurchaser.purchaserId.null")
+//    private long purchaserId;
     /**
      * 采购人员工姓名
      */

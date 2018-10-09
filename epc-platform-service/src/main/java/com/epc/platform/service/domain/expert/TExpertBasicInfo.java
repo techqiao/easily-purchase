@@ -7,7 +7,7 @@ import java.util.Date;
  * 描述:t_expert_basic_info表的实体类
  * @version
  * @author:  01
- * @创建时间: 2018-10-03
+ * @创建时间: 2018-10-08
  */
 public class TExpertBasicInfo implements Serializable {
     /**
@@ -61,6 +61,11 @@ public class TExpertBasicInfo implements Serializable {
     private Date circularDt;
 
     /**
+     * 通知结束时间
+     */
+    private Date circularDtEnd;
+
+    /**
      * 通知方式
      */
     private String circularMethod;
@@ -86,7 +91,7 @@ public class TExpertBasicInfo implements Serializable {
     private Long inviterCompanyId;
 
     /**
-     * 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * 1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过
      */
     private Integer state;
 
@@ -276,6 +281,22 @@ public class TExpertBasicInfo implements Serializable {
     }
 
     /**
+     * 通知结束时间
+     * @return circular_dt_end 通知结束时间
+     */
+    public Date getCircularDtEnd() {
+        return circularDtEnd;
+    }
+
+    /**
+     * 通知结束时间
+     * @param circularDtEnd 通知结束时间
+     */
+    public void setCircularDtEnd(Date circularDtEnd) {
+        this.circularDtEnd = circularDtEnd;
+    }
+
+    /**
      * 通知方式
      * @return circular_method 通知方式
      */
@@ -356,16 +377,16 @@ public class TExpertBasicInfo implements Serializable {
     }
 
     /**
-     * 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
-     * @return state 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * 1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过
+     * @return state 1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过
      */
     public Integer getState() {
         return state;
     }
 
     /**
-     * 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
-     * @param state 0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
+     * 1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过
+     * @param state 1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过
      */
     public void setState(Integer state) {
         this.state = state;
@@ -451,6 +472,7 @@ public class TExpertBasicInfo implements Serializable {
         sb.append(", workingYears=").append(workingYears);
         sb.append(", isIdle=").append(isIdle);
         sb.append(", circularDt=").append(circularDt);
+        sb.append(", circularDtEnd=").append(circularDtEnd);
         sb.append(", circularMethod=").append(circularMethod);
         sb.append(", otherInformation=").append(otherInformation);
         sb.append(", inviterType=").append(inviterType);

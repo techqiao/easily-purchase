@@ -9,38 +9,36 @@ public class HandleCreateProjectByAdmin implements Serializable {
     private static final long serialVersionUID = -8171927598256356072L;
 
     /**
-     * CREATE TABLE `t_project_employee_relation` (
-     *   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '项目主键ID',
-     *   `project_name` varchar(64) NOT NULL COMMENT '项目名字',
-     *   `creater_id` BIGINT(11) NOT NULL COMMENT '创建项目人ID',
-     *   `creater_name` varchar(64) DEFAULT NULL COMMENT '创建项目人姓名',
-     *   `purchaser_id` BIGINT(32) DEFAULT NULL COMMENT '采购法人ID',
-     *   `executive_id` BIGINT(11) unsigned DEFAULT NULL COMMENT '指派项目人负责人ID',
-     *   `state` int(1) DEFAULT '0' COMMENT '当前项目状态,0-未接受, 1-已接受',
-     *   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-     *   `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+     * CREATE TABLE `t_purchaser_basic_info` (
+     *   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+     *   `name` varchar(16) NOT NULL COMMENT '采购人员工姓名',
+     *   `cellphone` char(11) NOT NULL COMMENT '手机号',
+     *   `password` char(32) NOT NULL COMMENT '登录密码',
+     *   `purchaser_id` bigint(11) unsigned DEFAULT NULL COMMENT '采购人(法人)ID',
+     *   `inviter_type` int(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构，4-平台',
+     *   `inviter_id` bigint(11) DEFAULT NULL COMMENT '邀请人Id',
+     *   `inviter_company_id` bigint(11) DEFAULT NULL COMMENT '邀请人机构ID',
+     *   `state` int(3) unsigned DEFAULT NULL COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
+     *   `role` int(2) DEFAULT NULL COMMENT '用户角色:0-法人,1-管理员,2-普通员工',
+     *   `create_at` datetime NOT NULL COMMENT '创建时间',
+     *   `update_at` datetime NOT NULL COMMENT '最后修改时间',
+     *   `is_forbidden` int(1) DEFAULT '0' COMMENT '是否禁用: 0-启用,1-禁用',
+     *   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
      *   PRIMARY KEY (`id`)
-     * ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='项目人员指派关系表：不同的项目对应的指派的员工';
+     * ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='采购人:法人及其员工基本(登录)信息';
      */
+
+    private Integer loginRole;
+    private Long loginId;
+    private Long bossId;
+    private String name;
+
+
 
     /**
      * 项目名字
      */
     private String projectName;
-    /**
-     * 当前指派人id(管理员id或是法人id)
-     */
-    private Long createrId;
-
-    /**
-     * 当前的角色 role(是法人还是管理员)
-     */
-    private Integer role;
-
-    /**
-     * 创建项目人 姓名
-     */
-    private String createrName;
 
 
     /**
@@ -54,6 +52,5 @@ public class HandleCreateProjectByAdmin implements Serializable {
     private String executiveName;
 
 
-
-
+    private String notes;
 }

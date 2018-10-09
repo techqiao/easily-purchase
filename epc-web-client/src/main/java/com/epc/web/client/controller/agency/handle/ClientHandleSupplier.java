@@ -25,11 +25,11 @@ public class ClientHandleSupplier implements Serializable{
     @ApiModelProperty(value = "供货商密码")
     private String password;
 
-    @ApiModelProperty(value = "操作人id")
-    private String agencyId;
-
-    @ApiModelProperty(value = "供货商来源")
-    private String source;
+//    @ApiModelProperty(value = "操作人id")
+//    private String agencyId;
+//
+//    @ApiModelProperty(value = "供货商来源")
+//    private String source;
 
 
     @ApiModelProperty(value = "供货商公司名")

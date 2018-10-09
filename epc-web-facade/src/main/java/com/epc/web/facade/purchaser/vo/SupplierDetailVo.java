@@ -47,6 +47,10 @@ public class SupplierDetailVo implements Serializable{
      */
     private String cellphone;
     /**
+     * 法人姓名
+     */
+    private String name;
+    /**
      * 资料集合
      */
     private List<Attachement> atts;

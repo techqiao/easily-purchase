@@ -36,7 +36,7 @@ public interface TPurchaseProjectBasicInfoMapper {
 
     int updateByPrimaryKey(TPurchaseProjectBasicInfo record);
 
-    @Select("select t.purchase_project_status from t_purchase_project_basic_info where id=#{id}")
+    @Select("select t.purchase_project_status from t_purchase_project_basic_info t where id=#{id}")
     @ResultType(String.class)
     String getPurchaseProjectStatusById(Long id);
 
@@ -47,5 +47,9 @@ public interface TPurchaseProjectBasicInfoMapper {
             "from t_purchase_project_basic_info where id=#{id}")
     @ResultType(PublicityVO.class)
     PublicityVO getDetailInfoById(Long id);
+
+    @Select("select t.is_other_agency from t_purchase_project_basic_info t left join b_release_announcement b" +
+            " on b.procurement_project_id=t.id where b.id =#{id}")
+    int getIsOtherAgency(Long id);
 
 }

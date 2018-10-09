@@ -254,7 +254,7 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<Boolean> insertCompleteOperatorInfo(RoleDetailInfo roleDetailInfo) {
         //运营商法人id（当前登陆人的id）
         Long supplierId = roleDetailInfo.getSupplierId();
-        if(supplierId==null){
+        if (supplierId == null) {
             return Result.error("前端传入参数错误");
         }
         Date date = new Date();
@@ -413,13 +413,17 @@ public class OperatorServiceImpl implements OperatorService {
     @Transactional(rollbackFor = Exception.class)
     public Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId) {
         Long loginId = handleOperatorId.getLoginId();
-//        Long bossId = handleOperatorId.getBossId();
         Integer systemRole = handleOperatorId.getSystemRole();
         Integer loginRole = handleOperatorId.getLoginRole();
         // 不是运营商 ,或者是 员工
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
             return Result.success("角色不匹配，无相关权限");
         }
+
+
+        System.out.println("当前登陆人的id："+loginId);
+
+
         OperatorBasicVO vo = new OperatorBasicVO();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
         if (loginRole.intValue() != Const.Role.ROLE_CORPORATION) {
@@ -815,58 +819,7 @@ public class OperatorServiceImpl implements OperatorService {
             return Result.error("角色不匹配，无相关权限");
         }
 
-//        //得到电话 姓名
-//        String cellphone=handleCreatePurchaserByOperator.getCellphone();
-//        String name=handleCreatePurchaserByOperator.getName();
-//
-//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-//            return Result.error("[运营商新增采购人] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {前端传入参数异常} ");
-//        }
-//        Date date = new Date();
-//
-//        //创建TPurchaserBasicInfo表对象，添加信息
-//        TPurchaserBasicInfo tPurchaserBasicInfo=new TPurchaserBasicInfo();
-//        tPurchaserBasicInfo.setCellphone(cellphone);
-//        tPurchaserBasicInfo.setName(name);
-//        //设置默认密码(epc1688)
-//        tPurchaserBasicInfo.setPassword(MD5Util.MD5EncodeUtf8("epc1688"));
-//        //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
-//        tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
-//        //邀请人id
-//        tPurchaserBasicInfo.setInviterId(bossId.intValue());
-//        //邀请机构 id
-//        tPurchaserBasicInfo.setInviterCompanyId(bossId.intValue());
-//        //设置状态，已注册
-//        tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
-//        //邀请人角色
-//        tPurchaserBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
-//
-//        tPurchaserBasicInfo.setCreateAt(date);
-//        tPurchaserBasicInfo.setUpdateAt(date);
-//
-//        //此id, 采购basic表中的主键id,同时也是采购法人purchaser_id
-//        Long purchaserId=null;
-//        try{
-//            tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo);
-//            //将采购这张basic表中的主键id设置到purcheser_id上（同时是员工，也是采购法人）
-//            purchaserId = tPurchaserBasicInfo.getId();
-//            tPurchaserBasicInfo.setPurchaserId(purchaserId);
-//            tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo);
-//        }catch (BusinessException e){
-//            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-//        }catch (Exception e){
-//            LOGGER.error("[运营商添加采购人] tPurchaserBasicInfoMapper.insertSelective : {}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(e.getMessage());
-//        }
-
-        //添加详情表信息
-
-        //当前 添加的这个采购人id
-        //当前的采购人id
-        Long id = handleCreatePurchaserByOperator.getId();
+        Long id = handleCreatePurchaserByOperator.getSupplierId();
         if (id == null) {
             return Result.error("当前你添加的这个采购人id为空");
         }
@@ -880,8 +833,8 @@ public class OperatorServiceImpl implements OperatorService {
         tPurchaserDetailInfo.setPublicBankName(handleCreatePurchaserByOperator.getPublicBankName());
         //对公银行账号
         tPurchaserDetailInfo.setPublicBanAccountNumber(handleCreatePurchaserByOperator.getPublicBanAccountNumber());
-        //地址没填
-
+        //地址
+        tPurchaserDetailInfo.setCompanyAddress(handleCreatePurchaserByOperator.getCompanyAddress());
         Date date = new Date();
         tPurchaserDetailInfo.setCreateAt(date);
         tPurchaserDetailInfo.setUpdateAt(date);
@@ -898,31 +851,58 @@ public class OperatorServiceImpl implements OperatorService {
             return Result.error(e.getMessage());
         }
 
-        //拿到全部的附件信息
-        List<Attachment> atts = handleCreatePurchaserByOperator.getAtts();
-
         //添加附件表信息
-        TPurchaserAttachment tPurchaserAttachment = new TPurchaserAttachment();
-        //完善附件表
-        for (Attachment att : atts) {
-            tPurchaserAttachment.setCertificateType(att.getCertificateType());
-            tPurchaserAttachment.setCertificateFilePath(att.getCertificateFilePath());
-            tPurchaserAttachment.setCertificateName(att.getCertificateName());
-            tPurchaserAttachment.setCertificateNumber(att.getCertificateNumber());
-            tPurchaserAttachment.setPurchaserId(id);
-            tPurchaserAttachment.setCreateAt(date);
-            tPurchaserAttachment.setUpdateAt(date);
-            try {
-                tPurchaserAttachmentMapper.insertSelective(tPurchaserAttachment);
-            } catch (BusinessException e) {
-                LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}", e);
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-            } catch (Exception e) {
-                LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}", e);
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Result.error(e.getMessage());
+        TPurchaserAttachment attachment = new TPurchaserAttachment();
+        attachment.setPurchaserId(id);
+        attachment.setCreateAt(date);
+        attachment.setUpdateAt(date);
+        try {
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getBusinessLicense());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getBusinessLicenseNumber());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getLegalIdCardPositive());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getLegalIdCardPositiveNumber());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getLegalIdCardOther());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+            attachment.setCertificateName(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getCertificateOfAuthorization());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getCertificateOfAuthorizationNumber());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            attachment.setCertificateName(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getOperatorIdCardFront());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getOperatorIdCardFrontNumber());
+            tPurchaserAttachmentMapper.insertSelective(attachment);
+
+            List<QualificationCertificate> listQcs = handleCreatePurchaserByOperator.getQcs();
+            for (QualificationCertificate qcs : listQcs) {
+                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+                attachment.setCertificateFilePath(qcs.getQualificationCertificate());
+                attachment.setCertificateNumber(qcs.getQualificationCertificateNumber());
+                tPurchaserAttachmentMapper.insertSelective(attachment);
             }
+
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        } catch (Exception e) {
+            LOGGER.error("[运营商添加采购人] tPurchaserAttachmentMapper.insertSelective : {}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
         }
 
         //完善完 详情表，附件表，就要将采购主表状态改成 审核中,并设置最新时间
@@ -1124,48 +1104,9 @@ public class OperatorServiceImpl implements OperatorService {
         }
 
         //当前供应商商员工的id
-        Long id = handleCreatePurchaserByOperator.getId();
-
-//        String cellphone = handleCreatePurchaserByOperator.getCellphone();
-//        String name = handleCreatePurchaserByOperator.getName();
-//        if(id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)){
-//            return Result.error("[运营商新增供应商（包括完善信息）] id==null || StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-//        }
-//        Date date=new Date();
-//        TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-//        //得到法人id
-//        Long operatorId = tOperatorBasicInfo.getOperatorId();
-//
-//        //创建供应商基本信息对象
-//        TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
-//        tSupplierBasicInfo.setName(name);
-//        tSupplierBasicInfo.setCellphone(cellphone);
-//        tSupplierBasicInfo.setInviterType(Const.INVITER_TYPE.OPERATOR);
-//        tSupplierBasicInfo.setInviterId(id);
-//        tSupplierBasicInfo.setInviterCompanyId(operatorId.intValue());
-//        tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
-//        tSupplierBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
-//        tSupplierBasicInfo.setCreateAt(date);
-//        tSupplierBasicInfo.setUpdateAt(date);
-//        Long supplierId=null;
-//        try {
-//            tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
-//            supplierId = tSupplierBasicInfo.getId();
-//            tSupplierBasicInfo.setSupplierId(supplierId);
-//            tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
-//        }catch (BusinessException e){
-//            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierBasicInfoMapper.insertSelective : 异常信息e={}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-//        }catch (Exception e){
-//            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierBasicInfoMapper.insertSelective : 异常信息e={}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(e.getMessage());
-//        }
+        Long id = handleCreatePurchaserByOperator.getSupplierId();
 
         //完善供应商详情表
-
-
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
         tSupplierDetailInfo.setSupplierId(id);
         tSupplierDetailInfo.setCompanyName(handleCreatePurchaserByOperator.getCompanyName());
@@ -1190,28 +1131,56 @@ public class OperatorServiceImpl implements OperatorService {
         }
 
         //完善供应商附件表
-        TSupplierAttachment tSupplierAttachment = new TSupplierAttachment();
-        List<Attachment> atts = handleCreatePurchaserByOperator.getAtts();
-        for (Attachment att : atts) {
-            tSupplierAttachment.setCertificateFilePath(att.getCertificateFilePath());
-            tSupplierAttachment.setCertificateName(att.getCertificateName());
-            tSupplierAttachment.setCertificateNumber(att.getCertificateNumber());
-            tSupplierAttachment.setCertificateType(att.getCertificateType());
+        TSupplierAttachment attachment = new TSupplierAttachment();
+        attachment.setSupplierId(id);
+        attachment.setCreateAt(date);
+        attachment.setUpdateAt(date);
+        try {
+            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
+            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getBusinessLicense());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getBusinessLicenseNumber());
+            tSupplierAttachmentMapper.insertSelective(attachment);
 
-            tSupplierAttachment.setSupplierId(id);
-            tSupplierAttachment.setCreateAt(date);
-            tSupplierAttachment.setUpdateAt(date);
-            try {
-                tSupplierAttachmentMapper.insertSelective(tSupplierAttachment);
-            } catch (BusinessException e) {
-                LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-            } catch (Exception e) {
-                LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return Result.error(e.getMessage());
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getLegalIdCardPositive());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getLegalIdCardPositiveNumber());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
+            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getLegalIdCardOther());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getCode());
+            attachment.setCertificateName(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getCertificateOfAuthorization());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getCertificateOfAuthorizationNumber());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+
+            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
+            attachment.setCertificateName(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc());
+            attachment.setCertificateFilePath(handleCreatePurchaserByOperator.getOperatorIdCardFront());
+            attachment.setCertificateNumber(handleCreatePurchaserByOperator.getOperatorIdCardFrontNumber());
+            tSupplierAttachmentMapper.insertSelective(attachment);
+
+            List<QualificationCertificate> listQcs = handleCreatePurchaserByOperator.getQcs();
+            for (QualificationCertificate qcs : listQcs) {
+                attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
+                attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
+                attachment.setCertificateFilePath(qcs.getQualificationCertificate());
+                attachment.setCertificateNumber(qcs.getQualificationCertificateNumber());
+                tSupplierAttachmentMapper.insertSelective(attachment);
             }
+        } catch (BusinessException e) {
+            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
+        } catch (Exception e) {
+            LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
         }
         return Result.success(true);
     }

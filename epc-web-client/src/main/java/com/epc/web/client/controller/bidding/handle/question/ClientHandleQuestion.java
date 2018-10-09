@@ -15,6 +15,8 @@ public class ClientHandleQuestion {
     @ApiModelProperty(value = "采购项目ID")
     @NotEmpty(message = "ClientHandleQuestion.procurementProjectId.null")
     private Long procurementProjectId;
+    @ApiModelProperty(value = "标段id")
+    private Long bidsId;
     @ApiModelProperty("问题类别(公告-announcement,招标文件-bidFile,评标-bidEvaluation)")
     private String questionType;
     @ApiModelProperty("问题标题")

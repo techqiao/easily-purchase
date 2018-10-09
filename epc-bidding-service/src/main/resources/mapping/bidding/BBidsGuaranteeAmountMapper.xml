@@ -7,8 +7,8 @@
     <result column="b_issue_documents_id" property="bIssueDocumentsId" jdbcType="BIGINT" />
     <result column="tender_guarantee_amount" property="tenderGuaranteeAmount" jdbcType="DECIMAL" />
     <result column="bids_name" property="bidsName" jdbcType="VARCHAR" />
-    <result column="bids_code" property="bidsCode" jdbcType="VARCHAR" />
     <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
+    <result column="bids_code" property="bidsCode" jdbcType="VARCHAR" />
     <result column="receivables" property="receivables" jdbcType="VARCHAR" />
     <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
@@ -76,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, procurement_project_id, b_issue_documents_id, tender_guarantee_amount, bids_name, 
-    bids_code, bids_id, receivables, bank_account, operate_id, create_at, update_at, 
+    bids_id, bids_code, receivables, bank_account, operate_id, create_at, update_at, 
     is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.BBidsGuaranteeAmountCriteria" >
@@ -114,13 +114,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into b_bids_guarantee_amount (procurement_project_id, b_issue_documents_id, 
-      tender_guarantee_amount, bids_name, bids_code, 
-      bids_id, receivables, bank_account, 
+      tender_guarantee_amount, bids_name, bids_id, 
+      bids_code, receivables, bank_account, 
       operate_id, create_at, update_at, 
       is_deleted)
     values (#{procurementProjectId,jdbcType=BIGINT}, #{bIssueDocumentsId,jdbcType=BIGINT}, 
-      #{tenderGuaranteeAmount,jdbcType=DECIMAL}, #{bidsName,jdbcType=VARCHAR}, #{bidsCode,jdbcType=VARCHAR}, 
-      #{bidsId,jdbcType=BIGINT}, #{receivables,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR}, 
+      #{tenderGuaranteeAmount,jdbcType=DECIMAL}, #{bidsName,jdbcType=VARCHAR}, #{bidsId,jdbcType=BIGINT}, 
+      #{bidsCode,jdbcType=VARCHAR}, #{receivables,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR}, 
       #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER})
   </insert>
@@ -142,11 +142,11 @@
       <if test="bidsName != null" >
         bids_name,
       </if>
-      <if test="bidsCode != null" >
-        bids_code,
-      </if>
       <if test="bidsId != null" >
         bids_id,
+      </if>
+      <if test="bidsCode != null" >
+        bids_code,
       </if>
       <if test="receivables != null" >
         receivables,
@@ -180,11 +180,11 @@
       <if test="bidsName != null" >
         #{bidsName,jdbcType=VARCHAR},
       </if>
-      <if test="bidsCode != null" >
-        #{bidsCode,jdbcType=VARCHAR},
-      </if>
       <if test="bidsId != null" >
         #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsCode != null" >
+        #{bidsCode,jdbcType=VARCHAR},
       </if>
       <if test="receivables != null" >
         #{receivables,jdbcType=VARCHAR},
@@ -230,11 +230,11 @@
       <if test="record.bidsName != null" >
         bids_name = #{record.bidsName,jdbcType=VARCHAR},
       </if>
-      <if test="record.bidsCode != null" >
-        bids_code = #{record.bidsCode,jdbcType=VARCHAR},
-      </if>
       <if test="record.bidsId != null" >
         bids_id = #{record.bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.bidsCode != null" >
+        bids_code = #{record.bidsCode,jdbcType=VARCHAR},
       </if>
       <if test="record.receivables != null" >
         receivables = #{record.receivables,jdbcType=VARCHAR},
@@ -266,8 +266,8 @@
       b_issue_documents_id = #{record.bIssueDocumentsId,jdbcType=BIGINT},
       tender_guarantee_amount = #{record.tenderGuaranteeAmount,jdbcType=DECIMAL},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
-      bids_code = #{record.bidsCode,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
+      bids_code = #{record.bidsCode,jdbcType=VARCHAR},
       receivables = #{record.receivables,jdbcType=VARCHAR},
       bank_account = #{record.bankAccount,jdbcType=VARCHAR},
       operate_id = #{record.operateId,jdbcType=BIGINT},
@@ -293,11 +293,11 @@
       <if test="bidsName != null" >
         bids_name = #{bidsName,jdbcType=VARCHAR},
       </if>
-      <if test="bidsCode != null" >
-        bids_code = #{bidsCode,jdbcType=VARCHAR},
-      </if>
       <if test="bidsId != null" >
         bids_id = #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="bidsCode != null" >
+        bids_code = #{bidsCode,jdbcType=VARCHAR},
       </if>
       <if test="receivables != null" >
         receivables = #{receivables,jdbcType=VARCHAR},
@@ -326,8 +326,8 @@
       b_issue_documents_id = #{bIssueDocumentsId,jdbcType=BIGINT},
       tender_guarantee_amount = #{tenderGuaranteeAmount,jdbcType=DECIMAL},
       bids_name = #{bidsName,jdbcType=VARCHAR},
-      bids_code = #{bidsCode,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
+      bids_code = #{bidsCode,jdbcType=VARCHAR},
       receivables = #{receivables,jdbcType=VARCHAR},
       bank_account = #{bankAccount,jdbcType=VARCHAR},
       operate_id = #{operateId,jdbcType=BIGINT},

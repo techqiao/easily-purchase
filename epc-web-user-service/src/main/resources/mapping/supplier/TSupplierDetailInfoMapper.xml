@@ -314,6 +314,7 @@
     </select>
     <select id="selectSupplierByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo"
             parameterType="com.epc.web.facade.purchaser.dto.QuerySupplierDto">
+      <bind name="supplierName" value="'%'+name+'%'"/>
         SELECT t_supplier_detail_info.supplier_id AS supplierId,t_supplier_detail_info.company_name AS companyName
         ,t_supplier_detail_info.create_at AS createAt
         FROM t_supplier_detail_info LEFT JOIN t_purchaser_supplier ON t_supplier_detail_info.supplier_id
@@ -321,10 +322,10 @@
         <where>
             t_purchaser_supplier.purchaser_id =#{purchaserId}
             <if test="name!=null">
-                AND `name` Like '%'#{name}'%'
+                AND t_supplier_detail_info.company_name Like #{supplierName}
             </if>
             <if test="supplierId!=null">
-                AND supplier_id =#{supplierId}
+                AND t_supplier_detail_info.supplier_id =#{supplierId}
             </if>
         </where>
 

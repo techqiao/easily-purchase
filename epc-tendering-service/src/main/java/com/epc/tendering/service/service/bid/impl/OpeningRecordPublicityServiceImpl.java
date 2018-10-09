@@ -114,6 +114,6 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
             BeanUtils.copyProperties(tPurchaseProjectBegins.get(0),purchaseProjectBeginVO);
             return Result.success(purchaseProjectBeginVO);
         }
-        return Result.error();
+        return Result.success("没有开标确认");
     }
 }

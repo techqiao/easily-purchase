@@ -27,6 +27,10 @@ public class Const {
         int NOT_DELETED = 0;
     }
 
+    public interface PASSWORD{
+        String PASSWORD="epc1688";
+
+    }
     public interface IS_OK {
         int IS_OK = 1;
         int NOT_OK = 0;
@@ -118,13 +122,14 @@ public class Const {
      * 代理商2,
      * 供货商3,
      * 采购商4
+     * 评审专家5
      */
     public interface LOGIN_USER_TYPE{
         int OPERATOR=1;
         int PROXY=2;
         int SUPPLIER=3;
         int PURCHASER=4;
-        int Expert=5;
+        int EXPERT=5;
     }
 
 
@@ -166,4 +171,11 @@ public class Const {
         int AUDIT_SUCCESS=5;//审核通过
     }
 
+    /**
+     * 专家状态
+     */
+    public  interface EXPERT_STATUS{
+        int BUSY=0;
+        int FREE=1;
+    }
 }

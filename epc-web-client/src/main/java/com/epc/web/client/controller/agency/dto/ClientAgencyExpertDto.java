@@ -14,6 +14,12 @@ import java.util.List;
 @ApiModel(value = "ClientAgencyExpertDto" ,description = "代理机构专家信息查询条件")
 public class ClientAgencyExpertDto implements Serializable {
     private static final long serialVersionUID = 7424211851644334604L;
+
+    /**
+     * 专家id
+     */
+    @ApiModelProperty(value ="专家id")
+    private Long expertId;
     /**
      *专家姓名
      */
@@ -53,6 +59,9 @@ public class ClientAgencyExpertDto implements Serializable {
     @ApiModelProperty(value = "通知时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date circularDt;
+
+    @ApiModelProperty(value = "通知截止时间")
+    private Date circularDtEnd;
     /**
      * 通知方式
      */
@@ -63,22 +72,22 @@ public class ClientAgencyExpertDto implements Serializable {
      */
     @ApiModelProperty(value = "其他信息")
     private String otherInformation;
-    /**
-     * 邀请人类型
-     */
-    @ApiModelProperty(value = "邀请人类型")
-    private Integer inviterType;
-    /**
-     * 邀请人Id
-     */
-    @ApiModelProperty(value = "邀请人id")
-    private Long inviterId;
-    /**
-     * inviter_company_id
-     * 邀请人机构ID
-     */
-    @ApiModelProperty(value = "邀请人机构id")
-    private Long inviterCompanyId;
+//    /**
+//     * 邀请人类型
+//     */
+//    @ApiModelProperty(value = "邀请人类型")
+//    private Integer inviterType;
+//    /**
+//     * 邀请人Id
+//     */
+//    @ApiModelProperty(value = "邀请人id")
+//    private Long inviterId;
+//    /**
+//     * inviter_company_id
+//     * 邀请人机构ID
+//     */
+//    @ApiModelProperty(value = "邀请人机构id")
+//    private Long inviterCompanyId;
     /**
      * 审核状态
      */

@@ -16,8 +16,10 @@ import com.epc.platform.service.mapper.operator.TOperatorAttachmentMapper;
 import com.epc.platform.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.platform.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.platform.service.service.operator.OperatorService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +56,13 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertOperatorBasicInfo(UserBasicInfo userBasicInfo) {
+        TOperatorBasicInfoCriteria tOperatorBasicInfoCriteria = new TOperatorBasicInfoCriteria();
+        tOperatorBasicInfoCriteria.createCriteria().andCellphoneEqualTo(userBasicInfo.getCellphone());
+        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(tOperatorBasicInfoCriteria);
+        if(!tOperatorBasicInfos.isEmpty()){
+            return Result.success("用户已存在，请直接登录");
+        }
+
         TOperatorBasicInfo pojo = new TOperatorBasicInfo();
         Date date = new Date();
         pojo.setCellphone(userBasicInfo.getCellphone());
@@ -62,7 +71,8 @@ public class OperatorServiceImpl implements OperatorService {
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        pojo.setState(Const.STATE.REGISTERED);
+        pojo.setPassword(Const.PASSWORD.PASSWORD);
+        pojo.setState(Const.STATE.COMMITTED);
         SysAdminUserOperator sysAdminUserOperator = new SysAdminUserOperator();
         sysAdminUserOperator.setAdminUserId(pojo.getId());
         sysAdminUserOperator.setAdminUserName(pojo.getName());
@@ -94,11 +104,7 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<Boolean> insertOperatorDetailInfo(RoleDetailInfo roleDetailInfo) {
         Date date = new Date();
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
-        detailInfo.setOperatorId(roleDetailInfo.getId());
-        detailInfo.setCompanyName(roleDetailInfo.getCompanyName());
-        detailInfo.setUniformCreditCode(roleDetailInfo.getUniformCreditCode());
-        detailInfo.setPublicBankName(roleDetailInfo.getPublicBankName());
-        detailInfo.setPublicBanAccountNumber(roleDetailInfo.getPublicBanAccountNumber());
+        BeanUtils.copyProperties(roleDetailInfo,detailInfo);
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -107,13 +113,10 @@ public class OperatorServiceImpl implements OperatorService {
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setCreateAt(date);
         attachment.setUpdateAt(date);
-
         TOperatorDetailInfoCriteria tOperatorDetailInfoCriteria = new TOperatorDetailInfoCriteria();
         tOperatorDetailInfoCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
-
         TOperatorAttachmentCriteria tOperatorAttachmentCriteria = new TOperatorAttachmentCriteria();
         tOperatorAttachmentCriteria.createCriteria().andOperatorIdEqualTo(roleDetailInfo.getId());
-
         try {
             List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(tOperatorDetailInfoCriteria);
             //没有就新增 未通过重填就修改
@@ -157,7 +160,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
             tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
-            tOperatorBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
@@ -185,11 +188,7 @@ public class OperatorServiceImpl implements OperatorService {
        attachment.setUpdateAt(date);
        attachment.setOperatorId(roleDetailInfo.getId());
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
-        detailInfo.setOperatorId(roleDetailInfo.getId());
-        detailInfo.setCompanyName(roleDetailInfo.getCompanyName());
-        detailInfo.setUniformCreditCode(roleDetailInfo.getUniformCreditCode());
-        detailInfo.setPublicBankName(roleDetailInfo.getPublicBankName());
-        detailInfo.setPublicBanAccountNumber(roleDetailInfo.getPublicBanAccountNumber());
+        BeanUtils.copyProperties(roleDetailInfo,detailInfo);
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -235,7 +234,7 @@ public class OperatorServiceImpl implements OperatorService {
             TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
             tOperatorBasicInfo.setId(roleDetailInfo.getId());
             tOperatorBasicInfo.setOperatorId(roleDetailInfo.getId());
-            tOperatorBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tOperatorBasicInfo.setState(Const.STATE.COMMITTED);
             tOperatorBasicInfo.setRole(Const.Role.ROLE_CORPORATION);
             tOperatorBasicInfo.setUpdateAt(new Date());
             return Result.success(tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo) > 0);
@@ -292,11 +291,7 @@ public class OperatorServiceImpl implements OperatorService {
             //装填所有信息开始
             TOperatorDetailInfo tOperatorDetailInfo = tOperatorDetailInfos.get(0);
             OperatorUserVO operatorUserVO = new OperatorUserVO();
-            operatorUserVO.setCompanyName(tOperatorDetailInfo.getCompanyName());
-            operatorUserVO.setUniformCreditCode(tOperatorDetailInfo.getUniformCreditCode());
-            operatorUserVO.setPublicBankName(tOperatorDetailInfo.getPublicBankName());
-            operatorUserVO.setPublicBanAccountNumber(tOperatorDetailInfo.getPublicBanAccountNumber());
-
+            BeanUtils.copyProperties(tOperatorDetailInfo,operatorUserVO);
             TOperatorAttachmentCriteria tOperatorAttachmentCriteria = new TOperatorAttachmentCriteria();
             tOperatorAttachmentCriteria.createCriteria().andOperatorIdEqualTo(whereId);
             List<TOperatorAttachment>  tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(tOperatorAttachmentCriteria);
@@ -310,18 +305,13 @@ public class OperatorServiceImpl implements OperatorService {
                     operatorUserVO.setBusinessLicense(tOperatorAttachment.getCertificateFilePath());
                 }else{
                     OperatorAttachmentVO operatorAttachmentVO = new OperatorAttachmentVO();
-                    operatorAttachmentVO.setCertificateFilePath(tOperatorAttachment.getCertificateFilePath());
-                    operatorAttachmentVO.setCertificateName(tOperatorAttachment.getCertificateName());
+                    BeanUtils.copyProperties(tOperatorAttachment,operatorAttachmentVO);
                     operatorAttachmentVOS.add(operatorAttachmentVO);
                 }
             }
             operatorUserVO.setOperatorAttachmentVOList(operatorAttachmentVOS);
-            operatorUserVO.setId(tOperatorBasicInfo.getId());
             operatorUserVO.setCreateAt(new Date());
-            operatorUserVO.setIsDeleted(tOperatorBasicInfo.getIsDeleted());
-            operatorUserVO.setCellphone(tOperatorBasicInfo.getCellphone());
-            operatorUserVO.setState(tOperatorBasicInfo.getState());
-            operatorUserVO.setName(tOperatorBasicInfo.getName());
+            BeanUtils.copyProperties(tOperatorBasicInfo,operatorUserVO);
             //装填所有信息结束
             return Result.success(operatorUserVO);
         } catch (Exception e1) {
@@ -337,7 +327,7 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public List<OperatorVO> selectAllOperatorByPage(QueryDetailIfo queryDetailIfo) {
         String where = queryDetailIfo.getWhere();
-        if(where!=null){
+        if(StringUtils.isNotBlank(where)){
             where="%"+where+"%";
             queryDetailIfo.setWhere(where);
         }else{

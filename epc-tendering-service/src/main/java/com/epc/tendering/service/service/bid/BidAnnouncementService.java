@@ -24,10 +24,9 @@ public interface BidAnnouncementService {
 
     /**
      * 公开供应商投标附录
-     * @param queryBidAnnouncement
      * @return
      */
-     Result<List<BidAnnouncementVO>> queryBidAnnouncement( QueryBidAnnouncement queryBidAnnouncement) ;
+     Result<List<BidAnnouncementVO>> queryBidAnnouncement(Long bidId) ;
 
     /**
      * 查询唱标记录路径

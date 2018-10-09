@@ -6,6 +6,7 @@ import com.epc.administration.facade.supplier.handle.ExamineSupplierHandle;
 import com.epc.administration.facade.supplier.handle.SupplierForbiddenHandle;
 import com.epc.administration.facade.supplier.handle.SupplierHandle;
 import com.epc.administration.facade.supplier.handle.UserBasicInfo;
+import com.epc.administration.facade.supplier.vo.SupplierAttachmentVO;
 import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
@@ -79,7 +80,7 @@ public class SupplierController extends BaseController implements SupplierUserSe
      * @return
      */
     @Override
-    public Result<TOperatorDetailInfo> querySupplierDetailInfo(@RequestParam("whereId") Long id) {
+    public Result<SupplierAttachmentVO> querySupplierDetailInfo(@RequestParam("whereId") Long id) {
         return supplierService.querySupplierDetailInfo(id);
     }
 

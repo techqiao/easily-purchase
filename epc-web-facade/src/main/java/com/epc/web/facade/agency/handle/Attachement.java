@@ -1,6 +1,7 @@
 package com.epc.web.facade.agency.handle;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Attachement implements Serializable{
     private static final long serialVersionUID = -661929575861972061L;
     /**

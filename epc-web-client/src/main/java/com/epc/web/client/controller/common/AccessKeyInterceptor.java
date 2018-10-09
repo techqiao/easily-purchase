@@ -30,7 +30,7 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, referer,login-token,epc-token, X-Requested-With");
+        response.addHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, referer, epc-token, X-Requested-With");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         response.setHeader("Access-Control-Max-Age", "3600");
@@ -39,26 +39,20 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         String header = request.getHeader("epc-token");
-        if (null != handler) {
+        if (null != header) {
             String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
             if (null != s) {
                 return true;
             }
-        }else {
-            PrintWriter writer = null;
-            try {
-                writer = response.getWriter();
-                writer.write("to Login please");
-                writer.flush();
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                }
-            }
         }
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writer.write("to Login please");
+        writer.flush();
         return true;
     }
 

@@ -1,5 +1,6 @@
 package com.epc.tendering.service.controller.question;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.tendering.service.controller.common.BaseController;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
@@ -10,6 +11,7 @@ import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.MonitorAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
+import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,18 @@ public class BAnswerQuestionController extends BaseController implements FacadeA
     @Override
     public Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO) {
         return bAnswerQuestionService.getPublicityListOfficialNetwork(QueryPublicityDTO);
+    }
+
+    /**
+     * 官网:中标公示
+     * @return
+     */
+    @Override
+    public Result<PageInfo<WinBidVO>> getBidPublicity(@RequestBody PagerParam pagerParam) {
+        PageHelper.startPage(pagerParam.getPage(),pagerParam.getRows());
+        Result<List<WinBidVO>> bidPublicity = bAnswerQuestionService.getBidPublicity();
+        PageInfo<WinBidVO> pageInfo = new PageInfo<>(bidPublicity.getData());
+        return Result.success(pageInfo);
     }
 
     @Override

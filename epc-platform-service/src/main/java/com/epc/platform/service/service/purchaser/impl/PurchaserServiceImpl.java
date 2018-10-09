@@ -71,7 +71,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserBasicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tPurchaserBasicInfo.setCreateAt(date);
         tPurchaserBasicInfo.setUpdateAt(date);
-        tPurchaserBasicInfo.setPassword(Const.PASSWORD.PASSWORD);
         tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         tPurchaserBasicInfo.setState(Const.STATE.COMMITTED);
         tPurchaserBasicInfo.setInviterId(userBasicInfo.getId());

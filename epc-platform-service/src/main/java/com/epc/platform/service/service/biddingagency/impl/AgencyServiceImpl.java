@@ -9,6 +9,7 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
+import com.epc.common.util.MD5Util;
 import com.epc.platform.service.domain.tagency.*;
 import com.epc.platform.service.mapper.tagency.TAgencyAttachmentMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyBasicInfoMapper;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import sun.security.provider.MD5;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +68,6 @@ public class AgencyServiceImpl implements AgencyService {
         tAgencyBasicInfo.setCreateAt(date);
         tAgencyBasicInfo.setUpdateAt(date);
         tAgencyBasicInfo.setState(Const.STATE.REGISTERED);
-        tAgencyBasicInfo.setPassword(Const.PASSWORD.PASSWORD);
         tAgencyBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         try {
             return Result.success(tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo) > 0);
@@ -75,6 +76,10 @@ public class AgencyServiceImpl implements AgencyService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(MD5Util.MD5EncodeUtf8("epc1688"));
     }
     /**
      * 新增招标代理机构补全信息

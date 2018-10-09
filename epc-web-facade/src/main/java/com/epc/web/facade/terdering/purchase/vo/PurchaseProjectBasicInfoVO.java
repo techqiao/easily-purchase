@@ -23,8 +23,12 @@ public class PurchaseProjectBasicInfoVO implements Serializable {
     private String projectId;
     @ApiModelProperty(value = "项目名称")
     private String projectName;
+    @ApiModelProperty(value = "项目编号")
+    private String projectCode;
     @ApiModelProperty(value = "采购项目名称")
     private String purchaseProjectName;
+    @ApiModelProperty(value = "采购项目编号")
+    private String purchaseProjectCode;
     @ApiModelProperty(value = "采购项目开始时间")
     private Date purchaseStartTime;
     @ApiModelProperty(value = "采购项目结束时间")

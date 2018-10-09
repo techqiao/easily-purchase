@@ -28,6 +28,8 @@ public class ClientHandleAnnouncement {
     private Date biddingStart;
     @ApiModelProperty(value = "招标公告结束时间")
     private Date biddingEnd;
+    @ApiModelProperty(value = "标题")
+    private String title;
     @ApiModelProperty(value = "澄清开始时间")
     private Date defecationStart;
     @ApiModelProperty(value = "澄清结束时间")

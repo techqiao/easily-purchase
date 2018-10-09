@@ -2,15 +2,18 @@ package com.epc.web.client.controller.terdering.project;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
-import com.epc.web.client.controller.terdering.project.handle.*;
+import com.epc.web.client.controller.terdering.project.handle.ClientHandleCreateProjectByAdmin;
+import com.epc.web.client.controller.terdering.project.handle.ClientHandleProjectBasicInfo;
+import com.epc.web.client.controller.terdering.project.handle.ClientHandleUpdateProjectAdmin;
 import com.epc.web.client.controller.terdering.project.query.ClientQueryProjectInfoDTO;
 import com.epc.web.client.remoteApi.terdering.project.ProjectClient;
-import com.epc.web.facade.terdering.project.handle.*;
+import com.epc.web.facade.terdering.project.handle.HandleCreateProjectByAdmin;
+import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.handle.HandleUpdateProjectAdmin;
 import com.epc.web.facade.terdering.project.query.LoginInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
 import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
 import com.epc.web.facade.terdering.project.vo.SelectProjectListVO;
-import com.epc.web.facade.terdering.project.vo.SelectProjectPurchaserListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +30,7 @@ import java.util.Map;
  * <p>Date : 2018-09-18 14:03
  * <p>@Author : wjq
  */
-@Api(value = "项目服务",tags = {"项目服务"})
+@Api(value = "项目服务"/*,tags = {"项目服务"}*/)
 @RestController
 @RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ProjectBasicInfoController extends BaseController {

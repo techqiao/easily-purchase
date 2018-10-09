@@ -30,12 +30,10 @@ public interface FacadeBidAnnouncementService {
 
     /**
      * 根据标段查询 供应商投标报告
-     *
-     * @param queryBidAnnouncement
      * @return
      */
     @PostMapping(value = "queryBidAnnouncement", consumes = "application/json; charset=UTF-8")
-    Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestBody QueryBidAnnouncement queryBidAnnouncement);
+    Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestParam("bidId") Long bidId);
 
 
     /**

@@ -167,7 +167,6 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
-
     /**
      * 删除供应商
      * @param
@@ -186,7 +185,6 @@ public class SupplierServiceImpl  implements SupplierService {
             return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
         }
     }
-
     /**
      * 查询供应商基本信息
      * @param
@@ -210,7 +208,6 @@ public class SupplierServiceImpl  implements SupplierService {
             TSupplierAttachmentCriteria attachment= new TSupplierAttachmentCriteria();
             attachment.createCriteria().andSupplierIdEqualTo(tSupplierBasicInfo.getId());
             List<TSupplierAttachment> tSupplierAttachments = tSupplierAttachmentMapper.selectByExample(attachment);
-
             List<AttachmentVO> attachmentVOS = new ArrayList<>();
             for (TSupplierAttachment tSupplierAttachment : tSupplierAttachments) {
                 if(tSupplierAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())){

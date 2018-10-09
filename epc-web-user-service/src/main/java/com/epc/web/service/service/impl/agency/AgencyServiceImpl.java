@@ -121,12 +121,11 @@ public class AgencyServiceImpl implements AgencyService {
         tAgencyBasicInfo.setName(handleEmployee.getName());
         tAgencyBasicInfo.setAgencyId(handleEmployee.getAgencyId());
         tAgencyBasicInfo.setCellphone(handleEmployee.getCellphone());
-        tAgencyBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(handleEmployee.getPassword()));
+        tAgencyBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
         tAgencyBasicInfo.setInviterType(Const.INVITER_TYPE.PROXY);
         tAgencyBasicInfo.setInviterId(handleEmployee.getAgencyId());
         tAgencyBasicInfo.setInviterCompanyId(handleEmployee.getAgencyId().intValue());
         tAgencyBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
-        tAgencyBasicInfo.setPassword(Const.DEFAULT_PASSWORD.PASSWORD);
         tAgencyBasicInfo.setRole(handleEmployee.getRole());
         tAgencyBasicInfo.setCreateAt(new Date());
         tAgencyBasicInfo.setUpdateAt(new Date());
@@ -211,7 +210,7 @@ public class AgencyServiceImpl implements AgencyService {
             expertBasicInfo.setInviterId(handleExpert.getInviterid());
             expertBasicInfo.setInviterCompanyId(Integer.parseInt(handleExpert.getInvterCompanyId()));
             expertBasicInfo.setState(Const.STATE.REGISTERED);
-            expertBasicInfo.setPassword(Const.DEFAULT_PASSWORD.PASSWORD);
+            expertBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             expertBasicInfo.setCreateAt(date);
             expertBasicInfo.setUpdateAt(date);
             expertBasicInfo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
@@ -312,7 +311,7 @@ public class AgencyServiceImpl implements AgencyService {
             basicInfo.setState(Const.STATE.COMMITTED);
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             //默认密码
-            basicInfo.setPassword(Const.DEFAULT_PASSWORD.PASSWORD);
+            basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             basicInfo.setCreateAt(new Date());
             basicInfo.setUpdateAt(new Date());
             basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -1008,12 +1007,13 @@ public class AgencyServiceImpl implements AgencyService {
             supplierVos = tSupplierBasicInfoMapper.selectBasicInfo(supplierDto);
         } catch (Exception e) {
             LOGGER.error("条件查询供货商Exception:{}", e);
+            return Result.error("条件查询供应商失败");
         }
         if (CollectionUtils.isEmpty(supplierVos)) {
             return Result.error("没有符合条件的供货商");
         }
 
-        return CollectionUtils.isEmpty(supplierVos) ? Result.success("没有相关员工的信息") : Result.success("查询成功", supplierVos);
+        return CollectionUtils.isEmpty(supplierVos) ? Result.success("没有供应商的信息") : Result.success("查询成功", supplierVos);
     }
 
     /**

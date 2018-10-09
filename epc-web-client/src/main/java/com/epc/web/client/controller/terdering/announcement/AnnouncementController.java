@@ -9,7 +9,6 @@ import com.epc.web.client.remoteApi.terdering.announcement.AnnouncementClient;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncement;
 import com.epc.web.facade.terdering.announcement.handle.HandleAnnouncementStatus;
 import com.epc.web.facade.terdering.announcement.query.QueryAnnouncement;
-import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncement;
 import com.epc.web.facade.terdering.announcement.vo.PurchaseProjectAnnouncementOfficialNetwork;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +34,7 @@ public class AnnouncementController extends BaseController {
     private AnnouncementClient announcementClient;
 
     @ApiOperation(value = "添加|修改|刪除公告")
-    @PostMapping(value="/insertAnnouncement")
+    @PostMapping(value="/insertAnnouncement", consumes = "application/json; charset=UTF-8")
     public Result<Boolean> insertAnnouncement(@RequestBody ClientHandleAnnouncement clientHandleAnnouncement){
         HandleAnnouncement handleBidsBasicInfo = new HandleAnnouncement();
         BeanUtils.copyProperties(clientHandleAnnouncement, handleBidsBasicInfo);
@@ -45,7 +44,7 @@ public class AnnouncementController extends BaseController {
     }
 
     @ApiOperation(value = "公告状态 审批审核发布提交")
-    @PostMapping(value="/updateAnnouncementStatus")
+    @PostMapping(value="/updateAnnouncementStatus", consumes = "application/json; charset=UTF-8")
     public Result<Boolean> updateAnnouncementStatus(@RequestBody ClientHandleAnnouncementStatus clientHandleAnnouncementStatus){
         HandleAnnouncementStatus handleAnnouncementStatus = new HandleAnnouncementStatus();
         BeanUtils.copyProperties(clientHandleAnnouncementStatus,handleAnnouncementStatus);

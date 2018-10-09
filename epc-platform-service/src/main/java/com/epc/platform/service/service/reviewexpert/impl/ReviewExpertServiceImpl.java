@@ -60,7 +60,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
         if(!tExpertBasicInfos.isEmpty()){
             return Result.success("用户已存在，请直接登录");
         }
-
         TExpertBasicInfo pojo = new TExpertBasicInfo();
         pojo.setName(userBasicInfo.getUsername());
         pojo.setCellphone(userBasicInfo.getCellphone());

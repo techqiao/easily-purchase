@@ -10,7 +10,6 @@ import com.epc.tendering.service.mapper.bid.TPurchaserDetailInfoMapper;
 import com.epc.tendering.service.mapper.bid.TTenderMessageMapper;
 import com.epc.tendering.service.service.bid.BidAnnouncementService;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
-import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,14 +83,16 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
 
     /**
      * 公开供应商投标附录
-     * @param queryBidAnnouncement
      * @return
      */
     @Override
-    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(QueryBidAnnouncement queryBidAnnouncement) {
+    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(Long bidId) {
+        if(bidId==null){
+            return Result.error("bidId is not null");
+        }
         TOpeningRecordCriteria criteria=new TOpeningRecordCriteria();
         TOpeningRecordCriteria.Criteria cubCriteria=criteria.createCriteria();
-        cubCriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidsId());
+        cubCriteria.andBidsIdEqualTo(bidId);
         cubCriteria.andStatusEqualTo(Const.OPEN_STATUS.NORMA);
         cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TOpeningRecord> resultList=tOpeningRecordMapper.selectByExample(criteria);
@@ -112,7 +113,7 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
             }
             TTenderMessageCriteria tcriteria=new TTenderMessageCriteria();
             TTenderMessageCriteria.Criteria cubTcriteria=tcriteria.createCriteria();
-            cubTcriteria.andBidsIdEqualTo(queryBidAnnouncement.getBidsId());
+            cubTcriteria.andBidsIdEqualTo(bidId);
             cubTcriteria.andCompanyIdEqualTo(entity.getSupplierCompanyId());
             List<TTenderMessage> tenderList=tTenderMessageMapper.selectByExample(tcriteria);
             if(tenderList.size()==0){

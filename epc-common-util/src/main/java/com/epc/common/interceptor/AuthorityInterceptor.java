@@ -1,7 +1,5 @@
 package com.epc.common.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
-import com.epc.common.constants.Const;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
 import org.apache.commons.lang.StringUtils;
@@ -29,10 +27,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         String loginToken = CookieUtil.readLoginToken(request);
         if(StringUtils.isNotEmpty(loginToken)){
             String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-//            Sys = JSONObject.parseObject(userJsonStr,User.class);
         }
 
-//        if(user == null || (user.getRole().intValue() != Const.Role.ROLE_ADMIN)){
             response.reset();
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json;charset=UTF-8");
@@ -40,8 +36,6 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             out.flush();
             out.close();
             return false;
-//        }
-//        return true;
     }
 
     @Override

@@ -28,4 +28,7 @@ public class QueryExtractExpertList implements Serializable {
 
     private Long OperateId;
 
+    private Long procurementProjectId;
+
+
 }

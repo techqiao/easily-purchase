@@ -1,5 +1,6 @@
 package com.epc.web.client.controller.terdering.question;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.question.handle.ClientHandleReplyQuestion;
@@ -38,6 +39,7 @@ public class AnswerQuestionController extends BaseController {
         QueryAnswerQuestionDTO queryAnswerQuestionDTO = new QueryAnswerQuestionDTO();
         BeanUtils.copyProperties(clientQueryAnswerQuestionDTO,queryAnswerQuestionDTO);
         return answerQuestionClient.getQuestionList(queryAnswerQuestionDTO);
+
     }
 
     @ApiOperation(value = "回答采购项目问题")
@@ -58,6 +60,11 @@ public class AnswerQuestionController extends BaseController {
         return answerQuestionClient.getPublicityListOfficialNetwork(queryPublicityDTO);
     }
 
+    @ApiOperation(value = "官网:中标公示")
+    @PostMapping(value = "getBidPublicity")
+    public Result<Map<String, Object>> getBidPublicity(@RequestBody PagerParam pagerParam){
+        return answerQuestionClient.getBidPublicity(pagerParam);
+    }
 
     @ApiOperation(value = "监控 : 问题答复列表")
     @PostMapping(value = "getProcurementProjectAnswerQuestionList")

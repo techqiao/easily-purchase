@@ -417,7 +417,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select resultMap="selectMap" parameterType="com.epc.web.facade.terdering.answer.vo.WinBidVO" id="selectBySuppilerId" >
+  <select resultMap="selectMap" parameterType="com.epc.web.facade.terdering.answer.vo.WinBidVO" id="selectPublicWinning" >
    SELECT w.bid_name,w.create_at,s.company_name
     FROM t_win_bid w ,t_supplier_detail_info s
     WHERE w.supplier_id=s.supplier_id

@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 @Data
 @ApiModel
 public class ClientMoneyPayRecordDTO implements Serializable {
+
+    private static final long serialVersionUID = 4221608538190868410L;
     @ApiModelProperty("采购项目id")
     private Long purchaseProjectId;
 }

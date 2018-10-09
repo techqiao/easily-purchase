@@ -1,5 +1,6 @@
 package com.epc.web.client.remoteApi.terdering.question;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.answer.FacadeAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
@@ -31,6 +32,11 @@ public class AnswerQuestionHystrix implements FacadeAnswerQuestionService {
 
     @Override
     public Result<List<PublicityVO>> getPublicityListOfficialNetwork(QueryPublicityDTO QueryPublicityDTO) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result getBidPublicity(PagerParam pagerParam) {
         return Result.hystrixError();
     }
 

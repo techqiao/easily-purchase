@@ -45,5 +45,5 @@ public class AgencyEmployeeDto implements Serializable {
     /**
      * 是否删除
      */
-    private Integer isDelete= Const.IS_DELETED.NOT_DELETED;
+    private Integer isDeleted= Const.IS_DELETED.NOT_DELETED;
 }

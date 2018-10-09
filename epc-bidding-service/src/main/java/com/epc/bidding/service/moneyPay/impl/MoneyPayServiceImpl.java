@@ -183,13 +183,10 @@ public class MoneyPayServiceImpl implements MoneyPayService {
             Result.error("插入失败");
         }
         return Result.success(true);
-
-
-
-
     }
+
         /**
-         * 根据中标服务费表ID查询某标段供应商的服务费是否支付
+         * 查询采购项目下 标段供应商的服务费是否支付
          * @param dto
          * @return
          */

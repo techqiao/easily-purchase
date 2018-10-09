@@ -1,5 +1,6 @@
 package com.epc.web.facade.terdering.answer;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
@@ -44,6 +45,13 @@ public interface FacadeAnswerQuestionService {
     Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO);
 
 
+    /**
+     * 官网:中标公示
+     * @param pagerParam
+     * @return Result
+     */
+    @PostMapping(value = "getBidPublicity")
+    Result<Map<String, Object>> getBidPublicity(@RequestBody PagerParam pagerParam);
     /**
      * 监控 : 问题答复列表
      * @param queryAnswerQuestionDTO

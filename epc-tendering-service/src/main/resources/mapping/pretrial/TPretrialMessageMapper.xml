@@ -84,6 +84,8 @@
     </if>
     <include refid="Base_Column_List" />
     from t_pretrial_message
+    where is_delete=0
+
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

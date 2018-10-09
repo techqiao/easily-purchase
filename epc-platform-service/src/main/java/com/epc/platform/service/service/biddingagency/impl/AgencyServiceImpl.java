@@ -66,6 +66,7 @@ public class AgencyServiceImpl implements AgencyService {
         tAgencyBasicInfo.setCreateAt(date);
         tAgencyBasicInfo.setUpdateAt(date);
         tAgencyBasicInfo.setState(Const.STATE.REGISTERED);
+        tAgencyBasicInfo.setPassword(Const.PASSWORD.PASSWORD);
         tAgencyBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         try {
             return Result.success(tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo) > 0);

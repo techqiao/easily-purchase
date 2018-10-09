@@ -27,6 +27,10 @@ public class Const {
         int NOT_DELETED = 0;
     }
 
+    public interface PASSWORD{
+        String PASSWORD="epc1688";
+
+    }
     public interface IS_OK {
         int IS_OK = 1;
         int NOT_OK = 0;

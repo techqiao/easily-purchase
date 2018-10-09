@@ -71,6 +71,7 @@ public class SupplierServiceImpl  implements SupplierService {
         pojo.setRole(Const.Role.ROLE_CORPORATION);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setInviterType(Const.INVITER_TYPE.PLATFORM);
+        pojo.setPassword(Const.PASSWORD.PASSWORD);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
         pojo.setState(Const.STATE.REGISTERED);

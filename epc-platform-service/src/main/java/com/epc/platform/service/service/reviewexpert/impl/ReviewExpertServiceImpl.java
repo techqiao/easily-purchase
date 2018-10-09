@@ -67,6 +67,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
         pojo.setState(Const.STATE.REGISTERED);
         pojo.setCreateAt(new Date());
         pojo.setUpdateAt(new Date());
+        pojo.setPassword(Const.PASSWORD.PASSWORD);
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setInviterId(userBasicInfo.getId());
         pojo.setInviterType(Const.INVITER_TYPE.PLATFORM);

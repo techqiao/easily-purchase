@@ -266,6 +266,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             if(tPurchaserDetailInfos.isEmpty()){
                 PurchaserDetailVO purchaserDetailVO = new PurchaserDetailVO();
                 BeanUtils.copyProperties(tPurchaserBasicInfo,purchaserDetailVO);
+                purchaserDetailVO.setId(tPurchaserBasicInfo.getId());
                 return Result.success(purchaserDetailVO);
             }
             TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfos.get(0);

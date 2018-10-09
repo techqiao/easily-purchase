@@ -13,12 +13,12 @@ import com.epc.tendering.service.mapper.bid.*;
 import com.epc.tendering.service.mapper.pretrial.TPretrialFileMapper;
 import com.epc.tendering.service.mapper.pretrial.TPretrialMessageMapper;
 import com.epc.tendering.service.service.bid.EvaluationService;
-import com.epc.web.facade.bidding.handle.ClauseHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.handle.StandardTypeHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +57,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result insertEvaluation(EvaluationHandle evaluationHandle) {
+    public Result<Boolean> insertEvaluation(EvaluationHandle evaluationHandle) {
         List<StandardTypeHandle> standardType = evaluationHandle.getStandardType();
         List<Long> evaluationIds= new ArrayList<>();
         try {
@@ -87,10 +87,18 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
+    /**
+     * 根据id查询对应废标模板
+     * @param id 废标模板id
+     * @return
+     */
     @Override
     public Result<ClauseTemplateVO> getClauseTemplateById(Long id) {
-        BTenderAbolishClauseTemplate bTenderAbolishClauseTemplate = bTenderAbolishClauseTemplateMapper.selectByPrimaryKey(id);
         ClauseTemplateVO clauseTemplateVO = new ClauseTemplateVO();
+        BTenderAbolishClauseTemplate bTenderAbolishClauseTemplate = bTenderAbolishClauseTemplateMapper.selectByPrimaryKey(id);
+        if(null==bTenderAbolishClauseTemplate){
+            return Result.success(clauseTemplateVO);
+        }
         clauseTemplateVO.setFilePath(bTenderAbolishClauseTemplate.getFilePath());
         clauseTemplateVO.setClauseName(bTenderAbolishClauseTemplate.getClauseName());
        return Result.success(clauseTemplateVO);
@@ -103,44 +111,31 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     @Override
     public Result<List<GuaranteeVO>> selectGuarantee(Long procurementProjectId) {
+        //写入VO返回
+        List<GuaranteeVO> guaranteeVOS = new LinkedList<>();
         BBidsGuaranteeAmountCriteria criteria= new BBidsGuaranteeAmountCriteria();
         BBidsGuaranteeAmountCriteria.Criteria subCriterid = criteria.createCriteria();
         subCriterid.andProcurementProjectIdEqualTo(procurementProjectId);
         //查询
         List<BBidsGuaranteeAmount> bBidsGuaranteeAmounts = bBidsGuaranteeAmountMapper.selectByExample(criteria);
-        List<BBidOpeningPay> bBidOpeningPays = null;
+        List<BBidOpeningPay> bBidOpeningPays = new ArrayList<>();
         for (int i = 0; i < bBidsGuaranteeAmounts.size(); i++) {
             BBidOpeningPayCriteria bBidOpeningPayCriteria = new BBidOpeningPayCriteria();
             BBidOpeningPayCriteria.Criteria subBBidOpeningPayCriteria = bBidOpeningPayCriteria.createCriteria();
             subBBidOpeningPayCriteria.andBidsGuaranteeAmountIdEqualTo(bBidsGuaranteeAmounts.get(i).getId());
             bBidOpeningPays = bBidOpeningPayMapper.selectByExample(bBidOpeningPayCriteria);
         }
-        //写入VO返回
-        List<GuaranteeVO> guaranteeVOS = new LinkedList<>();
+        if(bBidOpeningPays.isEmpty()){
+            return Result.success(guaranteeVOS);
+        }
         for (int i = 0; i < bBidsGuaranteeAmounts.size(); i++) {
             GuaranteeVO guaranteeVO = new GuaranteeVO();
-            guaranteeVO.setProcurementProjectId(bBidsGuaranteeAmounts.get(i).getProcurementProjectId());
-            guaranteeVO.setBIssueDocumentsId(bBidsGuaranteeAmounts.get(i).getbIssueDocumentsId());
-            guaranteeVO.setBidsId(bBidsGuaranteeAmounts.get(i).getBidsId());
-            guaranteeVO.setBidsGuaranteeAmountId(bBidOpeningPays.get(i).getBidsGuaranteeAmountId());
-            guaranteeVO.setTendererId(bBidOpeningPays.get(i).getTendererId());
-            guaranteeVO.setTendererCompanyId(bBidOpeningPays.get(i).getTendererCompanyId());
-            guaranteeVO.setPaymentId(bBidOpeningPays.get(i).getPaymentId());
-            guaranteeVO.setTenderGuaranteeAmount(bBidsGuaranteeAmounts.get(i).getTenderGuaranteeAmount());
-            guaranteeVO.setBidsName(bBidsGuaranteeAmounts.get(i).getBidsName());
-            guaranteeVO.setReceivables(bBidsGuaranteeAmounts.get(i).getReceivables());
-            guaranteeVO.setBankAccount(bBidsGuaranteeAmounts.get(i).getBankAccount());
-            guaranteeVO.setTendererName(bBidOpeningPays.get(i).getTendererName());
-            guaranteeVO.setTendererCompanyName(bBidOpeningPays.get(i).getTendererName());
-            guaranteeVO.setAmountMoneyTime(bBidOpeningPays.get(i).getAmountMoneyTime());
-            guaranteeVO.setAmountMoney(bBidOpeningPays.get(i).getPaymentAccountNumber());
-            guaranteeVO.setPaymentName(bBidOpeningPays.get(i).getPaymentName());
-            guaranteeVO.setPaymentAccountNumber(bBidOpeningPays.get(i).getPaymentAccountNumber());
+            BeanUtils.copyProperties(bBidsGuaranteeAmounts.get(i),guaranteeVO);
+            BeanUtils.copyProperties(bBidOpeningPays.get(i),guaranteeVO);
             guaranteeVOS.add(guaranteeVO);
         }
         return Result.success(guaranteeVOS);
     }
-
     /**
      * 查询对应投递文件列表
      * @param companyId 公司id
@@ -175,7 +170,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         return Result.success(tPretrialFileVOS);
     }
-
 
     public int insertClause(EvaluationHandle evaluationHandle ,List<Long> evaluationIds){
         for (int i = 0; i < evaluationHandle.getTenderAbolishClauseList().size(); i++) {

@@ -12,7 +12,7 @@
     <!-- 按日期滚动日志 -->
     <appender name="ERROR-OUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 日志存放位置 -->
-        <file>logs/epc-platform-service/error.log</file>
+        <file>logs/epc-ossutil-service/error.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -32,7 +32,7 @@
     <!-- 按文件大小滚动日志 -->
     <appender name="INFO-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/epc-platform-service/info.log</file>
+        <file>logs/epc-ossutil-service/info.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>
         </encoder>
@@ -56,7 +56,7 @@
     <!-- 按日期和大小滚动日志 -->
     <appender name="DEBUG-OUT"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/epc-platform-service/debug.log</file>
+        <file>logs/epc-ossutil-service/debug.log</file>
 
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%class:%line] - %m%n</pattern>

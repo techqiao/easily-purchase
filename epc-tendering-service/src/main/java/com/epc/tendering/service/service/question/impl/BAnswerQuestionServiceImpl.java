@@ -91,7 +91,6 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
             publicityVO.setAnswerProblemList(list);
             returnList.add(publicityVO);
         }
-
         return Result.success(returnList);
     }
 
@@ -112,7 +111,11 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
             WinBidVO winBidVO = new WinBidVO();
             winBidVO.setBidName(tWinBid.getBidName());
             winBidVO.setCreateAt(tWinBid.getCreateAt());
-            winBidVO.setSupplierName(tSupplierDetailInfos.get(0).getCompanyName());
+            if(!tSupplierDetailInfos.isEmpty()){
+                winBidVO.setSupplierName(tSupplierDetailInfos.get(0).getCompanyName());
+            }else {
+                winBidVO.setSupplierName(null);
+            }
             winBidVOS.add(winBidVO);
         }
         return Result.success(winBidVOS);

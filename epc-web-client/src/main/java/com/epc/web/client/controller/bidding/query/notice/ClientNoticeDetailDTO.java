@@ -17,6 +17,6 @@ public class ClientNoticeDetailDTO{
     private  Long noticeId;
     @ApiModelProperty(value = "供应商Id")
     private  Long supplierId;
-    @ApiModelProperty(value = "供应商Id")
+    @ApiModelProperty(value = "下载文件支付查询")
     private ClientFilePay clientFilePay;
 }

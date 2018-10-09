@@ -1,15 +1,21 @@
 package com.epc.tendering.service.controller.enrolmentinvitation;
 
 import com.epc.common.Result;
+import com.epc.tendering.service.domain.signup.BSignUp;
 import com.epc.tendering.service.service.enrolmentinvitation.EnrolmentInvitationService;
+import com.epc.web.facade.bidding.vo.PayListForAllVO;
 import com.epc.web.facade.enrolmentinvitation.FacadeEnrolmentInvitation;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>Description : easilys
@@ -62,5 +68,23 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
 
     }
 
+    /**
+     * 供应商的采购项目参与列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<BSignUpVO>> queryInvitationList(@RequestBody InvitationForSupplierDTO dto){
+        return enrolmentInvitationService.queryInvitationList(dto);
+    }
 
+    /**
+     * 供应商参与的项目列表保证金支付情况
+     * @param list
+     * @return
+     */
+    @Override
+    public Result<List<PayListForAllVO>> isPayForGuaranty(@RequestBody List<BSignUpVO> list){
+        return enrolmentInvitationService.isPayForGuaranty(list);
+    }
 }

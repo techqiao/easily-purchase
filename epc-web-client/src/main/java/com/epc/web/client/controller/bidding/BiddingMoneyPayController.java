@@ -3,16 +3,20 @@ package com.epc.web.client.controller.bidding;
 import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.moneyPay.ClientFilePay;
 import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayDTO;
+import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayForAllDTO;
 import com.epc.web.client.controller.bidding.query.moneyPay.ClientMoneyPayRecordDTO;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.moneyPay.MoneyPayClient;
+import com.epc.web.client.remoteApi.enrolmentinvitation.EnrolmentInvitationClient;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.GuarantyListVo;
 import com.epc.web.facade.bidding.vo.MoneyPayVO;
+import com.epc.web.facade.bidding.vo.PayListForAllVO;
 import com.epc.web.facade.bidding.vo.ServiceBackVO;
 import com.epc.web.facade.bidding.vo.ServicePayVO;
+import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +41,8 @@ public class BiddingMoneyPayController extends BaseController {
 
     @Autowired
     MoneyPayClient moneyPayClient;
+    @Autowired
+    EnrolmentInvitationClient enrolmentInvitationClient;
 
     @ApiOperation(value = "获取保证金支付列表",tags = "获取保证金支付列表")
     @PostMapping(value = "getGuarantyPayList", consumes = "application/json; charset=UTF-8")
@@ -48,6 +54,16 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
 
+    @ApiOperation(value = "获取保证金支付列表(角色列表)",tags = "获取保证金支付列表(角色列表)")
+    @PostMapping(value = "getGuarantyPayListForAll", consumes = "application/json; charset=UTF-8")
+    public Result<List<PayListForAllVO>> getGuarantyPayListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
+        InvitationForSupplierDTO invitationForSupplierDTO=new InvitationForSupplierDTO();
+        invitationForSupplierDTO.setSupplierId(getLoginUser().getBossId());
+        invitationForSupplierDTO.setSupplierName(getLoginUser().getBossName());
+        Result<List<BSignUpVO>> result=enrolmentInvitationClient.queryInvitationList(invitationForSupplierDTO);
+        List<BSignUpVO> list=result.getData();
+        return enrolmentInvitationClient.isPayForGuaranty(list);
+    }
 
     @ApiOperation(value = "查询中标服务费支付列表",tags = "查询中标服务费支付列表")
     @PostMapping(value = "getServiceMoneyList", consumes = "application/json; charset=UTF-8")
@@ -80,8 +96,7 @@ public class BiddingMoneyPayController extends BaseController {
         HandleFilePay handleFilePay=new HandleFilePay();
         BeanUtils.copyProperties(handle,handleFilePay);
         handleFilePay.setCreator(getLoginUser().getName());
-        handle.setOperateId(getLoginUser().getUserId());
-        handle.setOperateId(1L);
+        handleFilePay.setOperateId(getLoginUser().getUserId());
         return moneyPayClient.insertPurchaseProjectFilePay(handleFilePay);
     }
 

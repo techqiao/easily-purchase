@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * @Date: 2018/9/30
  */
 @Data
-@ApiModel(value = "ClientFilePay",description = "下载文件支付查询")
+@ApiModel(value = "下载文件支付查询",description = "下载文件支付查询")
 public class ClientFilePay {
 
     @ApiModelProperty(value = "采购项目Id")

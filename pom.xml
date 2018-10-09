@@ -40,7 +40,7 @@
         <!--  招标数据服务 -->
         <module>epc-tendering-service</module>
         <!--epc-七牛文件存储服務-->
-        <module>epc-ossutil-service</module>
+        <module>epc-ossfile-service</module>
     </modules>
 
     <profiles>

@@ -9,7 +9,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * @author SongXing
  * @Date 2018-10-9 14:22:59
  */
-@FeignClient(value = "EPC-OSSUTIL-SERVICE",fallback = OssTokenHystrix.class)
+@FeignClient(value = "EPC-OSSFILE-SERVICE",fallback = OssTokenHystrix.class)
 public interface OssTokenClient extends FacadeOssTokenService {
 
 }

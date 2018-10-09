@@ -10,9 +10,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 public class ClientHandleOperatorCreateSupplier {
 
-    @ApiModelProperty(value = "运营商员工主键id")
-    @NotEmpty(message = "ClientHandleOperatorCreateSupplier.id.null")
-    private Long id;
+//    @ApiModelProperty(value = "运营商员工主键id")
+//    @NotEmpty(message = "ClientHandleOperatorCreateSupplier.id.null")
+//    private Long id;
 
     @ApiModelProperty(value = "供应商法人姓名")
     @NotEmpty(message = "ClientHandleOperatorCreateSupplier.name.null")

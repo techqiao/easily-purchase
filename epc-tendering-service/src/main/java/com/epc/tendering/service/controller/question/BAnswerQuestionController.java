@@ -53,11 +53,11 @@ public class BAnswerQuestionController extends BaseController implements FacadeA
      * @return
      */
     @Override
-    public Result<PageInfo<WinBidVO>> getBidPublicity(@RequestBody PagerParam pagerParam) {
+    public Result<Map<String, Object>> getBidPublicity(@RequestBody PagerParam pagerParam) {
         PageHelper.startPage(pagerParam.getPage(),pagerParam.getRows());
         Result<List<WinBidVO>> bidPublicity = bAnswerQuestionService.getBidPublicity();
         PageInfo<WinBidVO> pageInfo = new PageInfo<>(bidPublicity.getData());
-        return Result.success(pageInfo);
+        return Result.success(getDataTable(pageInfo));
     }
 
     @Override

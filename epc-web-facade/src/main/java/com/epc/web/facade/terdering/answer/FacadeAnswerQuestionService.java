@@ -7,9 +7,6 @@ import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
-import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
@@ -53,8 +50,8 @@ public interface FacadeAnswerQuestionService {
      * @param pagerParam
      * @return Result
      */
-    @GetMapping(value = "getBidPublicity")
-    Result<PageInfo<WinBidVO>> getBidPublicity(PagerParam pagerParam);
+    @PostMapping(value = "getBidPublicity")
+    Result<Map<String, Object>> getBidPublicity(@RequestBody PagerParam pagerParam);
     /**
      * 监控 : 问题答复列表
      * @param queryAnswerQuestionDTO

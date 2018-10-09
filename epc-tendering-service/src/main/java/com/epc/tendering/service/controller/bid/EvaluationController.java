@@ -5,10 +5,14 @@ import com.epc.tendering.service.service.bid.EvaluationService;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
+import com.epc.web.facade.bidding.vo.GuaranteeVO;
+import com.epc.web.facade.bidding.vo.TPretrialFileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>Description : easilys
@@ -23,17 +27,17 @@ public class EvaluationController implements FacadeEvaluationService {
     private EvaluationService evaluationService;
 
     @Override
-    public Result insertEvaluation(@RequestBody EvaluationHandle evaluationHandle) {
+    public Result<Boolean> insertEvaluation(@RequestBody EvaluationHandle evaluationHandle) {
         return evaluationService.insertEvaluation(evaluationHandle);
     }
 
     @Override
-    public Result selectGuarantee(@RequestParam("procurementProjectId") Long procurementProjectId) {
+    public Result<List<GuaranteeVO>> selectGuarantee(@RequestParam("procurementProjectId") Long procurementProjectId) {
         return evaluationService.selectGuarantee(procurementProjectId);
     }
 
     @Override
-    public Result getFilesByCompanyId(@RequestParam("companyId") Long companyId) {
+    public Result<List<TPretrialFileVO>> getFilesByCompanyId(@RequestParam("companyId") Long companyId) {
         return evaluationService.getFilesByCompanyId(companyId);
     }
 

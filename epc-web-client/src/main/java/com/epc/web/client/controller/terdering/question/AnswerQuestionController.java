@@ -11,8 +11,6 @@ import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +39,7 @@ public class AnswerQuestionController extends BaseController {
         QueryAnswerQuestionDTO queryAnswerQuestionDTO = new QueryAnswerQuestionDTO();
         BeanUtils.copyProperties(clientQueryAnswerQuestionDTO,queryAnswerQuestionDTO);
         return answerQuestionClient.getQuestionList(queryAnswerQuestionDTO);
+
     }
 
     @ApiOperation(value = "回答采购项目问题")
@@ -64,7 +62,7 @@ public class AnswerQuestionController extends BaseController {
 
     @ApiOperation(value = "官网:中标公示")
     @PostMapping(value = "getBidPublicity")
-    public Result<PageInfo<WinBidVO>> getBidPublicity(@RequestBody PagerParam pagerParam){
+    public Result<Map<String, Object>> getBidPublicity(@RequestBody PagerParam pagerParam){
         return answerQuestionClient.getBidPublicity(pagerParam);
     }
 

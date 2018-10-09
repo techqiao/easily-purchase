@@ -7,17 +7,22 @@ import com.epc.common.exception.BusinessException;
 import com.epc.common.util.GeneratorCodeUtil;
 import com.epc.tendering.service.domain.project.TProjectBasicInfo;
 import com.epc.tendering.service.domain.project.TProjectBasicInfoCriteria;
-import com.epc.tendering.service.domain.purchaser.*;
+import com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation;
+import com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria;
+import com.epc.tendering.service.domain.purchaser.TProjectPurchaserEmployeeRelation;
+import com.epc.tendering.service.domain.purchaser.TProjectPurchaserEmployeeRelationCriteria;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchaser.TProjectEmployeeRelationMapper;
 import com.epc.tendering.service.mapper.purchaser.TProjectPurchaserEmployeeRelationMapper;
 import com.epc.tendering.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.tendering.service.service.project.TProjectBasicInfoService;
 import com.epc.web.facade.terdering.project.handle.*;
-import com.epc.web.facade.terdering.project.query.QueryPurchaserEmployeeIdAndRole;
+import com.epc.web.facade.terdering.project.query.LoginInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
-import com.epc.web.facade.terdering.project.vo.*;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.epc.web.facade.terdering.project.vo.ProjectBasicInfoVO;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.vo.SelectProjectListVO;
+import com.epc.web.facade.terdering.project.vo.SelectProjectPurchaserListVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +58,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
     private TProjectEmployeeRelationMapper tProjectEmployeeRelationMapper;
     @Autowired  //采购项目人员关系表
     private TProjectPurchaserEmployeeRelationMapper tProjectPurchaserEmployeeRelationMapper;
-    @Autowired  //采购人基本表
+    @Autowired
     private TPurchaserBasicInfoMapper tPurchaserBasicInfoMapper;
 
     @Override
@@ -75,106 +80,229 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
         }
     }
 
-    /**
+    /**0
      * 创建项目
      * 指定项目名
-     * 指派项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
+     * 指派项目经理(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> createProjectByAdmin(HandleCreateProjectByAdmin handleCreateProjectByAdmin){
-        //当前指派人id(管理员id或是法人id) 当前登陆人的id（角色是法人或者管理员）
-        Long createrId = handleCreateProjectByAdmin.getCreaterId();
-        //创建项目人 姓名  当前登陆人的姓名
-        String createrName = handleCreateProjectByAdmin.getCreaterName();
+        Long loginId = handleCreateProjectByAdmin.getLoginId();
+        Long bossId = handleCreateProjectByAdmin.getBossId();
+        String name = handleCreateProjectByAdmin.getName();
 
-        //当前的角色 role(是法人还是管理员)
-        Integer role = handleCreateProjectByAdmin.getRole();
-        //项目名字
+        Integer loginRole = handleCreateProjectByAdmin.getLoginRole();
+
+        if(loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("是员工肯定不行");
+        }
         String projectName = handleCreateProjectByAdmin.getProjectName();
-
-        //指派人的id(指派某个员工)这个员工必须是这个 当前指派人id 的 法人 下的 员工
         Long executiveId = handleCreateProjectByAdmin.getExecutiveId();
-        //指派 人的姓名
         String executiveName = handleCreateProjectByAdmin.getExecutiveName();
-
-        if(createrId==null || role==null || StringUtils.isBlank(projectName) || StringUtils.isBlank(createrName) || executiveId==null){
-            return Result.error("[管理员指派项目负责人] createrId==null || role==null || StringUtils.isBlank(projectName) || StringUtils.isBlank(createrName) || executiveId==null {参数异常}");
+        String notes = handleCreateProjectByAdmin.getNotes();
+        if(StringUtils.isBlank(projectName) || executiveId==null || StringUtils.isBlank(executiveName)){
+            return Result.error("前端传入参数异常");
         }
-        if(role.intValue()==Const.Role.ROLE_CUSTOMER){  //是员工
-            return Result.error("role类型不是管理员或者法人，不能指派项目负责人");
-        }
-
-        //先查询采购人basic表中的法人id
-        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(createrId);
-        Long purchaserId = tPurchaserBasicInfo.getPurchaserId();
-
-        //将数据插入到  在项目人员指派关系表 中
+        //补全信息
         TProjectEmployeeRelation tProjectEmployeeRelation=new TProjectEmployeeRelation();
         tProjectEmployeeRelation.setProjectName(projectName);
-        tProjectEmployeeRelation.setCreaterId(createrId);
-        tProjectEmployeeRelation.setCreaterName(createrName);
-        tProjectEmployeeRelation.setPurchaserId(purchaserId);
-        tProjectEmployeeRelation.setExecutiveName(executiveName);
+        tProjectEmployeeRelation.setCreaterId(loginId);
+        tProjectEmployeeRelation.setCreaterName(name);
+        tProjectEmployeeRelation.setPurchaserId(bossId);
         tProjectEmployeeRelation.setExecutiveId(executiveId);
+        tProjectEmployeeRelation.setExecutiveName(executiveName);
         tProjectEmployeeRelation.setCreateAt(new Date());
         tProjectEmployeeRelation.setUpdateAt(new Date());
+        tProjectEmployeeRelation.setNotes(notes);
 
         try {
             return Result.success(tProjectEmployeeRelationMapper.insertSelective(tProjectEmployeeRelation) > 0);
         }catch (BusinessException e){
-            LOGGER.error("[管理员指派项目负责人] tProjectEmployeeRelationMapper.insertSelective : 异常信息e={}",e);
+            LOGGER.error("[管理员或法人指派项目及项目经理] tProjectEmployeeRelationMapper.insertSelective : 异常信息e={}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }catch (Exception e){
-            LOGGER.error("[管理员指派项目负责人] tProjectEmployeeRelationMapper.insertSelective : 异常信息e={}",e);
+            LOGGER.error("[管理员或法人指派项目及项目经理] tProjectEmployeeRelationMapper.insertSelective : 异常信息e={}",e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
     }
-    /**在已经存在的项目底下创建采购项目
-     * 创建采购项目
-     *      指定采购项目名
-     *      指派采购项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
+    /**0.1
+     *  删除一个项目
+     *
      */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> deleteProjectAdmin(HandleDeleteProjectAdmin handleDeleteProjectAdmin){
+        Integer loginRole = handleDeleteProjectAdmin.getLoginRole();
+        if(loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("是员工没有权限");
+        }
+        Long projectId = handleDeleteProjectAdmin.getProjectId();
+        Integer isDeleted = handleDeleteProjectAdmin.getIsDeleted();
+        if(projectId==null || isDeleted==null){
+            return Result.error("前端传输参数异常");
+        }
+        /**
+         * 先用项目id去采购项目表中去看下，有没有在这个项目底下创建具体的采购项目,那么就必须先将这个采购项目删除在进行 项目的删除
+         */
+        TProjectPurchaserEmployeeRelationCriteria criteria=new TProjectPurchaserEmployeeRelationCriteria();
+        TProjectPurchaserEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andProjectIdEqualTo(projectId);
+        List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria);
+        if(!CollectionUtils.isEmpty(tProjectPurchaserEmployeeRelations)){
+            return Result.success("此项目底下已经有具体实施的采购项目，请先删除底下的采购项目，在删除此项目");
+        }
+
+        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
+        tProjectEmployeeRelation.setIsDeleted(isDeleted);
+        int i=0;
+        try{
+            i=tProjectEmployeeRelationMapper.updateByPrimaryKeySelective(tProjectEmployeeRelation);
+            return Result.success(i>0);
+        }catch (BusinessException e){
+            LOGGER.error("[管理员或法人删除一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("[管理员或法人删除一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
+        }
+    }
+    /**0.2
+     *  修改项目
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> updateProjectAdmin(HandleUpdateProjectAdmin handleUpdateProjectAdmin){
+        Integer loginRole = handleUpdateProjectAdmin.getLoginRole();
+        if(loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("是员工没有权限");
+        }
+        Long projectId = handleUpdateProjectAdmin.getProjectId();
+        String projectName = handleUpdateProjectAdmin.getProjectName();
+        Long executiveId = handleUpdateProjectAdmin.getExecutiveId();
+        String executiveName = handleUpdateProjectAdmin.getExecutiveName();
+        String notes = handleUpdateProjectAdmin.getNotes();
+
+        if(projectId==null){
+            return Result.error("前端传输参数异常");
+        }
+        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
+        if(StringUtils.isNotBlank(projectName)){
+            tProjectEmployeeRelation.setProjectName(projectName);
+        }
+        if(executiveId!=null){
+            tProjectEmployeeRelation.setExecutiveId(executiveId);
+        }
+        if(StringUtils.isNotBlank(executiveName)){
+            tProjectEmployeeRelation.setExecutiveName(executiveName);
+        }
+        if(StringUtils.isNotBlank(notes)){
+            tProjectEmployeeRelation.setNotes(notes);
+        }
+        tProjectEmployeeRelation.setUpdateAt(new Date());
+        int i=0;
+        try{
+            i=tProjectEmployeeRelationMapper.updateByPrimaryKeySelective(tProjectEmployeeRelation);
+            return Result.success(i>0);
+        }catch (BusinessException e){
+            LOGGER.error("[管理员或法人修改一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("[管理员或法人修改一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
+        }
+    }
+    /**0.3
+     * 查看项目 列表
+     *
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<List<SelectProjectListVO>> selectProjectList(LoginInfo loginInfo){
+        Integer loginRole = loginInfo.getLoginRole();
+        Long loginId = loginInfo.getLoginId();
+
+        if(loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+            return Result.error("是员工没有权限");
+        }
+        TProjectEmployeeRelationCriteria criteria=new TProjectEmployeeRelationCriteria();
+        TProjectEmployeeRelationCriteria.Criteria subCriteria= criteria.createCriteria();
+        subCriteria.andCreaterIdEqualTo(loginId);
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        List<TProjectEmployeeRelation> tProjectEmployeeRelations = tProjectEmployeeRelationMapper.selectByExample(criteria);
+        if(CollectionUtils.isEmpty(tProjectEmployeeRelations)){
+            return Result.success("你还没有创建项目");
+        }
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        List<SelectProjectListVO> listVOS=new ArrayList<SelectProjectListVO>();
+        for(TProjectEmployeeRelation single:tProjectEmployeeRelations){
+            SelectProjectListVO vo=new SelectProjectListVO();
+            BeanUtils.copyProperties(single,vo);
+            vo.setCreateAt(format.format(single.getCreateAt()));
+            vo.setUpdateAt(format.format(single.getUpdateAt()));
+            listVOS.add(vo);
+        }
+        return Result.success(listVOS);
+    }
+
+
+
+    /**1
+     * 在已经存在的项目底下创建采购项目，指定采购项目名称，并指派经办人，批复人，审核人
+     *      指派采购项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据,将状态改成 1进行中)
+     */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> createProjectPurchaserByAdmin(HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin){
-        //这个 采购项目所属于哪个项目下面的子项目
+        Long bossId = handleCreateProjectPurchaserByAdmin.getBossId();
+        Long loginId = handleCreateProjectPurchaserByAdmin.getLoginId();
+        /**
+         * 确定当前登陆人的身份是这个项目的项目经理
+         *      用项目id去匹配这个项目经理id
+         *      方法：把当前 登陆人的id拿到项目表中走下，看有没有被指定项目。
+         */
+        //  拿到 该项目的 id;
         Long projectId = handleCreateProjectPurchaserByAdmin.getProjectId();
-        //当前 创建人的id（当前登陆人的id）
-        Long createrId = handleCreateProjectPurchaserByAdmin.getCreaterId();
-        // 当前 创建人的姓名 （当前 登陆人的姓名）
-        String createrName = handleCreateProjectPurchaserByAdmin.getCreaterName();
-        //  当前 你创建的这个采购项目的 名字
+        if(projectId==null){
+            return Result.error("不给我项目id,怎么知道你能不能在该项目下创建采购项目");
+        }
+        //  通过项目id来查具体的项目经理id
+        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
+        Long executiveId = tProjectEmployeeRelation.getExecutiveId();
+        if(!loginId.equals(executiveId)){
+            return Result.error("没有权利在该项目底下创建采购的权利");
+        }
         String projectPurchaserName = handleCreateProjectPurchaserByAdmin.getProjectPurchaserName();
-        //  指定执行人的id （法人所下的员工）
-        Long executiveId = handleCreateProjectPurchaserByAdmin.getExecutiveId();
+        Long executiveId1 = handleCreateProjectPurchaserByAdmin.getExecutiveId();
         String executiveName = handleCreateProjectPurchaserByAdmin.getExecutiveName();
-        //  当前 登陆人的角色
-        Integer role = handleCreateProjectPurchaserByAdmin.getRole();
-
-        if(projectId==null || createrId==null || createrName==null || StringUtils.isBlank(projectPurchaserName) || executiveId==null || role==null){
-            return Result.error("[创建采购项目] projectId==null || createrId==null || createrName==null || StringUtils.isBlank(projectPurchaserName) || executiveId==null || role==null : {参数异常}");
+        Long approvalId = handleCreateProjectPurchaserByAdmin.getApprovalId();
+        String approvalName = handleCreateProjectPurchaserByAdmin.getApprovalName();
+        Long checkId = handleCreateProjectPurchaserByAdmin.getCheckId();
+        String checkName = handleCreateProjectPurchaserByAdmin.getCheckName();
+        if(executiveId1==null || StringUtils.isBlank(executiveName) || approvalId==null || StringUtils.isBlank(approvalName) || checkId==null || StringUtils.isBlank(checkName)){
+            return Result.error("前端传入参数异常");
         }
-        if(role.intValue()==Const.Role.ROLE_CUSTOMER){  //是员工
-            return Result.error("你的角色权限不够");
-        }
-
-        //依据当前 登陆人的id来查出 法人id
-        TPurchaserBasicInfo tPurchaserBasicInfo = tPurchaserBasicInfoMapper.selectByPrimaryKey(createrId);
-        Long purchaserId = tPurchaserBasicInfo.getPurchaserId();
-
-        //  将得到的信息插入到 采购 人员 关系表中
+        String notes = handleCreateProjectPurchaserByAdmin.getNotes();
         TProjectPurchaserEmployeeRelation tProjectPurchaserEmployeeRelation=new TProjectPurchaserEmployeeRelation();
         tProjectPurchaserEmployeeRelation.setProjectId(projectId);
+        tProjectPurchaserEmployeeRelation.setPurchaserId(bossId);
         tProjectPurchaserEmployeeRelation.setProjectPurchaserName(projectPurchaserName);
-        tProjectPurchaserEmployeeRelation.setCreaterId(createrId);
-        tProjectPurchaserEmployeeRelation.setCreaterName(createrName);
-        tProjectPurchaserEmployeeRelation.setPurchaserId(purchaserId);
-        tProjectPurchaserEmployeeRelation.setExecutiveId(executiveId);
+        tProjectPurchaserEmployeeRelation.setExecutiveId(executiveId1);
         tProjectPurchaserEmployeeRelation.setExecutiveName(executiveName);
+        tProjectPurchaserEmployeeRelation.setApprovalId(approvalId);
+        tProjectPurchaserEmployeeRelation.setApprovalName(approvalName);
+        tProjectPurchaserEmployeeRelation.setCheckId(checkId);
+        tProjectPurchaserEmployeeRelation.setCheckName(checkName);
         tProjectPurchaserEmployeeRelation.setCreateAt(new Date());
         tProjectPurchaserEmployeeRelation.setUpdateAt(new Date());
-
+        tProjectPurchaserEmployeeRelation.setState(1);//进行中
+        tProjectPurchaserEmployeeRelation.setNotes(notes);
         try{
             return Result.success(tProjectPurchaserEmployeeRelationMapper.insertSelective(tProjectPurchaserEmployeeRelation)>0);
         }catch (BusinessException e){
@@ -187,163 +315,96 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
             return Result.error(e.getMessage());
         }
     }
-    /**
-     *  只查询 这个员工下的项目列表
+    /**1.1
+     * 获取 自己创建的采购项目 列表
+     *
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<List<ProjectEmployeeRelationVO>> getProjectListById(QueryPurchaserEmployeeIdAndRole queryPurchaserEmployeeIdAndRole){
-        /**
-         * 拿到自己当前登陆的一些信息
-         */
-        Long id = queryPurchaserEmployeeIdAndRole.getId();
-        Integer role = queryPurchaserEmployeeIdAndRole.getRole();
-        if(id==null || role==null){
-            return Result.error("[查询 这个员工下的项目，列表] id==null || role==null : {参数异常}");
-        }
-        if(role.intValue()!=Const.Role.ROLE_CUSTOMER){  //如果你不是员工
-            // 不是员工
-            return Result.error("角色不匹配");
-        }
-
-        //查询 项目
-        TProjectEmployeeRelationCriteria criteria=new TProjectEmployeeRelationCriteria();
-        TProjectEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
-
-        subCriteria.andExecutiveIdEqualTo(id);
-
-        List<TProjectEmployeeRelation> tProjectEmployeeRelations = tProjectEmployeeRelationMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tProjectEmployeeRelations)){
-            return Result.success("你没有被指定项目");
-        }
-        //  证明这个员工有被管理人指定项目
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-        //将数据 复制到返回类中
-        List<ProjectEmployeeRelationVO> listVO=new ArrayList<ProjectEmployeeRelationVO>();
-        for (TProjectEmployeeRelation single:tProjectEmployeeRelations) {
-            ProjectEmployeeRelationVO vo=new ProjectEmployeeRelationVO();
-            BeanUtils.copyProperties(single,vo);
-            vo.setCreateAt(format.format(single.getCreateAt()));
-            listVO.add(vo);
-        }
-        return Result.success(listVO);
-    }
-    /**
-     *  只查询 这个员工下的采购项目列表
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public Result<List<ProjectEmployeeRelationVO>> getProjectPurchaserListByEmployeeId(QueryPurchaserEmployeeIdAndRole queryPurchaserEmployeeIdAndRole){
-        /**
-         * 拿到自己当前登陆的一些信息
-         */
-        Long id = queryPurchaserEmployeeIdAndRole.getId();
-        Integer role = queryPurchaserEmployeeIdAndRole.getRole();
-        if(id==null || role==null){
-            return Result.error("[查询 这个员工下的项目，列表] id==null || role==null : {参数异常}");
-        }
-        if(role.intValue()!=Const.Role.ROLE_CUSTOMER){  //如果你不是员工
-            // 不是员工
-            return Result.error("角色不匹配");
-        }
-        //查询 采购项目
-        TProjectPurchaserEmployeeRelationCriteria criteria=new TProjectPurchaserEmployeeRelationCriteria();
-        TProjectPurchaserEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andExecutiveIdEqualTo(id);
-        List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tProjectPurchaserEmployeeRelations)){
-            return Result.success("没有查询到有被指派的采购项目");
-        }
-        List<ProjectEmployeeRelationVO> listVO=new ArrayList<ProjectEmployeeRelationVO>();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-        for(TProjectPurchaserEmployeeRelation single:tProjectPurchaserEmployeeRelations){
-            ProjectEmployeeRelationVO vo=new ProjectEmployeeRelationVO();
-            BeanUtils.copyProperties(single,vo);
-            vo.setProjectName(single.getProjectPurchaserName());
-            vo.setCreateAt(format.format(single.getCreateAt()));
-            listVO.add(vo);
-        }
-        return  Result.success(listVO);
-    }
-    /**3
-     * 管理员或者法人 查询所有的项目及其下面所有的采购项目列表
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public Result<List<ProjectEmployeeRelationVO2>> getProjectPurchaserListById(QueryPurchaserEmployeeIdAndRole queryPurchaserEmployeeIdAndRole){
-        /**
-         * 拿到自己当前登陆的一些信息
-         */
-        Long id = queryPurchaserEmployeeIdAndRole.getId();
-        Integer role = queryPurchaserEmployeeIdAndRole.getRole();
-        if(id==null || role==null){
-            return Result.error("[查询 这个员工下的项目，列表] id==null || role==null : {参数异常}");
-        }
-        if(role.intValue()==Const.Role.ROLE_CUSTOMER){
-            // 是员工，
-            return Result.error("角色不匹配");
-        }
-        //先拿到自己底下创建所有的项目，在通过项目的id来拿到这个项目id下面对应的采购项目
-        TProjectEmployeeRelationCriteria criteria=new TProjectEmployeeRelationCriteria();
-        TProjectEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andCreaterIdEqualTo(id);
-        List<TProjectEmployeeRelation> tProjectEmployeeRelations = tProjectEmployeeRelationMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tProjectEmployeeRelations)){
-            return Result.success("您还没有创建项目");
-        }
-
-        List<ProjectEmployeeRelationVO2> listVO=new ArrayList<ProjectEmployeeRelationVO2>();
-
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-        //拿到所有的已经创建的项目
-        for(TProjectEmployeeRelation single:tProjectEmployeeRelations){
-            ProjectEmployeeRelationVO2 vo2=new ProjectEmployeeRelationVO2();
-            BeanUtils.copyProperties(single,vo2);
-            vo2.setCreateAt(format.format(single.getCreateAt()));
-            listVO.add(vo2);
-        }
-        TProjectPurchaserEmployeeRelationCriteria criteria1=new TProjectPurchaserEmployeeRelationCriteria();
-        TProjectPurchaserEmployeeRelationCriteria.Criteria criteria2 = criteria1.createCriteria();
-        //拿到所有的采购项目
-        for(ProjectEmployeeRelationVO2 vo:listVO){
-            Long id1 = vo.getId();
-            List<ProjectPurchaserVO> listProjectPurchaser = vo.getListProjectPurchaser();
-            criteria2.andProjectIdEqualTo(id1);
-            criteria2.andCreaterIdEqualTo(id);
-            List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria1);
-            BeanUtils.copyProperties(tProjectPurchaserEmployeeRelations,listProjectPurchaser);
-            vo.setListProjectPurchaser(listProjectPurchaser);
-        }
-        return Result.success(listVO);
-    }
-    /**(重复)
-     * 这个登陆人必须是管理员 或者 法人（反正是创建这个项目的人）
-     * 查询 当前 登陆人下的对应项目下的所有采购项目
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public Result<List<ProjectEmployeeRelationVO>> getProjectPurchaserByProjectId(HandleProjectPurchaserByProjectId handleProjectPurchaserByProjectId){
-        Long id = handleProjectPurchaserByProjectId.getId();
-        Long projectId = handleProjectPurchaserByProjectId.getProjectId();
-
-        if(id==null || projectId==null){
-            return Result.error("[查询项目下的所有采购项目] id==null || projectId==null {参数异常}");
+    public Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(HandleSelectProjectPurchaserList handleSelectProjectPurchaserList){
+        Long loginId = handleSelectProjectPurchaserList.getLoginId();
+        Long projectId = handleSelectProjectPurchaserList.getProjectId();
+        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
+        Long executiveId = tProjectEmployeeRelation.getExecutiveId();
+        if(!loginId.equals(executiveId)){
+            return Result.error("当前项目经理不是你");
         }
         TProjectPurchaserEmployeeRelationCriteria criteria=new TProjectPurchaserEmployeeRelationCriteria();
         TProjectPurchaserEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andProjectIdEqualTo(projectId);
-        subCriteria.andCreaterIdEqualTo(id);
-
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria);
         if(CollectionUtils.isEmpty(tProjectPurchaserEmployeeRelations)){
-            return Result.success(null);
+            return Result.success("你还没有创建采购项目");
         }
-        List<ProjectEmployeeRelationVO> listVO=new ArrayList<ProjectEmployeeRelationVO>();
+        List<SelectProjectPurchaserListVO> listVOS=new ArrayList<SelectProjectPurchaserListVO>();
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
         for(TProjectPurchaserEmployeeRelation single:tProjectPurchaserEmployeeRelations){
-            ProjectEmployeeRelationVO vo=new ProjectEmployeeRelationVO();
+            SelectProjectPurchaserListVO vo=new SelectProjectPurchaserListVO();
             BeanUtils.copyProperties(single,vo);
-            vo.setProjectName(single.getProjectPurchaserName());
             vo.setCreateAt(format.format(single.getCreateAt()));
-            listVO.add(vo);
+            vo.setUpdateAt(format.format(single.getUpdateAt()));
+            listVOS.add(vo);
         }
-        return Result.success(listVO);
+        return Result.success(listVOS);
+    }
+    /**1.2
+     * 删除采购项目
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> deleteProjectPurchaser(HandleDeleteProjectPurchaser handleDeleteProjectPurchaser){
+        /**
+         * 依据采购项目id来查出所属项目id，从而在项目表中查出 对应的项目经理，然后匹配 当前登陆id，如果是一样的，证明这个项目是自己创建的，就可以删除
+         */
+        Long projectPurchaserId = handleDeleteProjectPurchaser.getProjectPurchaserId();
+        Integer isDeleted = handleDeleteProjectPurchaser.getIsDeleted();
+        if(projectPurchaserId==null || isDeleted==null){
+            Result.error("前端传入参数异常");
+        }
+        TProjectPurchaserEmployeeRelation tProjectPurchaserEmployeeRelation = tProjectPurchaserEmployeeRelationMapper.selectByPrimaryKey(projectPurchaserId);
+        tProjectPurchaserEmployeeRelation.setIsDeleted(isDeleted);
+        int i=0;
+        try{
+            i=tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKeySelective(tProjectPurchaserEmployeeRelation);
+            return Result.success(i>0);
+        }catch (BusinessException e){
+            LOGGER.error("[项目经理删除采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("[项目经理删除采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
+        }
+    }
+    /**1.3
+     * 修改采购项目
+     *
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<Boolean> updateProjectPurchaser(HandleUpdateProjectPurchaser handleUpdateProjectPurchaser){
+        Long projectPurchaserId = handleUpdateProjectPurchaser.getProjectPurchaserId();
+        if(projectPurchaserId==null){
+            return Result.error("前端传入参数异常");
+        }
+        TProjectPurchaserEmployeeRelation tProjectPurchaserEmployeeRelation=new TProjectPurchaserEmployeeRelation();
+        BeanUtils.copyProperties(handleUpdateProjectPurchaser,tProjectPurchaserEmployeeRelation);
+        tProjectPurchaserEmployeeRelation.setId(projectPurchaserId);
+        int i=0;
+        try {
+            i=tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKey(tProjectPurchaserEmployeeRelation);
+            return Result.success(i>0);
+        }catch (BusinessException e){
+            LOGGER.error("[项目经理修改采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKey : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+        }catch (Exception e){
+            LOGGER.error("[项目经理修改采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKey : 异常信息e={}",e);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return Result.error(e.getMessage());
+        }
     }
 
 

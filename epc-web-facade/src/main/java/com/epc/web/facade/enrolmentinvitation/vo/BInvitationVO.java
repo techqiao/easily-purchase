@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class BInvitationVO {
 
+    private Long id;
+
     private String bidsName;
 
     private String supplierName;

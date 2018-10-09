@@ -62,7 +62,6 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
 
 
     }
-
     /**
      * 该方法也是需要当前对应的Interceptor的preHandle方法的返回值为true时才会执行
      */

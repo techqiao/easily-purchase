@@ -66,6 +66,12 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.7.0</version>
 		</dependency>
+        <dependency>
+            <groupId>com.epc</groupId>
+            <artifactId>epc-web-facade</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

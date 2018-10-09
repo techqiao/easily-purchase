@@ -15,6 +15,7 @@ import java.io.Serializable;
 @ApiModel(value = "项目经理监控")
 @Data
 public class ClientQueryAnnouncement extends PagerParam implements Serializable {
+    private static final long serialVersionUID = 7773945870339866999L;
     @ApiModelProperty(value = "采购人ID")
     private Long purchaserId;
     @ApiModelProperty(value = "采购项目ID")

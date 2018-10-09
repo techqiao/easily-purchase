@@ -4,6 +4,21 @@
 
 -- 平台(管理后台)
 
+DROP TABLE IF EXISTS `platform_bank_account`;
+CREATE TABLE `platform_bank_account` (
+  `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+  `proceeds_unit` varchar(128) NOT NULL COMMENT '收款单位',
+  `bank_of_deposit` varchar(32) NOT NULL COMMENT '开户银行',
+  `shroff_account_number` varchar(32) NOT NULL COMMENT '收款账号',
+  `wholesale_line_number` varchar(32) NOT NULL COMMENT '大额行号',
+  `location_line_number` varchar(32) NOT NULL COMMENT '同城行号',
+  `payment_type` int (1) NOT NULL COMMENT '收款类型 ',
+  `create_at` DATETIME NOT NULL COMMENT '创建时间',
+  `update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='平台:银行账号管理表';
+
 DROP TABLE IF EXISTS `sys_admin_user`;
 CREATE TABLE `sys_admin_user` (
   `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',

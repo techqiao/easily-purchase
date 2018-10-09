@@ -1,11 +1,15 @@
 package com.epc.web.facade.terdering.answer;
 
+import com.epc.common.PagerParam;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
 import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
 import com.epc.web.facade.terdering.answer.vo.PublicityVO;
+import com.epc.web.facade.terdering.answer.vo.WinBidVO;
+import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
@@ -44,6 +48,13 @@ public interface FacadeAnswerQuestionService {
     Result<List<PublicityVO>> getPublicityListOfficialNetwork(@RequestBody QueryPublicityDTO QueryPublicityDTO);
 
 
+    /**
+     * 官网:中标公示
+     * @param pagerParam
+     * @return Result
+     */
+    @GetMapping(value = "getBidPublicity")
+    Result<PageInfo<WinBidVO>> getBidPublicity(PagerParam pagerParam);
     /**
      * 监控 : 问题答复列表
      * @param queryAnswerQuestionDTO

@@ -521,19 +521,19 @@
         UPDATE t_purchaser_basic_info
         <set>
             <if test="name!=null">
-                `name`= #{name}
+                `name`= #{name},
             </if>
             <if test="cellphone!=null">
-                `cellphone`= #{cellphone}
+                `cellphone`= #{cellphone},
             </if>
             <if test="role!=null">
-                `role`= #{role}
+                `role`= #{role},
             </if>
             <if test="name!=null">
-                `update_at`= #{updateAt}
+                `update_at`= #{updateAt},
             </if>
-            where id =#{id}
         </set>
+        where id =#{id}
     </update>
     <update id="updatePurchaserPassword" parameterType="com.epc.web.facade.loginuser.dto.ModifyUser">
     UPDATE  t_purchaser_basic_info
@@ -588,13 +588,14 @@
     </select>
     <select id="selectBasicInfoCriteria" resultMap="BaseResultMap"
             parameterType="com.epc.web.facade.purchaser.dto.HandleEmployeeDto">
+        <bind name="pattern" value="'%' + name + '%'" />
         SELECT
         <include refid="Base_Column_List"/>
         FROM t_purchaser_basic_info
         <where>
             purchaser_id =#{purchaseId}
             <if test="name!=null">
-                AND `name` LIKE '%'#{name}'%'
+                AND `name` LIKE #{pattern}
             </if>
         </where>
     </select>

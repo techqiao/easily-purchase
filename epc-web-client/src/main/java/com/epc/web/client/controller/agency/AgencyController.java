@@ -100,12 +100,12 @@ public class AgencyController extends BaseController {
     @PostMapping(value = "/completeInfo")
     public Result completeInfo(@RequestBody ClientHandleAgency agency) {
         HandleAgency handleAgency=new HandleAgency();
-        ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null !=clientLoginUser) {
+//        ClientLoginUser clientLoginUser = super.getLoginUser();
+//        if(null !=clientLoginUser) {
             BeanUtils.copyProperties(agency, handleAgency);
             return agencyClient.completeInfo(handleAgency);
-        }
-        return Result.success("请先登录,谢谢!",true);
+//        }
+//        return Result.success("请先登录,谢谢!",true);
     }
 
 

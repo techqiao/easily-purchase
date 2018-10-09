@@ -714,7 +714,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         //查询注册信息
         String name = dto.getName();
         String cellphone = dto.getCellphone();
-        //代理机构的id
+        //供应商的id
         Long supplierId = dto.getSupplierId();
         TSupplierBasicInfo basicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(supplierId);
         if (basicInfo == null) {
@@ -848,6 +848,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 agency.setCreateAt(new Date());
                 agency.setUpdateAt(new Date());
                 agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+                agency.setPurchaserId(dto.getCompanyId()+"");
                 tPurchaserAgencyMapper.insertSelective(agency);
             }
             if (detailInfo == null) {
@@ -1241,7 +1242,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         try {
             tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectBasicInfoCriteria(employeeDto);
             if (CollectionUtils.isEmpty(tPurchaserBasicInfos)) {
-                return Result.error("没有符合此条件的员工");
+                return Result.success("没有符合此条件的员工");
             }
             //获得自己机构的id
 
@@ -1505,15 +1506,15 @@ public class PurchaserServiceImpl implements PurchaserService {
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TSupplierAttachment attachment : attachments) {
-                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER)) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())) {
                     vo.setLegalIdCardOther(attachment.getCertificateFilePath());
                     continue;
                 }
-                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE)) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())) {
                     vo.setLegalIdCardPositive(attachment.getCertificateFilePath());
                     continue;
                 }
-                if (attachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE)) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())) {
                     vo.setBusinessLicense(attachment.getCertificateFilePath());
                     continue;
                 }
@@ -1562,11 +1563,11 @@ public class PurchaserServiceImpl implements PurchaserService {
         if (!CollectionUtils.isEmpty(list)) {
             List<Attachement> attachements = new ArrayList<>();
             for (TExpertAttachment att : list) {
-                if (att.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER)) {
+                if (att.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())) {
                     vo.setLegalIdCardOther(att.getCertificateFilePath());
                     continue;
                 }
-                if (att.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE)) {
+                if (att.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())) {
                     vo.setLegalIdCardPositive(att.getCertificateFilePath());
                     continue;
                 }
@@ -1612,15 +1613,15 @@ public class PurchaserServiceImpl implements PurchaserService {
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TAgencyAttachment attachment : attachments) {
-                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER)) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())) {
                     vo.setLegalIdCardOther(attachment.getCertificateFilePath());
                     continue;
                 }
-                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE)) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode())) {
                     vo.setLegalIdCardPositive(attachment.getCertificateFilePath());
                     continue;
                 }
-                if (attachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE)) {
+                if (attachment.getCertificateType().equals(AttachmentEnum.BUSINESS_LICENSE.getCode())) {
                     vo.setBusinessLicense(attachment.getCertificateFilePath());
                     continue;
                 }
@@ -1720,7 +1721,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<List<PurchaserExpertVo>> queryExperts(QueryExpertDto dto) {
         List<PurchaserExpertVo> infoList = null;
         try {
-            tExpertBasicInfoMapper.selectExpertByQueryCriteria(dto);
+            infoList =tExpertBasicInfoMapper.selectExpertByQueryCriteria(dto);
         } catch (Exception e) {
             LOGGER.error("查询专家失败Exception:{}", e);
             return Result.error("查询专家失败");
@@ -1762,12 +1763,12 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(QueryAgencyDto dto) {
         List<PurchaserAgencyVo> agencyVos = null;
         try {
-            tAgencyDetailInfoMapper.selectAgencyByCriteria(dto);
+            agencyVos= tAgencyDetailInfoMapper.selectAgencyByCriteria(dto);
         } catch (Exception e) {
             LOGGER.error("查询代理机构失败Exception:{}", e);
             return Result.error("查询代理机构失败");
         }
-        return CollectionUtils.isEmpty(agencyVos) ? Result.success("没有符合条件代理机构") : Result.success("查询成功", agencyVos);
+            return CollectionUtils.isEmpty(agencyVos) ? Result.success("没有符合条件代理机构") : Result.success("查询成功", agencyVos);
     }
 
 

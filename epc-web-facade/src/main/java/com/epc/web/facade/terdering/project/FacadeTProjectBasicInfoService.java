@@ -1,14 +1,17 @@
 package com.epc.web.facade.terdering.project;
 
 import com.epc.common.Result;
-import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
-import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.handle.*;
+import com.epc.web.facade.terdering.project.query.LoginInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.vo.SelectProjectListVO;
+import com.epc.web.facade.terdering.project.vo.SelectProjectPurchaserListVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +46,36 @@ public interface FacadeTProjectBasicInfoService {
      */
     @PostMapping(value = "getProjectList", consumes = "application/json; charset=UTF-8")
     Result<Map<String, Object>> getProjectList(@RequestBody QueryProjectInfoDTO queryProjectInfoDTO);
+
+
+    /**0
+     * 创建项目
+     * 指定项目名
+     * 指派项目经理(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
+     */
+    @PostMapping(value = "createProjectByAdmin",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> createProjectByAdmin(@RequestBody HandleCreateProjectByAdmin handleCreateProjectByAdmin);
+
+    /**0.1
+     *  删除一个项目
+     *
+     */
+//    @PostMapping(value = "deleteProjectAdmin",consumes = "application/json; charset=UTF-8")
+//    Result<Boolean> deleteProjectAdmin(@RequestBody HandleDeleteProjectAdmin handleDeleteProjectAdmin);
+
+    /**0.2
+     *  修改项目
+     */
+    @PostMapping(value = "updateProjectAdmin",consumes = "application/json; charset=UTF-8")
+    Result<Boolean> updateProjectAdmin(@RequestBody HandleUpdateProjectAdmin handleUpdateProjectAdmin);
+
+    /**0.3
+     * 查看项目 列表
+     *
+     */
+    @PostMapping(value = "selectProjectList",consumes = "application/json; charset=UTF-8")
+    Result<List<SelectProjectListVO>> selectProjectList(@RequestBody LoginInfo loginInfo);
+
 
 
 }

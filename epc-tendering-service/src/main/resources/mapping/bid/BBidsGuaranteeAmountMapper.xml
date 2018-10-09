@@ -361,14 +361,13 @@
         insert into b_bids_guarantee_amount (id, procurement_project_id, b_issue_documents_id, tender_guarantee_amount,
         bids_name,
         bids_id, bids_code, receivables,
-        bank_account, operate_id,create_at,update_at,is_deleted)
+        bank_account, operate_id,create_at,update_at)
         values
         <foreach collection="amountList" index="index" item="item" separator=",">
             (
             #{item.id},#{item.procurementProjectId},#{item.bIssueDocumentsId},#{item.tenderGuaranteeAmount},#{item.bidsName},
             #{item.bidsCode},#{item.bidsId},#{item.receivables},#{item.bankAccount},
-            #{item.operateId}, NOW(), NOW(),
-            '0'
+            #{item.operateId}, NOW(), NOW()
             )
         </foreach>
     </insert>

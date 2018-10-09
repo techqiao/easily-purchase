@@ -212,7 +212,7 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
     @Override
     public Map<Object, Object> getAllUrl(String p1) {
         List<SysAdminResource> sysAdminResources = sysAdminResourceMapper.selectUrl();
-        Map<Object, Object> resultMap = new HashMap<>();
+        Map<Object, Object> resultMap = new HashMap<>(16);
         for (int i = 0; i < sysAdminResources.size(); i++) {
             resultMap.put(sysAdminResources.get(i).getName(),sysAdminResources.get(i).getUrl());
         }

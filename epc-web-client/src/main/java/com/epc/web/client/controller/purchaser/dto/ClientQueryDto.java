@@ -10,5 +10,5 @@ import java.io.Serializable;
 public class ClientQueryDto implements Serializable {
     private static final long serialVersionUID = 4468039897804940011L;
     @ApiModelProperty(value = "用户id")
-    private Long userId;
+    private Long id;
 }

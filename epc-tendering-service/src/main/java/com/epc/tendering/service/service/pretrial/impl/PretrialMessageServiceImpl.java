@@ -10,6 +10,7 @@ import com.epc.tendering.service.service.pretrial.PretrialMessageService;
 import com.epc.web.facade.terdering.pretrial.handle.HandlePretrialMessage;
 import com.epc.web.facade.terdering.pretrial.query.QueryMessageDTO;
 import com.epc.web.facade.terdering.pretrial.vo.PretrialMessageVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,10 @@ public class PretrialMessageServiceImpl implements PretrialMessageService {
         final TPretrialMessageCriteria criteria = new TPretrialMessageCriteria();
         final TPretrialMessageCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andReleaseAnnouncementIdEqualTo(queryMessageDTO.getReleaseAnnouncementId());
-        List<TPretrialMessage> messageList = tPretrialMessageMapper.selectByExampleWithRowbounds(criteria, queryMessageDTO.getRowBounds());
+        if(StringUtils.isNotBlank(queryMessageDTO.getStatus())){
+            subCriteria.andStatusEqualTo(queryMessageDTO.getStatus());
+        }
+        List<TPretrialMessage> messageList = tPretrialMessageMapper.selectByExample(criteria);
         List<PretrialMessageVO> returnList = new ArrayList<>();
         for (TPretrialMessage item : messageList) {
             PretrialMessageVO pojo = new PretrialMessageVO();

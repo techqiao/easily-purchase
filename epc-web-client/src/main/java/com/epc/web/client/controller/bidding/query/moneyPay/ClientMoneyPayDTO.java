@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 @Data
 public class ClientMoneyPayDTO implements Serializable {
+    private static final long serialVersionUID = 2447185530802838759L;
     private Long companyId;
 
     private Long purchaseProjectId;

@@ -4,8 +4,13 @@ import com.epc.common.Result;
 import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
+import com.epc.tendering.service.domain.supplier.TSupplierDetailInfo;
+import com.epc.tendering.service.domain.supplier.TSupplierDetailInfoCriteria;
+import com.epc.tendering.service.domain.winBid.TWinBid;
+import com.epc.tendering.service.domain.winBid.TWinBidCriteria;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
+import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.mapper.winBid.TWinBidMapper;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
@@ -36,6 +41,8 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
     @Autowired
     private TWinBidMapper tWinBidMapper;
+    @Autowired
+    private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
 
 
     @Override
@@ -93,8 +100,21 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
      * @return
      */
     @Override
-    public Result<List<WinBidVO>> getwinBids() {
-        List<WinBidVO> winBidVOS = tWinBidMapper.selectBySuppilerId();
+    public Result<List<WinBidVO>> getBidPublicity() {
+        TWinBidCriteria tWinBidCriteria = new TWinBidCriteria();
+        tWinBidCriteria.setOrderByClause("id desc");
+        List<TWinBid> tWinBids = tWinBidMapper.selectByExample(tWinBidCriteria);
+        List<WinBidVO> winBidVOS = new ArrayList<>();
+        for (TWinBid tWinBid : tWinBids) {
+            TSupplierDetailInfoCriteria tSupplierDetailInfoCriteria = new TSupplierDetailInfoCriteria();
+            tSupplierDetailInfoCriteria.createCriteria().andSupplierIdEqualTo(tWinBid.getSupplierId());
+            List<TSupplierDetailInfo> tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(tSupplierDetailInfoCriteria);
+            WinBidVO winBidVO = new WinBidVO();
+            winBidVO.setBidName(tWinBid.getBidName());
+            winBidVO.setCreateAt(tWinBid.getCreateAt());
+            winBidVO.setSupplierName(tSupplierDetailInfos.get(0).getCompanyName());
+            winBidVOS.add(winBidVO);
+        }
         return Result.success(winBidVOS);
     }
 

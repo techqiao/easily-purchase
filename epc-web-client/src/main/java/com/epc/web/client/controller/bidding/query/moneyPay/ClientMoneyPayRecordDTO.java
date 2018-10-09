@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class ClientMoneyPayRecordDTO implements Serializable {
 
+    private static final long serialVersionUID = 4221608538190868410L;
     private Long moneyPayId;
 
     private Long operaterId;

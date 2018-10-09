@@ -72,7 +72,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserBasicInfo.setCreateAt(date);
         tPurchaserBasicInfo.setUpdateAt(date);
         tPurchaserBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
-        tPurchaserBasicInfo.setState(Const.STATE.REGISTERED);
+        tPurchaserBasicInfo.setState(Const.STATE.COMMITTED);
         tPurchaserBasicInfo.setInviterId(userBasicInfo.getId());
         try {
             return Result.success(tPurchaserBasicInfoMapper.insertSelective(tPurchaserBasicInfo) > 0);
@@ -98,7 +98,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         tPurchaserDetailInfo.setUpdateAt(date);
         TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
         tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());
-
         TPurchaserAttachment attachment = new TPurchaserAttachment();
         attachment.setPurchaserId(purchaserHandle.getId());
         attachment.setUpdateAt(date);
@@ -152,12 +151,11 @@ public class PurchaserServiceImpl implements PurchaserService {
                     attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
                     tPurchaserAttachmentMapper.updateByExample(attachment,tPurchaserAttachmentCriteria);
                 }
-
             }
             //完善信息完成后 更新信息状态至已提交
             TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
             tSupplierBasicInfo.setId(purchaserHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
             tSupplierBasicInfo.setUpdateAt(new Date());
             return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
         }catch (BusinessException e) {

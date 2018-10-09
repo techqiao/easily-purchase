@@ -4,6 +4,7 @@ import com.epc.bidding.service.winBid.WinBidService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeWinBidService;
 import com.epc.web.facade.bidding.handle.HandleWinBid;
+import com.epc.web.facade.bidding.handle.HandleWinBidFilePath;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
@@ -37,13 +38,13 @@ public class BiddingWinBidController implements FacadeWinBidService {
 
 
     /**
-     * 获取中标通知列表
-     * @param bidId
+     * 获取中标公示列表
+     * @param purchaseProjectId
      * @return
      */
     @Override
-    public Result<TWinBidNominateVO> getTWinBidNominate(Long bidId){
-        return winBidService.getTWinBidNominate(bidId);
+    public Result<List<TWinBidNominateVO>> getTWinBidNominate(Long purchaseProjectId){
+        return winBidService.getTWinBidNominate(purchaseProjectId);
     }
 
 
@@ -55,6 +56,12 @@ public class BiddingWinBidController implements FacadeWinBidService {
     @Override
     public Result<Boolean> insertTWinBidNominate(@RequestBody HandleWinBid handleWinBid) {
         return winBidService.insertTWinBidNominate(handleWinBid);
+    }
+
+
+    @Override
+    public Result<Boolean> insertTWinBidNominateFilePath(@RequestBody HandleWinBidFilePath handleWinBidFilePath){
+        return winBidService.insertTWinBidNominateFilePath(handleWinBidFilePath);
     }
 
 

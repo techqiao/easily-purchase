@@ -70,7 +70,7 @@ public class AgencyServiceImpl implements AgencyService {
         try {
             return Result.success(tAgencyBasicInfoMapper.insertSelective(tAgencyBasicInfo) > 0);
         } catch (BusinessException e) {
-            LOGGER.error("BusinessException insertBiddingAgencyBasicInfo : {}", e);
+            LOGGER.error("BusinessException insertBiddingAgencyBasicInfo : {}",tAgencyBasicInfo.toString(), e.getMessage());
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }

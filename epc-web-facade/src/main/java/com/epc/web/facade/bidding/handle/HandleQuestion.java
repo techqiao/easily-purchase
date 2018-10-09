@@ -10,6 +10,9 @@ public class HandleQuestion implements Serializable {
     private static final long serialVersionUID = 2633674461364958202L;
 
     private Long procurementProjectId;
+
+    private Long bidsId;
+
     /**
      * 问题类型
      */

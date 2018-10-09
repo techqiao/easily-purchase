@@ -13,9 +13,9 @@ public class ClientQueryAgencyDto implements Serializable {
     /**
      * 机构id
      */
-    @ApiModelProperty(value = "采购人id")
-    @NotEmpty(message = "ClientQueryAgencyDto.purchaserId.null")
-    private Long purchaserId;
+//    @ApiModelProperty(value = "采购人id")
+//    @NotEmpty(message = "ClientQueryAgencyDto.purchaserId.null")
+//    private Long purchaserId;
     /**
      * 代理机构名字
      */

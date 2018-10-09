@@ -563,7 +563,7 @@ CREATE TABLE `t_purchase_project_participant_permission` (
 	`action_state` int(1) DEFAULT '0' NOT NULL COMMENT '0:暂未到达此步 1待办 2已完成 -1 打回到此步',
 	`step_type` VARCHAR(64) DEFAULT NULL COMMENT '流程步骤类型 用来区分是具体哪个流程步骤 发布公告 发布招标文件',
 	`purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
-	`participant_permission` VARCHAR(32) NOT NULL COMMENT '项目参与者权限 批复reply 经办agent 审核auditor 负责人person_liable' ,
+	`participant_permission` VARCHAR(32) NOT NULL COMMENT '项目参与者权限 批复reply 经办agent 审核auditing 负责人person_liable' ,
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -761,6 +761,7 @@ CREATE TABLE `b_bid_opening_pay` (
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_back` INT(1) DEFAULT '0' COMMENT '是否退款: 0-否,1-是',
 	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:开标 ';
@@ -1289,6 +1290,7 @@ CREATE TABLE `b_invitation` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='招标流程:采购人邀请供应商参加采购项目';
 
 
+-- #项目流程表
 DROP TABLE if exists `t_project_procedure` ;
 CREATE TABLE `t_project_procedure` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -1299,6 +1301,7 @@ CREATE TABLE `t_project_procedure` (
   `creator` varchar(16) DEFAULT NULL COMMENT '创建人姓名',
   `create_at` datetime DEFAULT NULL COMMENT '创建时间',
   `update_at` datetime DEFAULT NULL COMMENT '最后修改时间',
+  `is_end` int(1) DEFAULT '0' COMMENT '是否删除: 0-进行中,1-结束',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目流程表';

@@ -32,7 +32,7 @@ public interface FacadeTProjectBasicInfoService {
      * @param projectId
      * @return
      */
-    @GetMapping(value = "getProjectDetailInfo", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "getProjectDetailInfo", consumes = "application/json; charset=UTF-8")
     Result<ProjectDetailInfoVO> getProjectDetailInfo(@RequestParam(value = "projectId") Long projectId);
 
 

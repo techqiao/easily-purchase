@@ -8,6 +8,7 @@ import com.epc.tendering.service.domain.preview.TBiddingPreview;
 import com.epc.tendering.service.domain.preview.TBiddingPreviewCriteria;
 import com.epc.tendering.service.mapper.preview.TBiddingPreviewMapper;
 import com.epc.tendering.service.service.preview.BiddingPreviewService;
+import com.epc.web.facade.terdering.preview.dto.QueryPageDTO;
 import com.epc.web.facade.terdering.preview.dto.QueryWhere;
 import com.epc.web.facade.terdering.preview.handle.PreviewHandle;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,7 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
 
     /**
      * 新增预告
+     *
      * @param previewHandle
      * @return
      */
@@ -57,24 +60,34 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
         tBiddingPreview.setProjectId(previewHandle.getProjectId());
         tBiddingPreview.setProjectName(previewHandle.getProjectName());
         try {
-            return Result.success(tBiddingPreviewMapper.insert(tBiddingPreview)>0);
+            return Result.success(tBiddingPreviewMapper.insert(tBiddingPreview) > 0);
         } catch (Exception e) {
             LOGGER.error("BusinessException tBiddingPreviewMapperinsert : {}", e);
-           return Result.error();
+            return Result.error();
         }
     }
 
     /**
      * 查询所有预告 分页展示
-     * @param pagerParam
+     *
+     * @param queryPageDTO
      * @return
      */
     @Override
-    public Result selectPreview(PagerParam pagerParam) {
+    public Result selectPreview(QueryPageDTO queryPageDTO) {
         final TBiddingPreviewCriteria criteria = new TBiddingPreviewCriteria();
-         criteria.createCriteria().andIdIsNotNull();
+        final TBiddingPreviewCriteria.Criteria subCriteria = criteria.createCriteria();
+        if(queryPageDTO.getProjectId() != null){
+            subCriteria.andProjectIdEqualTo(queryPageDTO.getProjectId());
+        }
+        if(queryPageDTO.getStartTime()!=null){
+            subCriteria.andCreateAtGreaterThanOrEqualTo(queryPageDTO.getStartTime());
+        }
+        if(queryPageDTO.getEndTime()!=null){
+            subCriteria.andCreateAtLessThanOrEqualTo(queryPageDTO.getEndTime());
+        }
         try {
-            List<TBiddingPreview>  tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, pagerParam.getRowBounds());
+            List<TBiddingPreview> tBiddingPreviews = tBiddingPreviewMapper.selectByExample(criteria);
             List<TBiddingPreview> returnList = new ArrayList<>();
             tBiddingPreviews.forEach(item -> {
                 TBiddingPreview pojo = new TBiddingPreview();
@@ -91,13 +104,14 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
 
     /**
      * 预告详情
+     *
      * @param queryWhere
      * @return
      */
     @Override
     public Result queryPreview(QueryWhere queryWhere) {
         try {
-           return Result.success( tBiddingPreviewMapper.selectByPrimaryKey(queryWhere.getPreviewId()));
+            return Result.success(tBiddingPreviewMapper.selectByPrimaryKey(queryWhere.getPreviewId()));
         } catch (Exception e) {
             LOGGER.error("BusinessException tBiddingPreviewMapperQueryPreview : {}", e);
             return Result.error();
@@ -106,19 +120,20 @@ public class BiddingPreviewServiceImpl implements BiddingPreviewService {
 
     /**
      * 在时间段来的分页展示
+     *
      * @param pagerParam
      * @param startDate
      * @param endDate
      * @return
      */
     @Override
-    public Result queryByDate(PagerParam pagerParam, String startDate, String endDate ) {
+    public Result queryByDate(PagerParam pagerParam, String startDate, String endDate) {
         Date startDateAs = new Date(startDate);
         Date endDateAs = new Date(startDate);
         TBiddingPreviewCriteria criteria = new TBiddingPreviewCriteria();
         TBiddingPreviewCriteria.Criteria subCriteria = criteria.createCriteria();
         criteria.setOrderByClause("id desc");
-        subCriteria.andCreateAtBetween(startDateAs,endDateAs);
+        subCriteria.andCreateAtBetween(startDateAs, endDateAs);
         try {
             List<TBiddingPreview> tBiddingPreviews = tBiddingPreviewMapper.selectByExampleWithRowbounds(criteria, pagerParam.getRowBounds());
             List<TBiddingPreview> returnList = new ArrayList<>();

@@ -91,4 +91,7 @@ public class TWinBidNominateVO implements Serializable {
     @ApiModelProperty("公示结束时间")
     private Date openEnd;
 
+    @ApiModelProperty("中标公示附件")
+    private String filePath;
+
 }

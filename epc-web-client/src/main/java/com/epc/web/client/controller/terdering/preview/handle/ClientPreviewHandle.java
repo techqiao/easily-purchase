@@ -31,9 +31,6 @@ public class ClientPreviewHandle  implements Serializable {
     @ApiModelProperty("预告内容")
     @NotEmpty(message = "ClientPreviewHandle.previewMemo.null")
     private String previewMemo;
-    @ApiModelProperty("采购商(法人)ID")
-    @NotEmpty(message = "ClientPreviewHandle.purchaserId.null")
-    private Long purchaserId;
 
 
 }

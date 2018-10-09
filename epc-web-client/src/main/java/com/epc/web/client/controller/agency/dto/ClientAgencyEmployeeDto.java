@@ -14,12 +14,12 @@ import java.util.Date;
 public class ClientAgencyEmployeeDto implements Serializable {
     private static final long serialVersionUID = 8957807592477177019L;
 
-    /**
-     * 机构id
-     */
-    @ApiModelProperty(value = "代理机构id不为空")
-    @NotEmpty(message = "ClientAgencyEmployeeDto.agencyId.null")
-    private Long agencyId;
+//    /**
+//     * 机构id
+//     */
+//    @ApiModelProperty(value = "代理机构id不为空")
+//    @NotEmpty(message = "ClientAgencyEmployeeDto.agencyId.null")
+//    private Long agencyId;
     /**
      * 员工姓名
      */

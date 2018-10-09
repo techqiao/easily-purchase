@@ -18,8 +18,8 @@ public class ClientHandleEmployee implements Serializable {
     @NotEmpty(message = "ClientHandleEmployee.name.null")
     private String name;
 
-    @ApiModelProperty(value = "公司或法人id")
-    private Long agencyId;
+//    @ApiModelProperty(value = "公司或法人id")
+//    private Long agencyId;
 
 
     @ApiModelProperty(value = "员工手机号")
@@ -27,11 +27,11 @@ public class ClientHandleEmployee implements Serializable {
     private String cellphone;
 
 
-    @ApiModelProperty(value = "密码")
-    private String password;
+//    @ApiModelProperty(value = "密码")
+//    private String password;
 
-    @ApiModelProperty(value = "审核状态")
-    private Integer state;
+//    @ApiModelProperty(value = "审核状态")
+//    private Integer state;
 
 
     @ApiModelProperty(value = "所属的角色")

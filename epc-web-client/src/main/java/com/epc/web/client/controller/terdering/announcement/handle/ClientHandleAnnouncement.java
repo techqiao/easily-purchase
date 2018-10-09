@@ -28,7 +28,11 @@ public class ClientHandleAnnouncement {
     private Date biddingStart;
     @ApiModelProperty(value = "招标公告结束时间")
     private Date biddingEnd;
-    @ApiModelProperty(value = "是否删除 删除时传")
+    @ApiModelProperty(value = "澄清开始时间")
+    private Date defecationStart;
+    @ApiModelProperty(value = "澄清结束时间")
+    private Date defecationEnd;
+    @ApiModelProperty(value = "是否删除 删除时传 0-存在,1-删除")
     private Integer isDeleted;
     @ApiModelProperty(value = "公告评语")
     private String announcementContent;

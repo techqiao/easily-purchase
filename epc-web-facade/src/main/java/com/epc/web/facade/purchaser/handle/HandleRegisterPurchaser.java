@@ -31,6 +31,10 @@ public class HandleRegisterPurchaser implements Serializable{
      */
     private String companyName;
     /**
+     * 公司地址
+     */
+    private String companyAddress;
+    /**
      * 统一的信用代码
      */
     private String uniformCreditCode;

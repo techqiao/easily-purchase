@@ -24,14 +24,14 @@ public class ClientHandleAgency implements Serializable {
 
     @ApiModelProperty(value = "代理机构的id")
     private  Long agencyId;
-    @ApiModelProperty(value = "代理商姓名")
-    private String name;
+//    @ApiModelProperty(value = "代理商姓名")
+//    private String name;
 
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    @ApiModelProperty(value = "电话")
-    private String cellphone;
+//    @ApiModelProperty(value = "密码")
+//    private String password;
+//
+//    @ApiModelProperty(value = "电话")
+//    private String cellphone;
 
     @ApiModelProperty(value = "公司名称")
     private String companyName;

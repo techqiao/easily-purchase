@@ -109,7 +109,7 @@
       FROM t_supplier_attachment
       WHERE id IN
       <foreach collection="list" separator="," open="(" close=")" item="item">
-        #{id}
+        #{item.id}
       </foreach>
 
     </delete>

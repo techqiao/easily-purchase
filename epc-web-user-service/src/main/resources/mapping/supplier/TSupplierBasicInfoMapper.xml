@@ -398,16 +398,17 @@
         AND cellphone =#{cellphone}
     </select>
     <select id="selectBasicInfo" resultType="com.epc.web.facade.agency.vo.AgencySupplierVo" parameterType="com.epc.web.facade.agency.dto.SupplierDto">
+       <bind name="pattern" value="'%'+companyName+'%'"/>
         SELECT detail.supplier_id AS supplierId ,detail.company_name AS companyName ,detail.create_at AS createAt
         FROM t_supplier_detail_info detail LEFT JOIN t_supplier_basic_info basic ON detail.supplier_id =
         basic.supplier_id
         <where>
-            basic.agency_id =#{agencyId}
+            basic.inviter_company_id =#{agencyId}
             <if test="supplierId!=null">
                 AND supplier_id = #{supplierId}
             </if>
-            <if test="fuzzyName!=null">
-                AND companyName LIKE '%'#{fuzzyName}'%'
+            <if test="companyName!=null">
+                AND company_name LIKE #{pattern}
             </if>
         </where>
     </select>

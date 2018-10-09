@@ -437,7 +437,7 @@
         AND is_deleted = #{isDeleted,jdbcType=INTEGER}
       </if>
       <if test="isForbbiden !=null">
-        AND is_forbbiden = #{isForbbiden,jdbcType=INTEGER}
+        AND is_forbidden = #{isForbbiden,jdbcType=INTEGER}
       </if>
       <if test="employeeId!=null">
         AND id = #{employeeId}

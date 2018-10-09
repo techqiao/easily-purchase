@@ -30,7 +30,7 @@ import java.util.Map;
  * <p>Date : 2018-09-18 14:03
  * <p>@Author : wjq
  */
-@Api(value = "项目服务"/*,tags = {"项目服务"}*/)
+@Api(value = "项目服务",tags = {"项目服务"})
 @RestController
 @RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ProjectBasicInfoController extends BaseController {

@@ -13,7 +13,7 @@ public class HandleOperatorId implements Serializable {
     /**
      *  是什么角色
      */
-    private Integer systemRole;
+//    private Integer systemRole;
 
     // 登陆时的用户角色
     private Integer loginRole;

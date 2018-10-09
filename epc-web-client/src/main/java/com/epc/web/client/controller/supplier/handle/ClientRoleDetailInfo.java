@@ -24,8 +24,8 @@ public class ClientRoleDetailInfo {
     @ApiModelProperty(value = "员工id")
     private Long supplierId;
 
-    @ApiModelProperty(value = "法人姓名")
-    private String name;
+//    @ApiModelProperty(value = "法人姓名")
+//    private String name;
 
     @ApiModelProperty(value = "公司名字")
     private String companyName;

@@ -81,7 +81,7 @@ public class OperatorController implements FacadeOperatorService {
      * 依据id查询已经登陆的个人信息
      */
     @Override
-    public Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId){
+    public Result<OperatorBasicVO> findByName(@RequestBody  HandleOperatorId handleOperatorId){
         return operatorService.findByName(handleOperatorId);
     }
 
@@ -172,7 +172,7 @@ public class OperatorController implements FacadeOperatorService {
      *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
      */
     @Override
-    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo){
+    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo){
         return operatorService.lookPurchaserList(handleOperatorLoginInfo);
     }
 
@@ -206,7 +206,7 @@ public class OperatorController implements FacadeOperatorService {
      *    查看当前登陆者拉的供应商列表
      */
     @Override
-    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo){
+    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo){
         return operatorService.lookSupplierList(handleOperatorLoginInfo);
     }
 

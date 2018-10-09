@@ -13,7 +13,7 @@ import java.util.Date;
 public class HandlerUpdateSupplierEmployeeById implements Serializable {
     private static final long serialVersionUID = 5772504294082133470L;
 
-    private Integer systemRole;
+//    private Integer systemRole;
     private Integer loginRole;
 
 
@@ -35,7 +35,7 @@ public class HandlerUpdateSupplierEmployeeById implements Serializable {
     /**
      * 密码
      */
-    private String password;
+//    private String password;
 
     /**
      * role 角色

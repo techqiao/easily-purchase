@@ -9,6 +9,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,8 +68,8 @@ public interface FacadeTSupplierBasicInfoService {
     /**4
      * 根据员工的id来查询基本信息
      */
-    @GetMapping(value = "findSupplierBasicById",consumes = "application/json;charset=UTF-8")
-    Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierBasicById handleFindSupplierBasicById);
+    @PostMapping(value = "findSupplierBasicById",consumes = "application/json;charset=UTF-8")
+    Result<SupplierBasicInfoVO> findSupplierBasicById(@RequestBody HandleFindSupplierBasicById handleFindSupplierBasicById);
 
     /**5
      *  供应商通过id修改员工
@@ -81,13 +82,13 @@ public interface FacadeTSupplierBasicInfoService {
      * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
      */
     @PostMapping(value = "findSupplierDetailByEmployee",consumes = "application/json;charset=UTF-8")
-    Result<RoleDetailInfo> findSupplierDetailByEmployee(HandleFindSupplierBasicById handleFindSupplierBasicById);
+    Result<RoleDetailInfo> findSupplierDetailByEmployee( HandleFindSupplierBasicById handleFindSupplierBasicById);
 
     /**6.5  查看公司详情
      * 管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）
      */
     @PostMapping(value = "/findSupplierByBossId",consumes = "application/json;charset=UTF-8")
-    Result<RoleDetailInfo> findSupplierByBossId(HandleFindSupplierBasicById handleFindSupplierBasicById);
+    Result<RoleDetailInfo> findSupplierByBossId(@RequestBody HandleFindSupplierBasicById handleFindSupplierBasicById);
 
     /**7
      * 根据电话来查找一条记录,返回一个真假值

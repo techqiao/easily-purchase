@@ -364,11 +364,10 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<Boolean> createOperatorEmployee(HandleOperatorAddEmployee handleOperatorAddEmployee) {
 
         //得到当前操作者的id，然后得到法人id
-        Integer systemRole = handleOperatorAddEmployee.getSystemRole();
         Integer loginRole = handleOperatorAddEmployee.getLoginRole();
         Long bossId = handleOperatorAddEmployee.getBossId();
-        // 不是运营商 ,或者是 员工
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+        // 是 员工
+        if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
             return Result.success("角色不匹配，无相关权限");
         }
 
@@ -407,22 +406,13 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 4
-     * 依据id查询已经登陆的个人信息(如果是法人，管理员，员工)
+     * 查询 登陆者个人详情
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<OperatorBasicVO> findByName(HandleOperatorId handleOperatorId) {
         Long loginId = handleOperatorId.getLoginId();
-        Integer systemRole = handleOperatorId.getSystemRole();
         Integer loginRole = handleOperatorId.getLoginRole();
-        // 不是运营商 ,或者是 员工
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.success("角色不匹配，无相关权限");
-        }
-
-
-        System.out.println("当前登陆人的id："+loginId);
-
 
         OperatorBasicVO vo = new OperatorBasicVO();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
@@ -435,33 +425,79 @@ public class OperatorServiceImpl implements OperatorService {
             return Result.success(vo);
         }
 
-        //法人 查询附件及详情及基本信息
+        //法人 基本信息
         TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(loginId);
         BeanUtils.copyProperties(tOperatorBasicInfo, vo);
+        vo.setCreateAt(format.format(tOperatorBasicInfo.getCreateAt()));
+        vo.setUpdateAt(format.format(tOperatorBasicInfo.getUpdateAt()));
 
+
+        //详情
         TOperatorDetailInfoCriteria criteria = new TOperatorDetailInfoCriteria();
         TOperatorDetailInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andOperatorIdEqualTo(loginId);
         List<TOperatorDetailInfo> tOperatorDetailInfos = tOperatorDetailInfoMapper.selectByExample(criteria);
-        if (CollectionUtils.isEmpty(tOperatorDetailInfos)) {
-            return Result.error("没有公司详情信息");
-        }
         BeanUtils.copyProperties(tOperatorDetailInfos.get(0), vo);
 
+        //查询附件
         TOperatorAttachmentCriteria criteria1 = new TOperatorAttachmentCriteria();
         TOperatorAttachmentCriteria.Criteria criteria2 = criteria1.createCriteria();
         criteria2.andOperatorIdEqualTo(loginId);
         List<TOperatorAttachment> tOperatorAttachments = tOperatorAttachmentMapper.selectByExample(criteria1);
-        if (CollectionUtils.isEmpty(tOperatorAttachments)) {
-            return Result.error("无附件信息");
+        List<QualificationCertificate> listQcs = new ArrayList<QualificationCertificate>();
+
+        for (TOperatorAttachment single : tOperatorAttachments) {
+            if(AttachmentEnum.BUSINESS_LICENSE.getDesc().equals(single.getCertificateName())){
+                vo.setBusinessLicense(single.getCertificateFilePath());
+                vo.setBusinessLicenseNumber(single.getCertificateNumber());
+                vo.setBusinessLicenseName(single.getCertificateName());
+                vo.setBusinessLicenseType(single.getCertificateType());
+                continue;
+            }
+
+            if(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc().equals(single.getCertificateName())){
+                vo.setLegalIdCardPositive(single.getCertificateFilePath());
+                vo.setLegalIdCardPositiveNumber(single.getCertificateNumber());
+                vo.setLegalIdCardPositiveName(single.getCertificateName());
+                vo.setLegalIdCardPositiveType(single.getCertificateType());
+                continue;
+            }
+
+            if(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc().equals(single.getCertificateName())){
+                vo.setLegalIdCardOther(single.getCertificateFilePath());
+                vo.setLegalIdCardOtherName(single.getCertificateName());
+                vo.setLegalIdCardOtherType(single.getCertificateType());
+                continue;
+            }
+
+            if(AttachmentEnum.CERTIFICATE_OF_AUTHORIZATION.getDesc().equals(single.getCertificateName())){
+                vo.setCertificateOfAuthorization(single.getCertificateFilePath());
+                vo.setCertificateOfAuthorizationNumber(single.getCertificateNumber());
+                vo.setCertificateOfAuthorizationName(single.getCertificateName());
+                vo.setCertificateOfAuthorizationType(single.getCertificateType());
+                continue;
+            }
+
+            if(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc().equals(single.getCertificateName())){
+                vo.setOperatorIdCardFront(single.getCertificateFilePath());
+                vo.setOperatorIdCardFrontNumber(single.getCertificateNumber());
+                vo.setOperatorIdCardFrontName(single.getCertificateName());
+                vo.setOperatorIdCardFrontType(single.getCertificateType());
+                continue;
+            }
+
+            if(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc().equals(single.getCertificateName())){
+                QualificationCertificate qc=new QualificationCertificate();
+                qc.setQualificationCertificate(single.getCertificateFilePath());
+                qc.setQualificationCertificateNumber(single.getCertificateNumber());
+                qc.setQualificationCertificateName(single.getCertificateName());
+                qc.setQualificationCertificateType(single.getCertificateType());
+                listQcs.add(qc);
+                continue;
+            }
         }
-        List<Attachment> listAtts = vo.getAtts();
-        for (TOperatorAttachment att : tOperatorAttachments) {
-            Attachment a = new Attachment();
-            BeanUtils.copyProperties(att, a);
-            listAtts.add(a);
-        }
-        vo.setAtts(listAtts);
+
+        vo.setQcs(listQcs);
         return Result.success(vo);
     }
 
@@ -473,26 +509,21 @@ public class OperatorServiceImpl implements OperatorService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> updateOperatorEmployeeById(HandleOperatorUpdateEmployeeById
-                                                              handleOperatorUpdateEmployeeById) {
+    public Result<Boolean> updateOperatorEmployeeById(HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById) {
         //得出登陆人的信息
 
-        Integer systemRole = handleOperatorUpdateEmployeeById.getSystemRole();
         Integer loginRole = handleOperatorUpdateEmployeeById.getLoginRole();
 
-        // 是员工，或者不是运营商
-        if (loginRole == Const.Role.ROLE_CUSTOMER || systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
+        // 是员工
+        if (loginRole == Const.Role.ROLE_CUSTOMER) {
             return Result.success("角色不匹配，无相关权限");
         }
         Long id = handleOperatorUpdateEmployeeById.getId();
         if (id == null) {
             return Result.success("获取员工id失败");
         }
-        //通过id来查询出一条员工对象信息
-        TOperatorBasicInfo pojo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-
-        //利用这个对象把最新从网页传输过来的的数据set进去，更新数据库,达到更新的目的
-        //设置姓名
+        TOperatorBasicInfo pojo = new TOperatorBasicInfo();
+        pojo.setId(id);
         pojo.setName(handleOperatorUpdateEmployeeById.getName());
         //设置电话
         pojo.setCellphone(handleOperatorUpdateEmployeeById.getCellphone());
@@ -528,9 +559,8 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> findOperatorRecordByCellphone(HandleOperatorCellphone handleOperatorCellphone) {
-        Integer systemRole = handleOperatorCellphone.getSystemRole();
         Integer loginRole = handleOperatorCellphone.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+        if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
             return Result.success("角色不匹配，无相关权限");
         }
         String cellphone = handleOperatorCellphone.getCellphone();
@@ -557,16 +587,15 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> deleteOperatorEmployeeByCellphone(HandleOperatorCellphone handleOperatorCellphone) {
-        Integer systemRole = handleOperatorCellphone.getSystemRole();
         Integer loginRole = handleOperatorCellphone.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
-            return Result.error("角色不匹配，无相关权限");
+        if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+            return Result.success("角色不匹配，无相关权限");
         }
 
         String cellphone = handleOperatorCellphone.getCellphone();
         Integer isDeleted = handleOperatorCellphone.getIsDeleted();
         if (StringUtils.isBlank(cellphone) || isDeleted == null) {
-            return Result.success("[依据电话来删除一个员工] StringUtils.isBlank(cellphone) && isDeleted==null : {前端传入参数异常}");
+            return Result.success("前端传入参数异常");
         }
         TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
         TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
@@ -574,6 +603,9 @@ public class OperatorServiceImpl implements OperatorService {
 
         //先看这个电话是否在数据中存在
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
+        if(CollectionUtils.isEmpty(tOperatorBasicInfos)){
+            return Result.success("查不到这个电话对应的记录");
+        }
 
         TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfos.get(0);
         tOperatorBasicInfo.setIsDeleted(isDeleted);
@@ -589,7 +621,6 @@ public class OperatorServiceImpl implements OperatorService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-
     }
 
     /**9
@@ -605,19 +636,19 @@ public class OperatorServiceImpl implements OperatorService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> deleteOperatorEmployeeById(HandleOperatorIdAndIsDeleted handleOperatorIdAndIsDeleted) {
 
-        Integer systemRole = handleOperatorIdAndIsDeleted.getSystemRole();
         Integer loginRole = handleOperatorIdAndIsDeleted.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+        if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
             return Result.error("角色不匹配，无相关权限");
         }
 
         Long id = handleOperatorIdAndIsDeleted.getId();
         Integer isDeleted = handleOperatorIdAndIsDeleted.getIsDeleted();
         if (id == null || isDeleted == null) {
-            return Result.error("[运营商依据id删除员工] id != null || isDeleted!=null : {前端传入参数异常}");
+            return Result.error("前端传入参数异常");
         }
         try {
-            TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
+            TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+            tOperatorBasicInfo.setId(id);
             tOperatorBasicInfo.setIsDeleted(isDeleted);
             tOperatorBasicInfo.setUpdateAt(new Date());
             tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
@@ -640,19 +671,19 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateOperatorEmployeeRoleById(HandleOperatorRole handleOperatorRole) {
-        Integer systemRole = handleOperatorRole.getSystemRole();
         Integer loginRole = handleOperatorRole.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() != Const.Role.ROLE_CORPORATION) {
+        if (loginRole.intValue() != Const.Role.ROLE_CORPORATION) {
             return Result.error("角色不匹配，无相关权限");
         }
 
         Long id = handleOperatorRole.getId();
         Integer role = handleOperatorRole.getRole();
         if (id == null || role == null) {
-            return Result.error("[根据用户id来修改他的role] id==null || role==null : {前端传入参数异常}");
+            return Result.error("前端传入参数异常");
         }
         try {
-            TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
+            TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+            tOperatorBasicInfo.setId(id);
             tOperatorBasicInfo.setRole(role);
             tOperatorBasicInfo.setUpdateAt(new Date());
             int i = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
@@ -676,20 +707,21 @@ public class OperatorServiceImpl implements OperatorService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updateOperatorEmployeeByisDeleted(HandleOperatorIdAndIsForbidden
                                                                      handleOperatorIdAndIsForbidden) {
-        Integer systemRole = handleOperatorIdAndIsForbidden.getSystemRole();
         Integer loginRole = handleOperatorIdAndIsForbidden.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+        if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
             return Result.error("角色不匹配，无相关权限");
         }
 
         Long id = handleOperatorIdAndIsForbidden.getId();
         Integer isForbidden = handleOperatorIdAndIsForbidden.getIsForbidden();
         if (id == null || isForbidden == null) {
-            return Result.error("[运营商通过id来改变员工是否禁用] id==null || isForbidden==null : {前端传入参数异常}");
+            return Result.error("前端传入参数异常");
         }
         try {
-            TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-            tOperatorBasicInfo.setIsForbidden(handleOperatorIdAndIsForbidden.getIsForbidden());
+            TOperatorBasicInfo tOperatorBasicInfo = new TOperatorBasicInfo();
+            tOperatorBasicInfo.setId(id);
+            tOperatorBasicInfo.setIsForbidden(isForbidden);
+            tOperatorBasicInfo.setUpdateAt(new Date());
             int i = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
             return Result.success(i > 0);
         } catch (BusinessException e) {
@@ -705,32 +737,28 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * 13
-     * 运营商忘记密码
+     * 修改密码
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> forgetPassword(HandleOperatorForgetPassword handleOperatorForgetPassword) {
 
-        Integer systemRole = handleOperatorForgetPassword.getSystemRole();
-//        Integer loginRole = handleOperatorForgetPassword.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.error("登陆角色不匹配，确认是运营商吗？");
-        }
-
-        TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
-        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //通过手机号查询 数据库中有没有，确实有这个人，才能更改密码
         String cellphone = handleOperatorForgetPassword.getCellphone();
         //拿到输入新的密码
         String newPassword = handleOperatorForgetPassword.getPassword();
         if (StringUtils.isBlank(cellphone) || StringUtils.isBlank(newPassword)) {
-            return Result.error("[运营商忘记密码] StringUtils.isBlank(cellphone) || StringUtils.isBlank(newPassword) : {前端传入参数异常}");
+            return Result.error("前端传入参数异常");
         }
+        TOperatorBasicInfoCriteria criteria = new TOperatorBasicInfoCriteria();
+        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         subCriteria.andCellphoneEqualTo(cellphone);
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        subCriteria.andIsForbiddenEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
 //        System.out.println("通过电话查询出来的对象有多少个   =="+tOperatorBasicInfos.size());
         if (CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-            return Result.error("请确认你的电话已经在平台注册，查询结果是空");
+            return Result.error("请确认你的电话已经在平台注册，查询结果是空（或者账号异常）");
         }
         TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfos.get(0);
         //重新设置密码,更新数据库中的这条记录中的密码
@@ -760,9 +788,8 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(HandleOperatorFindAllByName
                                                                               handleOperatorFindAllByName) {
         Long bossId = handleOperatorFindAllByName.getBossId();
-        Integer systemRole = handleOperatorFindAllByName.getSystemRole();
         Integer loginRole = handleOperatorFindAllByName.getLoginRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR || loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
+        if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
             return Result.error("角色不匹配，无相关权限");
         }
 
@@ -814,10 +841,6 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> createPurchaseByOperator(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
-        Integer systemRole = handleCreatePurchaserByOperator.getSystemRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.error("角色不匹配，无相关权限");
-        }
 
         Long id = handleCreatePurchaserByOperator.getSupplierId();
         if (id == null) {
@@ -935,18 +958,15 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
         //当前登陆人的id
         Long id = handleOperatorLoginInfo.getId();
-        Integer bossId = handleOperatorLoginInfo.getBossId();
+        Long bossId = handleOperatorLoginInfo.getBossId();
         Integer systemRole = handleOperatorLoginInfo.getSystemRole();
 
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.success("平台角色不匹配");
-        }
         TPurchaserBasicInfoCriteria criteria = new TPurchaserBasicInfoCriteria();
         TPurchaserBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //匹配邀请人id
         subCriteria.andInviterIdEqualTo(id);
         //匹配bossid
-        subCriteria.andInviterCompanyIdEqualTo(bossId);
+        subCriteria.andInviterCompanyIdEqualTo(bossId.intValue());
         //邀请人类型
         subCriteria.andInviterTypeEqualTo(systemRole);
         List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(criteria);
@@ -958,7 +978,10 @@ public class OperatorServiceImpl implements OperatorService {
         for (TPurchaserBasicInfo single : tPurchaserBasicInfos) {
             TPurchaserBasicInfoVO vo = new TPurchaserBasicInfoVO();
             BeanUtils.copyProperties(single, vo);
+            Integer isForbidden = single.getIsForbidden();
+            System.out.println("------"+isForbidden);
             vo.setCreateAt(format.format(single.getCreateAt()));
+            vo.setUpdateAt(format.format(single.getUpdateAt()));
             listVo.add(vo);
         }
         return Result.success(listVo);
@@ -1039,10 +1062,6 @@ public class OperatorServiceImpl implements OperatorService {
         Long id = handleOperatorCreateSupplier.getId();
         Long bossId = handleOperatorCreateSupplier.getBossId();
         Integer loginRole = handleOperatorCreateSupplier.getLoginRole();
-        Integer systemRole = handleOperatorCreateSupplier.getSystemRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.error("平台角色不匹配");
-        }
 
         String cellphone = handleOperatorCreateSupplier.getCellphone();
         String name = handleOperatorCreateSupplier.getName();
@@ -1074,10 +1093,11 @@ public class OperatorServiceImpl implements OperatorService {
         //供应商法人id
         Long supplierId = null;
         try {
-            tSupplierBasicInfoMapper.insert(tSupplierBasicInfo);
+            tSupplierBasicInfoMapper.insertSelective(tSupplierBasicInfo);
             supplierId = tSupplierBasicInfo.getId();
             tSupplierBasicInfo.setSupplierId(supplierId);
             tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
+            return Result.success(true);
         } catch (BusinessException e) {
             LOGGER.error("[运营商新增供应商] tSupplierBasicInfoMapper.insert : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -1087,7 +1107,6 @@ public class OperatorServiceImpl implements OperatorService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return Result.error(e.getMessage());
         }
-        return Result.success(true);
     }
 
 
@@ -1098,12 +1117,8 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> operatorCreateSupplier(HandleCreatePurchaserByOperator handleCreatePurchaserByOperator) {
-        Integer systemRole = handleCreatePurchaserByOperator.getSystemRole();
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.error("平台角色不匹配");
-        }
 
-        //当前供应商商员工的id
+        //第1步中的法人id
         Long id = handleCreatePurchaserByOperator.getSupplierId();
 
         //完善供应商详情表
@@ -1114,7 +1129,7 @@ public class OperatorServiceImpl implements OperatorService {
         tSupplierDetailInfo.setPublicBankName(handleCreatePurchaserByOperator.getPublicBankName());
         tSupplierDetailInfo.setPublicBanAccountNumber(handleCreatePurchaserByOperator.getPublicBanAccountNumber());
         //公司地址
-
+        tSupplierDetailInfo.setCompanyAddress(handleCreatePurchaserByOperator.getCompanyAddress());
         Date date = new Date();
         tSupplierDetailInfo.setCreateAt(date);
         tSupplierDetailInfo.setUpdateAt(date);
@@ -1173,6 +1188,14 @@ public class OperatorServiceImpl implements OperatorService {
                 attachment.setCertificateNumber(qcs.getQualificationCertificateNumber());
                 tSupplierAttachmentMapper.insertSelective(attachment);
             }
+
+            //将供应商basic表状态更新下
+            TSupplierBasicInfo tSupplierBasicInfo=new TSupplierBasicInfo();
+            tSupplierBasicInfo.setId(id);
+            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
+            tSupplierBasicInfo.setUpdateAt(new Date());
+            tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo);
+
         } catch (BusinessException e) {
             LOGGER.error("[运营商新增供应商（包括完善信息）] tSupplierAttachmentMapper.insertSelective : 异常信息e={}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -1194,19 +1217,16 @@ public class OperatorServiceImpl implements OperatorService {
     public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
         //当前登陆人的id
         Long id = handleOperatorLoginInfo.getId();
-        Integer bossId = handleOperatorLoginInfo.getBossId();
+        Long bossId = handleOperatorLoginInfo.getBossId();
         Integer systemRole = handleOperatorLoginInfo.getSystemRole();
 
-        if (systemRole.intValue() != Const.LOGIN_USER_TYPE.OPERATOR) {
-            return Result.success("平台角色不匹配");
-        }
         //匹配查找 供应商的条件
         TSupplierBasicInfoCriteria criteria = new TSupplierBasicInfoCriteria();
         TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
         //匹配邀请人id
         subCriteria.andInviterIdEqualTo(id);
         //匹配bossid
-        subCriteria.andInviterCompanyIdEqualTo(bossId.longValue());
+        subCriteria.andInviterCompanyIdEqualTo(bossId);
         //邀请人类型
         subCriteria.andInviterTypeEqualTo(systemRole);
         List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
@@ -1219,6 +1239,7 @@ public class OperatorServiceImpl implements OperatorService {
             TSupplierBasicInfoVO vo = new TSupplierBasicInfoVO();
             BeanUtils.copyProperties(single, vo);
             vo.setCreateAt(format.format(single.getCreateAt()));
+            vo.setUpdateAt(format.format(single.getUpdateAt()));
             listVo.add(vo);
         }
         return Result.success(listVo);

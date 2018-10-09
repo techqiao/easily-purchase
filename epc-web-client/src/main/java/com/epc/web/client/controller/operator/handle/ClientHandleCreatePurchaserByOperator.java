@@ -1,6 +1,7 @@
 package com.epc.web.client.controller.operator.handle;
 
 import com.epc.web.client.controller.supplier.handle.ClientQualificationCertificate;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,30 +9,33 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
 
+
+
 /**
-* @Description:    运营商录入采购人
-* @Author:          linzhixiang
-* @CreateDate:     2018/9/13 10:00
-* @UpdateUser:     linzhixiang
-* @UpdateDate:     2018/9/13 10:00
-* @UpdateRemark:   修改内容
-* @Version:        1.0
-*/
+ * @Description:    运营商录入采购人
+ * @Author:          linzhixiang
+ * @CreateDate:     2018/9/13 10:00
+ * @UpdateUser:     linzhixiang
+ * @UpdateDate:     2018/9/13 10:00
+ * @UpdateRemark:   修改内容
+ * @Version:        1.0
+ */
+
+@Api(value = "ClientHandleCreatePurchaserByOperator", description = "运营商添加采购人员信息")
 @Data
-@ApiModel(value = "ClientHandleCreatePurchaserByOperator", description = "运营商添加采购人员信息")
 public class ClientHandleCreatePurchaserByOperator {
 
     @ApiModelProperty(value = "运营商的主键id")
     @NotEmpty(message = "ClientHandleCreatePurchaserByOperator.id.null")
     private Long id;
 
-    @ApiModelProperty(value = "采购人姓名")
-    @NotEmpty(message = "ClientHandleCreatePurchaserByOperator.name.null")
-    private String name;
+//    @ApiModelProperty(value = "采购人姓名")
+//    @NotEmpty(message = "ClientHandleCreatePurchaserByOperator.name.null")
+//    private String name;
 
-    @ApiModelProperty(value = "手机号")
-    @NotEmpty(message = "ClientHandleCreatePurchaserByOperator.cellphone.null")
-    private String cellphone;
+//    @ApiModelProperty(value = "手机号")
+//    @NotEmpty(message = "ClientHandleCreatePurchaserByOperator.cellphone.null")
+//    private String cellphone;
 
     @ApiModelProperty(value = "公司名称")
     private String companyName;

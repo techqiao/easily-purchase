@@ -38,10 +38,6 @@ public class ProjectHystrix implements FacadeTProjectBasicInfoService {
         return Result.hystrixError();
     }
 
-    @Override
-    public Result<Boolean> deleteProjectAdmin(HandleDeleteProjectAdmin handleDeleteProjectAdmin) {
-        return Result.hystrixError();
-    }
 
     @Override
     public Result<Boolean> updateProjectAdmin(HandleUpdateProjectAdmin handleUpdateProjectAdmin) {
@@ -50,26 +46,6 @@ public class ProjectHystrix implements FacadeTProjectBasicInfoService {
 
     @Override
     public Result<List<SelectProjectListVO>> selectProjectList(LoginInfo loginInfo) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<Boolean> createProjectPurchaserByAdmin(HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(HandleSelectProjectPurchaserList handleSelectProjectPurchaserList) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<Boolean> deleteProjectPurchaser(HandleDeleteProjectPurchaser handleDeleteProjectPurchaser) {
-        return Result.hystrixError();
-    }
-
-    @Override
-    public Result<Boolean> updateProjectPurchaser(HandleUpdateProjectPurchaser handleUpdateProjectPurchaser) {
         return Result.hystrixError();
     }
 

@@ -65,10 +65,10 @@ public class TProjectBasicInfoController extends BaseController implements Facad
      *  删除一个项目
      *
      */
-    @Override
-    public Result<Boolean> deleteProjectAdmin(@RequestBody HandleDeleteProjectAdmin handleDeleteProjectAdmin){
-        return tProjectBasicInfoService.deleteProjectAdmin(handleDeleteProjectAdmin);
-    }
+//    @Override
+//    public Result<Boolean> deleteProjectAdmin(@RequestBody HandleDeleteProjectAdmin handleDeleteProjectAdmin){
+//        return tProjectBasicInfoService.deleteProjectAdmin(handleDeleteProjectAdmin);
+//    }
 
     /**0.2
      *  修改项目
@@ -87,40 +87,6 @@ public class TProjectBasicInfoController extends BaseController implements Facad
         return tProjectBasicInfoService.selectProjectList(loginInfo);
     }
 
-    /**1
-     * 在已经存在的项目底下创建采购项目，指定采购项目名称，并指派经办人，批复人，审核人
-     *      指派采购项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据,将状态改成 1进行中)
-     */
-    @Override
-    public Result<Boolean> createProjectPurchaserByAdmin(@RequestBody HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin){
-        return tProjectBasicInfoService.createProjectPurchaserByAdmin(handleCreateProjectPurchaserByAdmin);
-    }
-
-    /**1.1
-     * 获取 自己创建的采购项目 列表
-     *
-     */
-    @Override
-    public Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(@RequestBody HandleSelectProjectPurchaserList handleSelectProjectPurchaserList){
-        return tProjectBasicInfoService.selectProjectPurchaserList(handleSelectProjectPurchaserList);
-    }
-
-    /**1.2
-     * 删除采购项目
-     */
-    @Override
-    public Result<Boolean> deleteProjectPurchaser(@RequestBody HandleDeleteProjectPurchaser handleDeleteProjectPurchaser){
-        return tProjectBasicInfoService.deleteProjectPurchaser(handleDeleteProjectPurchaser);
-    }
-
-    /**1.3
-     * 修改采购项目
-     *
-     */
-    @Override
-    public Result<Boolean> updateProjectPurchaser(@RequestBody HandleUpdateProjectPurchaser handleUpdateProjectPurchaser){
-        return tProjectBasicInfoService.updateProjectPurchaser(handleUpdateProjectPurchaser);
-    }
 
 
 

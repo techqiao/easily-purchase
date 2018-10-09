@@ -132,45 +132,45 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
      *  删除一个项目
      *
      */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> deleteProjectAdmin(HandleDeleteProjectAdmin handleDeleteProjectAdmin){
-        Integer loginRole = handleDeleteProjectAdmin.getLoginRole();
-        if(loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
-            return Result.error("是员工没有权限");
-        }
-        Long projectId = handleDeleteProjectAdmin.getProjectId();
-        Integer isDeleted = handleDeleteProjectAdmin.getIsDeleted();
-        if(projectId==null || isDeleted==null){
-            return Result.error("前端传输参数异常");
-        }
-        /**
-         * 先用项目id去采购项目表中去看下，有没有在这个项目底下创建具体的采购项目,那么就必须先将这个采购项目删除在进行 项目的删除
-         */
-        TProjectPurchaserEmployeeRelationCriteria criteria=new TProjectPurchaserEmployeeRelationCriteria();
-        TProjectPurchaserEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andProjectIdEqualTo(projectId);
-        List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria);
-        if(!CollectionUtils.isEmpty(tProjectPurchaserEmployeeRelations)){
-            return Result.success("此项目底下已经有具体实施的采购项目，请先删除底下的采购项目，在删除此项目");
-        }
-
-        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
-        tProjectEmployeeRelation.setIsDeleted(isDeleted);
-        int i=0;
-        try{
-            i=tProjectEmployeeRelationMapper.updateByPrimaryKeySelective(tProjectEmployeeRelation);
-            return Result.success(i>0);
-        }catch (BusinessException e){
-            LOGGER.error("[管理员或法人删除一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[管理员或法人删除一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
-    }
+//    @Override
+//    @Transactional(rollbackFor = Exception.class)
+//    public Result<Boolean> deleteProjectAdmin(HandleDeleteProjectAdmin handleDeleteProjectAdmin){
+//        Integer loginRole = handleDeleteProjectAdmin.getLoginRole();
+//        if(loginRole.intValue()==Const.Role.ROLE_CUSTOMER){
+//            return Result.error("是员工没有权限");
+//        }
+//        Long projectId = handleDeleteProjectAdmin.getProjectId();
+//        Integer isDeleted = handleDeleteProjectAdmin.getIsDeleted();
+//        if(projectId==null || isDeleted==null){
+//            return Result.error("前端传输参数异常");
+//        }
+//        /**
+//         * 先用项目id去采购项目表中去看下，有没有在这个项目底下创建具体的采购项目,那么就必须先将这个采购项目删除在进行 项目的删除
+//         */
+//        TProjectPurchaserEmployeeRelationCriteria criteria=new TProjectPurchaserEmployeeRelationCriteria();
+//        TProjectPurchaserEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
+//        subCriteria.andProjectIdEqualTo(projectId);
+//        List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria);
+//        if(!CollectionUtils.isEmpty(tProjectPurchaserEmployeeRelations)){
+//            return Result.success("此项目底下已经有具体实施的采购项目，请先删除底下的采购项目，在删除此项目");
+//        }
+//
+//        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
+//        tProjectEmployeeRelation.setIsDeleted(isDeleted);
+//        int i=0;
+//        try{
+//            i=tProjectEmployeeRelationMapper.updateByPrimaryKeySelective(tProjectEmployeeRelation);
+//            return Result.success(i>0);
+//        }catch (BusinessException e){
+//            LOGGER.error("[管理员或法人删除一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
+//        }catch (Exception e){
+//            LOGGER.error("[管理员或法人删除一个项目] tProjectEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return Result.error(e.getMessage());
+//        }
+//    }
     /**0.2
      *  修改项目
      */
@@ -253,159 +253,6 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
 
 
 
-    /**1
-     * 在已经存在的项目底下创建采购项目，指定采购项目名称，并指派经办人，批复人，审核人
-     *      指派采购项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据,将状态改成 1进行中)
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> createProjectPurchaserByAdmin(HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin){
-        Long bossId = handleCreateProjectPurchaserByAdmin.getBossId();
-        Long loginId = handleCreateProjectPurchaserByAdmin.getLoginId();
-        /**
-         * 确定当前登陆人的身份是这个项目的项目经理
-         *      用项目id去匹配这个项目经理id
-         *      方法：把当前 登陆人的id拿到项目表中走下，看有没有被指定项目。
-         */
-        //  拿到 该项目的 id;
-        Long projectId = handleCreateProjectPurchaserByAdmin.getProjectId();
-        if(projectId==null){
-            return Result.error("不给我项目id,怎么知道你能不能在该项目下创建采购项目");
-        }
-        //  通过项目id来查具体的项目经理id
-        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
-        Long executiveId = tProjectEmployeeRelation.getExecutiveId();
-        if(!loginId.equals(executiveId)){
-            return Result.error("没有权利在该项目底下创建采购的权利");
-        }
-        String projectPurchaserName = handleCreateProjectPurchaserByAdmin.getProjectPurchaserName();
-        Long executiveId1 = handleCreateProjectPurchaserByAdmin.getExecutiveId();
-        String executiveName = handleCreateProjectPurchaserByAdmin.getExecutiveName();
-        Long approvalId = handleCreateProjectPurchaserByAdmin.getApprovalId();
-        String approvalName = handleCreateProjectPurchaserByAdmin.getApprovalName();
-        Long checkId = handleCreateProjectPurchaserByAdmin.getCheckId();
-        String checkName = handleCreateProjectPurchaserByAdmin.getCheckName();
-        if(executiveId1==null || StringUtils.isBlank(executiveName) || approvalId==null || StringUtils.isBlank(approvalName) || checkId==null || StringUtils.isBlank(checkName)){
-            return Result.error("前端传入参数异常");
-        }
-        String notes = handleCreateProjectPurchaserByAdmin.getNotes();
-        TProjectPurchaserEmployeeRelation tProjectPurchaserEmployeeRelation=new TProjectPurchaserEmployeeRelation();
-        tProjectPurchaserEmployeeRelation.setProjectId(projectId);
-        tProjectPurchaserEmployeeRelation.setPurchaserId(bossId);
-        tProjectPurchaserEmployeeRelation.setProjectPurchaserName(projectPurchaserName);
-        tProjectPurchaserEmployeeRelation.setExecutiveId(executiveId1);
-        tProjectPurchaserEmployeeRelation.setExecutiveName(executiveName);
-        tProjectPurchaserEmployeeRelation.setApprovalId(approvalId);
-        tProjectPurchaserEmployeeRelation.setApprovalName(approvalName);
-        tProjectPurchaserEmployeeRelation.setCheckId(checkId);
-        tProjectPurchaserEmployeeRelation.setCheckName(checkName);
-        tProjectPurchaserEmployeeRelation.setCreateAt(new Date());
-        tProjectPurchaserEmployeeRelation.setUpdateAt(new Date());
-        tProjectPurchaserEmployeeRelation.setState(1);//进行中
-        tProjectPurchaserEmployeeRelation.setNotes(notes);
-        try{
-            return Result.success(tProjectPurchaserEmployeeRelationMapper.insertSelective(tProjectPurchaserEmployeeRelation)>0);
-        }catch (BusinessException e){
-            LOGGER.error("[创建采购项目及指定负责人] tProjectPurchaserEmployeeRelationMapper.insertSelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[创建采购项目及指定负责人] tProjectPurchaserEmployeeRelationMapper.insertSelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
-    }
-    /**1.1
-     * 获取 自己创建的采购项目 列表
-     *
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(HandleSelectProjectPurchaserList handleSelectProjectPurchaserList){
-        Long loginId = handleSelectProjectPurchaserList.getLoginId();
-        Long projectId = handleSelectProjectPurchaserList.getProjectId();
-        TProjectEmployeeRelation tProjectEmployeeRelation = tProjectEmployeeRelationMapper.selectByPrimaryKey(projectId);
-        Long executiveId = tProjectEmployeeRelation.getExecutiveId();
-        if(!loginId.equals(executiveId)){
-            return Result.error("当前项目经理不是你");
-        }
-        TProjectPurchaserEmployeeRelationCriteria criteria=new TProjectPurchaserEmployeeRelationCriteria();
-        TProjectPurchaserEmployeeRelationCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andProjectIdEqualTo(projectId);
-        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        List<TProjectPurchaserEmployeeRelation> tProjectPurchaserEmployeeRelations = tProjectPurchaserEmployeeRelationMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tProjectPurchaserEmployeeRelations)){
-            return Result.success("你还没有创建采购项目");
-        }
-        List<SelectProjectPurchaserListVO> listVOS=new ArrayList<SelectProjectPurchaserListVO>();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-        for(TProjectPurchaserEmployeeRelation single:tProjectPurchaserEmployeeRelations){
-            SelectProjectPurchaserListVO vo=new SelectProjectPurchaserListVO();
-            BeanUtils.copyProperties(single,vo);
-            vo.setCreateAt(format.format(single.getCreateAt()));
-            vo.setUpdateAt(format.format(single.getUpdateAt()));
-            listVOS.add(vo);
-        }
-        return Result.success(listVOS);
-    }
-    /**1.2
-     * 删除采购项目
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> deleteProjectPurchaser(HandleDeleteProjectPurchaser handleDeleteProjectPurchaser){
-        /**
-         * 依据采购项目id来查出所属项目id，从而在项目表中查出 对应的项目经理，然后匹配 当前登陆id，如果是一样的，证明这个项目是自己创建的，就可以删除
-         */
-        Long projectPurchaserId = handleDeleteProjectPurchaser.getProjectPurchaserId();
-        Integer isDeleted = handleDeleteProjectPurchaser.getIsDeleted();
-        if(projectPurchaserId==null || isDeleted==null){
-            Result.error("前端传入参数异常");
-        }
-        TProjectPurchaserEmployeeRelation tProjectPurchaserEmployeeRelation = tProjectPurchaserEmployeeRelationMapper.selectByPrimaryKey(projectPurchaserId);
-        tProjectPurchaserEmployeeRelation.setIsDeleted(isDeleted);
-        int i=0;
-        try{
-            i=tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKeySelective(tProjectPurchaserEmployeeRelation);
-            return Result.success(i>0);
-        }catch (BusinessException e){
-            LOGGER.error("[项目经理删除采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[项目经理删除采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKeySelective : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
-    }
-    /**1.3
-     * 修改采购项目
-     *
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> updateProjectPurchaser(HandleUpdateProjectPurchaser handleUpdateProjectPurchaser){
-        Long projectPurchaserId = handleUpdateProjectPurchaser.getProjectPurchaserId();
-        if(projectPurchaserId==null){
-            return Result.error("前端传入参数异常");
-        }
-        TProjectPurchaserEmployeeRelation tProjectPurchaserEmployeeRelation=new TProjectPurchaserEmployeeRelation();
-        BeanUtils.copyProperties(handleUpdateProjectPurchaser,tProjectPurchaserEmployeeRelation);
-        tProjectPurchaserEmployeeRelation.setId(projectPurchaserId);
-        int i=0;
-        try {
-            i=tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKey(tProjectPurchaserEmployeeRelation);
-            return Result.success(i>0);
-        }catch (BusinessException e){
-            LOGGER.error("[项目经理修改采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKey : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-        }catch (Exception e){
-            LOGGER.error("[项目经理修改采购项目] tProjectPurchaserEmployeeRelationMapper.updateByPrimaryKey : 异常信息e={}",e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error(e.getMessage());
-        }
-    }
 
 
 

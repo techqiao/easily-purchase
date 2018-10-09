@@ -60,8 +60,8 @@ public interface FacadeTProjectBasicInfoService {
      *  删除一个项目
      *
      */
-    @PostMapping(value = "deleteProjectAdmin",consumes = "application/json; charset=UTF-8")
-    Result<Boolean> deleteProjectAdmin(@RequestBody HandleDeleteProjectAdmin handleDeleteProjectAdmin);
+//    @PostMapping(value = "deleteProjectAdmin",consumes = "application/json; charset=UTF-8")
+//    Result<Boolean> deleteProjectAdmin(@RequestBody HandleDeleteProjectAdmin handleDeleteProjectAdmin);
 
     /**0.2
      *  修改项目
@@ -76,32 +76,6 @@ public interface FacadeTProjectBasicInfoService {
     @PostMapping(value = "selectProjectList",consumes = "application/json; charset=UTF-8")
     Result<List<SelectProjectListVO>> selectProjectList(@RequestBody LoginInfo loginInfo);
 
-    /**1
-     * 在已经存在的项目底下创建采购项目，指定采购项目名称，并指派经办人，批复人，审核人
-     *      指派采购项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据,将状态改成 1进行中)
-     */
-    @PostMapping(value = "createProjectPurchaserByAdmin",consumes = "application/json; charset=UTF-8")
-    Result<Boolean> createProjectPurchaserByAdmin(@RequestBody HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin);
-
-    /**1.1
-     * 获取 自己创建的采购项目 列表
-     *
-     */
-    @PostMapping(value = "selectProjectPurchaserList",consumes = "application/json; charset=UTF-8")
-    Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(@RequestBody HandleSelectProjectPurchaserList handleSelectProjectPurchaserList);
-
-    /**1.2
-     * 删除采购项目
-     */
-    @PostMapping(value = "deleteProjectPurchaser",consumes = "application/json; charset=UTF-8")
-    Result<Boolean> deleteProjectPurchaser(@RequestBody HandleDeleteProjectPurchaser handleDeleteProjectPurchaser);
-
-    /**1.3
-     * 修改采购项目
-     *
-     */
-    @PostMapping(value = "updateProjectPurchaser",consumes = "application/json; charset=UTF-8")
-    Result<Boolean> updateProjectPurchaser(@RequestBody HandleUpdateProjectPurchaser handleUpdateProjectPurchaser);
 
 
 }

@@ -7,6 +7,7 @@ import com.epc.tendering.service.mapper.bid.BBidsGuaranteeAmountMapper;
 import com.epc.tendering.service.mapper.bid.BSaleDocumentsMapper;
 import com.epc.tendering.service.mapper.bid.BTenderDocumentsPlaceSaleMapper;
 import com.epc.tendering.service.service.bid.SaleDocumentsService;
+import com.epc.web.facade.terdering.bid.handle.HandleBidsGuaranteeAmount;
 import com.epc.web.facade.terdering.bid.handle.HandleDocuments;
 import com.epc.web.facade.terdering.bid.handle.HandleUnderLine;
 import com.epc.web.facade.terdering.bid.vo.BidsGuaranteeAmountVO;
@@ -63,9 +64,18 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
             try {
                 bSaleDocumentsMapper.insertSelective(bSaleDocuments);
                 if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
+                    bTenderDocumentsPlaceSale.setbIssueDocumentsId(bSaleDocuments.getId());
                     bTenderDocumentsPlaceSaleMapper.insertSelective(bTenderDocumentsPlaceSale);
                 }
-                bBidsGuaranteeAmountMapper.insertGuaranteeAmountList(handDocuments.getHandleBidsGuaranteeAmount());
+                List<HandleBidsGuaranteeAmount> list = handDocuments.getHandleBidsGuaranteeAmount();
+                for (HandleBidsGuaranteeAmount item : list) {
+                    item.setBIssueDocumentsId(bSaleDocuments.getId());
+                    BBidsGuaranteeAmount pojo = new BBidsGuaranteeAmount();
+                    BeanUtils.copyProperties(item,pojo);
+                    pojo.setCreateAt(new Date());
+                    pojo.setUpdateAt(new Date());
+                    bBidsGuaranteeAmountMapper.insertSelective(pojo);
+                }
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
@@ -78,7 +88,13 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
                 if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSaleMapper.updateByPrimaryKeySelective(bTenderDocumentsPlaceSale);
                 }
-                bBidsGuaranteeAmountMapper.updateGuaranteeAmountList(handDocuments.getHandleBidsGuaranteeAmount());
+                List<HandleBidsGuaranteeAmount> list = handDocuments.getHandleBidsGuaranteeAmount();
+                for (HandleBidsGuaranteeAmount item : list) {
+                    BBidsGuaranteeAmount pojo = new BBidsGuaranteeAmount();
+                    BeanUtils.copyProperties(item, pojo);
+                    pojo.setUpdateAt(new Date());
+                    bBidsGuaranteeAmountMapper.updateByPrimaryKeySelective(pojo);
+                }
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }

@@ -9,13 +9,13 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.platform.service.domain.operator.TOperatorBasicInfoCriteria;
 import com.epc.platform.service.domain.tagency.*;
 import com.epc.platform.service.mapper.tagency.TAgencyAttachmentMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyBasicInfoMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyDetailInfoMapper;
 import com.epc.platform.service.service.biddingagency.AgencyService;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -82,6 +82,7 @@ public class AgencyServiceImpl implements AgencyService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
+
     public Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
         TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
         Date date = new Date();
@@ -94,6 +95,7 @@ public class AgencyServiceImpl implements AgencyService {
         attachment.setUpdateAt(date);
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setAgencyId(biddingHandle.getId());
+
         try {
             tAgencyDetailInfoMapper.insertSelective(detailInfo);
             //法人身份证反面照片url
@@ -121,6 +123,7 @@ public class AgencyServiceImpl implements AgencyService {
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
             tAgencyBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertBiddingAgencyDetailInfo : {}", e);
@@ -232,9 +235,7 @@ public class AgencyServiceImpl implements AgencyService {
                 //如果未完善信息 返回基础信息
                 if(tAgencyDetailInfos.isEmpty()){
                     AgencyUserAttachmentVO agencyUserAttachmentVO = new AgencyUserAttachmentVO();
-                    agencyUserAttachmentVO.setName(tAgencyBasicInfo.getName());
-                    agencyUserAttachmentVO.setCellphone(tAgencyBasicInfo.getCellphone());
-                    agencyUserAttachmentVO.setState(tAgencyBasicInfo.getState());
+                    BeanUtils.copyProperties(tAgencyBasicInfo,agencyUserAttachmentVO);
                     return Result.success(agencyUserAttachmentVO);
                 }
                 //装填用户所有信息开始
@@ -250,7 +251,6 @@ public class AgencyServiceImpl implements AgencyService {
                 agencyUserAttachmentVO.setCreateAt(new Date());
                 BeanUtils.copyProperties(tAgencyBasicInfo,agencyUserAttachmentVO);
                 List<AgencyAttachmentVO> agencyAttachmentVOS = new ArrayList<>();
-
                 for (TAgencyAttachment tAgencyAttachment : tAgencyAttachments) {
                     if(tAgencyAttachment.getCertificateType().equals(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode())){
                         agencyUserAttachmentVO.setLegalIdCardOther(tAgencyAttachment.getCertificateFilePath());

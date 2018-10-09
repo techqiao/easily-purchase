@@ -71,7 +71,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         resultMap.put("user",sysAdminUser);
         Tree<SysAdminResource> resource = getResource(sysAdminUser.getId());
         resultMap.put("resourceList",resource);
-        resultMap.put("epc_token", token);
+        resultMap.put("epc-token", token);
         return Result.success(resultMap);
     }
 

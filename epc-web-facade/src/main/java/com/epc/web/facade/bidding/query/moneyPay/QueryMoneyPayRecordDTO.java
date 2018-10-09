@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 @Data
 public class QueryMoneyPayRecordDTO implements Serializable {
 
-    private Long moneyPayId;
-
     private Long operaterId;
 
     private String operaterName;
 
-    private BigDecimal serviceMoney;
+    private Long companyId;
+
+    private Long purchaseProjectId;
 }

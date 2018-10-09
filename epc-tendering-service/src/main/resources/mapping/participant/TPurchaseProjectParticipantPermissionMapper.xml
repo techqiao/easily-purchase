@@ -341,7 +341,6 @@
         action_state = #{actionState,jdbcType=INTEGER}
         where user_id = #{userId,jdbcType=BIGINT}
         and purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT}
-        and participant_id = #{participantId,jdbcType=BIGINT}
         and participant_permission = #{participantPermission,jdbcType=VARCHAR}
   </update>
   <select id="selectByExampleWithRowbounds" parameterType="com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria" resultMap="BaseResultMap">

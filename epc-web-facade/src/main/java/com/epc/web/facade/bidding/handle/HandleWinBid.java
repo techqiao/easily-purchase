@@ -1,9 +1,11 @@
 package com.epc.web.facade.bidding.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 public class HandleWinBid implements Serializable {
@@ -35,6 +37,11 @@ public class HandleWinBid implements Serializable {
     private Long purchaserId;
 
     private Long BossId;
+
+    private Date openStart;
+
+    private Date openEnd;
+    private String filePath;
 
 
 }

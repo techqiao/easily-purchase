@@ -1,6 +1,6 @@
 package com.epc.bidding.controller.question;
 
-import com.epc.bidding.service.bidding.BiddingService;
+import com.epc.bidding.service.question.QuestionService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeQuestionService;
 import com.epc.web.facade.bidding.handle.HandleQuestion;
@@ -16,7 +16,7 @@ import java.util.List;
 public class BiddingQuestionController implements FacadeQuestionService {
 
     @Autowired
-    BiddingService biddingService;
+    QuestionService questionService;
 
     /**
      * 根据 类型+id 获取答疑列表
@@ -25,7 +25,7 @@ public class BiddingQuestionController implements FacadeQuestionService {
      */
     @Override
     public Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(@RequestBody QueryAnswerQuestionDTO dto){
-        return biddingService.getAnswerQuestionList(dto);
+        return questionService.getAnswerQuestionList(dto);
     }
 
     /**
@@ -35,6 +35,6 @@ public class BiddingQuestionController implements FacadeQuestionService {
      */
     @Override
     public  Result<Boolean> insertQuestion(@RequestBody HandleQuestion handleQuestion){
-        return biddingService.insertBAnswerQuestion(handleQuestion);
+        return questionService.insertBAnswerQuestion(handleQuestion);
     }
 }

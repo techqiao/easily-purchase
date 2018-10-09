@@ -2,6 +2,7 @@ package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleWinBid;
+import com.epc.web.facade.bidding.handle.HandleWinBidFilePath;
 import com.epc.web.facade.bidding.query.winBid.QueryWinBidLetterDTO;
 import com.epc.web.facade.bidding.vo.TWinBidNominateVO;
 import com.epc.web.facade.bidding.vo.WinBidLetterVO;
@@ -20,17 +21,17 @@ public interface FacadeWinBidService {
      * @return
      */
 
-    @PostMapping(value = "getWinBidLetter", consumes = "application/json; charset=UTF-8")
+    @PostMapping(value = "getWinBidLetter")
     Result<List<WinBidLetterVO>> getWinBidLetter(@RequestBody  QueryWinBidLetterDTO dto);
 
 
     /**
      * 获取中标通知列表
-     * @param bidId
+     * @param purchaseProjectId
      * @return
      */
-    @GetMapping(value = "getTWinBidNominate", consumes = "application/json; charset=UTF-8")
-     Result<TWinBidNominateVO> getTWinBidNominate(@RequestParam("bidId") Long bidId);
+    @GetMapping(value = "tWinBidNominate", consumes = "application/json; charset=UTF-8")
+    Result<List<TWinBidNominateVO>> getTWinBidNominate(@RequestParam("purchaseProjectId") Long purchaseProjectId);
 
 
 
@@ -43,4 +44,12 @@ public interface FacadeWinBidService {
     Result<Boolean> insertTWinBidNominate(@RequestBody HandleWinBid handleWinBid) ;
 
 
-    }
+
+    /**
+     * 确认上传中标公示路径
+     * @param handleWinBidFilePath
+     * @return
+     */
+    @PostMapping(value = "insertTWinBidNominateFilePath", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> insertTWinBidNominateFilePath(@RequestBody HandleWinBidFilePath handleWinBidFilePath);
+}

@@ -2,10 +2,14 @@ package com.epc.web.client.remoteApi.terdering.project;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.project.FacadeTProjectBasicInfoService;
-import com.epc.web.facade.terdering.project.handle.HandleProjectBasicInfo;
+import com.epc.web.facade.terdering.project.handle.*;
+import com.epc.web.facade.terdering.project.query.LoginInfo;
 import com.epc.web.facade.terdering.project.query.QueryProjectInfoDTO;
 import com.epc.web.facade.terdering.project.vo.ProjectDetailInfoVO;
+import com.epc.web.facade.terdering.project.vo.SelectProjectListVO;
+import com.epc.web.facade.terdering.project.vo.SelectProjectPurchaserListVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +30,46 @@ public class ProjectHystrix implements FacadeTProjectBasicInfoService {
 
     @Override
     public Result<Map<String, Object>> getProjectList(QueryProjectInfoDTO queryProjectInfoDTO) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> createProjectByAdmin(HandleCreateProjectByAdmin handleCreateProjectByAdmin) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> deleteProjectAdmin(HandleDeleteProjectAdmin handleDeleteProjectAdmin) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateProjectAdmin(HandleUpdateProjectAdmin handleUpdateProjectAdmin) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<SelectProjectListVO>> selectProjectList(LoginInfo loginInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> createProjectPurchaserByAdmin(HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(HandleSelectProjectPurchaserList handleSelectProjectPurchaserList) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> deleteProjectPurchaser(HandleDeleteProjectPurchaser handleDeleteProjectPurchaser) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> updateProjectPurchaser(HandleUpdateProjectPurchaser handleUpdateProjectPurchaser) {
         return Result.hystrixError();
     }
 

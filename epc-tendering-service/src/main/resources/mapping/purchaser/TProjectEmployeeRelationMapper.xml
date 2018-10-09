@@ -9,8 +9,10 @@
     <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
     <result column="executive_id" property="executiveId" jdbcType="BIGINT" />
     <result column="executive_name" property="executiveName" jdbcType="VARCHAR" />
+    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="notes" property="notes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_name, creater_id, creater_name, purchaser_id, executive_id, executive_name, 
-    create_at, update_at
+    is_deleted, create_at, update_at, notes
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria" >
     select
@@ -110,10 +112,12 @@
     </selectKey>
     insert into t_project_employee_relation (project_name, creater_id, creater_name, 
       purchaser_id, executive_id, executive_name, 
-      create_at, update_at)
+      is_deleted, create_at, update_at, 
+      notes)
     values (#{projectName,jdbcType=VARCHAR}, #{createrId,jdbcType=BIGINT}, #{createrName,jdbcType=VARCHAR}, 
       #{purchaserId,jdbcType=BIGINT}, #{executiveId,jdbcType=BIGINT}, #{executiveName,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP})
+      #{isDeleted,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{notes,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelation" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -139,11 +143,17 @@
       <if test="executiveName != null" >
         executive_name,
       </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
       <if test="createAt != null" >
         create_at,
       </if>
       <if test="updateAt != null" >
         update_at,
+      </if>
+      <if test="notes != null" >
+        notes,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -165,11 +175,17 @@
       <if test="executiveName != null" >
         #{executiveName,jdbcType=VARCHAR},
       </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
       </if>
       <if test="updateAt != null" >
         #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="notes != null" >
+        #{notes,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -203,11 +219,17 @@
       <if test="record.executiveName != null" >
         executive_name = #{record.executiveName,jdbcType=VARCHAR},
       </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateAt != null" >
         update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.notes != null" >
+        notes = #{record.notes,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -223,8 +245,10 @@
       purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       executive_id = #{record.executiveId,jdbcType=BIGINT},
       executive_name = #{record.executiveName,jdbcType=VARCHAR},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP}
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      notes = #{record.notes,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -250,11 +274,17 @@
       <if test="executiveName != null" >
         executive_name = #{executiveName,jdbcType=VARCHAR},
       </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
       </if>
       <if test="updateAt != null" >
         update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="notes != null" >
+        notes = #{notes,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -267,8 +297,10 @@
       purchaser_id = #{purchaserId,jdbcType=BIGINT},
       executive_id = #{executiveId,jdbcType=BIGINT},
       executive_name = #{executiveName,jdbcType=VARCHAR},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
-      update_at = #{updateAt,jdbcType=TIMESTAMP}
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      notes = #{notes,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.purchaser.TProjectEmployeeRelationCriteria" id="selectByExampleWithRowbounds" >

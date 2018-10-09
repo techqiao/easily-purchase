@@ -34,4 +34,5 @@ public interface BBidOpeningPayMapper {
     int updateByPrimaryKey(BBidOpeningPay record);
 
     List<QueryTenderMoneyRecordVO> selectBidPayRecord(Long id);
+
 }

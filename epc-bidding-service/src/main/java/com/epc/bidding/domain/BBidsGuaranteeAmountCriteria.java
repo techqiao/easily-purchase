@@ -416,6 +416,66 @@ public class BBidsGuaranteeAmountCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBidsIdIsNull() {
+            addCriterion("bids_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdIsNotNull() {
+            addCriterion("bids_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdEqualTo(Long value) {
+            addCriterion("bids_id =", value, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdNotEqualTo(Long value) {
+            addCriterion("bids_id <>", value, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdGreaterThan(Long value) {
+            addCriterion("bids_id >", value, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("bids_id >=", value, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdLessThan(Long value) {
+            addCriterion("bids_id <", value, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdLessThanOrEqualTo(Long value) {
+            addCriterion("bids_id <=", value, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdIn(List<Long> values) {
+            addCriterion("bids_id in", values, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdNotIn(List<Long> values) {
+            addCriterion("bids_id not in", values, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdBetween(Long value1, Long value2) {
+            addCriterion("bids_id between", value1, value2, "bidsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsIdNotBetween(Long value1, Long value2) {
+            addCriterion("bids_id not between", value1, value2, "bidsId");
+            return (Criteria) this;
+        }
+
         public Criteria andBidsCodeIsNull() {
             addCriterion("bids_code is null");
             return (Criteria) this;
@@ -483,66 +543,6 @@ public class BBidsGuaranteeAmountCriteria {
 
         public Criteria andBidsCodeNotBetween(String value1, String value2) {
             addCriterion("bids_code not between", value1, value2, "bidsCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdIsNull() {
-            addCriterion("bids_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdIsNotNull() {
-            addCriterion("bids_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdEqualTo(Long value) {
-            addCriterion("bids_id =", value, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdNotEqualTo(Long value) {
-            addCriterion("bids_id <>", value, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdGreaterThan(Long value) {
-            addCriterion("bids_id >", value, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("bids_id >=", value, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdLessThan(Long value) {
-            addCriterion("bids_id <", value, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdLessThanOrEqualTo(Long value) {
-            addCriterion("bids_id <=", value, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdIn(List<Long> values) {
-            addCriterion("bids_id in", values, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdNotIn(List<Long> values) {
-            addCriterion("bids_id not in", values, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdBetween(Long value1, Long value2) {
-            addCriterion("bids_id between", value1, value2, "bidsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBidsIdNotBetween(Long value1, Long value2) {
-            addCriterion("bids_id not between", value1, value2, "bidsId");
             return (Criteria) this;
         }
 

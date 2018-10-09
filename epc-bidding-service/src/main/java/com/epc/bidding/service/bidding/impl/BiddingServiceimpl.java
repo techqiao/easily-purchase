@@ -46,8 +46,6 @@ public class BiddingServiceimpl implements BiddingService {
     @Autowired
     BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
     @Autowired
-    BAnswerQuestionMapper bAnswerQuestionMapper;
-    @Autowired
     TSupplierAttachmentMapper tSupplierAttachmentMapper;
     @Autowired
     TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
@@ -128,72 +126,6 @@ public class BiddingServiceimpl implements BiddingService {
             noticeDetailVO.setBiddingDocumentsUrl(null);
         }
         return Result.success(noticeDetailVO);
-    }
-/*******************************************问题********************************************************/
-    /**
-     * 查看 答疑列表
-     * @param dto
-     * @return
-     */
-    @Override
-    public Result<List<QueryAnswerQuestionListVO>> getAnswerQuestionList(QueryAnswerQuestionDTO dto) {
-        final BAnswerQuestionCriteria criteria = new BAnswerQuestionCriteria();
-        final BAnswerQuestionCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
-        if(StringUtils.isNotEmpty(dto.getAnswerName())){
-            subCriteria.andAnswerNameLike("%"+dto.getAnswerName()+"%");
-        }
-        if(StringUtils.isNotEmpty(dto.getQuestionType())){
-            subCriteria.andQuestionTypeEqualTo(dto.getQuestionType());
-        }
-        if(dto.getTypeId()!=null && dto.getTypeId()>0){
-            subCriteria.andTypeIdEqualTo(dto.getTypeId());
-        }
-        if(dto.getQuestionerId()!=null && dto.getQuestionerId()>0){
-            subCriteria.andQuestionerIdEqualTo(dto.getQuestionerId());
-        }
-        if(StringUtils.isNotEmpty(dto.getQuestionerName())){
-            subCriteria.andQuestionerNameLike("%"+dto.getQuestionerName()+"%");
-        }
-        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-        criteria.setOrderByClause("create_at desc");
-
-        List<BAnswerQuestionWithBLOBs> list=bAnswerQuestionMapper.selectByExampleWithBLOBs(criteria);
-        List<QueryAnswerQuestionListVO> returnList = new ArrayList<>();
-        list.forEach(item -> {
-            QueryAnswerQuestionListVO vo = new QueryAnswerQuestionListVO();
-            BeanUtils.copyProperties(item, vo);
-            vo.setCreateAt(DateTimeUtil.dateToStr(item.getCreateAt()));
-            returnList.add(vo);
-        });
-        return Result.success(returnList);
-    }
-
-
-
-    /**
-     * 新增一条问题 (公告,招标文件，评标)
-     * @param handleQuestion
-     * @return
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> insertBAnswerQuestion(HandleQuestion handleQuestion){
-        BAnswerQuestionWithBLOBs entity= new BAnswerQuestionWithBLOBs();
-        BeanUtils.copyProperties(handleQuestion,entity);
-        entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        entity.setCreateAt(new Date());
-        entity.setUpdateAt(new Date());
-        entity.setOperateId(handleQuestion.getQuestionerId());
-        entity.setStatus(QuestionTypeEnum.WAIT_REPLY.getCode());
-        try{
-            bAnswerQuestionMapper.insertSelective(entity);
-        }catch (Exception e){
-            LOGGER.error(entity.toString()+"_"+e.getMessage(),e);
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return Result.error();
-        }
-        return  Result.success(true);
     }
 
 /*******************************************投标文件记录********************************************************/

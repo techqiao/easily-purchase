@@ -1,5 +1,6 @@
 package com.epc.web.facade.operator.handle;
 
+import com.epc.web.facade.supplier.handle.QualificationCertificate;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -34,14 +35,17 @@ public class HandleCreatePurchaserByOperator implements Serializable {
 
 
 
-    //当前添加的采购人id
-    private Long id;
+    //当前添加的采购人id    (从前端列表中获取)
+    private Long supplierId;
 
     //采购人姓名
-    private String name;
+//    private String name;
 
     //手机号
-    private String cellphone;
+//    private String cellphone;
+
+    //公司地址
+    private String companyAddress;
 
     //公司名称
     private String companyName;
@@ -56,8 +60,33 @@ public class HandleCreatePurchaserByOperator implements Serializable {
     private String publicBanAccountNumber;
 
 
-    //附件表字段
-    private List<Attachment> atts;
+    //营业执照照片url
+    private String businessLicense;
+    private String businessLicenseNumber;
+
+    //法人身份证正面照片url
+    private String legalIdCardPositive;
+    private String legalIdCardPositiveNumber;
+
+
+    //法人身份证反面照片url
+    private String legalIdCardOther;
+
+    //带公章的授权书照片url
+    private String certificateOfAuthorization;
+    private String certificateOfAuthorizationNumber;
+
+    // 经办人(运营商员工)手持身份证正面照片url
+    private String operatorIdCardFront;
+    private String operatorIdCardFrontNumber;
+
+    //资质证书url
+//    private String qualificationCertificate;
+//    private String qualificationCertificateNumber;
+
+    private List<QualificationCertificate> qcs;
+
+//    private List<Attachment> atts;
 
 
 

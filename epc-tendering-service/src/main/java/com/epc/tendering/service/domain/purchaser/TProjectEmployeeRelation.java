@@ -18,9 +18,13 @@ public class TProjectEmployeeRelation implements Serializable {
 
     private String executiveName;
 
+    private Integer isDeleted;
+
     private Date createAt;
 
     private Date updateAt;
+
+    private String notes;
 
     private static final long serialVersionUID = 1L;
 
@@ -80,6 +84,14 @@ public class TProjectEmployeeRelation implements Serializable {
         this.executiveName = executiveName == null ? null : executiveName.trim();
     }
 
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     public Date getCreateAt() {
         return createAt;
     }
@@ -96,6 +108,14 @@ public class TProjectEmployeeRelation implements Serializable {
         this.updateAt = updateAt;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes == null ? null : notes.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -109,8 +129,10 @@ public class TProjectEmployeeRelation implements Serializable {
         sb.append(", purchaserId=").append(purchaserId);
         sb.append(", executiveId=").append(executiveId);
         sb.append(", executiveName=").append(executiveName);
+        sb.append(", isDeleted=").append(isDeleted);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
+        sb.append(", notes=").append(notes);
         sb.append("]");
         return sb.toString();
     }

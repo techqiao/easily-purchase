@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class QueryWinBidLetterDTO {
-    private Long projectId;
 
     private Long procurementProjectId;
 

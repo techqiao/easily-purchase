@@ -41,7 +41,7 @@ public class HandleAnnouncementStatus implements Serializable {
     /**
      * 是否全权委托代理机构
      */
-    private Long isOtherAgency;
+    private Integer isOtherAgency;
     /**
      * 是否通过 0不通过 1通过
      */

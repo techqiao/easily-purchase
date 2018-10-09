@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "OssTokenController",tags = "凭证服务")
 @RestController
-@RequestMapping(value = "OssTokenController")
+@RequestMapping(value = "public/OssTokenController")
 public class OssTokenController {
 
     @Autowired
     private OssTokenClient ossTokenClient;
-
 
     @ApiOperation(value = "申请上传凭证", notes = "申请上传凭证,参数：模块+文件原名，返回：凭证+文件存储key")
     @PostMapping(value = "getUpToken", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -75,7 +75,7 @@ public class ProjectBasicInfoController extends BaseController {
      * 指定项目名
      * 指派项目经理(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
      */
-    @ApiOperation(value = "创建项目")
+    @ApiOperation(value = "创建项目",notes = "donghuan")
     @PostMapping(value="/createProjectByAdmin")
     public Result<Boolean> createProjectByAdmin(@RequestBody ClientHandleCreateProjectByAdmin clientHandleCreateProjectByAdmin){
         HandleCreateProjectByAdmin handleCreateProjectByAdmin=new HandleCreateProjectByAdmin();
@@ -98,7 +98,7 @@ public class ProjectBasicInfoController extends BaseController {
      *  删除一个项目
      *
      */
-//    @ApiOperation(value = "删除一个项目")
+//    @ApiOperation(value = "删除一个项目",notes="donghuan")
 //    @PostMapping(value = "/deleteProjectAdmin")
 //    public Result<Boolean> deleteProjectAdmin(@RequestBody ClientHandleDeleteProjectAdmin clientHandleDeleteProjectAdmin){
 //        HandleDeleteProjectAdmin handleDeleteProjectAdmin=new HandleDeleteProjectAdmin();
@@ -114,7 +114,7 @@ public class ProjectBasicInfoController extends BaseController {
     /**0.2
      *  修改项目
      */
-    @ApiOperation(value = "修改项目")
+    @ApiOperation(value = "修改项目",notes = "donghuan")
     @PostMapping(value = "/updateProjectAdmin")
     public Result<Boolean> updateProjectAdmin(@RequestBody ClientHandleUpdateProjectAdmin clientHandleUpdateProjectAdmin){
         HandleUpdateProjectAdmin handleUpdateProjectAdmin=new HandleUpdateProjectAdmin();
@@ -131,7 +131,7 @@ public class ProjectBasicInfoController extends BaseController {
      * 查看项目 列表
      *
      */
-    @ApiOperation(value = "查看项目 列表")
+    @ApiOperation(value = "查看项目 列表",notes = "donghuan")
     @PostMapping(value = "/selectProjectList")
     public Result<List<SelectProjectListVO>> selectProjectList(){
         Integer loginRole = getLoginUser().getLoginRole();

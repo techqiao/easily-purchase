@@ -712,8 +712,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         if (loginUser != null) {
             String token = UUID.randomUUID().toString().replace("-", "");
             String tokens = "EPC_PRIVATE_" + token;
-            Map<String, Object> resultMap = new HashMap<String, Object>();
-            resultMap.put("epc_token", token);
+            Map<String, Object> resultMap = new HashMap<String, Object>(16);
+            resultMap.put("epc-token", token);
             RedisShardedPoolUtil.setEx(tokens, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             return Result.success("登陆成功", resultMap);
         }

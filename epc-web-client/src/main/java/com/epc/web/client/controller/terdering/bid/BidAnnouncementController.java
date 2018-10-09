@@ -50,15 +50,12 @@ public class BidAnnouncementController extends BaseController {
     /**
      * 根据标段查询 供应商投标报告
      *
-     * @param dto
      * @return
      */
     @ApiOperation(value = "根据标段查询供应商投标报告")
     @PostMapping(value = "queryBidAnnouncement")
-    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {
-        QueryBidAnnouncement queryBidAnnouncement = new QueryBidAnnouncement();
-        BeanUtils.copyProperties(dto, queryBidAnnouncement);
-        return bidAnnouncementClient.queryBidAnnouncement(queryBidAnnouncement);
+    public Result<List<BidAnnouncementVO>> queryBidAnnouncement(@RequestParam("bidId") Long bidId) {
+        return bidAnnouncementClient.queryBidAnnouncement(bidId);
     }
 
 

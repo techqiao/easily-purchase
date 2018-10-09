@@ -1,7 +1,6 @@
 package com.epc.tendering.service.service.committee.impl;
 
 import com.epc.common.Result;
-import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.committee.BAssessmentCommittee;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
@@ -17,6 +16,7 @@ import com.epc.web.facade.terdering.committee.dto.BidDTO;
 import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -53,7 +53,7 @@ public class CommitteeServiceImpl implements CommitteeService {
     public Result<Long> createCommittee(HandleCommittee dto){
         BAssessmentCommittee committee=new BAssessmentCommittee();
         BeanUtils.copyProperties(dto,committee);
-        committee.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
+        committee.setProcessState(Const.ACTION_STATE.NOT_ARRIVING);
         committee.setCreateAt(new Date());
         committee.setUpdateAt(new Date());
         committee.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -80,9 +80,15 @@ public class CommitteeServiceImpl implements CommitteeService {
         /** 组建评委员--标段对应专专业人数 */
         List<BidDTO> bidList=dto.getBidDTOList();
         List<ExpertDTO> expertList=dto.getExpertDTOList();
-        //获取要抽取的标段列表
+         //获取要抽取的标段列表
         for(BidDTO bid:bidList){
             for(ExpertDTO expert:expertList){
+                if(expert.getProfessionalNumber()==null){
+                    return Result.error("professionalNumber is not null");
+                }
+                if(expert.getProfessionalName()==null){
+                    return Result.error("professionalName is not null");
+                }
                 BAssessmentCommitteeBid committeeBid =new BAssessmentCommitteeBid();
                 BeanUtils.copyProperties(bid,committeeBid);
                 BeanUtils.copyProperties(expert,committeeBid);
@@ -90,24 +96,38 @@ public class CommitteeServiceImpl implements CommitteeService {
                 committeeBid.setCreateAt(new Date());
                 committeeBid.setUpdateAt(new Date());
                 committeeBid.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+                committeeBid.setOperateId(dto.getOperateId());
                 try{
                     bAssessmentCommitteeBidMapper.insertSelective(committeeBid) ;
                 }catch (Exception e){
                     LOGGER.error("bAssessmentCommitteeBid_"+committeeBid.toString()+e.getMessage(),e);
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    return Result.error();
                 }
 
                 //专业人数--专家列表
                 TExpertBasicInfoCriteria criteria=new TExpertBasicInfoCriteria();
                 TExpertBasicInfoCriteria.Criteria cubCriteria=criteria.createCriteria();
                 cubCriteria.andProfessionEqualTo(expert.getProfessionalName());
-                cubCriteria.andLevelEqualTo(expert.getProfessionalName());
                 cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+                if(StringUtils.isNotEmpty(expert.getProfessionalLevel())){
+                    cubCriteria.andLevelEqualTo(expert.getProfessionalLevel());
+                }
+                cubCriteria.andIsIdleEqualTo(Const.EXPERT_STATUS.FREE);
                 List<TExpertBasicInfo> resultList=tExpertBasicInfoMapper.selectByExample(criteria);
+                if(resultList.size()==0){
+
+                    LOGGER.error(resultList.toString()+"_"+"is not null");
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    return Result.error();
+                }
+
                 List<TExpertBasicInfo> padomList = getSubStringByRadom(resultList,expert.getProfessionalNumber());
                 for(TExpertBasicInfo entity:padomList){
                     BAssessmentCommitteeExpert bAssessmentCommitteeExpert=new BAssessmentCommitteeExpert();
                     bAssessmentCommitteeExpert.setCommitteeBidId(committeeBid.getId());
+                    bAssessmentCommitteeExpert.setProcurementProjectId(dto.getProcurementProjectId());
+                    bAssessmentCommitteeExpert.setBidsId(bid.getBidsId());
                     bAssessmentCommitteeExpert.setExpertId(entity.getId());
                     bAssessmentCommitteeExpert.setExpertName(entity.getName());
                     bAssessmentCommitteeExpert.setOperateId(dto.getOperateId());
@@ -117,8 +137,9 @@ public class CommitteeServiceImpl implements CommitteeService {
                     try{
                         bAssessmentCommitteeExpertMapper.insertSelective(bAssessmentCommitteeExpert);
                     }catch (Exception e){
-                        LOGGER.error("bAssessmentCommitteeExpert 插入失败");
+                        LOGGER.error(bAssessmentCommitteeExpert.toString()+"_"+e.getMessage());
                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        return Result.error();
                     }
                 }
 

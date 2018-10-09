@@ -35,7 +35,6 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         String header = request.getHeader("epc-token");
-
         if (null != header) {
             String s = RedisShardedPoolUtil.get("EPC_PRIVATE_" + header);
             if (null != s) {
@@ -63,7 +62,6 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
 
 
     }
-
     /**
      * 该方法也是需要当前对应的Interceptor的preHandle方法的返回值为true时才会执行
      */

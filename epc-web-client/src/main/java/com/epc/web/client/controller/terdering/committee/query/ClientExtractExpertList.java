@@ -21,6 +21,8 @@ public class ClientExtractExpertList implements Serializable {
     /**
     BAssessmentCommitteeBid
      */
+    @ApiModelProperty(value = "采购项目id")
+    private Long procurementProjectId;
 
     @ApiModelProperty(value = "委员会ID")
     private Long committeeId;
@@ -32,7 +34,5 @@ public class ClientExtractExpertList implements Serializable {
      */
     @ApiModelProperty(value = "标段列表")
     List<BidDTO> bidDTOList;
-    @ApiModelProperty(value = "操作人ID")
-    private Long OperateId;
 
 }

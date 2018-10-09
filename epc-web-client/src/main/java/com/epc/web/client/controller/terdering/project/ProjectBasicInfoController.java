@@ -72,7 +72,7 @@ public class ProjectBasicInfoController extends BaseController {
      * 指定项目名
      * 指派项目经理(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
      */
-    @ApiOperation(value = "项目列表")
+    @ApiOperation(value = "创建项目")
     @PostMapping(value="/createProjectByAdmin")
     public Result<Boolean> createProjectByAdmin(@RequestBody ClientHandleCreateProjectByAdmin clientHandleCreateProjectByAdmin){
         HandleCreateProjectByAdmin handleCreateProjectByAdmin=new HandleCreateProjectByAdmin();
@@ -95,18 +95,18 @@ public class ProjectBasicInfoController extends BaseController {
      *  删除一个项目
      *
      */
-    @ApiOperation(value = "删除一个项目")
-    @PostMapping(value = "/deleteProjectAdmin")
-    public Result<Boolean> deleteProjectAdmin(@RequestBody ClientHandleDeleteProjectAdmin clientHandleDeleteProjectAdmin){
-        HandleDeleteProjectAdmin handleDeleteProjectAdmin=new HandleDeleteProjectAdmin();
-        BeanUtils.copyProperties(clientHandleDeleteProjectAdmin,handleDeleteProjectAdmin);
-        Integer loginRole = getLoginUser().getLoginRole();
-        if(loginRole==null){
-            return Result.error("从redis中取出异常");
-        }
-        handleDeleteProjectAdmin.setLoginRole(loginRole);
-        return projectClient.deleteProjectAdmin(handleDeleteProjectAdmin);
-    }
+//    @ApiOperation(value = "删除一个项目")
+//    @PostMapping(value = "/deleteProjectAdmin")
+//    public Result<Boolean> deleteProjectAdmin(@RequestBody ClientHandleDeleteProjectAdmin clientHandleDeleteProjectAdmin){
+//        HandleDeleteProjectAdmin handleDeleteProjectAdmin=new HandleDeleteProjectAdmin();
+//        BeanUtils.copyProperties(clientHandleDeleteProjectAdmin,handleDeleteProjectAdmin);
+//        Integer loginRole = getLoginUser().getLoginRole();
+//        if(loginRole==null){
+//            return Result.error("从redis中取出异常");
+//        }
+//        handleDeleteProjectAdmin.setLoginRole(loginRole);
+//        return projectClient.deleteProjectAdmin(handleDeleteProjectAdmin);
+//    }
 
     /**0.2
      *  修改项目
@@ -142,64 +142,7 @@ public class ProjectBasicInfoController extends BaseController {
         return projectClient.selectProjectList(loginInfo);
     }
 
-    /**1
-     * 在已经存在的项目底下创建采购项目，指定采购项目名称，并指派经办人，批复人，审核人
-     *      指派采购项目负责人(在项目人员指派关系表 t_project_employee_relation 插入一条数据,将状态改成 1进行中)
-     */
-    @ApiOperation(value = "新建采购项目")
-    @PostMapping(value = "/createProjectPurchaserByAdmin")
-    public Result<Boolean> createProjectPurchaserByAdmin(@RequestBody ClientHandleCreateProjectPurchaserByAdmin clientHandleCreateProjectPurchaserByAdmin){
-        HandleCreateProjectPurchaserByAdmin handleCreateProjectPurchaserByAdmin=new HandleCreateProjectPurchaserByAdmin();
-        BeanUtils.copyProperties(clientHandleCreateProjectPurchaserByAdmin,handleCreateProjectPurchaserByAdmin);
-        Long userId = getLoginUser().getUserId();
-        Long bossId = getLoginUser().getBossId();
-        if(userId==null || bossId==null){
-            return Result.error("从redis中取出异常");
-        }
-        handleCreateProjectPurchaserByAdmin.setLoginId(userId);
-        handleCreateProjectPurchaserByAdmin.setBossId(bossId);
-        return projectClient.createProjectPurchaserByAdmin(handleCreateProjectPurchaserByAdmin);
-    }
 
-    /**1.1
-     * 获取 自己创建的采购项目 列表
-     *
-     */
-    @ApiOperation(value = "获取 自己创建的采购项目 列表")
-    @PostMapping(value = "/selectProjectPurchaserList")
-    public Result<List<SelectProjectPurchaserListVO>> selectProjectPurchaserList(@RequestBody ClientHandleSelectProjectPurchaserList clientHandleSelectProjectPurchaserList){
-        HandleSelectProjectPurchaserList handleSelectProjectPurchaserList=new HandleSelectProjectPurchaserList();
-        BeanUtils.copyProperties(clientHandleSelectProjectPurchaserList,handleSelectProjectPurchaserList);
-        Long userId = getLoginUser().getUserId();
-        if(userId==null){
-            return Result.error("从redis中取出异常");
-        }
-        handleSelectProjectPurchaserList.setLoginId(userId);
-        return projectClient.selectProjectPurchaserList(handleSelectProjectPurchaserList);
-    }
-
-    /**1.2
-     * 删除采购项目
-     */
-    @ApiOperation(value = "删除采购项目")
-    @PostMapping(value = "/deleteProjectPurchaser")
-    public Result<Boolean> deleteProjectPurchaser(@RequestBody ClientHandleDeleteProjectPurchaser clientHandleDeleteProjectPurchaser){
-        HandleDeleteProjectPurchaser handleDeleteProjectPurchaser=new HandleDeleteProjectPurchaser();
-        BeanUtils.copyProperties(clientHandleDeleteProjectPurchaser,handleDeleteProjectPurchaser);
-        return projectClient.deleteProjectPurchaser(handleDeleteProjectPurchaser);
-    }
-
-    /**1.3
-     * 修改采购项目
-     *
-     */
-    @ApiOperation(value = "修改采购项目")
-    @PostMapping(value = "/updateProjectPurchaser")
-    public Result<Boolean> updateProjectPurchaser(@RequestBody ClientHandleUpdateProjectPurchaser clientHandleUpdateProjectPurchaser){
-        HandleUpdateProjectPurchaser handleUpdateProjectPurchaser=new HandleUpdateProjectPurchaser();
-        BeanUtils.copyProperties(clientHandleUpdateProjectPurchaser,handleUpdateProjectPurchaser);
-        return projectClient.updateProjectPurchaser(handleUpdateProjectPurchaser);
-    }
 
 
 }

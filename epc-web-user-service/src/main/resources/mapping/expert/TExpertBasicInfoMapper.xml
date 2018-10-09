@@ -292,10 +292,10 @@
         </trim>
     </insert>
     <insert id="registerUser">
-        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT  INTO t_expert_basic_info
+        INSERT INTO t_expert_basic_info
         (cellphone,password,`name`,create_at,update_at,state)
         VALUES
         (#{cellphone},#{pwd},#{name},#{dates},#{dates},2)
@@ -520,7 +520,8 @@
         WHERE `name`=#{expertName}
         AND cellphone =#{cellPhone}
     </select>
-    <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo" parameterType="com.epc.web.facade.agency.dto.ExpertDto">
+    <select id="selectExpertByCriteria" resultType="com.epc.web.facade.agency.vo.AgencyExpertVo"
+            parameterType="com.epc.web.facade.agency.dto.ExpertDto">
         SELECT basic.name AS expertName,basic.profession, basic.positional, basic.level,basic.id as serialNum
         FROM t_expert_basic_info basic
 
@@ -548,15 +549,17 @@
         WHERE cellphone = #{cellphone}
         AND password = #{pwd}
     </select>
-    <select id="selectExpertByQueryCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserExpertVo" parameterType="com.epc.web.facade.purchaser.dto.QueryExpertDto">
-        SELECT id AS serialNum ,`name` AS  expertName, profession , positional ,`level`
+    <select id="selectExpertByQueryCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserExpertVo"
+            parameterType="com.epc.web.facade.purchaser.dto.QueryExpertDto">
+        <bind name="pattern" value="'%'+expertName+'%'"/>
+        SELECT id AS serialNum ,`name` AS expertName, profession , positional ,`level`
         FROM t_expert_basic_info
         <where>
             <if test="expertName!=null">
-              AND `name` LIKE '%'#{expertName}'%'
+                AND `name` LIKE #{pattern}
             </if>
             <if test="level!=null">
-                AND `level` #{level}
+                AND `level`= #{level}
             </if>
             <if test="positional!=null">
                 AND positional=#{positional}
@@ -567,7 +570,8 @@
         </where>
     </select>
     <select id="selectExpertCellPhone" resultType="com.epc.web.service.domain.expert.TExpertBasicInfo">
-        SELECT <include refid="Base_Column_List"/>
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM t_expert_basic_info
         WHERE cellphone =#{cell}
     </select>

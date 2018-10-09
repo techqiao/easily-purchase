@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RestController
 @Api(value = "采购项目相关咨询问题服务", tags = {"采购项目相关咨询问题服务"})
-@RequestMapping(value = "/purchaseProject", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/purchase", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AnswerQuestionController extends BaseController {
     @Autowired
     private AnswerQuestionClient answerQuestionClient;

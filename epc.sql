@@ -617,7 +617,7 @@ CREATE TABLE `t_purchase_project_bids` (
 	`bid_code` varchar(64) NOT NULL COMMENT '标段编号',
 	`bid_name` varchar(64) NOT NULL COMMENT '标段名称',
 	`bid_budgetary_amount` decimal(18,2) NOT NULL COMMENT '预算金额',
-	`guarantee_payment` DECIMAL(18,2) DEFAULT 0.00 COMMENT '保证金金额',
+	`guarantee_payment` DECIMAL(5,2) DEFAULT 0.00 COMMENT '保证金金额',
 	`bid_file_path` varchar(256) NOT NULL COMMENT '标段文件路径',
 	`bid_memo` TEXT COMMENT '标段描述',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',

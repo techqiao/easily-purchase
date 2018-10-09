@@ -20,7 +20,7 @@ import java.util.Map;
 public interface FacadeAnnouncementService {
 
     /**
-     * 添加公告信息
+     * 添加预告信息
      * @param handleAnnouncement
      * @return
      */

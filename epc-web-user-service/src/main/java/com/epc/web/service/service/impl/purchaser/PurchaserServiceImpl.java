@@ -714,7 +714,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         //查询注册信息
         String name = dto.getName();
         String cellphone = dto.getCellphone();
-        //代理机构的id
+        //供应商的id
         Long supplierId = dto.getSupplierId();
         TSupplierBasicInfo basicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(supplierId);
         if (basicInfo == null) {

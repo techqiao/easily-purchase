@@ -71,8 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, cellphone, password, state, supplier_id, supplier_name, uniform_credit_code, 
-    public_bank_name, public_ban_account_number, purchaser_id, source, create_at, update_at, 
+    id, state, agency_id,  purchaser_id, creater_id,source, create_at, update_at,
     is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgencyCriteria" >

@@ -173,8 +173,8 @@ public class ExpertServiceImpl implements ExpertService {
             //添加详细信息
             tExpertDetailInfoMapper.updateByPrimaryKeySelective(tExpertDetailInfo);
             //查询附件信息看初次完善是否添加
-            int nums = tExpertAttachmentMapper.selectAttchamentNumsByExpertId(expertId);
-            if (nums > 0) {
+             List<TExpertAttachment> list =tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
+            if (!CollectionUtils.isEmpty(list)) {
                 tExpertAttachmentMapper.deleteByAttachmentByExpertId(expertId);
                 //添加身份证信息
                 this.addExpertAttachment(expertAttachment, expertId, expert);

@@ -34,10 +34,12 @@ public interface TSupplierDetailInfoMapper {
     int updateByPrimaryKey(TSupplierDetailInfo record);
 
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     /*wenlin*/
     TSupplierDetailInfo selectTSupplierDetailInfoBySupplierId(Long supplierId);
 
-
     List<PurchaserSupplierVo> selectSupplierByCriteria(QuerySupplierDto dto);
+
+
 }

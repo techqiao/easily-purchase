@@ -93,6 +93,7 @@ public class BiddingServiceimpl implements BiddingService {
             for(BReleaseAnnouncement entity:list){
                 NoticeDetailVO clientNoticeDetailVO = new NoticeDetailVO();
                 BeanUtils.copyProperties(entity,clientNoticeDetailVO);
+                clientNoticeDetailVO.setBiddingDocumentsUrl(null);
                 resultList.add(clientNoticeDetailVO);
             }
 
@@ -352,11 +353,11 @@ public class BiddingServiceimpl implements BiddingService {
         //获取招标文件ID
         Long fileId=list.get(0).getId();
        // BigDecimal money=list.get(0).getFilePayment();
-        //根据招标文件ID 和 下载机构id 查询是否付费
+        //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
         subPay.andCompanyIdEqualTo(dto.getCompanyId());
-        subPay.andPurchasProjectFileIdEqualTo(fileId);
+        subPay.andPurchaseProjectFileIdEqualTo(fileId);
 
         List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
         //未查询到支付记录
@@ -364,6 +365,7 @@ public class BiddingServiceimpl implements BiddingService {
             LOGGER.error("未找到支付记录");
             return false;
         }else{
+
             //第一次支付，暂时不考虑多次
            /* BigDecimal realPay= payList.get(0).getFilePaymentReal();
             //compareTo  -1:<   0:=   1:>

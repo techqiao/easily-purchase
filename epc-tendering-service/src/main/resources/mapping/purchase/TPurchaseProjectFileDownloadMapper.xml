@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.bidding.mapper.TPurchaseProjectFilePayMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.TPurchaseProjectFilePay" >
+<mapper namespace="com.epc.tendering.service.mapper.purchase.TPurchaseProjectFileDownloadMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownload" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="purchase_project_file_id" property="purchaseProjectFileId" jdbcType="BIGINT" />
-    <result column="file_payment_real" property="filePaymentReal" jdbcType="DECIMAL" />
-    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
+    <result column="purchaser_id" property="purchaserId" jdbcType="BIGINT" />
+    <result column="purchase_file_name" property="purchaseFileName" jdbcType="VARCHAR" />
+    <result column="file_payment" property="filePayment" jdbcType="DECIMAL" />
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
@@ -71,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchase_project_file_id, file_payment_real, company_id, operate_id, creator, 
-    create_at, update_at, is_deleted
+    id, purchase_project_id, purchaser_id, purchase_file_name, file_payment, operate_id, 
+    creator, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePayCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownloadCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_purchase_project_file_pay
+    from t_purchase_project_file_download
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,46 +92,49 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from t_purchase_project_file_pay
+    from t_purchase_project_file_download
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from t_purchase_project_file_pay
+    delete from t_purchase_project_file_download
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePayCriteria" >
-    delete from t_purchase_project_file_pay
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownloadCriteria" >
+    delete from t_purchase_project_file_download
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePay" >
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownload" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_purchase_project_file_pay (purchase_project_file_id, file_payment_real, 
-      company_id, operate_id, creator, 
+    insert into t_purchase_project_file_download (purchase_project_id, purchaser_id, purchase_file_name, 
+      file_payment, operate_id, creator, 
       create_at, update_at, is_deleted
       )
-    values (#{purchaseProjectFileId,jdbcType=BIGINT}, #{filePaymentReal,jdbcType=DECIMAL}, 
-      #{companyId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+    values (#{purchaseProjectId,jdbcType=BIGINT}, #{purchaserId,jdbcType=BIGINT}, #{purchaseFileName,jdbcType=VARCHAR}, 
+      #{filePayment,jdbcType=DECIMAL}, #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
       #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePay" >
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownload" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_purchase_project_file_pay
+    insert into t_purchase_project_file_download
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="purchaseProjectFileId != null" >
-        purchase_project_file_id,
+      <if test="purchaseProjectId != null" >
+        purchase_project_id,
       </if>
-      <if test="filePaymentReal != null" >
-        file_payment_real,
+      <if test="purchaserId != null" >
+        purchaser_id,
       </if>
-      <if test="companyId != null" >
-        company_id,
+      <if test="purchaseFileName != null" >
+        purchase_file_name,
+      </if>
+      <if test="filePayment != null" >
+        file_payment,
       </if>
       <if test="operateId != null" >
         operate_id,
@@ -149,14 +153,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="purchaseProjectFileId != null" >
-        #{purchaseProjectFileId,jdbcType=BIGINT},
+      <if test="purchaseProjectId != null" >
+        #{purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="filePaymentReal != null" >
-        #{filePaymentReal,jdbcType=DECIMAL},
+      <if test="purchaserId != null" >
+        #{purchaserId,jdbcType=BIGINT},
       </if>
-      <if test="companyId != null" >
-        #{companyId,jdbcType=BIGINT},
+      <if test="purchaseFileName != null" >
+        #{purchaseFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePayment != null" >
+        #{filePayment,jdbcType=DECIMAL},
       </if>
       <if test="operateId != null" >
         #{operateId,jdbcType=BIGINT},
@@ -175,26 +182,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePayCriteria" resultType="java.lang.Integer" >
-    select count(*) from t_purchase_project_file_pay
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownloadCriteria" resultType="java.lang.Integer" >
+    select count(*) from t_purchase_project_file_download
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_purchase_project_file_pay
+    update t_purchase_project_file_download
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.purchaseProjectFileId != null" >
-        purchase_project_file_id = #{record.purchaseProjectFileId,jdbcType=BIGINT},
+      <if test="record.purchaseProjectId != null" >
+        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="record.filePaymentReal != null" >
-        file_payment_real = #{record.filePaymentReal,jdbcType=DECIMAL},
+      <if test="record.purchaserId != null" >
+        purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
       </if>
-      <if test="record.companyId != null" >
-        company_id = #{record.companyId,jdbcType=BIGINT},
+      <if test="record.purchaseFileName != null" >
+        purchase_file_name = #{record.purchaseFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePayment != null" >
+        file_payment = #{record.filePayment,jdbcType=DECIMAL},
       </if>
       <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
@@ -217,11 +227,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_purchase_project_file_pay
+    update t_purchase_project_file_download
     set id = #{record.id,jdbcType=BIGINT},
-      purchase_project_file_id = #{record.purchaseProjectFileId,jdbcType=BIGINT},
-      file_payment_real = #{record.filePaymentReal,jdbcType=DECIMAL},
-      company_id = #{record.companyId,jdbcType=BIGINT},
+      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+      purchaser_id = #{record.purchaserId,jdbcType=BIGINT},
+      purchase_file_name = #{record.purchaseFileName,jdbcType=VARCHAR},
+      file_payment = #{record.filePayment,jdbcType=DECIMAL},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -231,17 +242,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePay" >
-    update t_purchase_project_file_pay
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownload" >
+    update t_purchase_project_file_download
     <set >
-      <if test="purchaseProjectFileId != null" >
-        purchase_project_file_id = #{purchaseProjectFileId,jdbcType=BIGINT},
+      <if test="purchaseProjectId != null" >
+        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       </if>
-      <if test="filePaymentReal != null" >
-        file_payment_real = #{filePaymentReal,jdbcType=DECIMAL},
+      <if test="purchaserId != null" >
+        purchaser_id = #{purchaserId,jdbcType=BIGINT},
       </if>
-      <if test="companyId != null" >
-        company_id = #{companyId,jdbcType=BIGINT},
+      <if test="purchaseFileName != null" >
+        purchase_file_name = #{purchaseFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePayment != null" >
+        file_payment = #{filePayment,jdbcType=DECIMAL},
       </if>
       <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
@@ -261,11 +275,12 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePay" >
-    update t_purchase_project_file_pay
-    set purchase_project_file_id = #{purchaseProjectFileId,jdbcType=BIGINT},
-      file_payment_real = #{filePaymentReal,jdbcType=DECIMAL},
-      company_id = #{companyId,jdbcType=BIGINT},
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownload" >
+    update t_purchase_project_file_download
+    set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
+      purchaser_id = #{purchaserId,jdbcType=BIGINT},
+      purchase_file_name = #{purchaseFileName,jdbcType=VARCHAR},
+      file_payment = #{filePayment,jdbcType=DECIMAL},
       operate_id = #{operateId,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -273,13 +288,13 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.TPurchaseProjectFilePayCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.purchase.TPurchaseProjectFileDownloadCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_purchase_project_file_pay
+    from t_purchase_project_file_download
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

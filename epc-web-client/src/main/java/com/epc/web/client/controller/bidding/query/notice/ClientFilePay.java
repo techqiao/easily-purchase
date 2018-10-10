@@ -19,6 +19,5 @@ public class ClientFilePay {
     private Long procurementProjectId;
     @ApiModelProperty(value = "采购人id")
     private Long purchaserId;
-    @ApiModelProperty(value = "下载机构ID")
-    private Long companyId;
+
 }

@@ -16,9 +16,5 @@ public class ClientFilePay implements Serializable {
     private BigDecimal filePaymentReal;
     @ApiModelProperty(value = "公司ID")
     private Long companyId;
-    @ApiModelProperty(value = "操作人Id")
-    private Long operateId;
-    @ApiModelProperty(value = "创建人姓名")
-    private String creator;
 
 }

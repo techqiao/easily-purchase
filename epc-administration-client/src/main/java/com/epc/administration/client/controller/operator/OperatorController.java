@@ -99,4 +99,7 @@ public class OperatorController extends BaseController {
         BeanUtils.copyProperties(clientOperatorForbiddenHandle,operatorForbiddenHandle);
         return operatorClient.forbiddenOperatorUser(operatorForbiddenHandle);
    }
+    public static void main(String[] args) {
+        System.out.println(1+2+'1');
+    }
 }

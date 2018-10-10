@@ -28,8 +28,8 @@ public class ExpertSignController implements FacadeExpertSignService {
     }
 
     @Override
-    public Result<Boolean> handleExpert(@RequestParam(value = "id") Long id) {
-        return expertSignService.handleExpert(id);
+    public Result<Boolean> handleExpert(@RequestBody HandleExpertSign handleExpertSign) {
+        return expertSignService.handleExpert(handleExpertSign);
     }
 
     @Override

@@ -9,9 +9,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @ApiModel(value = "ClientHandleSupplierIdAndName",description = "依据条件查询")
 public class ClientHandleSupplierIdAndName {
 
-    @ApiModelProperty(value = "操作者的id")
-    @NotEmpty(message = "ClientHandleSupplierIdAndName.id.null")
-    private Long id;
+//    @ApiModelProperty(value = "操作者的id")
+//    @NotEmpty(message = "ClientHandleSupplierIdAndName.id.null")
+//    private Long id;
 
     @ApiModelProperty(value = "名字")
     private String name;

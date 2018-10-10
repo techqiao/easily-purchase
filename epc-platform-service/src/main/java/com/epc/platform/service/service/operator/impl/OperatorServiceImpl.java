@@ -71,7 +71,7 @@ public class OperatorServiceImpl implements OperatorService {
         pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         pojo.setCreateAt(date);
         pojo.setUpdateAt(date);
-        pojo.setState(Const.STATE.COMMITTED);
+        pojo.setState(Const.STATE.REGISTERED);
         SysAdminUserOperator sysAdminUserOperator = new SysAdminUserOperator();
         sysAdminUserOperator.setAdminUserId(pojo.getId());
         sysAdminUserOperator.setAdminUserName(pojo.getName());

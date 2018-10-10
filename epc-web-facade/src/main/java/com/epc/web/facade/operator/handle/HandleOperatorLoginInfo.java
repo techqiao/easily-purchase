@@ -18,6 +18,6 @@ public class HandleOperatorLoginInfo implements Serializable {
     private Long id;
 
     //登陆人的bossid
-    private Integer bossId;
+    private Long bossId;
 
 }

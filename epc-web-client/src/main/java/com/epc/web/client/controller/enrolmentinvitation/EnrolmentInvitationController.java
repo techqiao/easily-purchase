@@ -61,11 +61,20 @@ public class EnrolmentInvitationController  extends BaseController {
         return enrolmentInvitationClient.invitationListForSupplier(dto);
     }
 
+    @ApiOperation(value = "供应商的报名列表",notes = "供应商的报名列表")
+    @PostMapping(value = "queryInvitationList" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result queryInvitationList(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
+        InvitationForSupplierDTO dto=new InvitationForSupplierDTO();
+        dto.setSupplierId(getLoginUser().getBossId());
+        dto.setSupplierName(getLoginUser().getBossName());
+        return enrolmentInvitationClient.queryInvitationList(dto);
+    }
+
     @ApiOperation(value = "供应商确认/拒绝邀请",notes = "供应商确认/拒绝邀请")
     @PostMapping(value = "updateInvitation" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result updateInvitation(@RequestBody ClientInvitation ClientInvitation){
+    public Result updateInvitation(@RequestBody ClientInvitation clientInvitation){
         UpdateInvitation dto=new UpdateInvitation();
-        BeanUtils.copyProperties(ClientInvitation,dto);
+        BeanUtils.copyProperties(clientInvitation,dto);
         dto.setSupplierId(getLoginUser().getBossId());
         return enrolmentInvitationClient.updateInvitation(dto);
     }

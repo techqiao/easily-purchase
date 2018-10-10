@@ -3,10 +3,7 @@ package com.epc.web.client.controller.operator.handle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.Value;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import java.util.Date;
 
 @ApiModel(value = "ClientHandleCreateSupplerByOperator", description = "运营商添加供应商")
 @Data

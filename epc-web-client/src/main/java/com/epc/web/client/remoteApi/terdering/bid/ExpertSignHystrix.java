@@ -19,9 +19,10 @@ public class ExpertSignHystrix implements FacadeExpertSignService {
     }
 
     @Override
-    public Result<Boolean> handleExpert(Long id) {
+    public Result<Boolean> handleExpert(HandleExpertSign handleExpertSign) {
         return Result.hystrixError();
     }
+
 
     @Override
     public Result<List<ExpertSignVO>> getExpertList(Long procurementProjectId) {

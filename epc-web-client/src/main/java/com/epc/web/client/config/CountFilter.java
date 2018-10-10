@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author junlee
  * @date {date}       // 创建时间
  */
-@Configuration
+//@Configuration
 @WebFilter(filterName = "countFilter",urlPatterns = "/*")
 public class CountFilter implements Filter {
     @Override

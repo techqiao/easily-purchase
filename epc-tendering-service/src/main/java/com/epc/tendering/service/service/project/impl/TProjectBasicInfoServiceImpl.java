@@ -84,6 +84,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
      * 创建项目
      * 指定项目名
      * 指派项目经理(在项目人员指派关系表 t_project_employee_relation 插入一条数据)
+     * @author donghuan
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -130,7 +131,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
     }
     /**0.1
      *  删除一个项目
-     *
+     * @author donghuan
      */
 //    @Override
 //    @Transactional(rollbackFor = Exception.class)
@@ -173,6 +174,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
 //    }
     /**0.2
      *  修改项目
+     * @author donghuan
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -220,7 +222,7 @@ public class TProjectBasicInfoServiceImpl implements TProjectBasicInfoService {
     }
     /**0.3
      * 查看项目 列表
-     *
+     * @author donghuan
      */
     @Override
     @Transactional(rollbackFor = Exception.class)

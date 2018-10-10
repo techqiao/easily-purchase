@@ -24,60 +24,33 @@ public class ClientPurchaserUserDetailInfo implements Serializable {
     @ApiModelProperty(value = "主键ID")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.id.null")
     private Long id;
-
     @ApiModelProperty(value = "用户名")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.name.null")
     private String name;
-
     @ApiModelProperty(value = "手机号")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.cellPhone.null")
     private String cellPhone;
-    /**
-     * 公司名称
-     */
     @ApiModelProperty(value = "公司名称")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.companyName.null")
     private String companyName;
-
     @ApiModelProperty(value = "公司地址")
     @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
     private String companyAddress;
-    /**
-     *统一信用代码
-     */
     @ApiModelProperty(value = "统一信用代码")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.uniformCreditCode.null")
     private String uniformCreditCode;
-
-    /**
-     *对公银行名称
-     */
     @ApiModelProperty(value = "对公银行名称")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.publicBankName.null")
     private String publicBankName;
-
-    /**
-     *对公银行账号
-     */
     @ApiModelProperty(value = "对公银行账号")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.publicBanAccountNumber.null")
     private String publicBanAccountNumber;
-
-    /**
-     * 营业执照照片url
-     */
     @ApiModelProperty(value = "营业执照照片url")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.businessLicense.null")
     private String businessLicense;
-    /**
-     * 法人身份证正面照片url
-     */
     @ApiModelProperty(value = "法人身份证正面照片url")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.legalIdCardPositive.null")
     private String legalIdCardPositive;
-    /**
-     * 法人身份证反面照片url
-     */
     @ApiModelProperty(value = "法人身份证反面照片url")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.legalIdCardOther.null")
     private String legalIdCardOther;

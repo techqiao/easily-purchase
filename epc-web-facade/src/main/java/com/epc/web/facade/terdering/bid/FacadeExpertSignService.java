@@ -27,11 +27,11 @@ public interface FacadeExpertSignService {
 
     /**
      * 设为组长
-     * @param id
+     * @param handleExpertSign
      * @return
      */
     @PostMapping(value = "handleExpert", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> handleExpert(@RequestParam(value = "id") Long id);
+    Result<Boolean> handleExpert(@RequestBody HandleExpertSign handleExpertSign);
 
     /**
      * 获开始评标前置条件

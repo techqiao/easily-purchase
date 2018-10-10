@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "运营商服务"/*,tags = "运营商服务"*/)
+@Api(value = "运营商服务",tags = "运营商服务")
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController extends BaseController {
@@ -96,14 +96,11 @@ public class OperatorController extends BaseController {
     public Result<Boolean> createOperatorEmployee(@RequestBody ClientHandleOperatorAddEmployee clientHandleOperatorAddEmployee){
         HandleOperatorAddEmployee handleOperatorAddEmployee=new HandleOperatorAddEmployee();
         BeanUtils.copyProperties(clientHandleOperatorAddEmployee,handleOperatorAddEmployee);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
         Long bossId = getLoginUser().getBossId();
-        System.out.println("-----"+type+"-----"+loginRole+"-----"+bossId);
-        if(type==null || loginRole==null || bossId==null){
+        if(loginRole==null || bossId==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        handleOperatorAddEmployee.setSystemRole(type);
         handleOperatorAddEmployee.setLoginRole(loginRole);
         handleOperatorAddEmployee.setBossId(bossId);
         return operatorClient.createOperatorEmployee(handleOperatorAddEmployee);
@@ -130,23 +127,19 @@ public class OperatorController extends BaseController {
 //        return operatorClient.findByName(handleOperatorId);
 //    }
     /**4
-     * 依据id查询已经登陆的个人信息(如果是法人，管理员，员工)
+     * 查询 登陆者个人详情
      */
-    @ApiOperation(value = "4:依据id查询已经登陆的个人信息",notes = "donghuan")
+    @ApiOperation(value = "4:查询 登陆者个人详情",notes = "donghuan")
     @PostMapping(value = "/findByNameOperator")
     public Result<OperatorBasicVO> findByName(){
         HandleOperatorId handleOperatorId=new HandleOperatorId();
         Long userId = getLoginUser().getUserId();
-//        Long bossId = getLoginUser().getBossId();
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(userId==null || type==null || loginRole==null){
+        if(userId==null || loginRole==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        System.out.println("type="+type+" loginRole="+loginRole+" userId="+userId);
+        System.out.println(" loginRole="+loginRole+" userId="+userId);
         handleOperatorId.setLoginId(userId);
-//        handleOperatorId.setBossId(bossId);
-        handleOperatorId.setSystemRole(type);
         handleOperatorId.setLoginRole(loginRole);
         return operatorClient.findByName(handleOperatorId);
     }
@@ -159,12 +152,10 @@ public class OperatorController extends BaseController {
     public Result<Boolean> updateOperatorEmployeeById(@RequestBody ClientHandleOperatorUpdateEmployeeById clientHandleOperatorUpdateEmployeeById){
         HandleOperatorUpdateEmployeeById handleOperatorUpdateEmployeeById=new HandleOperatorUpdateEmployeeById();
         BeanUtils.copyProperties(clientHandleOperatorUpdateEmployeeById,handleOperatorUpdateEmployeeById);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null || loginRole==null){
+        if(loginRole==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        handleOperatorUpdateEmployeeById.setSystemRole(type);
         handleOperatorUpdateEmployeeById.setLoginRole(loginRole);
         return operatorClient.updateOperatorEmployeeById(handleOperatorUpdateEmployeeById);
     }
@@ -181,12 +172,10 @@ public class OperatorController extends BaseController {
     public Result<Boolean> findOperatorRecordByCellphone(@RequestBody ClientHandleOperatorCellphone clientHandleOperatorCellphone){
         HandleOperatorCellphone handleOperatorCellphone=new HandleOperatorCellphone();
         BeanUtils.copyProperties(clientHandleOperatorCellphone,handleOperatorCellphone);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null || loginRole==null){
+        if(loginRole==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        handleOperatorCellphone.setSystemRole(type);
         handleOperatorCellphone.setLoginRole(loginRole);
         return operatorClient.findOperatorRecordByCellphone(handleOperatorCellphone);
     }
@@ -199,13 +188,11 @@ public class OperatorController extends BaseController {
     public Result<Boolean> deleteOperatorEmployeeByCellphone(@RequestBody ClientHandleOperatorCellphone clientHandleOperatorCellphone){
         HandleOperatorCellphone handleOperatorCellphone=new HandleOperatorCellphone();
         BeanUtils.copyProperties(clientHandleOperatorCellphone,handleOperatorCellphone);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null || loginRole==null){
+        if(loginRole==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
         handleOperatorCellphone.setLoginRole(loginRole);
-        handleOperatorCellphone.setSystemRole(type);
         return operatorClient.deleteOperatorEmployeeByCellphone(handleOperatorCellphone);
     }
 
@@ -221,13 +208,11 @@ public class OperatorController extends BaseController {
     public Result<Boolean> deleteOperatorEmployeeById(@RequestBody ClientHandleOperatorIdAndIsDeleted clientHandleOperatorIdAndIsDeleted){
         HandleOperatorIdAndIsDeleted handleOperatorIdAndIsDeleted=new HandleOperatorIdAndIsDeleted();
         BeanUtils.copyProperties(clientHandleOperatorIdAndIsDeleted,handleOperatorIdAndIsDeleted);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null || loginRole==null){
+        if(loginRole==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
         handleOperatorIdAndIsDeleted.setLoginRole(loginRole);
-        handleOperatorIdAndIsDeleted.setSystemRole(type);
         return operatorClient.deleteOperatorEmployeeById(handleOperatorIdAndIsDeleted);
     }
 
@@ -239,12 +224,10 @@ public class OperatorController extends BaseController {
     public Result<Boolean> updateOperatorEmployeeRoleById(@RequestBody ClientHandleOperatorRole clientHandleOperatorRole){
         HandleOperatorRole handleOperatorRole=new HandleOperatorRole();
         BeanUtils.copyProperties(clientHandleOperatorRole,handleOperatorRole);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null || loginRole==null){
+        if(loginRole==null){
             return  Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        handleOperatorRole.setSystemRole(type);
         handleOperatorRole.setLoginRole(loginRole);
         return operatorClient.updateOperatorEmployeeRoleById(handleOperatorRole);
     }
@@ -257,12 +240,10 @@ public class OperatorController extends BaseController {
     public Result<Boolean> updateOperatorEmployeeByisDeleted(@RequestBody ClientHandleOperatorIdAndIsForbidden clientHandleOperatorIdAndIsForbidden){
         HandleOperatorIdAndIsForbidden handleOperatorIdAndIsForbidden=new HandleOperatorIdAndIsForbidden();
         BeanUtils.copyProperties(clientHandleOperatorIdAndIsForbidden,handleOperatorIdAndIsForbidden);
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null || loginRole==null){
+        if(loginRole==null){
             return  Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        handleOperatorIdAndIsForbidden.setSystemRole(type);
         handleOperatorIdAndIsForbidden.setLoginRole(loginRole);
         return operatorClient.updateOperatorEmployeeByisDeleted(handleOperatorIdAndIsForbidden);
     }
@@ -270,18 +251,11 @@ public class OperatorController extends BaseController {
     /**13
      * 运营商忘记密码
      */
-    @ApiOperation(value = "13:运营商忘记密码",notes = "donghuan")
+    @ApiOperation(value = "13:修改密码",notes = "donghuan")
     @PostMapping(value = "public/forgetPasswordOperator")
     public Result<Boolean> forgetPassword(@RequestBody ClientHandleOperatorForgetPassword clientHandleOperatorForgetPassword){
         HandleOperatorForgetPassword handleOperatorForgetPassword=new HandleOperatorForgetPassword();
         BeanUtils.copyProperties(clientHandleOperatorForgetPassword,handleOperatorForgetPassword);
-        Integer type = getLoginUser().getType();
-//        Integer loginRole = getLoginUser().getLoginRole();
-        if(type==null){
-            return  Result.error("从redis中获取当前登陆用户信息 异常");
-        }
-        handleOperatorForgetPassword.setSystemRole(type);
-//        handleOperatorForgetPassword.setLoginRole(loginRole);
         return operatorClient.forgetPassword(handleOperatorForgetPassword);
     }
 
@@ -293,16 +267,12 @@ public class OperatorController extends BaseController {
     public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(@RequestBody ClientHandleOperatorFindAllByName clientHandleOperatorFindAllByName){
         HandleOperatorFindAllByName handleOperatorFindAllByName=new HandleOperatorFindAllByName();
         BeanUtils.copyProperties(clientHandleOperatorFindAllByName,handleOperatorFindAllByName);
-//        Long userId = getLoginUser().getUserId();
         Long bossId = getLoginUser().getBossId();
-        Integer type = getLoginUser().getType();
         Integer loginRole = getLoginUser().getLoginRole();
-        if(bossId==null || type==null || loginRole==null){
+        if(bossId==null || loginRole==null){
             return  Result.error("从redis中获取当前登陆用户信息 异常");
         }
-//        handleOperatorFindAllByName.setId(userId);
         handleOperatorFindAllByName.setBossId(bossId);
-        handleOperatorFindAllByName.setSystemRole(type);
         handleOperatorFindAllByName.setLoginRole(loginRole);
         return operatorClient.queryOperatorEmployeeAll(handleOperatorFindAllByName);
     }
@@ -315,11 +285,6 @@ public class OperatorController extends BaseController {
     public Result<Boolean> createPurchaseByOperator(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo){
         HandleCreatePurchaserByOperator handleCreatePurchaserByOperator=new HandleCreatePurchaserByOperator();
         BeanUtils.copyProperties(clientRoleDetailInfo,handleCreatePurchaserByOperator);
-        Integer type = getLoginUser().getType();
-        if(type==null){
-            return  Result.error("从redis中获取当前登陆用户信息 异常");
-        }
-        handleCreatePurchaserByOperator.setSystemRole(type);
         return operatorClient.createPurchaseByOperator(handleCreatePurchaserByOperator);
     }
 
@@ -338,7 +303,7 @@ public class OperatorController extends BaseController {
         if(userId==null || bossId==null || type==null){
             return Result.error("从redis中获取当前登陆用户信息 异常");
         }
-        handleOperatorLoginInfo.setBossId(bossId.intValue());
+        handleOperatorLoginInfo.setBossId(bossId);
         handleOperatorLoginInfo.setId(userId);
         handleOperatorLoginInfo.setSystemRole(type);
         return operatorClient.lookPurchaserList(handleOperatorLoginInfo);
@@ -395,15 +360,9 @@ public class OperatorController extends BaseController {
      */
     @ApiOperation(value = "18:运营商新增供应商（包括完善信息）",notes = "donghuan")
     @PostMapping(value = "/operatorCreateSupplier")
-    public Result<Boolean> operatorCreateSupplier(@RequestBody ClientHandleCreatePurchaserByOperator clientHandleCreatePurchaserByOperator){
+    public Result<Boolean> operatorCreateSupplier(@RequestBody ClientRoleDetailInfo clientRoleDetailInfo){
         HandleCreatePurchaserByOperator handleCreatePurchaserByOperator=new HandleCreatePurchaserByOperator();
-        BeanUtils.copyProperties(clientHandleCreatePurchaserByOperator,handleCreatePurchaserByOperator);
-
-        Integer type = getLoginUser().getType();
-        if(type==null){
-            return Result.error("从redis中获取当前登陆用户信息 异常");
-        }
-        handleCreatePurchaserByOperator.setSystemRole(type);
+        BeanUtils.copyProperties(clientRoleDetailInfo,handleCreatePurchaserByOperator);
         return operatorClient.operatorCreateSupplier(handleCreatePurchaserByOperator);
     }
 
@@ -422,7 +381,7 @@ public class OperatorController extends BaseController {
         }
         handleOperatorLoginInfo.setSystemRole(type);
         handleOperatorLoginInfo.setId(userId);
-        handleOperatorLoginInfo.setBossId(bossId.intValue());
+        handleOperatorLoginInfo.setBossId(bossId);
         return operatorClient.lookSupplierList(handleOperatorLoginInfo);
     }
 

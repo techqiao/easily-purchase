@@ -10,7 +10,7 @@ public class HandleFindSupplierBasicById implements Serializable {
 
     private Long id;
 
-    private Integer systemRole;
+//    private Integer systemRole;
 
     private Integer loginRole;
 

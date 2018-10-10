@@ -29,8 +29,8 @@ public class ClientHandlerUpdateSupplierEmployeeById {
     @ApiModelProperty(value = "员工电话")
     private String cellphone;
 
-    @ApiModelProperty(value = "密码")
-    private String password;
+//    @ApiModelProperty(value = "密码")
+//    private String password;
 
     @ApiModelProperty(value = "角色")
     private Integer role;

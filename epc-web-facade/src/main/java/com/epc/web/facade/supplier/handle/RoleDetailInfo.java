@@ -23,7 +23,7 @@ public class RoleDetailInfo {
     private Long supplierId;
 
     //法人姓名
-    private String name;
+//    private String name;
 
     //法人电话
     private String cellphone;
@@ -60,22 +60,33 @@ public class RoleDetailInfo {
     //营业执照照片url
     private String businessLicense;
     private String businessLicenseNumber;
+    private String businessLicenseName;
+    private String businessLicenseType;
 
     //法人身份证正面照片url
     private String legalIdCardPositive;
     private String legalIdCardPositiveNumber;
+    private String legalIdCardPositiveName;
+    private String legalIdCardPositiveType;
+
 
 
     //法人身份证反面照片url
     private String legalIdCardOther;
+    private String legalIdCardOtherName;
+    private String legalIdCardOtherType;
 
     //带公章的授权书照片url
     private String certificateOfAuthorization;
     private String certificateOfAuthorizationNumber;
+    private String certificateOfAuthorizationName;
+    private String certificateOfAuthorizationType;
 
    // 经办人(运营商员工)手持身份证正面照片url
     private String operatorIdCardFront;
     private String operatorIdCardFrontNumber;
+    private String operatorIdCardFrontName;
+    private String operatorIdCardFrontType;
 
     //资质证书url
 //    private String qualificationCertificate;

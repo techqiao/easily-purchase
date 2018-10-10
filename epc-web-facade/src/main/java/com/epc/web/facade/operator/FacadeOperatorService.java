@@ -169,7 +169,7 @@ public interface FacadeOperatorService {
      *    查看当前登陆者拉的供应商列表
      */
     @PostMapping(value = "lookSupplierList",consumes = "application/json; charset=UTF-8")
-    Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo);
+    Result<List<TSupplierBasicInfoVO>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
 
 
 }

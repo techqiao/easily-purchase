@@ -88,7 +88,7 @@ public class SupplierController extends BaseController implements FacadeTSupplie
      * 根据员工的id来查询基本信息
      */
     @Override
-    public Result<SupplierBasicInfoVO> findSupplierBasicById(HandleFindSupplierBasicById handleFindSupplierBasicById){
+    public Result<SupplierBasicInfoVO> findSupplierBasicById(@RequestBody HandleFindSupplierBasicById handleFindSupplierBasicById){
         return supplierService.findSupplierBasicById(handleFindSupplierBasicById);
     }
 
@@ -105,14 +105,14 @@ public class SupplierController extends BaseController implements FacadeTSupplie
      * 员工id来查询（公司法人supplier_id） 公司详情（包括附件）
      */
     @Override
-    public Result<RoleDetailInfo> findSupplierDetailByEmployee(HandleFindSupplierBasicById handleFindSupplierBasicById) {
+    public Result<RoleDetailInfo> findSupplierDetailByEmployee(@RequestBody HandleFindSupplierBasicById handleFindSupplierBasicById) {
         return supplierService.findSupplierDetailByEmployee(handleFindSupplierBasicById);
     }
     /**6.5  查看公司详情
      * 管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）
      */
     @Override
-    public Result<RoleDetailInfo> findSupplierByBossId(HandleFindSupplierBasicById handleFindSupplierBasicById){
+    public Result<RoleDetailInfo> findSupplierByBossId(@RequestBody HandleFindSupplierBasicById handleFindSupplierBasicById){
         return supplierService.findSupplierByBossId(handleFindSupplierBasicById);
     }
 

@@ -16,6 +16,7 @@ public class SupplierBasicInfoVO implements Serializable {
      * 主键ID
      */
     private Long id;
+    private Long supplierId;
 
     /**
      * 员工姓名
@@ -26,6 +27,7 @@ public class SupplierBasicInfoVO implements Serializable {
      * 手机号
      */
     private String cellphone;
+
 
 
     /**

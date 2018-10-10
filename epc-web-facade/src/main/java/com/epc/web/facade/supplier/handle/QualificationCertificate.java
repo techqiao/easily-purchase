@@ -11,5 +11,8 @@ public class QualificationCertificate implements Serializable {
     //资质证书url
     private String qualificationCertificate;
     private String qualificationCertificateNumber;
+    private String qualificationCertificateName;
+    private String qualificationCertificateType;
+
 
 }

@@ -477,6 +477,24 @@ CREATE TABLE `t_project_basic_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:项目信息表';
 
+-- 项目人员指派关系表：不同的项目对应的指派的员工
+DROP TABLE IF EXISTS `t_project_employee_relation`;
+CREATE TABLE `t_project_employee_relation` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '项目主键ID',
+  `project_name` varchar(64) NOT NULL COMMENT '项目名字',
+  `creater_id` bigint(11) NOT NULL COMMENT '创建项目人ID',
+  `creater_name` varchar(64) NOT NULL COMMENT '创建项目人姓名',
+  `purchaser_id` bigint(32) NOT NULL COMMENT '采购法人ID',
+  `executive_id` bigint(11) unsigned NOT NULL COMMENT '指派项目经理ID',
+  `executive_name` varchar(64) NOT NULL COMMENT '指派项目经理姓名',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `notes` varchar(64) DEFAULT NULL COMMENT '备用字段',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='项目人员指派关系表：不同的项目对应的指派的员工';
+
+
 
 -- 招标流程：预告   表
 DROP TABLE IF EXISTS `t_bidding_preview`;

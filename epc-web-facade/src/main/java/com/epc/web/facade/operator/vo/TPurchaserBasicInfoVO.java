@@ -12,14 +12,16 @@ public class TPurchaserBasicInfoVO implements Serializable {
     private String name;
     private String cellphone;
 //    private String password;
-//    private Long purchaserId;
-//    private Integer inviterType;
-//    private Integer inviterId;
-//    private Integer inviterCompanyId;
+    private Long purchaserId;
+    private Integer inviterType;
+    private Integer inviterId;
+    private Integer inviterCompanyId;
     private Integer isForbidden;
+    private Integer isDeleted;
     private Integer state;
-//    private Integer role;
+    private Integer role;
     private String createAt;
+    private String updateAt;
 
 
 

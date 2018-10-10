@@ -52,7 +52,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 新增供应商基本信息
      * @param userBasicInfo
-     * @return
+     * @return Result
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -86,11 +86,11 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 新增供应商补全信息
      * @param supplierHandle
-     * @return
+     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result insertSupplierDetailInfo(SupplierHandle supplierHandle) {
+    public Result<Boolean> insertSupplierDetailInfo(SupplierHandle supplierHandle) {
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
         BeanUtils.copyProperties(supplierHandle,tSupplierDetailInfo);
         Date date = new Date();
@@ -147,7 +147,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 修改供应商信息
      * @param supplierHandle
-     * @return
+     * @return Boolean
      */
     @Override
     public Result<Boolean> updateSupplierDetailInfo(SupplierHandle supplierHandle) {
@@ -169,11 +169,11 @@ public class SupplierServiceImpl  implements SupplierService {
     }
     /**
      * 删除供应商
-     * @param
-     * @return
+     * @param whereId
+     * @return Result
      */
     @Override
-    public Result deleteSupplierDetailInfo( Long whereId) {
+    public Result<Boolean> deleteSupplierDetailInfo( Long whereId) {
         TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
         tSupplierBasicInfo.setId(whereId);
         tSupplierBasicInfo.setIsDeleted(Const.IS_DELETED.IS_DELETED);
@@ -187,8 +187,8 @@ public class SupplierServiceImpl  implements SupplierService {
     }
     /**
      * 查询供应商基本信息
-     * @param
-     * @return
+     * @param id
+     * @return SupplierAttachmentVO
      */
     @Override
     public Result<SupplierAttachmentVO> querySupplierDetailInfo(Long id) {
@@ -232,7 +232,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 查询所有供应商
      * @param queryDetailIfo
-     * @return
+     * @return SupplierUserVO
      */
     @Override
     public List<SupplierUserVO> selectAllSupplierByPage(QueryDetailIfo queryDetailIfo) {
@@ -248,7 +248,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 审核供应商
      * @param examineSupplierHandle
-     * @return
+     * @return Boolean
      */
     @Override
     public Result<Boolean> examineSupplier(ExamineSupplierHandle examineSupplierHandle) {
@@ -261,7 +261,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 启用禁用供应商
      * @param supplierForbiddenHandle
-     * @return
+     * @return Boolean
      */
     @Override
     public Result<Boolean> forbiddenSupplierUser(SupplierForbiddenHandle supplierForbiddenHandle) {
@@ -299,7 +299,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 供应商考评 奖惩
      * @param queryDetailIfo
-     * @return
+     * @return Result
      */
     @Override
     public Result supplierReviewRewardAndPunishment(QueryDetailIfo queryDetailIfo) {
@@ -311,7 +311,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 供应商考评 履约记录
      * @param queryDetailIfo
-     * @return
+     * @return Result
      */
     @Override
     public Result supplierReviewRecordOfPerformance(QueryDetailIfo queryDetailIfo) {
@@ -321,7 +321,7 @@ public class SupplierServiceImpl  implements SupplierService {
     /**
      * 根据ID 查供应商考评 履约记录详情
      * @param id
-     * @return
+     * @return Result
      */
     @Override
     public Result supplierReviewRecordOfPerformanceDetail(Long id) {

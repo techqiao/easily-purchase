@@ -78,9 +78,6 @@ public class AgencyServiceImpl implements AgencyService {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(MD5Util.MD5EncodeUtf8("epc1688"));
-    }
     /**
      * 新增招标代理机构补全信息
      * @param
@@ -128,7 +125,7 @@ public class AgencyServiceImpl implements AgencyService {
             }
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
-            tAgencyBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
 
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
@@ -196,7 +193,7 @@ public class AgencyServiceImpl implements AgencyService {
             //基础信息更新
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
-            tAgencyBasicInfo.setState(Const.STATE.AUDIT_SUCCESS);
+            tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException updateBiddingAgencyDetailInfo : {}", e);

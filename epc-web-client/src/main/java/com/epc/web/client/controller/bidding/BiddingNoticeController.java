@@ -48,14 +48,15 @@ public class BiddingNoticeController extends BaseController {
     @PostMapping(value="/getNoticeDetailWithFile")
     public Result<NoticeDetailVO> getProjectList(@RequestBody  ClientNoticeDetailDTO dto){
         QueryNoticeDetail queryNoticeDetail=new QueryNoticeDetail();
-        queryNoticeDetail.setSupplierId(getLoginUser().getBossId());
         BeanUtils.copyProperties(dto,queryNoticeDetail);
+        queryNoticeDetail.setSupplierId(getLoginUser().getBossId());
         //判断下载文件是否已支付（true:支付）
         QueryProgramPayDTO queryProgramPayDTO=new QueryProgramPayDTO();
-        BeanUtils.copyProperties(dto.getClientFilePay(),queryProgramPayDTO);
+        BeanUtils.copyProperties(dto,queryProgramPayDTO);
         queryProgramPayDTO.setCompanyId(getLoginUser().getBossId());
         Boolean isPay=noticeClient.isPayForProjectFile(queryProgramPayDTO);
         queryNoticeDetail.setIsPay(isPay);
+        //返回公告详情 +下载文件路径
         if(isPay!=null){
             return  noticeClient.getNoticeDetail(queryNoticeDetail);
         }else{

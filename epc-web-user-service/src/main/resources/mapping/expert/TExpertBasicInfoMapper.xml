@@ -496,7 +496,7 @@
         positional = #{positional,jdbcType=CHAR},
         level = #{level,jdbcType=CHAR},
         working_years =#{workingYears,jdbcType=VARCHAR},
-        is_idle =#{isIdle,dbcType=INTEGER},
+        is_idle =#{isIdle,jdbcType=INTEGER},
         circular_dt = #{circularDt,jdbcType=TIMESTAMP},
         circular_method = #{circularMethod,jdbcType=CHAR},
         other_information = #{otherInformation,jdbcType=VARCHAR},

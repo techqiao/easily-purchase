@@ -10,6 +10,7 @@ import com.epc.tendering.service.mapper.bid.BExpertSignMapper;
 import com.epc.tendering.service.mapper.bid.TPurchaseProjectBidsMapper;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeBidMapper;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeExpertMapper;
+import com.epc.tendering.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.tendering.service.service.bid.ExpertSignService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
@@ -39,6 +40,8 @@ public class ExpertSignServiceImpl implements ExpertSignService {
     private BAssessmentCommitteeBidMapper bAssessmentCommitteeBidMapper;
     @Autowired
     private BAssessmentCommitteeExpertMapper bAssessmentCommitteeExpertMapper;
+    @Autowired
+    private TExpertBasicInfoMapper tExpertBasicInfoMapper;
 
     @Override
     public Result<Boolean> insertExpertSign(HandleExpertSign handleExpertSign) {
@@ -54,10 +57,9 @@ public class ExpertSignServiceImpl implements ExpertSignService {
     }
 
     @Override
-    public Result<Boolean> handleExpert(Long id) {
+    public Result<Boolean> handleExpert(HandleExpertSign handleExpertSign) {
         BExpertSign bExpertSign = new BExpertSign();
-        bExpertSign.setId(id);
-        bExpertSign.setIsLeader(Const.IS_OK.IS_OK);
+        BeanUtils.copyProperties(handleExpertSign,bExpertSign);
         try {
             return Result.success(bExpertSignMapper.updateByPrimaryKeySelective(bExpertSign) > 0);
         } catch (Exception e) {
@@ -83,10 +85,13 @@ public class ExpertSignServiceImpl implements ExpertSignService {
                     pojo.setBidsId(bidsId);
                     pojo.setExpertName(item.getExpertName());
                     pojo.setProcurementProjectId(procurementProjectId);
+                    pojo.setExpertPhone(tExpertBasicInfoMapper.getCellPhone(item.getExpertId()));
                     BExpertSignCriteria signCriteria = new BExpertSignCriteria();
                     signCriteria.createCriteria().andBidsIdEqualTo(bidsId).andExpertIdEqualTo(item.getExpertId());
                     if (bExpertSignMapper.countByExample(signCriteria) > 0) {
                         pojo.setIsSign(Const.IS_OK.IS_OK);
+                    }else{
+                        pojo.setIsSign(Const.IS_OK.NOT_OK);
                     }
                     returnList.add(pojo);
                 }

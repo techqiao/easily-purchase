@@ -37,14 +37,16 @@ public class ExpertSignController extends BaseController {
     }
 
     @ApiOperation(value = "设为组长")
-    @GetMapping(value = "handleExpert", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> handleExpert(@RequestParam(value = "id") Long id){
-        return expertSignClient.handleExpert(id);
+    @PostMapping(value = "handleExpert")
+    public Result<Boolean> handleExpert(@RequestBody ClientHandleExpertSign clientHandleExpertSign){
+        HandleExpertSign handleExpertSign = new HandleExpertSign();
+        BeanUtils.copyProperties(clientHandleExpertSign, handleExpertSign);
+        return expertSignClient.handleExpert(handleExpertSign);
     }
 
     @ApiOperation(value = "获取开始评标前置条件")
-    @GetMapping(value = "getExpertList", consumes = "application/json; charset=UTF-8")
-    public Result<List<ExpertSignVO>> getExpertList(Long procurementProjectId){
+    @GetMapping(value = "getExpertList")
+    public Result<List<ExpertSignVO>> getExpertList(@RequestParam(value = "procurementProjectId") Long procurementProjectId){
         return expertSignClient.getExpertList(procurementProjectId);
     }
 

@@ -928,8 +928,8 @@ CREATE TABLE `t_opening_record` (
   `bidding_refuse_reason` VARCHAR(1024) NOT NULL COMMENT '拒收理由',
   `status` int(1)  NOT NULL COMMENT '状态 0不正常 1正常 ',
   `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
-  `create_at` datetime NOT NULL COMMENT '创建时间',
-  `update_at` datetime NOT NULL  COMMENT '最后修改时间',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投标流程:开标记录';

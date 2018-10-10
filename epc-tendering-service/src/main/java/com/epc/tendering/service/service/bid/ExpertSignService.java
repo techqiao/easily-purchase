@@ -23,10 +23,10 @@ public interface ExpertSignService {
     /**
      * 设为组长
      *
-     * @param id
+     * @param handleExpertSign
      * @return
      */
-    Result<Boolean> handleExpert(Long id);
+    Result<Boolean> handleExpert( HandleExpertSign handleExpertSign);
 
     /**
      * 获开始评标前置条件

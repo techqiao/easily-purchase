@@ -23,6 +23,8 @@ public class PayListForAllVO implements Serializable {
     private Long bidId;
     @ApiModelProperty("采购标段名称")
     private String bidName;
+    @ApiModelProperty("项目状态")
+    private Integer projectStatus;
     @ApiModelProperty("支付状态")
     private String payStatus;
 }

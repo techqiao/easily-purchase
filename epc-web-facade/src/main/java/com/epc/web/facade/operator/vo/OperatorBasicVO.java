@@ -1,6 +1,6 @@
 package com.epc.web.facade.operator.vo;
 
-import com.epc.web.facade.operator.handle.Attachment;
+import com.epc.web.facade.supplier.handle.QualificationCertificate;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,7 +27,8 @@ public class OperatorBasicVO implements Serializable {
      */
     private String name;
 
-
+    //state
+    private Integer state;
     /**
      * 用户角色:0-法人,1-管理员,2-普通员工
      */
@@ -48,12 +49,50 @@ public class OperatorBasicVO implements Serializable {
 
     private String companyName;
 
+    //公司地址
+    private String companyAddress;
+
     private String uniformCreditCode;
 
     private String publicBankName;
 
     private String publicBanAccountNumber;
 
-    private List<Attachment> atts;
+    //营业执照照片url
+    private String businessLicense;
+    private String businessLicenseNumber;
+    private String businessLicenseName;
+    private String businessLicenseType;
+
+
+    //法人身份证正面照片url
+    private String legalIdCardPositive;
+    private String legalIdCardPositiveNumber;
+    private String legalIdCardPositiveName;
+    private String legalIdCardPositiveType;
+
+
+
+    //法人身份证反面照片url
+    private String legalIdCardOther;
+    private String legalIdCardOtherName;
+    private String legalIdCardOtherType;
+
+
+    //带公章的授权书照片url
+    private String certificateOfAuthorization;
+    private String certificateOfAuthorizationNumber;
+    private String certificateOfAuthorizationName;
+    private String certificateOfAuthorizationType;
+
+    // 经办人(运营商员工)手持身份证正面照片url
+    private String operatorIdCardFront;
+    private String operatorIdCardFrontNumber;
+    private String operatorIdCardFrontName;
+    private String operatorIdCardFrontType;
+
+    private List<QualificationCertificate> qcs;
+
+//    private List<Attachment> atts;
 
 }

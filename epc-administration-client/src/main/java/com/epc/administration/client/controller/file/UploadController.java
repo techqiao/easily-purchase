@@ -26,17 +26,13 @@ import java.util.Date;
  * <p>Date : 2018-09-11  22:50
  * <p>@author : wjq
  */
-@Api(value = "文件上传" ,tags = "文件上传")
 @RestController
-@RequestMapping("/upload")
 public class UploadController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
 
     public static final String ROOT = "E:\\HttpFiles\\";
 
-    @ApiOperation(value = "文件上传",tags = "文件上传")
-    @PostMapping("/files")
     public String fileUpload(@RequestParam("file") MultipartFile multipartFile,
                              @RequestParam("dirName") String dirName,
                              @RequestParam("fileName") String fileName) {

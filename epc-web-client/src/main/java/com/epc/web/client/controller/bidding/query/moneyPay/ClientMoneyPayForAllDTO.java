@@ -18,5 +18,5 @@ public class ClientMoneyPayForAllDTO implements Serializable {
     @ApiModelProperty("项目状态")
     private Integer projectStatus;
     @ApiModelProperty("支付状态")
-    private Integer payStatus;
+    private String payStatus;
 }

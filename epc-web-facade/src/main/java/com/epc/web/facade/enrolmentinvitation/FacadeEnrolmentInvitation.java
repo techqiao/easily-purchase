@@ -6,6 +6,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,9 +66,10 @@ public interface FacadeEnrolmentInvitation {
 
     /**
      * 供应商参与的项目列表保证金支付情况
-     * @param list
      * @return
      */
     @PostMapping(value ="isPayForGuaranty",consumes = "application/json;charset=UTF-8")
-    Result<List<PayListForAllVO>> isPayForGuaranty(@RequestBody  List<BSignUpVO> list);
+    Result<List<PayListForAllVO>> isPayForGuaranty(@RequestBody PayForGuarantyDTO dto);
+
+
 }

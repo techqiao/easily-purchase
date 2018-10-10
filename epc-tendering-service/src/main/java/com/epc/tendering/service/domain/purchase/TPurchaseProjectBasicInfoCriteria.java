@@ -1136,6 +1136,66 @@ public class TPurchaseProjectBasicInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andIsEndIsNull() {
+            addCriterion("is_end is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndIsNotNull() {
+            addCriterion("is_end is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndEqualTo(Integer value) {
+            addCriterion("is_end =", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndNotEqualTo(Integer value) {
+            addCriterion("is_end <>", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndGreaterThan(Integer value) {
+            addCriterion("is_end >", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_end >=", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndLessThan(Integer value) {
+            addCriterion("is_end <", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndLessThanOrEqualTo(Integer value) {
+            addCriterion("is_end <=", value, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndIn(List<Integer> values) {
+            addCriterion("is_end in", values, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndNotIn(List<Integer> values) {
+            addCriterion("is_end not in", values, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndBetween(Integer value1, Integer value2) {
+            addCriterion("is_end between", value1, value2, "isEnd");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsEndNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_end not between", value1, value2, "isEnd");
+            return (Criteria) this;
+        }
+
         public Criteria andOperateIdIsNull() {
             addCriterion("operate_id is null");
             return (Criteria) this;

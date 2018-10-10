@@ -19,7 +19,7 @@ public class HandlerSupplierAddEmployee implements Serializable{
      */
     private Long supplierId;
     //当前登陆人的平台平台角色
-    private Integer systemRole;
+//    private Integer systemRole;
     //登陆人的用户角色
     private Integer loginRole;
 

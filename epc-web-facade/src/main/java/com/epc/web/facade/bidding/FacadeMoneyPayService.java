@@ -5,10 +5,8 @@ import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.GuarantyListVo;
-import com.epc.web.facade.bidding.vo.MoneyPayVO;
-import com.epc.web.facade.bidding.vo.ServiceBackVO;
-import com.epc.web.facade.bidding.vo.ServicePayVO;
+import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
+import com.epc.web.facade.bidding.vo.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -58,4 +56,12 @@ public interface FacadeMoneyPayService {
     @PostMapping(value = "getGuarantyBackPayList", consumes = "application/json; charset=UTF-8")
     Result<List<ServiceBackVO>> getGuarantyBackPayList(@RequestBody QueryMoneyPayRecordDTO dto);
 
+
+    /**
+     * 服务费缴费列表（角色缴费记录列表）
+     * @param queryMoneyPayRecordDTO
+     * @return
+     */
+    @PostMapping(value = "getServiceMoneyListForAll", consumes = "application/json; charset=UTF-8")
+    Result<List<PayListForAllVO>> getServiceMoneyListForAll(@RequestBody ServiceMoneyListForAllDTO queryMoneyPayRecordDTO);
 }

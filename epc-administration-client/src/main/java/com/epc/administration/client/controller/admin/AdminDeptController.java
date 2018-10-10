@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author luozhixin
  * @date 2018-9-14 20:19:31
  */
-@Api(value = "系统部门服务 @罗志鑫",tags = {"系统部门服务"})
+@Api(value = "系统部门服务 ",tags = {"系统部门服务"})
 @RestController
 @RequestMapping(value = "/dept", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AdminDeptController {

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class HandleSupplierCellphone implements Serializable {
     private static final long serialVersionUID = -9101853574553429537L;
 
-    private Integer type;
+//    private Integer type;
     private Integer loginRole;
 
 

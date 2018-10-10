@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "运营商服务",tags = "运营商服务")
+@Api(value = "运营商服务"/*,tags = "运营商服务"*/)
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController extends BaseController {
@@ -311,7 +311,7 @@ public class OperatorController extends BaseController {
     /**15.6
      *通过手机号或者姓名来搜索自己拉的采购人
      */
-    @ApiOperation(value = "通过手机号或者姓名来搜索自己拉的采购人",notes = "donghuan")
+    @ApiOperation(value = "15.6 通过手机号或者姓名来搜索自己拉的采购人",notes = "donghuan")
     @PostMapping(value = "/searchPurchaserSingle")
     public Result<List<TPurchaserBasicInfoVO>> searchPurchaserSingle(@RequestBody ClientHandleOperatorCreateSupplier clientHandleOperatorCreateSupplier){
         HandleOperatorCreateSupplier handleOperatorCreateSupplier=new HandleOperatorCreateSupplier();

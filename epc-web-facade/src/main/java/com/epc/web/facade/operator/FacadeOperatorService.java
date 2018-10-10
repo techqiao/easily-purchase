@@ -145,6 +145,12 @@ public interface FacadeOperatorService {
     @PostMapping(value = "lookPurchaserList",consumes = "application/json; charset=UTF-8")
     Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
 
+    /**15.6
+     *通过手机号或者姓名来搜索自己拉的采购人
+     */
+    @PostMapping(value = "searchPurchaserSingle",consumes = "application/json; charset=UTF-8")
+    Result<List<TPurchaserBasicInfoVO>> searchPurchaserSingle(@RequestBody HandleOperatorCreateSupplier handleOperatorCreateSupplier);
+
     /**16
      *  运营商新增采购人（不包括完善信息，只填写姓名，电话）
      */
@@ -171,5 +177,10 @@ public interface FacadeOperatorService {
     @PostMapping(value = "lookSupplierList",consumes = "application/json; charset=UTF-8")
     Result<List<TSupplierBasicInfoVO>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
 
+    /**20
+     *通过手机号或者姓名来搜索自己拉的供应商
+     */
+    @PostMapping(value = "searchSupplierSingle",consumes = "application/json; charset=UTF-8")
+    Result<List<TSupplierBasicInfoVO>> searchSupplierSingle(@RequestBody HandleOperatorCreateSupplier handleOperatorCreateSupplier);
 
 }

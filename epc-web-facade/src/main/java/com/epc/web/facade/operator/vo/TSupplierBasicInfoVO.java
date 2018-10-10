@@ -20,9 +20,9 @@ public class TSupplierBasicInfoVO implements Serializable {
 //    private String password;
 
 
-//    private Long supplierId;
+    private Long supplierId;
 
-//    private Integer inviterType;
+    private Integer inviterType;
 
 
     private Long inviterId;
@@ -34,7 +34,7 @@ public class TSupplierBasicInfoVO implements Serializable {
     private Integer state;
 
 
-//    private Integer role;
+    private Integer role;
 
 
     private String createAt;
@@ -43,7 +43,7 @@ public class TSupplierBasicInfoVO implements Serializable {
 
 
 
-    private Integer isDeleted;
+//    private Integer isDeleted;
 
     private Integer isForbidden;
 }

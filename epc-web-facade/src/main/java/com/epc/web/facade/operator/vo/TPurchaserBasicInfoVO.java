@@ -17,7 +17,7 @@ public class TPurchaserBasicInfoVO implements Serializable {
     private Integer inviterId;
     private Integer inviterCompanyId;
     private Integer isForbidden;
-    private Integer isDeleted;
+//    private Integer isDeleted;
     private Integer state;
     private Integer role;
     private String createAt;

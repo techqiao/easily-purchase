@@ -95,6 +95,11 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
+    public Result<List<TPurchaserBasicInfoVO>> searchPurchaserSingle(HandleOperatorCreateSupplier handleOperatorCreateSupplier) {
+        return Result.hystrixError();
+    }
+
+    @Override
     public Result<Boolean> createPurchaseByOperatorSimple(HandleOperatorCreateSupplier handleOperatorCreateSupplier) {
         return Result.hystrixError();
     }
@@ -111,6 +116,11 @@ public class OperatorHystrix implements FacadeOperatorService {
 
     @Override
     public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<TSupplierBasicInfoVO>> searchSupplierSingle(HandleOperatorCreateSupplier handleOperatorCreateSupplier) {
         return Result.hystrixError();
     }
 }

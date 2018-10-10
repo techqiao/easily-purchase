@@ -15,10 +15,8 @@ import java.math.BigDecimal;
 @ApiModel(value = "下载文件支付查询",description = "下载文件支付查询")
 public class ClientFilePay {
 
-    @ApiModelProperty(value = "采购项目Id")
-    private Long procurementProjectId;
+
     @ApiModelProperty(value = "采购人id")
     private Long purchaserId;
-    @ApiModelProperty(value = "下载机构ID")
-    private Long companyId;
+
 }

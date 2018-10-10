@@ -18,5 +18,7 @@ public class QueryNoticeDetail implements Serializable {
 
     private  Long supplierId;
 
+    private Long procurementProjectId;
+
     private Boolean isPay;
 }

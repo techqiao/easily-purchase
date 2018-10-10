@@ -10,7 +10,6 @@ public class QueryProgramPayDTO implements Serializable {
 
     private static final long serialVersionUID = -7947117795961660137L;
     private Long procurementProjectId;
-    private Long purchaserId;
     private Long companyId;
     private BigDecimal money;
 
@@ -20,14 +19,6 @@ public class QueryProgramPayDTO implements Serializable {
 
     public void setProcurementProjectId(Long procurementProjectId) {
         this.procurementProjectId = procurementProjectId;
-    }
-
-    public Long getPurchaserId() {
-        return purchaserId;
-    }
-
-    public void setPurchaserId(Long purchaserId) {
-        this.purchaserId = purchaserId;
     }
 
     public Long getCompanyId() {

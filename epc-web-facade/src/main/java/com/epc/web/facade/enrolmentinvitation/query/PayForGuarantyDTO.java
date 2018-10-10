@@ -1,7 +1,6 @@
 package com.epc.web.facade.enrolmentinvitation.query;
 
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;

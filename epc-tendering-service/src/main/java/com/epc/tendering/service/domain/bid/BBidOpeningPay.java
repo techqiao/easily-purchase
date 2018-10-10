@@ -39,6 +39,8 @@ public class BBidOpeningPay implements Serializable {
 
     private Date updateAt;
 
+    private Integer isBack;
+
     private Integer isDeleted;
 
     private static final long serialVersionUID = 1L;
@@ -179,6 +181,14 @@ public class BBidOpeningPay implements Serializable {
         this.updateAt = updateAt;
     }
 
+    public Integer getIsBack() {
+        return isBack;
+    }
+
+    public void setIsBack(Integer isBack) {
+        this.isBack = isBack;
+    }
+
     public Integer getIsDeleted() {
         return isDeleted;
     }
@@ -210,6 +220,7 @@ public class BBidOpeningPay implements Serializable {
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
+        sb.append(", isBack=").append(isBack);
         sb.append(", isDeleted=").append(isDeleted);
         sb.append("]");
         return sb.toString();

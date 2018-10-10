@@ -63,6 +63,8 @@ public class BiddingServiceimpl implements BiddingService {
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     TTenderFileMapper tTenderFileMapper;
+    @Autowired
+    TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
 
     /*******************************************公告*******************************************************/
 
@@ -92,7 +94,17 @@ public class BiddingServiceimpl implements BiddingService {
         List<BReleaseAnnouncement> list= bReleaseAnnouncementMapper.selectByExampleWithBLOBsWithRowbounds(criteria,queryNoticeDTO.getRowBounds());
             for(BReleaseAnnouncement entity:list){
                 NoticeDetailVO clientNoticeDetailVO = new NoticeDetailVO();
+                //获取采购项目信息
+                TPurchaseProjectBasicInfo purchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getProcurementProjectId());
                 BeanUtils.copyProperties(entity,clientNoticeDetailVO);
+                clientNoticeDetailVO.setBiddingType(purchaseProjectBasicInfo.getPurchaseMode());
+                clientNoticeDetailVO.setProcurementProjectName(purchaseProjectBasicInfo.getPurchaseProjectName());
+                //日期格式转换
+                clientNoticeDetailVO.setBiddingDocumentsUrl(null);
+                clientNoticeDetailVO.setBiddingStart(DateTimeUtil.dateToStr(entity.getBiddingStart()));
+                clientNoticeDetailVO.setBiddingEnd(DateTimeUtil.dateToStr(entity.getBiddingEnd()));
+                clientNoticeDetailVO.setDefecationStart(DateTimeUtil.dateToStr(entity.getDefecationStart()));
+                clientNoticeDetailVO.setDefecationEnd(DateTimeUtil.dateToStr(entity.getDefecationEnd()));
                 resultList.add(clientNoticeDetailVO);
             }
 
@@ -341,7 +353,7 @@ public class BiddingServiceimpl implements BiddingService {
         final TPurchaseProjectFileDownloadCriteria criteria=new TPurchaseProjectFileDownloadCriteria();
         final TPurchaseProjectFileDownloadCriteria.Criteria subCriteria=criteria.createCriteria();
         subCriteria.andPurchaseProjectIdEqualTo(dto.getProcurementProjectId());
-        subCriteria.andPurchaserIdEqualTo(dto.getPurchaserId());
+        subCriteria.andPurchaserIdEqualTo(dto.getCompanyId());
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         //根据采购项目Id 查询招标文件
         List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
@@ -352,11 +364,11 @@ public class BiddingServiceimpl implements BiddingService {
         //获取招标文件ID
         Long fileId=list.get(0).getId();
        // BigDecimal money=list.get(0).getFilePayment();
-        //根据招标文件ID 和 下载机构id 查询是否付费
+        //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
         subPay.andCompanyIdEqualTo(dto.getCompanyId());
-        subPay.andPurchasProjectFileIdEqualTo(fileId);
+        subPay.andPurchaseProjectFileIdEqualTo(fileId);
 
         List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
         //未查询到支付记录
@@ -364,6 +376,7 @@ public class BiddingServiceimpl implements BiddingService {
             LOGGER.error("未找到支付记录");
             return false;
         }else{
+
             //第一次支付，暂时不考虑多次
            /* BigDecimal realPay= payList.get(0).getFilePaymentReal();
             //compareTo  -1:<   0:=   1:>

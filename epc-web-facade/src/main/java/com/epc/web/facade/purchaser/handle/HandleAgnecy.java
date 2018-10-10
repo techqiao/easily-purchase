@@ -76,6 +76,13 @@ public class HandleAgnecy implements Serializable {
     private String companyAddress;
 
 
+    private String province;
+
+    private String city;
+
+    private String area;
+
+
 //    @ApiModelProperty(value = "采购人Id")
 //    private long userId;
 //    @ApiModelProperty(value = "代理机构人员姓名")

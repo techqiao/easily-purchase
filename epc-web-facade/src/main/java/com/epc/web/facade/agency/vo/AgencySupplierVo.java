@@ -62,4 +62,10 @@ public class AgencySupplierVo implements Serializable {
      * 营业执照
      */
     private String businessLicense;
+
+    private String companyAddress;
+    private String province;
+    private String city;
+    private String area;
+
 }

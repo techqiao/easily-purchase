@@ -37,6 +37,10 @@ public class    HandleExpertDto implements Serializable{
      * 采购人id
      */
     private Long puchaserId;
+    /**
+     * 工作年限
+     */
+    private Integer workingYears;
 
     /**
      * 手机

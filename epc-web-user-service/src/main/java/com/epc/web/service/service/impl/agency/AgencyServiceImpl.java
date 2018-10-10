@@ -11,7 +11,6 @@ import com.epc.web.facade.agency.vo.AgencyEmployeeVo;
 import com.epc.web.facade.agency.vo.AgencyExpertDetailVo;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
 import com.epc.web.facade.agency.vo.AgencySupplierVo;
-import com.epc.web.facade.operator.handle.Attachment;
 import com.epc.web.facade.purchaser.dto.QueryDto;
 import com.epc.web.facade.purchaser.handle.HandleTrustList;
 import com.epc.web.service.domain.agency.*;
@@ -38,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -201,6 +199,7 @@ public class AgencyServiceImpl implements AgencyService {
             expertBasicInfo.setProfession(handleExpert.getProfession());
             expertBasicInfo.setPositional(handleExpert.getPositional());
             expertBasicInfo.setLevel(handleExpert.getLevel());
+            expertBasicInfo.setWorkingYears(handleExpert.getWorkingYears());
             expertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
             expertBasicInfo.setCircularDt(handleExpert.getCircularDt());
             expertBasicInfo.setCircularDtEnd(handleExpert.getCircularDtEnd());
@@ -229,6 +228,9 @@ public class AgencyServiceImpl implements AgencyService {
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
                 if (detailInfo != null) {
                     tExpertDetailInfo.setCompanyName(detailInfo.getCompanyName());
+                    tExpertDetailInfo.setProvince(detailInfo.getProvince());
+                    tExpertDetailInfo.setCity(detailInfo.getCity());
+                    tExpertDetailInfo.setArea(detailInfo.getArea());
                     tExpertDetailInfo.setCompanyAddress(detailInfo.getCompanyAddress());
                     tExpertDetailInfo.setUniformCreditCode(detailInfo.getUniformCreditCode());
                     tExpertDetailInfo.setPublicBankName(detailInfo.getPublicBankName());
@@ -319,6 +321,10 @@ public class AgencyServiceImpl implements AgencyService {
             //详细信息封装
             TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
             detailInfo.setCompanyName(handleSupplier.getCompanyName());
+            detailInfo.setCompanyAddress(handleSupplier.getCompanyAddress());
+            detailInfo.setProvince(handleSupplier.getProvince());
+            detailInfo.setCity(handleSupplier.getCity());
+            detailInfo.setArea(handleSupplier.getArea());
             detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
             detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleSupplier.getPublicBanAccountNumber());
@@ -591,6 +597,10 @@ public class AgencyServiceImpl implements AgencyService {
         TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
         detailInfo.setAgencyId(agencyId);
         detailInfo.setCompanyName(agency.getCompanyName());
+        detailInfo.setCompanyAddress(agency.getCompanyAddress());
+        detailInfo.setProvince(agency.getProvince());
+        detailInfo.setCity(agency.getCity());
+        detailInfo.setArea(agency.getArea());
         detailInfo.setUniformCreditCode(agency.getUniformCreditCode());
         detailInfo.setPublicBankName(agency.getPublicBankName());
         detailInfo.setPublicBanAccountNumber(agency.getPublicBanAccountNumber());
@@ -892,6 +902,10 @@ public class AgencyServiceImpl implements AgencyService {
         vo.setSupplierId(id);
         vo.setCompanyName(detailInfo.getCompanyName());
         vo.setCreateAt(basicInfo.getCreateAt());
+        vo.setCompanyAddress(detailInfo.getCompanyAddress());
+        vo.setProvince(detailInfo.getProvince());
+        vo.setCity(detailInfo.getCity());
+        vo.setArea(detailInfo.getArea());
         vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
         vo.setPublicBankName(detailInfo.getPublicBankName());
         vo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
@@ -1122,6 +1136,10 @@ public class AgencyServiceImpl implements AgencyService {
             TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
             detailInfo.setSupplierId(supplierId);
             detailInfo.setCompanyName(dto.getCompanyName());
+            detailInfo.setCompanyAddress(dto.getCompanyAddress());
+            detailInfo.setProvince(dto.getProvince());
+            detailInfo.setCity(dto.getCity());
+            detailInfo.setArea(dto.getArea());
             detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
             detailInfo.setPublicBankName(dto.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
@@ -1230,6 +1248,9 @@ public class AgencyServiceImpl implements AgencyService {
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
                 tExpertDetailInfo.setExpertId(info.getId());
                 tExpertDetailInfo.setCompanyName(tAgencyDetailInfo.getCompanyName());
+                tExpertDetailInfo.setProvince(tAgencyDetailInfo.getProvince());
+                tExpertDetailInfo.setCity(tAgencyDetailInfo.getCity());
+                tExpertDetailInfo.setArea(tAgencyDetailInfo.getArea());
                 tExpertDetailInfo.setCompanyAddress(tAgencyDetailInfo.getCompanyAddress());
                 tExpertDetailInfo.setUniformCreditCode(tAgencyDetailInfo.getUniformCreditCode());
                 tExpertDetailInfo.setPublicBankName(tAgencyDetailInfo.getPublicBankName());

@@ -17,6 +17,6 @@ public class ClientRegisterDto implements Serializable {
     @ApiModelProperty(value = "密码")
     @NotEmpty(message = "ClientRegisterDto.password.null")
     private String password;
-    @ApiModelProperty(value = "手机号,查询出来后装入")
+    @ApiModelProperty(value = "id,查询出来后装入")
     private Long id;
 }

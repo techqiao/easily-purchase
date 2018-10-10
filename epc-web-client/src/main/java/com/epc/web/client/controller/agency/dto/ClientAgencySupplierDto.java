@@ -13,14 +13,9 @@ import java.util.List;
 @ApiModel(value = "ClientAgencySupplierDto",description = "代理机构供货商查询条件和信息完善类")
 public class ClientAgencySupplierDto implements Serializable {
     private static final long serialVersionUID = -1284782860769313490L;
-    /**
-     * supplierId供货商id
-     */
+
     @ApiModelProperty(value = "供货商id")
     private Long supplierId;
-    /**
-     * 用于接受数据库生成的的机构id
-     */
 
     @ApiModelProperty(value = "代理机构id")
     @NotEmpty(message = "ClientAgencySupplierDto.agencyId.null")
@@ -30,11 +25,7 @@ public class ClientAgencySupplierDto implements Serializable {
      */
     @ApiModelProperty(value = "供货商手机")
     private String cellphone;
-    /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码")
-    private String password;
+
 
     /**
      * 法人姓名
@@ -61,17 +52,6 @@ public class ClientAgencySupplierDto implements Serializable {
      */
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
-
-//    /**
-//     * 操作人id
-//     */
-//    @ApiModelProperty(value = "操作人id")
-//    private long OperatorId;
-//    /**
-//     * 操作人公司的id
-//     */
-//    @ApiModelProperty(value = "操作人公司id")
-//    private long companyId;
     /**
      * 附件list
      */
@@ -83,4 +63,12 @@ public class ClientAgencySupplierDto implements Serializable {
     private String legalIdCardOther;
     @ApiModelProperty(value = "附件信息:证书身份证等")
     private List<ClientAttachement> atts;
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
+    @ApiModelProperty(value = "省")
+    private String province;
+    @ApiModelProperty(value = "市")
+    private String city;
+    @ApiModelProperty(value = "区")
+    private String area;
 }

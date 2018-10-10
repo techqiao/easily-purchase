@@ -71,4 +71,12 @@ public class PurchaserHandleSupplierDto implements Serializable{
      * 来源
      */
     private String source;
+
+    private String companyAddress;
+
+    private String province;
+
+    private String city;
+
+    private String area;
 }

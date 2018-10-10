@@ -35,6 +35,8 @@ public class ClientHandleExpert implements Serializable {
     private Date circularDtEnd;
     @ApiModelProperty(value = "通知方式")
     private String circularMethod;
+    @ApiModelProperty(value = "工作年限")
+    private Integer workingYears;
 
     //    @ApiModelProperty(value = "邀请人id")
 //    private Long inviterid;

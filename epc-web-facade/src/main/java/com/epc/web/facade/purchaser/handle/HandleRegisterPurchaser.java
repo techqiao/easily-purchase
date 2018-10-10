@@ -67,4 +67,12 @@ public class HandleRegisterPurchaser implements Serializable{
      * 附件list
      */
     protected List<Attachement> atts;
+
+
+
+    private String province;
+
+    private String city;
+
+    private String area;
 }

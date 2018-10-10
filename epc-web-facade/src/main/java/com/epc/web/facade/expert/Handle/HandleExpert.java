@@ -71,4 +71,8 @@ public class HandleExpert {
      * 添加人的id
      */
     private Long operatorId;
+    /**
+     * 工作年限
+     */
+    private Integer workingYears;
 }

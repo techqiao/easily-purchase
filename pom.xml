@@ -39,8 +39,8 @@
         <module>epc-bidding-service</module>
         <!--  招标数据服务 -->
         <module>epc-tendering-service</module>
-        <!--epc-七牛文件存储服務-->
-        <module>epc-ossutil-service</module>
+        <!--&lt;!&ndash;epc-七牛文件存储服務&ndash;&gt;-->
+        <!--<module>epc-ossutil-service</module>-->
     </modules>
 
     <profiles>

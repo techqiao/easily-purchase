@@ -493,6 +493,11 @@
         SET password =#{newPassword}
         WHERE cellphone =#{cellphone}
     </update>
+    <update id="updateIsIdleOrNot" parameterType="com.epc.web.facade.expert.dto.IdleExpertDto">
+      UPDATE t_expert_basic_info
+      SET is_idle =#{idle}
+      WHERE id =#{expertId}
+    </update>
     <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.expert.TExpertBasicInfoCriteria"
             id="selectByExampleWithRowbounds">
         <!--

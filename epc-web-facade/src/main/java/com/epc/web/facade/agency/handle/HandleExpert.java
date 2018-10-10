@@ -10,6 +10,8 @@ import java.util.List;
 public class HandleExpert implements Serializable {
 
     private static final long serialVersionUID = 7406506628828438303L;
+    private Long expertId;
+
     private String name;
 
     private String cellphone;

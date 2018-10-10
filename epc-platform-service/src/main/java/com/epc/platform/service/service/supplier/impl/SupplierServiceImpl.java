@@ -93,6 +93,7 @@ public class SupplierServiceImpl  implements SupplierService {
     public Result<Boolean> insertSupplierDetailInfo(SupplierHandle supplierHandle) {
         TSupplierDetailInfo tSupplierDetailInfo = new TSupplierDetailInfo();
         BeanUtils.copyProperties(supplierHandle,tSupplierDetailInfo);
+        tSupplierDetailInfo.setSupplierId(supplierHandle.getId());
         Date date = new Date();
         tSupplierDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         tSupplierDetailInfo.setCreateAt(date);

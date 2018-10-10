@@ -474,4 +474,30 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectExpertWithCommitt" resultType="com.epc.tendering.service.domain.expert.TExpertBasicInfo">
+      SELECT
+	ebi.*
+FROM
+	t_expert_basic_info ebi
+LEFT JOIN t_expert_detail_info edi ON ebi.id = edi.expert_id and ebi.is_deleted=0
+WHERE
+	1 = 1
+      and ebi.is_idle=1
+      and ebi.is_deleted=0
+      <if test="province!= null" >
+        And ebi.province=#{province}
+      </if>
+      <if test="city!= null" >
+        And ebi.city=#{city}
+      </if>
+      <if test="area!= null" >
+        And ebi.area=#{area}
+      </if>
+      <if test="profession!= null" >
+        And ebi.profession=#{profession}
+      </if>
+      <if test="level!= null" >
+        And ebi.level=#{level}
+      </if>
+    </select>
 </mapper>

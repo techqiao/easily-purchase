@@ -18,9 +18,7 @@ import java.util.List;
 public class ClientExtractExpertList implements Serializable {
 
     private static final long serialVersionUID = 5472984522828487171L;
-    /**
-    BAssessmentCommitteeBid
-     */
+
     @ApiModelProperty(value = "采购项目id")
     private Long procurementProjectId;
 
@@ -29,10 +27,18 @@ public class ClientExtractExpertList implements Serializable {
 
     @ApiModelProperty(value = "专家属性")
     List<ExpertDTO> expertDTOList;
-    /**
-     * 标段选择
-     */
+
     @ApiModelProperty(value = "标段列表")
     List<BidDTO> bidDTOList;
+
+
+    @ApiModelProperty(value = "省份")
+    private String province;
+
+    @ApiModelProperty(value = "市区")
+    private String city;
+
+    @ApiModelProperty(value = "街道")
+    private String area;
 
 }

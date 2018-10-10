@@ -5,13 +5,16 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="operator_id" property="operatorId" jdbcType="BIGINT" />
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
     <result column="uniform_credit_code" property="uniformCreditCode" jdbcType="VARCHAR" />
     <result column="public_bank_name" property="publicBankName" jdbcType="VARCHAR" />
     <result column="public_ban_account_number" property="publicBanAccountNumber" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
-    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="selectMap" type="com.epc.administration.facade.operator.vo.OperatorVO">
     <id column="id" property="id" jdbcType="BIGINT" />
@@ -24,6 +27,10 @@
     <result column="state" property="state" jdbcType="INTEGER"/>
     <result column="name" property="name" jdbcType="VARCHAR"/>
     <result column="cellphone" property="cellphone" jdbcType="VARCHAR"/>
+    <result column="companyAddress" property="companyAddress" jdbcType="VARCHAR"/>
+    <result column="area" property="area" jdbcType="VARCHAR"/>
+    <result column="city" property="city" jdbcType="VARCHAR"/>
+    <result column="province" property="province" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,8 +91,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, operator_id, company_name, uniform_credit_code, public_bank_name, public_ban_account_number, 
-    create_at, update_at, is_deleted, company_address
+    id, operator_id, company_name, province, city, area, company_address, uniform_credit_code, 
+    public_bank_name, public_ban_account_number, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.operator.TOperatorDetailInfoCriteria" >
     select
@@ -121,14 +128,16 @@
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_operator_detail_info (operator_id, company_name, uniform_credit_code, 
-      public_bank_name, public_ban_account_number, 
-      create_at, update_at, is_deleted, 
-      company_address)
-    values (#{operatorId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{uniformCreditCode,jdbcType=VARCHAR}, 
-      #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
-      #{companyAddress,jdbcType=VARCHAR})
+    insert into t_operator_detail_info (operator_id, company_name, province, 
+      city, area, company_address, 
+      uniform_credit_code, public_bank_name, public_ban_account_number, 
+      create_at, update_at, is_deleted
+      )
+    values (#{operatorId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, 
+      #{uniformCreditCode,jdbcType=VARCHAR}, #{publicBankName,jdbcType=VARCHAR}, #{publicBanAccountNumber,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.platform.service.domain.operator.TOperatorDetailInfo" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -141,6 +150,18 @@
       </if>
       <if test="companyName != null" >
         company_name,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="companyAddress != null" >
+        company_address,
       </if>
       <if test="uniformCreditCode != null" >
         uniform_credit_code,
@@ -160,9 +181,6 @@
       <if test="isDeleted != null" >
         is_deleted,
       </if>
-      <if test="companyAddress != null" >
-        company_address,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="operatorId != null" >
@@ -170,6 +188,18 @@
       </if>
       <if test="companyName != null" >
         #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
       </if>
       <if test="uniformCreditCode != null" >
         #{uniformCreditCode,jdbcType=VARCHAR},
@@ -188,9 +218,6 @@
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
-      </if>
-      <if test="companyAddress != null" >
-        #{companyAddress,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -212,6 +239,18 @@
       <if test="record.companyName != null" >
         company_name = #{record.companyName,jdbcType=VARCHAR},
       </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyAddress != null" >
+        company_address = #{record.companyAddress,jdbcType=VARCHAR},
+      </if>
       <if test="record.uniformCreditCode != null" >
         uniform_credit_code = #{record.uniformCreditCode,jdbcType=VARCHAR},
       </if>
@@ -230,9 +269,6 @@
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="record.companyAddress != null" >
-        company_address = #{record.companyAddress,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -243,13 +279,16 @@
     set id = #{record.id,jdbcType=BIGINT},
       operator_id = #{record.operatorId,jdbcType=BIGINT},
       company_name = #{record.companyName,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=VARCHAR},
+      company_address = #{record.companyAddress,jdbcType=VARCHAR},
       uniform_credit_code = #{record.uniformCreditCode,jdbcType=VARCHAR},
       public_bank_name = #{record.publicBankName,jdbcType=VARCHAR},
       public_ban_account_number = #{record.publicBanAccountNumber,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
-      company_address = #{record.companyAddress,jdbcType=VARCHAR}
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -262,6 +301,18 @@
       </if>
       <if test="companyName != null" >
         company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        company_address = #{companyAddress,jdbcType=VARCHAR},
       </if>
       <if test="uniformCreditCode != null" >
         uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
@@ -281,9 +332,6 @@
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="companyAddress != null" >
-        company_address = #{companyAddress,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -291,13 +339,16 @@
     update t_operator_detail_info
     set operator_id = #{operatorId,jdbcType=BIGINT},
       company_name = #{companyName,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
       uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
       public_bank_name = #{publicBankName,jdbcType=VARCHAR},
       public_ban_account_number = #{publicBanAccountNumber,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=INTEGER},
-      company_address = #{companyAddress,jdbcType=VARCHAR}
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.operator.TOperatorDetailInfoCriteria" id="selectByExampleWithRowbounds" >
@@ -314,7 +365,6 @@
       order by ${orderByClause}
     </if>
   </select>
-
   <select resultMap="BaseResultMap" parameterType="com.epc.platform.service.domain.operator.TOperatorDetailInfo" id="selectByName" >
    SELECT tp.company_name ,tp.public_bank_name ,tp.create_at,tp.public_ban_account_number,tp.uniform_credit_code
 FROM t_operator_detail_info tp WHERE tp.is_deleted=0 AND tp.company_name like #{companyName,jdbcType=VARCHAR}
@@ -322,7 +372,7 @@ FROM t_operator_detail_info tp WHERE tp.is_deleted=0 AND tp.company_name like #{
 
 
   <select resultMap="selectMap" parameterType="com.epc.administration.facade.operator.vo.OperatorVO" id="selectByPage" >
-    SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.uniform_credit_code
+    SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.uniform_credit_code,td.companyAddress,td.area,td.city,td.province
     FROM t_operator_basic_info tb
     LEFT  JOIN t_operator_detail_info td ON td.operator_id=tb.id
     WHERE tb.is_deleted=0

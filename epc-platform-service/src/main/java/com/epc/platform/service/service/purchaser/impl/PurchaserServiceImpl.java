@@ -87,7 +87,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     /**
      * 未通过后 重新完善采购人资料
      * @param purchaserHandle
-     * @return
+     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -153,11 +153,11 @@ public class PurchaserServiceImpl implements PurchaserService {
                 }
             }
             //完善信息完成后 更新信息状态至已提交
-            TPurchaserBasicInfo tSupplierBasicInfo = new TPurchaserBasicInfo();
-            tSupplierBasicInfo.setId(purchaserHandle.getId());
-            tSupplierBasicInfo.setState(Const.STATE.COMMITTED);
-            tSupplierBasicInfo.setUpdateAt(new Date());
-            return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo)>0);
+            TPurchaserBasicInfo tPurchaserBasicInfo = new TPurchaserBasicInfo();
+            tPurchaserBasicInfo.setId(purchaserHandle.getId());
+            tPurchaserBasicInfo.setState(Const.STATE.COMMITTED);
+            tPurchaserBasicInfo.setUpdateAt(new Date());
+            return Result.success(tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(tPurchaserBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException updatePurchaserDetailInfo : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -167,16 +167,18 @@ public class PurchaserServiceImpl implements PurchaserService {
     /**
      * 采购人完善资料
      * @param purchaserHandle
-     * @return
+     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertPurchaserDetailInfo(PurchaserHandle purchaserHandle) {
         Date date = new Date();
         TPurchaserDetailInfo tPurchaserDetailInfo = new TPurchaserDetailInfo();
+        tPurchaserDetailInfo.setPurchaserId(purchaserHandle.getId());
         BeanUtils.copyProperties(purchaserHandle,tPurchaserDetailInfo);
         tPurchaserDetailInfo.setCreateAt(date);
         tPurchaserDetailInfo.setUpdateAt(date);
+        tPurchaserDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         //是否有重复数据判断条件
         TPurchaserDetailInfoCriteria tPurchaserDetailInfoCriteria = new TPurchaserDetailInfoCriteria();
         tPurchaserDetailInfoCriteria.createCriteria().andPurchaserIdEqualTo(purchaserHandle.getId());

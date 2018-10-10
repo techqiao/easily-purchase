@@ -9,14 +9,12 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.exception.BusinessException;
-import com.epc.common.util.MD5Util;
 import com.epc.platform.service.domain.tagency.*;
 import com.epc.platform.service.mapper.tagency.TAgencyAttachmentMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyBasicInfoMapper;
 import com.epc.platform.service.mapper.tagency.TAgencyDetailInfoMapper;
 import com.epc.platform.service.service.biddingagency.AgencyService;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import sun.security.provider.MD5;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,16 +77,17 @@ public class AgencyServiceImpl implements AgencyService {
 
     /**
      * 新增招标代理机构补全信息
-     * @param
-     * @return
+     * @param biddingHandle
+     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
 
     public Result<Boolean> insertBiddingAgencyDetailInfo(BiddingHandle biddingHandle) {
         TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
-        Date date = new Date();
         BeanUtils.copyProperties(biddingHandle,detailInfo);
+        detailInfo.setAgencyId(biddingHandle.getId());
+        Date date = new Date();
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -126,7 +124,6 @@ public class AgencyServiceImpl implements AgencyService {
             TAgencyBasicInfo tAgencyBasicInfo = new TAgencyBasicInfo();
             tAgencyBasicInfo.setId(biddingHandle.getId());
             tAgencyBasicInfo.setState(Const.STATE.COMMITTED);
-
             return Result.success(tAgencyBasicInfoMapper.updateByPrimaryKeySelective(tAgencyBasicInfo)>0);
         }catch (BusinessException e) {
             LOGGER.error("BusinessException insertBiddingAgencyDetailInfo : {}", e);
@@ -140,8 +137,8 @@ public class AgencyServiceImpl implements AgencyService {
     }
     /**
      * 修改招标代理机构补全信息
-     * @param
-     * @return
+     * @param biddingHandle
+     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -152,6 +149,7 @@ public class AgencyServiceImpl implements AgencyService {
         Date date = new Date();
         //详情
         BeanUtils.copyProperties(biddingHandle,detailInfo);
+
         detailInfo.setUpdateAt(date);
         TAgencyAttachment attachment = new TAgencyAttachment();
         attachment.setUpdateAt(date);
@@ -207,8 +205,8 @@ public class AgencyServiceImpl implements AgencyService {
     }
     /**
      * 删除招标代理机构
-     * @param
-     * @return
+     * @param whereId
+     * @return Boolean
      */
     @Override
     public Result<Boolean> deleteBiddingAgencyDetailInfo(Long  whereId) {

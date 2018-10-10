@@ -17,6 +17,10 @@ public interface TPurchaseProjectBidsMapper {
 
     int insertSelective(TPurchaseProjectBids record);
 
+    List<TPurchaseProjectBids> selectByExampleWithBLOBsWithRowbounds(TPurchaseProjectBidsCriteria example, RowBounds rowBounds);
+
+    List<TPurchaseProjectBids> selectByExampleWithBLOBs(TPurchaseProjectBidsCriteria example);
+
     List<TPurchaseProjectBids> selectByExampleWithRowbounds(TPurchaseProjectBidsCriteria example, RowBounds rowBounds);
 
     List<TPurchaseProjectBids> selectByExample(TPurchaseProjectBidsCriteria example);
@@ -25,9 +29,13 @@ public interface TPurchaseProjectBidsMapper {
 
     int updateByExampleSelective(@Param("record") TPurchaseProjectBids record, @Param("example") TPurchaseProjectBidsCriteria example);
 
+    int updateByExampleWithBLOBs(@Param("record") TPurchaseProjectBids record, @Param("example") TPurchaseProjectBidsCriteria example);
+
     int updateByExample(@Param("record") TPurchaseProjectBids record, @Param("example") TPurchaseProjectBidsCriteria example);
 
     int updateByPrimaryKeySelective(TPurchaseProjectBids record);
+
+    int updateByPrimaryKeyWithBLOBs(TPurchaseProjectBids record);
 
     int updateByPrimaryKey(TPurchaseProjectBids record);
 }

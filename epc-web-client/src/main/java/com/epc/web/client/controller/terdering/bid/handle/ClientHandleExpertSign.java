@@ -12,6 +12,8 @@ import lombok.Data;
 @ApiModel(value = "ClientHandleExpertSign",description = "评标专家签到参数")
 @Data
 public class ClientHandleExpertSign {
+    @ApiModelProperty(value = "主键ID")
+    private Long id;
     @ApiModelProperty(value = "评标专家ID")
     private Long expertId;
     @ApiModelProperty(value = "标段ID")

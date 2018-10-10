@@ -22,6 +22,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.slf4j.Logger;
@@ -173,8 +174,10 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
         List<BSignUp> result= bSignUpMapper.selectByExample(criteria);
         List<BSignUpVO> voList=new ArrayList<>();
         for(BSignUp entity:result){
+            TPurchaseProjectBasicInfo newEntity=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getProcurementProjectId());
             BSignUpVO vo=new BSignUpVO();
             BeanUtils.copyProperties(entity,vo);
+            vo.setIsEnd(newEntity.getIsEnd());
             voList.add(vo);
         }
         return  Result.success(voList);
@@ -182,25 +185,28 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
 
     /**
      * 供应商参与的采购项目 保证金支付列表
-     * @param newList
      * @return
      */
     @Override
-    public Result<List<PayListForAllVO>> isPayForGuaranty(List<BSignUpVO> newList){
+    public Result<List<PayListForAllVO>> isPayForGuaranty(PayForGuarantyDTO payForGuarantyDTO){
+        List<BSignUpVO> newList =payForGuarantyDTO.getList();
         List<PayListForAllVO> voList=new ArrayList<>();
         for(BSignUpVO list:newList){
             //切分bid数组
             String[] bidList=list.getBidsId().split(",");
+
+            //获取项目详情
+            PayListForAllVO vo= new PayListForAllVO();
+            TPurchaseProjectBasicInfo purchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(list.getProcurementProjectId());
+            if(purchaseProjectBasicInfo!=null){
+                vo.setStartDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseStartTime()));
+                vo.setEndDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseEndTime()));
+                vo.setProjectStatus(list.getIsEnd());
+            }
+
             for(String bidIdString:bidList){
                 Long bidId=Long.parseLong(bidIdString);
-                PayListForAllVO vo= new PayListForAllVO();
                 vo.setPayStatus("未支付");
-                //获取项目详情
-                TPurchaseProjectBasicInfo purchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(list.getProcurementProjectId());
-                if(purchaseProjectBasicInfo!=null){
-                    vo.setStartDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseStartTime()));
-                    vo.setEndDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseEndTime()));
-                }
                 //获取标段详情
                 TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(bidId);
                 if(purchaseProjectBids!=null){
@@ -209,7 +215,6 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
                     vo.setBidId(purchaseProjectBids.getId());
                     vo.setBidName(purchaseProjectBids.getBidName());
                 }
-
                 BigDecimal money=null;
                     //获取标段保证金金额
                     BBidsGuaranteeAmountCriteria bBidsGuaranteeAmountCriteria=new BBidsGuaranteeAmountCriteria();
@@ -234,6 +239,37 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
                 voList.add(vo);
             }
         }
-        return Result.success(voList);
+        //条件查询
+        List<PayListForAllVO> firstList=new ArrayList<>();
+        List<PayListForAllVO> secondList=new ArrayList<>();
+        List<PayListForAllVO> ThreeList=new ArrayList<>();
+        if(payForGuarantyDTO.getProjectName()!=null){
+            for(PayListForAllVO vo :voList){
+                if(vo.getProjectName().contains(payForGuarantyDTO.getProjectName())){
+                    firstList.add(vo);
+                }
+            }
+        }else{
+            firstList=voList;
+        }
+        if(payForGuarantyDTO.getProjectStatus()!=null){
+            for(PayListForAllVO vo :firstList){
+                if(vo.getProjectStatus().equals(payForGuarantyDTO.getProjectStatus())){
+                    secondList.add(vo);
+                }
+            }
+        }else{
+            secondList=firstList;
+        }
+        if(payForGuarantyDTO.getPayStatus()!=null){
+            for(PayListForAllVO vo :secondList){
+                if(vo.getPayStatus().equals(payForGuarantyDTO.getPayStatus())){
+                    ThreeList.add(vo);
+                }
+            }
+        }else {
+            ThreeList=secondList;
+        }
+        return Result.success(ThreeList);
     }
 }

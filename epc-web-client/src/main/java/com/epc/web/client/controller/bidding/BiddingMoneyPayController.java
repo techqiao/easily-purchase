@@ -11,11 +11,10 @@ import com.epc.web.client.remoteApi.enrolmentinvitation.EnrolmentInvitationClien
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.MoneyPayVO;
-import com.epc.web.facade.bidding.vo.PayListForAllVO;
-import com.epc.web.facade.bidding.vo.ServiceBackVO;
-import com.epc.web.facade.bidding.vo.ServicePayVO;
+import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
+import com.epc.web.facade.bidding.vo.*;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +53,7 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
 
-    @ApiOperation(value = "获取保证金支付列表(角色列表)",tags = "获取保证金支付列表(角色列表)")
+    @ApiOperation(value = "获取保证金支付列表(角色缴费记录列表)",tags = "获取保证金支付列表(角色缴费记录列表)")
     @PostMapping(value = "getGuarantyPayListForAll", consumes = "application/json; charset=UTF-8")
     public Result<List<PayListForAllVO>> getGuarantyPayListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
         InvitationForSupplierDTO invitationForSupplierDTO=new InvitationForSupplierDTO();
@@ -62,7 +61,22 @@ public class BiddingMoneyPayController extends BaseController {
         invitationForSupplierDTO.setSupplierName(getLoginUser().getBossName());
         Result<List<BSignUpVO>> result=enrolmentInvitationClient.queryInvitationList(invitationForSupplierDTO);
         List<BSignUpVO> list=result.getData();
-        return enrolmentInvitationClient.isPayForGuaranty(list);
+        PayForGuarantyDTO payForGuarantyDTO=new PayForGuarantyDTO();
+        if(list.size()==0){
+            return Result.success(null);
+        }else{
+            payForGuarantyDTO.setList(list);
+            if(dto.getPayStatus()!=null){
+                payForGuarantyDTO.setPayStatus(dto.getPayStatus());
+            }
+            if(dto.getProjectName()!=null){
+                payForGuarantyDTO.setProjectName(dto.getProjectName());
+            }
+            if(dto.getProjectStatus()!=null){
+                payForGuarantyDTO.setProjectStatus(dto.getProjectStatus());
+            }
+           return enrolmentInvitationClient.isPayForGuaranty(payForGuarantyDTO);
+        }
     }
 
     @ApiOperation(value = "查询中标服务费支付列表",tags = "查询中标服务费支付列表")
@@ -76,6 +90,14 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.IsPayForServiceMoney(queryMoneyPayRecordDTO);
     }
 
+    @ApiOperation(value = "获取中标服务费支付列表(角色缴费记录列表)",tags = "获取中标服务费支付列表(角色缴费记录列表)")
+    @PostMapping(value = "getServiceMoneyListForAll", consumes = "application/json; charset=UTF-8")
+    public Result<List<PayListForAllVO>> getServiceMoneyListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
+        ServiceMoneyListForAllDTO serviceMoneyListForAllDto=new ServiceMoneyListForAllDTO();
+        BeanUtils.copyProperties(dto,serviceMoneyListForAllDto);
+        serviceMoneyListForAllDto.setCompanyId(getLoginUser().getBossId());
+        return moneyPayClient.getServiceMoneyListForAll(serviceMoneyListForAllDto);
+    }
 
     @ApiOperation(value = "投标保证金退还列表",tags = "投标保证金退还列表")
     @PostMapping(value = "getGuarantyBackPayList", consumes = "application/json; charset=UTF-8")

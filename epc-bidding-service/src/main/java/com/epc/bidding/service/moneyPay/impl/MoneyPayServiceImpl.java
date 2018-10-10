@@ -6,14 +6,13 @@ import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.moneyPay.MoneyPayService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.util.DateTimeUtil;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.MoneyPayVO;
-import com.epc.web.facade.bidding.vo.ServiceBackVO;
-import com.epc.web.facade.bidding.vo.ServicePayVO;
-import com.epc.web.facade.bidding.vo.newGuaranteeVO;
+import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
+import com.epc.web.facade.bidding.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -220,6 +219,89 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         return Result.success(voList);
     }
 
+
+    /**
+     * 缴费列表（all） 标段供应商的服务费是否支付
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<PayListForAllVO>> getServiceMoneyListForAll(ServiceMoneyListForAllDTO dto){
+        TWinBidCriteria bidCriteria=new TWinBidCriteria();
+        TWinBidCriteria.Criteria cubBidCriteria=bidCriteria.createCriteria();
+        cubBidCriteria.andSupplierIdEqualTo(dto.getCompanyId());
+        cubBidCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //查看 采购项目中,供应商中标记录列表
+        List<TWinBid> winBidList=tWinBidMapper.selectByExample(bidCriteria);
+        List<PayListForAllVO> voList=new ArrayList<>();
+        for(TWinBid entity:winBidList){
+            PayListForAllVO vo=new PayListForAllVO();
+            TServiceMoneyPayCriteria payCriteria=new TServiceMoneyPayCriteria();
+            TServiceMoneyPayCriteria.Criteria cubPayCriteria=payCriteria.createCriteria();
+            cubPayCriteria.andBidIdEqualTo(entity.getBidId());
+            //获取 标段中标服务费详情
+            List<TServiceMoneyPay> moneyPayList=tServiceMoneyPayMapper.selectByExample(payCriteria);
+            for(TServiceMoneyPay result:moneyPayList){
+                //获取项目详情
+                if(result.getBidId()!=null){
+                    TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(result.getBidId());
+                    vo.setBidId(result.getBidId());
+                    vo.setBidName(result.getBidName());
+                    vo.setProjectCode(purchaseProjectBids.getProjectCode());
+                    vo.setProjectName(purchaseProjectBids.getProjectName());
+                }
+                //获取采购项目详情
+                TPurchaseProjectBasicInfo purchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(result.getProcurementProjectId());
+                if(purchaseProjectBasicInfo!=null){
+                    vo.setStartDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseStartTime()));
+                    vo.setEndDate(DateTimeUtil.dateToStr(purchaseProjectBasicInfo.getPurchaseEndTime()));
+                    vo.setProjectStatus(purchaseProjectBasicInfo.getIsEnd());
+                }
+
+                if(result.getStatus().equals(0)){
+                    vo.setPayStatus("未支付");
+                }else  if(result.getStatus().equals(1)){
+                    vo.setPayStatus("已支付");
+                }else  if(result.getStatus().equals(2)){
+                    vo.setPayStatus("已退回");
+                }
+                voList.add(vo);
+            }
+        }
+
+        //条件查询
+        List<PayListForAllVO> firstList=new ArrayList<>();
+        List<PayListForAllVO> secondList=new ArrayList<>();
+        List<PayListForAllVO> ThreeList=new ArrayList<>();
+        if(dto.getProjectName()!=null){
+            for(PayListForAllVO newVo :voList){
+                if(newVo.getProjectName().contains(dto.getProjectName())){
+                    firstList.add(newVo);
+                }
+            }
+        }else{
+            firstList=voList;
+        }
+        if(dto.getProjectStatus()!=null){
+            for(PayListForAllVO newVo :firstList){
+                if(newVo.getProjectStatus().equals(dto.getProjectStatus())){
+                    secondList.add(newVo);
+                }
+            }
+        }else{
+            secondList=firstList;
+        }
+        if(dto.getPayStatus()!=null){
+            for(PayListForAllVO newVo :secondList){
+                if(newVo.getPayStatus().equals(dto.getPayStatus())){
+                    ThreeList.add(newVo);
+                }
+            }
+        }else {
+            ThreeList=secondList;
+        }
+        return Result.success(ThreeList);
+    }
     /**
      * 保证金退还列表
      * @param dto
@@ -259,5 +341,4 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         }
         return Result.success(voList);
     }
-
 }

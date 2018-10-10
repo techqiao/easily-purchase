@@ -1,7 +1,8 @@
-package com.epc.web.service.service.Expert;
+package com.epc.web.service.service.expert;
 
 import com.epc.common.Result;
 import com.epc.web.facade.agency.handle.HandleExpert;
+import com.epc.web.facade.expert.dto.*;
 
 /**
  *@author :winlin
@@ -15,10 +16,10 @@ public interface ExpertService {
      *@return: 返回注册信息
      *@date:
      */
-    public Result<HandleExpert> registery(HandleExpert expert );
+    public Result<Boolean> completeExpertInfo(HandleExpert expert );
     /**
      *@author :winlin
-     *@Description : 专家完善自己的信息
+     *@Description : 专家修改自己的信息,状态为审核通过事后不能修改
      *@date:2018/9/30
      */
     public Result<Boolean> updateExpertSelfInfo(HandleExpert expert);
@@ -30,18 +31,16 @@ public interface ExpertService {
     public Result<Boolean> acceptRequestForSubject();
     /**
      *@author :winlin
-     *@Description : 查看项目详情
-     *@param:
-     *@return: 返回项目的详细信息
+     *@Description : 查看专家名下所有的标段信息
      *@date:2018/9/30
      */
-    public Result  lookUpDetailOfSubject();
+    public Result  selectAllBid(ProjectDto projecctDto);
     /**
      *@author :winlin
-     *@Description :是否有意向参与评标
+     *@Description :是否有空闲
      *@date:2018/9/30
      */
-    public Result<Boolean> hasIntentionOrNot();
+    public Result<Boolean> hasIntentionOrNot(IdleExpertDto dto);
     /**
      *@author :winlin
      *@Description :查看已完成的项目
@@ -54,24 +53,24 @@ public interface ExpertService {
      *@date:2018/9/30
      */
     public Result<Boolean> evaluateSubject();
-    /**
-     *@author :winlin
-     *@Description :
-     *@date:2018/9/30
-     */
-    public Result toSeeTheResponseForEvaluateSubject();
-    /**
-     *@author :winlin
-     *@Description :
-     *@return:
-     */
-    public Result answerQuestionForSubject();
-    /**
-     *@author :winlin
-     *@Description :
-     *@date:2018/9/30
-     */
-    public Result analysisFinishedSubject();
+//    /**
+//     *@author :winlin
+//     *@Description :查看对评价项目的回复
+//     *@date:2018/9/30
+//     */
+//    public Result toSeeTheResponseForEvaluateSubject();
+//    /**
+//     *@author :winlin
+//     *@Description :回复项目相关的问题
+//     *@return:
+//     */
+//    public Result answerQuestionForSubject();
+//    /**
+//     *@author :winlin
+//     *@Description : 分析已经完成的项目
+//     *@date:2018/9/30
+//     */
+//    public Result analysisFinishedSubject();
 
 
 }

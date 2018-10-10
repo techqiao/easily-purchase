@@ -12,6 +12,10 @@ import java.util.Date;
 @Data
 public class HandleExpertSign {
     /**
+     * 主键ID
+     */
+    private Long id;
+    /**
      * 评标专家ID
      */
     private Long expertId;

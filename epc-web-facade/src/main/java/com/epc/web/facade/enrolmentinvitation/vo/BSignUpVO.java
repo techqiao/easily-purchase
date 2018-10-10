@@ -25,4 +25,6 @@ public class BSignUpVO implements Serializable {
     private Date updateAt;
 
     private Integer isDeleted;
+
+    private Integer isEnd;
 }

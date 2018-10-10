@@ -50,7 +50,7 @@ public class AccessKeyInterceptor extends HandlerInterceptorAdapter {
         }
         writer.write("to Login please");
         writer.flush();
-        return true;
+        return false;
     }
     /**
      * 这个方法只会在当前这个Interceptor的preHandle方法返回值为true的时候才会执行。

@@ -162,7 +162,7 @@ public class SysAdminResourceServiceImpl implements SysAdminResourceService {
         }
         sysAdminResourceMapper.insertSelective(sysAdminResource);
         SysAdminRoleResource sysAdminRoleResource = new SysAdminRoleResource();
-        sysAdminRoleResource.setAmdinRoleId(Long.valueOf(Const.Role.ROLE_ADMIN));
+        sysAdminRoleResource.setAmdinRoleId(6L);
         sysAdminRoleResource.setAdminResourceId(sysAdminResource.getId());
         sysAdminRoleResource.setCreateAt(new Date());
         sysAdminRoleResource.setUpdateAt(new Date());

@@ -33,7 +33,6 @@ public interface TPurchaserDetailInfoMapper {
 
     int updateByPrimaryKey(TPurchaserDetailInfo record);
 
-
     /**
      * 分页查询
      * @return

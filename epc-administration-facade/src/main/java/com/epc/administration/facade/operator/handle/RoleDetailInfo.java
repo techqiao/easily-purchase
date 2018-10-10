@@ -28,6 +28,22 @@ public class RoleDetailInfo implements Serializable {
      */
     private String companyName;
     /**
+     * 公司地址
+     */
+    private String companyAddress;
+    /**
+     * 省份
+     */
+    private String province;
+    /**
+     * 市区
+     */
+    private String city;
+    /**
+     * 区域
+     */
+    private String area;
+    /**
      * 手机号
      */
     private String cellphone;

@@ -138,6 +138,12 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     public void deleteRoles(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(","));
         List<Long> longList = list.stream().map(Long::parseLong).collect(Collectors.toList());
+        //不允许删除管理员
+        for (Long aLong : longList) {
+            if(6==aLong){
+                longList.remove(aLong);
+            }
+        }
         this.batchDelete(longList);
         for (Long aLong : longList) {
             SysAdminRoleResourceCriteria criteria = new SysAdminRoleResourceCriteria();
@@ -155,6 +161,10 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
      */
     @Override
     public Result updateRole(UpdateRoleDTO updateRoleDTO) {
+        //不允许修改管理员
+        if(6==updateRoleDTO.getRoleId() ){
+            return Result.error("没有权限进行此操作");
+        }
         SysAdminRole sysAdminRole = new SysAdminRole();
         sysAdminRole.setName(updateRoleDTO.getName());
         sysAdminRole.setMemo(updateRoleDTO.getMemo());

@@ -43,6 +43,18 @@ public class ReviewExpertHandle implements Serializable {
     private String companyName;
     @ApiModelProperty(value = "公司地址")
     private String companyAddress;
+    /**
+     * 省份
+     */
+    private String province;
+    /**
+     * 市区
+     */
+    private String city;
+    /**
+     * 区域
+     */
+    private String area;
     @ApiModelProperty(value = "资质证书url")
     private List<AttachmentHandle> attachmentHandleList;
 

@@ -7,6 +7,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 
 import java.util.List;
@@ -44,8 +45,8 @@ public class EnrolmentInvitationHystrix implements FacadeEnrolmentInvitation {
     }
 
     @Override
-    public Result<List<PayListForAllVO>> isPayForGuaranty(List<BSignUpVO> list) {
-        return null;
+    public Result<List<PayListForAllVO>> isPayForGuaranty(PayForGuarantyDTO dto) {
+        return Result.hystrixError();
     }
 
 }

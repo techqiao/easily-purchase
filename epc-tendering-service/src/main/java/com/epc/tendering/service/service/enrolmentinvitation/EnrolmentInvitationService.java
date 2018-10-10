@@ -7,6 +7,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 
 import java.util.List;
@@ -61,8 +62,8 @@ public interface EnrolmentInvitationService {
 
     /**
      * 供应商参与的采购项目列表保证金支付列表
-     * @param list
+     * @param payForGuarantyDTO
      * @return
      */
-    Result<List<PayListForAllVO>> isPayForGuaranty(List<BSignUpVO> list);
+    Result<List<PayListForAllVO>> isPayForGuaranty(PayForGuarantyDTO payForGuarantyDTO);
 }

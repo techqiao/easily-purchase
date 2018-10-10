@@ -8,9 +8,8 @@ import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
-import com.epc.web.facade.bidding.vo.MoneyPayVO;
-import com.epc.web.facade.bidding.vo.ServiceBackVO;
-import com.epc.web.facade.bidding.vo.ServicePayVO;
+import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
+import com.epc.web.facade.bidding.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,6 +66,17 @@ public class BiddingMoneyPayController implements FacadeMoneyPayService {
     @Override
     public Result<List<ServiceBackVO>> getGuarantyBackPayList(@RequestBody QueryMoneyPayRecordDTO dto) {
         return moneyPayService.getGuarantyBackPayList(dto);
+    }
+
+
+    /**
+     * 服务费缴费列表（角色缴费记录列表）
+     * @param queryMoneyPayRecordDTO
+     * @return
+     */
+    @Override
+    public Result<List<PayListForAllVO>> getServiceMoneyListForAll(@RequestBody ServiceMoneyListForAllDTO queryMoneyPayRecordDTO) {
+        return moneyPayService.getServiceMoneyListForAll(queryMoneyPayRecordDTO);
     }
 
 

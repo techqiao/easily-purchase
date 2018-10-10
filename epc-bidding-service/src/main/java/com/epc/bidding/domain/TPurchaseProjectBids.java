@@ -11,9 +11,13 @@ public class TPurchaseProjectBids implements Serializable {
 
     private String purchaseProjectName;
 
+    private String purchaseProjectCode;
+
     private Long projectId;
 
     private String projectName;
+
+    private String projectCode;
 
     private String bidCode;
 
@@ -25,8 +29,6 @@ public class TPurchaseProjectBids implements Serializable {
 
     private String bidFilePath;
 
-    private String bidMemo;
-
     private Long operateId;
 
     private String creator;
@@ -36,6 +38,8 @@ public class TPurchaseProjectBids implements Serializable {
     private Date updateAt;
 
     private Integer isDeleted;
+
+    private String bidMemo;
 
     private static final long serialVersionUID = 1L;
 
@@ -63,6 +67,14 @@ public class TPurchaseProjectBids implements Serializable {
         this.purchaseProjectName = purchaseProjectName == null ? null : purchaseProjectName.trim();
     }
 
+    public String getPurchaseProjectCode() {
+        return purchaseProjectCode;
+    }
+
+    public void setPurchaseProjectCode(String purchaseProjectCode) {
+        this.purchaseProjectCode = purchaseProjectCode == null ? null : purchaseProjectCode.trim();
+    }
+
     public Long getProjectId() {
         return projectId;
     }
@@ -77,6 +89,14 @@ public class TPurchaseProjectBids implements Serializable {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode == null ? null : projectCode.trim();
     }
 
     public String getBidCode() {
@@ -119,14 +139,6 @@ public class TPurchaseProjectBids implements Serializable {
         this.bidFilePath = bidFilePath == null ? null : bidFilePath.trim();
     }
 
-    public String getBidMemo() {
-        return bidMemo;
-    }
-
-    public void setBidMemo(String bidMemo) {
-        this.bidMemo = bidMemo == null ? null : bidMemo.trim();
-    }
-
     public Long getOperateId() {
         return operateId;
     }
@@ -167,6 +179,14 @@ public class TPurchaseProjectBids implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public String getBidMemo() {
+        return bidMemo;
+    }
+
+    public void setBidMemo(String bidMemo) {
+        this.bidMemo = bidMemo == null ? null : bidMemo.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -176,19 +196,21 @@ public class TPurchaseProjectBids implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", purchaseProjectName=").append(purchaseProjectName);
+        sb.append(", purchaseProjectCode=").append(purchaseProjectCode);
         sb.append(", projectId=").append(projectId);
         sb.append(", projectName=").append(projectName);
+        sb.append(", projectCode=").append(projectCode);
         sb.append(", bidCode=").append(bidCode);
         sb.append(", bidName=").append(bidName);
         sb.append(", bidBudgetaryAmount=").append(bidBudgetaryAmount);
         sb.append(", guaranteePayment=").append(guaranteePayment);
         sb.append(", bidFilePath=").append(bidFilePath);
-        sb.append(", bidMemo=").append(bidMemo);
         sb.append(", operateId=").append(operateId);
         sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
+        sb.append(", bidMemo=").append(bidMemo);
         sb.append("]");
         return sb.toString();
     }

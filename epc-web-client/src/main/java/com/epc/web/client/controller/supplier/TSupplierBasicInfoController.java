@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@Api(value = "供应商服务",tags = "供应商服务")
+@Api(value = "供应商服务"/*,tags = "供应商服务"*/)
 @RestController
 @RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TSupplierBasicInfoController extends BaseController {

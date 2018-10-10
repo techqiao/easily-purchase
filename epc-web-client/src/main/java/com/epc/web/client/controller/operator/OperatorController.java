@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "运营商服务",tags = "运营商服务")
+@Api(value = "运营商服务"/*,tags = "运营商服务"*/)
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController extends BaseController {
@@ -308,10 +308,32 @@ public class OperatorController extends BaseController {
         handleOperatorLoginInfo.setSystemRole(type);
         return operatorClient.lookPurchaserList(handleOperatorLoginInfo);
     }
-
-    /**16
-     *  运营商新增采购人（第1步：不包括完善信息，只填写姓名，电话，及默认密码epc1688）
+    /**15.6
+     *通过手机号或者姓名来搜索自己拉的采购人
      */
+    @ApiOperation(value = "15.6 通过手机号或者姓名来搜索自己拉的采购人",notes = "donghuan")
+    @PostMapping(value = "/searchPurchaserSingle")
+    public Result<List<TPurchaserBasicInfoVO>> searchPurchaserSingle(@RequestBody ClientHandleOperatorCreateSupplier clientHandleOperatorCreateSupplier){
+        HandleOperatorCreateSupplier handleOperatorCreateSupplier=new HandleOperatorCreateSupplier();
+        BeanUtils.copyProperties(clientHandleOperatorCreateSupplier,handleOperatorCreateSupplier);
+        Long bossId = getLoginUser().getBossId();
+        Long userId = getLoginUser().getUserId();
+        Integer type = getLoginUser().getType();
+        if(type==null || bossId==null || userId==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleOperatorCreateSupplier.setSystemRole(type);
+        handleOperatorCreateSupplier.setId(userId);
+        handleOperatorCreateSupplier.setBossId(bossId);
+        return operatorClient.searchPurchaserSingle(handleOperatorCreateSupplier);
+    }
+
+
+
+
+        /**16
+         *  运营商新增采购人（第1步：不包括完善信息，只填写姓名，电话，及默认密码epc1688）
+         */
     @ApiOperation(value = "运营商新增采购人（第1步：不包括完善信息，只填写姓名，电话，及默认密码epc1688--16）",notes = "donghuan")
     @PostMapping(value = "/createPurchaseByOperatorSimple")
     public Result<Boolean> createPurchaseByOperatorSimple(@RequestBody ClientHandleOperatorCreateSupplier clientHandleOperatorCreateSupplier){
@@ -370,7 +392,7 @@ public class OperatorController extends BaseController {
      *    查看当前登陆者拉的供应商列表
      */
     @ApiOperation(value = "查看当前登陆者拉的供应商列表--19",notes = "donghuan")
-    @PostMapping(value = "lookSupplierList")
+    @PostMapping(value = "/lookSupplierList")
     public Result<List<TSupplierBasicInfoVO>> lookSupplierList(){
         HandleOperatorLoginInfo handleOperatorLoginInfo=new HandleOperatorLoginInfo();
         Long userId = getLoginUser().getUserId();
@@ -385,8 +407,28 @@ public class OperatorController extends BaseController {
         return operatorClient.lookSupplierList(handleOperatorLoginInfo);
     }
 
+    /**20
+     *通过手机号或者姓名来搜索自己拉的供应商
+     */
+    @ApiOperation(value = "20 通过手机号或者姓名来搜索自己拉的供应商",notes = "donghuan")
+    @PostMapping(value = "/searchSupplierSingle")
+    public Result<List<TSupplierBasicInfoVO>> searchSupplierSingle(@RequestBody ClientHandleOperatorCreateSupplier clientHandleOperatorCreateSupplier){
+        HandleOperatorCreateSupplier handleOperatorCreateSupplier=new HandleOperatorCreateSupplier();
+        BeanUtils.copyProperties(clientHandleOperatorCreateSupplier,handleOperatorCreateSupplier);
+        Integer type = getLoginUser().getType();
+        Long bossId = getLoginUser().getBossId();
+        Long userId = getLoginUser().getUserId();
+        if(type==null || bossId==null || userId==null){
+            return Result.error("从redis中获取当前登陆用户信息 异常");
+        }
+        handleOperatorCreateSupplier.setSystemRole(type);
+        handleOperatorCreateSupplier.setBossId(bossId);
+        handleOperatorCreateSupplier.setId(userId);
+        return operatorClient.searchSupplierSingle(handleOperatorCreateSupplier);
+    }
 
 
 
 
-}
+
+    }

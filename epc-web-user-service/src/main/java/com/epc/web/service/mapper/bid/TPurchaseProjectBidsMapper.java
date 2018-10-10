@@ -1,5 +1,6 @@
 package com.epc.web.service.mapper.bid;
 
+import com.epc.web.facade.expert.dto.ProjectDto;
 import com.epc.web.service.domain.bid.TPurchaseProjectBids;
 import com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria;
 import java.util.List;
@@ -38,4 +39,7 @@ public interface TPurchaseProjectBidsMapper {
     int updateByPrimaryKeyWithBLOBs(TPurchaseProjectBids record);
 
     int updateByPrimaryKey(TPurchaseProjectBids record);
+
+
+    List<TPurchaseProjectBids> selectProjectByExpertIds(@Param("projectDto") ProjectDto projecctDto, @Param("bids") List<Long> bids);
 }

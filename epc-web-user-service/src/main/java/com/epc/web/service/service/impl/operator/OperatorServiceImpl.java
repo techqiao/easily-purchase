@@ -987,6 +987,52 @@ public class OperatorServiceImpl implements OperatorService {
         return Result.success(listVo);
     }
 
+    /**15.6
+     *通过手机号或者姓名来搜索自己拉的采购人
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<List<TPurchaserBasicInfoVO>> searchPurchaserSingle(HandleOperatorCreateSupplier handleOperatorCreateSupplier){
+        Long id = handleOperatorCreateSupplier.getId();
+        Long bossId = handleOperatorCreateSupplier.getBossId();
+        Integer systemRole = handleOperatorCreateSupplier.getSystemRole();
+
+        TPurchaserBasicInfoCriteria criteria=new TPurchaserBasicInfoCriteria();
+        TPurchaserBasicInfoCriteria.Criteria subCriteria= criteria.createCriteria();
+        //当前 采购人 role 0
+        subCriteria.andRoleEqualTo(Const.Role.ROLE_CORPORATION);
+        //邀请人类型是当前 登陆平台的角色
+        subCriteria.andInviterTypeEqualTo(systemRole);
+        // 邀请人id
+        subCriteria.andInviterIdEqualTo(id);
+        // 邀请人 公司 id
+        subCriteria.andInviterCompanyIdEqualTo(bossId.intValue());
+        //  不是删除的
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        String name = handleOperatorCreateSupplier.getName();
+        String cellphone = handleOperatorCreateSupplier.getCellphone();
+        if(StringUtils.isNotBlank(name)){
+            subCriteria.andNameLike("%"+name+"%");
+        }
+        if(StringUtils.isNotBlank(cellphone)){
+            subCriteria.andCellphoneEqualTo("%"+cellphone+"%");
+        }
+        List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(criteria);
+        if(CollectionUtils.isEmpty(tPurchaserBasicInfos)){
+            return Result.success("条件有误");
+        }
+        List<TPurchaserBasicInfoVO> listVO=new ArrayList<TPurchaserBasicInfoVO>();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        for(TPurchaserBasicInfo single:tPurchaserBasicInfos){
+            TPurchaserBasicInfoVO vo=new TPurchaserBasicInfoVO();
+            BeanUtils.copyProperties(single,vo);
+            vo.setCreateAt(format.format(single.getCreateAt()));
+            vo.setUpdateAt(format.format(single.getUpdateAt()));
+            listVO.add(vo);
+        }
+        return Result.success(listVO);
+    }
+
 
     /**
      * 16
@@ -1016,7 +1062,7 @@ public class OperatorServiceImpl implements OperatorService {
         TPurchaserBasicInfo tPurchaserBasicInfo = new TPurchaserBasicInfo();
         tPurchaserBasicInfo.setCellphone(cellphone);
         tPurchaserBasicInfo.setName(name);
-        tPurchaserBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
+//        tPurchaserBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
         //设置 邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构   1-运营商
         tPurchaserBasicInfo.setInviterType(systemRole);
         //邀请人id
@@ -1076,7 +1122,7 @@ public class OperatorServiceImpl implements OperatorService {
         TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
         tSupplierBasicInfo.setName(name);
         tSupplierBasicInfo.setCellphone(cellphone);
-        tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
+//        tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
         //邀请人类型 运营商
         tSupplierBasicInfo.setInviterType(Const.LOGIN_USER_TYPE.OPERATOR);
         //邀请人id
@@ -1244,6 +1290,51 @@ public class OperatorServiceImpl implements OperatorService {
         }
         return Result.success(listVo);
     }
+
+    /**20
+     *通过手机号或者姓名来搜索自己拉的供应商
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result<List<TSupplierBasicInfoVO>> searchSupplierSingle(HandleOperatorCreateSupplier handleOperatorCreateSupplier){
+        //登陆者的信息
+        Integer systemRole = handleOperatorCreateSupplier.getSystemRole();
+        Long id = handleOperatorCreateSupplier.getId();
+        Long bossId = handleOperatorCreateSupplier.getBossId();
+
+        String name = handleOperatorCreateSupplier.getName();
+        String cellphone = handleOperatorCreateSupplier.getCellphone();
+        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
+        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
+        //没有删除的
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //邀请人的角色 是 0 法人
+        subCriteria.andRoleEqualTo(Const.Role.ROLE_CORPORATION);
+        subCriteria.andInviterTypeEqualTo(systemRole);
+        subCriteria.andInviterIdEqualTo(id);
+        subCriteria.andInviterCompanyIdEqualTo(bossId);
+        if(StringUtils.isNotBlank(name)){
+            subCriteria.andNameLike("%"+name+"%");
+        }
+        if(StringUtils.isNotBlank(cellphone)){
+            subCriteria.andCellphoneLike("%"+cellphone+"%");
+        }
+        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
+        if(CollectionUtils.isEmpty(tSupplierBasicInfos)){
+            return Result.success("条件有误");
+        }
+        List<TSupplierBasicInfoVO> listVO=new ArrayList<TSupplierBasicInfoVO>();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
+        for(TSupplierBasicInfo single:tSupplierBasicInfos){
+            TSupplierBasicInfoVO vo=new TSupplierBasicInfoVO();
+            BeanUtils.copyProperties(single,vo);
+            vo.setCreateAt(format.format(single.getCreateAt()));
+            vo.setUpdateAt(format.format(single.getUpdateAt()));
+            listVO.add(vo);
+        }
+        return Result.success(listVO);
+    }
+
 
 
     /*-------------------------------------------------*/

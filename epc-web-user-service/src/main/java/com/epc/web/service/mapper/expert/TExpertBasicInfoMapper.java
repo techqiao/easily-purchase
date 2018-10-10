@@ -3,6 +3,7 @@ package com.epc.web.service.mapper.expert;
 import com.epc.web.facade.agency.dto.AgencyExpertDto;
 import com.epc.web.facade.agency.dto.ExpertDto;
 import com.epc.web.facade.agency.vo.AgencyExpertVo;
+import com.epc.web.facade.expert.dto.IdleExpertDto;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.purchaser.dto.QueryExpertDto;
@@ -128,4 +129,7 @@ public interface TExpertBasicInfoMapper {
     int updateExpertPassword(ModifyUser modifyUser);
 
     TExpertBasicInfo selectExpertCellPhone(@Param("cell") String cell);
+
+    int updateIsIdleOrNot(IdleExpertDto dto);
+
 }

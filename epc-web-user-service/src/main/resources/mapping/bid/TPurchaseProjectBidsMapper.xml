@@ -1,467 +1,473 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.web.service.domain.bid.TPurchaseProjectBids" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
-    <result column="purchase_project_name" property="purchaseProjectName" jdbcType="VARCHAR" />
-    <result column="purchase_project_code" property="purchaseProjectCode" jdbcType="VARCHAR" />
-    <result column="project_id" property="projectId" jdbcType="BIGINT" />
-    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
-    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
-    <result column="bid_code" property="bidCode" jdbcType="VARCHAR" />
-    <result column="bid_name" property="bidName" jdbcType="VARCHAR" />
-    <result column="bid_budgetary_amount" property="bidBudgetaryAmount" jdbcType="DECIMAL" />
-    <result column="guarantee_payment" property="guaranteePayment" jdbcType="DECIMAL" />
-    <result column="bid_file_path" property="bidFilePath" jdbcType="VARCHAR" />
-    <result column="operate_id" property="operateId" jdbcType="BIGINT" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
-    <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
-    <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.epc.web.service.domain.bid.TPurchaseProjectBids" extends="BaseResultMap" >
-    <result column="bid_memo" property="bidMemo" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+<mapper namespace="com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper">
+    <resultMap id="BaseResultMap" type="com.epc.web.service.domain.bid.TPurchaseProjectBids">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT"/>
+        <result column="purchase_project_name" property="purchaseProjectName" jdbcType="VARCHAR"/>
+        <result column="purchase_project_code" property="purchaseProjectCode" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="BIGINT"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
+        <result column="bid_code" property="bidCode" jdbcType="VARCHAR"/>
+        <result column="bid_name" property="bidName" jdbcType="VARCHAR"/>
+        <result column="bid_budgetary_amount" property="bidBudgetaryAmount" jdbcType="DECIMAL"/>
+        <result column="guarantee_payment" property="guaranteePayment" jdbcType="DECIMAL"/>
+        <result column="bid_file_path" property="bidFilePath" jdbcType="VARCHAR"/>
+        <result column="operate_id" property="operateId" jdbcType="BIGINT"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.epc.web.service.domain.bid.TPurchaseProjectBids"
+               extends="BaseResultMap">
+        <result column="bid_memo" property="bidMemo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, purchase_project_id, purchase_project_name, purchase_project_code, project_id,
+        project_name, project_code, bid_code, bid_name, bid_budgetary_amount, guarantee_payment,
+        bid_file_path, operate_id, creator, create_at, update_at, is_deleted
+    </sql>
+    <sql id="Blob_Column_List">
+        bid_memo
+    </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria">
+        select
+        <if test="distinct">
+            distinct
         </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    id, purchase_project_id, purchase_project_name, purchase_project_code, project_id, 
-    project_name, project_code, bid_code, bid_name, bid_budgetary_amount, guarantee_payment, 
-    bid_file_path, operate_id, creator, create_at, update_at, is_deleted
-  </sql>
-  <sql id="Blob_Column_List" >
-    bid_memo
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_purchase_project_bids
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from t_purchase_project_bids
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_purchase_project_bids
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from t_purchase_project_bids
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria" >
-    delete from t_purchase_project_bids
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_purchase_project_bids (purchase_project_id, purchase_project_name, 
-      purchase_project_code, project_id, project_name, 
-      project_code, bid_code, bid_name, 
-      bid_budgetary_amount, guarantee_payment, bid_file_path, 
-      operate_id, creator, create_at, 
-      update_at, is_deleted, bid_memo
-      )
-    values (#{purchaseProjectId,jdbcType=BIGINT}, #{purchaseProjectName,jdbcType=VARCHAR}, 
-      #{purchaseProjectCode,jdbcType=VARCHAR}, #{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR}, 
-      #{projectCode,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, #{bidName,jdbcType=VARCHAR}, 
-      #{bidBudgetaryAmount,jdbcType=DECIMAL}, #{guaranteePayment,jdbcType=DECIMAL}, #{bidFilePath,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{bidMemo,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids" >
-    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_purchase_project_bids
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="purchaseProjectId != null" >
-        purchase_project_id,
-      </if>
-      <if test="purchaseProjectName != null" >
-        purchase_project_name,
-      </if>
-      <if test="purchaseProjectCode != null" >
-        purchase_project_code,
-      </if>
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="projectName != null" >
-        project_name,
-      </if>
-      <if test="projectCode != null" >
-        project_code,
-      </if>
-      <if test="bidCode != null" >
-        bid_code,
-      </if>
-      <if test="bidName != null" >
-        bid_name,
-      </if>
-      <if test="bidBudgetaryAmount != null" >
-        bid_budgetary_amount,
-      </if>
-      <if test="guaranteePayment != null" >
-        guarantee_payment,
-      </if>
-      <if test="bidFilePath != null" >
-        bid_file_path,
-      </if>
-      <if test="operateId != null" >
-        operate_id,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="createAt != null" >
-        create_at,
-      </if>
-      <if test="updateAt != null" >
-        update_at,
-      </if>
-      <if test="isDeleted != null" >
-        is_deleted,
-      </if>
-      <if test="bidMemo != null" >
-        bid_memo,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="purchaseProjectId != null" >
-        #{purchaseProjectId,jdbcType=BIGINT},
-      </if>
-      <if test="purchaseProjectName != null" >
-        #{purchaseProjectName,jdbcType=VARCHAR},
-      </if>
-      <if test="purchaseProjectCode != null" >
-        #{purchaseProjectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null" >
-        #{projectId,jdbcType=BIGINT},
-      </if>
-      <if test="projectName != null" >
-        #{projectName,jdbcType=VARCHAR},
-      </if>
-      <if test="projectCode != null" >
-        #{projectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="bidCode != null" >
-        #{bidCode,jdbcType=VARCHAR},
-      </if>
-      <if test="bidName != null" >
-        #{bidName,jdbcType=VARCHAR},
-      </if>
-      <if test="bidBudgetaryAmount != null" >
-        #{bidBudgetaryAmount,jdbcType=DECIMAL},
-      </if>
-      <if test="guaranteePayment != null" >
-        #{guaranteePayment,jdbcType=DECIMAL},
-      </if>
-      <if test="bidFilePath != null" >
-        #{bidFilePath,jdbcType=VARCHAR},
-      </if>
-      <if test="operateId != null" >
-        #{operateId,jdbcType=BIGINT},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
-        #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateAt != null" >
-        #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isDeleted != null" >
-        #{isDeleted,jdbcType=INTEGER},
-      </if>
-      <if test="bidMemo != null" >
-        #{bidMemo,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria" resultType="java.lang.Integer" >
-    select count(*) from t_purchase_project_bids
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update t_purchase_project_bids
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.purchaseProjectId != null" >
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_purchase_project_bids
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_purchase_project_bids
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_purchase_project_bids
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_purchase_project_bids
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria">
+        delete from t_purchase_project_bids
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_purchase_project_bids (purchase_project_id, purchase_project_name,
+        purchase_project_code, project_id, project_name,
+        project_code, bid_code, bid_name,
+        bid_budgetary_amount, guarantee_payment, bid_file_path,
+        operate_id, creator, create_at,
+        update_at, is_deleted, bid_memo
+        )
+        values (#{purchaseProjectId,jdbcType=BIGINT}, #{purchaseProjectName,jdbcType=VARCHAR},
+        #{purchaseProjectCode,jdbcType=VARCHAR}, #{projectId,jdbcType=BIGINT}, #{projectName,jdbcType=VARCHAR},
+        #{projectCode,jdbcType=VARCHAR}, #{bidCode,jdbcType=VARCHAR}, #{bidName,jdbcType=VARCHAR},
+        #{bidBudgetaryAmount,jdbcType=DECIMAL}, #{guaranteePayment,jdbcType=DECIMAL}, #{bidFilePath,jdbcType=VARCHAR},
+        #{operateId,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP},
+        #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{bidMemo,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_purchase_project_bids
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="purchaseProjectId != null">
+                purchase_project_id,
+            </if>
+            <if test="purchaseProjectName != null">
+                purchase_project_name,
+            </if>
+            <if test="purchaseProjectCode != null">
+                purchase_project_code,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="projectName != null">
+                project_name,
+            </if>
+            <if test="projectCode != null">
+                project_code,
+            </if>
+            <if test="bidCode != null">
+                bid_code,
+            </if>
+            <if test="bidName != null">
+                bid_name,
+            </if>
+            <if test="bidBudgetaryAmount != null">
+                bid_budgetary_amount,
+            </if>
+            <if test="guaranteePayment != null">
+                guarantee_payment,
+            </if>
+            <if test="bidFilePath != null">
+                bid_file_path,
+            </if>
+            <if test="operateId != null">
+                operate_id,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createAt != null">
+                create_at,
+            </if>
+            <if test="updateAt != null">
+                update_at,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="bidMemo != null">
+                bid_memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="purchaseProjectId != null">
+                #{purchaseProjectId,jdbcType=BIGINT},
+            </if>
+            <if test="purchaseProjectName != null">
+                #{purchaseProjectName,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseProjectCode != null">
+                #{purchaseProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=BIGINT},
+            </if>
+            <if test="projectName != null">
+                #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectCode != null">
+                #{projectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bidCode != null">
+                #{bidCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bidName != null">
+                #{bidName,jdbcType=VARCHAR},
+            </if>
+            <if test="bidBudgetaryAmount != null">
+                #{bidBudgetaryAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="guaranteePayment != null">
+                #{guaranteePayment,jdbcType=DECIMAL},
+            </if>
+            <if test="bidFilePath != null">
+                #{bidFilePath,jdbcType=VARCHAR},
+            </if>
+            <if test="operateId != null">
+                #{operateId,jdbcType=BIGINT},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateAt != null">
+                #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="bidMemo != null">
+                #{bidMemo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria"
+            resultType="java.lang.Integer">
+        select count(*) from t_purchase_project_bids
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_purchase_project_bids
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.purchaseProjectId != null">
+                purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+            </if>
+            <if test="record.purchaseProjectName != null">
+                purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.purchaseProjectCode != null">
+                purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.projectId != null">
+                project_id = #{record.projectId,jdbcType=BIGINT},
+            </if>
+            <if test="record.projectName != null">
+                project_name = #{record.projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.projectCode != null">
+                project_code = #{record.projectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bidCode != null">
+                bid_code = #{record.bidCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bidName != null">
+                bid_name = #{record.bidName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.bidBudgetaryAmount != null">
+                bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.guaranteePayment != null">
+                guarantee_payment = #{record.guaranteePayment,jdbcType=DECIMAL},
+            </if>
+            <if test="record.bidFilePath != null">
+                bid_file_path = #{record.bidFilePath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.operateId != null">
+                operate_id = #{record.operateId,jdbcType=BIGINT},
+            </if>
+            <if test="record.creator != null">
+                creator = #{record.creator,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createAt != null">
+                create_at = #{record.createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateAt != null">
+                update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isDeleted != null">
+                is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="record.bidMemo != null">
+                bid_memo = #{record.bidMemo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update t_purchase_project_bids
+        set id = #{record.id,jdbcType=BIGINT},
         purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
-      </if>
-      <if test="record.purchaseProjectName != null" >
         purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.purchaseProjectCode != null" >
         purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=BIGINT},
-      </if>
-      <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.projectCode != null" >
         project_code = #{record.projectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bidCode != null" >
         bid_code = #{record.bidCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bidName != null" >
         bid_name = #{record.bidName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.bidBudgetaryAmount != null" >
         bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
-      </if>
-      <if test="record.guaranteePayment != null" >
         guarantee_payment = #{record.guaranteePayment,jdbcType=DECIMAL},
-      </if>
-      <if test="record.bidFilePath != null" >
         bid_file_path = #{record.bidFilePath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.operateId != null" >
         operate_id = #{record.operateId,jdbcType=BIGINT},
-      </if>
-      <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updateAt != null" >
         update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
-      </if>
-      <if test="record.bidMemo != null" >
-        bid_memo = #{record.bidMemo,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update t_purchase_project_bids
-    set id = #{record.id,jdbcType=BIGINT},
-      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
-      purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
-      purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
-      project_id = #{record.projectId,jdbcType=BIGINT},
-      project_name = #{record.projectName,jdbcType=VARCHAR},
-      project_code = #{record.projectCode,jdbcType=VARCHAR},
-      bid_code = #{record.bidCode,jdbcType=VARCHAR},
-      bid_name = #{record.bidName,jdbcType=VARCHAR},
-      bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
-      guarantee_payment = #{record.guaranteePayment,jdbcType=DECIMAL},
-      bid_file_path = #{record.bidFilePath,jdbcType=VARCHAR},
-      operate_id = #{record.operateId,jdbcType=BIGINT},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
-      bid_memo = #{record.bidMemo,jdbcType=LONGVARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update t_purchase_project_bids
-    set id = #{record.id,jdbcType=BIGINT},
-      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
-      purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
-      purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
-      project_id = #{record.projectId,jdbcType=BIGINT},
-      project_name = #{record.projectName,jdbcType=VARCHAR},
-      project_code = #{record.projectCode,jdbcType=VARCHAR},
-      bid_code = #{record.bidCode,jdbcType=VARCHAR},
-      bid_name = #{record.bidName,jdbcType=VARCHAR},
-      bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
-      guarantee_payment = #{record.guaranteePayment,jdbcType=DECIMAL},
-      bid_file_path = #{record.bidFilePath,jdbcType=VARCHAR},
-      operate_id = #{record.operateId,jdbcType=BIGINT},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      create_at = #{record.createAt,jdbcType=TIMESTAMP},
-      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids" >
-    update t_purchase_project_bids
-    <set >
-      <if test="purchaseProjectId != null" >
-        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
-      </if>
-      <if test="purchaseProjectName != null" >
+        bid_memo = #{record.bidMemo,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_purchase_project_bids
+        set id = #{record.id,jdbcType=BIGINT},
+        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+        purchase_project_name = #{record.purchaseProjectName,jdbcType=VARCHAR},
+        purchase_project_code = #{record.purchaseProjectCode,jdbcType=VARCHAR},
+        project_id = #{record.projectId,jdbcType=BIGINT},
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
+        bid_code = #{record.bidCode,jdbcType=VARCHAR},
+        bid_name = #{record.bidName,jdbcType=VARCHAR},
+        bid_budgetary_amount = #{record.bidBudgetaryAmount,jdbcType=DECIMAL},
+        guarantee_payment = #{record.guaranteePayment,jdbcType=DECIMAL},
+        bid_file_path = #{record.bidFilePath,jdbcType=VARCHAR},
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+        creator = #{record.creator,jdbcType=VARCHAR},
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids">
+        update t_purchase_project_bids
+        <set>
+            <if test="purchaseProjectId != null">
+                purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
+            </if>
+            <if test="purchaseProjectName != null">
+                purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
+            </if>
+            <if test="purchaseProjectCode != null">
+                purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=BIGINT},
+            </if>
+            <if test="projectName != null">
+                project_name = #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectCode != null">
+                project_code = #{projectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bidCode != null">
+                bid_code = #{bidCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bidName != null">
+                bid_name = #{bidName,jdbcType=VARCHAR},
+            </if>
+            <if test="bidBudgetaryAmount != null">
+                bid_budgetary_amount = #{bidBudgetaryAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="guaranteePayment != null">
+                guarantee_payment = #{guaranteePayment,jdbcType=DECIMAL},
+            </if>
+            <if test="bidFilePath != null">
+                bid_file_path = #{bidFilePath,jdbcType=VARCHAR},
+            </if>
+            <if test="operateId != null">
+                operate_id = #{operateId,jdbcType=BIGINT},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="bidMemo != null">
+                bid_memo = #{bidMemo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids">
+        update t_purchase_project_bids
+        set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
         purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
-      </if>
-      <if test="purchaseProjectCode != null" >
         purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null" >
         project_id = #{projectId,jdbcType=BIGINT},
-      </if>
-      <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
-      </if>
-      <if test="projectCode != null" >
         project_code = #{projectCode,jdbcType=VARCHAR},
-      </if>
-      <if test="bidCode != null" >
         bid_code = #{bidCode,jdbcType=VARCHAR},
-      </if>
-      <if test="bidName != null" >
         bid_name = #{bidName,jdbcType=VARCHAR},
-      </if>
-      <if test="bidBudgetaryAmount != null" >
         bid_budgetary_amount = #{bidBudgetaryAmount,jdbcType=DECIMAL},
-      </if>
-      <if test="guaranteePayment != null" >
         guarantee_payment = #{guaranteePayment,jdbcType=DECIMAL},
-      </if>
-      <if test="bidFilePath != null" >
         bid_file_path = #{bidFilePath,jdbcType=VARCHAR},
-      </if>
-      <if test="operateId != null" >
         operate_id = #{operateId,jdbcType=BIGINT},
-      </if>
-      <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateAt != null" >
         update_at = #{updateAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
-      </if>
-      <if test="bidMemo != null" >
-        bid_memo = #{bidMemo,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids" >
-    update t_purchase_project_bids
-    set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
-      purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
-      purchase_project_code = #{purchaseProjectCode,jdbcType=VARCHAR},
-      project_id = #{projectId,jdbcType=BIGINT},
-      project_name = #{projectName,jdbcType=VARCHAR},
-      project_code = #{projectCode,jdbcType=VARCHAR},
-      bid_code = #{bidCode,jdbcType=VARCHAR},
-      bid_name = #{bidName,jdbcType=VARCHAR},
-      bid_budgetary_amount = #{bidBudgetaryAmount,jdbcType=DECIMAL},
-      guarantee_payment = #{guaranteePayment,jdbcType=DECIMAL},
-      bid_file_path = #{bidFilePath,jdbcType=VARCHAR},
-      operate_id = #{operateId,jdbcType=BIGINT},
-      creator = #{creator,jdbcType=VARCHAR},
-      create_at = #{createAt,jdbcType=TIMESTAMP},
-      update_at = #{updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=INTEGER},
-      bid_memo = #{bidMemo,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids" >
+        bid_memo = #{bidMemo,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBids">
     update t_purchase_project_bids
     set purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
       purchase_project_name = #{purchaseProjectName,jdbcType=VARCHAR},
@@ -481,34 +487,64 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from t_purchase_project_bids
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria" id="selectByExampleWithRowbounds" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from t_purchase_project_bids
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
+    <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria"
+            id="selectByExampleWithBLOBsWithRowbounds">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_purchase_project_bids
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.bid.TPurchaseProjectBidsCriteria"
+            id="selectByExampleWithRowbounds">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_purchase_project_bids
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectProjectByExpertIds" resultMap="BaseResultMap">
+        <bind name="projectName" value="'%'+projectDto.getProjectName+'%'"/>
+        <bind name="purchaserName" value="'%'+projectDto.getPurchaserName+'%'"/>
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        t_purchase_project_bids
+        <where>
+            id IN
+            <foreach collection="bids" item="bid" open="(" separator="," close=")">
+                #{bid}
+            </foreach>
+
+            <if test="projectDto.getProjectName!=null">
+                AND project_name LIKE #{projectName}
+            </if>
+            <if test="projectDto.getPurchaserName!=null">
+                AND project_name LIKE #{purchaserName}
+            </if>
+            <if test="projectDto.getIsEnd!=null">
+                AND is_end =#{projectDto.getIsEnd}
+            </if>
+
+        </where>
+        ORDER BY create_at;
+    </select>
+
+
 </mapper>

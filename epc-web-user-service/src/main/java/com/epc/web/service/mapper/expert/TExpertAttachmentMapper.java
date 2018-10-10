@@ -107,4 +107,8 @@ public interface TExpertAttachmentMapper {
 
     List<TExpertAttachment> selectAttchamentByExpertId(Long expertId);
 
+    int selectAttchamentNumsByExpertId(Long expertId);
+
+    int deleteByAttachmentByExpertId(Long expertId);
+
 }

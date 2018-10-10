@@ -7,20 +7,16 @@ import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.PretrialMessageEnum;
-import com.epc.common.constants.QuestionTypeEnum;
 import com.epc.common.util.DateTimeUtil;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
-import com.epc.web.facade.bidding.handle.HandleQuestion;
-import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,7 +122,8 @@ public class BiddingServiceimpl implements BiddingService {
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //根据公告ID查看详情
-        BReleaseAnnouncement bReleaseAnnouncement = bReleaseAnnouncementMapper.selectByPrimaryKey(queryNoticeDetail.getNoticeId());
+        BReleaseAnnouncement bReleaseAnnouncement = bReleaseAnnouncementMapper.selectByPrimaryKey(
+                queryNoticeDetail.getNoticeId());
         NoticeDetailVO noticeDetailVO = new NoticeDetailVO();
         if (bReleaseAnnouncement==null){
             return Result.success(null);
@@ -133,6 +131,18 @@ public class BiddingServiceimpl implements BiddingService {
         BeanUtils.copyProperties(bReleaseAnnouncement, noticeDetailVO);
         noticeDetailVO.setBiddingStart(sdf.format(bReleaseAnnouncement.getBiddingStart()));
         noticeDetailVO.setBiddingEnd(sdf.format(bReleaseAnnouncement.getBiddingEnd()));
+        noticeDetailVO.setDefecationStart(sdf.format(bReleaseAnnouncement.getDefecationStart()));
+        noticeDetailVO.setDefecationEnd(sdf.format(bReleaseAnnouncement.getDefecationEnd()));
+
+        //查询采购项目详情
+        TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo= tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(
+                bReleaseAnnouncement.getProcurementProjectId());
+        if(tPurchaseProjectBasicInfo!=null){
+            noticeDetailVO.setProcurementProjectName(tPurchaseProjectBasicInfo.getPurchaseProjectName());
+            noticeDetailVO.setBiddingType(tPurchaseProjectBasicInfo.getPurchaseType());
+        }
+
+
         //未支付招标文件下载金，则不能下载，路径为空
         if(queryNoticeDetail.getIsPay()==false){
             noticeDetailVO.setBiddingDocumentsUrl(null);
@@ -350,10 +360,12 @@ public class BiddingServiceimpl implements BiddingService {
 
     @Override
     public Boolean IsPayForProjectFile(QueryProgramPayDTO dto){
+        if(dto.getProcurementProjectId()==null){
+            return  false;
+        }
         final TPurchaseProjectFileDownloadCriteria criteria=new TPurchaseProjectFileDownloadCriteria();
         final TPurchaseProjectFileDownloadCriteria.Criteria subCriteria=criteria.createCriteria();
         subCriteria.andPurchaseProjectIdEqualTo(dto.getProcurementProjectId());
-        subCriteria.andPurchaserIdEqualTo(dto.getCompanyId());
         subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         //根据采购项目Id 查询招标文件
         List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
@@ -363,7 +375,7 @@ public class BiddingServiceimpl implements BiddingService {
         }
         //获取招标文件ID
         Long fileId=list.get(0).getId();
-       // BigDecimal money=list.get(0).getFilePayment();
+        BigDecimal money=list.get(0).getFilePayment();
         //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
@@ -376,13 +388,12 @@ public class BiddingServiceimpl implements BiddingService {
             LOGGER.error("未找到支付记录");
             return false;
         }else{
-
-            //第一次支付，暂时不考虑多次
-           /* BigDecimal realPay= payList.get(0).getFilePaymentReal();
-            //compareTo  -1:<   0:=   1:>
-            if(money.compareTo(realPay)>-1){
-                Result.success(true);
-            }*/
+            //(实付金额 比对 下载金额)
+            for(TPurchaseProjectFilePay entity:payList){
+                if(entity.getFilePaymentReal().compareTo(money)>-1){
+                    return true;
+                }
+            }
             return true;
         }
     }

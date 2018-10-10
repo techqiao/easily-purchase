@@ -39,7 +39,7 @@ public class ExpertController  extends BaseController{
     public Result<Boolean> updateExpertSelfInfo(@RequestBody ClientHandleExpert clientHandleExperte) {
         HandleExpert handleExpert = new HandleExpert();
         BeanUtils.copyProperties(clientHandleExperte,handleExpert);
-        return expertClient.completeExpertInfo(handleExpert);
+        return expertClient.updateExpertSelfInfo(handleExpert);
     }
 
     @ApiOperation(value = "专家修改空闲状态" ,notes="专家修改空闲状态")

@@ -21,6 +21,7 @@ import com.epc.web.service.service.expert.ExpertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +29,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class ExpertServiceImpl implements ExpertService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpertServiceImpl.class);
@@ -220,7 +221,7 @@ public class ExpertServiceImpl implements ExpertService {
                 bids.add(committeeExpert.getBidsId());
             }
             //通过id获得采购目标段详情t_purchaser_project_bids
-            tPurchaseProjectBids = tPurchaseProjectBidsMapper.selectProjectByExpertIds(projecctDto,bids);
+            tPurchaseProjectBids = tPurchaseProjectBidsMapper.selectProjectByExpertIds(projecctDto, bids);
             if (CollectionUtils.isEmpty(tPurchaseProjectBids)) {
                 return Result.success("该专家下没有再评审的标段");
             }

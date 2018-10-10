@@ -3,16 +3,11 @@ package com.epc.bidding.service.bidding;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
-import com.epc.web.facade.bidding.handle.HandleQuestion;
-import com.epc.web.facade.bidding.query.answerQuestion.QueryAnswerQuestionDTO;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
-import com.epc.web.facade.bidding.query.schedule.HandleProjectSchedule;
-import com.epc.web.facade.bidding.query.schedule.QueryProjectSchedule;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.QueryAnswerQuestionListVO;
 
 import java.util.List;
 

@@ -1,18 +1,18 @@
-package com.epc.bidding.domain;
+package com.epc.tendering.service.domain.purchase;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TPurchaseProjectFilePayCriteria {
+public class TPurchaseProjectFileDownloadCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TPurchaseProjectFilePayCriteria() {
+    public TPurchaseProjectFileDownloadCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -166,183 +166,253 @@ public class TPurchaseProjectFilePayCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdIsNull() {
-            addCriterion("purchase_project_file_id is null");
+        public Criteria andPurchaseProjectIdIsNull() {
+            addCriterion("purchase_project_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdIsNotNull() {
-            addCriterion("purchase_project_file_id is not null");
+        public Criteria andPurchaseProjectIdIsNotNull() {
+            addCriterion("purchase_project_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdEqualTo(Long value) {
-            addCriterion("purchase_project_file_id =", value, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdEqualTo(Long value) {
+            addCriterion("purchase_project_id =", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdNotEqualTo(Long value) {
-            addCriterion("purchase_project_file_id <>", value, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdNotEqualTo(Long value) {
+            addCriterion("purchase_project_id <>", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdGreaterThan(Long value) {
-            addCriterion("purchase_project_file_id >", value, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdGreaterThan(Long value) {
+            addCriterion("purchase_project_id >", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("purchase_project_file_id >=", value, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_id >=", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdLessThan(Long value) {
-            addCriterion("purchase_project_file_id <", value, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdLessThan(Long value) {
+            addCriterion("purchase_project_id <", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdLessThanOrEqualTo(Long value) {
-            addCriterion("purchase_project_file_id <=", value, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdLessThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_id <=", value, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdIn(List<Long> values) {
-            addCriterion("purchase_project_file_id in", values, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdIn(List<Long> values) {
+            addCriterion("purchase_project_id in", values, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdNotIn(List<Long> values) {
-            addCriterion("purchase_project_file_id not in", values, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdNotIn(List<Long> values) {
+            addCriterion("purchase_project_id not in", values, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdBetween(Long value1, Long value2) {
-            addCriterion("purchase_project_file_id between", value1, value2, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_id between", value1, value2, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseProjectFileIdNotBetween(Long value1, Long value2) {
-            addCriterion("purchase_project_file_id not between", value1, value2, "purchaseProjectFileId");
+        public Criteria andPurchaseProjectIdNotBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_id not between", value1, value2, "purchaseProjectId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealIsNull() {
-            addCriterion("file_payment_real is null");
+        public Criteria andPurchaserIdIsNull() {
+            addCriterion("purchaser_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealIsNotNull() {
-            addCriterion("file_payment_real is not null");
+        public Criteria andPurchaserIdIsNotNull() {
+            addCriterion("purchaser_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealEqualTo(BigDecimal value) {
-            addCriterion("file_payment_real =", value, "filePaymentReal");
+        public Criteria andPurchaserIdEqualTo(Long value) {
+            addCriterion("purchaser_id =", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealNotEqualTo(BigDecimal value) {
-            addCriterion("file_payment_real <>", value, "filePaymentReal");
+        public Criteria andPurchaserIdNotEqualTo(Long value) {
+            addCriterion("purchaser_id <>", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealGreaterThan(BigDecimal value) {
-            addCriterion("file_payment_real >", value, "filePaymentReal");
+        public Criteria andPurchaserIdGreaterThan(Long value) {
+            addCriterion("purchaser_id >", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("file_payment_real >=", value, "filePaymentReal");
+        public Criteria andPurchaserIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("purchaser_id >=", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealLessThan(BigDecimal value) {
-            addCriterion("file_payment_real <", value, "filePaymentReal");
+        public Criteria andPurchaserIdLessThan(Long value) {
+            addCriterion("purchaser_id <", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("file_payment_real <=", value, "filePaymentReal");
+        public Criteria andPurchaserIdLessThanOrEqualTo(Long value) {
+            addCriterion("purchaser_id <=", value, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealIn(List<BigDecimal> values) {
-            addCriterion("file_payment_real in", values, "filePaymentReal");
+        public Criteria andPurchaserIdIn(List<Long> values) {
+            addCriterion("purchaser_id in", values, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealNotIn(List<BigDecimal> values) {
-            addCriterion("file_payment_real not in", values, "filePaymentReal");
+        public Criteria andPurchaserIdNotIn(List<Long> values) {
+            addCriterion("purchaser_id not in", values, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("file_payment_real between", value1, value2, "filePaymentReal");
+        public Criteria andPurchaserIdBetween(Long value1, Long value2) {
+            addCriterion("purchaser_id between", value1, value2, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andFilePaymentRealNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("file_payment_real not between", value1, value2, "filePaymentReal");
+        public Criteria andPurchaserIdNotBetween(Long value1, Long value2) {
+            addCriterion("purchaser_id not between", value1, value2, "purchaserId");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdIsNull() {
-            addCriterion("company_id is null");
+        public Criteria andPurchaseFileNameIsNull() {
+            addCriterion("purchase_file_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdIsNotNull() {
-            addCriterion("company_id is not null");
+        public Criteria andPurchaseFileNameIsNotNull() {
+            addCriterion("purchase_file_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdEqualTo(Long value) {
-            addCriterion("company_id =", value, "companyId");
+        public Criteria andPurchaseFileNameEqualTo(String value) {
+            addCriterion("purchase_file_name =", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdNotEqualTo(Long value) {
-            addCriterion("company_id <>", value, "companyId");
+        public Criteria andPurchaseFileNameNotEqualTo(String value) {
+            addCriterion("purchase_file_name <>", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdGreaterThan(Long value) {
-            addCriterion("company_id >", value, "companyId");
+        public Criteria andPurchaseFileNameGreaterThan(String value) {
+            addCriterion("purchase_file_name >", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("company_id >=", value, "companyId");
+        public Criteria andPurchaseFileNameGreaterThanOrEqualTo(String value) {
+            addCriterion("purchase_file_name >=", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdLessThan(Long value) {
-            addCriterion("company_id <", value, "companyId");
+        public Criteria andPurchaseFileNameLessThan(String value) {
+            addCriterion("purchase_file_name <", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdLessThanOrEqualTo(Long value) {
-            addCriterion("company_id <=", value, "companyId");
+        public Criteria andPurchaseFileNameLessThanOrEqualTo(String value) {
+            addCriterion("purchase_file_name <=", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdIn(List<Long> values) {
-            addCriterion("company_id in", values, "companyId");
+        public Criteria andPurchaseFileNameLike(String value) {
+            addCriterion("purchase_file_name like", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdNotIn(List<Long> values) {
-            addCriterion("company_id not in", values, "companyId");
+        public Criteria andPurchaseFileNameNotLike(String value) {
+            addCriterion("purchase_file_name not like", value, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdBetween(Long value1, Long value2) {
-            addCriterion("company_id between", value1, value2, "companyId");
+        public Criteria andPurchaseFileNameIn(List<String> values) {
+            addCriterion("purchase_file_name in", values, "purchaseFileName");
             return (Criteria) this;
         }
 
-        public Criteria andCompanyIdNotBetween(Long value1, Long value2) {
-            addCriterion("company_id not between", value1, value2, "companyId");
+        public Criteria andPurchaseFileNameNotIn(List<String> values) {
+            addCriterion("purchase_file_name not in", values, "purchaseFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseFileNameBetween(String value1, String value2) {
+            addCriterion("purchase_file_name between", value1, value2, "purchaseFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseFileNameNotBetween(String value1, String value2) {
+            addCriterion("purchase_file_name not between", value1, value2, "purchaseFileName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentIsNull() {
+            addCriterion("file_payment is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentIsNotNull() {
+            addCriterion("file_payment is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentEqualTo(BigDecimal value) {
+            addCriterion("file_payment =", value, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentNotEqualTo(BigDecimal value) {
+            addCriterion("file_payment <>", value, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentGreaterThan(BigDecimal value) {
+            addCriterion("file_payment >", value, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("file_payment >=", value, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentLessThan(BigDecimal value) {
+            addCriterion("file_payment <", value, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("file_payment <=", value, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentIn(List<BigDecimal> values) {
+            addCriterion("file_payment in", values, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentNotIn(List<BigDecimal> values) {
+            addCriterion("file_payment not in", values, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("file_payment between", value1, value2, "filePayment");
+            return (Criteria) this;
+        }
+
+        public Criteria andFilePaymentNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("file_payment not between", value1, value2, "filePayment");
             return (Criteria) this;
         }
 

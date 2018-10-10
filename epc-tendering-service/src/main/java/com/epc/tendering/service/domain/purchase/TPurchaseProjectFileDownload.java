@@ -1,17 +1,19 @@
-package com.epc.bidding.domain;
+package com.epc.tendering.service.domain.purchase;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TPurchaseProjectFilePay implements Serializable {
+public class TPurchaseProjectFileDownload implements Serializable {
     private Long id;
 
-    private Long purchaseProjectFileId;
+    private Long purchaseProjectId;
 
-    private BigDecimal filePaymentReal;
+    private Long purchaserId;
 
-    private Long companyId;
+    private String purchaseFileName;
+
+    private BigDecimal filePayment;
 
     private Long operateId;
 
@@ -33,28 +35,36 @@ public class TPurchaseProjectFilePay implements Serializable {
         this.id = id;
     }
 
-    public Long getPurchaseProjectFileId() {
-        return purchaseProjectFileId;
+    public Long getPurchaseProjectId() {
+        return purchaseProjectId;
     }
 
-    public void setPurchaseProjectFileId(Long purchaseProjectFileId) {
-        this.purchaseProjectFileId = purchaseProjectFileId;
+    public void setPurchaseProjectId(Long purchaseProjectId) {
+        this.purchaseProjectId = purchaseProjectId;
     }
 
-    public BigDecimal getFilePaymentReal() {
-        return filePaymentReal;
+    public Long getPurchaserId() {
+        return purchaserId;
     }
 
-    public void setFilePaymentReal(BigDecimal filePaymentReal) {
-        this.filePaymentReal = filePaymentReal;
+    public void setPurchaserId(Long purchaserId) {
+        this.purchaserId = purchaserId;
     }
 
-    public Long getCompanyId() {
-        return companyId;
+    public String getPurchaseFileName() {
+        return purchaseFileName;
     }
 
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
+    public void setPurchaseFileName(String purchaseFileName) {
+        this.purchaseFileName = purchaseFileName == null ? null : purchaseFileName.trim();
+    }
+
+    public BigDecimal getFilePayment() {
+        return filePayment;
+    }
+
+    public void setFilePayment(BigDecimal filePayment) {
+        this.filePayment = filePayment;
     }
 
     public Long getOperateId() {
@@ -104,9 +114,10 @@ public class TPurchaseProjectFilePay implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", purchaseProjectFileId=").append(purchaseProjectFileId);
-        sb.append(", filePaymentReal=").append(filePaymentReal);
-        sb.append(", companyId=").append(companyId);
+        sb.append(", purchaseProjectId=").append(purchaseProjectId);
+        sb.append(", purchaserId=").append(purchaserId);
+        sb.append(", purchaseFileName=").append(purchaseFileName);
+        sb.append(", filePayment=").append(filePayment);
         sb.append(", operateId=").append(operateId);
         sb.append(", creator=").append(creator);
         sb.append(", createAt=").append(createAt);

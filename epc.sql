@@ -130,6 +130,9 @@ CREATE TABLE `t_operator_detail_info` (
     `id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
     `operator_id` BIGINT(11) UNSIGNED COMMENT '运营商法人ID',
   	`company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
+  	`province` VARCHAR(64)  DEFAULT NULL COMMENT '省份',
+	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
+	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	   `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
     `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
@@ -208,6 +211,9 @@ CREATE TABLE `t_supplier_detail_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`supplier_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
 	`company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
+		`province` VARCHAR(64)  DEFAULT NULL COMMENT '省份',
+	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
+	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
     `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
@@ -261,6 +267,9 @@ CREATE TABLE `t_purchaser_detail_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`purchaser_id` BIGINT(11) UNSIGNED COMMENT '采购人(法人)ID',
 	`company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
+		`province` VARCHAR(64)  DEFAULT NULL COMMENT '省份',
+	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
+	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
 	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
 	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
@@ -365,6 +374,9 @@ CREATE TABLE `t_agency_detail_info` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`agency_id` BIGINT(11) UNSIGNED COMMENT '招标代理机构(法人)ID',
 	`company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
+		`province` VARCHAR(64)  DEFAULT NULL COMMENT '省份',
+	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
+	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
     `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
@@ -392,32 +404,33 @@ CREATE TABLE  `t_agency_attachment`(
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标(采购)代理机构:附件信息';
 
--- 评标专家 注册（10.7）
+-- 评标专家 注册（10.9）
 DROP TABLE IF EXISTS `t_expert_basic_info`;
 CREATE TABLE `t_expert_basic_info` (
-	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-	`name` VARCHAR(16) NOT NULL COMMENT '评标专家姓名',
-	`cellphone` CHAR(11) NOT NULL COMMENT '手机号(登录账号)',
-	`password` CHAR(32) DEFAULT NULL COMMENT '登录密码',
-	`profession` CHAR(11) DEFAULT NULL COMMENT '专业',
-	`positional` CHAR(11) DEFAULT NULL COMMENT '职称',
-	`level` CHAR(11) DEFAULT NULL COMMENT '级别',
-	`working_years` INT(2) DEFAULT NULL COMMENT '从业年限',
-	`is_idle` INT(1) DEFAULT '1' COMMENT '0-繁忙, 1-空闲',
-	`circular_dt` TIMESTAMP  NOT NULL COMMENT '通知时间',
-	`circular_dt_end` TIMESTAMP  NOT NULL COMMENT '通知结束时间',
-	`circular_method` CHAR(11) DEFAULT NULL COMMENT '通知方式',
-	`other_information` VARCHAR(8000) DEFAULT NULL COMMENT '其他信息',
-	`inviter_type` INT(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,4-平台',
-	`inviter_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人Id',
-	`inviter_company_id` BIGINT(11) DEFAULT NULL COMMENT '邀请人机构ID',
-	`state` INT(3) UNSIGNED COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
-	`create_at` DATETIME NOT NULL COMMENT '创建时间',
-	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
-	`is_forbidden` INT(1) DEFAULT '0' COMMENT '是否禁用: 0-启用,1-禁用',
-	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
-	PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评标专家:基本(登录)信息';
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(16) NOT NULL COMMENT '评标专家姓名',
+  `cellphone` char(11) NOT NULL COMMENT '手机号(登录账号)',
+  `password` char(32) DEFAULT NULL COMMENT '登录密码',
+  `profession` char(11) DEFAULT NULL COMMENT '专业',
+  `positional` char(11) DEFAULT NULL COMMENT '职称',
+  `level` char(11) DEFAULT NULL COMMENT '级别',
+  `working_years` int(2) DEFAULT NULL COMMENT '从业年限',
+  `is_idle` int(1) DEFAULT '1' COMMENT '0-繁忙, 1-空闲',
+  `circular_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '通知时间',
+  `circular_dt_end` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '通知结束时间',
+  `circular_method` char(11) DEFAULT NULL COMMENT '通知方式',
+  `other_information` varchar(8000) DEFAULT NULL COMMENT '其他信息',
+  `inviter_type` int(3) DEFAULT NULL COMMENT '邀请人类型,0-采购人, 1-运营商, 2-供应商, 3-代理机构,4-平台',
+  `inviter_id` bigint(11) DEFAULT NULL COMMENT '邀请人Id',
+  `inviter_company_id` bigint(11) DEFAULT NULL COMMENT '邀请人机构ID',
+  `state` int(3) unsigned DEFAULT NULL COMMENT '1-拉取 2-完善信息 3-审核中 4-禁用 5-审核通过',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `is_forbidden` int(1) DEFAULT '0' COMMENT '是否禁用: 0-启用,1-禁用',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='评标专家:基本(登录)信息';
+
 
 
 -- 评标专家 详细信息
@@ -426,6 +439,9 @@ CREATE TABLE `t_expert_detail_info` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `expert_id` bigint(11) unsigned DEFAULT NULL COMMENT '专家基础信息表ID',
   `company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
+  	`province` VARCHAR(64)  DEFAULT NULL COMMENT '省份',
+	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
+	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
   `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
   `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
   `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
@@ -516,7 +532,7 @@ CREATE TABLE `t_bidding_preview` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程：预告表';
 
 
--- 招标流程:采购项目    表（10.6）
+-- 招标流程:采购项目    表（10.9）
 DROP TABLE IF EXISTS `t_purchase_project_basic_info`;
 CREATE TABLE `t_purchase_project_basic_info` (
 	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
@@ -535,7 +551,7 @@ CREATE TABLE `t_purchase_project_basic_info` (
 	`purchase_project_status` VARCHAR(64) COMMENT '采购项目状态 已创建 进行中 已结束 流标',
 	`is_adjust` INT(1) DEFAULT '0' COMMENT '是否允许调价:0-不允许,1-允许',
 	`is_other_agency` INT(1) DEFAULT '0' COMMENT '是否全权委托招标代理机构(0:不全权委托,1:全权委托)',
-		`is_end` INT(1) DEFAULT '0' COMMENT '是否结束',
+		`is_end` INT(2) DEFAULT '0' COMMENT '是否结束（-1：未开始，0：进行中，1：已结束）',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -1171,7 +1187,7 @@ CREATE TABLE `t_service_money_pay` (
   `bid_name` varchar(64) NOT NULL COMMENT '标段名称',
   `bid_money` decimal(18,2) NOT NULL COMMENT '中标金额',
   `service_money` decimal(18,2) NOT NULL COMMENT '应缴纳平台服务费',
-  `status` int(1) DEFAULT '0' COMMENT '缴纳状态(0:未缴纳，1:已缴纳)',
+  `status` int(2) DEFAULT '0' COMMENT '缴纳状态(0:未缴纳，1:已缴纳,2已退回)',
   `company_id` bigint(11) NOT NULL COMMENT '中标机构ID',
   `company_name` varchar(64) NOT NULL COMMENT '中标机构名称',
   `create_at` datetime NOT NULL COMMENT '创建时间',

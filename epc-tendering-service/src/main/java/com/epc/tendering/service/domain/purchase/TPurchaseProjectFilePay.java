@@ -1,4 +1,4 @@
-package com.epc.bidding.domain;
+package com.epc.tendering.service.domain.purchase;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

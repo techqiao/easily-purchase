@@ -36,10 +36,10 @@ public class PurchaserController extends BaseController {
         ClientLoginUser loginUser = super.getLoginUser();
         if (null != loginUser) {
 //            if(!StringUtils.isEmpty(loginUser.getBossId())) {
-                HandlePurchaser purchaser = new HandlePurchaser();
-                BeanUtils.copyProperties(handleEmployee, purchaser);
-                purchaser.setPurchaserId(loginUser.getCompanyId());
-                return purchaserClient.createPurchaserUserInfo(purchaser);
+            HandlePurchaser purchaser = new HandlePurchaser();
+            BeanUtils.copyProperties(handleEmployee, purchaser);
+            purchaser.setPurchaserId(loginUser.getCompanyId());
+            return purchaserClient.createPurchaserUserInfo(purchaser);
 //            }
 //            return Result.success("请先完善信息");
         }
@@ -247,7 +247,7 @@ public class PurchaserController extends BaseController {
             BeanUtils.copyProperties(handleAgnecy, agnecy);
             return purchaserClient.createAgencyUserInfo(agnecy);
         }
-         return Result.success("请先登录",true);
+        return Result.success("请先登录", true);
     }
 
     ;
@@ -269,7 +269,7 @@ public class PurchaserController extends BaseController {
             agnecy.setCompanyId(clientLoginUser.getCompanyId());
             return purchaserClient.updateAgencyDetail(agnecy);
         }
-       return Result.success("请先登录",true);
+        return Result.success("请先登录", true);
     }
 
     ;
@@ -303,7 +303,7 @@ public class PurchaserController extends BaseController {
     public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(@RequestBody ClientQueryAgencyDto agencyDto) {
         QueryAgencyDto queryAgencyDto = new QueryAgencyDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null!=clientLoginUser) {
+        if (null != clientLoginUser) {
 //            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
 //                return Result.error("请先完善信息!");
 //            }
@@ -311,7 +311,7 @@ public class PurchaserController extends BaseController {
             BeanUtils.copyProperties(agencyDto, queryAgencyDto);
             return purchaserClient.queryAgenciesByCriteria(queryAgencyDto);
         }
-        return Result.success("请先登录",null);
+        return Result.success("请先登录", null);
     }
 
     ;
@@ -328,7 +328,7 @@ public class PurchaserController extends BaseController {
     Result<Boolean> createSupplierByPurchaser(@RequestBody ClientHandleSupplierDto handleOperator) {
         HandleSupplierDto handleSupplierDto = new HandleSupplierDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null!=clientLoginUser) {
+        if (null != clientLoginUser) {
 //            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
 //                return Result.error("请先完善信息!");
 //            }
@@ -337,7 +337,7 @@ public class PurchaserController extends BaseController {
             BeanUtils.copyProperties(handleOperator, handleSupplierDto);
             return purchaserClient.createSupplierByPurchaser(handleSupplierDto);
         }
-        return Result.success("请先登录",true);
+        return Result.success("请先登录", true);
     }
 
     ;
@@ -353,7 +353,7 @@ public class PurchaserController extends BaseController {
     Result<Boolean> updateSupplierDetail(@RequestBody ClientPurchaserHandleSupplierDto dto) {
         PurchaserHandleSupplierDto purchaserHandleSupplierDto = new PurchaserHandleSupplierDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null !=clientLoginUser) {
+        if (null != clientLoginUser) {
 //            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
 //                return Result.error("请先完善信息!");
 //            }
@@ -362,7 +362,7 @@ public class PurchaserController extends BaseController {
             purchaserHandleSupplierDto.setCompanyId(clientLoginUser.getCompanyId());
             return purchaserClient.updateSupplierDetail(purchaserHandleSupplierDto);
         }
-        return  Result.success("请先登录",true);
+        return Result.success("请先登录", true);
     }
 
     ;
@@ -396,7 +396,7 @@ public class PurchaserController extends BaseController {
     public Result<List<PurchaserSupplierVo>> querySupplierByCriterias(@RequestBody ClientQuerySupplierDto supplierDto) {
         QuerySupplierDto querySupplierDto = new QuerySupplierDto();
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null!=clientLoginUser) {
+        if (null != clientLoginUser) {
 //            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
 //                return Result.error("请先完善信息!");
 //            }
@@ -404,7 +404,7 @@ public class PurchaserController extends BaseController {
             BeanUtils.copyProperties(supplierDto, querySupplierDto);
             return purchaserClient.querySupplierByCriterias(querySupplierDto);
         }
-        return Result.success("请先登录",null);
+        return Result.success("请先登录", null);
     }
 
     ;
@@ -421,12 +421,8 @@ public class PurchaserController extends BaseController {
     Result<Boolean> updatePurchaserDetail(@RequestBody ClientHandleRegisterPurchaser handlePurchaser) {
         HandleRegisterPurchaser handleRegisterPurchaser = new HandleRegisterPurchaser();
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if(null!=clientLoginUser){
-            BeanUtils.copyProperties(handlePurchaser, handleRegisterPurchaser);
-            handleRegisterPurchaser.setOperatorId(clientLoginUser.getUserId());
-            return purchaserClient.updatePurchaserDetail(handleRegisterPurchaser);
-        }
-        return Result.success("请先登录",true);
+        BeanUtils.copyProperties(handlePurchaser, handleRegisterPurchaser);
+        return purchaserClient.updatePurchaserDetail(handleRegisterPurchaser);
     }
 
     ;

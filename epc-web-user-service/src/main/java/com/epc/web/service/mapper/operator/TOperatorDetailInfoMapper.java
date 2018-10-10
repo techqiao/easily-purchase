@@ -32,8 +32,9 @@ public interface TOperatorDetailInfoMapper {
     int updateByPrimaryKey(TOperatorDetailInfo record);
 
 
-
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     /*wenlin*/
     TOperatorDetailInfo selectOperatorDetailByOperatorId(Long operatorId);
+
 }

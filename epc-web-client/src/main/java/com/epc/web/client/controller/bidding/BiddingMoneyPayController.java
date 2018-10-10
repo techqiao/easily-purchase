@@ -53,6 +53,32 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
 
+    @ApiOperation(value = "获取招标文件支付列表(角色缴费记录列表)",tags = "获取招标文件支付列表(角色缴费记录列表)")
+    @PostMapping(value = "getBiddingDocumentListForAll", consumes = "application/json; charset=UTF-8")
+    public Result<List<PayListForAllVO>> getBiddingDocumentListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
+        InvitationForSupplierDTO invitationForSupplierDTO=new InvitationForSupplierDTO();
+        invitationForSupplierDTO.setSupplierId(getLoginUser().getBossId());
+        invitationForSupplierDTO.setSupplierName(getLoginUser().getBossName());
+        Result<List<BSignUpVO>> result=enrolmentInvitationClient.queryInvitationList(invitationForSupplierDTO);
+        List<BSignUpVO> list=result.getData();
+        PayForGuarantyDTO payForGuarantyDTO=new PayForGuarantyDTO();
+        if(list.size()==0){
+            return Result.success(null);
+        }else{
+            payForGuarantyDTO.setList(list);
+            if(dto.getPayStatus()!=null){
+                payForGuarantyDTO.setPayStatus(dto.getPayStatus());
+            }
+            if(dto.getProjectName()!=null){
+                payForGuarantyDTO.setProjectName(dto.getProjectName());
+            }
+            if(dto.getProjectStatus()!=null){
+                payForGuarantyDTO.setProjectStatus(dto.getProjectStatus());
+            }
+           return enrolmentInvitationClient.getBiddingDocumentListForAll(payForGuarantyDTO);
+        }
+    }
+
     @ApiOperation(value = "获取保证金支付列表(角色缴费记录列表)",tags = "获取保证金支付列表(角色缴费记录列表)")
     @PostMapping(value = "getGuarantyPayListForAll", consumes = "application/json; charset=UTF-8")
     public Result<List<PayListForAllVO>> getGuarantyPayListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
@@ -75,7 +101,7 @@ public class BiddingMoneyPayController extends BaseController {
             if(dto.getProjectStatus()!=null){
                 payForGuarantyDTO.setProjectStatus(dto.getProjectStatus());
             }
-           return enrolmentInvitationClient.isPayForGuaranty(payForGuarantyDTO);
+            return enrolmentInvitationClient.getBiddingDocumentListForAll(payForGuarantyDTO);
         }
     }
 
@@ -110,7 +136,6 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.getGuarantyBackPayList(queryMoneyPayRecordDTO);
 
     }
-
 
     @ApiOperation(value = "平台插入用户支付记录",tags = "平台插入用户支付记录")
     @PostMapping(value = "insertPurchaseProjectFilePay", consumes = "application/json; charset=UTF-8")

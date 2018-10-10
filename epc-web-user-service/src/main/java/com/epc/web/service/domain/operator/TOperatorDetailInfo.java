@@ -10,6 +10,14 @@ public class TOperatorDetailInfo implements Serializable {
 
     private String companyName;
 
+    private String province;
+
+    private String city;
+
+    private String area;
+
+    private String companyAddress;
+
     private String uniformCreditCode;
 
     private String publicBankName;
@@ -21,8 +29,6 @@ public class TOperatorDetailInfo implements Serializable {
     private Date updateAt;
 
     private Integer isDeleted;
-
-    private String companyAddress;
 
     private static final long serialVersionUID = 1L;
 
@@ -48,6 +54,38 @@ public class TOperatorDetailInfo implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area == null ? null : area.trim();
+    }
+
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
     }
 
     public String getUniformCreditCode() {
@@ -98,14 +136,6 @@ public class TOperatorDetailInfo implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public String getCompanyAddress() {
-        return companyAddress;
-    }
-
-    public void setCompanyAddress(String companyAddress) {
-        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -115,13 +145,16 @@ public class TOperatorDetailInfo implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", operatorId=").append(operatorId);
         sb.append(", companyName=").append(companyName);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", area=").append(area);
+        sb.append(", companyAddress=").append(companyAddress);
         sb.append(", uniformCreditCode=").append(uniformCreditCode);
         sb.append(", publicBankName=").append(publicBankName);
         sb.append(", publicBanAccountNumber=").append(publicBanAccountNumber);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", companyAddress=").append(companyAddress);
         sb.append("]");
         return sb.toString();
     }

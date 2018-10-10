@@ -32,7 +32,4 @@ public interface BAssessmentCommitteeExpertMapper {
     int updateByPrimaryKey(BAssessmentCommitteeExpert record);
 
     List<BAssessmentCommitteeExpert> selectByExpertId(Long expertId);
-
-//    List<Integer> selectBidList(Long expertId);
-
 }

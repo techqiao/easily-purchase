@@ -49,6 +49,11 @@ public class OperatorBasicVO implements Serializable {
 
     private String companyName;
 
+    private String province;
+
+    private String city;
+
+    private String area;
     //公司地址
     private String companyAddress;
 

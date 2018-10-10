@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "运营商服务"/*,tags = "运营商服务"*/)
+@Api(value = "运营商服务",description = "运营商服务")
 @RestController
 @RequestMapping(value = "/operator", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OperatorController extends BaseController {
@@ -44,34 +44,6 @@ public class OperatorController extends BaseController {
         return operatorClient.registerOperator(handleOperator);
     }
 
-
-    /**0.5
-     *  已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
-     */
-//    @ApiOperation(value = "0.5:已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆",notes = "donghuan")
-//    @PostMapping(value = "public/addPasswordOperatorLogin")
-//    public Result<Boolean> addPasswordOperatorLogin(@RequestBody ClientHandleOperator clientHandleOperator){
-//        HandleOperator  handleOperator=new HandleOperator();
-//        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
-//        return operatorClient.addPasswordOperatorLogin(handleOperator);
-//    }
-
-    /**1
-     *
-     * version 2:业务修改，被拉取的设置其默认密码为epc1688，并状态为1（拉取状态），直接从电话号码 与 密码框进行登陆,进去就设置密码，将状态改成2（完善信息中）
-     *
-     *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
-     *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
-     *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
-     *           )
-     */
-//    @ApiOperation(value = "1:运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)",notes = "donghuan")
-//    @PostMapping(value = "public/addPasswordOperator")
-//    public Result<Boolean> addPasswordOperator(@RequestBody ClientHandleOperator clientHandleOperator){
-//        HandleOperator handleOperator=new HandleOperator();
-//        BeanUtils.copyProperties(clientHandleOperator,handleOperator);
-//        return operatorClient.addPasswordOperator(handleOperator);
-//    }
 
     /**2
      * 完善运营商信息
@@ -106,26 +78,7 @@ public class OperatorController extends BaseController {
         return operatorClient.createOperatorEmployee(handleOperatorAddEmployee);
     }
 
-//    /**4
-//     * 依据id查询已经登陆的个人信息(如果是法人，管理员，员工)
-//     */
-//    @ApiOperation(value = "4:依据id查询已经登陆的个人信息",notes = "donghuan")
-//    @PostMapping(value = "/findByNameOperator")
-//    public Result<OperatorBasicInfoVO> findByName(@RequestBody ClientHandleOperatorId clientHandleOperatorId){
-//        HandleOperatorId handleOperatorId=new HandleOperatorId();
-//        BeanUtils.copyProperties(clientHandleOperatorId,handleOperatorId);
-//        Long userId = getLoginUser().getUserId();
-//        Long bossId = getLoginUser().getBossId();
-//        Integer type = getLoginUser().getType();
-//        Integer loginRole = getLoginUser().getLoginRole();
-//        if(userId==null || type==null || loginRole==null || bossId==null){
-//            return Result.success("从redis中获取当前登陆用户信息 异常");
-//        }
-//        handleOperatorId.s
-//        handleOperatorId
-//
-//        return operatorClient.findByName(handleOperatorId);
-//    }
+
     /**4
      * 查询 登陆者个人详情
      */

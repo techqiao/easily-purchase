@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@Api(value = "供应商服务"/*,tags = "供应商服务"*/)
+@Api(value = "供应商服务",description = "供应商服务")
 @RestController
 @RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TSupplierBasicInfoController extends BaseController {
@@ -38,11 +38,6 @@ public class TSupplierBasicInfoController extends BaseController {
 
     /**0
      * 注册供应商
-     *  {业务：    还需要要判断电话在数据库中有没有，（有无人拉。如无，就是自己注册；如有，就是添加密码登陆完善个人信息）
-     *         1. 第一次只需要填写电话及密码就行，注册完成登陆成功后，可以做后续的完善信息工作
-     *              所以目前，只操作一张基本信息表就行，等完善信息时，操作三张即可
-     *         2.  由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
-     *  }
      *  自己找到平台网站注册供应商
      */
     @ApiOperation(value = "0:自己找到平台网站注册供应商",notes = "donghuan")
@@ -53,28 +48,6 @@ public class TSupplierBasicInfoController extends BaseController {
         return supplierClient.registerSupplier(handleSupplierDetail);
     }
 
-
-//    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
-//    @PostMapping(value="public/addPasswordSupplierLogin")
-//    public Result<Boolean> addPasswordSupplierLogin(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
-//        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
-//        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
-//        return supplierClient.addPasswordSupplierLogin(handleSupplierDetail);
-//    }
-
-    /**1
-     *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
-     *      (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
-     *      不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
-     *      )
-     */
-//    @ApiOperation(value = "1:由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号",notes = "donghuan")
-//    @PostMapping(value="public/addPasswordSupplier")
-//    public Result<Boolean> addPasswordSupplier(@RequestBody ClientHandleSupplierDetail clientHandleSupplierDetail){
-//        HandleSupplierDetail handleSupplierDetail=new HandleSupplierDetail();
-//        BeanUtils.copyProperties(clientHandleSupplierDetail,handleSupplierDetail);
-//        return supplierClient.addPasswordSupplier(handleSupplierDetail);
-//    }
 
     /**2
      *  完善供应商信息

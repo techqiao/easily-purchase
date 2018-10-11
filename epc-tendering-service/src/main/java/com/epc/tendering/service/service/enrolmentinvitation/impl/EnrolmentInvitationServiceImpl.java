@@ -409,10 +409,22 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
             vo.setBidsName(entity.getBidName());
             BSignUpCriteria criteria=new BSignUpCriteria();
             BSignUpCriteria.Criteria cubCriteria=criteria.createCriteria();
-            cubCriteria.andBidsIdLike(entity.getId().toString());
-            List<BSignUp> bSignUpList=bSignUpMapper.selectByExample(criteria);
-            //获取总数
-            int count =bSignUpMapper.countByExample(criteria);
+            cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
+            List<BSignUp> newBSignUpList=bSignUpMapper.selectByExample(criteria);
+            List<BSignUp> bSignUpList=new ArrayList<>();
+            int count =0;
+            for(BSignUp bSignUp:newBSignUpList){
+                String[] list=bSignUp.getBidsId().split(",");
+                for(String bid:list){
+                    if(entity.getId().toString().equals(bid)){
+                        bSignUpList.add(bSignUp);
+                        ++count;
+                    }
+                }
+                //获取总数
+                vo.setCount(count);
+            }
+
             List<SupplierSignDTO> SupplierSignList=new ArrayList<>();
             for(BSignUp bSignUp:bSignUpList){
                 SupplierSignDTO supplierSignDTO=new SupplierSignDTO();
@@ -421,7 +433,6 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
                 SupplierSignList.add(supplierSignDTO);
             }
             vo.setSupplierSignList(SupplierSignList);
-            vo.setCount(count);
             voList.add(vo);
         }
         return Result.success(voList);

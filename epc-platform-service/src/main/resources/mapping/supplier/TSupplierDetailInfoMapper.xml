@@ -27,7 +27,7 @@
     <result column="state" property="state" jdbcType="INTEGER"/>
     <result column="name" property="name" jdbcType="VARCHAR"/>
     <result column="cellphone" property="cellphone" jdbcType="VARCHAR"/>
-    <result column="companyAddress" property="companyAddress" jdbcType="VARCHAR"/>
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR"/>
     <result column="area" property="area" jdbcType="VARCHAR"/>
     <result column="city" property="city" jdbcType="VARCHAR"/>
     <result column="province" property="province" jdbcType="VARCHAR"/>

@@ -3,6 +3,7 @@ package com.epc.platform.service.service.admin;
 import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
+import com.epc.administration.facade.admin.vo.userVO;
 import com.epc.common.Result;
 import com.epc.platform.service.domain.admin.SysAdminUser;
 import com.epc.platform.service.domain.admin.UserWithRole;
@@ -44,7 +45,7 @@ public interface SysAdminUserService {
      * 获取所有用户信息
      * @return
      */
-    List<SysAdminUser> findUserWithDept(QueryUserDTO queryUserDTO);
+    List<userVO> findUserWithDept(QueryUserDTO queryUserDTO);
 
     /**
      * 注册用户

@@ -15,7 +15,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="dept_id" property="deptName" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
     <result column="create_at" property="crateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -285,8 +285,8 @@
 
 
   <select resultMap="selectMap" parameterType="com.epc.platform.service.domain.admin.SysAdminUser" id="findUserWithDept" >
-    select u.id,u.name,u.phone,u.create_at crateTime,
-    d.dept_name deptName from sys_admin_user u
+    select u.id,u.name,u.phone,u.create_at,
+    d.dept_name from sys_admin_user u
     left join sys_admin_dept d on(u.dept_id = d.id)
     where 1=1
     <if test="name != null and name != ''">

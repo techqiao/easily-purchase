@@ -153,6 +153,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         permission.setPurchaseProjectId(handleAnnouncementStatus.getPurchaseProjectId());
         permission.setActionState(actionState);
         permission.setParticipantPermission(participantPermission);
+        permission.setStepType("announcement");
         if(handleAnnouncementStatus.getIsOtherAgency().equals(Const.IS_OTHER_AGENCY.NOT_OTHER_AGENCY)){
             permission.setParticipantType(Const.LOGIN_USER_TYPE.PURCHASER);
         }else{

@@ -3,6 +3,7 @@ package com.epc.platform.service.controller.admin;
 import com.epc.administration.facade.admin.AdminUserService;
 import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.UserHandle;
+import com.epc.administration.facade.admin.vo.userVO;
 import com.epc.common.Result;
 import com.epc.common.util.MD5Util;
 import com.epc.platform.service.domain.admin.SysAdminUser;
@@ -65,8 +66,8 @@ public class UserController extends BaseController implements AdminUserService {
     @Override
     public Result userList(@RequestBody QueryUserDTO queryUserDTO) {
         PageHelper.startPage(queryUserDTO.getPageNum(), queryUserDTO.getPageSize());
-        List<SysAdminUser> list = this.sysAdminUserService.findUserWithDept(queryUserDTO);
-        PageInfo<SysAdminUser> pageInfo = new PageInfo<>(list);
+        List<userVO> list = this.sysAdminUserService.findUserWithDept(queryUserDTO);
+        PageInfo<userVO> pageInfo = new PageInfo<>(list);
         return Result.success(getDataTable(pageInfo));
     }
 

@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Description : easily-purchase
@@ -41,8 +42,10 @@ public class ClientHandlePurchaseProjectBasicInfo {
     private String purchaseCategory;
     @ApiModelProperty(value = "采购类型")
     private String purchaseType;
-    @ApiModelProperty(value = "可见范围 0:全平台 1:供应商私库")
+    @ApiModelProperty(value = "可见范围 0:全平台 1:指定")
     private Integer purchaseRange;
+    @ApiModelProperty(value = "当为指定时  供应商id集合")
+    private List<Long> supplierIds;
     @ApiModelProperty(value = "是否允许调价 0:不允许 1:允许")
     private Integer isAdjust;
     @ApiModelProperty(value = "是否全权委托招标代理机构  0:不全权委托 1:全权委托")

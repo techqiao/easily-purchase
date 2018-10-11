@@ -2,6 +2,7 @@ package com.epc.web.client.controller.bidding;
 
 
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
 import com.epc.common.util.FTPUtil;
 import com.epc.web.client.controller.bidding.query.notice.ClientNoticeDTO;
 import com.epc.web.client.controller.bidding.query.notice.ClientNoticeDetailDTO;
@@ -11,6 +12,7 @@ import com.epc.web.client.remoteApi.bidding.notice.NoticeClient;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
+import com.epc.web.facade.bidding.vo.BankAccountVO;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -72,6 +74,8 @@ public class BiddingNoticeController extends BaseController {
             return Result.error("尚未发布招标文件");
         }else if(isPay==false){
             noticeDetailVO.setBiddingDocumentsUrl(null);
+            BankAccountVO bankAccount=moneyPayClient.getBankAccount(Const.PAYMENT_TYPE.DOCUMENTS);
+            noticeDetailVO.setBankAccountVO(bankAccount);
         }
         return Result.success(noticeDetailVO);
     }

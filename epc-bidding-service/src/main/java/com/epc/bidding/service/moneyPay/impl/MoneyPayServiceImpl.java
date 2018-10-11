@@ -52,6 +52,10 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     TWinBidMapper tWinBidMapper;
     @Autowired
     TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
+    @Autowired
+    PlatformBankAccountMapper platformBankAccountMapper;
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -388,5 +392,34 @@ public class MoneyPayServiceImpl implements MoneyPayService {
             }
             return true;
         }
+    }
+
+    /**
+     * 根据支付类型 获取 对应银行信息
+     * @param documents
+     * @return
+     */
+    @Override
+    public BankAccountVO getBankAccount(int documents){
+
+        PlatformBankAccountCriteria criteria=new PlatformBankAccountCriteria();
+        PlatformBankAccountCriteria.Criteria cubCriteria=criteria.createCriteria();
+
+        if(documents==Const.PAYMENT_TYPE.DOCUMENTS){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.DOCUMENTS);
+        }else if(documents==Const.PAYMENT_TYPE.GUARANTY){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.GUARANTY);
+        }else if(documents==Const.PAYMENT_TYPE.SERVICE){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.SERVICE);
+        }
+
+        List<PlatformBankAccount> result = platformBankAccountMapper.selectByExample(criteria);
+        BankAccountVO vo= new BankAccountVO();
+
+        if(result.size()>0){
+            PlatformBankAccount entity=result.get(0);
+            BeanUtils.copyProperties(entity,vo);
+        }
+        return  vo;
     }
 }

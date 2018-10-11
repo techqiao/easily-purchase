@@ -64,4 +64,11 @@ public interface MoneyPayService {
      */
     Boolean IsPayForProjectFile(QueryProgramPayDTO dto);
 
+
+    /**
+     * 获取支付银行详情
+     * @param documents
+     * @return
+     */
+    BankAccountVO getBankAccount(int documents);
 }

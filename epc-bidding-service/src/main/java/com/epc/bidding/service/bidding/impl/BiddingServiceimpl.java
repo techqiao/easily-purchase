@@ -115,9 +115,9 @@ public class BiddingServiceimpl implements BiddingService {
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail) {
+    public NoticeDetailVO findByNoticeId(QueryNoticeDetail queryNoticeDetail) {
         if(queryNoticeDetail.getNoticeId()==null){
-            return Result.error("公告Id不能为空");
+            return null;
         }
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -126,14 +126,13 @@ public class BiddingServiceimpl implements BiddingService {
                 queryNoticeDetail.getNoticeId());
         NoticeDetailVO noticeDetailVO = new NoticeDetailVO();
         if (bReleaseAnnouncement==null){
-            return Result.success(null);
+            return null;
         }
         BeanUtils.copyProperties(bReleaseAnnouncement, noticeDetailVO);
         noticeDetailVO.setBiddingStart(sdf.format(bReleaseAnnouncement.getBiddingStart()));
         noticeDetailVO.setBiddingEnd(sdf.format(bReleaseAnnouncement.getBiddingEnd()));
         noticeDetailVO.setDefecationStart(sdf.format(bReleaseAnnouncement.getDefecationStart()));
         noticeDetailVO.setDefecationEnd(sdf.format(bReleaseAnnouncement.getDefecationEnd()));
-
         //查询采购项目详情
         TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo= tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(
                 bReleaseAnnouncement.getProcurementProjectId());
@@ -141,13 +140,7 @@ public class BiddingServiceimpl implements BiddingService {
             noticeDetailVO.setProcurementProjectName(tPurchaseProjectBasicInfo.getPurchaseProjectName());
             noticeDetailVO.setBiddingType(tPurchaseProjectBasicInfo.getPurchaseType());
         }
-
-
-        //未支付招标文件下载金，则不能下载，路径为空
-        if(queryNoticeDetail.getIsPay()==false){
-            noticeDetailVO.setBiddingDocumentsUrl(null);
-        }
-        return Result.success(noticeDetailVO);
+        return noticeDetailVO;
     }
 
 /*******************************************投标文件记录********************************************************/

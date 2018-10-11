@@ -130,8 +130,16 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     @Override
     public List<userVO> findUserWithDept(QueryUserDTO queryUserDTO) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setName(queryUserDTO.getUserName());
-        sysAdminUser.setPhone(queryUserDTO.getPhone());
+        String phone = queryUserDTO.getPhone();
+        String userName = queryUserDTO.getUserName();
+        if(!StringUtils.isNotBlank(phone)){
+            phone="%"+phone+"%";
+        }
+        if(StringUtils.isNotBlank(userName)){
+            userName="%"+userName+"%";
+        }
+        sysAdminUser.setName(userName);
+        sysAdminUser.setPhone(phone);
         sysAdminUser.setDeptId(queryUserDTO.getDeptId());
         try {
             return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);

@@ -29,5 +29,12 @@ public class RegisterUser implements Serializable {
      * 注册姓名
      */
     private String name;
-
+    /**
+     * 验证码
+     */
+    private String verityCode;
+    /**
+     * 供货商leibie
+     */
+    private String categorySupplier;
 }

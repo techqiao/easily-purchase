@@ -43,7 +43,7 @@ public class BiddingMoneyPayController extends BaseController {
     @Autowired
     EnrolmentInvitationClient enrolmentInvitationClient;
 
-    @ApiOperation(value = "获取保证金支付列表",tags = "获取保证金支付列表")
+    @ApiOperation(value = "获取保证金支付列表")
     @PostMapping(value = "getGuarantyPayList", consumes = "application/json; charset=UTF-8")
     public Result<List<MoneyPayVO>> getGuarantyPayList(@RequestBody ClientMoneyPayDTO dto){
         QueryMoneyPayDTO queryMoneyPayDTO=new QueryMoneyPayDTO();
@@ -53,7 +53,7 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.getMoneyPayList(queryMoneyPayDTO);
     }
 
-    @ApiOperation(value = "获取招标文件支付列表(角色缴费记录列表)",tags = "获取招标文件支付列表(角色缴费记录列表)")
+    @ApiOperation(value = "获取招标文件支付列表(角色缴费记录列表)")
     @PostMapping(value = "getBiddingDocumentListForAll", consumes = "application/json; charset=UTF-8")
     public Result<List<PayListForAllVO>> getBiddingDocumentListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
         InvitationForSupplierDTO invitationForSupplierDTO=new InvitationForSupplierDTO();
@@ -79,7 +79,7 @@ public class BiddingMoneyPayController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "获取保证金支付列表(角色缴费记录列表)",tags = "获取保证金支付列表(角色缴费记录列表)")
+    @ApiOperation(value = "获取保证金支付列表(角色缴费记录列表)")
     @PostMapping(value = "getGuarantyPayListForAll", consumes = "application/json; charset=UTF-8")
     public Result<List<PayListForAllVO>> getGuarantyPayListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
         InvitationForSupplierDTO invitationForSupplierDTO=new InvitationForSupplierDTO();
@@ -105,7 +105,7 @@ public class BiddingMoneyPayController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "查询中标服务费支付列表",tags = "查询中标服务费支付列表")
+    @ApiOperation(value = "查询中标服务费支付列表")
     @PostMapping(value = "getServiceMoneyList", consumes = "application/json; charset=UTF-8")
     public Result<List<ServicePayVO>> getServiceMoneyList(@RequestBody ClientMoneyPayRecordDTO dto){
         QueryMoneyPayRecordDTO queryMoneyPayRecordDTO=new QueryMoneyPayRecordDTO();
@@ -116,7 +116,7 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.IsPayForServiceMoney(queryMoneyPayRecordDTO);
     }
 
-    @ApiOperation(value = "获取中标服务费支付列表(角色缴费记录列表)",tags = "获取中标服务费支付列表(角色缴费记录列表)")
+    @ApiOperation(value = "获取中标服务费支付列表(角色缴费记录列表)")
     @PostMapping(value = "getServiceMoneyListForAll", consumes = "application/json; charset=UTF-8")
     public Result<List<PayListForAllVO>> getServiceMoneyListForAll(@RequestBody ClientMoneyPayForAllDTO dto){
         ServiceMoneyListForAllDTO serviceMoneyListForAllDto=new ServiceMoneyListForAllDTO();
@@ -125,7 +125,7 @@ public class BiddingMoneyPayController extends BaseController {
         return moneyPayClient.getServiceMoneyListForAll(serviceMoneyListForAllDto);
     }
 
-    @ApiOperation(value = "投标保证金退还列表",tags = "投标保证金退还列表")
+    @ApiOperation(value = "投标保证金退还列表")
     @PostMapping(value = "getGuarantyBackPayList", consumes = "application/json; charset=UTF-8")
     public Result<List<ServiceBackVO>> getGuarantyBackPayList(@RequestBody ClientMoneyPayRecordDTO dto){
         QueryMoneyPayRecordDTO queryMoneyPayRecordDTO=new QueryMoneyPayRecordDTO();
@@ -137,7 +137,7 @@ public class BiddingMoneyPayController extends BaseController {
 
     }
 
-    @ApiOperation(value = "平台插入用户支付记录",tags = "平台插入用户支付记录")
+    @ApiOperation(value = "平台插入用户支付记录")
     @PostMapping(value = "insertPurchaseProjectFilePay", consumes = "application/json; charset=UTF-8")
     public Result<Boolean> insertPurchaseProjectFilePay(@RequestBody ClientFilePay handle){
         HandleFilePay handleFilePay=new HandleFilePay();

@@ -30,7 +30,7 @@ public class BaseController {
     public ClientLoginUser getLoginUser() {
         ClientLoginUser loginHandle = null;
 
-        boolean isLoginFinished = false;
+        boolean isLoginFinished = true;
         // 登陆用户模块暂未完成
         Integer fakeUserType = 4;
         //moniji "机构类型: 运营商1,代理商2,供货商3,采购商4,专家5")

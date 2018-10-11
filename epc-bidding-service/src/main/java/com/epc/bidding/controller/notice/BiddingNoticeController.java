@@ -46,7 +46,7 @@ public class BiddingNoticeController implements FacadeNoticeService {
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
+    public NoticeDetailVO getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
         return biddingService.findByNoticeId(queryNoticeDetail);
     }
 

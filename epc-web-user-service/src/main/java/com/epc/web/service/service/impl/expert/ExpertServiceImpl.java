@@ -5,15 +5,20 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.agency.handle.Attachement;
 import com.epc.web.facade.agency.handle.HandleExpert;
+import com.epc.web.facade.expert.Handle.ProjectOperatorCompany;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
 import com.epc.web.facade.expert.dto.ProjectDto;
 import com.epc.web.facade.expert.vo.ExpertProjectVo;
+import com.epc.web.service.domain.bid.TProjectBasicInfo;
 import com.epc.web.service.domain.bid.TPurchaseProjectBids;
 import com.epc.web.service.domain.expert.*;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria;
+import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
+import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
 import com.epc.web.service.mapper.expert.*;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
+import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.web.service.service.expert.ExpertService;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.slf4j.Logger;
@@ -51,6 +56,10 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Autowired
     TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+
+    @Autowired
+    TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
+
 
     /**
      * @author :winlin
@@ -240,18 +249,27 @@ public class ExpertServiceImpl implements ExpertService {
             if(CollectionUtils.isEmpty(tPurchaseProjectBasicInfos)){
                 return Result.success("该专家下没有在评审的项目信息");
             }
+            //查询项目中公司的名称
+            List<ProjectOperatorCompany>  projectOperatorCompanies = tPurchaserDetailInfoMapper.selectCompanyNameByCriteria(tPurchaseProjectBasicInfos,projecctDto.getPurchaserName());
+            if(CollectionUtils.isEmpty(projectOperatorCompanies)){
+                return Result.success("该专家下没有符合条件评审的项目信息");
+            }
             //返回封装信息
             expertProjectVos = new ArrayList<>();
             for (TPurchaseProjectBasicInfo basicInfo:tPurchaseProjectBasicInfos) {
-                ExpertProjectVo vo = new ExpertProjectVo();
-                vo.setSerialNum(basicInfo.getId());//序号,采购项目id
-                vo.setProjectName(basicInfo.getProjectName()); //项目名称
-                vo.setProjectNum(basicInfo.getPurchaseProjectCode()); //采购项目编号
-                vo.setPurchaserMode(basicInfo.getPurchaseMode());//采购方式
-                vo.setProjectState(basicInfo.getPurchaseProjectStatus());//招标状态
-                vo.setCreateAt(basicInfo.getCreateAt());//创建时间
-                vo.setProjectId(basicInfo.getProjectId());//项目id
-                expertProjectVos.add(vo);
+                for(ProjectOperatorCompany operatorCompany:projectOperatorCompanies){
+                    if(basicInfo.getOperateId().equals(operatorCompany.getOperatorId())) {
+                        ExpertProjectVo vo = new ExpertProjectVo();
+                        vo.setSerialNum(basicInfo.getId());//序号,采购项目id
+                        vo.setProjectName(basicInfo.getProjectName()); //项目名称
+                        vo.setProjectNum(basicInfo.getPurchaseProjectCode()); //采购项目编号
+                        vo.setPurchaserMode(basicInfo.getPurchaseMode());//采购方式
+                        vo.setProjectState(basicInfo.getPurchaseProjectStatus());//招标状态
+                        vo.setCreateAt(basicInfo.getCreateAt());//创建时间
+                        vo.setProjectId(basicInfo.getProjectId());//项目id
+                        expertProjectVos.add(vo);
+                    }
+                }
             }
 
         } catch (Exception e) {

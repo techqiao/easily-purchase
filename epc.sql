@@ -1196,7 +1196,17 @@ CREATE TABLE `t_service_money_pay` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投标流程:服务费支付表';
 
-
+-- 采购项目指定供应商
+DROP TABLE IF EXISTS `t_procurement_project_supplier` ;
+CREATE TABLE `t_procurement_project_supplier` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `supplier_id` bigint(11) NOT NULL COMMENT '供应商ID',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投标流程:采购项目指定供应商';
 
 
 -- 招标流程:中标提名       表
@@ -1308,19 +1318,22 @@ CREATE TABLE `b_suppliers_number` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:供应商数量';
 
-DROP TABLE IF EXISTS `b_sign_up`;
+DROP TABLE if EXISTS `b_sign_up` (10.11);
 CREATE TABLE `b_sign_up` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(11) NOT NULL COMMENT '项目ID',
   `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
-  `bids_id` varchar(256) DEFAULT NULL COMMENT '标段ID',
+  `bids_id` varchar(256) NOT NULL COMMENT '标段ID',
   `bids_name` varchar(256) NOT NULL COMMENT '标段名称',
+  `bids_code` varchar(256) DEFAULT NULL COMMENT '标段编码',
   `supplier_id` bigint(11) NOT NULL COMMENT '供应商ID',
+  `supplier_name` varchar(64) DEFAULT NULL COMMENT '供应商名称',
   `create_at` datetime NOT NULL COMMENT '创建时间',
   `update_at` datetime NOT NULL COMMENT '最后修改时间',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报名表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='报名表';
+
 
 DROP TABLE IF EXISTS `b_invitation`;
 CREATE TABLE `b_invitation` (
@@ -1350,7 +1363,7 @@ CREATE TABLE `t_project_procedure` (
   `creator` varchar(16) DEFAULT NULL COMMENT '创建人姓名',
   `create_at` datetime DEFAULT NULL COMMENT '创建时间',
   `update_at` datetime DEFAULT NULL COMMENT '最后修改时间',
-  `is_end` int(1) DEFAULT '0' COMMENT '是否删除: 0-进行中,1-结束',
+  `is_end` int(1) DEFAULT '0' COMMENT '是否结束: 0-进行中,1-结束',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目流程表';
@@ -1367,3 +1380,15 @@ CREATE TABLE `sys_dictionary` (
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`dict_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='数据字典，使用 路径枚举策略';
+
+-- #供货商:供货商类别管理
+DROP TABLE IF EXISTS `supplier_category`;
+CREATE TABLE `supplier_category` (
+  `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+  `supplier_id` BIGINT(11) NOT NULL COMMENT '供货商id',
+  `value` varchar(64) NOT NULL COMMENT '供货商供货类别',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供货商:供货商类别管理';

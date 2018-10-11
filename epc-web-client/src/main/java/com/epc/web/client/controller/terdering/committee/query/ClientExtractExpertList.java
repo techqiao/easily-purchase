@@ -31,7 +31,6 @@ public class ClientExtractExpertList implements Serializable {
     @ApiModelProperty(value = "标段列表")
     List<BidDTO> bidDTOList;
 
-
     @ApiModelProperty(value = "省份")
     private String province;
 

@@ -442,10 +442,10 @@
                 level = #{level,jdbcType=CHAR},
             </if>
             <if test="workingYears != null">
-               working_years= #{workingYears},
+                working_years= #{workingYears},
             </if>
             <if test="isIdle!=null">
-               is_idle= #{isIdle},
+                is_idle= #{isIdle},
             </if>
             <if test="circularDt != null">
                 circular_dt = #{circularDt,jdbcType=TIMESTAMP},
@@ -566,7 +566,7 @@
                 AND working_years >= #{workingYears}
             </if>
             <!--<if test="!=null">-->
-                <!--AND inviter_company_id =#{agencyId}-->
+            <!--AND inviter_company_id =#{agencyId}-->
             <!--</if>-->
         </where>
     </select>
@@ -578,7 +578,9 @@
     </select>
     <select id="selectExpertByQueryCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserExpertVo"
             parameterType="com.epc.web.facade.purchaser.dto.QueryExpertDto">
-        <bind name="pattern" value="'%'+expertName+'%'"/>
+        <if test="expertName!=null">
+            <bind name="pattern" value="'%'+expertName+'%'"/>
+        </if>
         SELECT id AS serialNum ,`name` AS expertName, profession , positional ,`level`
         FROM t_expert_basic_info
         <where>

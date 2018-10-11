@@ -30,8 +30,8 @@ public  class NoticeHystrix implements FacadeNoticeService {
     }
 
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(QueryNoticeDetail queryNoticeDetail) {
-        return Result.hystrixError();
+    public NoticeDetailVO getNoticeDetail(QueryNoticeDetail queryNoticeDetail) {
+        return null;
     }
 
     @Override

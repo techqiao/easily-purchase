@@ -34,7 +34,7 @@ public class BiddingWinBidController extends BaseController {
      * @param dto
      * @return
      */
-    @ApiOperation(value = "获取中标通知书列表",tags = "获取中标通知书列表")
+    @ApiOperation(value = "获取中标通知书列表")
     @PostMapping(value = "/getWinBidLetter", consumes = "application/json; charset=UTF-8")
     public Result<List<WinBidLetterVO>> getWinBidLetter(@RequestBody ClientWinBidLetter dto){
         QueryWinBidLetterDTO queryWinBidLetterDTO=new QueryWinBidLetterDTO();
@@ -49,7 +49,7 @@ public class BiddingWinBidController extends BaseController {
      * @param purchaseProjectId
      * @return
      */
-    @ApiOperation(value = "获取中标公示记录",tags = "获取中标公示记录")
+    @ApiOperation(value = "获取中标公示记录")
     @GetMapping(value = "/getTWinBidNominate")
     public  Result<List<TWinBidNominateVO>> getTWinBidNominate(@RequestParam("purchaseProjectId") Long purchaseProjectId){
         return  winBidClient.getTWinBidNominate(purchaseProjectId);
@@ -61,7 +61,7 @@ public class BiddingWinBidController extends BaseController {
      * @param clientWinBid
      * @return
      */
-    @ApiOperation(value = "新增中标公示记录",tags = "新增中标公示记录")
+    @ApiOperation(value = "新增中标公示记录")
     @PostMapping(value = "/insertTWinBidNominate", consumes = "application/json; charset=UTF-8")
     public Result<Boolean> insertTWinBidNominate(@RequestBody ClientWinBid clientWinBid) {
         HandleWinBid handleWinBid=new HandleWinBid();

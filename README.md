@@ -1,0 +1,12 @@
+### 下面是前端链接
+ * [管理总后台](http://www.epc1688.com/admin/)
+ * [PC官网](http://www.epc1688.com)
+ * [手机官网](http://m.epc1688.com)
+### 下面是开发链接
+ * [线上后台Swagger](http://118.24.201.17:7000/swagger-ui.html)
+ * [线上官网Swagger](http://118.24.201.17:6006/swagger-ui.html)
+ * [线上官网Eureka](http://118.24.201.17:1111)
+### 本机开发链接
+ * [本机后台Swagger](http://118.24.201.17:7000/swagger-ui.html)
+ * [本机官网Swagger](http://118.24.201.17:6006/swagger-ui.html)
+ * [本机官网Eureka](http://127.0.0.1:10000)

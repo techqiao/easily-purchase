@@ -368,7 +368,7 @@
 
   <select resultMap="selectMap" parameterType="com.epc.administration.facade.supplier.vo.SupplierUserVO" id="selectByPage" >
     SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, ts.company_name,
-    tb.create_at,ts.is_deleted,ts.public_bank_name,ts.public_ban_account_number,ts.supplier_id,ts.uniform_credit_code,td.companyAddress,td.area,td.city,td.province
+    tb.create_at,ts.is_deleted,ts.public_bank_name,ts.public_ban_account_number,ts.supplier_id,ts.uniform_credit_code,td.company_address,td.area,td.city,td.province
     FROM t_supplier_basic_info tb
     LEFT  JOIN t_supplier_detail_info ts ON ts.supplier_id=tb.id
     WHERE tb.is_deleted=0

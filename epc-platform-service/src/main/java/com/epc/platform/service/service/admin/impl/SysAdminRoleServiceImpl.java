@@ -80,7 +80,7 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 查找角色和对应资源
      * @param roleId
-     * @return
+     * @return RoleWithSource
      */
     @Override
     public RoleWithSource findRoleWithResource(Long roleId) {
@@ -100,14 +100,14 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 根据name查找
      * @param roleName
-     * @return
+     * @return SysAdminRole
      */
     @Override
     public SysAdminRole findByName(String roleName) {
         final SysAdminRoleCriteria criteria = new SysAdminRoleCriteria();
         criteria.createCriteria().andNameEqualTo(roleName);
         List<SysAdminRole> list = sysAdminRoleMapper.selectByExample(criteria);
-        return list.isEmpty()? null : list.get(0);
+        return list.isEmpty()? null : list.get(0);  
     }
 
     /**
@@ -157,7 +157,7 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 修改角色
      * @param updateRoleDTO
-     * @return
+     * @return Result
      */
     @Override
     public Result updateRole(UpdateRoleDTO updateRoleDTO) {
@@ -189,7 +189,7 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 批量删除角色
      * @param longList
-     * @return
+     * @return Boolean
      */
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> batchDelete(List<Long> longList) {

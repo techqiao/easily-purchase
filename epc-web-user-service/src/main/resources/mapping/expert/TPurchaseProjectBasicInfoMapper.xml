@@ -515,7 +515,9 @@
     </select>
     <select id="selectBasicInfosByProjectIdsAndCriteria"
             resultMap="BaseResultMap">
-        <bind name="pattern" value="'%'+projectName+'%'"/>
+        <if test="projectName!=null">
+            <bind name="pattern" value="'%'+projectName+'%'"/>
+        </if>
         <!--<bind name="pattern2" value="'%'+purchaserName+'%'"/>-->
         SELECT
         <include refid="Base_Column_List"/>
@@ -526,11 +528,17 @@
                 #{item}
             </foreach>
             <if test="projectName!=null">
-               AND project_name Like #{pattern}
+                AND project_name Like #{pattern}
             </if>
             <!--<if test="purchaserName!=null">-->
-               <!--AND project_name Like #{pattern}-->
+            <!--AND project_name Like #{pattern}-->
             <!--</if>-->
         </where>
+    </select>
+    <select id="selectPurhcaserIds" resultType="java.lang.Long">
+        SELECT purchaser_id FROM t_project_basic_info WHERE id IN
+        <foreach collection="tPurchaseProjectBasicInfos" open="(" separator="," close=")" item="item">
+            #{item.projectId}
+        </foreach>
     </select>
 </mapper>

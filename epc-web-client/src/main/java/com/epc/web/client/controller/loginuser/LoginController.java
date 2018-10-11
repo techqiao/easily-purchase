@@ -18,10 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,5 +83,17 @@ public class LoginController {
         ModifyUser modifyUser = new ModifyUser();
         BeanUtils.copyProperties(clientModifyUser,modifyUser);
         return iLoginUserClient.modifyPassword(modifyUser);
+    };
+
+    /**
+     *@author :winlin
+     *@Description :发送短信验证码
+     *@date:2018/10/11
+     */
+    @ApiOperation(value = "发送短信验证码" )
+    @GetMapping(path = "retrieveVerifyCode/{cellphone}")
+    Result  retrieveVerifyCode(@PathVariable("cellphone") String cellphone){ ;
+        String cellphones= cellphone.replaceAll("[^0-9a-zA-Z\u4e00-\u9fa5.，,。？“”]+","");
+        return iLoginUserClient.retrieveVerifyCode(cellphones);
     };
 }

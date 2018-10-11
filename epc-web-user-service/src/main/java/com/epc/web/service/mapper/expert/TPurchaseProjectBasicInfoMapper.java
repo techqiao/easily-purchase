@@ -36,4 +36,6 @@ public interface TPurchaseProjectBasicInfoMapper {
 
     List<TPurchaseProjectBasicInfo> selectBasicInfosByProjectIdsAndCriteria(ProjectDto projecctDto);
 
+    List<Long> selectPurhcaserIds(List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos);
+
 }

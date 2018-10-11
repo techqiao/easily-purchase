@@ -11,7 +11,9 @@ public class Const {
     public interface RedisCacheExtime {
         int REDIS_SESSION_EXTIME = 60 * 30*30000;//30分钟
     }
-
+    public interface RedisVerifyCodeCacheExtime {
+        int REDIS_VERITYCODE_EXTIME = 60 * 3;//3分钟
+    }
     public interface Role {
         int ROLE_CORPORATION = 0;// 法人
         int ROLE_ADMIN = 1;//管理员

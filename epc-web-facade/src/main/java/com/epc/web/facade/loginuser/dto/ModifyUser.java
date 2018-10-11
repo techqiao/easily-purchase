@@ -9,4 +9,5 @@ public class ModifyUser implements Serializable {
     private Integer type;
     private String cellphone;
     private String newPassword;
+    private String verityCode;
 }

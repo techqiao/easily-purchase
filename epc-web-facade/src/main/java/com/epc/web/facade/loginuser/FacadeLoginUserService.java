@@ -5,6 +5,8 @@ import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -41,4 +43,7 @@ public interface FacadeLoginUserService {
      */
     @PostMapping(value = "modifyPassword", consumes = "application/json;charset=UTF-8")
     Result<Boolean> modifyPassword(@RequestBody ModifyUser modifyUser);
+
+    @GetMapping(path = "retrieveVerifyCode/{cellphone}")
+    Result retrieveVerifyCode(@PathVariable("cellphone") String cellphone);
 }

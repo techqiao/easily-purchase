@@ -10,4 +10,5 @@ public class Loginer implements Serializable {
     private String cellphone;
     private String password;
     private Integer type;
+    private String verityCode;
 }

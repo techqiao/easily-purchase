@@ -30,15 +30,15 @@ import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
+import com.epc.web.service.utils.SmsUtils;
+import org.jboss.logging.Param;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author :winlin
@@ -69,6 +69,11 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+
+    @Autowired
+    SmsUtils smsUtils;
+
+    private static final String MEETING_SMS_CACHE_KEY = "meeting:sms:";
 
     @Override
     public Result<LoginUser> operatorLogin(@RequestBody Loginer loginer) {
@@ -553,6 +558,25 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             return Result.error("密码修改失败");
         }
         return purchaser > 0 ? Result.success("密码修改成功") : Result.error("密码修改失败");
+    }
+/**
+ *@author :winlin
+ *@Description :发送短信验证码
+ *@date:2018/10/11
+ */
+    @Override
+    public Result retrieveVerifyCode(String cellphone) {
+        final String verifyCode = String.valueOf(new Random().nextInt(890000) + 100000);
+        // 三分钟有效期(如果存在则覆盖)
+        RedisShardedPoolUtil.setEx(MEETING_SMS_CACHE_KEY + cellphone,verifyCode , Const.RedisVerifyCodeCacheExtime.REDIS_VERITYCODE_EXTIME);
+       // redisTemplate.opsForValue().set(MEETING_SMS_CACHE_KEY + cellphone, verifyCode, 2L, TimeUnit.MINUTES);
+        // 发送短信
+        try {
+            smsUtils.sendVerifyCode(cellphone, verifyCode);
+        }catch(Exception e){
+            LOGGER.error("[发送短信] 向手机号{}发送短信失败.", cellphone);
+        }
+        return Result.success("发送短信成功");
     }
 
     @Override

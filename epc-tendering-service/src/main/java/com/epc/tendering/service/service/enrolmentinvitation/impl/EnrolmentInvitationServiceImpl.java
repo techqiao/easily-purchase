@@ -1,4 +1,6 @@
 package com.epc.tendering.service.service.enrolmentinvitation.impl;
+import com.epc.web.facade.bidding.dto.SupplierSignDTO;
+import com.google.common.collect.Lists;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -22,11 +24,13 @@ import com.epc.tendering.service.mapper.signup.BSignUpMapper;
 import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.enrolmentinvitation.EnrolmentInvitationService;
 import com.epc.web.facade.bidding.vo.PayListForAllVO;
+import com.epc.web.facade.bidding.vo.QuerySignUpListVO;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
+import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
 import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.slf4j.Logger;
@@ -381,5 +385,56 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
         }
         return Result.success(ThreeList);
 
+    }
+
+
+    /**
+     * 采购人查看报名列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result<List<QuerySignUpListVO>> querySignUpList(QuerySignUpList dto) {
+        //获取采购项目下面的标段列表
+        TPurchaseProjectBidsCriteria cite=new TPurchaseProjectBidsCriteria();
+        TPurchaseProjectBidsCriteria.Criteria cubCite=cite.createCriteria();
+        cubCite.andPurchaseProjectIdEqualTo(dto.getProcurementProjectId());
+        List< TPurchaseProjectBids> bidsList= tPurchaseProjectBidsMapper.selectByExample(cite);
+        List<QuerySignUpListVO> voList=new ArrayList<>();
+        //根据bidList 遍历
+        for(TPurchaseProjectBids entity:bidsList){
+            //获取签到信息
+            QuerySignUpListVO vo=new QuerySignUpListVO();
+            vo.setBidsId(entity.getId());
+            vo.setBidsName(entity.getBidName());
+            BSignUpCriteria criteria=new BSignUpCriteria();
+            BSignUpCriteria.Criteria cubCriteria=criteria.createCriteria();
+            cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
+            List<BSignUp> newBSignUpList=bSignUpMapper.selectByExample(criteria);
+            List<BSignUp> bSignUpList=new ArrayList<>();
+            int count =0;
+            for(BSignUp bSignUp:newBSignUpList){
+                String[] list=bSignUp.getBidsId().split(",");
+                for(String bid:list){
+                    if(entity.getId().toString().equals(bid)){
+                        bSignUpList.add(bSignUp);
+                        ++count;
+                    }
+                }
+                //获取总数
+                vo.setCount(count);
+            }
+
+            List<SupplierSignDTO> SupplierSignList=new ArrayList<>();
+            for(BSignUp bSignUp:bSignUpList){
+                SupplierSignDTO supplierSignDTO=new SupplierSignDTO();
+                BeanUtils.copyProperties(bSignUp,supplierSignDTO);
+                supplierSignDTO.setSignUpTime( DateTimeUtil.dateToStr(bSignUp.getCreateAt()));
+                SupplierSignList.add(supplierSignDTO);
+            }
+            vo.setSupplierSignList(SupplierSignList);
+            voList.add(vo);
+        }
+        return Result.success(voList);
     }
 }

@@ -23,6 +23,8 @@ public class NoticeDetailVO implements Serializable {
     private String biddingStart;
     @ApiModelProperty("结束时间")
     private String biddingEnd;
+    @ApiModelProperty("采购项目id")
+    private Long procurementProjectId;
     @ApiModelProperty("采购项目名称")
     private String procurementProjectName;
     @ApiModelProperty("招标方式")

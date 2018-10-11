@@ -26,7 +26,7 @@ public interface BiddingService {
      * @param queryNoticeDetail 公告详情
      * @return
      */
-    Result<NoticeDetailVO> findByNoticeId(QueryNoticeDetail queryNoticeDetail);
+    NoticeDetailVO findByNoticeId(QueryNoticeDetail queryNoticeDetail);
 
     /**
      * 查询供应商是否支付下载招标文件金额

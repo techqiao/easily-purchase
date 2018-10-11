@@ -2,15 +2,13 @@ package com.epc.web.client.controller.enrolmentinvitation;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
-import com.epc.web.client.controller.enrolmentinvitation.handle.ClientInvitation;
-import com.epc.web.client.controller.enrolmentinvitation.handle.ClientInvitationForSupplier;
-import com.epc.web.client.controller.enrolmentinvitation.handle.ClientInvitationHandle;
-import com.epc.web.client.controller.enrolmentinvitation.handle.ClientSignUpHandle;
+import com.epc.web.client.controller.enrolmentinvitation.handle.*;
 import com.epc.web.client.remoteApi.enrolmentinvitation.EnrolmentInvitationClient;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
+import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -61,13 +59,22 @@ public class EnrolmentInvitationController  extends BaseController {
         return enrolmentInvitationClient.invitationListForSupplier(dto);
     }
 
-    @ApiOperation(value = "供应商的报名列表",notes = "供应商的报名列表")
+    @ApiOperation(value = "供应商查看自己的报名列表",notes = "供应商查看自己的报名列表")
     @PostMapping(value = "queryInvitationList" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result queryInvitationList(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
         InvitationForSupplierDTO dto=new InvitationForSupplierDTO();
         dto.setSupplierId(getLoginUser().getBossId());
         dto.setSupplierName(getLoginUser().getBossName());
         return enrolmentInvitationClient.queryInvitationList(dto);
+    }
+
+    @ApiOperation(value = "采购人查看标段报名列表",notes = "采购人查看标段报名列表")
+    @PostMapping(value = "querySignUpList" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result querySignUpList(@RequestBody ClientSignUpList ClientSignUpList){
+        QuerySignUpList dto=new QuerySignUpList();
+        dto.setPurchaserId(getLoginUser().getBossId());
+        BeanUtils.copyProperties(ClientSignUpList,dto);
+        return enrolmentInvitationClient.querySignUpList(dto);
     }
 
     @ApiOperation(value = "供应商确认/拒绝邀请",notes = "供应商确认/拒绝邀请")

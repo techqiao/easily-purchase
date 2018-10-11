@@ -50,18 +50,21 @@ public class BiddingNoticeController extends BaseController {
         QueryNoticeDetail queryNoticeDetail=new QueryNoticeDetail();
         BeanUtils.copyProperties(dto,queryNoticeDetail);
         queryNoticeDetail.setSupplierId(getLoginUser().getBossId());
+        //获取公告信息
+        NoticeDetailVO noticeDetailVO=  noticeClient.getNoticeDetail(queryNoticeDetail);
+
         //判断下载文件是否已支付（true:支付）
         QueryProgramPayDTO queryProgramPayDTO=new QueryProgramPayDTO();
         BeanUtils.copyProperties(dto,queryProgramPayDTO);
         queryProgramPayDTO.setCompanyId(getLoginUser().getBossId());
+        queryProgramPayDTO.setProcurementProjectId(noticeDetailVO.getProcurementProjectId());
         Boolean isPay=noticeClient.isPayForProjectFile(queryProgramPayDTO);
-        queryNoticeDetail.setIsPay(isPay);
-        //返回公告详情 +下载文件路径
-        if(isPay!=null){
-            return  noticeClient.getNoticeDetail(queryNoticeDetail);
-        }else{
-            return Result.error("尚未发布招标文件");
-        }
-    }
 
+        if(isPay==null){
+            return Result.error("尚未发布招标文件");
+        }else if(isPay==false){
+            noticeDetailVO.setBiddingDocumentsUrl(null);
+        }
+        return Result.success(noticeDetailVO);
+    }
 }

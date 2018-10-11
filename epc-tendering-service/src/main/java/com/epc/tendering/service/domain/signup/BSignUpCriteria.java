@@ -425,6 +425,76 @@ public class BSignUpCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andBidsCodeIsNull() {
+            addCriterion("bids_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeIsNotNull() {
+            addCriterion("bids_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeEqualTo(String value) {
+            addCriterion("bids_code =", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotEqualTo(String value) {
+            addCriterion("bids_code <>", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeGreaterThan(String value) {
+            addCriterion("bids_code >", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("bids_code >=", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeLessThan(String value) {
+            addCriterion("bids_code <", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeLessThanOrEqualTo(String value) {
+            addCriterion("bids_code <=", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeLike(String value) {
+            addCriterion("bids_code like", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotLike(String value) {
+            addCriterion("bids_code not like", value, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeIn(List<String> values) {
+            addCriterion("bids_code in", values, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotIn(List<String> values) {
+            addCriterion("bids_code not in", values, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeBetween(String value1, String value2) {
+            addCriterion("bids_code between", value1, value2, "bidsCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andBidsCodeNotBetween(String value1, String value2) {
+            addCriterion("bids_code not between", value1, value2, "bidsCode");
+            return (Criteria) this;
+        }
+
         public Criteria andSupplierIdIsNull() {
             addCriterion("supplier_id is null");
             return (Criteria) this;
@@ -482,6 +552,76 @@ public class BSignUpCriteria {
 
         public Criteria andSupplierIdNotBetween(Long value1, Long value2) {
             addCriterion("supplier_id not between", value1, value2, "supplierId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameIsNull() {
+            addCriterion("supplier_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameIsNotNull() {
+            addCriterion("supplier_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameEqualTo(String value) {
+            addCriterion("supplier_name =", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameNotEqualTo(String value) {
+            addCriterion("supplier_name <>", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameGreaterThan(String value) {
+            addCriterion("supplier_name >", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameGreaterThanOrEqualTo(String value) {
+            addCriterion("supplier_name >=", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameLessThan(String value) {
+            addCriterion("supplier_name <", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameLessThanOrEqualTo(String value) {
+            addCriterion("supplier_name <=", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameLike(String value) {
+            addCriterion("supplier_name like", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameNotLike(String value) {
+            addCriterion("supplier_name not like", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameIn(List<String> values) {
+            addCriterion("supplier_name in", values, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameNotIn(List<String> values) {
+            addCriterion("supplier_name not in", values, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameBetween(String value1, String value2) {
+            addCriterion("supplier_name between", value1, value2, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameNotBetween(String value1, String value2) {
+            addCriterion("supplier_name not between", value1, value2, "supplierName");
             return (Criteria) this;
         }
 

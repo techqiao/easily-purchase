@@ -63,10 +63,10 @@ public class LoginController implements FacadeLoginUserService {
 
     @Override
     public Result<Boolean> registerUser(@RequestBody RegisterUser user) {
-        String verityCode = this.getVerityCode(user.getCellphone());
-        if(!verityCode.equals(user.getVerityCode())){
-            return Result.success("验证码或密码不正确");
-        }
+//        String verityCode = this.getVerityCode(user.getCellphone());
+//        if(!verityCode.equals(user.getVerityCode())){
+//            return Result.success("验证码或密码不正确");
+//        }
         //用户类型
         Integer type = user.getType();
         switch (type) {
@@ -88,9 +88,9 @@ public class LoginController implements FacadeLoginUserService {
     @Override
     public Result<Boolean> modifyPassword(@RequestBody ModifyUser user) {
         String verityCode = this.getVerityCode(user.getCellphone());
-        if(!verityCode.equals(user.getVerityCode())){
-            return Result.success("验证码或密码不正确");
-        }
+//        if(!verityCode.equals(user.getVerityCode())){
+//            return Result.success("验证码或密码不正确");
+//        }
         Integer type = user.getType();
         switch (type) {
             case IRoleLoginService.OPERRATOR:

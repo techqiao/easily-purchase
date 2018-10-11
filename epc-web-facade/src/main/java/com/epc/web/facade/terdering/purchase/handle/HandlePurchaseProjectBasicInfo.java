@@ -5,6 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Description : easily-purchase
@@ -79,6 +80,11 @@ public class HandlePurchaseProjectBasicInfo implements Serializable {
      * 可见范围
      */
     private Integer purchaseRange;
+
+    /**
+     * 供应商ID
+     */
+    private List<Long> supplierIds;
 
     /**
      * 是否允许调价

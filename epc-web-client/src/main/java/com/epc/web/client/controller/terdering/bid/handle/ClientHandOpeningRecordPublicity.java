@@ -22,7 +22,7 @@ public class ClientHandOpeningRecordPublicity {
     private Date endTime;
     @ApiModelProperty(value = "唱标ID")
     private Long bidAnnouncementId;
-    @ApiModelProperty(value = "状态  审核 auditing, 批复 reply, 待发布wait_release,已发布 released, 未提交not_submit, 失效invalid")
+    @ApiModelProperty(value = "状态  已发布 released, 未提交not_submit")
     private String processStatus;
     @ApiModelProperty(value = "操作人ID")
     private Long operateId;
@@ -32,5 +32,7 @@ public class ClientHandOpeningRecordPublicity {
     private Long auditorId;
     @ApiModelProperty(value = "标段ID")
     private Long bidsId;
+    @ApiModelProperty(value = "是否删除 0-存在,1-删除")
+    private Integer isDeleted;
 
 }

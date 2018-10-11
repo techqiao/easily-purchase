@@ -9,6 +9,7 @@ import com.epc.common.constants.Const;
 import com.epc.common.util.DateTimeUtil;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
@@ -49,6 +50,8 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     TWinBidMapper tWinBidMapper;
+    @Autowired
+    TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -340,5 +343,50 @@ public class MoneyPayServiceImpl implements MoneyPayService {
             voList.add(vo);
         }
         return Result.success(voList);
+    }
+
+
+    /**
+     * 查询供应商是否支付下载招标文件金额
+     * @return
+     */
+    @Override
+    public Boolean IsPayForProjectFile(QueryProgramPayDTO dto){
+        if(dto.getProcurementProjectId()==null){
+            return  false;
+        }
+        final TPurchaseProjectFileDownloadCriteria criteria=new TPurchaseProjectFileDownloadCriteria();
+        final TPurchaseProjectFileDownloadCriteria.Criteria subCriteria=criteria.createCriteria();
+        subCriteria.andPurchaseProjectIdEqualTo(dto.getProcurementProjectId());
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //根据采购项目Id 查询招标文件
+        List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
+        if(list.size()==0){
+            LOGGER.error("尚未发布招标文件");
+            return false;
+        }
+        //获取招标文件ID
+        Long fileId=list.get(0).getId();
+        BigDecimal money=list.get(0).getFilePayment();
+        //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
+        final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
+        final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
+        subPay.andCompanyIdEqualTo(dto.getCompanyId());
+        subPay.andPurchaseProjectFileIdEqualTo(fileId);
+
+        List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
+        //未查询到支付记录
+        if(payList.size()==0){
+            LOGGER.error("未找到支付记录");
+            return false;
+        }else{
+            //(实付金额 比对 下载金额)
+            for(TPurchaseProjectFilePay entity:payList){
+                if(entity.getFilePaymentReal().compareTo(money)>-1){
+                    return true;
+                }
+            }
+            return true;
+        }
     }
 }

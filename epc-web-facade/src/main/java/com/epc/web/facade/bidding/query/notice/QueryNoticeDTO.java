@@ -1,6 +1,7 @@
 package com.epc.web.facade.bidding.query.notice;
 
 import com.epc.common.PagerParam;
+import com.epc.common.QueryRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @author linzhixiang
  */
 @Data
-public class QueryNoticeDTO extends PagerParam implements Serializable {
+public class QueryNoticeDTO extends QueryRequest implements Serializable {
     private static final long serialVersionUID = 4243161078452593344L;
     private Long supplierId;
     private String title;

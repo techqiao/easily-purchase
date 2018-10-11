@@ -3,6 +3,7 @@ package com.epc.bidding.service.moneyPay;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
@@ -56,4 +57,11 @@ public interface MoneyPayService {
      * @return
      */
     Result<List<PayListForAllVO>> getServiceMoneyListForAll(ServiceMoneyListForAllDTO queryMoneyPayRecordDTO);
+
+    /**
+     * 查询供应商是否支付下载招标文件金额
+     * @return
+     */
+    Boolean IsPayForProjectFile(QueryProgramPayDTO dto);
+
 }

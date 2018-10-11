@@ -6,11 +6,14 @@ import com.epc.common.util.FTPUtil;
 import com.epc.web.client.controller.bidding.query.notice.ClientNoticeDTO;
 import com.epc.web.client.controller.bidding.query.notice.ClientNoticeDetailDTO;
 import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.remoteApi.bidding.moneyPay.MoneyPayClient;
 import com.epc.web.client.remoteApi.bidding.notice.NoticeClient;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
+
 /**
 * @Description:  招标公告
 * @Author: linzhixiang
@@ -36,12 +41,15 @@ public class BiddingNoticeController extends BaseController {
 
     @Autowired
     NoticeClient noticeClient;
+    @Autowired
+    MoneyPayClient moneyPayClient;
     @ApiOperation(value = "公告列表")
     @PostMapping(value="/getNoticeList")
-    public Result<List<NoticeDetailVO>> getProjectList(@RequestBody ClientNoticeDTO clientNoticeDTO){
+    public Result<Map<String, Object>> getProjectList(@RequestBody ClientNoticeDTO clientNoticeDTO){
         QueryNoticeDTO queryNoticeDTO=new QueryNoticeDTO();
         BeanUtils.copyProperties(clientNoticeDTO,queryNoticeDTO);
-        return  noticeClient.queryBIssueDocumentsList(queryNoticeDTO);
+        queryNoticeDTO.setSupplierId(getLoginUser().getBossId());
+       return noticeClient.queryBIssueDocumentsList(queryNoticeDTO);
     }
 
     @ApiOperation(value = "查看公告详情及下载文件")
@@ -58,7 +66,7 @@ public class BiddingNoticeController extends BaseController {
         BeanUtils.copyProperties(dto,queryProgramPayDTO);
         queryProgramPayDTO.setCompanyId(getLoginUser().getBossId());
         queryProgramPayDTO.setProcurementProjectId(noticeDetailVO.getProcurementProjectId());
-        Boolean isPay=noticeClient.isPayForProjectFile(queryProgramPayDTO);
+        Boolean isPay=moneyPayClient.isPayForProjectFile(queryProgramPayDTO);
 
         if(isPay==null){
             return Result.error("尚未发布招标文件");

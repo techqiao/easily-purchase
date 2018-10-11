@@ -63,7 +63,11 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
 
     }
 
-
+    /**
+     *  确认/拒绝
+     * @param updateInvitation
+     * @return
+     */
     @Override
     public Result updateInvitation(@RequestBody UpdateInvitation updateInvitation){
         return enrolmentInvitationService.updateInvitation(updateInvitation);

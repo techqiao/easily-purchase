@@ -11,12 +11,14 @@ import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipant;
 import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantCriteria;
 import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission;
 import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria;
+import com.epc.tendering.service.domain.purchase.TProcurementProjectSupplier;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfoCriteria;
 import com.epc.tendering.service.domain.purchaser.TProjectPurchaserEmployeeRelation;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
+import com.epc.tendering.service.mapper.purchase.TProcurementProjectSupplierMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchaser.TProjectPurchaserEmployeeRelationMapper;
 import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoService;
@@ -30,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +54,8 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     private TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
     @Autowired
     private TProjectBasicInfoMapper tProjectBasicInfoMapper;
+    @Autowired
+    private TProcurementProjectSupplierMapper tProcurementProjectSupplierMapper;
 
     @Override
     @Transactional
@@ -69,6 +74,8 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         Long purchaseProjectId = handlePurchaseProjectBasicInfoSub.getPurchaseProjectId();
         //是否全权委托代理机构
         Integer isOtherAgency = handlePurchaseProjectBasicInfoSub.getIsOtherAgency();
+        //供应商集合
+        List<Long> supplierIds = handlePurchaseProjectBasicInfoSub.getSupplierIds();
         //采购项目参与者集合
         List<HandleParticipantBasicInfo> basicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
         //不全权委托招标代理机构
@@ -81,6 +88,8 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setPurchaseProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    //指定供应商
+                    insertProjectSupplier(pojo, supplierIds);
                     purchaseProjectId = pojo.getId();
                     //指定采购项目参与者 经办人 审核人 批复人 负责人
                     addUserRole(isOtherAgency, basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
@@ -110,6 +119,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setPurchaseProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    insertProjectSupplier(pojo, supplierIds);
                     purchaseProjectId = pojo.getId();
                     //指定批复人
                     addUserRole(isOtherAgency, ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
@@ -129,6 +139,23 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
             }
         }
 
+    }
+
+    /**
+     * 指定供应商
+     * @param pojo
+     * @param supplierIds
+     */
+    private void insertProjectSupplier(TPurchaseProjectBasicInfo pojo, List<Long> supplierIds) {
+        if(!CollectionUtils.isEmpty(supplierIds)
+                && pojo.getPurchaseRange().equals(Const.IS_OK.IS_OK)){
+            for (Long supplierId : supplierIds) {
+                TProcurementProjectSupplier projectSupplier = new TProcurementProjectSupplier();
+                projectSupplier.setProcurementProjectId(pojo.getId());
+                projectSupplier.setSupplierId(supplierId);
+                tProcurementProjectSupplierMapper.insertSelective(projectSupplier);
+            }
+        }
     }
 
     /**
@@ -257,7 +284,12 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         tpppp.setActionState(0);
         tpppp.setPurchaseProjectId(purchaseProjectId);
         tpppp.setUserId(userId);
-        //分配权限
+        tpppp.setStepType("announcement");
+        //分配权限 公告
+        tPurchaseProjectParticipantPermissionMapper.insertSelective(tpppp);
+        tpppp.setStepType("publicity");
+        tpppp.setId(null);
+        //分配权限 发布招标公示
         tPurchaseProjectParticipantPermissionMapper.insertSelective(tpppp);
     }
 

@@ -19,7 +19,7 @@ public interface BiddingService {
      * @param queryNoticeDTO
      * @return
      */
-    Result<List<NoticeDetailVO>> findBySupplierId(QueryNoticeDTO queryNoticeDTO);
+    List<NoticeDetailVO> findBySupplierId(QueryNoticeDTO queryNoticeDTO);
 
     /**
      *  查看公告详情 及 下载文件路径
@@ -27,32 +27,5 @@ public interface BiddingService {
      * @return
      */
     NoticeDetailVO findByNoticeId(QueryNoticeDetail queryNoticeDetail);
-
-    /**
-     * 查询供应商是否支付下载招标文件金额
-     * @return
-     */
-    Boolean IsPayForProjectFile(QueryProgramPayDTO dto);
-
-    /**
-     * 投标上传
-     * @param handleNotice
-     * @return
-     */
-     Result<Boolean> insertNotice(HandleNotice handleNotice);
-
-    /**
-     * 预审信息 修改/删除
-     * @param handlePretriaFile
-     * @return
-     */
-    Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile) ;
-
-    /**
-     * 获取预审信息 详情
-     * @param handlePretriaFile
-     * @return
-     */
-    Result<PretrialMessageVO> getTPretrialMessage(HandlePretriaFile handlePretriaFile);
 
     }

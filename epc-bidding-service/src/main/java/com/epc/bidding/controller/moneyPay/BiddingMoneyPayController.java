@@ -6,6 +6,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeMoneyPayService;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
@@ -79,5 +80,15 @@ public class BiddingMoneyPayController implements FacadeMoneyPayService {
         return moneyPayService.getServiceMoneyListForAll(queryMoneyPayRecordDTO);
     }
 
+    /**
+     * 是否支付下载文件金额
+     * @param dto
+     * @return
+     */
+
+    @Override
+    public Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
+        return moneyPayService.IsPayForProjectFile(dto);
+    }
 
 }

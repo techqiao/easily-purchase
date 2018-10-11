@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /** 
 * @Description:  投标流程接口
@@ -28,7 +29,7 @@ public interface FacadeNoticeService {
      * @return
      */
     @PostMapping(value = "queryBIssueDocumentsList", consumes = "application/json; charset=UTF-8")
-    Result<List<NoticeDetailVO>> queryBIssueDocumentsList(@RequestBody QueryNoticeDTO queryNoticeDTO);
+    Result<Map<String, Object>> queryBIssueDocumentsList(@RequestBody QueryNoticeDTO queryNoticeDTO);
 
     /**
      * 查询预告列表
@@ -54,15 +55,6 @@ public interface FacadeNoticeService {
          */
     @PostMapping(value = "getNoticeDetail", consumes = "application/json; charset=UTF-8")
     NoticeDetailVO  getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail);
-
-
-    /**
-     * 是否支付下载金额
-     * @param dto
-     * @return
-     */
-    @PostMapping(value = "isPayForProjectFile", consumes = "application/json; charset=UTF-8")
-     Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto);
 
     }
 

@@ -3,6 +3,7 @@ package com.epc.web.facade.bidding;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
@@ -64,4 +65,15 @@ public interface FacadeMoneyPayService {
      */
     @PostMapping(value = "getServiceMoneyListForAll", consumes = "application/json; charset=UTF-8")
     Result<List<PayListForAllVO>> getServiceMoneyListForAll(@RequestBody ServiceMoneyListForAllDTO queryMoneyPayRecordDTO);
+
+
+
+    /**
+     * 是否支付下载金额
+     * @param dto
+     * @return
+     */
+    @PostMapping(value = "isPayForProjectFile", consumes = "application/json; charset=UTF-8")
+    Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto);
+
 }

@@ -1,5 +1,6 @@
 package com.epc.bidding.controller.file;
 import com.epc.bidding.service.bidding.BiddingService;
+import com.epc.bidding.service.file.FileService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
 import com.epc.web.facade.bidding.handle.HandleNotice;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BiddingFileUploadController implements FacadeFileUploadService {
 
     @Autowired
-    BiddingService biddingService;
+    FileService fileService;
 
     /**
      * 投标信息 更新
@@ -26,7 +27,7 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
      */
     @Override
     public Result<Boolean> updateNotice(@RequestBody HandleNotice handleNotice){
-        return biddingService.insertNotice(handleNotice);
+        return fileService.insertNotice(handleNotice);
     }
 
         /**
@@ -36,7 +37,7 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
          */
     @Override
     public Result<Boolean> updatePretrialFile(@RequestBody HandlePretriaFile handlePretriaFile) {
-        return biddingService.updatePretrialFile(handlePretriaFile);
+        return fileService.updatePretrialFile(handlePretriaFile);
     }
 
 
@@ -47,6 +48,6 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
      */
     @Override
     public Result<PretrialMessageVO> getTPretrialMessage(@RequestBody HandlePretriaFile handlePretriaFile) {
-        return biddingService.getTPretrialMessage(handlePretriaFile);
+        return fileService.getTPretrialMessage(handlePretriaFile);
     }
 }

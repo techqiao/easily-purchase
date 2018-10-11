@@ -4,6 +4,7 @@ import java.util.Date;
 import com.epc.administration.facade.admin.dto.QueryUserDTO;
 import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.administration.facade.admin.handle.UserHandle;
+import com.epc.administration.facade.admin.vo.userVO;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.MD5Util;
@@ -127,10 +128,18 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
      * @return
      */
     @Override
-    public List<SysAdminUser> findUserWithDept(QueryUserDTO queryUserDTO) {
+    public List<userVO> findUserWithDept(QueryUserDTO queryUserDTO) {
         SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setName(queryUserDTO.getUserName());
-        sysAdminUser.setPhone(queryUserDTO.getPhone());
+        String phone = queryUserDTO.getPhone();
+        String userName = queryUserDTO.getUserName();
+        if(!StringUtils.isNotBlank(phone)){
+            phone="%"+phone+"%";
+        }
+        if(StringUtils.isNotBlank(userName)){
+            userName="%"+userName+"%";
+        }
+        sysAdminUser.setName(userName);
+        sysAdminUser.setPhone(phone);
         sysAdminUser.setDeptId(queryUserDTO.getDeptId());
         try {
             return this.sysAdminUserMapper.findUserWithDept(sysAdminUser);

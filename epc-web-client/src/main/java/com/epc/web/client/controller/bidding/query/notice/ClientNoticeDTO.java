@@ -1,10 +1,10 @@
 package com.epc.web.client.controller.bidding.query.notice;
 
+import com.epc.common.QueryRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,9 +12,8 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "ClientNoticeDTO",description = "根据供应商ID查看公告列表")
-public class ClientNoticeDTO  {
-    @ApiModelProperty(value = "供应商ID")
-    private Long supplierId;
+public class ClientNoticeDTO extends QueryRequest {
+
     @ApiModelProperty(value = "公告标题")
     private String title;
     @ApiModelProperty(value = "招标公告开始时间")

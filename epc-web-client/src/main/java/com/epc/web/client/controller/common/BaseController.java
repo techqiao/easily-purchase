@@ -1,7 +1,6 @@
 package com.epc.web.client.controller.common;
 
 import com.alibaba.fastjson.JSONObject;
-//import com.epc.administration.facade.admin.handle.LoginHandle;
 import com.epc.common.util.CookieUtil;
 import com.epc.web.client.controller.loginuser.handle.ClientLoginUser;
 import com.github.pagehelper.PageInfo;

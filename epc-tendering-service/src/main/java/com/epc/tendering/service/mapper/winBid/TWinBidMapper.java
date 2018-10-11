@@ -33,5 +33,5 @@ public interface TWinBidMapper {
 
     int updateByPrimaryKey(TWinBid record);
 
-    List<WinBidVO> selectBySuppilerId();
+    List<WinBidVO> selectPublicWinning();
 }

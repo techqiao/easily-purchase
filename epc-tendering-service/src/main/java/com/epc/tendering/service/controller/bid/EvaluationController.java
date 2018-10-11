@@ -3,6 +3,7 @@ package com.epc.tendering.service.controller.bid;
 import com.epc.common.Result;
 import com.epc.tendering.service.service.bid.EvaluationService;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
@@ -37,12 +38,17 @@ public class EvaluationController implements FacadeEvaluationService {
     }
 
     @Override
-    public Result<List<TPretrialFileVO>> getFilesByCompanyId(@RequestParam("companyId") Long companyId) {
-        return evaluationService.getFilesByCompanyId(companyId);
+    public Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(@RequestParam("purchaseProjectId") Long purchaseProjectId) {
+        return evaluationService.getFilesByPurchaseProjectId(purchaseProjectId);
     }
 
     @Override
     public Result<ClauseTemplateVO> getClauseTemplateById(@RequestParam("id")Long id) {
         return evaluationService.getClauseTemplateById(id);
+    }
+
+    @Override
+    public Result<Boolean> insertClauseTemplate(ClauseTemplateHandle clauseTemplateHandle) {
+        return evaluationService.insertClauseTemplate(clauseTemplateHandle);
     }
 }

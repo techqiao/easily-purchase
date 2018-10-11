@@ -1,9 +1,11 @@
 package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.bidding.handle.evaluation.ClientClauseTemplateHandle;
 import com.epc.web.client.controller.bidding.handle.evaluation.ClientEvaluationHandle;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.evaluation.EvaluationClient;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 /**
  * <p>Description : 新增评标办法
@@ -46,9 +49,9 @@ public class BiddingEvaluationController extends BaseController{
     }
 
     @ApiOperation(value = "查询投递文件列表",tags = "查询投递文件列表")
-    @GetMapping(value = "getFilesByCompanyId" )
-    public Result<List<TPretrialFileVO>> getFilesByCompanyId(@RequestParam("companyId") Long companyId){
-         return   evaluationClient.getFilesByCompanyId(companyId);
+    @GetMapping(value = "getFilesByPurchaseProjectId" )
+    public Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(@RequestParam("purchaseProjectId") Long purchaseProjectId){
+         return   evaluationClient.getFilesByPurchaseProjectId(purchaseProjectId);
     }
 
     @ApiOperation(value = "根据id查询对应废标模板",tags = "根据id查询对应废标模板")
@@ -57,5 +60,12 @@ public class BiddingEvaluationController extends BaseController{
         return  evaluationClient.getClauseTemplateById(id);
     }
 
+    @ApiOperation(value = "新增废标模板",tags = "新增废标模板")
+    @PostMapping(value = "insertClauseTemplate" ,consumes = "application/json; charset=UTF-8"  )
+    public Result<Boolean> insertClauseTemplate(@RequestBody ClientClauseTemplateHandle clientClauseTemplateHandle){
+        ClauseTemplateHandle clauseTemplateHandle = new ClauseTemplateHandle();
+        BeanUtils.copyProperties(clientClauseTemplateHandle,clauseTemplateHandle);
+        return  evaluationClient.insertClauseTemplate(clauseTemplateHandle);
+    }
 
 }

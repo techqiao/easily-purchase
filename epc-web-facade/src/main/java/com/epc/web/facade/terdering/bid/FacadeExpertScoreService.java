@@ -40,7 +40,7 @@ public interface FacadeExpertScoreService {
      * @param bidId
      * @return
      */
-    @PostMapping(value = "queryExpertScore", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "queryExpertScore")
      Result<ScoreAndPathVO> queryExpertScore (@RequestParam(value = "bidId") Long bidId) ;
 
 

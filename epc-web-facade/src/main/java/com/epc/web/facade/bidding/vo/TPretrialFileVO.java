@@ -11,33 +11,12 @@ import lombok.Data;
 @Data
 public class TPretrialFileVO {
 
-    /**
-     * 采购项目ID
-     */
-    private Long purchaseProjectId;
+
 
     /**
-     * 公告ID
+     * 供应商名称
      */
-    private Long releaseAnnouncementId;
-
-    /**
-     * company_id
-     */
-    private Long companyId;
-
-    /**
-     * 是否通过:
-     * review-审核中,
-     * noPass-未通过,
-     * pass-通过
-     */
-    private String status;
-
-    /**
-     * 信息
-     */
-    private String content;
+    private String companyName;
 
     /**
      * 文件路径

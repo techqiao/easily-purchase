@@ -1,7 +1,6 @@
 package com.epc.tendering.service.service.pretrial.impl;
 
 import com.epc.common.Result;
-import com.epc.tendering.service.domain.pretrial.TPretrialFileCriteria;
 import com.epc.tendering.service.domain.pretrial.TPretrialMessage;
 import com.epc.tendering.service.domain.pretrial.TPretrialMessageCriteria;
 import com.epc.tendering.service.mapper.pretrial.TPretrialFileMapper;

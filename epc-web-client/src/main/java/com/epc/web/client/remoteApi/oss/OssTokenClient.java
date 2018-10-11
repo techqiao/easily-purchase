@@ -1,6 +1,5 @@
 package com.epc.web.client.remoteApi.oss;
 
-import com.epc.web.client.remoteApi.operator.OperatorHystrix;
 import com.epc.web.facade.oss.FacadeOssTokenService;
 import org.springframework.cloud.netflix.feign.FeignClient;
 

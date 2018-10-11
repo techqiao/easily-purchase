@@ -5,14 +5,9 @@ import com.epc.common.Result;
 import com.epc.common.constants.AnnouncementProcessStatusEnum;
 import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.bid.*;
-import com.epc.tendering.service.domain.pretrial.TPretrialFile;
-import com.epc.tendering.service.domain.pretrial.TPretrialFileCriteria;
-import com.epc.tendering.service.domain.pretrial.TPretrialMessage;
-import com.epc.tendering.service.domain.pretrial.TPretrialMessageCriteria;
 import com.epc.tendering.service.mapper.bid.*;
-import com.epc.tendering.service.mapper.pretrial.TPretrialFileMapper;
-import com.epc.tendering.service.mapper.pretrial.TPretrialMessageMapper;
 import com.epc.tendering.service.service.bid.EvaluationService;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.handle.StandardTypeHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
@@ -46,14 +41,13 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Autowired
     private BBidOpeningPayMapper bBidOpeningPayMapper;
     @Autowired
-    private TPretrialMessageMapper tPretrialMessageMapper;
+    private TTenderMessageMapper tTenderMessageMapper;
     @Autowired
-    private TPretrialFileMapper tPretrialFileMapper;
-
+    private TTenderFileMapper tTenderFileMapper;
     /**
      * 新增评标标准设定  废标条款
      * @param evaluationHandle
-     * @return
+     * @return Boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -86,11 +80,10 @@ public class EvaluationServiceImpl implements EvaluationService {
             return Result.error();
         }
     }
-
     /**
      * 根据id查询对应废标模板
      * @param id 废标模板id
-     * @return
+     * @return ClauseTemplateVO
      */
     @Override
     public Result<ClauseTemplateVO> getClauseTemplateById(Long id) {
@@ -103,11 +96,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         clauseTemplateVO.setClauseName(bTenderAbolishClauseTemplate.getClauseName());
        return Result.success(clauseTemplateVO);
     }
-
     /**
      * 查询开标的标段保证金
      * @param procurementProjectId 采购项目ID
-     * @return
+     * @return List<GuaranteeVO>
      */
     @Override
     public Result<List<GuaranteeVO>> selectGuarantee(Long procurementProjectId) {
@@ -138,34 +130,27 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
     /**
      * 查询对应投递文件列表
-     * @param companyId 公司id
-     * @return
+     * @param purchaseProjectId 采购项目id
+     * @return List<TPretrialFileVO>
      */
     @Override
-    public Result<List<TPretrialFileVO>> getFilesByCompanyId(Long companyId) {
-        //公司id 作为条件查询预审信息
-        TPretrialMessageCriteria criteria = new TPretrialMessageCriteria();
-        TPretrialMessageCriteria.Criteria subMessageCriteria = criteria.createCriteria();
-        subMessageCriteria.andCompanyIdEqualTo(companyId);
-        List<TPretrialMessage> tPretrialMessages = tPretrialMessageMapper.selectByExample(criteria);
-        TPretrialFileCriteria fileCriteria = new TPretrialFileCriteria();
-        TPretrialFileCriteria.Criteria subFileCriteria = fileCriteria.createCriteria();
-        List<TPretrialFile> tPretrialFiles =new ArrayList<>();
-        //通过预审信息查询对应文件
-        for (int i = 0; i < tPretrialMessages.size(); i++) {
-            subFileCriteria.andIdEqualTo(tPretrialMessages.get(i).getId());
-            tPretrialFiles = tPretrialFileMapper.selectByExample(fileCriteria);
-        }
-       List<TPretrialFileVO> tPretrialFileVOS = new LinkedList<>();
-        for (int i = 0; i < tPretrialFiles.size(); i++) {
-            TPretrialFileVO tPretrialFileVO= new TPretrialFileVO();
-            tPretrialFileVO.setPurchaseProjectId(tPretrialMessages.get(i).getPurchaseProjectId());
-            tPretrialFileVO.setReleaseAnnouncementId(tPretrialMessages.get(i).getReleaseAnnouncementId());
-            tPretrialFileVO.setCompanyId(tPretrialMessages.get(i).getCompanyId());
-            tPretrialFileVO.setStatus(tPretrialMessages.get(i).getStatus());
-            tPretrialFileVO.setContent(tPretrialMessages.get(i).getContent());
-            tPretrialFileVO.setFilePath(tPretrialFiles.get(i).getFilePath());
-            tPretrialFileVO.setFileName(tPretrialFiles.get(i).getFileName());
+    public Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(Long purchaseProjectId){
+        //采购项目id 作为条件查询预审信息
+       TTenderMessageCriteria tTenderMessageCriteria = new TTenderMessageCriteria();
+       tTenderMessageCriteria.createCriteria().andPurchaseProjectIdEqualTo(purchaseProjectId);
+       List<TTenderMessage> tTenderMessages = tTenderMessageMapper.selectByExample(tTenderMessageCriteria);
+
+        List<TPretrialFileVO> tPretrialFileVOS = new ArrayList<>();
+        for (TTenderMessage tTenderMessage : tTenderMessages) {
+            TTenderFileCriteria tTenderFileCriteria = new TTenderFileCriteria();
+            tTenderFileCriteria.createCriteria().andTenderMessageIdEqualTo(tTenderMessage.getId());
+            List<TTenderFile> tTenderFiles = tTenderFileMapper.selectByExample(tTenderFileCriteria);
+            TPretrialFileVO tPretrialFileVO = new TPretrialFileVO();
+            for (TTenderFile tTenderFile : tTenderFiles) {
+                tPretrialFileVO.setFileName(tTenderFile.getFileName());
+                tPretrialFileVO.setFilePath(tPretrialFileVO.getFilePath());
+            }
+            tPretrialFileVO.setCompanyName(tTenderMessage.getCompanyName());
             tPretrialFileVOS.add(tPretrialFileVO);
         }
         return Result.success(tPretrialFileVOS);
@@ -185,4 +170,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         return 0;
     }
 
+    @Override
+    public Result<Boolean> insertClauseTemplate(ClauseTemplateHandle clauseTemplateHandle) {
+        BTenderAbolishClauseTemplate bTenderAbolishClauseTemplate = new BTenderAbolishClauseTemplate();
+        BeanUtils.copyProperties(clauseTemplateHandle,bTenderAbolishClauseTemplate);
+        return Result.success(bTenderAbolishClauseTemplateMapper.insertSelective(bTenderAbolishClauseTemplate)>0);
+    }
 }

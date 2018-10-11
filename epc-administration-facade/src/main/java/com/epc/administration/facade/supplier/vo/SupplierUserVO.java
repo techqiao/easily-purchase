@@ -25,6 +25,14 @@ public class SupplierUserVO implements Serializable {
      */
     @ApiModelProperty("公司名称")
     private String companyName;
+    @ApiModelProperty("公司地址")
+    private String companyAddress;
+    @ApiModelProperty("省份")
+    private String province;
+    @ApiModelProperty("市区")
+    private String city;
+    @ApiModelProperty("区域")
+    private String area;
     /**
      * 统一信用代码
      */

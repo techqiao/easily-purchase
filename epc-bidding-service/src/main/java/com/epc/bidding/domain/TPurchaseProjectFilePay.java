@@ -7,7 +7,7 @@ import java.util.Date;
 public class TPurchaseProjectFilePay implements Serializable {
     private Long id;
 
-    private Long purchasProjectFileId;
+    private Long purchaseProjectFileId;
 
     private BigDecimal filePaymentReal;
 
@@ -33,12 +33,12 @@ public class TPurchaseProjectFilePay implements Serializable {
         this.id = id;
     }
 
-    public Long getPurchasProjectFileId() {
-        return purchasProjectFileId;
+    public Long getPurchaseProjectFileId() {
+        return purchaseProjectFileId;
     }
 
-    public void setPurchasProjectFileId(Long purchasProjectFileId) {
-        this.purchasProjectFileId = purchasProjectFileId;
+    public void setPurchaseProjectFileId(Long purchaseProjectFileId) {
+        this.purchaseProjectFileId = purchaseProjectFileId;
     }
 
     public BigDecimal getFilePaymentReal() {
@@ -104,7 +104,7 @@ public class TPurchaseProjectFilePay implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", purchasProjectFileId=").append(purchasProjectFileId);
+        sb.append(", purchaseProjectFileId=").append(purchaseProjectFileId);
         sb.append(", filePaymentReal=").append(filePaymentReal);
         sb.append(", companyId=").append(companyId);
         sb.append(", operateId=").append(operateId);

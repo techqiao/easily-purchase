@@ -34,8 +34,18 @@ public class ClientSupplierDetailInfo implements Serializable {
     private String companyName;
 
     @ApiModelProperty(value = "公司地址")
-    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
+    @NotEmpty(message = "ClientSupplierDetailInfo.companyAddress.null")
     private String companyAddress;
+
+    @ApiModelProperty(value = "省份")
+    @NotEmpty(message = "ClientSupplierDetailInfo.province.null")
+    private String province;
+    @ApiModelProperty(value = "市区")
+    @NotEmpty(message = "ClientSupplierDetailInfo.city.null")
+    private String city;
+    @ApiModelProperty(value = "区域")
+    @NotEmpty(message = "ClientSupplierDetailInfo.area.null")
+    private String area;
     /**
      *统一信用代码
      */

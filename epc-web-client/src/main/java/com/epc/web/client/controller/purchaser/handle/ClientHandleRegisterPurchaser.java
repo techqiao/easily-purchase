@@ -81,4 +81,10 @@ public class ClientHandleRegisterPurchaser implements Serializable {
     private String certificateOfAuthorization;
     @ApiModelProperty(value = "附件list")
     protected List<ClientAttachement> atts;
+    @ApiModelProperty(value = "省")
+    private String province;
+    @ApiModelProperty(value = "市")
+    private String city;
+    @ApiModelProperty(value = "区")
+    private String area;
 }

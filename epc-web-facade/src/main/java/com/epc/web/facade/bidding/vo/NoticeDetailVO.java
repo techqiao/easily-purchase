@@ -33,5 +33,9 @@ public class NoticeDetailVO implements Serializable {
     private String announcementContent;
     @ApiModelProperty("文件路径")
     private String biddingDocumentsUrl;
+    @ApiModelProperty("澄清开始时间")
+    private String defecationStart;
+    @ApiModelProperty("澄清结束时间")
+    private String defecationEnd;
 
 }

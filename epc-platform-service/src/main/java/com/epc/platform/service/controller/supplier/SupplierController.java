@@ -11,7 +11,6 @@ import com.epc.administration.facade.supplier.vo.SupplierUserVO;
 import com.epc.administration.facade.supplier.vo.TWinBidVO;
 import com.epc.common.Result;
 import com.epc.platform.service.controller.admin.BaseController;
-import com.epc.platform.service.domain.operator.TOperatorDetailInfo;
 import com.epc.platform.service.service.supplier.SupplierService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

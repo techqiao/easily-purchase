@@ -76,7 +76,9 @@ public class CommitteeServiceImpl implements CommitteeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto){
-
+         String province =dto.getProvince();
+         String city=dto.getCity();
+         String area=dto.getArea();
         /** 组建评委员--标段对应专专业人数 */
         List<BidDTO> bidList=dto.getBidDTOList();
         List<ExpertDTO> expertList=dto.getExpertDTOList();
@@ -88,6 +90,9 @@ public class CommitteeServiceImpl implements CommitteeService {
                 }
                 if(expert.getProfessionalName()==null){
                     return Result.error("professionalName is not null");
+                }
+                if(expert.getProfessionalNumber()==null){
+                    return Result.error("professionalNumber is not null");
                 }
                 BAssessmentCommitteeBid committeeBid =new BAssessmentCommitteeBid();
                 BeanUtils.copyProperties(bid,committeeBid);
@@ -104,17 +109,8 @@ public class CommitteeServiceImpl implements CommitteeService {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     return Result.error();
                 }
-
-                //专业人数--专家列表
-                TExpertBasicInfoCriteria criteria=new TExpertBasicInfoCriteria();
-                TExpertBasicInfoCriteria.Criteria cubCriteria=criteria.createCriteria();
-                cubCriteria.andProfessionEqualTo(expert.getProfessionalName());
-                cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-                if(StringUtils.isNotEmpty(expert.getProfessionalLevel())){
-                    cubCriteria.andLevelEqualTo(expert.getProfessionalLevel());
-                }
-                cubCriteria.andIsIdleEqualTo(Const.EXPERT_STATUS.FREE);
-                List<TExpertBasicInfo> resultList=tExpertBasicInfoMapper.selectByExample(criteria);
+                //根据筛选条件，抽取专家
+                List<TExpertBasicInfo> resultList=tExpertBasicInfoMapper.selectExpertWithCommitt(province,city,area,expert.getProfessionalName(),expert.getProfessionalLevel());
                 if(resultList.size()==0){
 
                     LOGGER.error(resultList.toString()+"_"+"is not null");

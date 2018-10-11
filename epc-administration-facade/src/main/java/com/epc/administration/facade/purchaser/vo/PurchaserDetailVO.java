@@ -18,6 +18,12 @@ public class PurchaserDetailVO extends PurchaserVO implements Serializable {
 
     @ApiModelProperty("公司地址")
     private  String companyAddress;
+    @ApiModelProperty("省份")
+    private String province;
+    @ApiModelProperty("市区")
+    private String city;
+    @ApiModelProperty("区域")
+    private String area;
     @ApiModelProperty(value = "身份证正面照片url")
     private String legalIdCardPositive;
     @ApiModelProperty(value = "身份证反面照片url")

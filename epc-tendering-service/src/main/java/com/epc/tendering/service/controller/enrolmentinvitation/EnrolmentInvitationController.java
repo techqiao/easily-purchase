@@ -88,4 +88,9 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
         return enrolmentInvitationService.isPayForGuaranty(payForGuarantyDTO);
     }
 
+    @Override
+    public Result<List<PayListForAllVO>> getBiddingDocumentListForAll(@RequestBody PayForGuarantyDTO payForGuarantyDTO) {
+        return enrolmentInvitationService.getBiddingDocumentListForAll(payForGuarantyDTO);
+    }
+
 }

@@ -80,7 +80,7 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 查找角色和对应资源
      * @param roleId
-     * @return
+     * @return RoleWithSource
      */
     @Override
     public RoleWithSource findRoleWithResource(Long roleId) {
@@ -100,14 +100,14 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 根据name查找
      * @param roleName
-     * @return
+     * @return SysAdminRole
      */
     @Override
     public SysAdminRole findByName(String roleName) {
         final SysAdminRoleCriteria criteria = new SysAdminRoleCriteria();
         criteria.createCriteria().andNameEqualTo(roleName);
         List<SysAdminRole> list = sysAdminRoleMapper.selectByExample(criteria);
-        return list.isEmpty()? null : list.get(0);
+        return list.isEmpty()? null : list.get(0);  
     }
 
     /**
@@ -138,6 +138,12 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     public void deleteRoles(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(","));
         List<Long> longList = list.stream().map(Long::parseLong).collect(Collectors.toList());
+        //不允许删除管理员
+        for (Long aLong : longList) {
+            if(6==aLong){
+                longList.remove(aLong);
+            }
+        }
         this.batchDelete(longList);
         for (Long aLong : longList) {
             SysAdminRoleResourceCriteria criteria = new SysAdminRoleResourceCriteria();
@@ -151,10 +157,14 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 修改角色
      * @param updateRoleDTO
-     * @return
+     * @return Result
      */
     @Override
     public Result updateRole(UpdateRoleDTO updateRoleDTO) {
+        //不允许修改管理员
+        if(6==updateRoleDTO.getRoleId() ){
+            return Result.error("没有权限进行此操作");
+        }
         SysAdminRole sysAdminRole = new SysAdminRole();
         sysAdminRole.setName(updateRoleDTO.getName());
         sysAdminRole.setMemo(updateRoleDTO.getMemo());
@@ -179,7 +189,7 @@ public class SysAdminRoleServiceImpl implements SysAdminRoleService {
     /**
      * 批量删除角色
      * @param longList
-     * @return
+     * @return Boolean
      */
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> batchDelete(List<Long> longList) {

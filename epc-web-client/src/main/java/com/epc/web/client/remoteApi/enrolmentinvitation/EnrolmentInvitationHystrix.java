@@ -49,4 +49,9 @@ public class EnrolmentInvitationHystrix implements FacadeEnrolmentInvitation {
         return Result.hystrixError();
     }
 
+    @Override
+    public Result<List<PayListForAllVO>> getBiddingDocumentListForAll(PayForGuarantyDTO payForGuarantyDTO) {
+        return Result.hystrixError();
+    }
+
 }

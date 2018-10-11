@@ -39,10 +39,8 @@ public class ReviewExpertServiceImpl implements ExpertService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
     @Autowired
     private TExpertBasicInfoMapper tExpertBasicInfoMapper;
-
     @Autowired
     private TExpertDetailInfoMapper tExpertDetailInfoMapper;
-
     @Autowired
     private TExpertAttachmentMapper tExpertAttachmentMapper;
 
@@ -77,7 +75,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
             return Result.error(ErrorMessagesEnum.INSERT_FAILURE);
         }
     }
-
     /**
      * 完善专家信息
      * @param reviewExpertHandle
@@ -88,6 +85,7 @@ public class ReviewExpertServiceImpl implements ExpertService {
     public Result<Boolean> insertExpertDetailInfo(ReviewExpertHandle reviewExpertHandle) {
         TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
         BeanUtils.copyProperties(reviewExpertHandle,tExpertDetailInfo);
+        tExpertDetailInfo.setExpertId(reviewExpertHandle.getId());
         tExpertDetailInfo.setCreateAt(new Date());
         tExpertDetailInfo.setUpdateAt(new Date());
         tExpertDetailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -162,7 +160,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
         }
 
     }
-
     /**
      * 删除评审专家
      * @param whereId
@@ -232,7 +229,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
         }
     }
 
-
     /**
      *分页查询
      * @param queryDetailIfo
@@ -248,7 +244,6 @@ public class ReviewExpertServiceImpl implements ExpertService {
             queryDetailIfo.setWhere(null);
         }
         return Result.success(tExpertDetailInfoMapper.selectByPage(queryDetailIfo)) ;
-
     }
 
     /**

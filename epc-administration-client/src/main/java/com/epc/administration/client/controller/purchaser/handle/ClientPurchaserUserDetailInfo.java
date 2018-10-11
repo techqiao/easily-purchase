@@ -27,15 +27,21 @@ public class ClientPurchaserUserDetailInfo implements Serializable {
     @ApiModelProperty(value = "用户名")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.name.null")
     private String name;
-    @ApiModelProperty(value = "手机号")
-    @NotEmpty(message = "ClientPurchaserUserDetailInfo.cellPhone.null")
-    private String cellPhone;
     @ApiModelProperty(value = "公司名称")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.companyName.null")
     private String companyName;
     @ApiModelProperty(value = "公司地址")
-    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
+    @NotEmpty(message = "ClientPurchaserUserDetailInfo.companyAddress.null")
     private String companyAddress;
+    @ApiModelProperty(value = "省份")
+    @NotEmpty(message = "ClientPurchaserUserDetailInfo.province.null")
+    private String province;
+    @ApiModelProperty(value = "市区")
+    @NotEmpty(message = "ClientPurchaserUserDetailInfo.city.null")
+    private String city;
+    @ApiModelProperty(value = "区域")
+    @NotEmpty(message = "ClientPurchaserUserDetailInfo.area.null")
+    private String area;
     @ApiModelProperty(value = "统一信用代码")
     @NotEmpty(message = "ClientPurchaserUserDetailInfo.uniformCreditCode.null")
     private String uniformCreditCode;

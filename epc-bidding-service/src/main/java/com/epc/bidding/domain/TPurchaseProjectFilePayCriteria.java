@@ -1,14 +1,11 @@
 package com.epc.bidding.domain;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-public class TPurchaseProjectFilePayCriteria implements Serializable {
-    private static final long serialVersionUID = -8078812936267964032L;
+public class TPurchaseProjectFilePayCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -169,63 +166,63 @@ public class TPurchaseProjectFilePayCriteria implements Serializable {
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdIsNull() {
-            addCriterion("purchas_project_file_id is null");
+        public Criteria andPurchaseProjectFileIdIsNull() {
+            addCriterion("purchase_project_file_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdIsNotNull() {
-            addCriterion("purchas_project_file_id is not null");
+        public Criteria andPurchaseProjectFileIdIsNotNull() {
+            addCriterion("purchase_project_file_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdEqualTo(Long value) {
-            addCriterion("purchas_project_file_id =", value, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdEqualTo(Long value) {
+            addCriterion("purchase_project_file_id =", value, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdNotEqualTo(Long value) {
-            addCriterion("purchas_project_file_id <>", value, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdNotEqualTo(Long value) {
+            addCriterion("purchase_project_file_id <>", value, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdGreaterThan(Long value) {
-            addCriterion("purchas_project_file_id >", value, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdGreaterThan(Long value) {
+            addCriterion("purchase_project_file_id >", value, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("purchas_project_file_id >=", value, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_file_id >=", value, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdLessThan(Long value) {
-            addCriterion("purchas_project_file_id <", value, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdLessThan(Long value) {
+            addCriterion("purchase_project_file_id <", value, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdLessThanOrEqualTo(Long value) {
-            addCriterion("purchas_project_file_id <=", value, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdLessThanOrEqualTo(Long value) {
+            addCriterion("purchase_project_file_id <=", value, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdIn(List<Long> values) {
-            addCriterion("purchas_project_file_id in", values, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdIn(List<Long> values) {
+            addCriterion("purchase_project_file_id in", values, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdNotIn(List<Long> values) {
-            addCriterion("purchas_project_file_id not in", values, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdNotIn(List<Long> values) {
+            addCriterion("purchase_project_file_id not in", values, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdBetween(Long value1, Long value2) {
-            addCriterion("purchas_project_file_id between", value1, value2, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_file_id between", value1, value2, "purchaseProjectFileId");
             return (Criteria) this;
         }
 
-        public Criteria andPurchasProjectFileIdNotBetween(Long value1, Long value2) {
-            addCriterion("purchas_project_file_id not between", value1, value2, "purchasProjectFileId");
+        public Criteria andPurchaseProjectFileIdNotBetween(Long value1, Long value2) {
+            addCriterion("purchase_project_file_id not between", value1, value2, "purchaseProjectFileId");
             return (Criteria) this;
         }
 

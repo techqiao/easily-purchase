@@ -69,8 +69,13 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
 
     @Override
     public Result<Boolean> replyQuestion(HandleReplyQuestion handleReplyQuestion) {
-        BAnswerQuestionWithBLOBs questionWithBLOBs = bAnswerQuestionMapper.selectByPrimaryKey(handleReplyQuestion.getId());
-        questionWithBLOBs.setAnswerId(handleReplyQuestion.getOperateId());
+        BAnswerQuestionWithBLOBs questionWithBLOBs = new BAnswerQuestionWithBLOBs();
+        questionWithBLOBs = bAnswerQuestionMapper.selectByPrimaryKey(handleReplyQuestion.getId());
+        if(questionWithBLOBs==null){
+            return Result.error("回复问题不存在");
+        }
+        Long operateId = handleReplyQuestion.getOperateId();
+        questionWithBLOBs.setAnswerId(operateId);
         questionWithBLOBs.setAnswerName(handleReplyQuestion.getOperateName());
         questionWithBLOBs.setUpdateAt(new Date());
         questionWithBLOBs.setStatus("replied");

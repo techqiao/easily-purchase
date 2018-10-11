@@ -60,16 +60,16 @@ public class PurchaseProjectBasicInfoController extends BaseController {
             //参与者集合
             handlePurchaseProjectBasicInfoSub.setHandleParticipantBasicInfoList(new ArrayList<>());
             List<HandleParticipantBasicInfo> handleParticipantBasicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
-//            if (agentId != null) {
-//                addUserRole(ParticipantPermissionEnum.AGENT.getCode(), agentId, handleParticipantBasicInfoList);
-//            }
-//            if (auditorId != null) {
-//                addUserRole(ParticipantPermissionEnum.AUDITOR.getCode(), auditorId, handleParticipantBasicInfoList);
-//            }
-//            if (userId != null) {
-//                addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
-//                addUserRole(ParticipantPermissionEnum.PERSON_LIABLE.getCode(), userId, handleParticipantBasicInfoList);
-//            }
+            if (agentId != null) {
+                addUserRole(ParticipantPermissionEnum.AGENT.getCode(), agentId, handleParticipantBasicInfoList);
+            }
+            if (auditorId != null) {
+                addUserRole(ParticipantPermissionEnum.AUDITOR.getCode(), auditorId, handleParticipantBasicInfoList);
+            }
+            if (userId != null) {
+                addUserRole(ParticipantPermissionEnum.REPLY.getCode(), userId, handleParticipantBasicInfoList);
+                addUserRole(ParticipantPermissionEnum.PERSON_LIABLE.getCode(), userId, handleParticipantBasicInfoList);
+            }
             return purchaseProjectClient.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfoSub);
         }
         //全权委托代理机构

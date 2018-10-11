@@ -64,6 +64,15 @@ public class ClientExpertDetailIfo implements Serializable {
     @ApiModelProperty(value = "公司地址")
     @NotEmpty(message = "ClientExpertDetailIfo.companyAddress.null")
     private String companyAddress;
+    @ApiModelProperty(value = "省份")
+    @NotEmpty(message = "ClientExpertDetailIfo.province.null")
+    private String province;
+    @ApiModelProperty(value = "市区")
+    @NotEmpty(message = "ClientExpertDetailIfo.city.null")
+    private String city;
+    @ApiModelProperty(value = "区域")
+    @NotEmpty(message = "ClientExpertDetailIfo.area.null")
+    private String area;
     @ApiModelProperty(value = "资质证书url")
     @NotEmpty(message = "ClientExpertDetailIfo.qualificationCertificateList.null")
     private List<ClientAttachmentHandle> attachmentHandleList;

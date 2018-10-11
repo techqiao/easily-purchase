@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Data
 @ApiModel("缴费记录")
 public class PayListForAllVO implements Serializable {
+    private static final long serialVersionUID = 2648614389737911473L;
     @ApiModelProperty("流水编号")
     private String payCode;
     @ApiModelProperty("项目编号")

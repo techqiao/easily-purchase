@@ -73,8 +73,8 @@ public class BaseController {
                     loginHandle.setPassword("123");
                     break;
                 case 4:
-                    loginHandle.setUserId(2L);
-                    loginHandle.setBossId(2L);
+                    loginHandle.setUserId(9L);
+                    loginHandle.setBossId(9L);
                     loginHandle.setName("模拟用户9");
                     loginHandle.setBossName("模拟boss");
                     loginHandle.setCompanyName("模拟公司4");

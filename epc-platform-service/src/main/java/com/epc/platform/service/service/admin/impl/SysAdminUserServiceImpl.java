@@ -75,9 +75,6 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
         return Result.success(resultMap);
     }
 
-    public static void main(String[] args) {
-        System.out.println(MD5Util.MD5EncodeUtf8("root"));
-    }
     /**
      * 根据name查找用户信息
      * @param userName
@@ -217,6 +214,12 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
     public void deleteUsers(String userIds) {
         List<String> list = Arrays.asList(userIds.split(","));
         List<Long> longList = list.stream().map(Long::parseLong).collect(Collectors.toList());
+        //不允许删除admin管理员
+        for (Long aLong : longList) {
+            if(5==aLong){
+                longList.remove(aLong);
+            }
+        }
         this.batchDelete(longList);
         this.sysAdminUserRoleService.deleteUserRolesByUserId(userIds);
     }
@@ -252,6 +255,7 @@ public class SysAdminUserServiceImpl implements SysAdminUserService {
      */
     @Override
     public void updateUserDetail(UserHandle userHandle) {
+
         SysAdminUser sysAdminUser = new SysAdminUser();
         sysAdminUser.setUpdateAt(new Date());
         sysAdminUser.setIsDeleted(userHandle.getIsDeleted());

@@ -35,6 +35,15 @@ public class ClientBiddingAgencyDetailInfo implements Serializable {
     @ApiModelProperty(value = "公司地址")
     @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
     private String companyAddress;
+    @ApiModelProperty(value = "省份")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.province.null")
+    private String province;
+    @ApiModelProperty(value = "市区")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.city.null")
+    private String city;
+    @ApiModelProperty(value = "区域")
+    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.area.null")
+    private String area;
 
     /**
      *统一信用代码

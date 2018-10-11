@@ -24,7 +24,7 @@ public class TExpertBasicInfo implements Serializable {
 
 
     private String level;
-
+    private  Integer workingYears;
     private Integer isIdle;
     private Date circularDt;
     private Date circularDtEnd;

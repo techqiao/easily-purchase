@@ -35,6 +35,22 @@ public class AgencySupplierDto implements Serializable {
      */
     private String companyName;
     /**
+     * 省
+     */
+    private String province;
+    /**
+     * 市
+     */
+    private String city;
+    /**
+     * 区
+     */
+     private String area;
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
+    /**
      * 统一的信用代码
      */
     private String uniformCreditCode;
@@ -75,4 +91,6 @@ public class AgencySupplierDto implements Serializable {
      * 附件list
      */
     private List<Attachement> atts;
+
+
 }

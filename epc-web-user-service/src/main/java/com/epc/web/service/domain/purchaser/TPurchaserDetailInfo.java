@@ -34,6 +34,9 @@ public class TPurchaserDetailInfo implements Serializable {
 
 
     private Integer isDeleted;
+    private String province;
+    private String city;
+    private String area;
     private String companyAddress;
 
     private static final long serialVersionUID = 1L;

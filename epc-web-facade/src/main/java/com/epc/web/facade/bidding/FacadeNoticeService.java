@@ -53,7 +53,7 @@ public interface FacadeNoticeService {
          * @return
          */
     @PostMapping(value = "getNoticeDetail", consumes = "application/json; charset=UTF-8")
-    Result<NoticeDetailVO>  getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail);
+    NoticeDetailVO  getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail);
 
 
     /**

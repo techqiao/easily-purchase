@@ -19,6 +19,7 @@
     <result column="operate_id" property="operateId" jdbcType="BIGINT" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
+    <result column="is_back" property="isBack" jdbcType="INTEGER" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -83,7 +84,7 @@
     id, project_id, procurement_project_id, bid_id, bids_guarantee_amount_id, tenderer_id, 
     tenderer_company_id, tenderer_name, tenderer_company_name, amount_money_time, amount_money, 
     payment_name, payment_account_number, payment_id, operate_id, create_at, update_at, 
-    is_deleted
+    is_back, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.bid.BBidOpeningPayCriteria" >
     select
@@ -124,13 +125,15 @@
       tenderer_name, tenderer_company_name, amount_money_time, 
       amount_money, payment_name, payment_account_number, 
       payment_id, operate_id, create_at, 
-      update_at, is_deleted)
+      update_at, is_back, is_deleted
+      )
     values (#{projectId,jdbcType=BIGINT}, #{procurementProjectId,jdbcType=BIGINT}, #{bidId,jdbcType=BIGINT}, 
       #{bidsGuaranteeAmountId,jdbcType=BIGINT}, #{tendererId,jdbcType=BIGINT}, #{tendererCompanyId,jdbcType=BIGINT}, 
       #{tendererName,jdbcType=VARCHAR}, #{tendererCompanyName,jdbcType=VARCHAR}, #{amountMoneyTime,jdbcType=TIMESTAMP}, 
       #{amountMoney,jdbcType=DECIMAL}, #{paymentName,jdbcType=VARCHAR}, #{paymentAccountNumber,jdbcType=VARCHAR}, 
       #{paymentId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+      #{updateAt,jdbcType=TIMESTAMP}, #{isBack,jdbcType=INTEGER}, #{isDeleted,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BBidOpeningPay" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -186,6 +189,9 @@
       <if test="updateAt != null" >
         update_at,
       </if>
+      <if test="isBack != null" >
+        is_back,
+      </if>
       <if test="isDeleted != null" >
         is_deleted,
       </if>
@@ -238,6 +244,9 @@
       </if>
       <if test="updateAt != null" >
         #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isBack != null" >
+        #{isBack,jdbcType=INTEGER},
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
@@ -304,6 +313,9 @@
       <if test="record.updateAt != null" >
         update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.isBack != null" >
+        is_back = #{record.isBack,jdbcType=INTEGER},
+      </if>
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
@@ -331,6 +343,7 @@
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_back = #{record.isBack,jdbcType=INTEGER},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -387,6 +400,9 @@
       <if test="updateAt != null" >
         update_at = #{updateAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="isBack != null" >
+        is_back = #{isBack,jdbcType=INTEGER},
+      </if>
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
@@ -411,6 +427,7 @@
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_back = #{isBack,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>

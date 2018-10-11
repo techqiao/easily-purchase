@@ -40,6 +40,8 @@ public class ClientHandleExpert {
     @ApiModelProperty(value = "级别")
     @NotEmpty(message = "HandleExpert.level.null")
     private String level;
+    @ApiModelProperty(value = "工作年限")
+    private Integer workingYears;
     @ApiModelProperty(value = "通知时间")
     @NotEmpty(message = "HandleExpert.circularDt.null")
     private Date circularDt;
@@ -61,6 +63,7 @@ public class ClientHandleExpert {
     private String legalIdCardOther;
     @ApiModelProperty(value = "附件")
     private List<ClientAttachement> atts;
+
 
 
 }

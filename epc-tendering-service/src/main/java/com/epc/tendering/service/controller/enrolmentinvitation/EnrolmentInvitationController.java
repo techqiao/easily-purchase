@@ -10,6 +10,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
+import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,6 +87,25 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
     @Override
     public Result<List<PayListForAllVO>> isPayForGuaranty(@RequestBody PayForGuarantyDTO payForGuarantyDTO){
         return enrolmentInvitationService.isPayForGuaranty(payForGuarantyDTO);
+    }
+
+    /**
+     * 供应商招标文件下载支付情况
+     * @return
+     */
+    @Override
+    public Result<List<PayListForAllVO>> getBiddingDocumentListForAll(@RequestBody PayForGuarantyDTO payForGuarantyDTO) {
+        return enrolmentInvitationService.getBiddingDocumentListForAll(payForGuarantyDTO);
+    }
+
+    /**
+     * 采购人查看报名列表
+     * @param dto
+     * @return
+     */
+    @Override
+    public Result querySignUpList(@RequestBody QuerySignUpList dto) {
+        return enrolmentInvitationService.querySignUpList(dto);
     }
 
 }

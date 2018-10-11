@@ -2,11 +2,13 @@ package com.epc.web.client.controller.expert;
 
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
+import com.epc.web.client.controller.expert.dto.ClientProjectDto;
 import com.epc.web.client.controller.expert.handle.ClientHandleExpert;
 import com.epc.web.client.controller.expert.handle.ClientIdleExpertDto;
 import com.epc.web.client.remoteApi.expert.ExpertClient;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
+import com.epc.web.facade.expert.dto.ProjectDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -49,4 +51,17 @@ public class ExpertController  extends BaseController{
         BeanUtils.copyProperties(dto,idleExpertDto);
         return expertClient.hasIntentionOrNot(idleExpertDto);
     }
+
+    /**
+     *@author :winlin
+     *@Description : 查看专家名下所有的标段信息
+     *@date:2018/9/30
+     */
+    @ApiOperation(value = "专家修评审的所有项目" ,notes="专家修评审的所有项目")
+    @PostMapping(value = "/ExpertSelectAllBid",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result  selectAllBid(@RequestBody ClientProjectDto clientProjectDto){
+        ProjectDto projectDto = new ProjectDto();
+        BeanUtils.copyProperties(clientProjectDto,projectDto);
+        return expertClient.selectAllBid(projectDto);
+    };
 }

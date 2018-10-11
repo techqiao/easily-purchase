@@ -13,7 +13,6 @@ import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -47,7 +46,7 @@ public class BiddingNoticeController implements FacadeNoticeService {
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
+    public NoticeDetailVO getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
         return biddingService.findByNoticeId(queryNoticeDetail);
     }
 

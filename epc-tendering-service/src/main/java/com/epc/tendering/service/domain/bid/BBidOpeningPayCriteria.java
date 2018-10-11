@@ -1166,6 +1166,66 @@ public class BBidOpeningPayCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andIsBackIsNull() {
+            addCriterion("is_back is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackIsNotNull() {
+            addCriterion("is_back is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackEqualTo(Integer value) {
+            addCriterion("is_back =", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackNotEqualTo(Integer value) {
+            addCriterion("is_back <>", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackGreaterThan(Integer value) {
+            addCriterion("is_back >", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_back >=", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackLessThan(Integer value) {
+            addCriterion("is_back <", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackLessThanOrEqualTo(Integer value) {
+            addCriterion("is_back <=", value, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackIn(List<Integer> values) {
+            addCriterion("is_back in", values, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackNotIn(List<Integer> values) {
+            addCriterion("is_back not in", values, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackBetween(Integer value1, Integer value2) {
+            addCriterion("is_back between", value1, value2, "isBack");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsBackNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_back not between", value1, value2, "isBack");
+            return (Criteria) this;
+        }
+
         public Criteria andIsDeletedIsNull() {
             addCriterion("is_deleted is null");
             return (Criteria) this;

@@ -9,9 +9,9 @@ import java.util.Date;
 public class ExpertProjectVo implements Serializable {
     private static final long serialVersionUID = 5118535404845708L;
     /**
-     * 序号
+     * 序号==采购项目的id
      */
-    private Integer serialNum;
+    private Long serialNum;
     /**
      * 项目名称
      */
@@ -19,7 +19,7 @@ public class ExpertProjectVo implements Serializable {
     /**
      * 项目编号
      */
-    private Integer projectNum;
+    private String  projectNum;
     /**
      * 采购方式
      */
@@ -33,7 +33,11 @@ public class ExpertProjectVo implements Serializable {
      */
     private Date  createAt;
     /**
-     * 评价
+     * 项目id
      */
-    private String evaluation;
+    private Long projectId;
+//    /**
+//     * 评价
+//     */
+//    private String evaluation;
 }

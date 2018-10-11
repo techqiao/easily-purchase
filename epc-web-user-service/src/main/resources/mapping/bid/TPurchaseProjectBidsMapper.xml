@@ -545,6 +545,15 @@
         </where>
         ORDER BY create_at;
     </select>
+    <select id="selectBidsByExpertId" resultType="java.lang.Integer">
+        SELECT bids_id FROM t_purchase_project_bids WHERE expert_id=#{expertId}
+    </select>
+    <select id="selectPurchaserProjectIds" resultType="java.lang.Long">
+        SELECT purchase_project_id FROM t_purchase_project_bids WHERE id IN
+        <foreach collection="list" item="bid" open="(" separator="," close=")">
+            #{bid}
+        </foreach>
+    </select>
 
 
 </mapper>

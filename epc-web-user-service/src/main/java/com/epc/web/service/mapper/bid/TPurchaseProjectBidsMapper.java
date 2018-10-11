@@ -42,4 +42,9 @@ public interface TPurchaseProjectBidsMapper {
 
 
     List<TPurchaseProjectBids> selectProjectByExpertIds(@Param("projectDto") ProjectDto projecctDto, @Param("bids") List<Long> bids);
+
+    List<Integer> selectBidsByExpertId(Long expertId);
+
+    List<Long> selectPurchaserProjectIds(List<Long> bids);
+
 }

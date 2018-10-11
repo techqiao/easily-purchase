@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.expert.FacadeExpertService;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
+import com.epc.web.facade.expert.dto.ProjectDto;
 import com.epc.web.service.service.expert.ExpertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,5 +31,10 @@ public class ExpertController implements FacadeExpertService {
     @Override
     public Result<Boolean> hasIntentionOrNot(@RequestBody IdleExpertDto dto) {
         return expertService.hasIntentionOrNot(dto);
+    }
+
+    @Override
+    public Result selectAllBid(@RequestBody ProjectDto projecctDto) {
+        return expertService.selectAllBid(projecctDto);
     }
 }

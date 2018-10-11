@@ -34,4 +34,6 @@ public interface TExpertBasicInfoMapper {
 
     @Select("SELECT t.cellphone FROM t_expert_basic_info t where t.id=#{id}")
     String getCellPhone(Long id);
+
+    List<TExpertBasicInfo> selectExpertWithCommitt(@Param("province") String province, @Param("city") String city,@Param("area") String area,@Param("profession") String profession,@Param("level") String Level);
 }

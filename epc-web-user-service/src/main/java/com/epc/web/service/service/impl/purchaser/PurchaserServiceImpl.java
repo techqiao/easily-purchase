@@ -33,7 +33,6 @@ import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -165,6 +164,10 @@ public class PurchaserServiceImpl implements PurchaserService {
             TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
             //if(StringUtils.)
             detailInfo.setCompanyName(handleSupplier.getCompanyName());
+            detailInfo.setArea(handleSupplier.getArea());
+            detailInfo.setProvince(handleSupplier.getProvince());
+            detailInfo.setCity(handleSupplier.getCity());
+            detailInfo.setCompanyAddress(handleSupplier.getCompanyAddress());
             detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
             detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleSupplier.getPublicBankCount());
@@ -310,6 +313,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             pojo.setProfession(handleExpert.getProfession());
             pojo.setPositional(handleExpert.getPositional());
             pojo.setLevel(handleExpert.getLevel());
+            pojo.setWorkingYears(handleExpert.getWorkingYears());
             pojo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
             pojo.setCircularDt(handleExpert.getCircularDt());
             pojo.setCircularDtEnd(handleExpert.getCircularDtEnd());
@@ -347,6 +351,9 @@ public class PurchaserServiceImpl implements PurchaserService {
                     TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
                     tExpertDetailInfo.setExpertId(expertId);
                     tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
+                    tExpertDetailInfo.setProvince(tPurchaserDetailInfo.getProvince());
+                    tExpertDetailInfo.setCity(tPurchaserDetailInfo.getCity());
+                    tExpertDetailInfo.setArea(tPurchaserDetailInfo.getArea());
                     tExpertDetailInfo.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
                     tExpertDetailInfo.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
                     tExpertDetailInfo.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
@@ -466,6 +473,10 @@ public class PurchaserServiceImpl implements PurchaserService {
             detailInfo.setUpdateAt(new Date());
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             detailInfo.setCompanyName(handleAgnecy.getCompanyName());
+            detailInfo.setCompanyAddress(handleAgnecy.getCompanyAddress());
+            detailInfo.setProvince(handleAgnecy.getProvince());
+            detailInfo.setCity(handleAgnecy.getCity());
+            detailInfo.setArea(handleAgnecy.getArea());
             detailInfo.setUniformCreditCode(handleAgnecy.getUniformCreditCode());
             detailInfo.setPublicBankName(handleAgnecy.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleAgnecy.getPublicBankCount());
@@ -638,10 +649,13 @@ public class PurchaserServiceImpl implements PurchaserService {
         TPurchaserDetailInfo detailInfo = new TPurchaserDetailInfo();
         detailInfo.setPurchaserId(purchaserId);
         detailInfo.setCompanyName(handlePurchaser.getCompanyName());
+        detailInfo.setCity(handlePurchaser.getCity());
+        detailInfo.setCompanyAddress(handlePurchaser.getCompanyAddress());
+        detailInfo.setProvince(handlePurchaser.getProvince());
+        detailInfo.setCompanyAddress(handlePurchaser.getCompanyAddress());
         detailInfo.setUniformCreditCode(handlePurchaser.getUniformCreditCode());
         detailInfo.setPublicBankName(handlePurchaser.getPublicBankName());
         detailInfo.setPublicBanAccountNumber(handlePurchaser.getPublicBankCount());
-        detailInfo.setCompanyName(handlePurchaser.getCompanyAddress());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -741,6 +755,10 @@ public class PurchaserServiceImpl implements PurchaserService {
                 //detailInfo.setId(0L);
                 detailInfo.setSupplierId(supplierId);
                 detailInfo.setCompanyName(dto.getCompanyName());
+                detailInfo.setCompanyAddress(dto.getCompanyAddress());
+                detailInfo.setProvince(dto.getProvince());
+                detailInfo.setCity(dto.getCity());
+                detailInfo.setArea(dto.getArea());
                 detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
                 detailInfo.setPublicBankName(dto.getPublicBankName());
                 detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
@@ -855,6 +873,10 @@ public class PurchaserServiceImpl implements PurchaserService {
                 detailInfo = new TAgencyDetailInfo();
                 detailInfo.setAgencyId(agencyId);
                 detailInfo.setCompanyName(dto.getCompanyName());
+                detailInfo.setCompanyAddress(dto.getCompanyAddress());
+                detailInfo.setProvince(dto.getProvince());
+                detailInfo.setCity(dto.getCity());
+                detailInfo.setArea(dto.getArea());
                 detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
                 detailInfo.setPublicBankName(dto.getPublicBankName());
                 detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
@@ -1497,6 +1519,10 @@ public class PurchaserServiceImpl implements PurchaserService {
         SupplierDetailVo vo = new SupplierDetailVo();
         vo.setSupplierId(id);
         vo.setCompanyName(detailInfo.getCompanyName());
+        vo.setArea(detailInfo.getArea());
+        vo.setProvince(detailInfo.getProvince());
+        vo.setCity(detailInfo.getCity());
+        vo.setCompanyAddress(detailInfo.getCompanyAddress());
         vo.setCreateAt(basicInfo.getCreateAt());
         vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
         vo.setPublicBankName(detailInfo.getPublicBankName());
@@ -1558,7 +1584,7 @@ public class PurchaserServiceImpl implements PurchaserService {
             list = tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
         } catch (Exception e) {
             LOGGER.error("查询专家详细信息失败Exception:{}", e);
-            return Result.error("查询失败");
+            return Result.error("查询专家详细信息失败");
         }
         if (!CollectionUtils.isEmpty(list)) {
             List<Attachement> attachements = new ArrayList<>();
@@ -1605,6 +1631,10 @@ public class PurchaserServiceImpl implements PurchaserService {
         PurchaserAgencyDetailVo vo = new PurchaserAgencyDetailVo();
         vo.setAgencyId(agencyId);
         vo.setCompanyName(detailInfo.getCompanyName());
+        vo.setArea(detailInfo.getArea());
+        vo.setProvince(detailInfo.getProvince());
+        vo.setCity(detailInfo.getCity());
+        vo.setCompanyAddress(detailInfo.getCompanyAddress());
         vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
         vo.setPublicBankName(detailInfo.getPublicBankName());
         vo.setPublicBankCount(detailInfo.getPublicBanAccountNumber());
@@ -1810,6 +1840,9 @@ public class PurchaserServiceImpl implements PurchaserService {
             if (tPurchaserDetailInfo != null) {
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
                 tExpertDetailInfo.setExpertId(expertId);
+                tExpertDetailInfo.setArea(tPurchaserDetailInfo.getArea());
+                tExpertDetailInfo.setCity(tPurchaserDetailInfo.getCity());
+                tExpertDetailInfo.setProvince(tPurchaserDetailInfo.getProvince());
                 tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
                 tExpertDetailInfo.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
                 tExpertDetailInfo.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());

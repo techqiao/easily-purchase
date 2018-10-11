@@ -50,11 +50,6 @@ public class ClientHandleSupplierDto implements Serializable {
     @ApiModelProperty(value = "对公银行账号")
     private String publicBankCount;
     /**
-     * 公司地址
-     */
-    @ApiModelProperty(value = "公司地址")
-    private String companyAddress;
-    /**
      * 附件list
      */
     @ApiModelProperty(value = "营业执照照片url")
@@ -67,6 +62,14 @@ public class ClientHandleSupplierDto implements Serializable {
     private String certificateOfAuthorization;
     @ApiModelProperty(value = "附件信息:证书身份证等")
     private List<ClientAttachement> atts;
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
+    @ApiModelProperty(value = "省")
+    private String province;
+    @ApiModelProperty(value = "市")
+    private String city;
+    @ApiModelProperty(value = "区")
+    private String area;
 
 
 }

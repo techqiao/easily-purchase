@@ -85,4 +85,10 @@ public class HandleSupplierDto implements Serializable {
      */
     private String companyAddress;
 
+    private String province;
+
+    private String city;
+
+    private String area;
+
 }

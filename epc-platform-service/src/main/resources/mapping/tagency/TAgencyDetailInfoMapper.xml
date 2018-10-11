@@ -375,7 +375,7 @@ FROM t_agency_detail_info ts WHERE ts.is_deleted=0 AND ts.company_name like #{co
 
 
   <select resultMap="selectMap" parameterType="com.epc.administration.facade.biddingagency.vo.BiddingAgencyVO" id="selectByPage" >
-    SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.agency_id,td.uniform_credit_code ,td.company_address,td.area,td.city,td.province
+    SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.agency_id,td.uniform_credit_code
     FROM t_agency_basic_info tb
     LEFT  JOIN t_agency_detail_info td ON td.agency_id=tb.id
     WHERE tb.is_deleted=0

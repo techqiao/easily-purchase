@@ -372,7 +372,7 @@ FROM t_operator_detail_info tp WHERE tp.is_deleted=0 AND tp.company_name like #{
 
 
   <select resultMap="selectMap" parameterType="com.epc.administration.facade.operator.vo.OperatorVO" id="selectByPage" >
-    SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.uniform_credit_code,td.company_address,td.area,td.city,td.province
+    SELECT tb.id id, tb.cellphone,tb.`name`,tb.state, td.company_name,tb.create_at,td.is_deleted,td.public_bank_name,td.public_ban_account_number,td.uniform_credit_code
     FROM t_operator_basic_info tb
     LEFT  JOIN t_operator_detail_info td ON td.operator_id=tb.id
     WHERE tb.is_deleted=0

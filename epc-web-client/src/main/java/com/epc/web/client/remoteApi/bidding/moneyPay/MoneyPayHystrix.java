@@ -2,6 +2,7 @@ package com.epc.web.client.remoteApi.bidding.moneyPay;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeMoneyPayService;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
@@ -45,9 +46,10 @@ public class MoneyPayHystrix implements FacadeMoneyPayService {
     }
 
     @Override
-    public Boolean isPayForProjectFile(QueryProgramPayDTO dto) {
+    public IsPayDTO isPayForProjectFile(QueryProgramPayDTO dto) {
         return null;
     }
+
 
     @Override
     public BankAccountVO getBankAccount(int documents) {

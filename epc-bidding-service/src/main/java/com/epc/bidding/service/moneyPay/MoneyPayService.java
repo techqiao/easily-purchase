@@ -1,6 +1,7 @@
 package com.epc.bidding.service.moneyPay;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
@@ -62,7 +63,7 @@ public interface MoneyPayService {
      * 查询供应商是否支付下载招标文件金额
      * @return
      */
-    Boolean IsPayForProjectFile(QueryProgramPayDTO dto);
+    IsPayDTO IsPayForProjectFile(QueryProgramPayDTO dto);
 
 
     /**

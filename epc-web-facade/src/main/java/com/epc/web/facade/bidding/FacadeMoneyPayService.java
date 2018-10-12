@@ -1,6 +1,7 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
@@ -75,7 +76,7 @@ public interface FacadeMoneyPayService {
      * @return
      */
     @PostMapping(value = "isPayForProjectFile", consumes = "application/json; charset=UTF-8")
-    Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto);
+    IsPayDTO isPayForProjectFile(@RequestBody QueryProgramPayDTO dto);
 
 
     /**

@@ -17,10 +17,12 @@ import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +32,13 @@ import java.util.Map;
 
 @Api(value = "供应商服务"/*,tags = "供应商服务"*/)
 @RestController
-@RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TSupplierBasicInfoController extends BaseController {
 
     @Autowired
     private SupplierClient supplierClient;
+
+
 
     /**0
      * 注册供应商
@@ -299,7 +303,7 @@ public class TSupplierBasicInfoController extends BaseController {
     }
 
     @ApiOperation(value = "15:根据当前登录供应商获取对应项目详情")
-    @PostMapping("querySupplierProject")
+    @PostMapping("/querySupplierProject")
     public Result<Map<String, Object>> querySupplierProject(@RequestBody QueryRequest queryRequest){
         QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
        // LoginUser loginUser = new LoginUser();
@@ -311,5 +315,9 @@ public class TSupplierBasicInfoController extends BaseController {
         return supplierClient.querySupplierProject(querywithPageHandle);
     }
 
-
+    @ApiOperation(value = "16:获得供货商类别列表")
+    @RequestMapping("/querySupplierCategory")
+    public Result<List<SupplierCategoryVo>> querySupplierCategory(){
+        return supplierClient.querySupplierCategory();
+    }
 }

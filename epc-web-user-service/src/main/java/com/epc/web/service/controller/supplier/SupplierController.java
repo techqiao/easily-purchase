@@ -10,6 +10,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.controller.BaseController;
 import com.epc.web.service.domain.supplier.TTenderMessage;
@@ -17,6 +18,7 @@ import com.epc.web.service.service.supplier.SupplierService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -196,5 +198,10 @@ public class SupplierController extends BaseController implements FacadeTSupplie
         Result<List<TenderMessageVO>> listResult= supplierService.querySupplierProject(querywithPageHandle);
         PageInfo<TenderMessageVO> pageInfo = new PageInfo<>(listResult.getData());
         return Result.success(getDataTable(pageInfo));
+    }
+
+    @Override
+    public Result<List<SupplierCategoryVo>> querySupplierCategory() {
+        return supplierService.querySupplierCategory();
     }
 }

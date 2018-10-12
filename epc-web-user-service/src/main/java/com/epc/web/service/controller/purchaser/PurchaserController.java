@@ -11,6 +11,7 @@ import com.epc.web.facade.expert.Handle.HandleExpert;
 import com.epc.web.facade.purchaser.FacadePurchaserService;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -152,6 +153,11 @@ public  class PurchaserController implements FacadePurchaserService {
     public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(@RequestBody QueryDto dto) {
         return purchaserService.queryAgencyDetailById(dto);
 
+    }
+
+    @Override
+    public Result<Boolean> deletePurchaserEmployee(@PathVariable("id") Long id) {
+        return purchaserService.deletePurchaserEmployee(id);
     }
 
     @Override

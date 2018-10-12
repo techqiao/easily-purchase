@@ -7,6 +7,7 @@ import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -89,4 +90,6 @@ public interface IRoleLoginService {
      * @date:2018/10/3
      */
     Result<Boolean> modifyPassword(ModifyUser modifyUser);
+
+    Result<String> getTokenValue(String token);
 }

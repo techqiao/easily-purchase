@@ -310,6 +310,8 @@ public interface PurchaserService {
 //     */
 //    public Result<Boolean> updatePurchaserExpert(HandleExpertDto expertDto);
 
+    Result<Boolean> deletePurchaserEmployee(Long id);
+
 
 
 

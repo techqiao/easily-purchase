@@ -1,8 +1,10 @@
 package com.epc.web.facade.purchaser.vo;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 public class PurchaserEmplyeeVo implements Serializable{
@@ -31,4 +33,13 @@ public class PurchaserEmplyeeVo implements Serializable{
      * 公司名称
      */
     private String companyName;
+    /**
+     * 员工状态
+     */
+    private Integer state;
+    /**
+     * 加入时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createAt;
 }

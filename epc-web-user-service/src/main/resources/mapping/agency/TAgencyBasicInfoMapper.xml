@@ -374,7 +374,7 @@
   </update>
   <update id="deleteAgencyExpertById">
     UPDATE t_agency_expert
-    SET is_delete=#{delete}
+    SET is_deleted=#{delete}
     WHERE id =#{id}
   </update>
   <update id="updateAgencyEmployeeDetail" parameterType="com.epc.web.service.domain.agency.TAgencyBasicInfo">
@@ -433,15 +433,13 @@
       <if test="createAt != null" >
         AND create_at = #{createAt,jdbcType=TIMESTAMP}
       </if>
-      <if test="isDeleted != null" >
-        AND is_deleted = #{isDeleted,jdbcType=INTEGER}
-      </if>
       <if test="isForbbiden !=null">
         AND is_forbidden = #{isForbbiden,jdbcType=INTEGER}
       </if>
       <if test="employeeId!=null">
         AND id = #{employeeId}
       </if>
+      AND is_deleted =0
     </where>
   </select>
   <select id="selectAgencyBasicByCellphoneAndName"

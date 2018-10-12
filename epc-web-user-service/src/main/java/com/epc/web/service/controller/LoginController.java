@@ -113,6 +113,11 @@ public class LoginController implements FacadeLoginUserService {
         return iRoleLoginService.retrieveVerifyCode(cellphone);
     }
 
+    @Override
+    public Result<String> getTokenValue(@PathVariable("token") String token) {
+        return iRoleLoginService.getTokenValue(token);
+    }
+
     public String getVerityCode(String cellphone){
       return CookieUtil.readVerityCode(cellphone);
     }

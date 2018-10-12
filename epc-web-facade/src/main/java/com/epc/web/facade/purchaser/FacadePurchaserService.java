@@ -6,9 +6,7 @@ import com.epc.web.facade.purchaser.dto.*;
 import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.*;
 import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -227,6 +225,13 @@ public interface FacadePurchaserService {
      */
     @PostMapping(value = "queryAgencyDetailById", consumes = "application/json; charset=UTF-8")
     public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(@RequestBody QueryDto dto);
+    /**
+     *@author :winlin
+     *@Description : 删除员工
+     *@date:2018/10/12
+     */
+    @GetMapping(value = "deletePurchaserEmployee/{id}")
+    public Result<Boolean> deletePurchaserEmployee(@PathVariable("id") Long id);
 
 
 

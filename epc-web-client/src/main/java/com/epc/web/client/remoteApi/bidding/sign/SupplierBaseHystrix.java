@@ -9,6 +9,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,11 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
 
     @Override
     public Result<Map<String, Object>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<SupplierCategoryVo>> querySupplierCategory() {
         return Result.hystrixError();
     }
 }

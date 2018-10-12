@@ -860,7 +860,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 agency.setCreateAt(new Date());
                 agency.setUpdateAt(new Date());
                 agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                agency.setPurchaserId(dto.getCompanyId()+"");
+                agency.setPurchaserId(dto.getCompanyId() + "");
                 tPurchaserAgencyMapper.insertSelective(agency);
             }
             if (detailInfo == null) {
@@ -1279,6 +1279,8 @@ public class PurchaserServiceImpl implements PurchaserService {
                 vo.setCellphone(tPurchaserBasicInfo.getCellphone());
                 vo.setCompanyId(companyId);
                 vo.setBossName(bossName);
+                vo.setCreateAt(tPurchaserBasicInfo.getCreateAt());
+                vo.setState(tPurchaserBasicInfo.getIsForbidden());
                 vo.setCompanyName(companyName);
                 list.add(vo);
             }
@@ -1745,7 +1747,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<List<PurchaserExpertVo>> queryExperts(QueryExpertDto dto) {
         List<PurchaserExpertVo> infoList = null;
         try {
-            infoList =tExpertBasicInfoMapper.selectExpertByQueryCriteria(dto);
+            infoList = tExpertBasicInfoMapper.selectExpertByQueryCriteria(dto);
         } catch (Exception e) {
             LOGGER.error("查询专家失败Exception:{}", e);
             return Result.error("查询专家失败");
@@ -1777,6 +1779,26 @@ public class PurchaserServiceImpl implements PurchaserService {
 
     /**
      * @author :winlin
+     * @Description :删除员工
+     * @date:2018/10/12
+     */
+    @Override
+    public Result<Boolean> deletePurchaserEmployee(Long id) {
+        if(id ==null){
+            return Result.success("请传入有效的信息");
+        }
+        int success =0;
+        try{
+           success= tPurchaserBasicInfoMapper.updateDeleteStateById(id);
+        }catch(Exception e){
+            LOGGER.error("删除员工失败Exception:{}",e);
+            return Result.error("删除员工失败");
+        }
+        return success>0?Result.success("删除员工成功"):Result.success("删除员工失败");
+    }
+
+    /**
+     * @author :winlin
      * @Description :依据条件检索代理机构
      * @param:
      * @return:
@@ -1787,12 +1809,12 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<List<PurchaserAgencyVo>> queryAgenciesByCriteria(QueryAgencyDto dto) {
         List<PurchaserAgencyVo> agencyVos = null;
         try {
-            agencyVos= tAgencyDetailInfoMapper.selectAgencyByCriteria(dto);
+            agencyVos = tAgencyDetailInfoMapper.selectAgencyByCriteria(dto);
         } catch (Exception e) {
             LOGGER.error("查询代理机构失败Exception:{}", e);
             return Result.error("查询代理机构失败");
         }
-            return CollectionUtils.isEmpty(agencyVos) ? Result.success("没有符合条件代理机构") : Result.success("查询成功", agencyVos);
+        return CollectionUtils.isEmpty(agencyVos) ? Result.success("没有符合条件代理机构") : Result.success("查询成功", agencyVos);
     }
 
 

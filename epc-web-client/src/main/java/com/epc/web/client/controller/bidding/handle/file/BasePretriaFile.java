@@ -19,7 +19,7 @@ public class BasePretriaFile {
     private String filePath;
     @ApiModelProperty(value = "文件名")
     private String fileName;
-    @ApiModelProperty(value = "文件类型")
+    @ApiModelProperty(value = "文件类型()")
     private String fileType;
 
 }

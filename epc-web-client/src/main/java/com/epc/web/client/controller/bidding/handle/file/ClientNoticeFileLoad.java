@@ -16,8 +16,6 @@ public class ClientNoticeFileLoad {
     private Long purchaseProjectId;
     @ApiModelProperty("标段Id")
     private Long bidsId;
-    @ApiModelProperty("公司Id")
-    private Long companyId;
     @ApiModelProperty("委托人姓名")
     private String delegator;
     @ApiModelProperty("委托人身份证")
@@ -26,8 +24,6 @@ public class ClientNoticeFileLoad {
     private String bailmentPath;
     @ApiModelProperty("投标附录路径")
     private String bidAppendix;
-    private Long operateId;
-
     @ApiModelProperty("投标文件列表")
     private List<BasePretriaFile> filePathList;
 }

@@ -49,7 +49,7 @@ public class ExpertScoreController extends BaseController {
 
 
     @ApiOperation(value = "查看评审汇总")
-    @PostMapping(value = "queryExpertScore", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "queryExpertScore")
     public Result<ScoreAndPathVO> queryExpertScore (@RequestParam(value = "bidId") Long bidId) {
         return expertScoreClient.queryExpertScore(bidId);
     }

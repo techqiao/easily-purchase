@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
 import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.vo.SubEvaluationV0;
 
 /**
  * <p>Description : easilys
@@ -17,6 +18,12 @@ public class EvaluationHystrix implements FacadeEvaluationService {
     public Result insertEvaluation(EvaluationHandle evaluationHandle) {
         return Result.hystrixError();
     }
+
+    @Override
+    public Result<SubEvaluationV0> getEvaluationDetail(Long supplierId, Long procurementProjectId) {
+        return Result.hystrixError();
+    }
+
 
     @Override
     public Result selectGuarantee(Long procurementProjectId) {

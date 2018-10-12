@@ -7,6 +7,7 @@ import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
+import com.epc.web.facade.bidding.vo.SubEvaluationV0;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,11 @@ public class EvaluationController implements FacadeEvaluationService {
     @Override
     public Result<Boolean> insertEvaluation(@RequestBody EvaluationHandle evaluationHandle) {
         return evaluationService.insertEvaluation(evaluationHandle);
+    }
+
+    @Override
+    public Result<SubEvaluationV0> getEvaluationDetail(@RequestParam("supplierId") Long supplierId,@RequestParam("procurementProjectId")  Long procurementProjectId) {
+        return evaluationService.getEvaluationDetail(supplierId,procurementProjectId);
     }
 
     @Override

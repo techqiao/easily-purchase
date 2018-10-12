@@ -10,14 +10,13 @@ import com.epc.tendering.service.service.bid.EvaluationService;
 import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.handle.StandardTypeHandle;
-import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
-import com.epc.web.facade.bidding.vo.GuaranteeVO;
-import com.epc.web.facade.bidding.vo.TPretrialFileVO;
+import com.epc.web.facade.bidding.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -44,8 +43,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     private TTenderMessageMapper tTenderMessageMapper;
     @Autowired
     private TTenderFileMapper tTenderFileMapper;
-    @Autowired
     private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+    @Autowired
+    private BSaleDocumentsMapper bSaleDocumentsMapper;
     /**
      * 新增评标标准设定  废标条款
      * @param evaluationHandle
@@ -82,6 +82,25 @@ public class EvaluationServiceImpl implements EvaluationService {
             return Result.error();
         }
     }
+
+    @Override
+    public Result<SubEvaluationV0> getEvaluationDetail(Long supplierId,Long procurementProjectId) {
+        SubEvaluationV0 subEvaluationV0 = new SubEvaluationV0();
+        List<EvaluationVO> evaluationVOList = new ArrayList<>();
+        subEvaluationV0.setEvaluationV0List(evaluationVOList);
+        BEvaluationTenderStandardCriteria criteria = new BEvaluationTenderStandardCriteria();
+        BEvaluationTenderStandardCriteria.Criteria subCriteria = criteria.createCriteria();
+        subCriteria.andProcurementProjectIdEqualTo(procurementProjectId);
+        List<BEvaluationTenderStandard> list = bEvaluationTenderStandardMapper.selectByExample(criteria);
+        for (BEvaluationTenderStandard item : list) {
+            EvaluationVO pojo = new EvaluationVO();
+            BeanUtils.copyProperties(item, pojo);
+            evaluationVOList.add(pojo);
+        }
+        subEvaluationV0.setBiddingDocumentsDownloadUrl(bSaleDocumentsMapper.getUrl(procurementProjectId));
+        return Result.success(subEvaluationV0);
+    }
+
     /**
      * 根据id查询对应废标模板
      * @param id 废标模板id
@@ -180,8 +199,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     public Result<Boolean> insertClauseTemplate(ClauseTemplateHandle clauseTemplateHandle) {
         BTenderAbolishClauseTemplate bTenderAbolishClauseTemplate = new BTenderAbolishClauseTemplate();
         BeanUtils.copyProperties(clauseTemplateHandle,bTenderAbolishClauseTemplate);
-        bTenderAbolishClauseTemplate.setUpdateAt(new Date());
-        bTenderAbolishClauseTemplate.setCreateAt(new Date());
         return Result.success(bTenderAbolishClauseTemplateMapper.insertSelective(bTenderAbolishClauseTemplate)>0);
     }
 }

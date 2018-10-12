@@ -176,4 +176,10 @@ public class Const {
         int BUSY=0;
         int FREE=1;
     }
+
+    public  interface PAYMENT_TYPE{
+        int DOCUMENTS=0;
+        int GUARANTY=1;
+        int SERVICE=2;
+    }
 }

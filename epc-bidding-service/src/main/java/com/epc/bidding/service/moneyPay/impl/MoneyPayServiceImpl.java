@@ -7,6 +7,7 @@ import com.epc.bidding.service.moneyPay.MoneyPayService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.DateTimeUtil;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
@@ -52,6 +53,10 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     TWinBidMapper tWinBidMapper;
     @Autowired
     TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
+    @Autowired
+    PlatformBankAccountMapper platformBankAccountMapper;
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -351,9 +356,11 @@ public class MoneyPayServiceImpl implements MoneyPayService {
      * @return
      */
     @Override
-    public Boolean IsPayForProjectFile(QueryProgramPayDTO dto){
+    public IsPayDTO IsPayForProjectFile(QueryProgramPayDTO dto){
+        IsPayDTO isPayDTO=new IsPayDTO();
         if(dto.getProcurementProjectId()==null){
-            return  false;
+            isPayDTO.setIsPay(false);
+            return  isPayDTO;
         }
         final TPurchaseProjectFileDownloadCriteria criteria=new TPurchaseProjectFileDownloadCriteria();
         final TPurchaseProjectFileDownloadCriteria.Criteria subCriteria=criteria.createCriteria();
@@ -363,11 +370,13 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
         if(list.size()==0){
             LOGGER.error("尚未发布招标文件");
-            return false;
+            isPayDTO.setIsPay(false);
+            return  isPayDTO;
         }
         //获取招标文件ID
         Long fileId=list.get(0).getId();
         BigDecimal money=list.get(0).getFilePayment();
+        isPayDTO.setMoney(money);
         //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
@@ -378,15 +387,45 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         //未查询到支付记录
         if(payList.size()==0){
             LOGGER.error("未找到支付记录");
-            return false;
+            isPayDTO.setIsPay(false);
+            return  isPayDTO;
         }else{
             //(实付金额 比对 下载金额)
             for(TPurchaseProjectFilePay entity:payList){
                 if(entity.getFilePaymentReal().compareTo(money)>-1){
-                    return true;
+                    isPayDTO.setIsPay(true);
                 }
             }
-            return true;
+            return  isPayDTO;
         }
+    }
+
+    /**
+     * 根据支付类型 获取 对应银行信息
+     * @param documents
+     * @return
+     */
+    @Override
+    public BankAccountVO getBankAccount(int documents){
+
+        PlatformBankAccountCriteria criteria=new PlatformBankAccountCriteria();
+        PlatformBankAccountCriteria.Criteria cubCriteria=criteria.createCriteria();
+
+        if(documents==Const.PAYMENT_TYPE.DOCUMENTS){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.DOCUMENTS);
+        }else if(documents==Const.PAYMENT_TYPE.GUARANTY){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.GUARANTY);
+        }else if(documents==Const.PAYMENT_TYPE.SERVICE){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.SERVICE);
+        }
+
+        List<PlatformBankAccount> result = platformBankAccountMapper.selectByExample(criteria);
+        BankAccountVO vo= new BankAccountVO();
+
+        if(result.size()>0){
+            PlatformBankAccount entity=result.get(0);
+            BeanUtils.copyProperties(entity,vo);
+        }
+        return  vo;
     }
 }

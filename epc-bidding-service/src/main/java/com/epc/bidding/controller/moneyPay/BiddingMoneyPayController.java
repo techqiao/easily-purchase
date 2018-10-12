@@ -4,6 +4,7 @@ package com.epc.bidding.controller.moneyPay;
 import com.epc.bidding.service.moneyPay.MoneyPayService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeMoneyPayService;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
 import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
@@ -13,6 +14,7 @@ import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
 import com.epc.web.facade.bidding.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -87,8 +89,15 @@ public class BiddingMoneyPayController implements FacadeMoneyPayService {
      */
 
     @Override
-    public Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
+    public IsPayDTO isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
         return moneyPayService.IsPayForProjectFile(dto);
+    }
+
+
+
+    @Override
+    public BankAccountVO getBankAccount(int documents){
+        return moneyPayService.getBankAccount(documents);
     }
 
 }

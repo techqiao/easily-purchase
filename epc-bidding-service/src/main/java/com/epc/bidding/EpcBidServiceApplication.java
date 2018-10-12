@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan("com.epc.bidding")
 @MapperScan(value = "com.epc.bidding.mapper")
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class EpcBidServiceApplication {
 
 	public static void main(String[] args) {

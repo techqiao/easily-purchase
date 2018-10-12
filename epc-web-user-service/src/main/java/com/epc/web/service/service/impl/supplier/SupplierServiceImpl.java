@@ -14,6 +14,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.domain.bid.TProjectBasicInfo;
 import com.epc.web.service.domain.bid.TPurchaseProjectBids;
@@ -22,7 +23,6 @@ import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
 import com.epc.web.service.mapper.supplier.*;
 import com.epc.web.service.service.supplier.SupplierService;
-import com.netflix.discovery.converters.Auto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +63,10 @@ public class SupplierServiceImpl implements SupplierService {
     TProjectBasicInfoMapper tProjectBasicInfoMapper;
     @Autowired
     TProjectProcedureMapper tProjectProcedureMapper;
+    @Autowired
+    SupplierCategoryMapper supplierCategoryMapper;
+
+    private String supplierCategory ="supplier.type";
     /**
      * 0
      * 注册供应商
@@ -1113,6 +1117,25 @@ public class SupplierServiceImpl implements SupplierService {
         }
         return Result.success(voList);
     }
+
+
+    /**
+     * @author :winlin
+     * @Description :获得供应商列表
+     * @date:2018/10/11
+     */
+    @Override
+    public Result<List<SupplierCategoryVo>> querySupplierCategory() {
+        List<SupplierCategoryVo> categoryVos = null;
+        try {
+            categoryVos = supplierCategoryMapper.selectCategory(supplierCategory);
+        } catch (Exception e) {
+            LOGGER.error("查询供货商类别列表失败", e);
+            return Result.error("查询供货商类别列表失败");
+        }
+        return CollectionUtils.isEmpty(categoryVos) ? Result.success("查询供货商类别列表失败") : Result.success(categoryVos);
+    }
+
 
     /**
      * 根据bid 和 用户类型 判断标段环节步骤（）

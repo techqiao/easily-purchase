@@ -4,8 +4,6 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.query.notice.QueryAdvanceNoticeDTO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeDetailVO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

@@ -1,6 +1,4 @@
 package com.epc.tendering.service.service.enrolmentinvitation.impl;
-import com.epc.web.facade.bidding.dto.SupplierSignDTO;
-import com.google.common.collect.Lists;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -23,6 +21,7 @@ import com.epc.tendering.service.mapper.signup.BInvitationMapper;
 import com.epc.tendering.service.mapper.signup.BSignUpMapper;
 import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.enrolmentinvitation.EnrolmentInvitationService;
+import com.epc.web.facade.bidding.dto.SupplierSignDTO;
 import com.epc.web.facade.bidding.vo.PayListForAllVO;
 import com.epc.web.facade.bidding.vo.QuerySignUpListVO;
 import com.epc.web.facade.enrolmentinvitation.handle.InvitationHandle;

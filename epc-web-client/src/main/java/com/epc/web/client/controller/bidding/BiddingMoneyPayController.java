@@ -35,7 +35,6 @@ import java.util.List;
 @Api(value = "支付业务",tags = "支付业务")
 @RestController
 @RequestMapping(value = "/bidding", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-
 public class BiddingMoneyPayController extends BaseController {
 
     @Autowired

@@ -1,11 +1,20 @@
 package com.epc.common;
 
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.MoreObjects;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class QueryRequest implements Serializable {
 
+	protected Map<String, Object> getDataTable(PageInfo<?> pageInfo) {
+		Map<String, Object> rspData = new HashMap<>();
+		rspData.put("rows", pageInfo.getList());
+		rspData.put("total", pageInfo.getTotal());
+		return rspData;
+	}
 	private static final long serialVersionUID = -4869594085374385813L;
 
 	private int pageSize;

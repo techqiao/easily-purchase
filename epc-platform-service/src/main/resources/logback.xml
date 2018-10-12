@@ -27,7 +27,6 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
-
     <!-- info日志 -->
     <!-- 按文件大小滚动日志 -->
     <appender name="INFO-OUT"
@@ -74,7 +73,6 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
-
     <!-- 配置好前面对应的appender -->
     <root level="DEBUG-OUT">
 

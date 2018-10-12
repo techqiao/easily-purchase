@@ -1,10 +1,12 @@
 package com.epc.tendering.service.service.bid;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -32,15 +34,22 @@ public interface EvaluationService {
 
     /**
      * 查询对应投递文件列表
-     * @param companyId 发售招标文件表主键ID
+     * @param purchaseProjectId 公司id
      * @return
      */
-    Result<List<TPretrialFileVO>> getFilesByCompanyId(Long companyId);
+    Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(Long purchaseProjectId);
     /**
      * 根据id查询对应废标模板
      * @param id 废标模板id
      * @return
      */
     Result<ClauseTemplateVO> getClauseTemplateById(Long id);
+
+    /**
+     * 新增废标模板
+     * @param clauseTemplateHandle
+     * @return
+     */
+    Result<Boolean> insertClauseTemplate(@RequestBody ClauseTemplateHandle clauseTemplateHandle);
 
 }

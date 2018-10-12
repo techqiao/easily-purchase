@@ -32,7 +32,7 @@ public interface AdminUserService {
      * @return
      */
     @GetMapping(value = "getUser")
-     Result getUser(@RequestBody Long userId);
+     Result getUser(@RequestParam("userId") Long userId);
 
     /**
      * 获取用户信息 分页

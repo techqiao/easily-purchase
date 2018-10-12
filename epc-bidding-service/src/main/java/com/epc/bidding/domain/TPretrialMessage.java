@@ -10,6 +10,8 @@ public class TPretrialMessage implements Serializable {
 
     private Long releaseAnnouncementId;
 
+    private Long bidId;
+
     private Long companyId;
 
     private String status;
@@ -50,6 +52,14 @@ public class TPretrialMessage implements Serializable {
 
     public void setReleaseAnnouncementId(Long releaseAnnouncementId) {
         this.releaseAnnouncementId = releaseAnnouncementId;
+    }
+
+    public Long getBidId() {
+        return bidId;
+    }
+
+    public void setBidId(Long bidId) {
+        this.bidId = bidId;
     }
 
     public Long getCompanyId() {
@@ -125,6 +135,7 @@ public class TPretrialMessage implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", purchaseProjectId=").append(purchaseProjectId);
         sb.append(", releaseAnnouncementId=").append(releaseAnnouncementId);
+        sb.append(", bidId=").append(bidId);
         sb.append(", companyId=").append(companyId);
         sb.append(", status=").append(status);
         sb.append(", content=").append(content);

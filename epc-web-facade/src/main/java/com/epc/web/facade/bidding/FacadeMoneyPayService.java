@@ -1,14 +1,17 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
 import com.epc.web.facade.bidding.vo.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -64,4 +67,23 @@ public interface FacadeMoneyPayService {
      */
     @PostMapping(value = "getServiceMoneyListForAll", consumes = "application/json; charset=UTF-8")
     Result<List<PayListForAllVO>> getServiceMoneyListForAll(@RequestBody ServiceMoneyListForAllDTO queryMoneyPayRecordDTO);
+
+
+
+    /**
+     * 是否支付下载金额
+     * @param dto
+     * @return
+     */
+    @PostMapping(value = "isPayForProjectFile", consumes = "application/json; charset=UTF-8")
+    IsPayDTO isPayForProjectFile(@RequestBody QueryProgramPayDTO dto);
+
+
+    /**
+     * 支付类型获取支付银行信息
+     * @param documents
+     * @return
+     */
+    @PostMapping(value = "getBankAccount", consumes = "application/json; charset=UTF-8")
+    BankAccountVO getBankAccount(@RequestParam("documents")  int documents);
 }

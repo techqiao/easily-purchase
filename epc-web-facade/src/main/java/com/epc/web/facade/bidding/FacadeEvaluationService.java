@@ -1,6 +1,7 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
@@ -38,11 +39,11 @@ public interface FacadeEvaluationService {
 
     /**
      * 查询对应投递文件列表
-     * @param companyId 发售招标文件表主键ID
+     * @param purchaseProjectId 公司id
      * @return
      */
-    @GetMapping(value = "getFilesByCompanyId")
-    Result<List<TPretrialFileVO>> getFilesByCompanyId(@RequestParam("companyId") Long companyId);
+    @GetMapping(value = "getFilesByPurchaseProjectId")
+    Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(@RequestParam("purchaseProjectId") Long purchaseProjectId);
 
 
     /**
@@ -52,4 +53,12 @@ public interface FacadeEvaluationService {
      */
     @GetMapping(value = "getClauseTemplateById" )
     Result<ClauseTemplateVO> getClauseTemplateById(@RequestParam("id") Long id);
+
+    /**
+     * 新增废标模板
+     * @param clauseTemplateHandle
+     * @return
+     */
+    @PostMapping(value = "insertClauseTemplate" ,consumes = "application/json; charset=UTF-8"  )
+    Result<Boolean> insertClauseTemplate(@RequestBody ClauseTemplateHandle clauseTemplateHandle);
 }

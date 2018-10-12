@@ -51,7 +51,7 @@ public class EnrolmentInvitationController  extends BaseController {
     }
 
     @ApiOperation(value = "供应商收到的邀请列表",notes = "供应商收到的邀请列表")
-    @PostMapping(value = "invitationListForSupplier" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "invitationListForSupplier" ,consumes = "application/json;charset=UTF-8")
     public Result invitationListForSupplier(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
         InvitationForSupplierDTO dto=new InvitationForSupplierDTO();
         dto.setSupplierId(getLoginUser().getBossId());

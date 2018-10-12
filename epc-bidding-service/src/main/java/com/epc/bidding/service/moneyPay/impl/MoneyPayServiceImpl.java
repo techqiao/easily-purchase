@@ -7,8 +7,10 @@ import com.epc.bidding.service.moneyPay.MoneyPayService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.DateTimeUtil;
+import com.epc.web.facade.bidding.dto.IsPayDTO;
 import com.epc.web.facade.bidding.handle.HandleFilePay;
 import com.epc.web.facade.bidding.handle.HandleGuaranteeAmountPay;
+import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayDTO;
 import com.epc.web.facade.bidding.query.moneyPay.QueryMoneyPayRecordDTO;
 import com.epc.web.facade.bidding.query.moneyPay.ServiceMoneyListForAllDTO;
@@ -49,6 +51,12 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     @Autowired
     TWinBidMapper tWinBidMapper;
+    @Autowired
+    TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
+    @Autowired
+    PlatformBankAccountMapper platformBankAccountMapper;
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -340,5 +348,84 @@ public class MoneyPayServiceImpl implements MoneyPayService {
             voList.add(vo);
         }
         return Result.success(voList);
+    }
+
+
+    /**
+     * 查询供应商是否支付下载招标文件金额
+     * @return
+     */
+    @Override
+    public IsPayDTO IsPayForProjectFile(QueryProgramPayDTO dto){
+        IsPayDTO isPayDTO=new IsPayDTO();
+        if(dto.getProcurementProjectId()==null){
+            isPayDTO.setIsPay(false);
+            return  isPayDTO;
+        }
+        final TPurchaseProjectFileDownloadCriteria criteria=new TPurchaseProjectFileDownloadCriteria();
+        final TPurchaseProjectFileDownloadCriteria.Criteria subCriteria=criteria.createCriteria();
+        subCriteria.andPurchaseProjectIdEqualTo(dto.getProcurementProjectId());
+        subCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
+        //根据采购项目Id 查询招标文件
+        List<TPurchaseProjectFileDownload> list=tPurchaseProjectFileDownloadMapper.selectByExample(criteria);
+        if(list.size()==0){
+            LOGGER.error("尚未发布招标文件");
+            isPayDTO.setIsPay(false);
+            return  isPayDTO;
+        }
+        //获取招标文件ID
+        Long fileId=list.get(0).getId();
+        BigDecimal money=list.get(0).getFilePayment();
+        isPayDTO.setMoney(money);
+        //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
+        final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
+        final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
+        subPay.andCompanyIdEqualTo(dto.getCompanyId());
+        subPay.andPurchaseProjectFileIdEqualTo(fileId);
+
+        List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
+        //未查询到支付记录
+        if(payList.size()==0){
+            LOGGER.error("未找到支付记录");
+            isPayDTO.setIsPay(false);
+            return  isPayDTO;
+        }else{
+            //(实付金额 比对 下载金额)
+            for(TPurchaseProjectFilePay entity:payList){
+                if(entity.getFilePaymentReal().compareTo(money)>-1){
+                    isPayDTO.setIsPay(true);
+                }
+            }
+            return  isPayDTO;
+        }
+    }
+
+    /**
+     * 根据支付类型 获取 对应银行信息
+     * @param documents
+     * @return
+     */
+    @Override
+    public BankAccountVO getBankAccount(int documents){
+
+        PlatformBankAccountCriteria criteria=new PlatformBankAccountCriteria();
+        PlatformBankAccountCriteria.Criteria cubCriteria=criteria.createCriteria();
+
+        if(documents==Const.PAYMENT_TYPE.DOCUMENTS){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.DOCUMENTS);
+        }else if(documents==Const.PAYMENT_TYPE.GUARANTY){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.GUARANTY);
+        }else if(documents==Const.PAYMENT_TYPE.SERVICE){
+            cubCriteria.andPaymentTypeEqualTo(Const.PAYMENT_TYPE.SERVICE);
+        }
+
+        List<PlatformBankAccount> result = platformBankAccountMapper.selectByExample(criteria);
+        BankAccountVO vo= new BankAccountVO();
+
+        if(result.size()>0){
+            PlatformBankAccount entity=result.get(0);
+            BeanUtils.copyProperties(entity,vo);
+        }
+        return  vo;
     }
 }

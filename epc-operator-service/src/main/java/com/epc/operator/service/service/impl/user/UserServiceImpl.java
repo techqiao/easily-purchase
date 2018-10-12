@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Override
     public User findByName(String name){
-
         String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
         userMapper.insert(uuid, 20);
         User u = userMapper.findByName("AAA");

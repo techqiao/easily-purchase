@@ -97,6 +97,7 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> createSupplierEmployee(@RequestBody ClientHandlerSupplierAddEmployee clientHandlerSupplierAddEmployee){
         HandlerSupplierAddEmployee handlerSupplierAddEmployee=new HandlerSupplierAddEmployee();
         BeanUtils.copyProperties(clientHandlerSupplierAddEmployee,handlerSupplierAddEmployee);
+        handlerSupplierAddEmployee.setPassword("epc1688");
         Long bossId = getLoginUser().getBossId();
         Integer loginRole = getLoginUser().getLoginRole();
         if(bossId==null || loginRole==null){

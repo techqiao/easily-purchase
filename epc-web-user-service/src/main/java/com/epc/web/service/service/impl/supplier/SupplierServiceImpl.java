@@ -16,18 +16,13 @@ import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.domain.bid.TProjectBasicInfo;
-import com.epc.web.service.domain.bid.TProjectBidProcedure;
-import com.epc.web.service.domain.bid.TProjectBidProcedureCriteria;
 import com.epc.web.service.domain.bid.TPurchaseProjectBids;
 import com.epc.web.service.domain.supplier.*;
 import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
-import com.epc.web.service.mapper.bid.TProjectBidProcedureMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
-import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
-import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
-import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
-import com.epc.web.service.mapper.supplier.TTenderMessageMapper;
+import com.epc.web.service.mapper.supplier.*;
 import com.epc.web.service.service.supplier.SupplierService;
+import com.netflix.discovery.converters.Auto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,8 +62,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Autowired
     TProjectBasicInfoMapper tProjectBasicInfoMapper;
     @Autowired
-    TProjectBidProcedureMapper tProjectBidProcedureMapper;
-
+    TProjectProcedureMapper tProjectProcedureMapper;
     /**
      * 0
      * 注册供应商
@@ -345,7 +339,7 @@ public class SupplierServiceImpl implements SupplierService {
         Long supplierId = handlerSupplierAddEmployee.getSupplierId();
         Integer loginRole = handlerSupplierAddEmployee.getLoginRole();
         if (loginRole.intValue() == Const.Role.ROLE_CUSTOMER) {
-            return Result.success("角色不匹配");
+            return Result.error("角色不匹配");
         }
 
         Date date = new Date();
@@ -355,7 +349,7 @@ public class SupplierServiceImpl implements SupplierService {
         Integer role = handlerSupplierAddEmployee.getRole();
 
         if (StringUtils.isBlank(name) || StringUtils.isBlank(cellphone) || StringUtils.isBlank(password) || role == null) {
-            return Result.success("前端传入参数异常");
+            return Result.error("前端传入参数异常");
         }
         // 创建数据库插入对象
         TSupplierBasicInfo pojo = new TSupplierBasicInfo();
@@ -1127,14 +1121,14 @@ public class SupplierServiceImpl implements SupplierService {
      * @return
      */
     public Result<String> queryProjectSchedule(QueryProjectSchedule dto) {
-        TProjectBidProcedureCriteria criteria = new TProjectBidProcedureCriteria();
-        TProjectBidProcedureCriteria.Criteria cubCriteria = criteria.createCriteria();
+        TProjectProcedureCriteria criteria = new TProjectProcedureCriteria();
+        TProjectProcedureCriteria.Criteria cubCriteria = criteria.createCriteria();
         cubCriteria.andPurchaseProjectIdEqualTo(dto.getPurchaseProjectId());
         cubCriteria.andOperateTypeEqualTo("supplier");
         criteria.setOrderByClause("create_at desc");
-        List<TProjectBidProcedure> result = tProjectBidProcedureMapper.selectByExample(criteria);
+        List<TProjectProcedure> result = tProjectProcedureMapper.selectByExample(criteria);
         if (result.size() > 0) {
-            return Result.success(result.get(0).getProcedureName());
+            return Result.success(result.get(0).getProcedureCode());
         } else {
             return Result.success(null);
         }

@@ -1,4 +1,6 @@
 package com.epc.tendering.service.service.committee.impl;
+import com.epc.web.facade.terdering.committee.dto.CommittExpertDTO;
+import com.google.common.collect.Lists;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -6,7 +8,6 @@ import com.epc.tendering.service.domain.committee.BAssessmentCommittee;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert;
 import com.epc.tendering.service.domain.expert.TExpertBasicInfo;
-import com.epc.tendering.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeBidMapper;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeExpertMapper;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeMapper;
@@ -16,7 +17,7 @@ import com.epc.web.facade.terdering.committee.dto.BidDTO;
 import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
-import org.apache.commons.lang3.StringUtils;
+import com.epc.web.facade.terdering.committee.vo.CommittVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -75,7 +76,8 @@ public class CommitteeServiceImpl implements CommitteeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto){
+    public Result<List<CommittVO>> createBAssessmentCommittee(QueryExtractExpertList dto){
+        List<CommittVO> voList=new ArrayList<>();
          String province =dto.getProvince();
          String city=dto.getCity();
          String area=dto.getArea();
@@ -85,6 +87,10 @@ public class CommitteeServiceImpl implements CommitteeService {
          //获取要抽取的标段列表
         for(BidDTO bid:bidList){
             for(ExpertDTO expert:expertList){
+                //返回类
+                CommittVO committVO=new CommittVO();
+                committVO.setBidId(bid.getBidsId());
+
                 if(expert.getProfessionalNumber()==null){
                     return Result.error("professionalNumber is not null");
                 }
@@ -119,6 +125,7 @@ public class CommitteeServiceImpl implements CommitteeService {
                 }
 
                 List<TExpertBasicInfo> padomList = getSubStringByRadom(resultList,expert.getProfessionalNumber());
+                List<CommittExpertDTO> expertDTOList=new ArrayList<>();
                 for(TExpertBasicInfo entity:padomList){
                     BAssessmentCommitteeExpert bAssessmentCommitteeExpert=new BAssessmentCommitteeExpert();
                     bAssessmentCommitteeExpert.setCommitteeBidId(committeeBid.getId());
@@ -130,7 +137,12 @@ public class CommitteeServiceImpl implements CommitteeService {
                     bAssessmentCommitteeExpert.setCreateAt(new Date());
                     bAssessmentCommitteeExpert.setUpdateAt(new Date());
                     bAssessmentCommitteeExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+
+                    CommittExpertDTO committExpertDTO=new CommittExpertDTO();
+                    BeanUtils.copyProperties(entity,committExpertDTO);
+                    expertDTOList.add(committExpertDTO);
                     try{
+                        //插入委员会专家表
                         bAssessmentCommitteeExpertMapper.insertSelective(bAssessmentCommitteeExpert);
                     }catch (Exception e){
                         LOGGER.error(bAssessmentCommitteeExpert.toString()+"_"+e.getMessage());
@@ -138,10 +150,11 @@ public class CommitteeServiceImpl implements CommitteeService {
                         return Result.error();
                     }
                 }
-
+                committVO.setExpertList(expertDTOList);
+                voList.add(committVO);
             }
         }
-        return Result.success(true);
+        return Result.success(voList);
     }
 
     /**

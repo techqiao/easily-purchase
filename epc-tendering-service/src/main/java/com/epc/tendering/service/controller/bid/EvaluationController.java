@@ -48,7 +48,7 @@ public class EvaluationController implements FacadeEvaluationService {
     }
 
     @Override
-    public Result<Boolean> insertClauseTemplate(ClauseTemplateHandle clauseTemplateHandle) {
+    public Result<Boolean> insertClauseTemplate(@RequestBody ClauseTemplateHandle clauseTemplateHandle) {
         return evaluationService.insertClauseTemplate(clauseTemplateHandle);
     }
 }

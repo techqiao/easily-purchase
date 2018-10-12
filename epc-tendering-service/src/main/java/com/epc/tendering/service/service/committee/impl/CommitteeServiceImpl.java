@@ -1,9 +1,8 @@
 package com.epc.tendering.service.service.committee.impl;
-import com.epc.web.facade.terdering.committee.dto.CommittExpertDTO;
-import com.google.common.collect.Lists;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.util.DateTimeUtil;
 import com.epc.tendering.service.domain.committee.BAssessmentCommittee;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert;
@@ -14,6 +13,7 @@ import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeMapper;
 import com.epc.tendering.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.tendering.service.service.committee.CommitteeService;
 import com.epc.web.facade.terdering.committee.dto.BidDTO;
+import com.epc.web.facade.terdering.committee.dto.CommittExpertDTO;
 import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
@@ -140,6 +140,8 @@ public class CommitteeServiceImpl implements CommitteeService {
 
                     CommittExpertDTO committExpertDTO=new CommittExpertDTO();
                     BeanUtils.copyProperties(entity,committExpertDTO);
+                    committExpertDTO.setCircularDt(DateTimeUtil.dateToStr(entity.getCircularDt()));
+                    committExpertDTO.setCircularDtEnd(DateTimeUtil.dateToStr(entity.getCircularDtEnd()));
                     expertDTOList.add(committExpertDTO);
                     try{
                         //插入委员会专家表

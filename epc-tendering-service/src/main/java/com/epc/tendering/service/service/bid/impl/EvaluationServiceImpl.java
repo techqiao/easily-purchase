@@ -180,6 +180,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     public Result<Boolean> insertClauseTemplate(ClauseTemplateHandle clauseTemplateHandle) {
         BTenderAbolishClauseTemplate bTenderAbolishClauseTemplate = new BTenderAbolishClauseTemplate();
         BeanUtils.copyProperties(clauseTemplateHandle,bTenderAbolishClauseTemplate);
+        bTenderAbolishClauseTemplate.setUpdateAt(new Date());
+        bTenderAbolishClauseTemplate.setCreateAt(new Date());
         return Result.success(bTenderAbolishClauseTemplateMapper.insertSelective(bTenderAbolishClauseTemplate)>0);
     }
 }

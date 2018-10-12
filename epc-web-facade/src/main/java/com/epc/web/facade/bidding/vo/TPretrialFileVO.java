@@ -12,7 +12,20 @@ import lombok.Data;
 public class TPretrialFileVO {
 
 
+    /**
+     * 标段id
+     */
+    private Long bidId;
 
+    /**
+     * 标段名称
+     */
+    private String bidName;
+
+    /**
+     * 公司id
+     */
+    private Long companyId;
     /**
      * 供应商名称
      */

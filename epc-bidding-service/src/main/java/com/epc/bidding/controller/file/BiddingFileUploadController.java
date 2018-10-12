@@ -5,9 +5,13 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
+import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -50,4 +54,5 @@ public class BiddingFileUploadController implements FacadeFileUploadService {
     public Result<PretrialMessageVO> getTPretrialMessage(@RequestBody HandlePretriaFile handlePretriaFile) {
         return fileService.getTPretrialMessage(handlePretriaFile);
     }
+
 }

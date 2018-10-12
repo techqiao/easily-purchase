@@ -8,5 +8,5 @@ import java.math.BigDecimal;
 @Data
 public class IsPayDTO implements Serializable {
     private  Boolean isPay;
-    private BigDecimal money;
+    private String filePath;
 }

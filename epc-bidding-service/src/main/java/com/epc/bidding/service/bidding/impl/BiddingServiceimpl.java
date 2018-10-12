@@ -75,7 +75,9 @@ public class BiddingServiceimpl implements BiddingService {
         List<BReleaseAnnouncement> list= bReleaseAnnouncementMapper.selectByExampleWithBLOBs(criteria);
         for(BReleaseAnnouncement entity:list){
                 NoticeDetailVO clientNoticeDetailVO = new NoticeDetailVO();
-                //获取采购项目信息
+                clientNoticeDetailVO.setBiddingDocumentsUrl(null);
+
+            //获取采购项目信息
                 TPurchaseProjectBasicInfo purchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getProcurementProjectId());
                 if(purchaseProjectBasicInfo==null){
                    LOGGER.error("采购项目信息不存在");
@@ -87,7 +89,6 @@ public class BiddingServiceimpl implements BiddingService {
                    clientNoticeDetailVO.setBiddingType(purchaseProjectBasicInfo.getPurchaseMode());
                    clientNoticeDetailVO.setProcurementProjectName(purchaseProjectBasicInfo.getPurchaseProjectName());
                    //日期格式转换
-                   clientNoticeDetailVO.setBiddingDocumentsUrl(null);
                    clientNoticeDetailVO.setBiddingStart(DateTimeUtil.dateToStr(entity.getBiddingStart()));
                    clientNoticeDetailVO.setBiddingEnd(DateTimeUtil.dateToStr(entity.getBiddingEnd()));
                    clientNoticeDetailVO.setDefecationStart(DateTimeUtil.dateToStr(entity.getDefecationStart()));
@@ -105,7 +106,6 @@ public class BiddingServiceimpl implements BiddingService {
                         clientNoticeDetailVO.setBiddingType(purchaseProjectBasicInfo.getPurchaseMode());
                         clientNoticeDetailVO.setProcurementProjectName(purchaseProjectBasicInfo.getPurchaseProjectName());
                         //日期格式转换
-                        clientNoticeDetailVO.setBiddingDocumentsUrl(null);
                         clientNoticeDetailVO.setBiddingStart(DateTimeUtil.dateToStr(entity.getBiddingStart()));
                         clientNoticeDetailVO.setBiddingEnd(DateTimeUtil.dateToStr(entity.getBiddingEnd()));
                         clientNoticeDetailVO.setDefecationStart(DateTimeUtil.dateToStr(entity.getDefecationStart()));

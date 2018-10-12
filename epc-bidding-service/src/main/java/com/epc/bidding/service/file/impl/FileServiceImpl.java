@@ -1,10 +1,7 @@
 package com.epc.bidding.service.file.impl;
 
 import com.epc.bidding.domain.*;
-import com.epc.bidding.mapper.TPretrialFileMapper;
-import com.epc.bidding.mapper.TPretrialMessageMapper;
-import com.epc.bidding.mapper.TTenderFileMapper;
-import com.epc.bidding.mapper.TTenderMessageMapper;
+import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.file.FileService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -13,7 +10,10 @@ import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
+import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +40,12 @@ public class FileServiceImpl implements FileService {
     TTenderFileMapper tTenderFileMapper;
     @Autowired
     TPretrialFileMapper tPretrialFileMapper;
+    @Autowired
+    BSaleDocumentsMapper bSaleDocumentsMapper;
+    @Autowired
+    BTenderDocumentsPlaceSaleMapper bTenderDocumentsPlaceSaleMapper;
+    @Autowired
+    BSaleDocumentsFileMapper bSaleDocumentsFileMapper;
     /**
      * 投标文件记录(新增/修改/删除)
      * @param handleNotice
@@ -236,5 +243,6 @@ public class FileServiceImpl implements FileService {
         vo.setFileList(dtoList);
         return Result.success(vo);
     }
+
 
 }

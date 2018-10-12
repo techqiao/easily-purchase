@@ -9,6 +9,7 @@ import com.epc.web.client.controller.supplier.handle.*;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierCellphone;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierId;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierIdAndName;
+import com.epc.web.client.controller.supplier.query.ClientSupplierProject;
 import com.epc.web.client.remoteApi.supplier.SupplierClient;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
@@ -302,16 +303,12 @@ public class TSupplierBasicInfoController extends BaseController {
         return supplierClient.querySupplierEmployeeAll(handleSupplierIdAndName);
     }
 
-    @ApiOperation(value = "15:根据当前登录供应商获取对应项目详情")
+    @ApiOperation(value = "15:根据当前登录供应商获取对应项目列表")
     @PostMapping("/querySupplierProject")
-    public Result<Map<String, Object>> querySupplierProject(@RequestBody QueryRequest queryRequest){
+    public Result<Map<String, Object>> querySupplierProject(@RequestBody ClientSupplierProject clientSupplierProject){
         QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
-       // LoginUser loginUser = new LoginUser();
-        BeanUtils.copyProperties(querywithPageHandle,queryRequest);
-       /* if(loginUser==null){
-            return Result.error();
-        }*/
-        querywithPageHandle.setId(1L);
+        BeanUtils.copyProperties(clientSupplierProject,querywithPageHandle);
+        querywithPageHandle.setId(getLoginUser().getBossId());
         return supplierClient.querySupplierProject(querywithPageHandle);
     }
 

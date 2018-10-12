@@ -18,9 +18,11 @@ import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.domain.bid.TProjectBasicInfo;
 import com.epc.web.service.domain.bid.TPurchaseProjectBids;
+import com.epc.web.service.domain.expert.TPurchaseProjectBasicInfo;
 import com.epc.web.service.domain.supplier.*;
 import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
+import com.epc.web.service.mapper.expert.TPurchaseProjectBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.*;
 import com.epc.web.service.service.supplier.SupplierService;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +67,8 @@ public class SupplierServiceImpl implements SupplierService {
     TProjectProcedureMapper tProjectProcedureMapper;
     @Autowired
     SupplierCategoryMapper supplierCategoryMapper;
+    @Autowired
+    TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
 
     private String supplierCategory ="supplier.type";
     /**
@@ -1093,6 +1097,9 @@ public class SupplierServiceImpl implements SupplierService {
             TPurchaseProjectBids bisEntity = tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
             BeanUtils.copyProperties(bisEntity, vo);
             TProjectBasicInfo projectEntity = tProjectBasicInfoMapper.selectByPrimaryKey(bisEntity.getProjectId());
+           if(!bisEntity.getPurchaseProjectName().contains(querywithPageHandle.getProjectName())){
+               break;
+           }
             if (projectEntity.getSourceOfInvestment() == 0) {
                 vo.setProjectType("国有投资");
             } else if (projectEntity.getSourceOfInvestment() == 1) {
@@ -1103,15 +1110,25 @@ public class SupplierServiceImpl implements SupplierService {
             vo.setBidId(entity.getBidsId());
             dto.setPurchaseProjectId(entity.getPurchaseProjectId());
             dto.setOperateType("supplier");
+            //获取
             String schedule = "";
             if (queryProjectSchedule(dto) != null) {
                 schedule = queryProjectSchedule(dto).getData();
             }
             vo.setSchedule(schedule);
-            if (schedule != "退还保证金") {
+            //获取采购项目
+            TPurchaseProjectBasicInfo purchaserBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(bisEntity.getPurchaseProjectId());
+            if (purchaserBasicInfo.getIsEnd()==Const.PROJECT_STATUS.NOT_START) {
+                vo.setStatus("未开始");
+            }else if (purchaserBasicInfo.getIsEnd()==Const.PROJECT_STATUS.STARTING) {
                 vo.setStatus("进行中");
-            } else {
+            } else  if (purchaserBasicInfo.getIsEnd()==Const.PROJECT_STATUS.END){
                 vo.setStatus("已结束");
+            }
+            if(vo.getStatus()==null){
+                continue;
+            }else if(!querywithPageHandle.getStatus().equals(vo.getStatus())){
+                break;
             }
             voList.add(vo);
         }

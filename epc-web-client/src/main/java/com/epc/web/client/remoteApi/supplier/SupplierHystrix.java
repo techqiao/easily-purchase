@@ -9,6 +9,7 @@ import com.epc.web.facade.supplier.handle.*;
 import com.epc.web.facade.supplier.query.*;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 
 import java.util.List;
 
@@ -102,6 +103,11 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
 
     @Override
     public Result querySupplierProject(QuerywithPageHandle querywithPageHandle) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<List<SupplierCategoryVo>> querySupplierCategory() {
         return Result.hystrixError();
     }
 }

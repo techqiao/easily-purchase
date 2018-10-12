@@ -142,6 +142,11 @@ public class PurchaserHystrix implements FacadePurchaserService {
         return Result.hystrixError();
     }
 
+    @Override
+    public Result<Boolean> deletePurchaserEmployee(Long id) {
+        return Result.hystrixError();
+    }
+
 
     @Override
     public Result<Boolean> updateExpertState(Long id, Integer state) {

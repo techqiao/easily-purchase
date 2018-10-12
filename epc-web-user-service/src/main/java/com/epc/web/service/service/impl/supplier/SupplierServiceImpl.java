@@ -14,6 +14,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.domain.bid.TProjectBasicInfo;
 import com.epc.web.service.domain.bid.TProjectBidProcedure;
@@ -23,16 +24,14 @@ import com.epc.web.service.domain.supplier.*;
 import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
 import com.epc.web.service.mapper.bid.TProjectBidProcedureMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
-import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
-import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
-import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
-import com.epc.web.service.mapper.supplier.TTenderMessageMapper;
+import com.epc.web.service.mapper.supplier.*;
 import com.epc.web.service.service.supplier.SupplierService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +67,11 @@ public class SupplierServiceImpl implements SupplierService {
     TProjectBasicInfoMapper tProjectBasicInfoMapper;
     @Autowired
     TProjectBidProcedureMapper tProjectBidProcedureMapper;
+    @Autowired
+    SupplierCategoryMapper supplierCategoryMapper;
+
+    private String supplierCategory ="supplier.type";
+
 
     /**
      * 0
@@ -744,7 +748,7 @@ public class SupplierServiceImpl implements SupplierService {
         subCriteria.andCellphoneEqualTo(cellphone);
 
         List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-        if(CollectionUtils.isEmpty(tSupplierBasicInfos)){
+        if (CollectionUtils.isEmpty(tSupplierBasicInfos)) {
             return Result.success("没有这个电话");
         }
         TSupplierBasicInfo single = tSupplierBasicInfos.get(0);
@@ -874,10 +878,10 @@ public class SupplierServiceImpl implements SupplierService {
             return Result.success("前端传入参数异常");
         }
         try {
-            TSupplierBasicInfo tSupplierBasicInfo =new TSupplierBasicInfo();
+            TSupplierBasicInfo tSupplierBasicInfo = new TSupplierBasicInfo();
             tSupplierBasicInfo.setId(id);
             tSupplierBasicInfo.setState(state);
-            return Result.success( tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo) > 0);
+            return Result.success(tSupplierBasicInfoMapper.updateByPrimaryKeySelective(tSupplierBasicInfo) > 0);
         } catch (BusinessException e) {
             LOGGER.error("[通过id来修改对应的state] tSupplierBasicInfoMapper.updateByPrimaryKeySelective : {}", e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -1118,6 +1122,23 @@ public class SupplierServiceImpl implements SupplierService {
             voList.add(vo);
         }
         return Result.success(voList);
+    }
+
+    /**
+     * @author :winlin
+     * @Description :获得供应商列表
+     * @date:2018/10/11
+     */
+    @Override
+    public Result<List<SupplierCategoryVo>> querySupplierCategory() {
+        List<SupplierCategoryVo> categoryVos = null;
+        try {
+            categoryVos = supplierCategoryMapper.selectCategory(supplierCategory);
+        } catch (Exception e) {
+            LOGGER.error("查询供货商类别列表失败", e);
+            return Result.error("查询供货商类别列表失败");
+        }
+        return CollectionUtils.isEmpty(categoryVos) ? Result.success("查询供货商类别列表失败") : Result.success(categoryVos);
     }
 
     /**

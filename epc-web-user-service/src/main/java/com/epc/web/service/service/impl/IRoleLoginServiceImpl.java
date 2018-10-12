@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
+import com.epc.common.util.CookieUtil;
 import com.epc.common.util.MD5Util;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
-import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.service.domain.agency.TAgencyBasicInfo;
 import com.epc.web.service.domain.agency.TAgencyDetailInfo;
 import com.epc.web.service.domain.expert.TExpertBasicInfo;
@@ -18,6 +18,7 @@ import com.epc.web.service.domain.operator.TOperatorBasicInfo;
 import com.epc.web.service.domain.operator.TOperatorDetailInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
+import com.epc.web.service.domain.supplier.SupplierCategory;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
@@ -27,18 +28,22 @@ import com.epc.web.service.mapper.operator.TOperatorBasicInfoMapper;
 import com.epc.web.service.mapper.operator.TOperatorDetailInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
+import com.epc.web.service.mapper.supplier.SupplierCategoryMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
 import com.epc.web.service.utils.SmsUtils;
-import org.jboss.logging.Param;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author :winlin
@@ -69,6 +74,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     TOperatorDetailInfoMapper tOperatorDetailInfoMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+    @Autowired
+    SupplierCategoryMapper supplierCategoryMapper;
 
     @Autowired
     SmsUtils smsUtils;
@@ -105,8 +112,10 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         loginUser.setUserId(basicInfo.getId());
         loginUser.setType(type);
         loginUser.setLoginRole(basicInfo.getRole());
-        Integer role =basicInfo.getRole();
-        if(role==Const.Role.ROLE_CORPORATION){loginUser.setBossId(basicInfo.getId());}
+        Integer role = basicInfo.getRole();
+        if (role == Const.Role.ROLE_CORPORATION) {
+            loginUser.setBossId(basicInfo.getId());
+        }
         if (operatorId != null) {
             TOperatorBasicInfo boss = null;
             TOperatorDetailInfo detailInfo = null;
@@ -159,8 +168,10 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         loginUser3.setUserId(basicinfo3.getId());
         loginUser3.setType(type);
         loginUser3.setLoginRole(basicinfo3.getRole());
-        Integer role =basicinfo3.getRole();
-        if(role==Const.Role.ROLE_CORPORATION){loginUser3.setBossId(basicinfo3.getId());}
+        Integer role = basicinfo3.getRole();
+        if (role == Const.Role.ROLE_CORPORATION) {
+            loginUser3.setBossId(basicinfo3.getId());
+        }
         if (purchaserId != null) {
             //获得老板
             TPurchaserBasicInfo boss3 = null;
@@ -168,7 +179,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             TPurchaserDetailInfo detailInfo3 = null;
             try {
                 boss3 = tPurchaserBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(purchaserId, Const.Role.ROLE_CORPORATION);
-                detailInfo3= tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaserId);
+                detailInfo3 = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(purchaserId);
             } catch (Exception e) {
                 LOGGER.error("公司信息不完善Exception:{}");
                 return Result.error("登录失败");
@@ -213,8 +224,10 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         loginUser1.setUserId(basicinfo1.getId());
         loginUser1.setType(type);
         loginUser1.setLoginRole(basicinfo1.getRole());
-        Integer role =basicinfo1.getRole();
-        if(role==Const.Role.ROLE_CORPORATION){loginUser1.setBossId(basicinfo1.getId());}
+        Integer role = basicinfo1.getRole();
+        if (role == Const.Role.ROLE_CORPORATION) {
+            loginUser1.setBossId(basicinfo1.getId());
+        }
         if (agencyId != null) {
             //获得老板
             TAgencyBasicInfo boss1 = null;
@@ -268,16 +281,18 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         loginUser2.setUserId(basicinfo2.getId());
         loginUser2.setType(type);
         loginUser2.setLoginRole(basicinfo2.getRole());
-        Integer role =basicinfo2.getRole();
-        if(role==Const.Role.ROLE_CORPORATION){loginUser2.setBossId(basicinfo2.getId());}
+        Integer role = basicinfo2.getRole();
+        if (role == Const.Role.ROLE_CORPORATION) {
+            loginUser2.setBossId(basicinfo2.getId());
+        }
         if (suuplierId != null) {
             //获得老板
             TSupplierBasicInfo boss2 = null;
             //获得公司信息
             TSupplierDetailInfo detailInfo2 = null;
             try {
-                boss2= tSupplierBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(suuplierId, Const.Role.ROLE_CORPORATION);
-                detailInfo2= tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(suuplierId);
+                boss2 = tSupplierBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(suuplierId, Const.Role.ROLE_CORPORATION);
+                detailInfo2 = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(suuplierId);
             } catch (Exception e) {
                 LOGGER.error("公司信息不完善Exception:{}");
             }
@@ -405,7 +420,23 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         try {
             TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectSupplierBasicByCell(cellphone);
             if (tSupplierBasicInfo == null) {
-                return Result.success(tSupplierBasicInfoMapper.registerUser(cellphone, pwd, name, date) > 0);
+                TSupplierBasicInfo basicInfo = new TSupplierBasicInfo();
+                basicInfo.setCreateAt(date);
+                basicInfo.setUpdateAt(date);
+                basicInfo.setName(name);
+                basicInfo.setCellphone(cellphone);
+                basicInfo.setPassword(pwd);
+                basicInfo.setRole(Const.Role.ROLE_CORPORATION);
+                basicInfo.setState(Const.STATE.PERFECTING);
+                tSupplierBasicInfoMapper.insertSelective(basicInfo);
+                Long supplierId = basicInfo.getId();
+                SupplierCategory supplierCategory = new SupplierCategory();
+                supplierCategory.setSupplierId(supplierId);
+                supplierCategory.setValue(registerUser.getCategorySupplier());
+                supplierCategory.setCreateAt(date);
+                supplierCategory.setUpdateAt(date);
+                supplierCategoryMapper.insertSelective(supplierCategory);
+                return Result.success("供货商注册成功", true);
             } else {
                 return Result.success("供货商" + name + "已存在!");
             }
@@ -559,21 +590,22 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
         }
         return purchaser > 0 ? Result.success("密码修改成功") : Result.error("密码修改失败");
     }
-/**
- *@author :winlin
- *@Description :发送短信验证码
- *@date:2018/10/11
- */
+
+    /**
+     * @author :winlin
+     * @Description :发送短信验证码
+     * @date:2018/10/11
+     */
     @Override
     public Result retrieveVerifyCode(String cellphone) {
         final String verifyCode = String.valueOf(new Random().nextInt(890000) + 100000);
         // 三分钟有效期(如果存在则覆盖)
-        RedisShardedPoolUtil.setEx(MEETING_SMS_CACHE_KEY + cellphone,verifyCode , Const.RedisVerifyCodeCacheExtime.REDIS_VERITYCODE_EXTIME);
-       // redisTemplate.opsForValue().set(MEETING_SMS_CACHE_KEY + cellphone, verifyCode, 2L, TimeUnit.MINUTES);
+        RedisShardedPoolUtil.setEx(MEETING_SMS_CACHE_KEY + cellphone, verifyCode, Const.RedisVerifyCodeCacheExtime.REDIS_VERITYCODE_EXTIME);
+        // redisTemplate.opsForValue().set(MEETING_SMS_CACHE_KEY + cellphone, verifyCode, 2L, TimeUnit.MINUTES);
         // 发送短信
         try {
             smsUtils.sendVerifyCode(cellphone, verifyCode);
-        }catch(Exception e){
+        } catch (Exception e) {
             LOGGER.error("[发送短信] 向手机号{}发送短信失败.", cellphone);
         }
         return Result.success("发送短信成功");
@@ -730,6 +762,16 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             return Result.success("密码修改成功");
         }
         return Result.error("密码修改失败!");
+    }
+
+    @Override
+    public Result<String> getTokenValue(String token) {
+        if (!StringUtils.isEmpty(token)) {
+            token = "EPC_PRIVATE_" + token;
+            String tokenValue = RedisShardedPoolUtil.get(token);
+            return Result.success("TOKEN的值为:"+tokenValue);
+        }
+        return Result.success("没有此token对应的值");
     }
 
     public Result loginBack(LoginUser loginUser) {

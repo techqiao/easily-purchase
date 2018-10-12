@@ -22,7 +22,7 @@ import java.util.List;
 
 @Api(value = "采购人服务")
 @RestController
-@RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PurchaserController extends BaseController {
     @Autowired
     PurchaserClient purchaserClient;
@@ -495,8 +495,16 @@ public class PurchaserController extends BaseController {
         BeanUtils.copyProperties(dto, queryDto);
         return purchaserClient.queryAgencyDetailById(queryDto);
     }
-
-    ;
+    /**
+     *@author :winlin
+     *@Description :删除员工
+     *@date:2018/10/12
+     */
+    @ApiOperation(value = "删除员工")
+    @GetMapping(value = "deletePurchaserEmployee/{id}")
+    public Result<Boolean> deletePurchaserEmployee(@PathVariable("id") Long id){
+        return purchaserClient.deletePurchaserEmployee(id);
+    };
 
 
     public Result queryEmployee(@RequestParam Long userId) {

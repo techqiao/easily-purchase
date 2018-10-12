@@ -195,7 +195,7 @@
         UPDATE t_purchaser_expert
         <set>
             <if test="state!=null">
-                is_delete=#{state}
+                is_deleted=#{state}
             </if>
         </set>
         WHERE id=#{id}
@@ -543,6 +543,11 @@
     SET password =#{newPassword}
     WHERE cellphone=#{cellphone}
   </update>
+    <update id="updateDeleteStateById">
+        UPDATE t_purchaser_basic_info
+        SET is_deleted =1
+        WHERE id =#{id}
+    </update>
     <select id="selectByExampleWithRowbounds"
             parameterType="com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria" resultMap="BaseResultMap">
         <!--
@@ -599,6 +604,7 @@
         FROM t_purchaser_basic_info
         <where>
             purchaser_id =#{purchaseId}
+            AND is_deleted =0
             <if test="name!=null">
                 AND `name` LIKE #{pattern}
             </if>

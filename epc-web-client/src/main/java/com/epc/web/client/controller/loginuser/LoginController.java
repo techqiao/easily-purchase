@@ -96,4 +96,9 @@ public class LoginController {
         String cellphones= cellphone.replaceAll("[^0-9a-zA-Z\u4e00-\u9fa5.，,。？“”]+","");
         return iLoginUserClient.retrieveVerifyCode(cellphones);
     };
+    @ApiOperation(value="获得token的值")
+    @GetMapping(path = "getTokenValue/{token}")
+    Result<String> getTokenValue(@PathVariable("token") String token){
+        return iLoginUserClient.getTokenValue(token);
+    };
 }

@@ -46,4 +46,6 @@ public interface FacadeLoginUserService {
 
     @GetMapping(path = "retrieveVerifyCode/{cellphone}")
     Result retrieveVerifyCode(@PathVariable("cellphone") String cellphone);
+    @GetMapping(path = "getTokenValue/{token}")
+    Result<String> getTokenValue(@PathVariable("token") String token);
 }

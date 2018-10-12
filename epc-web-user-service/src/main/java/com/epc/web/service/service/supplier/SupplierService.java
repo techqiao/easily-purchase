@@ -10,6 +10,7 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierAttachmentAndDetailVO;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import com.epc.web.facade.supplier.vo.TenderMessageVO;
 import com.epc.web.service.domain.supplier.TTenderMessage;
 
@@ -130,6 +131,12 @@ public interface SupplierService {
      * @return
      */
     Result<List<TenderMessageVO>>  querySupplierProject(QuerywithPageHandle querywithPageHandle);
+    /**
+     *@author :winlin
+     *@Description :获得供应商类别列表
+     *@date:2018/10/11
+     */
+    Result<List<SupplierCategoryVo>> querySupplierCategory();
 
 
 }

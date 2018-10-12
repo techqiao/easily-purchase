@@ -90,4 +90,7 @@ public interface TPurchaserBasicInfoMapper {
     int updatePurchaserPassword(ModifyUser modifyUser);
 
     TPurchaserBasicInfo selectPurchaserBasicInfoByCell(@Param("cell") String cell);
+
+    int updateDeleteStateById(Long id);
+
 }

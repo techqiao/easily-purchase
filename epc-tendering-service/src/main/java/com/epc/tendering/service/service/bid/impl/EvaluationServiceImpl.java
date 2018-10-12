@@ -44,6 +44,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     private TTenderMessageMapper tTenderMessageMapper;
     @Autowired
     private TTenderFileMapper tTenderFileMapper;
+
+    private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     /**
      * 新增评标标准设定  废标条款
      * @param evaluationHandle
@@ -150,6 +152,10 @@ public class EvaluationServiceImpl implements EvaluationService {
                 tPretrialFileVO.setFileName(tTenderFile.getFileName());
                 tPretrialFileVO.setFilePath(tPretrialFileVO.getFilePath());
             }
+            tPretrialFileVO.setBidId(tTenderMessage.getBidsId());
+            TPurchaseProjectBids tPurchaseProjectBids = tPurchaseProjectBidsMapper.selectByPrimaryKey(tTenderMessage.getBidsId());
+            tPretrialFileVO.setBidName(tPurchaseProjectBids.getBidName());
+            tPretrialFileVO.setCompanyId(tTenderMessage.getCompanyId());
             tPretrialFileVO.setCompanyName(tTenderMessage.getCompanyName());
             tPretrialFileVOS.add(tPretrialFileVO);
         }

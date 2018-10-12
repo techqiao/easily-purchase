@@ -40,16 +40,17 @@ public class OpeningRecordServiceImpl implements OpeningRecordService {
     private TSupplierSignMapper tSupplierSignMapper;
 
     @Override
-    public Result<Boolean> insertOpeningRecord(HandleOpeningRecord handleOpeningRecord) {
-        TOpeningRecord tOpeningRecord = new TOpeningRecord();
-        BeanUtils.copyProperties(handleOpeningRecord, tOpeningRecord);
-        try {
-            return Result.success(tOpeningRecordMapper.insertSelective(tOpeningRecord) > 0);
-        } catch (Exception e) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+    public Result<Boolean> insertOpeningRecord(List<HandleOpeningRecord> recordList) {
+        for (HandleOpeningRecord item : recordList) {
+            TOpeningRecord tOpeningRecord = new TOpeningRecord();
+            BeanUtils.copyProperties(item, tOpeningRecord);
+            try {
+                tOpeningRecordMapper.insertSelective(tOpeningRecord);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
         }
-        return Result.error();
-
+        return Result.success();
     }
 
     @Override

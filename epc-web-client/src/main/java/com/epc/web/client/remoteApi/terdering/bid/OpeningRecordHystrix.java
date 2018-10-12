@@ -13,8 +13,9 @@ import java.util.List;
  * <p>@Author : wjq
  */
 public class OpeningRecordHystrix implements FacadeOpeningRecordService {
+
     @Override
-    public Result<Boolean> insertOpeningRecord(HandleOpeningRecord handleOpeningRecord) {
+    public Result<Boolean> insertOpeningRecord(List<HandleOpeningRecord> recordList) {
         return Result.hystrixError();
     }
 

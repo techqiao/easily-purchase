@@ -20,7 +20,7 @@ public class ClientHandleExpertSign {
     private Long bidsId;
     @ApiModelProperty(value = "采购项目ID")
     private Long procurementProjectId;
-    @ApiModelProperty(value = "是否为组长")
+    @ApiModelProperty(value = "是否为组长 0 否 1 是")
     private Integer isLeader;
     @ApiModelProperty(value = "操作人ID")
     private Long operateId;

@@ -32,10 +32,4 @@ public class ClientHandlerSupplierAddEmployee{
     @NotEmpty(message = "ClientHandlerSupplierAddEmployee.cellphone.null")
     private String cellphone;
 
-    @ApiModelProperty(value = "员工密码")
-    @NotEmpty(message = "ClientHandlerSupplierAddEmployee.password.null")
-    private String password;
-
-
-
 }

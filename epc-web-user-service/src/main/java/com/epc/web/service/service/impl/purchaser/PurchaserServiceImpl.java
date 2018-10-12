@@ -159,7 +159,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             purchaserSupplier.setState(Const.STATE.REGISTERED);
             purchaserSupplier.setOperateId(handleSupplier.getOperatorId().intValue());
             purchaserSupplier.setPurchaserId(handleSupplier.getCompanyId());
-
             //供应商详情数据库
             TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
             //if(StringUtils.)
@@ -174,8 +173,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             detailInfo.setCreateAt(date);
             detailInfo.setUpdateAt(date);
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
-
             //供应商基本信息数据库
             basicInfo = new TSupplierBasicInfo();
             basicInfo.setName(handleSupplier.getName());
@@ -190,7 +187,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             basicInfo.setUpdateAt(date);
             basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             basicInfo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
-
             //附件信息
             List<Attachement> atts = handleSupplier.getAtts();
             //添加到数据库
@@ -483,8 +479,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             detailInfo.setCompanyAddress(handleAgnecy.getCompanyAddress());
             detailInfo.setCreateAt(new Date());
             detailInfo.setUpdateAt(new Date());
-
-
             //私库添加基本name和cellphone
             TPurchaserAgency agency = new TPurchaserAgency();
             agency.setCreaterId(handleAgnecy.getOperatorId());

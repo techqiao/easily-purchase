@@ -22,6 +22,7 @@ public class TestServiceImpl implements TestService {
     @Autowired
     private TestMapper testMapper;
 
+    @Override
     public User findByName(String name){
         testMapper.insert("AAA", 20);
         User u = testMapper.findByName("AAA");

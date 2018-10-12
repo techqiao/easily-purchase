@@ -1072,7 +1072,7 @@ CREATE TABLE `b_expert_sign` (
 	`procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
 	`is_leader` INT(1) DEFAULT '0' COMMENT '是否为组长 0 否 1 是',
   `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
-  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:评标专家签到';

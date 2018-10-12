@@ -5,8 +5,10 @@ import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
+import com.epc.web.facade.bidding.vo.SubEvaluationV0;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,6 +26,13 @@ public interface EvaluationService {
      * @return
      */
     Result<Boolean> insertEvaluation(EvaluationHandle evaluationHandle);
+
+    /**
+     * 专家评审 评标详情
+     * @param supplierId 供应商ID
+     * @return
+     */
+    Result<SubEvaluationV0> getEvaluationDetail(Long supplierId,Long procurementProjectId);
 
     /**
      * 查询开标的标段保证金

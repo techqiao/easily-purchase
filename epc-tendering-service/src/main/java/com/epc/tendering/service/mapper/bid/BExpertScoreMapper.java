@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.BExpertScore;
 import com.epc.tendering.service.domain.bid.BExpertScoreCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface BExpertScoreMapper {
@@ -30,4 +31,5 @@ public interface BExpertScoreMapper {
     int updateByPrimaryKeySelective(BExpertScore record);
 
     int updateByPrimaryKey(BExpertScore record);
+
 }

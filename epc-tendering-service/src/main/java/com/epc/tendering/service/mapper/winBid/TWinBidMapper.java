@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.epc.web.facade.terdering.answer.vo.WinBidVO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TWinBidMapper {
@@ -34,4 +35,8 @@ public interface TWinBidMapper {
     int updateByPrimaryKey(TWinBid record);
 
     List<WinBidVO> selectPublicWinning();
+
+
+    @Select("Select COUNT(b.id) from t_win_bid b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
+    Integer getId(Long procurementProjectId);
 }

@@ -35,4 +35,6 @@ public interface BSaleDocumentsMapper {
     @Select("Select b.bidding_documents_download_url from b_sale_documents b where b.procurement_project_id=#{procurementProjectId}")
     String getUrl(Long procurementProjectId);
 
+    @Select("Select b.id from b_sale_documents b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
 }

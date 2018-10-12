@@ -15,16 +15,21 @@ import com.epc.tendering.service.domain.purchase.TProcurementProjectSupplier;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfoCriteria;
 import com.epc.tendering.service.domain.purchaser.TProjectPurchaserEmployeeRelation;
+import com.epc.tendering.service.mapper.announcement.BReleaseAnnouncementMapper;
+import com.epc.tendering.service.mapper.bid.*;
+import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchase.TProcurementProjectSupplierMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchaser.TProjectPurchaserEmployeeRelationMapper;
+import com.epc.tendering.service.mapper.winBid.TWinBidMapper;
 import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.participant.handle.HandleParticipantBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
+import com.epc.web.facade.terdering.purchase.vo.FlowVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -56,6 +61,30 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     private TProjectBasicInfoMapper tProjectBasicInfoMapper;
     @Autowired
     private TProcurementProjectSupplierMapper tProcurementProjectSupplierMapper;
+    @Autowired
+    private BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
+    @Autowired
+    private BSaleDocumentsMapper bSaleDocumentsMapper;
+    @Autowired
+    private BEvaluationTenderStandardMapper bEvaluationTenderStandardMapper;
+    @Autowired
+    private BAssessmentCommitteeMapper bAssessmentCommitteeMapper;
+    @Autowired
+    private TOpeningRecordMapper tOpeningRecordMapper;
+    @Autowired
+    private TBidAnnouncementMapper tBidAnnouncementMapper;
+    @Autowired
+    private TOpeningRecordPublicityMapper tOpeningRecordPublicityMapper;
+    @Autowired
+    private BExpertSignMapper bExpertSignMapper;
+    @Autowired
+    private BExpertScoreReportMapper bExpertScoreReportMapper;
+    @Autowired
+    private TWinBidNominateMapper tWinBidNominateMapper;
+    @Autowired
+    private TWinBidMapper tWinBidMapper;
+    @Autowired
+    private BBidOpeningPayMapper bBidOpeningPayMapper;
 
     @Override
     @Transactional
@@ -320,6 +349,26 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
             returnList.add(pojo);
         });
         return Result.success(returnList);
+    }
+
+
+    @Override
+    public Result<FlowVO> getFlowByProcurementProjectId(Long procurementProjectId) {
+        FlowVO flowVO = new FlowVO();
+        flowVO.setAnnouncementId(bReleaseAnnouncementMapper.getId(procurementProjectId));
+        flowVO.setSaleDocumentsId(bSaleDocumentsMapper.getId(procurementProjectId));
+        flowVO.setEvaluationId(bEvaluationTenderStandardMapper.getId(procurementProjectId));
+        flowVO.setAssessmentCommitteeId(bAssessmentCommitteeMapper.getId(procurementProjectId));
+        flowVO.setOpeningRecordId(tOpeningRecordMapper.getId(procurementProjectId));
+        flowVO.setBidAnnouncement(tBidAnnouncementMapper.getId(procurementProjectId) > 0);
+        flowVO.setRecordPublicityId(tOpeningRecordPublicityMapper.getId(procurementProjectId));
+        flowVO.setExpertSign(bExpertSignMapper.getId(procurementProjectId) > 0);
+        flowVO.setExpertSignLeader(bExpertSignMapper.getIdLeader(procurementProjectId) > 0);
+        flowVO.setReport(bExpertScoreReportMapper.getId(procurementProjectId) > 0);
+        flowVO.setNominateId(tWinBidNominateMapper.getId(procurementProjectId));
+        flowVO.setWinBid(tWinBidMapper.getId(procurementProjectId) > 0);
+        flowVO.setOpeningPay(bBidOpeningPayMapper.getId(procurementProjectId) > 0);
+        return Result.success(flowVO);
     }
 
     /**

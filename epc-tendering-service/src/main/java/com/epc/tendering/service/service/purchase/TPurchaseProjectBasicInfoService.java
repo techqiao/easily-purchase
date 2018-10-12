@@ -4,7 +4,9 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
+import com.epc.web.facade.terdering.purchase.vo.FlowVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -37,4 +39,11 @@ public interface TPurchaseProjectBasicInfoService {
      * @return
      */
     Result<List<PurchaseProjectBasicInfoVO>> getPurchaseProjectList(QueryPurchaseBasicInfoVO queryPurchaseBasicInfoVO);
+
+    /**
+     * 采购项目步骤
+     * @param procurementProjectId
+     * @return
+     */
+    Result<FlowVO> getFlowByProcurementProjectId(Long procurementProjectId);
 }

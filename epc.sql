@@ -1108,6 +1108,7 @@ CREATE TABLE `b_expert_score_report` (
 	`memo` TEXT COMMENT '评分报告',
 	`file_path` VARCHAR(256) NOT NULL COMMENT '评标报告url',
 	`bids_id` BIGINT(11) NOT NULL COMMENT  '标段ID',
+	`procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
 	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',
 	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',

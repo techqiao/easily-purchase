@@ -19,4 +19,6 @@ public class ClientScoreReport implements Serializable {
     private Long operateId;
     @ApiModelProperty(value = "报告详情")
     private String memo;
+    @ApiModelProperty(value = "采购项目ID")
+    private Long procurementProjectId;
 }

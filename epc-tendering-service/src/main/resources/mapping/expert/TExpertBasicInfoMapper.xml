@@ -474,7 +474,7 @@
       order by ${orderByClause}
     </if>
   </select>
-    <select id="selectExpertWithCommitt" resultType="com.epc.tendering.service.domain.expert.TExpertBasicInfo">
+    <select id="selectExpertWithCommitt" resultMap="BaseResultMap">
       SELECT
 	ebi.*
 FROM

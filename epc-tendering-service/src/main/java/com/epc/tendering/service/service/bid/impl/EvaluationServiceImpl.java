@@ -44,7 +44,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private TTenderMessageMapper tTenderMessageMapper;
     @Autowired
     private TTenderFileMapper tTenderFileMapper;
-
+    @Autowired
     private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     /**
      * 新增评标标准设定  废标条款

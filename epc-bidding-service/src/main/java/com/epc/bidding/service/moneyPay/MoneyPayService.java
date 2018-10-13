@@ -24,7 +24,7 @@ public interface MoneyPayService {
      Result<List<MoneyPayVO>> getMoneyPayList(QueryMoneyPayDTO dto);
 
 
-    /**
+    /**getOutMoneyPayList
      * 平台插入下载金额支付记录
      * @param handle
      * @return

@@ -14,9 +14,9 @@ public class OfflineDetailDTO implements Serializable {
 
     private static final long serialVersionUID = -4660476813322703350L;
     @ApiModelProperty("发售开始时间")
-    private Date saleTimeStart;
+    private String saleTimeStart;
     @ApiModelProperty("发售结束时间")
-    private Date saleTimeEnd;
+    private String saleTimeEnd;
     @ApiModelProperty("发售地点")
     private String place;
     @ApiModelProperty("金额")

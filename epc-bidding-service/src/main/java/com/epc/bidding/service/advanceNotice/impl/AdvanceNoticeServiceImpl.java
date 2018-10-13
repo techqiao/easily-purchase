@@ -6,6 +6,7 @@ import com.epc.bidding.service.advanceNotice.AdvanceNoticeService;
 import com.epc.common.Result;
 import com.epc.common.constants.BiddingPreviewStatusEnum;
 import com.epc.common.constants.PretrialMessageEnum;
+import com.epc.common.util.DateTimeUtil;
 import com.epc.web.facade.bidding.dto.OfflineDetailDTO;
 import com.epc.web.facade.bidding.dto.OnlineDetailDTO;
 import com.epc.web.facade.bidding.query.notice.PretrialMessageDTO;
@@ -141,6 +142,8 @@ public class AdvanceNoticeServiceImpl  implements AdvanceNoticeService {
                     if(!CollectionUtils.isEmpty(placeSales)){
                         BTenderDocumentsPlaceSale placeSale=placeSales.get(0);
                         BeanUtils.copyProperties(placeSale,offline);
+                        offline.setSaleTimeStart(DateTimeUtil.dateToStr(placeSale.getSaleTimeStart()));
+                        offline.setSaleTimeEnd(DateTimeUtil.dateToStr(placeSale.getSaleTimeEnd()));
                     }
                     break;
                 case 1:
@@ -161,6 +164,8 @@ public class AdvanceNoticeServiceImpl  implements AdvanceNoticeService {
                     if(!CollectionUtils.isEmpty(pplaceSales)){
                         BTenderDocumentsPlaceSale placeSale=pplaceSales.get(0);
                         BeanUtils.copyProperties(placeSale,offline);
+                        offline.setSaleTimeStart(DateTimeUtil.dateToStr(placeSale.getSaleTimeStart()));
+                        offline.setSaleTimeEnd(DateTimeUtil.dateToStr(placeSale.getSaleTimeEnd()));
                     }
                     BSaleDocumentsFileCriteria mcriteria2=new BSaleDocumentsFileCriteria();
                     BSaleDocumentsFileCriteria.Criteria mcubCriteria2=mcriteria2.createCriteria();

@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
+import com.epc.web.facade.terdering.bid.query.QueryExpertDTO;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : 评标专家签到
@@ -35,9 +37,9 @@ public interface FacadeExpertSignService {
 
     /**
      * 获开始评标前置条件
-     * @param procurementProjectId
+     * @param queryExpertDTO
      * @return
      */
-    @GetMapping(value = "getExpertList", consumes = "application/json; charset=UTF-8")
-    Result<List<ExpertSignVO>> getExpertList(@RequestParam(value = "procurementProjectId") Long procurementProjectId);
+    @PostMapping(value = "getExpertList", consumes = "application/json; charset=UTF-8")
+    Result<Map<String, Object>> getExpertList(@RequestBody QueryExpertDTO queryExpertDTO);
 }

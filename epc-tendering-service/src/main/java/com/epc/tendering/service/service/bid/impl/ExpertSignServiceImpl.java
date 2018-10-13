@@ -87,8 +87,12 @@ public class ExpertSignServiceImpl implements ExpertSignService {
                     pojo.setProcurementProjectId(procurementProjectId);
                     pojo.setExpertPhone(tExpertBasicInfoMapper.getCellPhone(item.getExpertId()));
                     BExpertSignCriteria signCriteria = new BExpertSignCriteria();
-                    signCriteria.createCriteria().andBidsIdEqualTo(bidsId).andExpertIdEqualTo(item.getExpertId());
-                    if (bExpertSignMapper.countByExample(signCriteria) > 0) {
+                    signCriteria.createCriteria().andBidsIdEqualTo(bidsId).andExpertIdEqualTo(item.getExpertId())
+                            .andProcurementProjectIdEqualTo(procurementProjectId);
+                    List<BExpertSign> signList = bExpertSignMapper.selectByExample(signCriteria);
+                    if (!signList.isEmpty()) {
+                        pojo.setId(signList.get(0).getId());
+                        pojo.setIsLeader(signList.get(0).getIsLeader());
                         pojo.setIsSign(Const.IS_OK.IS_OK);
                     }else{
                         pojo.setIsSign(Const.IS_OK.NOT_OK);

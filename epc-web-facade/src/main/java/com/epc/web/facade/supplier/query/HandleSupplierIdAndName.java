@@ -1,12 +1,13 @@
 package com.epc.web.facade.supplier.query;
 
 
+import com.epc.common.QueryRequest;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class HandleSupplierIdAndName implements Serializable {
+public class HandleSupplierIdAndName extends QueryRequest implements Serializable {
 
     private static final long serialVersionUID = 4294897343334948695L;
 

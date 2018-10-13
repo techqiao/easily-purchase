@@ -41,6 +41,11 @@
         <module>epc-tendering-service</module>
         <!--epc-七牛文件存储服務-->
         <module>epc-ossfile-service</module>
+        <!--epc-一键采招标服务-->
+        <module>epc-epurchase-service</module>
+        <!--epc-一键采招标服务-->
+        <module>epc-esupplier-service</module>
+
     </modules>
 
     <profiles>

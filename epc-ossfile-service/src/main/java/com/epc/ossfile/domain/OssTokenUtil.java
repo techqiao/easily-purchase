@@ -25,13 +25,29 @@ public class OssTokenUtil {
 
     StringMap upPolicy = new StringMap();
 
-
+    /**
+     * 获得文件上传凭证
+     * @return  上传文件Token-新增
+     */
     public static String getUpToken(){
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket,null,expireInSeconds,null);
         return upToken;
     }
-
+    /**
+     * 获得文件覆盖凭证
+     * @param fileKey 覆盖文件 key
+     * @return 上传文件-Token-覆盖
+     */
+    public static String getReWriteUpToken(String fileKey){
+        Auth auth = Auth.create(accessKey, secretKey);
+        String upToken = auth.uploadToken(bucket,fileKey,expireInSeconds,null);
+        return upToken;
+    }
+    /** 获取私密文件访问路径
+     * @param fileKey 文件key 用户 想要访问的 文件key
+     * @return String 文件私密路径
+     * */
     public static String getPrivatePath(String fileKey){
         Auth auth = Auth.create(accessKey, secretKey);
 

@@ -1,11 +1,12 @@
 package com.epc.web.facade.operator.handle;
 
+import com.epc.common.QueryRequest;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class HandleOperatorLoginInfo implements Serializable {
+public class HandleOperatorLoginInfo extends QueryRequest implements Serializable {
 
 
     private static final long serialVersionUID = 7421331888941810560L;

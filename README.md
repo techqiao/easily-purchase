@@ -1,14 +1,20 @@
-### 下面是前端链接
+##### 官网前端链接
  * [管理总后台](http://www.epc1688.com/admin/) 
  * [PC官网](http://www.epc1688.com) 
  * [手机官网](http://m.epc1688.com) 
-### 下面是开发链接 
+##### 官网开发链接 
  * [线上后台Swagger](http://118.24.201.17:7000/swagger-ui.html) 
  * [线上官网Swagger](http://118.24.201.17:6006/swagger-ui.html) 
  * [线上官网Eureka](http://118.24.201.17:1111) 
-### 本机开发链接
+ * [git-lab地址](http://47.99.94.220/epc1688/easily-purchase) 
+ * [maven私服地址](http://47.99.94.220:8081/nexus/repository/maven-public/) 
+##### 局域网测试链接
+ * [发布工具jekins](http://192.168.0.58:8080/jenkins/) 
+ * [局域网前台swagger](http://192.168.0.24:6006/swagger-ui.html) 
+ * [局域网后台swagger](http://192.168.0.24:7000/swagger-ui.html) 
+ * [局域网Eureka](http://192.168.0.24:1111) 
+##### 本机开发链接
  * [本机后台Swagger](http://127.0.0.1:7001/swagger-ui.html) 
- * [本机web网Swagger](http://127.0.0.1:3106/swagger-ui.html) 
- * [本机官网Eureka](http://127.0.0.1t:10000) 
-  * [maven私服地址](http://47.99.94.220:8081/nexus/repository/maven-public/) 
-### end
+ * [本机前台Swagger](http://127.0.0.1:3106/swagger-ui.html) 
+ * [本机Eureka](http://127.0.0.1:10000) 
+##### end

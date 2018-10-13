@@ -30,7 +30,16 @@ public class ClientRoleDetailInfo {
     @ApiModelProperty(value = "公司名字")
     private String companyName;
 
-    @ApiModelProperty(value = "公司地址")
+    @ApiModelProperty(value = "省")
+    private String province;
+
+    @ApiModelProperty(value = "市")
+    private String city;
+
+    @ApiModelProperty(value = "区域")
+    private String area;
+
+    @ApiModelProperty(value = "公司详情地址")
     private String companyAddress;
 
     @ApiModelProperty(value = "信用号码")

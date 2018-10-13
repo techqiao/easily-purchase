@@ -1,5 +1,6 @@
 package com.epc.web.client.controller.supplier.query;
 
+import com.epc.common.QueryRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -7,7 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Data
 @ApiModel(value = "ClientHandleSupplierIdAndName",description = "依据条件查询")
-public class ClientHandleSupplierIdAndName {
+public class ClientHandleSupplierIdAndName extends QueryRequest {
 
 //    @ApiModelProperty(value = "操作者的id")
 //    @NotEmpty(message = "ClientHandleSupplierIdAndName.id.null")
@@ -21,5 +22,7 @@ public class ClientHandleSupplierIdAndName {
 
     @ApiModelProperty(value = "是否禁用")
     private Integer isForbidden;
+
+
 
 }

@@ -12,12 +12,16 @@ import com.epc.web.facade.operator.vo.OperatorBasicVO;
 import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
 import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
+import com.epc.web.service.controller.BaseController;
 import com.epc.web.service.service.operator.OperatorService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,7 +29,7 @@ import java.util.List;
  * <p>Date : 2018-09-10  18:08
  */
 @RestController
-public class OperatorController implements FacadeOperatorService {
+public class OperatorController extends BaseController implements FacadeOperatorService {
 
     @Autowired
     private OperatorService operatorService;
@@ -39,23 +43,6 @@ public class OperatorController implements FacadeOperatorService {
         return operatorService.registerOperator(handleOperator);
     }
 
-    /**0.5
-     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
-     */
-//    @Override
-//    public Result<Boolean> addPasswordOperatorLogin(@RequestBody HandleOperator handleOperator){
-//        return operatorService.addPasswordOperatorLogin(handleOperator);
-//    }
-    /**1
-     *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
-     *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
-     *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
-     *           )
-     */
-//    @Override
-//    public Result<Boolean> addPasswordOperator(@RequestBody HandleOperator handleOperator){
-//        return operatorService.addPasswordOperator(handleOperator);
-//    }
 
     /**2
      * 完善运营商信息
@@ -154,8 +141,12 @@ public class OperatorController implements FacadeOperatorService {
      *     来匹配出符合条件的员工返回一个list：
      */
     @Override
-    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(@RequestBody HandleOperatorFindAllByName handleOperatorFindAllByName){
-        return operatorService.queryOperatorEmployeeAll(handleOperatorFindAllByName);
+    public Result<Map<String,Object>> queryOperatorEmployeeAll(@RequestBody HandleOperatorFindAllByName handleOperatorFindAllByName){
+        PageHelper.startPage(handleOperatorFindAllByName.getPageNum(),handleOperatorFindAllByName.getPageSize());
+        Result<List<OperatorBasicInfoVO>> listResult = operatorService.queryOperatorEmployeeAll(handleOperatorFindAllByName);
+        PageInfo<OperatorBasicInfoVO> pageInfo=new PageInfo<>(listResult.getData());
+        Map<String,Object> dataTable=getDataTable(pageInfo);
+        return Result.success(dataTable);
     }
 
     /**15
@@ -172,8 +163,12 @@ public class OperatorController implements FacadeOperatorService {
      *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
      */
     @Override
-    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo){
-        return operatorService.lookPurchaserList(handleOperatorLoginInfo);
+    public Result<Map<String,Object>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo){
+        PageHelper.startPage(handleOperatorLoginInfo.getPageNum(),handleOperatorLoginInfo.getPageSize());
+        Result<List<TPurchaserBasicInfoVO>> listResult = operatorService.lookPurchaserList(handleOperatorLoginInfo);
+        PageInfo<TPurchaserBasicInfoVO> pageInfo=new PageInfo<>(listResult.getData());
+        Map<String,Object> dataTable=getDataTable(pageInfo);
+        return Result.success(dataTable);
     }
 
     /**15.6
@@ -214,8 +209,12 @@ public class OperatorController implements FacadeOperatorService {
      *    查看当前登陆者拉的供应商列表
      */
     @Override
-    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo){
-        return operatorService.lookSupplierList(handleOperatorLoginInfo);
+    public Result<Map<String,Object>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo){
+        PageHelper.startPage(handleOperatorLoginInfo.getPageNum(),handleOperatorLoginInfo.getPageSize());
+        Result<List<TSupplierBasicInfoVO>> listResult = operatorService.lookSupplierList(handleOperatorLoginInfo);
+        PageInfo<TSupplierBasicInfoVO> pageInfo=new PageInfo<>(listResult.getData());
+        Map<String,Object> dataTable=getDataTable(pageInfo);
+        return Result.success(dataTable);
     }
 
     /**20

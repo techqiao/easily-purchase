@@ -155,96 +155,6 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
 
-    /**0.5
-     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
-     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<Boolean> addPasswordOperatorLogin(HandleOperator handleOperator){
-//
-//        //得到电话 姓名
-//        String cellphone=handleOperator.getCellphone();
-//        String name = handleOperator.getName();
-//
-//        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
-//        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
-//        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-//            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-//        }
-//        subCriteria.andCellphoneEqualTo(cellphone);
-//        subCriteria.andNameEqualTo(name);
-//        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-//
-//        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-//            return Result.success(false);
-//        }
-//        return Result.success(true);
-//
-//    }
-
-    /**1
-     *  运营商注册,(有人拉的，手机与名字都有,只需要输入电话，姓名就可以登陆)
-     *          (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
-     *           不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
-     *           )
-     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<Boolean> addPasswordOperator(HandleOperator handleOperator){
-//        Date date=new Date();
-//
-//        //得到电话 姓名
-//        String cellphone=handleOperator.getCellphone();
-//        String name = handleOperator.getName();
-//
-//        //依据电话查询数据库中有没有这样一条记录,有就让其设置密码，将状态改成完善信息中
-//        TOperatorBasicInfoCriteria criteria=new TOperatorBasicInfoCriteria();
-//        TOperatorBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-//            return Result.error("[运营商注册] StringUtils.isBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-//        }
-//        subCriteria.andCellphoneEqualTo(cellphone);
-//        subCriteria.andNameEqualTo(name);
-//        List<TOperatorBasicInfo> tOperatorBasicInfos = tOperatorBasicInfoMapper.selectByExample(criteria);
-//        if(CollectionUtils.isEmpty(tOperatorBasicInfos)) {
-//            return Result.error("[运营商注册] 查不到符合条件的信息");
-//        }
-//        //通过电话,名字 能查出这个数据在数据库中 存在
-//        TOperatorBasicInfo operatorBasic = tOperatorBasicInfos.get(0);
-//        //然后判断从数据库中查出的这条数据 密码项为空
-//        String password = operatorBasic.getPassword();
-//
-//        if(StringUtils.isNotBlank(password)){
-//            //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
-//            //因为你的电话与名字可能某些人知道！！
-//            return Result.error("如果你由别人拉取，数据库密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
-//        }
-//        //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
-//        //设置一些表中必须的信息
-//        String inputPassword = handleOperator.getPassword();
-//        operatorBasic.setPassword(MD5Util.MD5EncodeUtf8(inputPassword));
-//        //完善中
-//        operatorBasic.setState(Const.STATE.PERFECTING);
-//        //最后修改时间
-//        operatorBasic.setUpdateAt(date);
-//        int i=0;
-//        try{
-//            //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息,并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
-//            tOperatorBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
-//        }catch (BusinessException e){
-//            LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {由平台拉取完成登陆，更新密码}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-//        }catch (Exception e){
-//            LOGGER.error("tOperatorBasicInfoMapper.updateByExampleSelective ： {}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(e.getMessage());
-//        }
-//        return  Result.success(true);
-//    }
-
-
     /**
      * 2
      * 完善运营商信息
@@ -496,7 +406,6 @@ public class OperatorServiceImpl implements OperatorService {
                 continue;
             }
         }
-
         vo.setQcs(listQcs);
         return Result.success(vo);
     }
@@ -856,7 +765,10 @@ public class OperatorServiceImpl implements OperatorService {
         tPurchaserDetailInfo.setPublicBankName(handleCreatePurchaserByOperator.getPublicBankName());
         //对公银行账号
         tPurchaserDetailInfo.setPublicBanAccountNumber(handleCreatePurchaserByOperator.getPublicBanAccountNumber());
-        //地址
+        //公司 省，市，区域，详细地址
+//        tPurchaserDetailInfo.setProvince(handleCreatePurchaserByOperator.getProvince());
+//        tPurchaserDetailInfo.setCity(handleCreatePurchaserByOperator.getCity());
+//        tPurchaserDetailInfo.setArea(handleCreatePurchaserByOperator.getArea());
         tPurchaserDetailInfo.setCompanyAddress(handleCreatePurchaserByOperator.getCompanyAddress());
         Date date = new Date();
         tPurchaserDetailInfo.setCreateAt(date);
@@ -1174,7 +1086,10 @@ public class OperatorServiceImpl implements OperatorService {
         tSupplierDetailInfo.setUniformCreditCode(handleCreatePurchaserByOperator.getUniformCreditCode());
         tSupplierDetailInfo.setPublicBankName(handleCreatePurchaserByOperator.getPublicBankName());
         tSupplierDetailInfo.setPublicBanAccountNumber(handleCreatePurchaserByOperator.getPublicBanAccountNumber());
-        //公司地址
+        //公司 省，市，区，详细地址
+        tSupplierDetailInfo.setProvince(handleCreatePurchaserByOperator.getProvince());
+        tSupplierDetailInfo.setCity(handleCreatePurchaserByOperator.getCity());
+        tSupplierDetailInfo.setArea(handleCreatePurchaserByOperator.getArea());
         tSupplierDetailInfo.setCompanyAddress(handleCreatePurchaserByOperator.getCompanyAddress());
         Date date = new Date();
         tSupplierDetailInfo.setCreateAt(date);
@@ -1335,37 +1250,6 @@ public class OperatorServiceImpl implements OperatorService {
         return Result.success(listVO);
     }
 
-
-
-    /*-------------------------------------------------*/
-
-    /**(暂时没想到有什么用)
-     * 通过id来修改对应的state  0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败
-     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<Boolean> updateOperatorEmployeeStateById(HandleOperatorState handleOperatorState){
-//        Long id = handleOperatorState.getId();
-//        Integer state=handleOperatorState.getState();
-//        if(id==null || state==null){
-//            LOGGER.error("[通过id来修改对应的state] id==null || state==null : {参数异常}");
-//            return Result.error("[通过id来修改对应的state] id==null || state==null : {参数异常}");
-//        }
-//        try{
-//            TOperatorBasicInfo tOperatorBasicInfo = tOperatorBasicInfoMapper.selectByPrimaryKey(id);
-//            tOperatorBasicInfo.setState(state);
-//            int i = tOperatorBasicInfoMapper.updateByPrimaryKeySelective(tOperatorBasicInfo);
-//            return Result.success(i>0);
-//        }catch (BusinessException e){
-//            LOGGER.error("[通过id来修改对应的state] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-//        }catch (Exception e){
-//            LOGGER.error("[通过id来修改对应的state] tOperatorBasicInfoMapper.updateByPrimaryKeySelective : {}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(e.getMessage());
-//        }
-//    }
 
 
 }

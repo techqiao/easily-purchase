@@ -3,6 +3,9 @@ package com.epc.tendering.service.service.committee;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
+import com.epc.web.facade.terdering.committee.vo.CommittVO;
+
+import java.util.List;
 
 public interface CommitteeService {
 
@@ -19,6 +22,6 @@ public interface CommitteeService {
      * @param dto
      * @return
      */
-     Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto);
+    Result<List<CommittVO>> createBAssessmentCommittee(QueryExtractExpertList dto);
 
     }

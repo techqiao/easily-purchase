@@ -52,5 +52,9 @@ public class HandOpeningRecordPublicity {
      * 标段ID
      */
     private Long bidsId;
+    /**
+     * 是否删除
+     */
+    private Integer isDeleted;
 
 }

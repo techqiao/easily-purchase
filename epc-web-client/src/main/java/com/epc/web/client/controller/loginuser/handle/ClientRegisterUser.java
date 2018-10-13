@@ -35,4 +35,11 @@ public class ClientRegisterUser implements Serializable {
     @NotEmpty(message = "ClientRegisterUser.cellphone.null")
     private String name;
 
+    @ApiModelProperty(value = "验证码")
+    @NotEmpty(message = "ClientRegisterUser.verifyCode.null")
+    private String verityCode;
+    @ApiModelProperty(value = "供货商类型，供货商专用，其他角色忽略")
+    @NotEmpty(message = "ClientRegisterUser.categorySupplier.null")
+    private String categorySupplier;
+
 }

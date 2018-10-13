@@ -18,4 +18,6 @@ public class ClientModifyUser implements Serializable {
     private String newPassword;
     @ApiModelProperty(value = "用户类型")
     private Integer type;
+    @ApiModelProperty(value = "验证码")
+    private String verityCode;
 }

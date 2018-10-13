@@ -104,6 +104,7 @@ public class OperatorServiceImpl implements OperatorService {
         Date date = new Date();
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
         BeanUtils.copyProperties(roleDetailInfo,detailInfo);
+        detailInfo.setOperatorId(roleDetailInfo.getId());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -188,6 +189,7 @@ public class OperatorServiceImpl implements OperatorService {
        attachment.setOperatorId(roleDetailInfo.getId());
         TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
         BeanUtils.copyProperties(roleDetailInfo,detailInfo);
+        detailInfo.setOperatorId(roleDetailInfo.getId());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);

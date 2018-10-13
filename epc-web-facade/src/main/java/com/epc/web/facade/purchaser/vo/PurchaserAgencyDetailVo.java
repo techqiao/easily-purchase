@@ -59,4 +59,9 @@ public class PurchaserAgencyDetailVo implements Serializable{
      * 附件list
      */
     protected List<Attachement> atts;
+
+    private String companyAddress;
+    private String province;
+    private String city;
+    private String area;
 }

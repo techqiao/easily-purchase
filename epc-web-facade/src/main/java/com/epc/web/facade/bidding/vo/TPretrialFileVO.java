@@ -1,6 +1,9 @@
 package com.epc.web.facade.bidding.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * <p>Description : 查询文件列表返回
@@ -9,44 +12,43 @@ import lombok.Data;
  * <p>TPretrialFileVO
  */
 @Data
-public class TPretrialFileVO {
+public class TPretrialFileVO implements Serializable {
+
+
+    private static final long serialVersionUID = 8708410627548431059L;
+    /**
+     * 标段id
+     */
+    @ApiModelProperty("标段id")
+    private Long bidId;
 
     /**
-     * 采购项目ID
+     * 标段名称
      */
-    private Long purchaseProjectId;
+    @ApiModelProperty("标段名称")
+    private String bidName;
 
     /**
-     * 公告ID
+     * 公司id
      */
-    private Long releaseAnnouncementId;
-
-    /**
-     * company_id
-     */
+    @ApiModelProperty("公司id")
     private Long companyId;
-
     /**
-     * 是否通过:
-     * review-审核中,
-     * noPass-未通过,
-     * pass-通过
+     * 供应商名称
      */
-    private String status;
-
-    /**
-     * 信息
-     */
-    private String content;
+    @ApiModelProperty("供应商名称")
+    private String companyName;
 
     /**
      * 文件路径
      */
+    @ApiModelProperty("文件路径")
     private String filePath;
 
     /**
      * 文件名
      */
+    @ApiModelProperty("文件名")
     private String fileName;
 
 }

@@ -4,7 +4,10 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
+import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 
 public class FileHystrix implements FacadeFileUploadService {
 
@@ -23,4 +26,5 @@ public class FileHystrix implements FacadeFileUploadService {
     public Result<Boolean> updateNotice(HandleNotice handleNotice) {
         return Result.hystrixError();
     }
+
 }

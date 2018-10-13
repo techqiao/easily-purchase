@@ -85,9 +85,12 @@ public class ClientPurchaserHandleSupplierDto implements Serializable {
      */
     @ApiModelProperty(value = "附件")
     protected List<ClientAttachement> atts;
-//    /**
-//     * 来源
-//     */
-//    @ApiModelProperty(value = "客户来源")
-//    private String source;
+    @ApiModelProperty(value = "公司地址")
+    private String companyAddress;
+    @ApiModelProperty(value = "省")
+    private String province;
+    @ApiModelProperty(value = "市")
+    private String city;
+    @ApiModelProperty(value = "区")
+    private String area;
 }

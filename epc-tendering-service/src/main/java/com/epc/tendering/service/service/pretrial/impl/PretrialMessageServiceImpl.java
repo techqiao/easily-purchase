@@ -1,7 +1,6 @@
 package com.epc.tendering.service.service.pretrial.impl;
 
 import com.epc.common.Result;
-import com.epc.tendering.service.domain.pretrial.TPretrialFileCriteria;
 import com.epc.tendering.service.domain.pretrial.TPretrialMessage;
 import com.epc.tendering.service.domain.pretrial.TPretrialMessageCriteria;
 import com.epc.tendering.service.mapper.pretrial.TPretrialFileMapper;
@@ -37,10 +36,10 @@ public class PretrialMessageServiceImpl implements PretrialMessageService {
     public Result<List<PretrialMessageVO>> getPretrialMessageList(QueryMessageDTO queryMessageDTO) {
         final TPretrialMessageCriteria criteria = new TPretrialMessageCriteria();
         final TPretrialMessageCriteria.Criteria subCriteria = criteria.createCriteria();
-        subCriteria.andReleaseAnnouncementIdEqualTo(queryMessageDTO.getReleaseAnnouncementId());
         if(StringUtils.isNotBlank(queryMessageDTO.getStatus())){
             subCriteria.andStatusEqualTo(queryMessageDTO.getStatus());
         }
+        subCriteria.andReleaseAnnouncementIdEqualTo(queryMessageDTO.getReleaseAnnouncementId());
         List<TPretrialMessage> messageList = tPretrialMessageMapper.selectByExample(criteria);
         List<PretrialMessageVO> returnList = new ArrayList<>();
         for (TPretrialMessage item : messageList) {

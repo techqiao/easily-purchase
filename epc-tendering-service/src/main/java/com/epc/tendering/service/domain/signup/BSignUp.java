@@ -14,7 +14,11 @@ public class BSignUp implements Serializable {
 
     private String bidsName;
 
+    private String bidsCode;
+
     private Long supplierId;
+
+    private String supplierName;
 
     private Date createAt;
 
@@ -64,12 +68,28 @@ public class BSignUp implements Serializable {
         this.bidsName = bidsName == null ? null : bidsName.trim();
     }
 
+    public String getBidsCode() {
+        return bidsCode;
+    }
+
+    public void setBidsCode(String bidsCode) {
+        this.bidsCode = bidsCode == null ? null : bidsCode.trim();
+    }
+
     public Long getSupplierId() {
         return supplierId;
     }
 
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName == null ? null : supplierName.trim();
     }
 
     public Date getCreateAt() {
@@ -107,7 +127,9 @@ public class BSignUp implements Serializable {
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", bidsId=").append(bidsId);
         sb.append(", bidsName=").append(bidsName);
+        sb.append(", bidsCode=").append(bidsCode);
         sb.append(", supplierId=").append(supplierId);
+        sb.append(", supplierName=").append(supplierName);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

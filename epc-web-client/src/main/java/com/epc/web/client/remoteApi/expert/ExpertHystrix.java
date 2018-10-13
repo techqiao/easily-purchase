@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.agency.handle.HandleExpert;
 import com.epc.web.facade.expert.FacadeExpertService;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
+import com.epc.web.facade.expert.dto.ProjectDto;
 
 /**
  * @Author :winlin
@@ -24,6 +25,11 @@ public class ExpertHystrix implements FacadeExpertService {
 
     @Override
     public Result<Boolean> hasIntentionOrNot(IdleExpertDto dto) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result selectAllBid(ProjectDto projecctDto) {
         return Result.hystrixError();
     }
 }

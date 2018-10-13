@@ -1,5 +1,7 @@
 package com.epc.web.service.mapper.purchaser;
 
+import com.epc.web.facade.expert.Handle.ProjectOperatorCompany;
+import com.epc.web.service.domain.expert.TPurchaseProjectBasicInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfoCriteria;
 import java.util.List;
@@ -45,4 +47,8 @@ public interface TPurchaserDetailInfoMapper {
 
     TPurchaserDetailInfo selectDetailByPurchaserId(Long purchaseId);
 
+    List<TPurchaserDetailInfo> selectDetailByPurchaserIdAndCompanyName(@Param("purchaserIds") List<Long> purchaserIds, @Param("purchaserName") String purchaserName);
+
+
+    List<ProjectOperatorCompany> selectCompanyNameByCriteria(@Param("tPurchaseProjectBasicInfos") List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos, @Param("purchaserName") String purchaserName);
 }

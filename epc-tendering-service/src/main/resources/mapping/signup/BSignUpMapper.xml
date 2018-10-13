@@ -7,7 +7,9 @@
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="bids_id" property="bidsId" jdbcType="VARCHAR" />
     <result column="bids_name" property="bidsName" jdbcType="VARCHAR" />
+    <result column="bids_code" property="bidsCode" jdbcType="VARCHAR" />
     <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -71,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, procurement_project_id, bids_id, bids_name, supplier_id, create_at, 
-    update_at, is_deleted
+    id, project_id, procurement_project_id, bids_id, bids_name, bids_code, supplier_id, 
+    supplier_name, create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.tendering.service.domain.signup.BSignUpCriteria" >
     select
@@ -109,11 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into b_sign_up (project_id, procurement_project_id, bids_id, 
-      bids_name, supplier_id, create_at, 
-      update_at, is_deleted)
+      bids_name, bids_code, supplier_id, 
+      supplier_name, create_at, update_at, 
+      is_deleted)
     values (#{projectId,jdbcType=BIGINT}, #{procurementProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=VARCHAR}, 
-      #{bidsName,jdbcType=VARCHAR}, #{supplierId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+      #{bidsName,jdbcType=VARCHAR}, #{bidsCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=BIGINT}, 
+      #{supplierName,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.signup.BSignUp" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -133,8 +137,14 @@
       <if test="bidsName != null" >
         bids_name,
       </if>
+      <if test="bidsCode != null" >
+        bids_code,
+      </if>
       <if test="supplierId != null" >
         supplier_id,
+      </if>
+      <if test="supplierName != null" >
+        supplier_name,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -159,8 +169,14 @@
       <if test="bidsName != null" >
         #{bidsName,jdbcType=VARCHAR},
       </if>
+      <if test="bidsCode != null" >
+        #{bidsCode,jdbcType=VARCHAR},
+      </if>
       <if test="supplierId != null" >
         #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierName != null" >
+        #{supplierName,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -197,8 +213,14 @@
       <if test="record.bidsName != null" >
         bids_name = #{record.bidsName,jdbcType=VARCHAR},
       </if>
+      <if test="record.bidsCode != null" >
+        bids_code = #{record.bidsCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.supplierId != null" >
         supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="record.supplierName != null" >
+        supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -221,7 +243,9 @@
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       bids_id = #{record.bidsId,jdbcType=VARCHAR},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
+      bids_code = #{record.bidsCode,jdbcType=VARCHAR},
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -244,8 +268,14 @@
       <if test="bidsName != null" >
         bids_name = #{bidsName,jdbcType=VARCHAR},
       </if>
+      <if test="bidsCode != null" >
+        bids_code = #{bidsCode,jdbcType=VARCHAR},
+      </if>
       <if test="supplierId != null" >
         supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierName != null" >
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -265,7 +295,9 @@
       procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       bids_id = #{bidsId,jdbcType=VARCHAR},
       bids_name = #{bidsName,jdbcType=VARCHAR},
+      bids_code = #{bidsCode,jdbcType=VARCHAR},
       supplier_id = #{supplierId,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}

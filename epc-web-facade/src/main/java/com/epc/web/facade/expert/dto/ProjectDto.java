@@ -3,6 +3,8 @@ package com.epc.web.facade.expert.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
+
 /**
  *@author :winlin
  *@date:2018/10/9
@@ -19,4 +21,9 @@ public class ProjectDto implements Serializable {
      * 0 进行中,1 已结束 -1 未开始
      */
     private Integer isEnd;
+
+    /**
+     * 采购项目id
+     */
+    private List<Long> projectIds;
 }

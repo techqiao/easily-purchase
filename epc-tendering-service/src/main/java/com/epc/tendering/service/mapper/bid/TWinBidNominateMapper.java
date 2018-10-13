@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.TWinBidNominate;
 import com.epc.tendering.service.domain.bid.TWinBidNominateCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TWinBidNominateMapper {
@@ -30,4 +31,7 @@ public interface TWinBidNominateMapper {
     int updateByPrimaryKeySelective(TWinBidNominate record);
 
     int updateByPrimaryKey(TWinBidNominate record);
+
+    @Select("Select b.id from t_win_bid_nominate b where b.purchase_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
 }

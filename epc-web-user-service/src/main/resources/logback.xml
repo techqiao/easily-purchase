@@ -80,9 +80,10 @@
 
         <appender-ref ref="ERROR-OUT" />
         <appender-ref ref="STDOUT" />
-        <!--
+
        <appender-ref ref="INFO-OUT" />
       <appender-ref ref="DEBUG-OUT" />
-       -->
+        <!--
+  -->
     </root>
 </configuration>

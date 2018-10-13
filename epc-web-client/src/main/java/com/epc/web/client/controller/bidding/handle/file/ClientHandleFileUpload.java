@@ -22,12 +22,6 @@ public class ClientHandleFileUpload {
     private Long bidId;
     @ApiModelProperty(value = "公告ID")
     private Long releaseAnnouncementId;
-    @ApiModelProperty(value = "供应商Id")
-    private Long companyId;
-    @ApiModelProperty(value = "操作人ID")
-    private Long operateId;
-    @ApiModelProperty(value = "操作人姓名")
-    private String operateName;
     @ApiModelProperty(value = "内容")
     private String content;
     @ApiModelProperty(value = "文件路径集合")

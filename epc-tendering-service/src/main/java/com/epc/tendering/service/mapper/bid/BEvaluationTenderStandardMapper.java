@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.BEvaluationTenderStandard;
 import com.epc.tendering.service.domain.bid.BEvaluationTenderStandardCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface BEvaluationTenderStandardMapper {
@@ -38,4 +39,9 @@ public interface BEvaluationTenderStandardMapper {
     int updateByPrimaryKeyWithBLOBs(BEvaluationTenderStandard record);
 
     int updateByPrimaryKey(BEvaluationTenderStandard record);
+
+    @Select("Select b.id from b_evaluation_tender_standard b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
+
+
 }

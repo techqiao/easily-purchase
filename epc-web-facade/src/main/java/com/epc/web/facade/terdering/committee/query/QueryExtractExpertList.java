@@ -2,6 +2,7 @@ package com.epc.web.facade.terdering.committee.query;
 
 import com.epc.web.facade.terdering.committee.dto.BidDTO;
 import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -29,6 +30,10 @@ public class QueryExtractExpertList implements Serializable {
     private Long OperateId;
 
     private Long procurementProjectId;
+    private String province;
 
+    private String city;
+
+    private String area;
 
 }

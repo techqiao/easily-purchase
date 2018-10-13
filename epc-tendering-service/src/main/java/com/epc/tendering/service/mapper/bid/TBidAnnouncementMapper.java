@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.TBidAnnouncement;
 import com.epc.tendering.service.domain.bid.TBidAnnouncementCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TBidAnnouncementMapper {
@@ -30,4 +31,7 @@ public interface TBidAnnouncementMapper {
     int updateByPrimaryKeySelective(TBidAnnouncement record);
 
     int updateByPrimaryKey(TBidAnnouncement record);
+
+    @Select("Select COUNT(b.id) from t_bid_announcement b where b.purchase_project_id =#{procurementProjectId}")
+    Integer getId(Long procurementProjectId);
 }

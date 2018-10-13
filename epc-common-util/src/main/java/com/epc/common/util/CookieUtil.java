@@ -19,6 +19,7 @@ public class CookieUtil {
 
     private final static String COOKIE_DOMAIN = "epc.com";
     private final static String COOKIE_NAME = "epc-token";
+    private static final String MEETING_SMS_CACHE_KEY = "meeting:sms:";
 
 
     public static String readLoginToken(HttpServletRequest request){
@@ -31,7 +32,14 @@ public class CookieUtil {
         }
         return null;
     }
-
+    public static String readVerityCode(String cellphone){
+        if(cellphone != null){
+            cellphone = CookieUtil.MEETING_SMS_CACHE_KEY+cellphone;
+            String verityCode = RedisShardedPoolUtil.get(cellphone);
+            return verityCode;
+        }
+        return null;
+    }
 
     public static void writeLoginToken(HttpServletResponse response, String token){
         Cookie ck = new Cookie(COOKIE_NAME,token);

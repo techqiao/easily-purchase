@@ -364,7 +364,9 @@
   </select>
   <select id="selectSupplierByCriteria" resultType="com.epc.web.facade.purchaser.vo.PurchaserSupplierVo"
           parameterType="com.epc.web.facade.purchaser.dto.QuerySupplierDto">
-    <bind name="supplierName" value="'%'+name+'%'"/>
+    <if test="name!=null">
+      <bind name="supplierName" value="'%'+name+'%'"/>
+    </if>
     SELECT t_supplier_detail_info.supplier_id AS supplierId,t_supplier_detail_info.company_name AS companyName
     ,t_supplier_detail_info.create_at AS createAt
     FROM t_supplier_detail_info LEFT JOIN t_purchaser_supplier ON t_supplier_detail_info.supplier_id

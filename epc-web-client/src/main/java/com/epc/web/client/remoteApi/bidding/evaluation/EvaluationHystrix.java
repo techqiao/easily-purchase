@@ -2,7 +2,9 @@ package com.epc.web.client.remoteApi.bidding.evaluation;
 
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.vo.SubEvaluationV0;
 
 /**
  * <p>Description : easilys
@@ -18,17 +20,28 @@ public class EvaluationHystrix implements FacadeEvaluationService {
     }
 
     @Override
+    public Result<SubEvaluationV0> getEvaluationDetail(Long supplierId, Long procurementProjectId) {
+        return Result.hystrixError();
+    }
+
+
+    @Override
     public Result selectGuarantee(Long procurementProjectId) {
         return Result.hystrixError();
     }
 
     @Override
-    public Result getFilesByCompanyId(Long BIssueDocumentsId) {
+    public Result getFilesByPurchaseProjectId(Long BIssueDocumentsId) {
         return Result.hystrixError();
     }
 
     @Override
     public Result getClauseTemplateById(Long id) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<Boolean> insertClauseTemplate(ClauseTemplateHandle clauseTemplateHandle) {
         return Result.hystrixError();
     }
 }

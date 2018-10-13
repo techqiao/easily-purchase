@@ -23,8 +23,8 @@ public class OpeningRecordController implements FacadeOpeningRecordService {
     private OpeningRecordService openingRecordService;
 
     @Override
-    public Result<Boolean> insertOpeningRecord(@RequestBody HandleOpeningRecord handleOpeningRecord) {
-        return openingRecordService.insertOpeningRecord(handleOpeningRecord);
+    public Result<Boolean> insertOpeningRecord(@RequestBody List<HandleOpeningRecord> recordList) {
+        return openingRecordService.insertOpeningRecord(recordList);
     }
 
     @Override

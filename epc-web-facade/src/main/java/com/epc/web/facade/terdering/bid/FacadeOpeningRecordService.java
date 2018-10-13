@@ -19,11 +19,11 @@ public interface FacadeOpeningRecordService {
 
     /**
      * 插入开标记录
-     * @param handleOpeningRecord
+     * @param recordList
      * @return
      */
     @PostMapping(value = "insertOpeningRecord", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertOpeningRecord(@RequestBody HandleOpeningRecord handleOpeningRecord);
+    Result<Boolean> insertOpeningRecord(@RequestBody List<HandleOpeningRecord> recordList);
 
     /**
      * 查询开标前置条件

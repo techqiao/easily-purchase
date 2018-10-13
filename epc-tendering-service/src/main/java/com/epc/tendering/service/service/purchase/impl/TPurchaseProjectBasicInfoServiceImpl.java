@@ -11,18 +11,25 @@ import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipant;
 import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantCriteria;
 import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermission;
 import com.epc.tendering.service.domain.participant.TPurchaseProjectParticipantPermissionCriteria;
+import com.epc.tendering.service.domain.purchase.TProcurementProjectSupplier;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfoCriteria;
 import com.epc.tendering.service.domain.purchaser.TProjectPurchaserEmployeeRelation;
+import com.epc.tendering.service.mapper.announcement.BReleaseAnnouncementMapper;
+import com.epc.tendering.service.mapper.bid.*;
+import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
+import com.epc.tendering.service.mapper.purchase.TProcurementProjectSupplierMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchaser.TProjectPurchaserEmployeeRelationMapper;
+import com.epc.tendering.service.mapper.winBid.TWinBidMapper;
 import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.participant.handle.HandleParticipantBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
+import com.epc.web.facade.terdering.purchase.vo.FlowVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +59,32 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     private TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
     @Autowired
     private TProjectBasicInfoMapper tProjectBasicInfoMapper;
+    @Autowired
+    private TProcurementProjectSupplierMapper tProcurementProjectSupplierMapper;
+    @Autowired
+    private BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
+    @Autowired
+    private BSaleDocumentsMapper bSaleDocumentsMapper;
+    @Autowired
+    private BEvaluationTenderStandardMapper bEvaluationTenderStandardMapper;
+    @Autowired
+    private BAssessmentCommitteeMapper bAssessmentCommitteeMapper;
+    @Autowired
+    private TOpeningRecordMapper tOpeningRecordMapper;
+    @Autowired
+    private TBidAnnouncementMapper tBidAnnouncementMapper;
+    @Autowired
+    private TOpeningRecordPublicityMapper tOpeningRecordPublicityMapper;
+    @Autowired
+    private BExpertSignMapper bExpertSignMapper;
+    @Autowired
+    private BExpertScoreReportMapper bExpertScoreReportMapper;
+    @Autowired
+    private TWinBidNominateMapper tWinBidNominateMapper;
+    @Autowired
+    private TWinBidMapper tWinBidMapper;
+    @Autowired
+    private BBidOpeningPayMapper bBidOpeningPayMapper;
 
     @Override
     @Transactional
@@ -69,6 +103,8 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         Long purchaseProjectId = handlePurchaseProjectBasicInfoSub.getPurchaseProjectId();
         //是否全权委托代理机构
         Integer isOtherAgency = handlePurchaseProjectBasicInfoSub.getIsOtherAgency();
+        //供应商集合
+        List<Long> supplierIds = handlePurchaseProjectBasicInfoSub.getSupplierIds();
         //采购项目参与者集合
         List<HandleParticipantBasicInfo> basicInfoList = handlePurchaseProjectBasicInfoSub.getHandleParticipantBasicInfoList();
         //不全权委托招标代理机构
@@ -81,6 +117,8 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setPurchaseProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    //指定供应商
+                    insertProjectSupplier(pojo, supplierIds);
                     purchaseProjectId = pojo.getId();
                     //指定采购项目参与者 经办人 审核人 批复人 负责人
                     addUserRole(isOtherAgency, basicInfoList, operateId, creator, agentId, auditorId, purchaseProjectId);
@@ -110,6 +148,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
                     pojo.setPurchaseProjectCode(GeneratorCodeUtil.GeneratorProjectCode());
                     //新增采购项目
                     tPurchaseProjectBasicInfoMapper.insertSelective(pojo);
+                    insertProjectSupplier(pojo, supplierIds);
                     purchaseProjectId = pojo.getId();
                     //指定批复人
                     addUserRole(isOtherAgency, ParticipantPermissionEnum.REPLY.getCode(), basicInfoList, operateId, creator, operateId, purchaseProjectId);
@@ -129,6 +168,23 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
             }
         }
 
+    }
+
+    /**
+     * 指定供应商
+     * @param pojo
+     * @param supplierIds
+     */
+    private void insertProjectSupplier(TPurchaseProjectBasicInfo pojo, List<Long> supplierIds) {
+        if(!CollectionUtils.isEmpty(supplierIds)
+                && pojo.getPurchaseRange().equals(Const.IS_OK.IS_OK)){
+            for (Long supplierId : supplierIds) {
+                TProcurementProjectSupplier projectSupplier = new TProcurementProjectSupplier();
+                projectSupplier.setProcurementProjectId(pojo.getId());
+                projectSupplier.setSupplierId(supplierId);
+                tProcurementProjectSupplierMapper.insertSelective(projectSupplier);
+            }
+        }
     }
 
     /**
@@ -257,7 +313,12 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         tpppp.setActionState(0);
         tpppp.setPurchaseProjectId(purchaseProjectId);
         tpppp.setUserId(userId);
-        //分配权限
+        tpppp.setStepType("announcement");
+        //分配权限 公告
+        tPurchaseProjectParticipantPermissionMapper.insertSelective(tpppp);
+        tpppp.setStepType("publicity");
+        tpppp.setId(null);
+        //分配权限 发布招标公示
         tPurchaseProjectParticipantPermissionMapper.insertSelective(tpppp);
     }
 
@@ -290,9 +351,28 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         return Result.success(returnList);
     }
 
+
+    @Override
+    public Result<FlowVO> getFlowByProcurementProjectId(Long procurementProjectId) {
+        FlowVO flowVO = new FlowVO();
+        flowVO.setAnnouncementId(bReleaseAnnouncementMapper.getId(procurementProjectId));
+        flowVO.setSaleDocumentsId(bSaleDocumentsMapper.getId(procurementProjectId));
+        flowVO.setEvaluationId(bEvaluationTenderStandardMapper.getId(procurementProjectId));
+        flowVO.setAssessmentCommitteeId(bAssessmentCommitteeMapper.getId(procurementProjectId));
+        flowVO.setOpeningRecordId(tOpeningRecordMapper.getId(procurementProjectId));
+        flowVO.setBidAnnouncement(tBidAnnouncementMapper.getId(procurementProjectId) > 0);
+        flowVO.setRecordPublicityId(tOpeningRecordPublicityMapper.getId(procurementProjectId));
+        flowVO.setExpertSign(bExpertSignMapper.getId(procurementProjectId) > 0);
+        flowVO.setExpertSignLeader(bExpertSignMapper.getIdLeader(procurementProjectId) > 0);
+        flowVO.setReport(bExpertScoreReportMapper.getId(procurementProjectId) > 0);
+        flowVO.setNominateId(tWinBidNominateMapper.getId(procurementProjectId));
+        flowVO.setWinBid(tWinBidMapper.getId(procurementProjectId) > 0);
+        flowVO.setOpeningPay(bBidOpeningPayMapper.getId(procurementProjectId) > 0);
+        return Result.success(flowVO);
+    }
+
     /**
      * 条件过滤查询
-     *
      * @param queryPurchaseBasicInfoVO
      * @param criteria
      * @param subCriteria

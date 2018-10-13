@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="bids_id" jdbcType="BIGINT" property="bidsId" />
+    <result column="procurement_project_id" jdbcType="BIGINT" property="procurementProjectId" />
     <result column="operate_id" jdbcType="BIGINT" property="operateId" />
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
@@ -72,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, file_path, bids_id, operate_id, create_at, update_at, is_deleted
+    id, file_path, bids_id, procurement_project_id, operate_id, create_at, update_at, 
+    is_deleted
   </sql>
   <sql id="Blob_Column_List">
     memo
@@ -129,12 +131,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into b_expert_score_report (file_path, bids_id, operate_id, 
-      create_at, update_at, is_deleted, 
-      memo)
-    values (#{filePath,jdbcType=VARCHAR}, #{bidsId,jdbcType=BIGINT}, #{operateId,jdbcType=BIGINT}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, 
-      #{memo,jdbcType=LONGVARCHAR})
+    insert into b_expert_score_report (file_path, bids_id, procurement_project_id, 
+      operate_id, create_at, update_at, 
+      is_deleted, memo)
+    values (#{filePath,jdbcType=VARCHAR}, #{bidsId,jdbcType=BIGINT}, #{procurementProjectId,jdbcType=BIGINT}, 
+      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER}, #{memo,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BExpertScoreReport">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -147,6 +149,9 @@
       </if>
       <if test="bidsId != null">
         bids_id,
+      </if>
+      <if test="procurementProjectId != null">
+        procurement_project_id,
       </if>
       <if test="operateId != null">
         operate_id,
@@ -170,6 +175,9 @@
       </if>
       <if test="bidsId != null">
         #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectId != null">
+        #{procurementProjectId,jdbcType=BIGINT},
       </if>
       <if test="operateId != null">
         #{operateId,jdbcType=BIGINT},
@@ -206,6 +214,9 @@
       <if test="record.bidsId != null">
         bids_id = #{record.bidsId,jdbcType=BIGINT},
       </if>
+      <if test="record.procurementProjectId != null">
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
       <if test="record.operateId != null">
         operate_id = #{record.operateId,jdbcType=BIGINT},
       </if>
@@ -231,6 +242,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       file_path = #{record.filePath,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
@@ -245,6 +257,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       file_path = #{record.filePath,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
@@ -261,6 +274,9 @@
       </if>
       <if test="bidsId != null">
         bids_id = #{bidsId,jdbcType=BIGINT},
+      </if>
+      <if test="procurementProjectId != null">
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       </if>
       <if test="operateId != null">
         operate_id = #{operateId,jdbcType=BIGINT},
@@ -284,6 +300,7 @@
     update b_expert_score_report
     set file_path = #{filePath,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
+      procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -295,6 +312,7 @@
     update b_expert_score_report
     set file_path = #{filePath,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
+      procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
@@ -331,5 +349,6 @@
       order by ${orderByClause}
     </if>
   </select>
+
 
 </mapper>

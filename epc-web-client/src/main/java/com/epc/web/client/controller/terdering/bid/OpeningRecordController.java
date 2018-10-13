@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,11 +31,15 @@ public class OpeningRecordController extends BaseController {
 
     @ApiOperation(value = "开标确认")
     @PostMapping(value = "insertOpeningRecord")
-    public Result<Boolean> insertOpeningRecord(@RequestBody ClientHandleOpeningRecord clientHandleOpeningRecord){
-        HandleOpeningRecord handleOpeningRecord = new HandleOpeningRecord();
-        BeanUtils.copyProperties(clientHandleOpeningRecord, handleOpeningRecord);
-        handleOpeningRecord.setOperateId(getLoginUser().getUserId());
-        return openingRecordClient.insertOpeningRecord(handleOpeningRecord);
+    public Result<Boolean> insertOpeningRecord(@RequestBody List<ClientHandleOpeningRecord> clientHandleOpeningRecord){
+        List<HandleOpeningRecord> recordList = new ArrayList<>();
+        for (ClientHandleOpeningRecord item : clientHandleOpeningRecord) {
+            HandleOpeningRecord pojo = new HandleOpeningRecord();
+            BeanUtils.copyProperties(item,pojo);
+            pojo.setOperateId(getLoginUser().getUserId());
+            recordList.add(pojo);
+        }
+        return openingRecordClient.insertOpeningRecord(recordList);
     }
 
     @ApiOperation(value = "查询开标前置条件")

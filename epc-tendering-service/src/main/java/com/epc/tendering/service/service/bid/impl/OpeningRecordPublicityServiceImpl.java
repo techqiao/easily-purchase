@@ -38,7 +38,7 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
 
     @Override
     public Result<Boolean> insertOpeningRecordPublicity(HandOpeningRecordPublicity handOpeningRecordPublicity) {
-        if(handOpeningRecordPublicity.getId() == null){
+        if (handOpeningRecordPublicity.getId() == null) {
             TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
             BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
             try {
@@ -46,46 +46,14 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
-            return Result.error();
         }
-        if(handOpeningRecordPublicity.getId()!=null){
-            String processStatus = tOpeningRecordPublicityMapper.getProcessStatus(handOpeningRecordPublicity.getId());
-            //状态为未提交 或者发布 为修改
-            if(handOpeningRecordPublicity.getProcessStatus().equals(AnnouncementProcessStatusEnum.WAIT_RELEASE.getCode())
-                    || handOpeningRecordPublicity.getProcessStatus().equals(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode())){
-                TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
-                BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
-                try {
-                    return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                }
-            }
-            //审核
-            if(processStatus.equals(AnnouncementProcessStatusEnum.AUDITING.getCode())
-                    && handOpeningRecordPublicity.getProcessStatus().equals(AnnouncementProcessStatusEnum.REPLY.getCode())) {
-                TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
-                BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
-                //审核人
-                tOpeningRecordPublicity.setAuditorId(handOpeningRecordPublicity.getAuditorId());
-                try {
-                    return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                }
-            }
-            //批复
-            if(processStatus.equals(AnnouncementProcessStatusEnum.REPLY.getCode())
-                    && handOpeningRecordPublicity.getProcessStatus().equals(AnnouncementProcessStatusEnum.WAIT_RELEASE.getCode())) {
-                TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
-                BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
-                //批复人
-                tOpeningRecordPublicity.setRepliesId(handOpeningRecordPublicity.getAuditorId());
-                try {
-                    return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                }
+        if (handOpeningRecordPublicity.getId() != null) {
+            TOpeningRecordPublicity tOpeningRecordPublicity = new TOpeningRecordPublicity();
+            BeanUtils.copyProperties(handOpeningRecordPublicity, tOpeningRecordPublicity);
+            try {
+                return Result.success(tOpeningRecordPublicityMapper.updateByPrimaryKeySelective(tOpeningRecordPublicity) > 0);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
 
         }
@@ -111,7 +79,7 @@ public class OpeningRecordPublicityServiceImpl implements OpeningRecordPublicity
         List<TPurchaseProjectBegin> tPurchaseProjectBegins = tPurchaseProjectBeginMapper.selectByExample(criteria);
         if (!CollectionUtils.isEmpty(tPurchaseProjectBegins)) {
             PurchaseProjectBeginVO purchaseProjectBeginVO = new PurchaseProjectBeginVO();
-            BeanUtils.copyProperties(tPurchaseProjectBegins.get(0),purchaseProjectBeginVO);
+            BeanUtils.copyProperties(tPurchaseProjectBegins.get(0), purchaseProjectBeginVO);
             return Result.success(purchaseProjectBeginVO);
         }
         return Result.success("没有开标确认");

@@ -22,4 +22,14 @@ public class LoginUserHystrix implements FacadeLoginUserService {
     public Result<Boolean> modifyPassword(ModifyUser modifyUser) {
          return Result.hystrixError();
     }
+
+    @Override
+    public Result retrieveVerifyCode(String cellphone) {
+        return Result.hystrixError();
+    }
+
+    @Override
+    public Result<String> getTokenValue(String token) {
+        return Result.hystrixError();
+    }
 }

@@ -10,6 +10,8 @@ public class BExpertScoreReport implements Serializable {
 
     private Long bidsId;
 
+    private Long procurementProjectId;
+
     private Long operateId;
 
     private Date createAt;
@@ -44,6 +46,14 @@ public class BExpertScoreReport implements Serializable {
 
     public void setBidsId(Long bidsId) {
         this.bidsId = bidsId;
+    }
+
+    public Long getProcurementProjectId() {
+        return procurementProjectId;
+    }
+
+    public void setProcurementProjectId(Long procurementProjectId) {
+        this.procurementProjectId = procurementProjectId;
     }
 
     public Long getOperateId() {
@@ -95,6 +105,7 @@ public class BExpertScoreReport implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", filePath=").append(filePath);
         sb.append(", bidsId=").append(bidsId);
+        sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", operateId=").append(operateId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);

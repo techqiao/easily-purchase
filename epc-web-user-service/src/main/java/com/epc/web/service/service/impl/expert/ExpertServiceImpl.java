@@ -5,19 +5,22 @@ import com.epc.common.constants.AttachmentEnum;
 import com.epc.common.constants.Const;
 import com.epc.web.facade.agency.handle.Attachement;
 import com.epc.web.facade.agency.handle.HandleExpert;
+import com.epc.web.facade.expert.Handle.ProjectOperatorCompany;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
 import com.epc.web.facade.expert.dto.ProjectDto;
+import com.epc.web.facade.expert.vo.ExpertProjectVo;
+import com.epc.web.service.domain.bid.TProjectBasicInfo;
 import com.epc.web.service.domain.bid.TPurchaseProjectBids;
-import com.epc.web.service.domain.expert.BAssessmentCommitteeExpert;
-import com.epc.web.service.domain.expert.TExpertAttachment;
-import com.epc.web.service.domain.expert.TExpertBasicInfo;
-import com.epc.web.service.domain.expert.TExpertDetailInfo;
+import com.epc.web.service.domain.expert.*;
+import com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria;
+import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
+import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
-import com.epc.web.service.mapper.expert.BAssessmentCommitteeExpertMapper;
-import com.epc.web.service.mapper.expert.TExpertAttachmentMapper;
-import com.epc.web.service.mapper.expert.TExpertBasicInfoMapper;
-import com.epc.web.service.mapper.expert.TExpertDetailInfoMapper;
+import com.epc.web.service.mapper.expert.*;
+import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
+import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.web.service.service.expert.ExpertService;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +30,10 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
 @Service
 public class ExpertServiceImpl implements ExpertService {
 
@@ -48,6 +53,13 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Autowired
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+
+    @Autowired
+    TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+
+    @Autowired
+    TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
+
 
     /**
      * @author :winlin
@@ -79,6 +91,7 @@ public class ExpertServiceImpl implements ExpertService {
         tExpertBasicInfo.setProfession(expert.getProfession());
         tExpertBasicInfo.setPositional(expert.getPositional());
         tExpertBasicInfo.setLevel(expert.getLevel());
+        tExpertBasicInfo.setWorkingYears(expert.getWorkingYears());
         tExpertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
         tExpertBasicInfo.setCircularDt(expert.getCircularDt());
         tExpertBasicInfo.setCircularDtEnd(expert.getCircularDtEnd());
@@ -146,6 +159,7 @@ public class ExpertServiceImpl implements ExpertService {
         tExpertBasicInfo.setProfession(expert.getProfession());
         tExpertBasicInfo.setPositional(expert.getPositional());
         tExpertBasicInfo.setLevel(expert.getLevel());
+        tExpertBasicInfo.setWorkingYears(expert.getWorkingYears());
         tExpertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
         tExpertBasicInfo.setCircularDt(expert.getCircularDt());
         tExpertBasicInfo.setCircularDtEnd(expert.getCircularDtEnd());
@@ -173,8 +187,9 @@ public class ExpertServiceImpl implements ExpertService {
             //添加详细信息
             tExpertDetailInfoMapper.updateByPrimaryKeySelective(tExpertDetailInfo);
             //查询附件信息看初次完善是否添加
-             List<TExpertAttachment> list =tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
-            if (!CollectionUtils.isEmpty(list)) {
+            int success = tExpertAttachmentMapper.selectAttchamentNumsByExpertId(expertId);
+            //List<TExpertAttachment> list =tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
+            if (success > 0) {
                 tExpertAttachmentMapper.deleteByAttachmentByExpertId(expertId);
                 //添加身份证信息
                 this.addExpertAttachment(expertAttachment, expertId, expert);
@@ -206,12 +221,12 @@ public class ExpertServiceImpl implements ExpertService {
      */
     @Override
     public Result selectAllBid(ProjectDto projecctDto) {
-        //通过专家id获得自己对应标段的的所有的标段id
-        List<BAssessmentCommitteeExpert> bAssessmentCommitteeExpert = null;
-        List<TPurchaseProjectBids> tPurchaseProjectBids = null;
+        //信息返回集合
+        List<ExpertProjectVo> expertProjectVos =null;
         try {
             Long expertId = projecctDto.getExpertId();
-            bAssessmentCommitteeExpert = bAssessmentCommitteeExpertMapper.selectByExpertId(expertId);
+            List<BAssessmentCommitteeExpert> bAssessmentCommitteeExpert = bAssessmentCommitteeExpertMapper.selectByExpertId(expertId);
+            //为空返回信息
             if (CollectionUtils.isEmpty(bAssessmentCommitteeExpert)) {
                 return Result.success("该专家下没有再评审的标段");
             }
@@ -220,17 +235,48 @@ public class ExpertServiceImpl implements ExpertService {
             for (BAssessmentCommitteeExpert committeeExpert : bAssessmentCommitteeExpert) {
                 bids.add(committeeExpert.getBidsId());
             }
-            //通过id获得采购目标段详情t_purchaser_project_bids
-            tPurchaseProjectBids = tPurchaseProjectBidsMapper.selectProjectByExpertIds(projecctDto, bids);
-            if (CollectionUtils.isEmpty(tPurchaseProjectBids)) {
+            if (CollectionUtils.isEmpty(bids)) {
                 return Result.success("该专家下没有再评审的标段");
+            }
+            //依据标段的id 查询所有的采购项目id
+            List<Long> purchaserProjectIds = tPurchaseProjectBidsMapper.selectPurchaserProjectIds(bids);
+            if (CollectionUtils.isEmpty(purchaserProjectIds)) {
+                return Result.success("该专家下没有在评审的项目信息");
+            }
+            //查询专家所有的采购项目信息
+            projecctDto.setProjectIds(purchaserProjectIds);
+            List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos =tPurchaseProjectBasicInfoMapper.selectBasicInfosByProjectIdsAndCriteria(projecctDto);
+            if(CollectionUtils.isEmpty(tPurchaseProjectBasicInfos)){
+                return Result.success("该专家下没有在评审的项目信息");
+            }
+            //查询项目中公司的名称
+            List<ProjectOperatorCompany>  projectOperatorCompanies = tPurchaserDetailInfoMapper.selectCompanyNameByCriteria(tPurchaseProjectBasicInfos,projecctDto.getPurchaserName());
+            if(CollectionUtils.isEmpty(projectOperatorCompanies)){
+                return Result.success("该专家下没有符合条件评审的项目信息");
+            }
+            //返回封装信息
+            expertProjectVos = new ArrayList<>();
+            for (TPurchaseProjectBasicInfo basicInfo:tPurchaseProjectBasicInfos) {
+                for(ProjectOperatorCompany operatorCompany:projectOperatorCompanies){
+                    if(basicInfo.getOperateId().equals(operatorCompany.getOperatorId())) {
+                        ExpertProjectVo vo = new ExpertProjectVo();
+                        vo.setSerialNum(basicInfo.getId());//序号,采购项目id
+                        vo.setProjectName(basicInfo.getProjectName()); //项目名称
+                        vo.setProjectNum(basicInfo.getPurchaseProjectCode()); //采购项目编号
+                        vo.setPurchaserMode(basicInfo.getPurchaseMode());//采购方式
+                        vo.setProjectState(basicInfo.getPurchaseProjectStatus());//招标状态
+                        vo.setCreateAt(basicInfo.getCreateAt());//创建时间
+                        vo.setProjectId(basicInfo.getProjectId());//项目id
+                        expertProjectVos.add(vo);
+                    }
+                }
             }
 
         } catch (Exception e) {
             LOGGER.error("查看评审标段详情失败Exception:{}", e);
             return Result.error("查看评审标段详情失败");
         }
-        return null;
+        return CollectionUtils.isEmpty(expertProjectVos)?Result.success("没有符合条件的项目信息"):Result.success("查询成功",expertProjectVos);
     }
 
     @Override
@@ -281,5 +327,6 @@ public class ExpertServiceImpl implements ExpertService {
             }
         }
     }
+
 
 }

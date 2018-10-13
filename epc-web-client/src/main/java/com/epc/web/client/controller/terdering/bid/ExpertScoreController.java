@@ -31,7 +31,7 @@ public class ExpertScoreController extends BaseController {
     private ExpertScoreClient expertScoreClient;
 
     @ApiOperation(value = "获取投标人列表")
-    @GetMapping(value = "getBidderList", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "getBidderList")
     public Result<List<BidderListVO>> getBidderList(Long procurementProjectId){
         return expertScoreClient.getBidderList(procurementProjectId);
     }
@@ -49,7 +49,7 @@ public class ExpertScoreController extends BaseController {
 
 
     @ApiOperation(value = "查看评审汇总")
-    @PostMapping(value = "queryExpertScore", consumes = "application/json; charset=UTF-8")
+    @GetMapping(value = "queryExpertScore")
     public Result<ScoreAndPathVO> queryExpertScore (@RequestParam(value = "bidId") Long bidId) {
         return expertScoreClient.queryExpertScore(bidId);
     }

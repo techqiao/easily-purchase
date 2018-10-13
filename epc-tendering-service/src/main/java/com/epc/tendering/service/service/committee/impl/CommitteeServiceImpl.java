@@ -2,21 +2,22 @@ package com.epc.tendering.service.service.committee.impl;
 
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.util.DateTimeUtil;
 import com.epc.tendering.service.domain.committee.BAssessmentCommittee;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeBid;
 import com.epc.tendering.service.domain.committee.BAssessmentCommitteeExpert;
 import com.epc.tendering.service.domain.expert.TExpertBasicInfo;
-import com.epc.tendering.service.domain.expert.TExpertBasicInfoCriteria;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeBidMapper;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeExpertMapper;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeMapper;
 import com.epc.tendering.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.tendering.service.service.committee.CommitteeService;
 import com.epc.web.facade.terdering.committee.dto.BidDTO;
+import com.epc.web.facade.terdering.committee.dto.CommittExpertDTO;
 import com.epc.web.facade.terdering.committee.dto.ExpertDTO;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
-import org.apache.commons.lang3.StringUtils;
+import com.epc.web.facade.terdering.committee.vo.CommittVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -75,19 +76,29 @@ public class CommitteeServiceImpl implements CommitteeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result<Boolean> createBAssessmentCommittee(QueryExtractExpertList dto){
-
+    public Result<List<CommittVO>> createBAssessmentCommittee(QueryExtractExpertList dto){
+        List<CommittVO> voList=new ArrayList<>();
+         String province =dto.getProvince();
+         String city=dto.getCity();
+         String area=dto.getArea();
         /** 组建评委员--标段对应专专业人数 */
         List<BidDTO> bidList=dto.getBidDTOList();
         List<ExpertDTO> expertList=dto.getExpertDTOList();
          //获取要抽取的标段列表
         for(BidDTO bid:bidList){
             for(ExpertDTO expert:expertList){
+                //返回类
+                CommittVO committVO=new CommittVO();
+                committVO.setBidId(bid.getBidsId());
+
                 if(expert.getProfessionalNumber()==null){
                     return Result.error("professionalNumber is not null");
                 }
                 if(expert.getProfessionalName()==null){
                     return Result.error("professionalName is not null");
+                }
+                if(expert.getProfessionalNumber()==null){
+                    return Result.error("professionalNumber is not null");
                 }
                 BAssessmentCommitteeBid committeeBid =new BAssessmentCommitteeBid();
                 BeanUtils.copyProperties(bid,committeeBid);
@@ -104,17 +115,8 @@ public class CommitteeServiceImpl implements CommitteeService {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     return Result.error();
                 }
-
-                //专业人数--专家列表
-                TExpertBasicInfoCriteria criteria=new TExpertBasicInfoCriteria();
-                TExpertBasicInfoCriteria.Criteria cubCriteria=criteria.createCriteria();
-                cubCriteria.andProfessionEqualTo(expert.getProfessionalName());
-                cubCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-                if(StringUtils.isNotEmpty(expert.getProfessionalLevel())){
-                    cubCriteria.andLevelEqualTo(expert.getProfessionalLevel());
-                }
-                cubCriteria.andIsIdleEqualTo(Const.EXPERT_STATUS.FREE);
-                List<TExpertBasicInfo> resultList=tExpertBasicInfoMapper.selectByExample(criteria);
+                //根据筛选条件，抽取专家
+                List<TExpertBasicInfo> resultList=tExpertBasicInfoMapper.selectExpertWithCommitt(province,city,area,expert.getProfessionalName(),expert.getProfessionalLevel());
                 if(resultList.size()==0){
 
                     LOGGER.error(resultList.toString()+"_"+"is not null");
@@ -123,6 +125,7 @@ public class CommitteeServiceImpl implements CommitteeService {
                 }
 
                 List<TExpertBasicInfo> padomList = getSubStringByRadom(resultList,expert.getProfessionalNumber());
+                List<CommittExpertDTO> expertDTOList=new ArrayList<>();
                 for(TExpertBasicInfo entity:padomList){
                     BAssessmentCommitteeExpert bAssessmentCommitteeExpert=new BAssessmentCommitteeExpert();
                     bAssessmentCommitteeExpert.setCommitteeBidId(committeeBid.getId());
@@ -134,7 +137,14 @@ public class CommitteeServiceImpl implements CommitteeService {
                     bAssessmentCommitteeExpert.setCreateAt(new Date());
                     bAssessmentCommitteeExpert.setUpdateAt(new Date());
                     bAssessmentCommitteeExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+
+                    CommittExpertDTO committExpertDTO=new CommittExpertDTO();
+                    BeanUtils.copyProperties(entity,committExpertDTO);
+                    committExpertDTO.setCircularDt(DateTimeUtil.dateToStr(entity.getCircularDt()));
+                    committExpertDTO.setCircularDtEnd(DateTimeUtil.dateToStr(entity.getCircularDtEnd()));
+                    expertDTOList.add(committExpertDTO);
                     try{
+                        //插入委员会专家表
                         bAssessmentCommitteeExpertMapper.insertSelective(bAssessmentCommitteeExpert);
                     }catch (Exception e){
                         LOGGER.error(bAssessmentCommitteeExpert.toString()+"_"+e.getMessage());
@@ -142,10 +152,11 @@ public class CommitteeServiceImpl implements CommitteeService {
                         return Result.error();
                     }
                 }
-
+                committVO.setExpertList(expertDTOList);
+                voList.add(committVO);
             }
         }
-        return Result.success(true);
+        return Result.success(voList);
     }
 
     /**

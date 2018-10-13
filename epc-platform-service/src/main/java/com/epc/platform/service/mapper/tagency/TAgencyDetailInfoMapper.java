@@ -46,5 +46,4 @@ public interface TAgencyDetailInfoMapper {
      * @return
      */
     List<BiddingAgencyVO> selectByPage(QueryDetailIfo queryDetailIfo);
-
 }

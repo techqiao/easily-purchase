@@ -31,4 +31,10 @@ public interface BExpertSignMapper {
     int updateByPrimaryKeySelective(BExpertSign record);
 
     int updateByPrimaryKey(BExpertSign record);
+
+    @Select("Select count(b.id) from b_expert_sign b where b.procurement_project_id =#{procurementProjectId}")
+    Integer getId(Long procurementProjectId);
+
+    @Select("Select count(b.id) from b_expert_sign b where b.procurement_project_id =#{procurementProjectId} and b.is_leader = '1'")
+    Integer getIdLeader(Long procurementProjectId);
 }

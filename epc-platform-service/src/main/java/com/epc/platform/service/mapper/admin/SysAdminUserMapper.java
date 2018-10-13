@@ -1,5 +1,6 @@
 package com.epc.platform.service.mapper.admin;
 
+import com.epc.administration.facade.admin.vo.userVO;
 import com.epc.platform.service.domain.admin.SysAdminUser;
 import com.epc.platform.service.domain.admin.SysAdminUserCriteria;
 import java.util.List;
@@ -35,5 +36,5 @@ public interface SysAdminUserMapper {
 
     UserWithRole findUserWithRole(Long userId);
 
-    List<SysAdminUser> findUserWithDept(SysAdminUser user);
+    List<userVO> findUserWithDept(SysAdminUser user);
 }

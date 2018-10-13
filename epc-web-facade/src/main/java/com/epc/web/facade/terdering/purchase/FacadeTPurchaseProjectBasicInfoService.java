@@ -3,6 +3,7 @@ package com.epc.web.facade.terdering.purchase;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
+import com.epc.web.facade.terdering.purchase.vo.FlowVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,14 @@ public interface FacadeTPurchaseProjectBasicInfoService {
      */
     @PostMapping(value = "handlePurchaseProjectBasicInfo", consumes = "application/json; charset=UTF-8")
     Result<Boolean> handlePurchaseProjectBasicInfo(@RequestBody HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub);
+
+    /**
+     * 获取采购项目步骤
+     * @param procurementProjectId
+     * @return
+     */
+    @GetMapping(value = "getFlowByProcurementProjectId", consumes = "application/json; charset=UTF-8")
+    Result<FlowVO> getFlowByProcurementProjectId(@RequestParam("procurementProjectId") Long procurementProjectId);
 
     /**
      * 查询采购项目详情

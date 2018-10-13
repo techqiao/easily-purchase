@@ -11,7 +11,9 @@ public class Const {
     public interface RedisCacheExtime {
         int REDIS_SESSION_EXTIME = 60 * 30*30000;//30分钟
     }
-
+    public interface RedisVerifyCodeCacheExtime {
+        int REDIS_VERITYCODE_EXTIME = 60 * 3;//3分钟
+    }
     public interface Role {
         int ROLE_CORPORATION = 0;// 法人
         int ROLE_ADMIN = 1;//管理员
@@ -173,5 +175,17 @@ public class Const {
     public  interface EXPERT_STATUS{
         int BUSY=0;
         int FREE=1;
+    }
+
+    public  interface PAYMENT_TYPE{
+        int DOCUMENTS=0;
+        int GUARANTY=1;
+        int SERVICE=2;
+    }
+
+    public  interface PROJECT_STATUS{
+        int NOT_START=0;
+        int STARTING=1;
+        int END=2;
     }
 }

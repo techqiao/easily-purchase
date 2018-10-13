@@ -3,8 +3,11 @@ package com.epc.web.facade.terdering.committee;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
+import com.epc.web.facade.terdering.committee.vo.CommittVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * @author linzhixiang
@@ -26,6 +29,6 @@ public interface FacadeCommitteeService {
      * @return
      */
      @PostMapping(value = "createBAssessmentCommittee", consumes = "application/json; charset=UTF-8")
-      Result<Boolean> createBAssessmentCommittee(@RequestBody  QueryExtractExpertList dto);
+     Result<List<CommittVO>> createBAssessmentCommittee(@RequestBody  QueryExtractExpertList dto);
 
 }

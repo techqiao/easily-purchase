@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.epc.web.service.mapper.bid.TProjectBidProcedureMapper" >
-  <resultMap id="BaseResultMap" type="com.epc.web.service.domain.bid.TProjectBidProcedure" >
+<mapper namespace="com.epc.bidding.mapper.PlatformBankAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.epc.bidding.domain.PlatformBankAccount" >
     <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="project_id" property="projectId" jdbcType="BIGINT" />
-    <result column="purchase_project_id" property="purchaseProjectId" jdbcType="BIGINT" />
-    <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
-    <result column="procedure_name" property="procedureName" jdbcType="VARCHAR" />
-    <result column="operate_type" property="operateType" jdbcType="VARCHAR" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="proceeds_unit" property="proceedsUnit" jdbcType="VARCHAR" />
+    <result column="bank_of_deposit" property="bankOfDeposit" jdbcType="VARCHAR" />
+    <result column="shroff_account_number" property="shroffAccountNumber" jdbcType="VARCHAR" />
+    <result column="wholesale_line_number" property="wholesaleLineNumber" jdbcType="VARCHAR" />
+    <result column="location_line_number" property="locationLineNumber" jdbcType="VARCHAR" />
+    <result column="payment_type" property="paymentType" jdbcType="INTEGER" />
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
@@ -72,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, purchase_project_id, bids_id, procedure_name, operate_type, creator, 
-    create_at, update_at, is_deleted
+    id, proceeds_unit, bank_of_deposit, shroff_account_number, wholesale_line_number, 
+    location_line_number, payment_type, create_at, update_at, is_deleted
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedureCriteria" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.PlatformBankAccountCriteria" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_project_bid_procedure
+    from platform_bank_account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,55 +92,55 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from t_project_bid_procedure
+    from platform_bank_account
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from t_project_bid_procedure
+    delete from platform_bank_account
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedureCriteria" >
-    delete from t_project_bid_procedure
+  <delete id="deleteByExample" parameterType="com.epc.bidding.domain.PlatformBankAccountCriteria" >
+    delete from platform_bank_account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedure" >
+  <insert id="insert" parameterType="com.epc.bidding.domain.PlatformBankAccount" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_project_bid_procedure (project_id, purchase_project_id, bids_id, 
-      procedure_name, operate_type, creator, 
-      create_at, update_at, is_deleted
-      )
-    values (#{projectId,jdbcType=BIGINT}, #{purchaseProjectId,jdbcType=BIGINT}, #{bidsId,jdbcType=BIGINT}, 
-      #{procedureName,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
-      )
+    insert into platform_bank_account (proceeds_unit, bank_of_deposit, shroff_account_number, 
+      wholesale_line_number, location_line_number, 
+      payment_type, create_at, update_at, 
+      is_deleted)
+    values (#{proceedsUnit,jdbcType=VARCHAR}, #{bankOfDeposit,jdbcType=VARCHAR}, #{shroffAccountNumber,jdbcType=VARCHAR}, 
+      #{wholesaleLineNumber,jdbcType=VARCHAR}, #{locationLineNumber,jdbcType=VARCHAR}, 
+      #{paymentType,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedure" >
+  <insert id="insertSelective" parameterType="com.epc.bidding.domain.PlatformBankAccount" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_project_bid_procedure
+    insert into platform_bank_account
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        project_id,
+      <if test="proceedsUnit != null" >
+        proceeds_unit,
       </if>
-      <if test="purchaseProjectId != null" >
-        purchase_project_id,
+      <if test="bankOfDeposit != null" >
+        bank_of_deposit,
       </if>
-      <if test="bidsId != null" >
-        bids_id,
+      <if test="shroffAccountNumber != null" >
+        shroff_account_number,
       </if>
-      <if test="procedureName != null" >
-        procedure_name,
+      <if test="wholesaleLineNumber != null" >
+        wholesale_line_number,
       </if>
-      <if test="operateType != null" >
-        operate_type,
+      <if test="locationLineNumber != null" >
+        location_line_number,
       </if>
-      <if test="creator != null" >
-        creator,
+      <if test="paymentType != null" >
+        payment_type,
       </if>
       <if test="createAt != null" >
         create_at,
@@ -153,23 +153,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="projectId != null" >
-        #{projectId,jdbcType=BIGINT},
+      <if test="proceedsUnit != null" >
+        #{proceedsUnit,jdbcType=VARCHAR},
       </if>
-      <if test="purchaseProjectId != null" >
-        #{purchaseProjectId,jdbcType=BIGINT},
+      <if test="bankOfDeposit != null" >
+        #{bankOfDeposit,jdbcType=VARCHAR},
       </if>
-      <if test="bidsId != null" >
-        #{bidsId,jdbcType=BIGINT},
+      <if test="shroffAccountNumber != null" >
+        #{shroffAccountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="procedureName != null" >
-        #{procedureName,jdbcType=VARCHAR},
+      <if test="wholesaleLineNumber != null" >
+        #{wholesaleLineNumber,jdbcType=VARCHAR},
       </if>
-      <if test="operateType != null" >
-        #{operateType,jdbcType=VARCHAR},
+      <if test="locationLineNumber != null" >
+        #{locationLineNumber,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
+      <if test="paymentType != null" >
+        #{paymentType,jdbcType=INTEGER},
       </if>
       <if test="createAt != null" >
         #{createAt,jdbcType=TIMESTAMP},
@@ -182,35 +182,35 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedureCriteria" resultType="java.lang.Integer" >
-    select count(*) from t_project_bid_procedure
+  <select id="countByExample" parameterType="com.epc.bidding.domain.PlatformBankAccountCriteria" resultType="java.lang.Integer" >
+    select count(*) from platform_bank_account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_project_bid_procedure
+    update platform_bank_account
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=BIGINT},
+      <if test="record.proceedsUnit != null" >
+        proceeds_unit = #{record.proceedsUnit,jdbcType=VARCHAR},
       </if>
-      <if test="record.purchaseProjectId != null" >
-        purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
+      <if test="record.bankOfDeposit != null" >
+        bank_of_deposit = #{record.bankOfDeposit,jdbcType=VARCHAR},
       </if>
-      <if test="record.bidsId != null" >
-        bids_id = #{record.bidsId,jdbcType=BIGINT},
+      <if test="record.shroffAccountNumber != null" >
+        shroff_account_number = #{record.shroffAccountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.procedureName != null" >
-        procedure_name = #{record.procedureName,jdbcType=VARCHAR},
+      <if test="record.wholesaleLineNumber != null" >
+        wholesale_line_number = #{record.wholesaleLineNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.operateType != null" >
-        operate_type = #{record.operateType,jdbcType=VARCHAR},
+      <if test="record.locationLineNumber != null" >
+        location_line_number = #{record.locationLineNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
+      <if test="record.paymentType != null" >
+        payment_type = #{record.paymentType,jdbcType=INTEGER},
       </if>
       <if test="record.createAt != null" >
         create_at = #{record.createAt,jdbcType=TIMESTAMP},
@@ -227,14 +227,14 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_project_bid_procedure
+    update platform_bank_account
     set id = #{record.id,jdbcType=BIGINT},
-      project_id = #{record.projectId,jdbcType=BIGINT},
-      purchase_project_id = #{record.purchaseProjectId,jdbcType=BIGINT},
-      bids_id = #{record.bidsId,jdbcType=BIGINT},
-      procedure_name = #{record.procedureName,jdbcType=VARCHAR},
-      operate_type = #{record.operateType,jdbcType=VARCHAR},
-      creator = #{record.creator,jdbcType=VARCHAR},
+      proceeds_unit = #{record.proceedsUnit,jdbcType=VARCHAR},
+      bank_of_deposit = #{record.bankOfDeposit,jdbcType=VARCHAR},
+      shroff_account_number = #{record.shroffAccountNumber,jdbcType=VARCHAR},
+      wholesale_line_number = #{record.wholesaleLineNumber,jdbcType=VARCHAR},
+      location_line_number = #{record.locationLineNumber,jdbcType=VARCHAR},
+      payment_type = #{record.paymentType,jdbcType=INTEGER},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER}
@@ -242,26 +242,26 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedure" >
-    update t_project_bid_procedure
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.bidding.domain.PlatformBankAccount" >
+    update platform_bank_account
     <set >
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=BIGINT},
+      <if test="proceedsUnit != null" >
+        proceeds_unit = #{proceedsUnit,jdbcType=VARCHAR},
       </if>
-      <if test="purchaseProjectId != null" >
-        purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
+      <if test="bankOfDeposit != null" >
+        bank_of_deposit = #{bankOfDeposit,jdbcType=VARCHAR},
       </if>
-      <if test="bidsId != null" >
-        bids_id = #{bidsId,jdbcType=BIGINT},
+      <if test="shroffAccountNumber != null" >
+        shroff_account_number = #{shroffAccountNumber,jdbcType=VARCHAR},
       </if>
-      <if test="procedureName != null" >
-        procedure_name = #{procedureName,jdbcType=VARCHAR},
+      <if test="wholesaleLineNumber != null" >
+        wholesale_line_number = #{wholesaleLineNumber,jdbcType=VARCHAR},
       </if>
-      <if test="operateType != null" >
-        operate_type = #{operateType,jdbcType=VARCHAR},
+      <if test="locationLineNumber != null" >
+        location_line_number = #{locationLineNumber,jdbcType=VARCHAR},
       </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
+      <if test="paymentType != null" >
+        payment_type = #{paymentType,jdbcType=INTEGER},
       </if>
       <if test="createAt != null" >
         create_at = #{createAt,jdbcType=TIMESTAMP},
@@ -275,26 +275,26 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedure" >
-    update t_project_bid_procedure
-    set project_id = #{projectId,jdbcType=BIGINT},
-      purchase_project_id = #{purchaseProjectId,jdbcType=BIGINT},
-      bids_id = #{bidsId,jdbcType=BIGINT},
-      procedure_name = #{procedureName,jdbcType=VARCHAR},
-      operate_type = #{operateType,jdbcType=VARCHAR},
-      creator = #{creator,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.PlatformBankAccount" >
+    update platform_bank_account
+    set proceeds_unit = #{proceedsUnit,jdbcType=VARCHAR},
+      bank_of_deposit = #{bankOfDeposit,jdbcType=VARCHAR},
+      shroff_account_number = #{shroffAccountNumber,jdbcType=VARCHAR},
+      wholesale_line_number = #{wholesaleLineNumber,jdbcType=VARCHAR},
+      location_line_number = #{locationLineNumber,jdbcType=VARCHAR},
+      payment_type = #{paymentType,jdbcType=INTEGER},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.bid.TProjectBidProcedureCriteria" id="selectByExampleWithRowbounds" >
+  <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.PlatformBankAccountCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_project_bid_procedure
+    from platform_bank_account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>

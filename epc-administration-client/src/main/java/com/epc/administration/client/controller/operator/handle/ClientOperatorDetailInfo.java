@@ -27,8 +27,17 @@ public class ClientOperatorDetailInfo implements Serializable {
     @NotEmpty(message = "ClientOperatorDetailInfo.companyName.null")
     private String companyName;
     @ApiModelProperty(value = "公司地址")
-    @NotEmpty(message = "ClientBiddingAgencyDetailInfo.companyAddress.null")
+    @NotEmpty(message = "ClientOperatorDetailInfo.companyAddress.null")
     private String companyAddress;
+    @ApiModelProperty(value = "省份")
+    @NotEmpty(message = "ClientOperatorDetailInfo.province.null")
+    private String province;
+    @ApiModelProperty(value = "市区")
+    @NotEmpty(message = "ClientOperatorDetailInfo.city.null")
+    private String city;
+    @ApiModelProperty(value = "区域")
+    @NotEmpty(message = "ClientOperatorDetailInfo.area.null")
+    private String area;
     @ApiModelProperty(value = "手机号")
     @NotEmpty(message = "ClientOperatorDetailInfo.cellphone.null")
     private String cellphone;

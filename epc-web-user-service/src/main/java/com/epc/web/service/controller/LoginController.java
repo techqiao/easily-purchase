@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
+import com.epc.common.util.CookieUtil;
 import com.epc.common.util.MD5Util;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.FacadeLoginUserService;
@@ -14,9 +15,14 @@ import com.epc.web.facade.loginuser.dto.RegisterUser;
 import com.epc.web.service.service.IRoleLoginService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -57,6 +63,10 @@ public class LoginController implements FacadeLoginUserService {
 
     @Override
     public Result<Boolean> registerUser(@RequestBody RegisterUser user) {
+//        String verityCode = this.getVerityCode(user.getCellphone());
+//        if(!verityCode.equals(user.getVerityCode())){
+//            return Result.success("验证码或密码不正确");
+//        }
         //用户类型
         Integer type = user.getType();
         switch (type) {
@@ -77,6 +87,10 @@ public class LoginController implements FacadeLoginUserService {
 
     @Override
     public Result<Boolean> modifyPassword(@RequestBody ModifyUser user) {
+        String verityCode = this.getVerityCode(user.getCellphone());
+//        if(!verityCode.equals(user.getVerityCode())){
+//            return Result.success("验证码或密码不正确");
+//        }
         Integer type = user.getType();
         switch (type) {
             case IRoleLoginService.OPERRATOR:
@@ -92,6 +106,20 @@ public class LoginController implements FacadeLoginUserService {
             default:
                 return Result.error("密码修改失败");
         }
+    }
+
+    @Override
+    public Result retrieveVerifyCode(@PathVariable("cellphone") String cellphone) {
+        return iRoleLoginService.retrieveVerifyCode(cellphone);
+    }
+
+    @Override
+    public Result<String> getTokenValue(@PathVariable("token") String token) {
+        return iRoleLoginService.getTokenValue(token);
+    }
+
+    public String getVerityCode(String cellphone){
+      return CookieUtil.readVerityCode(cellphone);
     }
 }
 

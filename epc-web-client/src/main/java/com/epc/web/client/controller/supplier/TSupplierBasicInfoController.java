@@ -9,6 +9,7 @@ import com.epc.web.client.controller.supplier.handle.*;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierCellphone;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierId;
 import com.epc.web.client.controller.supplier.query.ClientHandleSupplierIdAndName;
+import com.epc.web.client.controller.supplier.query.ClientSupplierProject;
 import com.epc.web.client.remoteApi.supplier.SupplierClient;
 import com.epc.web.facade.operator.handle.HandleOperatorRole;
 import com.epc.web.facade.operator.handle.HandleOperatorState;
@@ -17,10 +18,12 @@ import com.epc.web.facade.supplier.query.HandleSupplierCellphone;
 import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
+import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +33,13 @@ import java.util.Map;
 
 @Api(value = "供应商服务",description = "供应商服务")
 @RestController
-@RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/supplier",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TSupplierBasicInfoController extends BaseController {
 
     @Autowired
     private SupplierClient supplierClient;
+
+
 
     /**0
      * 注册供应商
@@ -70,6 +75,7 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<Boolean> createSupplierEmployee(@RequestBody ClientHandlerSupplierAddEmployee clientHandlerSupplierAddEmployee){
         HandlerSupplierAddEmployee handlerSupplierAddEmployee=new HandlerSupplierAddEmployee();
         BeanUtils.copyProperties(clientHandlerSupplierAddEmployee,handlerSupplierAddEmployee);
+        handlerSupplierAddEmployee.setPassword("epc1688");
         Long bossId = getLoginUser().getBossId();
         Integer loginRole = getLoginUser().getLoginRole();
         if(bossId==null || loginRole==null){
@@ -270,18 +276,18 @@ public class TSupplierBasicInfoController extends BaseController {
         return supplierClient.querySupplierEmployeeAll(handleSupplierIdAndName);
     }
 
-    @ApiOperation(value = "15:根据当前登录供应商获取对应项目详情")
-    @PostMapping("querySupplierProject")
-    public Result<Map<String, Object>> querySupplierProject(@RequestBody QueryRequest queryRequest){
+    @ApiOperation(value = "15:根据当前登录供应商获取对应项目列表")
+    @PostMapping("/querySupplierProject")
+    public Result<Map<String, Object>> querySupplierProject(@RequestBody ClientSupplierProject clientSupplierProject){
         QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
-       // LoginUser loginUser = new LoginUser();
-        BeanUtils.copyProperties(querywithPageHandle,queryRequest);
-       /* if(loginUser==null){
-            return Result.error();
-        }*/
-        querywithPageHandle.setId(1L);
+        BeanUtils.copyProperties(clientSupplierProject,querywithPageHandle);
+        querywithPageHandle.setId(getLoginUser().getBossId());
         return supplierClient.querySupplierProject(querywithPageHandle);
     }
 
-
+    @ApiOperation(value = "16:获得供货商类别列表")
+    @RequestMapping("/querySupplierCategory")
+    public Result<List<SupplierCategoryVo>> querySupplierCategory(){
+        return supplierClient.querySupplierCategory();
+    }
 }

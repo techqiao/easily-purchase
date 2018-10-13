@@ -1,11 +1,12 @@
 package com.epc.bidding.service.advanceNotice;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.query.notice.PretrialMessageDTO;
+import com.epc.web.facade.bidding.query.notice.PretrialMessageDetailDTO;
 import com.epc.web.facade.bidding.query.notice.QueryAdvanceNoticeDTO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeDetailVO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.epc.web.facade.bidding.vo.PretrialMessageDetailVO;
 
 import java.util.List;
 
@@ -30,4 +31,18 @@ public interface AdvanceNoticeService {
      */
      Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(Long id);
 
-    }
+
+    /**
+     * 是否通过预审
+     * @param pretrialMessageDTO
+     * @return
+     */
+    Boolean getPretrialMessage(PretrialMessageDTO pretrialMessageDTO);
+
+
+    /**
+     * 招标文件详情
+     * @return
+     */
+    PretrialMessageDetailVO getPretrigetPretrialMessageDetail(Long procurementProjectId);
+}

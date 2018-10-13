@@ -7,7 +7,7 @@ import java.util.Date;
  * 描述:t_expert_detail_info表的实体类
  * @version
  * @author:  01
- * @创建时间: 2018-10-03
+ * @创建时间: 2018-10-10
  */
 public class TExpertDetailInfo implements Serializable {
     /**
@@ -16,7 +16,7 @@ public class TExpertDetailInfo implements Serializable {
     private Long id;
 
     /**
-     * 运营商法人ID
+     * 专家基础信息表ID
      */
     private Long expertId;
 
@@ -24,6 +24,26 @@ public class TExpertDetailInfo implements Serializable {
      * 公司名称
      */
     private String companyName;
+
+    /**
+     * 省
+     */
+    private String province;
+
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 区
+     */
+    private String area;
+
+    /**
+     * 公司地址
+     */
+    private String companyAddress;
 
     /**
      * 统一信用代码
@@ -61,11 +81,6 @@ public class TExpertDetailInfo implements Serializable {
     private Integer isDeleted;
 
     /**
-     * 公司地址
-     */
-    private String companyAddress;
-
-    /**
      * t_expert_detail_info
      */
     private static final long serialVersionUID = 1L;
@@ -87,16 +102,16 @@ public class TExpertDetailInfo implements Serializable {
     }
 
     /**
-     * 运营商法人ID
-     * @return expert_id 运营商法人ID
+     * 专家基础信息表ID
+     * @return expert_id 专家基础信息表ID
      */
     public Long getExpertId() {
         return expertId;
     }
 
     /**
-     * 运营商法人ID
-     * @param expertId 运营商法人ID
+     * 专家基础信息表ID
+     * @param expertId 专家基础信息表ID
      */
     public void setExpertId(Long expertId) {
         this.expertId = expertId;
@@ -116,6 +131,70 @@ public class TExpertDetailInfo implements Serializable {
      */
     public void setCompanyName(String companyName) {
         this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    /**
+     * 省
+     * @return province 省
+     */
+    public String getProvince() {
+        return province;
+    }
+
+    /**
+     * 省
+     * @param province 省
+     */
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    /**
+     * 市
+     * @return city 市
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 市
+     * @param city 市
+     */
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    /**
+     * 区
+     * @return area 区
+     */
+    public String getArea() {
+        return area;
+    }
+
+    /**
+     * 区
+     * @param area 区
+     */
+    public void setArea(String area) {
+        this.area = area == null ? null : area.trim();
+    }
+
+    /**
+     * 公司地址
+     * @return company_address 公司地址
+     */
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    /**
+     * 公司地址
+     * @param companyAddress 公司地址
+     */
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
     }
 
     /**
@@ -230,22 +309,6 @@ public class TExpertDetailInfo implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    /**
-     * 公司地址
-     * @return company_address 公司地址
-     */
-    public String getCompanyAddress() {
-        return companyAddress;
-    }
-
-    /**
-     * 公司地址
-     * @param companyAddress 公司地址
-     */
-    public void setCompanyAddress(String companyAddress) {
-        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -255,6 +318,10 @@ public class TExpertDetailInfo implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", expertId=").append(expertId);
         sb.append(", companyName=").append(companyName);
+        sb.append(", province=").append(province);
+        sb.append(", city=").append(city);
+        sb.append(", area=").append(area);
+        sb.append(", companyAddress=").append(companyAddress);
         sb.append(", uniformCreditCode=").append(uniformCreditCode);
         sb.append(", publicBankName=").append(publicBankName);
         sb.append(", publicBanAccountNumber=").append(publicBanAccountNumber);
@@ -262,7 +329,6 @@ public class TExpertDetailInfo implements Serializable {
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
-        sb.append(", companyAddress=").append(companyAddress);
         sb.append("]");
         return sb.toString();
     }

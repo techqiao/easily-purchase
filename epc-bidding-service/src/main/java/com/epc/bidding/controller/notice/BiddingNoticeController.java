@@ -2,21 +2,23 @@ package com.epc.bidding.controller.notice;
 
 import com.epc.bidding.service.advanceNotice.AdvanceNoticeService;
 import com.epc.bidding.service.bidding.BiddingService;
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeNoticeService;
-import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
-import com.epc.web.facade.bidding.query.notice.QueryAdvanceNoticeDTO;
-import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
-import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
+import com.epc.web.facade.bidding.query.notice.*;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeDetailVO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
+import com.epc.web.facade.bidding.vo.PretrialMessageDetailVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description:投标接口
@@ -24,7 +26,7 @@ import java.util.List;
 * @Date: 2018/9/18
 */
 @RestController
-public class BiddingNoticeController implements FacadeNoticeService {
+public class BiddingNoticeController extends QueryRequest implements FacadeNoticeService {
 
     @Autowired
     BiddingService biddingService;
@@ -36,8 +38,13 @@ public class BiddingNoticeController implements FacadeNoticeService {
      * @return
      */
     @Override
-    public Result<List<NoticeDetailVO>> queryBIssueDocumentsList(@RequestBody QueryNoticeDTO queryNoticeDTO) {
-        return biddingService.findBySupplierId(queryNoticeDTO);
+    public Result<Map<String, Object>> queryBIssueDocumentsList(@RequestBody QueryNoticeDTO queryNoticeDTO) {
+        PageHelper.startPage(queryNoticeDTO.getPageNum(),queryNoticeDTO.getPageSize());
+        List<NoticeDetailVO> voList=biddingService.findBySupplierId(queryNoticeDTO);
+        PageInfo<NoticeDetailVO> pageInfo = new PageInfo<>(voList);
+        Map<String, Object> dataTable = getDataTable(pageInfo);
+
+        return Result.success(dataTable);
     }
 
 
@@ -47,21 +54,10 @@ public class BiddingNoticeController implements FacadeNoticeService {
      * @return
      */
     @Override
-    public Result<NoticeDetailVO> getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
+    public NoticeDetailVO getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
         return biddingService.findByNoticeId(queryNoticeDetail);
     }
 
-
-    /**
-     * 是否支付下载文件金额
-     * @param dto
-     * @return
-     */
-
-    @Override
-    public Boolean isPayForProjectFile(@RequestBody QueryProgramPayDTO dto){
-        return biddingService.IsPayForProjectFile(dto);
-    }
 
     /**
      * 查询预告列表
@@ -82,6 +78,26 @@ public class BiddingNoticeController implements FacadeNoticeService {
     public Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(Long id){
         return advanceNoticeService.AdvanceNoticeDetail(id);
 
+    }
+
+
+    /**
+     * 是否通过预审
+     * @param pretrialMessageDTO
+     * @return
+     */
+    @Override
+    public Result<Boolean> getPretrialMessage(@RequestBody PretrialMessageDTO pretrialMessageDTO) {
+        return Result.success(advanceNoticeService.getPretrialMessage(pretrialMessageDTO));
+    }
+
+    /**
+     * 获取招标文件信息
+     * @return
+     */
+    @Override
+    public Result<PretrialMessageDetailVO> getPretrigetPretrialMessageDetail( Long procurementProjectId) {
+        return Result.success(advanceNoticeService.getPretrigetPretrialMessageDetail(procurementProjectId));
     }
 
 }

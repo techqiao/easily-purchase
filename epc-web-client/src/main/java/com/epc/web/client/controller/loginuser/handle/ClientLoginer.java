@@ -15,4 +15,6 @@ public class ClientLoginer implements Serializable {
     private String password;
     @ApiModelProperty(value = "用户类型运营商1,代理商2,供货商3,采购商4,专家 5")
     private Integer type;
+    @ApiModelProperty(value = "验证码")
+    private String verityCode;
 }

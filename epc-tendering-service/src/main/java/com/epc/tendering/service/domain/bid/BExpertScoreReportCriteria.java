@@ -295,6 +295,66 @@ public class BExpertScoreReportCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andProcurementProjectIdIsNull() {
+            addCriterion("procurement_project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdIsNotNull() {
+            addCriterion("procurement_project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdEqualTo(Long value) {
+            addCriterion("procurement_project_id =", value, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdNotEqualTo(Long value) {
+            addCriterion("procurement_project_id <>", value, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdGreaterThan(Long value) {
+            addCriterion("procurement_project_id >", value, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("procurement_project_id >=", value, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdLessThan(Long value) {
+            addCriterion("procurement_project_id <", value, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdLessThanOrEqualTo(Long value) {
+            addCriterion("procurement_project_id <=", value, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdIn(List<Long> values) {
+            addCriterion("procurement_project_id in", values, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdNotIn(List<Long> values) {
+            addCriterion("procurement_project_id not in", values, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdBetween(Long value1, Long value2) {
+            addCriterion("procurement_project_id between", value1, value2, "procurementProjectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcurementProjectIdNotBetween(Long value1, Long value2) {
+            addCriterion("procurement_project_id not between", value1, value2, "procurementProjectId");
+            return (Criteria) this;
+        }
+
         public Criteria andOperateIdIsNull() {
             addCriterion("operate_id is null");
             return (Criteria) this;

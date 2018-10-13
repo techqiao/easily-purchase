@@ -21,6 +21,7 @@ import java.util.List;
 public interface FacadeExpertScoreService {
     /**
      * 获取投标人列表
+     *
      * @param procurementProjectId 采购项目ID
      * @return
      */
@@ -29,6 +30,7 @@ public interface FacadeExpertScoreService {
 
     /**
      * 专家评分
+     *
      * @param handleExpertScore
      * @return
      */
@@ -37,19 +39,23 @@ public interface FacadeExpertScoreService {
 
     /**
      * 查看评审记录
+     *
      * @param bidId
      * @return
      */
-    @PostMapping(value = "queryExpertScore", consumes = "application/json; charset=UTF-8")
-     Result<ScoreAndPathVO> queryExpertScore (@RequestParam(value = "bidId") Long bidId) ;
+    @GetMapping(value = "queryExpertScore", consumes = "application/json; charset=UTF-8")
+    Result<ScoreAndPathVO> queryExpertScore(@RequestParam(value = "bidId") Long bidId);
 
 
     /**
      * 撰写评审报告
+     *
      * @param handleScore
      * @return
      */
     @PostMapping(value = "createExpertScoreReport", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> createExpertScoreReport(@RequestBody HandleScoreReport handleScore) ;
+    Result<Boolean> createExpertScoreReport(@RequestBody HandleScoreReport handleScore);
 
-    }
+
+
+}

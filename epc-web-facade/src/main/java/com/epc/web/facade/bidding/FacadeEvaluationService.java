@@ -1,10 +1,9 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
+import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
-import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
-import com.epc.web.facade.bidding.vo.GuaranteeVO;
-import com.epc.web.facade.bidding.vo.TPretrialFileVO;
+import com.epc.web.facade.bidding.vo.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +28,14 @@ public interface FacadeEvaluationService {
     Result<Boolean> insertEvaluation(@RequestBody EvaluationHandle evaluationHandle);
 
     /**
+     * 专家评审 评标详情
+     * @param supplierId 供应商ID
+     * @return
+     */
+    @GetMapping(value = "getEvaluationDetail")
+    Result<SubEvaluationV0> getEvaluationDetail(@RequestParam("supplierId") Long supplierId,@RequestParam("procurementProjectId") Long procurementProjectId);
+
+    /**
      * 查询开标的标段保证金
      * @param procurementProjectId 采购项目ID
      * @return
@@ -38,11 +45,11 @@ public interface FacadeEvaluationService {
 
     /**
      * 查询对应投递文件列表
-     * @param companyId 发售招标文件表主键ID
+     * @param purchaseProjectId 公司id
      * @return
      */
-    @GetMapping(value = "getFilesByCompanyId")
-    Result<List<TPretrialFileVO>> getFilesByCompanyId(@RequestParam("companyId") Long companyId);
+    @GetMapping(value = "getFilesByPurchaseProjectId")
+    Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(@RequestParam("purchaseProjectId") Long purchaseProjectId);
 
 
     /**
@@ -52,4 +59,12 @@ public interface FacadeEvaluationService {
      */
     @GetMapping(value = "getClauseTemplateById" )
     Result<ClauseTemplateVO> getClauseTemplateById(@RequestParam("id") Long id);
+
+    /**
+     * 新增废标模板
+     * @param clauseTemplateHandle
+     * @return
+     */
+    @PostMapping(value = "insertClauseTemplate" ,consumes = "application/json; charset=UTF-8"  )
+    Result<Boolean> insertClauseTemplate(@RequestBody ClauseTemplateHandle clauseTemplateHandle);
 }

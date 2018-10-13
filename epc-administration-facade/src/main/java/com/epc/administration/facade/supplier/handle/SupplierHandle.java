@@ -26,6 +26,18 @@ public class SupplierHandle implements Serializable {
      */
     private String companyAddress;
     /**
+     * 省份
+     */
+    private String province;
+    /**
+     * 市区
+     */
+    private String city;
+    /**
+     * 区域
+     */
+    private String area;
+    /**
      *统一信用代码
      */
     private String uniformCreditCode;

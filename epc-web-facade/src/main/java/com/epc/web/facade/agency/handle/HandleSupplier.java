@@ -65,4 +65,12 @@ public class HandleSupplier implements Serializable{
      */
     private List<Attachement>  atts;
 
+    private String companyAddress;
+
+    private String province;
+
+    private String city;
+
+    private String area;
+
 }

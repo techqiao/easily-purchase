@@ -35,4 +35,7 @@ public interface TOpeningRecordPublicityMapper {
 
     @Select("SELECT t.process_status FROM t_opening_record_publicity t WHERE t.id = #{id}")
     String getProcessStatus(Long id);
+
+    @Select("Select b.id from t_opening_record_publicity b left join t_opening_record t on t.id = b.bid_announcement_id where t.purchase_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
 }

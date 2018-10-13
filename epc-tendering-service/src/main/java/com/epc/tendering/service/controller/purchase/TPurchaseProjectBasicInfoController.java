@@ -6,11 +6,13 @@ import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoServi
 import com.epc.web.facade.terdering.purchase.FacadeTPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
+import com.epc.web.facade.terdering.purchase.vo.FlowVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,6 +31,11 @@ public class TPurchaseProjectBasicInfoController extends BaseController implemen
     @Override
     public Result<Boolean> handlePurchaseProjectBasicInfo(@RequestBody HandlePurchaseProjectBasicInfoSub handlePurchaseProjectBasicInfoSub) {
         return tPurchaseProjectBasicInfoService.handlePurchaseProjectBasicInfo(handlePurchaseProjectBasicInfoSub);
+    }
+
+    @Override
+    public Result<FlowVO> getFlowByProcurementProjectId(@RequestParam(value = "procurementProjectId") Long procurementProjectId) {
+        return tPurchaseProjectBasicInfoService.getFlowByProcurementProjectId(procurementProjectId);
     }
 
     @Override

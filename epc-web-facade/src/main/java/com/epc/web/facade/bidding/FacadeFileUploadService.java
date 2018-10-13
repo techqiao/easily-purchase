@@ -3,9 +3,13 @@ package com.epc.web.facade.bidding;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
+import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
+import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface FacadeFileUploadService {
 
@@ -33,4 +37,4 @@ public interface FacadeFileUploadService {
     @PostMapping(value = "updateNotice", consumes = "application/json; charset=UTF-8")
      Result<Boolean> updateNotice(@RequestBody HandleNotice handleNotice);
 
-    }
+}

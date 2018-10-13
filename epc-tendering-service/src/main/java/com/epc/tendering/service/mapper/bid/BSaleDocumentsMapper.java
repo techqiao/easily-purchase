@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.BSaleDocuments;
 import com.epc.tendering.service.domain.bid.BSaleDocumentsCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface BSaleDocumentsMapper {
@@ -31,4 +32,9 @@ public interface BSaleDocumentsMapper {
 
     int updateByPrimaryKey(BSaleDocuments record);
 
+    @Select("Select b.bidding_documents_download_url from b_sale_documents b where b.procurement_project_id=#{procurementProjectId}")
+    String getUrl(Long procurementProjectId);
+
+    @Select("Select b.id from b_sale_documents b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
 }

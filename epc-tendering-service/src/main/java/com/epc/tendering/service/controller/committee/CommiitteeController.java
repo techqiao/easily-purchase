@@ -5,9 +5,12 @@ import com.epc.tendering.service.service.committee.CommitteeService;
 import com.epc.web.facade.terdering.committee.FacadeCommitteeService;
 import com.epc.web.facade.terdering.committee.handle.HandleCommittee;
 import com.epc.web.facade.terdering.committee.query.QueryExtractExpertList;
+import com.epc.web.facade.terdering.committee.vo.CommittVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class CommiitteeController implements FacadeCommitteeService {
@@ -31,7 +34,7 @@ CommitteeService committeeService;
      * @return
      */
     @Override
-    public Result<Boolean> createBAssessmentCommittee(@RequestBody QueryExtractExpertList dto){
+    public Result<List<CommittVO>> createBAssessmentCommittee(@RequestBody QueryExtractExpertList dto){
         return  committeeService.createBAssessmentCommittee(dto);
     }
 

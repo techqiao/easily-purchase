@@ -51,4 +51,7 @@ public interface BReleaseAnnouncementMapper {
     @Select("select procurement_project_id from b_release_announcement where id =#{id}")
     Long getProcurementProjectId(Long id);
 
+    @Select("Select b.id from b_release_announcement b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
+
 }

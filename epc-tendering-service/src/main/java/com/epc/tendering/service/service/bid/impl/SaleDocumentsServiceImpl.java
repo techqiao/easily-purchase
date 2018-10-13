@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.bid.*;
 import com.epc.tendering.service.mapper.bid.BBidsGuaranteeAmountMapper;
+import com.epc.tendering.service.mapper.bid.BSaleDocumentsFileMapper;
 import com.epc.tendering.service.mapper.bid.BSaleDocumentsMapper;
 import com.epc.tendering.service.mapper.bid.BTenderDocumentsPlaceSaleMapper;
 import com.epc.tendering.service.service.bid.SaleDocumentsService;
@@ -39,6 +40,8 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
     private BBidsGuaranteeAmountMapper bBidsGuaranteeAmountMapper;
     @Autowired
     private BTenderDocumentsPlaceSaleMapper bTenderDocumentsPlaceSaleMapper;
+    @Autowired
+    private BSaleDocumentsFileMapper bSaleDocumentsFileMapper;
 
 
     @Override
@@ -63,6 +66,10 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
                 && !handDocuments.getHandleBidsGuaranteeAmount().isEmpty()) {
             try {
                 bSaleDocumentsMapper.insertSelective(bSaleDocuments);
+                BSaleDocumentsFile bSaleDocumentsFile = new BSaleDocumentsFile();
+                BeanUtils.copyProperties(handDocuments.getHandleSaleDocuments(), bSaleDocumentsFile);
+                bSaleDocumentsFile.setSaleDocumentsId(bSaleDocuments.getId());
+                bSaleDocumentsFileMapper.insertSelective(bSaleDocumentsFile);
                 if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSale.setbIssueDocumentsId(bSaleDocuments.getId());
                     bTenderDocumentsPlaceSaleMapper.insertSelective(bTenderDocumentsPlaceSale);
@@ -88,6 +95,13 @@ public class SaleDocumentsServiceImpl implements SaleDocumentsService {
                 if (!bSaleDocuments.getIsUnderLine().equals(Const.IS_UNDER_LINE.UP)) {
                     bTenderDocumentsPlaceSaleMapper.updateByPrimaryKeySelective(bTenderDocumentsPlaceSale);
                 }
+                BSaleDocumentsFileCriteria criteria = new BSaleDocumentsFileCriteria();
+                criteria.createCriteria().andProcurementProjectIdEqualTo(handDocuments.getHandleSaleDocuments().getProcurementProjectId());
+                bSaleDocumentsFileMapper.deleteByExample(criteria);
+                BSaleDocumentsFile bSaleDocumentsFile = new BSaleDocumentsFile();
+                BeanUtils.copyProperties(handDocuments.getHandleSaleDocuments(), bSaleDocumentsFile);
+                bSaleDocumentsFile.setSaleDocumentsId(bSaleDocuments.getId());
+                bSaleDocumentsFileMapper.insertSelective(bSaleDocumentsFile);
                 List<HandleBidsGuaranteeAmount> list = handDocuments.getHandleBidsGuaranteeAmount();
                 for (HandleBidsGuaranteeAmount item : list) {
                     BBidsGuaranteeAmount pojo = new BBidsGuaranteeAmount();

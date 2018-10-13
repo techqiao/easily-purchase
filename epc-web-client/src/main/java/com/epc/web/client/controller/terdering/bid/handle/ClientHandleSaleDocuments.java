@@ -40,5 +40,14 @@ public class ClientHandleSaleDocuments {
     private String processStatus;
     @ApiModelProperty(value = "是否删除 0存在 1删除")
     private Integer isDeleted;
-
+    @ApiModelProperty(value = "招标公告url")
+    private String announcementUrl;
+    @ApiModelProperty(value = "投标人须知url")
+    private String noticeBidderUrl;
+    @ApiModelProperty(value = "技术要求url")
+    private String technicalRequirementUrl;
+    @ApiModelProperty(value = "合同主要条款url")
+    private String termsContractUrl;
+    @ApiModelProperty(value = "评标标准url")
+    private String evaluationUrl;
 }

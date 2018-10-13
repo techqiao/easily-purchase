@@ -9,6 +9,7 @@ import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
+import com.epc.web.facade.bidding.vo.SubEvaluationV0;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +43,15 @@ public class BiddingEvaluationController extends BaseController{
         evaluationHandle.setOperateId(getLoginUser().getUserId());
         return evaluationClient.insertEvaluation(evaluationHandle);
     }
+
+
+    @ApiOperation(value = "专家评审 评标详情",tags = "专家评审 评标详情")
+    @GetMapping(value = "getEvaluationDetail")
+    public Result<SubEvaluationV0> getEvaluationDetail(@RequestParam("supplierId") Long supplierId,@RequestParam("procurementProjectId") Long procurementProjectId){
+        return evaluationClient.getEvaluationDetail(supplierId,procurementProjectId);
+    }
+
+
     @ApiOperation(value = "查询开标的标段保证金",tags = "查询开标的标段保证金")
     @GetMapping(value = "selectGuarantee"  )
     public Result<List<GuaranteeVO>> selectGuarantee(@RequestParam("procurementProjectId") Long procurementProjectId){

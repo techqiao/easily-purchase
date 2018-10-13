@@ -1,5 +1,4 @@
 package com.epc.bidding.service.moneyPay.impl;
-import java.math.BigDecimal;
 
 import com.epc.bidding.domain.*;
 import com.epc.bidding.mapper.*;
@@ -22,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,8 +56,6 @@ public class MoneyPayServiceImpl implements MoneyPayService {
     TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
     @Autowired
     PlatformBankAccountMapper platformBankAccountMapper;
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MoneyPayServiceImpl.class);
 
     /**
@@ -382,7 +381,7 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
         subPay.andCompanyIdEqualTo(dto.getCompanyId());
         subPay.andPurchaseProjectFileIdEqualTo(fileId);
-
+        subPay.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
         //未查询到支付记录
         if(payList.size()==0){
@@ -394,6 +393,14 @@ public class MoneyPayServiceImpl implements MoneyPayService {
             for(TPurchaseProjectFilePay entity:payList){
                 if(entity.getFilePaymentReal().compareTo(money)>-1){
                     isPayDTO.setIsPay(true);
+                    //获取招标文件路径
+                    BSaleDocumentsCriteria criteria1=new BSaleDocumentsCriteria();
+                    BSaleDocumentsCriteria.Criteria cubCriteria=criteria1.createCriteria();
+                    cubCriteria.andProcurementProjectIdEqualTo(dto.getProcurementProjectId());
+                   List<BSaleDocuments>  entityList=bSaleDocumentsMapper.selectByExample(criteria1);
+                   if(!CollectionUtils.isEmpty(entityList)){
+                       isPayDTO.setFilePath(entityList.get(0).getBiddingDocumentsUpUrl());
+                   }
                 }
             }
             return  isPayDTO;

@@ -39,7 +39,5 @@ public class NoticeDetailVO implements Serializable {
     private String defecationStart;
     @ApiModelProperty("澄清结束时间")
     private String defecationEnd;
-    @ApiModelProperty("付款银行信息")
-    private BankAccountVO bankAccountVO;
 
 }

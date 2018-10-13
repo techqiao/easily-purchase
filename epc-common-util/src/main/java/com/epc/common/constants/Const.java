@@ -182,4 +182,10 @@ public class Const {
         int GUARANTY=1;
         int SERVICE=2;
     }
+
+    public  interface PROJECT_STATUS{
+        int NOT_START=0;
+        int STARTING=1;
+        int END=2;
+    }
 }

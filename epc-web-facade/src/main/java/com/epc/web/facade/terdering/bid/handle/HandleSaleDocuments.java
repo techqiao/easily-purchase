@@ -1,5 +1,6 @@
 package com.epc.web.facade.terdering.bid.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -71,5 +72,25 @@ public class HandleSaleDocuments {
      * 操作人ID
      */
     private Long operateId;
+    /**
+     * 招标公告url
+     */
+    private String announcementUrl;
+    /**
+     * 投标人须知url
+     */
+    private String noticeBidderUrl;
+    /**
+     * 技术要求url
+     */
+    private String technicalRequirementUrl;
+    /**
+     * 合同主要条款url
+     */
+    private String termsContractUrl;
+    /**
+     * 评标标准url
+     */
+    private String evaluationUrl;
 
 }

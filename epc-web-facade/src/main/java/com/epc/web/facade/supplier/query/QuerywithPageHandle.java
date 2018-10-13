@@ -1,6 +1,7 @@
 package com.epc.web.facade.supplier.query;
 
 import com.epc.common.QueryRequest;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,7 +15,8 @@ import java.io.Serializable;
 @Data
 public class QuerywithPageHandle extends QueryRequest implements Serializable {
     private static final long serialVersionUID = 6599949161649152523L;
-
+    private String projectName;
+    private String status;
     /**
      * 用户id
      */

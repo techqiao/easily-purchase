@@ -3,9 +3,10 @@ package com.epc.web.client.controller.terdering.bid;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleExpertSign;
+import com.epc.web.client.controller.terdering.bid.query.ClientQueryExpertDTO;
 import com.epc.web.client.remoteApi.terdering.bid.ExpertSignClient;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
-import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
+import com.epc.web.facade.terdering.bid.query.QueryExpertDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -41,13 +42,16 @@ public class ExpertSignController extends BaseController {
     public Result<Boolean> handleExpert(@RequestBody ClientHandleExpertSign clientHandleExpertSign){
         HandleExpertSign handleExpertSign = new HandleExpertSign();
         BeanUtils.copyProperties(clientHandleExpertSign, handleExpertSign);
+        handleExpertSign.setOperateId(getLoginUser().getUserId());
         return expertSignClient.handleExpert(handleExpertSign);
     }
 
     @ApiOperation(value = "获取开始评标前置条件")
-    @GetMapping(value = "getExpertList")
-    public Result<List<ExpertSignVO>> getExpertList(@RequestParam(value = "procurementProjectId") Long procurementProjectId){
-        return expertSignClient.getExpertList(procurementProjectId);
+    @PostMapping(value = "getExpertList")
+    public Result<Map<String, Object>> getExpertList(@RequestBody ClientQueryExpertDTO queryExpertDTO){
+        QueryExpertDTO query = new QueryExpertDTO();
+        BeanUtils.copyProperties(queryExpertDTO, query);
+        return expertSignClient.getExpertList(query);
     }
 
 }

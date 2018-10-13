@@ -1,13 +1,11 @@
 package com.epc.web.facade.bidding;
 
 import com.epc.common.Result;
-import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
-import com.epc.web.facade.bidding.query.notice.QueryAdvanceNoticeDTO;
-import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
-import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
+import com.epc.web.facade.bidding.query.notice.*;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeDetailVO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
+import com.epc.web.facade.bidding.vo.PretrialMessageDetailVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +54,21 @@ public interface FacadeNoticeService {
     @PostMapping(value = "getNoticeDetail", consumes = "application/json; charset=UTF-8")
     NoticeDetailVO  getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail);
 
-    }
+
+    /**
+     * 是否通过预审
+     * @param pretrialMessageDTO
+     */
+    @PostMapping(value = "getPretrialMessage", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> getPretrialMessage(@RequestBody PretrialMessageDTO pretrialMessageDTO);
+
+
+    /**
+     * 招标信息详情
+     * @return
+     */
+    @GetMapping(value = "getPretrigetPretrialMessageDetailal", consumes = "application/json; charset=UTF-8")
+    Result<PretrialMessageDetailVO> getPretrigetPretrialMessageDetail(@RequestParam("procurementProjectId") Long procurementProjectId);
+}
 
 

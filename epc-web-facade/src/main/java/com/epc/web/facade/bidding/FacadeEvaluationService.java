@@ -3,9 +3,7 @@ package com.epc.web.facade.bidding;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
-import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
-import com.epc.web.facade.bidding.vo.GuaranteeVO;
-import com.epc.web.facade.bidding.vo.TPretrialFileVO;
+import com.epc.web.facade.bidding.vo.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +26,14 @@ public interface FacadeEvaluationService {
      */
     @PostMapping(value = "insertEvaluation")
     Result<Boolean> insertEvaluation(@RequestBody EvaluationHandle evaluationHandle);
+
+    /**
+     * 专家评审 评标详情
+     * @param supplierId 供应商ID
+     * @return
+     */
+    @GetMapping(value = "getEvaluationDetail")
+    Result<SubEvaluationV0> getEvaluationDetail(@RequestParam("supplierId") Long supplierId,@RequestParam("procurementProjectId") Long procurementProjectId);
 
     /**
      * 查询开标的标段保证金

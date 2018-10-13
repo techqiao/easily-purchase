@@ -15,10 +15,10 @@ public interface OpeningRecordService {
 
     /**
      * 插入开标记录
-     * @param handleOpeningRecord
+     * @param recordList
      * @return
      */
-    Result<Boolean> insertOpeningRecord(HandleOpeningRecord handleOpeningRecord);
+    Result<Boolean> insertOpeningRecord(List<HandleOpeningRecord> recordList);
 
     /**
      * 查询开标前置条件

@@ -14,6 +14,7 @@ import com.epc.web.facade.purchaser.vo.PurchaserEmplyeeVo;
 import com.epc.web.facade.terdering.participant.handle.HandleParticipantBasicInfo;
 import com.epc.web.facade.terdering.purchase.handle.HandlePurchaseProjectBasicInfoSub;
 import com.epc.web.facade.terdering.purchase.query.QueryPurchaseBasicInfoVO;
+import com.epc.web.facade.terdering.purchase.vo.FlowVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -102,6 +103,12 @@ public class PurchaseProjectBasicInfoController extends BaseController {
         }
 
 
+    }
+
+    @ApiOperation(value = "获取采购项目步骤")
+    @GetMapping(value = "getFlowByProcurementProjectId")
+    public Result<FlowVO> getFlowByProcurementProjectId(@RequestParam("procurementProjectId") Long procurementProjectId){
+        return purchaseProjectClient.getFlowByProcurementProjectId(procurementProjectId);
     }
 
     /**

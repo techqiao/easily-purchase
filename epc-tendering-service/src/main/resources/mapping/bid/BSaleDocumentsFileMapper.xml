@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.epc.tendering.service.mapper.bid.BSaleDocumentsFileMapper">
+  <resultMap id="BaseResultMap" type="com.epc.tendering.service.domain.bid.BSaleDocumentsFile">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="procurement_project_id" jdbcType="BIGINT" property="procurementProjectId" />
+    <result column="sale_documents_id" jdbcType="BIGINT" property="saleDocumentsId" />
+    <result column="announcement_url" jdbcType="VARCHAR" property="announcementUrl" />
+    <result column="notice_bidder_url" jdbcType="VARCHAR" property="noticeBidderUrl" />
+    <result column="technical_requirement_url" jdbcType="VARCHAR" property="technicalRequirementUrl" />
+    <result column="terms_contract_url" jdbcType="VARCHAR" property="termsContractUrl" />
+    <result column="evaluation_url" jdbcType="VARCHAR" property="evaluationUrl" />
+    <result column="operate_id" jdbcType="BIGINT" property="operateId" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, procurement_project_id, sale_documents_id, announcement_url, notice_bidder_url, 
+    technical_requirement_url, terms_contract_url, evaluation_url, operate_id, create_at, 
+    update_at, is_deleted
+  </sql>
+  <select id="selectByExample" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFileCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_sale_documents_file
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_sale_documents_file
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from b_sale_documents_file
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFileCriteria">
+    delete from b_sale_documents_file
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFile">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_sale_documents_file (procurement_project_id, sale_documents_id, 
+      announcement_url, notice_bidder_url, technical_requirement_url, 
+      terms_contract_url, evaluation_url, operate_id, 
+      create_at, update_at, is_deleted
+      )
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{saleDocumentsId,jdbcType=BIGINT}, 
+      #{announcementUrl,jdbcType=VARCHAR}, #{noticeBidderUrl,jdbcType=VARCHAR}, #{technicalRequirementUrl,jdbcType=VARCHAR}, 
+      #{termsContractUrl,jdbcType=VARCHAR}, #{evaluationUrl,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFile">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into b_sale_documents_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="procurementProjectId != null">
+        procurement_project_id,
+      </if>
+      <if test="saleDocumentsId != null">
+        sale_documents_id,
+      </if>
+      <if test="announcementUrl != null">
+        announcement_url,
+      </if>
+      <if test="noticeBidderUrl != null">
+        notice_bidder_url,
+      </if>
+      <if test="technicalRequirementUrl != null">
+        technical_requirement_url,
+      </if>
+      <if test="termsContractUrl != null">
+        terms_contract_url,
+      </if>
+      <if test="evaluationUrl != null">
+        evaluation_url,
+      </if>
+      <if test="operateId != null">
+        operate_id,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="procurementProjectId != null">
+        #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="saleDocumentsId != null">
+        #{saleDocumentsId,jdbcType=BIGINT},
+      </if>
+      <if test="announcementUrl != null">
+        #{announcementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeBidderUrl != null">
+        #{noticeBidderUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="technicalRequirementUrl != null">
+        #{technicalRequirementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="termsContractUrl != null">
+        #{termsContractUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationUrl != null">
+        #{evaluationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null">
+        #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFileCriteria" resultType="java.lang.Integer">
+    select count(*) from b_sale_documents_file
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update b_sale_documents_file
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.procurementProjectId != null">
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.saleDocumentsId != null">
+        sale_documents_id = #{record.saleDocumentsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.announcementUrl != null">
+        announcement_url = #{record.announcementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeBidderUrl != null">
+        notice_bidder_url = #{record.noticeBidderUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.technicalRequirementUrl != null">
+        technical_requirement_url = #{record.technicalRequirementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.termsContractUrl != null">
+        terms_contract_url = #{record.termsContractUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.evaluationUrl != null">
+        evaluation_url = #{record.evaluationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateId != null">
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createAt != null">
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateAt != null">
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update b_sale_documents_file
+    set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      sale_documents_id = #{record.saleDocumentsId,jdbcType=BIGINT},
+      announcement_url = #{record.announcementUrl,jdbcType=VARCHAR},
+      notice_bidder_url = #{record.noticeBidderUrl,jdbcType=VARCHAR},
+      technical_requirement_url = #{record.technicalRequirementUrl,jdbcType=VARCHAR},
+      terms_contract_url = #{record.termsContractUrl,jdbcType=VARCHAR},
+      evaluation_url = #{record.evaluationUrl,jdbcType=VARCHAR},
+      operate_id = #{record.operateId,jdbcType=BIGINT},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFile">
+    update b_sale_documents_file
+    <set>
+      <if test="procurementProjectId != null">
+        procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="saleDocumentsId != null">
+        sale_documents_id = #{saleDocumentsId,jdbcType=BIGINT},
+      </if>
+      <if test="announcementUrl != null">
+        announcement_url = #{announcementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeBidderUrl != null">
+        notice_bidder_url = #{noticeBidderUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="technicalRequirementUrl != null">
+        technical_requirement_url = #{technicalRequirementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="termsContractUrl != null">
+        terms_contract_url = #{termsContractUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationUrl != null">
+        evaluation_url = #{evaluationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="operateId != null">
+        operate_id = #{operateId,jdbcType=BIGINT},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFile">
+    update b_sale_documents_file
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      sale_documents_id = #{saleDocumentsId,jdbcType=BIGINT},
+      announcement_url = #{announcementUrl,jdbcType=VARCHAR},
+      notice_bidder_url = #{noticeBidderUrl,jdbcType=VARCHAR},
+      technical_requirement_url = #{technicalRequirementUrl,jdbcType=VARCHAR},
+      terms_contract_url = #{termsContractUrl,jdbcType=VARCHAR},
+      evaluation_url = #{evaluationUrl,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.epc.tendering.service.domain.bid.BSaleDocumentsFileCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_sale_documents_file
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+</mapper>

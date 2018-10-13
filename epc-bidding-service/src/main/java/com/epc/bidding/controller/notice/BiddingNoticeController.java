@@ -5,17 +5,16 @@ import com.epc.bidding.service.bidding.BiddingService;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeNoticeService;
-import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
-import com.epc.web.facade.bidding.query.notice.QueryAdvanceNoticeDTO;
-import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
-import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
+import com.epc.web.facade.bidding.query.notice.*;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeDetailVO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
+import com.epc.web.facade.bidding.vo.PretrialMessageDetailVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -59,6 +58,7 @@ public class BiddingNoticeController extends QueryRequest implements FacadeNotic
         return biddingService.findByNoticeId(queryNoticeDetail);
     }
 
+
     /**
      * 查询预告列表
      * @param dto
@@ -78,6 +78,26 @@ public class BiddingNoticeController extends QueryRequest implements FacadeNotic
     public Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(Long id){
         return advanceNoticeService.AdvanceNoticeDetail(id);
 
+    }
+
+
+    /**
+     * 是否通过预审
+     * @param pretrialMessageDTO
+     * @return
+     */
+    @Override
+    public Result<Boolean> getPretrialMessage(@RequestBody PretrialMessageDTO pretrialMessageDTO) {
+        return Result.success(advanceNoticeService.getPretrialMessage(pretrialMessageDTO));
+    }
+
+    /**
+     * 获取招标文件信息
+     * @return
+     */
+    @Override
+    public Result<PretrialMessageDetailVO> getPretrigetPretrialMessageDetail( Long procurementProjectId) {
+        return Result.success(advanceNoticeService.getPretrigetPretrialMessageDetail(procurementProjectId));
     }
 
 }

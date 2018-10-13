@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.TOpeningRecord;
 import com.epc.tendering.service.domain.bid.TOpeningRecordCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface TOpeningRecordMapper {
@@ -30,4 +31,7 @@ public interface TOpeningRecordMapper {
     int updateByPrimaryKeySelective(TOpeningRecord record);
 
     int updateByPrimaryKey(TOpeningRecord record);
+
+    @Select("Select b.id from t_opening_record b where b.purchase_project_id =#{procurementProjectId} and b.status='1'")
+    Long getId(Long procurementProjectId);
 }

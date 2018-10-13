@@ -6,8 +6,8 @@ public enum BusinessModelEnum {
     // 模块
     USER_INFO_FILE("user_info","user-info-file","用户证件信息"),
     BIDDING_FILE("bidding","bidding-file","投标文件"),
-    TENDERING_FILE("tendering","tendering_file","招标文件");
-
+    TENDERING_FILE("tendering","tendering_file","招标文件"),
+    PRE_QUALIFICATION("pre_qualification","pre_qualification_file","资格预审文件");
     private String modelCode;
     private String modelValue;
     private String modelDescription;

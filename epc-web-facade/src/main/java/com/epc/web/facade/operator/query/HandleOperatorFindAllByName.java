@@ -1,11 +1,12 @@
 package com.epc.web.facade.operator.query;
 
+import com.epc.common.QueryRequest;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class HandleOperatorFindAllByName implements Serializable {
+public class HandleOperatorFindAllByName extends QueryRequest implements Serializable {
 
     private static final long serialVersionUID = -5503378128453752419L;
 

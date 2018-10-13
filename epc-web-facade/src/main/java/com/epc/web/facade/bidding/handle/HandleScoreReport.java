@@ -13,4 +13,5 @@ public class HandleScoreReport implements Serializable {
 
     private Long operateId;
     private String memo;
+    private Long procurementProjectId;
 }

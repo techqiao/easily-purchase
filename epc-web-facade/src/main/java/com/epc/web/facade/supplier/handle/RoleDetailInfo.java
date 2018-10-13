@@ -38,6 +38,11 @@ public class RoleDetailInfo {
     //公司名字 0
     private String companyName;
 
+    private String province;
+
+    private String city;
+
+    private String area;
     //公司地址
     private String companyAddress;
 

@@ -23,11 +23,11 @@ public class ClientHandleExpertScore {
     @ApiModelProperty(value = "供应商公司名称")
     private String supplierCompanyName;
     @ApiModelProperty(value = "技术评标分数")
-    private Integer techTypeScore;
+    private Double techTypeScore;
     @ApiModelProperty(value = "商务评标分数")
-    private Integer commerceTypeScore;
+    private Double commerceTypeScore;
     @ApiModelProperty(value = "最终评标分数")
-    private Integer finalScore;
+    private Double finalScore;
     @ApiModelProperty(value = "专家ID")
     private Long expertId;
     @ApiModelProperty(value = "专家姓名")

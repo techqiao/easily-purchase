@@ -74,11 +74,6 @@ public class SupplierServiceImpl implements SupplierService {
     /**
      * 0
      * 注册供应商
-     * {业务：    还需要要判断电话在数据库中有没有，（有无人拉。如无，就是自己注册；如有，就是添加密码登陆完善个人信息）
-     * 1. 第一次只需要填写电话及密码就行，注册完成登陆成功后，可以做后续的完善信息工作
-     * 所以目前，只操作一张基本信息表就行，等完善信息时，操作三张即可
-     * 2.  由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
-     * }
      * 自己找到平台网站注册供应商
      */
     @Override
@@ -110,7 +105,7 @@ public class SupplierServiceImpl implements SupplierService {
             //设置电话
             tSupplierBasicInfo.setCellphone(cellphone);
             //设置密码
-            tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(password));
+//            tSupplierBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(password));
             //短信验证
 
             //设置状态 为 完善中
@@ -149,98 +144,6 @@ public class SupplierServiceImpl implements SupplierService {
         }
     }
 
-    /**0.5
-     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
-     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<Boolean> addPasswordSupplierLogin(HandleSupplierDetail handleSupplierDetail){
-//
-//        //得到电话 姓名
-//        String cellphone=handleSupplierDetail.getCellphone();
-//        String name=handleSupplierDetail.getName();
-//        /**
-//         *  依据电话查询数据库中有没有这样一条记录,并且数据库中密码这一项为空，是的就让其设置密码，将状态改成完善信息中
-//         */
-//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-//        if(StringUtils.isBlank(cellphone) || StringUtils.isBlank(name)) {
-//            //传入的电话为空，让其调用接口失败
-//            return Result.error("[供应商注册] StringUtils.isNotBlank(cellphone) || StringUtils.isBlank(name) : {参数异常}");
-//        }
-//        subCriteria.andCellphoneEqualTo(cellphone);
-//        subCriteria.andNameEqualTo(name);
-//        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-//        if(CollectionUtils.isEmpty(tSupplierBasicInfos)) {
-//            return Result.success(false);
-//        }
-//        return Result.success(true);
-//    }
-    /**1
-     *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
-     *      (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
-     *      不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
-     *      )
-     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<Boolean> addPasswordSupplier(HandleSupplierDetail handleSupplierDetail){
-//        Date date=new Date();
-//
-//        //得到电话 姓名
-//        String cellphone=handleSupplierDetail.getCellphone();
-//        String name=handleSupplierDetail.getName();
-//        /**
-//         *  依据电话查询数据库中有没有这样一条记录,并且数据库中密码这一项为空，是的就让其设置密码，将状态改成完善信息中
-//         */
-//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-//        if(StringUtils.isBlank(cellphone)) {
-//            //传入的电话为空，让其调用接口失败
-//            return Result.error("[供应商注册] StringUtils.isNotBlank(cellphone) : {参数异常}");
-//        }
-//        subCriteria.andCellphoneEqualTo(cellphone);
-//        subCriteria.andNameEqualTo(name);
-//        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-//        if(CollectionUtils.isEmpty(tSupplierBasicInfos)) {
-//            return Result.error("[供应商注册] 数据库中没有这个电话，名字，必须由别人拉取，或者在平台自己注册");
-//        }
-//        //通过电话,名字 能查出这个数据在数据库中 存在
-//        TSupplierBasicInfo operatorBasic = tSupplierBasicInfos.get(0);
-//        //然后判断从数据库中查出的这条数据 密码项为空
-//        String password = operatorBasic.getPassword();
-//
-//        if(StringUtils.isNotBlank(password)){
-//            //如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，
-//            //因为你的电话与名字可能某些人知道！！！
-//            return Result.error("如果密码不为空，那么只能用电话密码进行登陆，或者你可以在电话与密码那个页面用忘记密码进行登陆,绝对不能用这种方式进行登陆，不安全，因为你的电话与名字可能某些人知道！！！   您已经设置过密码，请在首页用电话与密码进行登陆。");
-//        }
-//        //数据库中 密码项为空，证明这个人是第一次进行登陆，并且是由别人拉取过来的
-//        //设置一些表中必须的信息
-//        String inputPassword = handleSupplierDetail.getPassword();
-//        if(StringUtils.isBlank(inputPassword)){
-//            return Result.error("密码传参异常");
-//        }
-//        operatorBasic.setPassword(MD5Util.MD5EncodeUtf8(inputPassword));
-//        //完善中
-//        operatorBasic.setState(Const.STATE.PERFECTING);
-//        //最后修改更新时间
-//        operatorBasic.setUpdateAt(date);
-//        int i=0;
-//        try{
-//            //更新数据到表中，完成账号的激活，后续 必须 要完善个人信息，并且审核通过之后 ，状态变为审核 通过，否则其它功能将不可用
-//            i=tSupplierBasicInfoMapper.updateByExampleSelective(operatorBasic,criteria);
-//            return Result.success(i>0);
-//        }catch (BusinessException e){
-//            LOGGER.error("[供应商注册] tSupplierBasicInfoMapper.updateByExampleSelective, 异常信息e={}" , e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE);
-//        }catch (Exception e){
-//            LOGGER.error("[供应商注册] tSupplierBasicInfoMapper.updateByExampleSelective ： 异常信息e={}",e);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return Result.error(e.getMessage());
-//        }
-//    }
 
     /**
      * 2
@@ -583,6 +486,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     /**
      * 6.5
+     * 员工查看公司详情
      * 管理员或者员工 通过登陆信息里面的 bossId 来查看  公司详情（包括附件）
      */
     @Override
@@ -938,7 +842,7 @@ public class SupplierServiceImpl implements SupplierService {
     /**
      * 14 :ok
      * 根据员工的名字,角色，是否禁用
-     * 来匹配出符合条件的员工返回一个list：
+     * 来匹配出符合条件的员工返回一个list：s
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -990,95 +894,6 @@ public class SupplierServiceImpl implements SupplierService {
         return Result.success(listVo);
     }
 
-
-    /**
-     * 重复了，所以注释
-     * 由员工状态来查询出员工的列表:(你给我你的id, 我找出这个角色当中符合这个状态的所有员工)
-     */
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeByisDeleted(HandleFindSupplierByInfo handleFindSupplierByInfo){
-//
-//        Long id=handleFindSupplierByInfo.getId();
-//        Integer role=handleFindSupplierByInfo.getRole();
-//        Integer isDeleted = handleFindSupplierByInfo.getIsDeleted();
-//
-//        if(id==null || role==null || isDeleted==null){
-//            LOGGER.error("[由员工状态来查询出员工的列表] id==null || role==null || isDeleted==null : {参数异常}");
-//            return Result.error("参数异常");
-//        }
-//
-//        // 因为有三种角色，法人，管理员，员工，可能是管理员，所以首先要依据查这个人的id来查出法人id,继而查出法人底下所有的员工
-//        //查出法人supplier_id
-//        TSupplierBasicInfo tSupplierBasicInfo = tSupplierBasicInfoMapper.selectByPrimaryKey(id);
-//        if(tSupplierBasicInfo==null){
-//            LOGGER.error("[由员工状态来查询出员工的列表:(你给我你的id, 我找出这个角色当中符合这个状态的所有员工)] tSupplierBasicInfoMapper.selectByPrimaryKey : {}");
-//            return Result.error(ErrorMessagesEnum.SELECT_FAILURE);
-//        }
-//        Long supplierId=tSupplierBasicInfo.getSupplierId();
-//
-//        if(role==Const.Role.ROLE_CUSTOMER && isDeleted==Const.IS_DELETED.NOT_DELETED){
-//            //如果你选的是员工,并且状态是可用的，
-//            return Result.success(findSupplierEmployeeByRoleOrisDeleted(supplierId,role,isDeleted));
-//        }else if(role==Const.Role.ROLE_CUSTOMER && isDeleted==Const.IS_DELETED.IS_DELETED){
-//            //如果你选的是员工,并且状态禁用的，
-//            return Result.success(findSupplierEmployeeByRoleOrisDeleted(supplierId,role,isDeleted));
-//        }else if(role==Const.Role.ROLE_ADMIN && isDeleted==Const.IS_DELETED.IS_DELETED){
-//            //如果你选的是管理员,并且状态禁用的，
-//            return Result.success(findSupplierEmployeeByRoleOrisDeleted(supplierId,role,isDeleted));
-//        }else if(role==Const.Role.ROLE_ADMIN && isDeleted==Const.IS_DELETED.NOT_DELETED){
-//            //如果你选的是管理员,并且状态可用的，
-//            return Result.success(findSupplierEmployeeByRoleOrisDeleted(supplierId,role,isDeleted));
-//        }else{
-//            return Result.error("查询条件异常");
-//        }
-//    }
-
-    /* *
-     *  为上面的实现方法服务，此方法是查出 所有的员工
-     */
-//    private List<SupplierBasicInfoVO> findSupplierEmployeeByRoleOrisDeleted(Long supplierId,Integer role,Integer isDeleted){
-//
-//        //查询出所有的员工
-//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-//        subCriteria.andRoleEqualTo(role);
-//        subCriteria.andSupplierIdEqualTo(supplierId);
-//        subCriteria.andIsDeletedEqualTo(isDeleted);
-//
-//        //给查询出来的结果一个容器，存储查找出来的数据
-//        List<SupplierBasicInfoVO> listVO=new ArrayList<SupplierBasicInfoVO>();
-//
-//        List<TSupplierBasicInfo> tSupplierBasicInfos = tSupplierBasicInfoMapper.selectByExample(criteria);
-//        //查询这样符合条件的员工
-//
-//        for(TSupplierBasicInfo single:tSupplierBasicInfos){
-//            SupplierBasicInfoVO vo=new SupplierBasicInfoVO();
-//            BeanUtils.copyProperties(single,vo);
-//            //将时间格式化
-//            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E a");
-//            vo.setCreateAt(format.format(single.getCreateAt()));
-//            vo.setUpdateAt(format.format(single.getUpdateAt()));
-//            listVO.add(vo);
-//        }
-//        return listVO;
-//    }
-
-    /**
-     * 暂时没用,不知道后期有没有这个需求
-     *   依据 用户角色 是法人的情况下，来查出 supplier_id,
-     */
-//    @Transactional(rollbackFor = Exception.class)
-//    public Result<Long> findSupplierIdByRole(Integer role){
-//        TSupplierBasicInfoCriteria criteria=new TSupplierBasicInfoCriteria();
-//        TSupplierBasicInfoCriteria.Criteria subCriteria = criteria.createCriteria();
-//        if(role!=null && role==0){
-//            subCriteria.andRoleEqualTo(role);
-//            return Result.success(tSupplierBasicInfoMapper.selectByExample(criteria).get(0).getId());
-//        }else{
-//            return Result.error("role!=null && role==0 : {参数异常}");
-//        }
-//    }
 
 
     /**

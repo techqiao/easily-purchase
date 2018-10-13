@@ -44,6 +44,12 @@ public class HandleCreatePurchaserByOperator implements Serializable {
     //手机号
 //    private String cellphone;
 
+    private String province;
+
+    private String city;
+
+    private String area;
+
     //公司地址
     private String companyAddress;
 

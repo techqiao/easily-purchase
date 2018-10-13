@@ -174,7 +174,6 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     public Result<Boolean> insertExpert(HandleExpert handleExpert) {
         //依旧专家提供的信息来查询是否在公库中有此专家的信息
-        String expertName = handleExpert.getName();
         String cellphone = handleExpert.getCellphone();
         //返回此专家
         TExpertBasicInfo info = null;
@@ -288,7 +287,6 @@ public class AgencyServiceImpl implements AgencyService {
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public Result<Integer> insertSupplier(HandleSupplier handleSupplier) {
-        String name = handleSupplier.getName();
         String cellphone = handleSupplier.getCellphone();
         TSupplierBasicInfo basicInfo = null;
         try {
@@ -995,7 +993,7 @@ public class AgencyServiceImpl implements AgencyService {
             tAgencyBasicInfoMapper.updateAgencyEmployeeRoleById(id, role);
         } catch (Exception e) {
             LOGGER.error("updateAgencyEmployeeRoleById修改员工角色失败", e);
-            return Result.error(ErrorMessagesEnum.UPDATE_FAILURE.getErrCode(), "修改员工角色失败");
+            return Result.error("修改员工角色失败");
         }
         return Result.success("修改员工角色成功", true);
     }

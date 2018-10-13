@@ -1,5 +1,6 @@
 package com.epc.web.facade.purchaser.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,6 +41,6 @@ public class PurchaserEmplyeeVo implements Serializable{
     /**
      * 加入时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 }

@@ -94,7 +94,7 @@
           This element was generated on Thu Sep 13 13:25:44 CST 2018.
         -->
         id, name, cellphone, password, purchaser_id,inviter_type,inviter_id,inviter_company_id, state, role, create_at,
-        update_at, is_deleted
+        update_at, is_deleted,is_forbidden
     </sql>
 
     <select id="login" resultMap="BaseResultMap">

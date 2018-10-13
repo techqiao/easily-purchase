@@ -149,6 +149,12 @@ public class PurchaserHystrix implements FacadePurchaserService {
 
 
     @Override
+    public Result selectPurchaserProjectStatus(Long id, Integer userType, String stepType) {
+        return Result.hystrixError();
+    }
+
+
+    @Override
     public Result<Boolean> updateExpertState(Long id, Integer state) {
         return Result.hystrixError();
     }

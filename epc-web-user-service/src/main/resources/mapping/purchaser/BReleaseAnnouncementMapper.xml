@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.epc.web.service.mapper.purchaser.BReleaseAnnouncementMapper">
+    <resultMap id="BaseResultMap" type="com.epc.web.service.domain.purchaser.BReleaseAnnouncement">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT"/>
+        <result column="auditor_id" property="auditorId" jdbcType="BIGINT"/>
+        <result column="replies_id" property="repliesId" jdbcType="BIGINT"/>
+        <result column="bidding_documents_url" property="biddingDocumentsUrl" jdbcType="VARCHAR"/>
+        <result column="bidding_start" property="biddingStart" jdbcType="TIMESTAMP"/>
+        <result column="bidding_end" property="biddingEnd" jdbcType="TIMESTAMP"/>
+        <result column="defecation_start" property="defecationStart" jdbcType="TIMESTAMP"/>
+        <result column="defecation_end" property="defecationEnd" jdbcType="TIMESTAMP"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="process_status" property="processStatus" jdbcType="VARCHAR"/>
+        <result column="operate_id" property="operateId" jdbcType="BIGINT"/>
+        <result column="create_at" property="createAt" jdbcType="TIMESTAMP"/>
+        <result column="update_at" property="updateAt" jdbcType="TIMESTAMP"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.epc.web.service.domain.purchaser.BReleaseAnnouncement"
+               extends="BaseResultMap">
+        <result column="announcement_content" property="announcementContent" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, procurement_project_id, auditor_id, replies_id, bidding_documents_url, bidding_start, 
+    bidding_end, defecation_start, defecation_end, title, process_status, operate_id, 
+    create_at, update_at, is_deleted
+  </sql>
+    <sql id="Blob_Column_List">
+    announcement_content
+  </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncementCriteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from b_release_announcement
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncementCriteria">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from b_release_announcement
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from b_release_announcement
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from b_release_announcement
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncementCriteria">
+        delete from b_release_announcement
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncement">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b_release_announcement (procurement_project_id, auditor_id, replies_id,
+        bidding_documents_url, bidding_start, bidding_end,
+        defecation_start, defecation_end, title,
+        process_status, operate_id, create_at,
+        update_at, is_deleted, announcement_content
+        )
+        values (#{procurementProjectId,jdbcType=BIGINT}, #{auditorId,jdbcType=BIGINT}, #{repliesId,jdbcType=BIGINT},
+        #{biddingDocumentsUrl,jdbcType=VARCHAR}, #{biddingStart,jdbcType=TIMESTAMP}, #{biddingEnd,jdbcType=TIMESTAMP},
+        #{defecationStart,jdbcType=TIMESTAMP}, #{defecationEnd,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR},
+        #{processStatus,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP},
+        #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{announcementContent,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncement">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b_release_announcement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="procurementProjectId != null">
+                procurement_project_id,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="repliesId != null">
+                replies_id,
+            </if>
+            <if test="biddingDocumentsUrl != null">
+                bidding_documents_url,
+            </if>
+            <if test="biddingStart != null">
+                bidding_start,
+            </if>
+            <if test="biddingEnd != null">
+                bidding_end,
+            </if>
+            <if test="defecationStart != null">
+                defecation_start,
+            </if>
+            <if test="defecationEnd != null">
+                defecation_end,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="processStatus != null">
+                process_status,
+            </if>
+            <if test="operateId != null">
+                operate_id,
+            </if>
+            <if test="createAt != null">
+                create_at,
+            </if>
+            <if test="updateAt != null">
+                update_at,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="announcementContent != null">
+                announcement_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="procurementProjectId != null">
+                #{procurementProjectId,jdbcType=BIGINT},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=BIGINT},
+            </if>
+            <if test="repliesId != null">
+                #{repliesId,jdbcType=BIGINT},
+            </if>
+            <if test="biddingDocumentsUrl != null">
+                #{biddingDocumentsUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="biddingStart != null">
+                #{biddingStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="biddingEnd != null">
+                #{biddingEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="defecationStart != null">
+                #{defecationStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="defecationEnd != null">
+                #{defecationEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="processStatus != null">
+                #{processStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="operateId != null">
+                #{operateId,jdbcType=BIGINT},
+            </if>
+            <if test="createAt != null">
+                #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateAt != null">
+                #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="announcementContent != null">
+                #{announcementContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncementCriteria"
+            resultType="java.lang.Integer">
+        select count(*) from b_release_announcement
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update b_release_announcement
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.procurementProjectId != null">
+                procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+            </if>
+            <if test="record.auditorId != null">
+                auditor_id = #{record.auditorId,jdbcType=BIGINT},
+            </if>
+            <if test="record.repliesId != null">
+                replies_id = #{record.repliesId,jdbcType=BIGINT},
+            </if>
+            <if test="record.biddingDocumentsUrl != null">
+                bidding_documents_url = #{record.biddingDocumentsUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.biddingStart != null">
+                bidding_start = #{record.biddingStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.biddingEnd != null">
+                bidding_end = #{record.biddingEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.defecationStart != null">
+                defecation_start = #{record.defecationStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.defecationEnd != null">
+                defecation_end = #{record.defecationEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.title != null">
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.processStatus != null">
+                process_status = #{record.processStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="record.operateId != null">
+                operate_id = #{record.operateId,jdbcType=BIGINT},
+            </if>
+            <if test="record.createAt != null">
+                create_at = #{record.createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateAt != null">
+                update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isDeleted != null">
+                is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="record.announcementContent != null">
+                announcement_content = #{record.announcementContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update b_release_announcement
+        set id = #{record.id,jdbcType=BIGINT},
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+        auditor_id = #{record.auditorId,jdbcType=BIGINT},
+        replies_id = #{record.repliesId,jdbcType=BIGINT},
+        bidding_documents_url = #{record.biddingDocumentsUrl,jdbcType=VARCHAR},
+        bidding_start = #{record.biddingStart,jdbcType=TIMESTAMP},
+        bidding_end = #{record.biddingEnd,jdbcType=TIMESTAMP},
+        defecation_start = #{record.defecationStart,jdbcType=TIMESTAMP},
+        defecation_end = #{record.defecationEnd,jdbcType=TIMESTAMP},
+        title = #{record.title,jdbcType=VARCHAR},
+        process_status = #{record.processStatus,jdbcType=VARCHAR},
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+        announcement_content = #{record.announcementContent,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update b_release_announcement
+        set id = #{record.id,jdbcType=BIGINT},
+        procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+        auditor_id = #{record.auditorId,jdbcType=BIGINT},
+        replies_id = #{record.repliesId,jdbcType=BIGINT},
+        bidding_documents_url = #{record.biddingDocumentsUrl,jdbcType=VARCHAR},
+        bidding_start = #{record.biddingStart,jdbcType=TIMESTAMP},
+        bidding_end = #{record.biddingEnd,jdbcType=TIMESTAMP},
+        defecation_start = #{record.defecationStart,jdbcType=TIMESTAMP},
+        defecation_end = #{record.defecationEnd,jdbcType=TIMESTAMP},
+        title = #{record.title,jdbcType=VARCHAR},
+        process_status = #{record.processStatus,jdbcType=VARCHAR},
+        operate_id = #{record.operateId,jdbcType=BIGINT},
+        create_at = #{record.createAt,jdbcType=TIMESTAMP},
+        update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+        is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncement">
+        update b_release_announcement
+        <set>
+            <if test="procurementProjectId != null">
+                procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=BIGINT},
+            </if>
+            <if test="repliesId != null">
+                replies_id = #{repliesId,jdbcType=BIGINT},
+            </if>
+            <if test="biddingDocumentsUrl != null">
+                bidding_documents_url = #{biddingDocumentsUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="biddingStart != null">
+                bidding_start = #{biddingStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="biddingEnd != null">
+                bidding_end = #{biddingEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="defecationStart != null">
+                defecation_start = #{defecationStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="defecationEnd != null">
+                defecation_end = #{defecationEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="processStatus != null">
+                process_status = #{processStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="operateId != null">
+                operate_id = #{operateId,jdbcType=BIGINT},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="announcementContent != null">
+                announcement_content = #{announcementContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncement">
+    update b_release_announcement
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      auditor_id = #{auditorId,jdbcType=BIGINT},
+      replies_id = #{repliesId,jdbcType=BIGINT},
+      bidding_documents_url = #{biddingDocumentsUrl,jdbcType=VARCHAR},
+      bidding_start = #{biddingStart,jdbcType=TIMESTAMP},
+      bidding_end = #{biddingEnd,jdbcType=TIMESTAMP},
+      defecation_start = #{defecationStart,jdbcType=TIMESTAMP},
+      defecation_end = #{defecationEnd,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      announcement_content = #{announcementContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncement">
+    update b_release_announcement
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      auditor_id = #{auditorId,jdbcType=BIGINT},
+      replies_id = #{repliesId,jdbcType=BIGINT},
+      bidding_documents_url = #{biddingDocumentsUrl,jdbcType=VARCHAR},
+      bidding_start = #{biddingStart,jdbcType=TIMESTAMP},
+      bidding_end = #{biddingEnd,jdbcType=TIMESTAMP},
+      defecation_start = #{defecationStart,jdbcType=TIMESTAMP},
+      defecation_end = #{defecationEnd,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      process_status = #{processStatus,jdbcType=VARCHAR},
+      operate_id = #{operateId,jdbcType=BIGINT},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select resultMap="ResultMapWithBLOBs"
+            parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncementCriteria"
+            id="selectByExampleWithBLOBsWithRowbounds">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from b_release_announcement
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select resultMap="BaseResultMap" parameterType="com.epc.web.service.domain.purchaser.BReleaseAnnouncementCriteria"
+            id="selectByExampleWithRowbounds">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from b_release_announcement
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT
+        bidding_documents_url, bidding_start,
+        bidding_end, defecation_start, defecation_end, title, process_status,
+        create_at, update_at
+        FROM b_release_announcement
+        WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

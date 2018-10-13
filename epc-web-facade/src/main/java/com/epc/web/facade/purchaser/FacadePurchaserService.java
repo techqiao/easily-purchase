@@ -233,7 +233,13 @@ public interface FacadePurchaserService {
     @GetMapping(value = "deletePurchaserEmployee/{id}")
     public Result<Boolean> deletePurchaserEmployee(@PathVariable("id") Long id);
 
-
+    /**
+     *@author :winlin
+     *@Description : 角色登录后查询项目信息
+     *@date:2018/10/12
+     */
+    @GetMapping(value = "selectPurchaserProjectStatus/{id}/{userType}/{stepType}")
+    public  Result selectPurchaserProjectStatus(@PathVariable("id")Long id,@PathVariable("userType")Integer userType,@PathVariable("stepType")String stepType);
 
     /**
      *@author :winlin

@@ -1,16 +1,22 @@
 package com.epc.tendering.service.controller.bid;
 
 import com.epc.common.Result;
+import com.epc.tendering.service.controller.common.BaseController;
 import com.epc.tendering.service.service.bid.ExpertSignService;
 import com.epc.web.facade.terdering.bid.FacadeExpertSignService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
+import com.epc.web.facade.terdering.bid.query.QueryExpertDTO;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
+import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -18,7 +24,7 @@ import java.util.List;
  * <p>@Author : wjq
  */
 @RestController
-public class ExpertSignController implements FacadeExpertSignService {
+public class ExpertSignController extends BaseController implements FacadeExpertSignService {
     @Autowired
     private ExpertSignService expertSignService;
 
@@ -33,7 +39,10 @@ public class ExpertSignController implements FacadeExpertSignService {
     }
 
     @Override
-    public Result<List<ExpertSignVO>> getExpertList(@RequestParam(value = "procurementProjectId") Long procurementProjectId) {
-        return expertSignService.getExpertList(procurementProjectId);
+    public Result<Map<String, Object>> getExpertList(@RequestBody QueryExpertDTO queryExpertDTO) {
+        PageHelper.startPage(queryExpertDTO.getPage(),queryExpertDTO.getRows());
+        Result<List<ExpertSignVO>> expertList = expertSignService.getExpertList(queryExpertDTO.getProcurementProjectId());
+        PageInfo<ExpertSignVO> pageInfo = new PageInfo<>(expertList.getData());
+        return Result.success(getDataTable(pageInfo));
     }
 }

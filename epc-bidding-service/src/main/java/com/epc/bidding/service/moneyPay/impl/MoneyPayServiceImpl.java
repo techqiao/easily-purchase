@@ -381,7 +381,7 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();
         subPay.andCompanyIdEqualTo(dto.getCompanyId());
         subPay.andPurchaseProjectFileIdEqualTo(fileId);
-
+        subPay.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
         List<TPurchaseProjectFilePay> payList=tPurchaseProjectFilePayMapper.selectByExample(pay);
         //未查询到支付记录
         if(payList.size()==0){

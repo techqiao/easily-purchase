@@ -9,12 +9,12 @@
  * [git-lab地址](http://47.99.94.220/epc1688/easily-purchase) 
  * [maven私服地址](http://47.99.94.220:8081/nexus/repository/maven-public/) 
 ##### 局域网测试链接
- * [jekins发布工具](http://192.168.0.58:8080/jenkins/) 
+ * [发布工具jekins](http://192.168.0.58:8080/jenkins/) 
  * [局域网前台swagger](http://192.168.0.24:6006/swagger-ui.html) 
- * [局域网后天swagger](http://192.168.0.24:7000/swagger-ui.html) 
+ * [局域网后台swagger](http://192.168.0.24:7000/swagger-ui.html) 
  * [局域网Eureka](http://192.168.0.24:1111) 
 ##### 本机开发链接
  * [本机后台Swagger](http://127.0.0.1:7001/swagger-ui.html) 
- * [本机web网Swagger](http://127.0.0.1:3106/swagger-ui.html) 
- * [本机官网Eureka](http://127.0.0.1t:10000) 
+ * [本机前台Swagger](http://127.0.0.1:3106/swagger-ui.html) 
+ * [本机Eureka](http://127.0.0.1:10000) 
 ##### end

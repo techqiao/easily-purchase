@@ -11,7 +11,6 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class EpcWebClientApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(EpcWebClientApplication.class).web(true).run(args);

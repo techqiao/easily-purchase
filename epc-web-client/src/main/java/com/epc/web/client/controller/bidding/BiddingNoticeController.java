@@ -92,6 +92,12 @@ public class BiddingNoticeController extends BaseController {
         queryProgramPayDTO.setCompanyId(getLoginUser().getBossId());
         queryProgramPayDTO.setProcurementProjectId(procurementProjectId);
         IsPayDTO isPay=moneyPayClient.isPayForProjectFile(queryProgramPayDTO);
+        if(isPay!=null){
+            if(isPay.getIsPay()==false){
+                BankAccountVO bankAccountVO=moneyPayClient.getBankAccount(Const.PAYMENT_TYPE.DOCUMENTS);
+                isPay.setBankAccountVO(bankAccountVO);
+            }
+        }
         return  Result.success(isPay);
     }
 }

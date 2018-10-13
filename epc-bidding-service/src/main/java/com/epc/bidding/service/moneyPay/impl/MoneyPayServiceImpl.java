@@ -375,7 +375,7 @@ public class MoneyPayServiceImpl implements MoneyPayService {
         //获取招标文件ID
         Long fileId=list.get(0).getId();
         BigDecimal money=list.get(0).getFilePayment();
-        //isPayDTO.setMoney(money);
+        isPayDTO.setMoney(money);
         //根据招标文件ID 和 下载机构id 查询是否付费 t_purchase_project_file_pay
         final TPurchaseProjectFilePayCriteria pay =new TPurchaseProjectFilePayCriteria();
         final TPurchaseProjectFilePayCriteria.Criteria subPay=pay.createCriteria();

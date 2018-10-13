@@ -16,10 +16,6 @@ public class BExpertScore implements Serializable {
 
     private String supplierCompanyName;
 
-    private Integer status;
-
-    private String standardType;
-
     private Double techTypeScore;
 
     private Double commerceTypeScore;
@@ -86,22 +82,6 @@ public class BExpertScore implements Serializable {
 
     public void setSupplierCompanyName(String supplierCompanyName) {
         this.supplierCompanyName = supplierCompanyName == null ? null : supplierCompanyName.trim();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getStandardType() {
-        return standardType;
-    }
-
-    public void setStandardType(String standardType) {
-        this.standardType = standardType == null ? null : standardType.trim();
     }
 
     public Double getTechTypeScore() {
@@ -188,8 +168,6 @@ public class BExpertScore implements Serializable {
         sb.append(", procurementProjectId=").append(procurementProjectId);
         sb.append(", supplierId=").append(supplierId);
         sb.append(", supplierCompanyName=").append(supplierCompanyName);
-        sb.append(", status=").append(status);
-        sb.append(", standardType=").append(standardType);
         sb.append(", techTypeScore=").append(techTypeScore);
         sb.append(", commerceTypeScore=").append(commerceTypeScore);
         sb.append(", finalScore=").append(finalScore);

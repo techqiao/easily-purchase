@@ -8,8 +8,6 @@
     <result column="procurement_project_id" jdbcType="BIGINT" property="procurementProjectId" />
     <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
     <result column="supplier_company_name" jdbcType="VARCHAR" property="supplierCompanyName" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="standard_type" jdbcType="VARCHAR" property="standardType" />
     <result column="tech_type_score" jdbcType="DOUBLE" property="techTypeScore" />
     <result column="commerce_type_score" jdbcType="DOUBLE" property="commerceTypeScore" />
     <result column="final_score" jdbcType="DOUBLE" property="finalScore" />
@@ -80,8 +78,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, bids_id, bids_code, procurement_project_id, supplier_id, supplier_company_name, 
-    status, standard_type, tech_type_score, commerce_type_score, final_score, expert_id, 
-    expert_name, operate_id, create_at, update_at, is_deleted
+    tech_type_score, commerce_type_score, final_score, expert_id, expert_name, operate_id, 
+    create_at, update_at, is_deleted
   </sql>
   <select id="selectByExample" parameterType="com.epc.tendering.service.domain.bid.BExpertScoreCriteria" resultMap="BaseResultMap">
     select
@@ -118,17 +116,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into b_expert_score (bids_id, bids_code, procurement_project_id, 
-      supplier_id, supplier_company_name, status, 
-      standard_type, tech_type_score, commerce_type_score, 
-      final_score, expert_id, expert_name, 
-      operate_id, create_at, update_at, 
-      is_deleted)
+      supplier_id, supplier_company_name, tech_type_score, 
+      commerce_type_score, final_score, expert_id, 
+      expert_name, operate_id, create_at, 
+      update_at, is_deleted)
     values (#{bidsId,jdbcType=BIGINT}, #{bidsCode,jdbcType=VARCHAR}, #{procurementProjectId,jdbcType=BIGINT}, 
-      #{supplierId,jdbcType=BIGINT}, #{supplierCompanyName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{standardType,jdbcType=VARCHAR}, #{techTypeScore,jdbcType=DOUBLE}, #{commerceTypeScore,jdbcType=DOUBLE}, 
-      #{finalScore,jdbcType=DOUBLE}, #{expertId,jdbcType=BIGINT}, #{expertName,jdbcType=VARCHAR}, 
-      #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER})
+      #{supplierId,jdbcType=BIGINT}, #{supplierCompanyName,jdbcType=VARCHAR}, #{techTypeScore,jdbcType=DOUBLE}, 
+      #{commerceTypeScore,jdbcType=DOUBLE}, #{finalScore,jdbcType=DOUBLE}, #{expertId,jdbcType=BIGINT}, 
+      #{expertName,jdbcType=VARCHAR}, #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.tendering.service.domain.bid.BExpertScore">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -150,12 +146,6 @@
       </if>
       <if test="supplierCompanyName != null">
         supplier_company_name,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="standardType != null">
-        standard_type,
       </if>
       <if test="techTypeScore != null">
         tech_type_score,
@@ -200,12 +190,6 @@
       </if>
       <if test="supplierCompanyName != null">
         #{supplierCompanyName,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="standardType != null">
-        #{standardType,jdbcType=VARCHAR},
       </if>
       <if test="techTypeScore != null">
         #{techTypeScore,jdbcType=DOUBLE},
@@ -263,12 +247,6 @@
       <if test="record.supplierCompanyName != null">
         supplier_company_name = #{record.supplierCompanyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null">
-        status = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.standardType != null">
-        standard_type = #{record.standardType,jdbcType=VARCHAR},
-      </if>
       <if test="record.techTypeScore != null">
         tech_type_score = #{record.techTypeScore,jdbcType=DOUBLE},
       </if>
@@ -309,8 +287,6 @@
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
       supplier_company_name = #{record.supplierCompanyName,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=INTEGER},
-      standard_type = #{record.standardType,jdbcType=VARCHAR},
       tech_type_score = #{record.techTypeScore,jdbcType=DOUBLE},
       commerce_type_score = #{record.commerceTypeScore,jdbcType=DOUBLE},
       final_score = #{record.finalScore,jdbcType=DOUBLE},
@@ -341,12 +317,6 @@
       </if>
       <if test="supplierCompanyName != null">
         supplier_company_name = #{supplierCompanyName,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="standardType != null">
-        standard_type = #{standardType,jdbcType=VARCHAR},
       </if>
       <if test="techTypeScore != null">
         tech_type_score = #{techTypeScore,jdbcType=DOUBLE},
@@ -385,8 +355,6 @@
       procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{supplierId,jdbcType=BIGINT},
       supplier_company_name = #{supplierCompanyName,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
-      standard_type = #{standardType,jdbcType=VARCHAR},
       tech_type_score = #{techTypeScore,jdbcType=DOUBLE},
       commerce_type_score = #{commerceTypeScore,jdbcType=DOUBLE},
       final_score = #{finalScore,jdbcType=DOUBLE},
@@ -412,5 +380,6 @@
       order by ${orderByClause}
     </if>
   </select>
+
 
 </mapper>

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author SongXing
- * @Description: 获取上传凭证，相关的接口
+ * @Description: 七牛 oss 凭证服务
  * @date 2018-10-9
  */
 @RestController
@@ -40,25 +40,37 @@ public class OssTokenController implements FacadeOssTokenService {
         return Result.success( "获得upToken成功",upTokenResult);
     }
 
+    /**
+     * 获取 复盖凭证  TODO 文件复写权限校验
+     * @param fileName qiniu FileKey
+     * @return String ReWriteToken
+     */
     @Override
-    // 文件复写权限
     public Result<String> getReWriteToken(@RequestParam String fileName){
-        String reWriteToken ="";
-
+        String reWriteToken =OssTokenUtil.getReWriteUpToken(fileName);
         return Result.success("获得ReWriteToke成功",reWriteToken) ;
     }
+
+    /**
+     * 获取 文件的私密路径 // TODO 按照用户权限鉴定
+     * @param fileKey 文件key
+     * @return 文件的私密路径
+     */
     @Override
-    // TODO 按照用户权限鉴定
     public Result<String> getPrivatePath(@RequestParam String fileKey){
         String privatePath = OssTokenUtil.getPrivatePath(fileKey);
         return  Result.success("获得私密路径成功",privatePath);
     }
 
-    //  模块-时间戳-原文件名
+    /**
+     * 根据模块名 文件原名 生成文件的存储路径   //  模块-时间戳-原文件名
+     * @param modelValue 业务模块名
+     * @param regionFileName 文件原名
+     * @return String 文件存储 key
+     */
     private  String getFullPathByModelValue(String modelValue,String regionFileName){
         long time = System.currentTimeMillis();
         String fullFilePath = modelValue+"_"+time+"_"+regionFileName;
         return  fullFilePath;
     }
-
 }

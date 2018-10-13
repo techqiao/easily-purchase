@@ -34,15 +34,15 @@ public class HandleExpertScore {
     /**
      * 技术评标分数
      */
-    private Integer techTypeScore;
+    private Double techTypeScore;
     /**
      * 商务评标分数
      */
-    private Integer commerceTypeScore;
+    private Double commerceTypeScore;
     /**
      * 最终评标分数
      */
-    private Integer finalScore;
+    private Double finalScore;
     /**
      * 专家ID
      */

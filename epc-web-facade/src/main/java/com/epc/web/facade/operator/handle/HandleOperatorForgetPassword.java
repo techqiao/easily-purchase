@@ -1,10 +1,12 @@
 package com.epc.web.facade.operator.handle;
 
+import com.epc.common.QueryRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.management.Query;
 import java.io.Serializable;
 
 /**

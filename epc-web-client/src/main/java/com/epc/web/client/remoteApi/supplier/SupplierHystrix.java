@@ -12,6 +12,7 @@ import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -97,7 +98,7 @@ public class SupplierHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
+    public Result<Map<String,Object>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
         return Result.hystrixError();
     }
 

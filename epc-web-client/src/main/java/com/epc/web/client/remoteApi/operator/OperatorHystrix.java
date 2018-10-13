@@ -6,13 +6,13 @@ import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
-import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.operator.vo.OperatorBasicVO;
 import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
 import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase 添加熔断器
@@ -80,7 +80,7 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(HandleOperatorFindAllByName handleOperatorFindAllByName) {
+    public Result<Map<String,Object>> queryOperatorEmployeeAll(HandleOperatorFindAllByName handleOperatorFindAllByName) {
         return Result.hystrixError();
     }
 
@@ -90,7 +90,7 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
+    public Result<Map<String,Object>> lookPurchaserList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
         return Result.hystrixError();
     }
 
@@ -115,7 +115,7 @@ public class OperatorHystrix implements FacadeOperatorService {
     }
 
     @Override
-    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
+    public Result<Map<String,Object>> lookSupplierList(HandleOperatorLoginInfo handleOperatorLoginInfo) {
         return Result.hystrixError();
     }
 

@@ -24,4 +24,9 @@ public class ExpertSignVO {
     private String expertPhone;
     @ApiModelProperty(value = "是否已签到")
     private Integer isSign;
+    @ApiModelProperty(value = "id")
+    private Long id;
+    @ApiModelProperty(value = "是否为组长 0 否 1 是")
+    private Integer isLeader;
+
 }

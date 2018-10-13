@@ -1,5 +1,6 @@
 package com.epc.web.client.controller.operator;
 
+import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.operator.handle.*;
@@ -11,7 +12,6 @@ import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
-import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.operator.vo.OperatorBasicVO;
 import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
 import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "运营商服务",description = "运营商服务")
 @RestController
@@ -217,7 +218,7 @@ public class OperatorController extends BaseController {
      */
     @ApiOperation(value = "14:根据员工的名字,角色，是否禁用,来匹配出符合条件的员工返回一个list",notes = "donghuan")
     @PostMapping(value = "/queryOperatorEmployeeAll")
-    public Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(@RequestBody ClientHandleOperatorFindAllByName clientHandleOperatorFindAllByName){
+    public Result<Map<String,Object>> queryOperatorEmployeeAll(@RequestBody ClientHandleOperatorFindAllByName clientHandleOperatorFindAllByName){
         HandleOperatorFindAllByName handleOperatorFindAllByName=new HandleOperatorFindAllByName();
         BeanUtils.copyProperties(clientHandleOperatorFindAllByName,handleOperatorFindAllByName);
         Long bossId = getLoginUser().getBossId();
@@ -248,8 +249,9 @@ public class OperatorController extends BaseController {
      */
     @ApiOperation(value = "查看当前登陆人拉的采购人列表list--15.5",notes = "donghuan")
     @PostMapping(value = "/lookPurchaserList")
-    public Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(){
+    public Result<Map<String,Object>> lookPurchaserList(@RequestBody QueryRequest queryRequest){
         HandleOperatorLoginInfo handleOperatorLoginInfo=new HandleOperatorLoginInfo();
+        BeanUtils.copyProperties(queryRequest,handleOperatorLoginInfo);
         Long userId = getLoginUser().getUserId();
         Long bossId = getLoginUser().getBossId();
         Integer type = getLoginUser().getType();
@@ -346,8 +348,9 @@ public class OperatorController extends BaseController {
      */
     @ApiOperation(value = "查看当前登陆者拉的供应商列表--19",notes = "donghuan")
     @PostMapping(value = "/lookSupplierList")
-    public Result<List<TSupplierBasicInfoVO>> lookSupplierList(){
+    public Result<Map<String,Object>> lookSupplierList(@RequestBody QueryRequest queryRequest){
         HandleOperatorLoginInfo handleOperatorLoginInfo=new HandleOperatorLoginInfo();
+        BeanUtils.copyProperties(queryRequest,handleOperatorLoginInfo);
         Long userId = getLoginUser().getUserId();
         Long bossId = getLoginUser().getBossId();
         Integer type = getLoginUser().getType();

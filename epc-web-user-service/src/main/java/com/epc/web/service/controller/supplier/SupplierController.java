@@ -50,23 +50,7 @@ public class SupplierController extends BaseController implements FacadeTSupplie
         return supplierService.registerSupplier(handleSupplierDetail);
     }
 
-    /**0.5
-     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
-     */
-//    @Override
-//    public Result<Boolean> addPasswordSupplierLogin(@RequestBody HandleSupplierDetail handleSupplierDetail){
-//        return supplierService.addPasswordSupplierLogin(handleSupplierDetail);
-//    }
-    /**1
-     *    2.由其他角色拉入平台网站 ，直接设置密码 ，登陆供应商账号
-     *      (有单独的页面登陆，只需要输入姓名，电话就可以进行登陆，进去直接设置密码，然后完善个人信息，然后下次登陆，就查询这个电话下的这条数据的密码状态是否为空，
-     *      不为空，就电话，密码登陆；如果为空，就到相应的姓名电话登陆页面登陆。一旦设置完密码就只能用电话与密码进行登陆【其中每个登陆都要验证码，否则不安全】
-     *      )
-     */
-//    @Override
-//    public Result<Boolean> addPasswordSupplier(@RequestBody HandleSupplierDetail handleSupplierDetail){
-//        return supplierService.addPasswordSupplier(handleSupplierDetail);
-//    }
+
 
     /**2
      *  完善供应商信息
@@ -182,10 +166,14 @@ public class SupplierController extends BaseController implements FacadeTSupplie
      * 来匹配出符合条件的员工返回一个list：
      */
     @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleSupplierIdAndName handleSupplierIdAndName){
-        return supplierService.querySupplierEmployeeAll(handleSupplierIdAndName);
+    public Result<Map<String,Object>> querySupplierEmployeeAll(@RequestBody HandleSupplierIdAndName handleSupplierIdAndName){
+        PageHelper.startPage(handleSupplierIdAndName.getPageNum(),handleSupplierIdAndName.getPageSize());
+        Result<List<SupplierBasicInfoVO>> listVOS=supplierService.querySupplierEmployeeAll(handleSupplierIdAndName);
+        List<SupplierBasicInfoVO> data = listVOS.getData();
+        PageInfo<SupplierBasicInfoVO> pageInfo=new PageInfo<>(data);
+        Map<String,Object> dataTable=getDataTable(pageInfo);
+        return Result.success(dataTable);
     }
-
 
     /**
      * 投标项目列表展示

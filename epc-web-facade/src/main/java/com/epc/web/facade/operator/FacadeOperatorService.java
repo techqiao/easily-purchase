@@ -1,20 +1,19 @@
 package com.epc.web.facade.operator;
 
+import com.epc.common.Result;
 import com.epc.web.facade.operator.handle.*;
 import com.epc.web.facade.operator.query.HandleOperatorCellphone;
 import com.epc.web.facade.operator.query.HandleOperatorFindAllByName;
 import com.epc.web.facade.operator.query.HandleOperatorId;
-import com.epc.web.facade.operator.vo.OperatorBasicInfoVO;
 import com.epc.web.facade.operator.vo.OperatorBasicVO;
 import com.epc.web.facade.operator.vo.TPurchaserBasicInfoVO;
 import com.epc.web.facade.operator.vo.TSupplierBasicInfoVO;
 import com.epc.web.facade.supplier.handle.RoleDetailInfo;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.epc.common.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:    运营商服务
@@ -38,19 +37,6 @@ public interface FacadeOperatorService {
      */
     @PostMapping(value = "public/registerOperator",consumes = "application/json; charset=UTF-8")
     Result<Boolean> registerOperator(@RequestBody HandleOperator handleOperator);
-
-//    /**0.5
-//     * 已经被人拉取过的，校验电话与名字是否在数据库中有，并且密码为空的，才让其设置密码进行登陆
-//     */
-//    @PostMapping(value = "addPasswordOperatorLogin",consumes = "application/json; charset=UTF-8")
-//    Result<Boolean> addPasswordOperatorLogin(@RequestBody HandleOperator handleOperator);
-
-    /**1
-     *  运营商注册,(有人拉的，状态为1（拉取状态）,只需要输入电话，默认密码就可以登陆，一进去就要改密码，然后将状态改成2（完善信息）)
-     *
-     */
-//    @PostMapping(value = "addPasswordOperator",consumes = "application/json; charset=UTF-8")
-//    Result<Boolean> addPasswordOperator(@RequestBody HandleOperator handleOperator);
 
     /**2
      * 完善运营商信息
@@ -129,7 +115,7 @@ public interface FacadeOperatorService {
      *     来匹配出符合条件的员工返回一个list：
      */
     @PostMapping(value = "queryOperatorEmployeeAll",consumes = "application/json; charset=UTF-8")
-    Result<List<OperatorBasicInfoVO>> queryOperatorEmployeeAll(@RequestBody HandleOperatorFindAllByName handleOperatorFindAllByName);
+    Result<Map<String,Object>> queryOperatorEmployeeAll(@RequestBody HandleOperatorFindAllByName handleOperatorFindAllByName);
 
     /**15
      *  运营商新增采购人（包括完善信息）
@@ -143,7 +129,7 @@ public interface FacadeOperatorService {
      *      参数:传入当前运营商的id,去采购basic表中去查，看有哪几个采购人是自己拉的
      */
     @PostMapping(value = "lookPurchaserList",consumes = "application/json; charset=UTF-8")
-    Result<List<TPurchaserBasicInfoVO>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
+    Result<Map<String,Object>> lookPurchaserList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
 
     /**15.6
      *通过手机号或者姓名来搜索自己拉的采购人
@@ -175,7 +161,7 @@ public interface FacadeOperatorService {
      *    查看当前登陆者拉的供应商列表
      */
     @PostMapping(value = "lookSupplierList",consumes = "application/json; charset=UTF-8")
-    Result<List<TSupplierBasicInfoVO>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
+    Result<Map<String,Object>> lookSupplierList(@RequestBody HandleOperatorLoginInfo handleOperatorLoginInfo);
 
     /**20
      *通过手机号或者姓名来搜索自己拉的供应商

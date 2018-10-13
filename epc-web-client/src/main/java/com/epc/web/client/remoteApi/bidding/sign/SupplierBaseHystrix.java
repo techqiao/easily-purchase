@@ -88,7 +88,7 @@ public class SupplierBaseHystrix implements FacadeTSupplierBasicInfoService {
     }
 
     @Override
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
+    public Result<Map<String,Object>> querySupplierEmployeeAll(HandleSupplierIdAndName handleSupplierIdAndName) {
         return Result.hystrixError();
     }
 

@@ -1,6 +1,5 @@
 package com.epc.web.client.controller.supplier;
 
-import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.operator.handle.ClientHandleOperatorRole;
@@ -19,11 +18,11 @@ import com.epc.web.facade.supplier.query.HandleSupplierIdAndName;
 import com.epc.web.facade.supplier.query.QuerywithPageHandle;
 import com.epc.web.facade.supplier.vo.SupplierBasicInfoVO;
 import com.epc.web.facade.supplier.vo.SupplierCategoryVo;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -263,7 +262,7 @@ public class TSupplierBasicInfoController extends BaseController {
      */
     @ApiOperation(value = "14:根据员工的名字,角色，是否禁用 来匹配出符合条件的员工返回一个list",notes = "donghuan")
     @PostMapping(value = "/querySupplierEmployeeAll")
-    public Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody ClientHandleSupplierIdAndName clientHandleSupplierIdAndName){
+    public Result<Map<String,Object>> querySupplierEmployeeAll(@RequestBody ClientHandleSupplierIdAndName clientHandleSupplierIdAndName){
         HandleSupplierIdAndName handleSupplierIdAndName=new HandleSupplierIdAndName();
         BeanUtils.copyProperties(clientHandleSupplierIdAndName,handleSupplierIdAndName);
         Integer loginRole = getLoginUser().getLoginRole();

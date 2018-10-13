@@ -138,7 +138,7 @@ public interface FacadeTSupplierBasicInfoService {
      * 来匹配出符合条件的员工返回一个list：
      */
     @PostMapping(value = "querySupplierEmployeeAll",consumes = "application/json;charset=UTF-8")
-    Result<List<SupplierBasicInfoVO>> querySupplierEmployeeAll(@RequestBody HandleSupplierIdAndName handleSupplierIdAndName);
+    Result<Map<String,Object>> querySupplierEmployeeAll(@RequestBody HandleSupplierIdAndName handleSupplierIdAndName);
 
 
     /**

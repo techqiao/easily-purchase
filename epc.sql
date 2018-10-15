@@ -1751,3 +1751,25 @@ CREATE TABLE `e_contract_awarded` (
 
 -- #易建采购--流程表
 
+
+
+-- #供货商:投标函信息
+DROP TABLE IF EXISTS `letter_of_tender`;
+CREATE TABLE `letter_of_tender` (
+  `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+  `procurement_project_id` varchar(11) DEFAULT NULL COMMENT '采购项目ID',
+  `supplier_id` BIGINT(11) NOT NULL COMMENT '供货商id',
+  `supplier_name` BIGINT(11) NOT NULL COMMENT '供货商名称',
+  `bids_id` BIGINT(11) NOT NULL COMMENT '标段ID',
+  `bids_name` varchar(256) NOT NULL COMMENT '标段名称',
+  `money` decimal(18,2) NOT NULL COMMENT '投标总金额',
+  `quality_target` varchar(256) NOT NULL COMMENT '工程质量目标',
+  `duration` int NOT NULL COMMENT '工期',
+  `validity` int NOT NULL COMMENT '投标有效期',
+  `manager_name` varchar(64) NOT NULL COMMENT '项目经理姓名',
+  `certificate_number` varchar(64) NOT NULL COMMENT '执业证书号码',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供货商:投标函信息';

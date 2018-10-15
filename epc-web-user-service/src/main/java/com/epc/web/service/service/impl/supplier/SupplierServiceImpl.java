@@ -897,14 +897,14 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     /**
-     * 根据当前登录者查对应的投标项目
-     *
+     * 根据当前登录者参与的投标项目列表
      * @param querywithPageHandle
      * @return
      */
     @Override
     public Result<List<TenderMessageVO>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
-        List<TTenderMessage> tTenderMessages = tTenderMessageMapper.querySupplierProject(querywithPageHandle.getId());
+        //获取当前用户 参与的投标项目列表
+        List<TTenderMessage> tTenderMessages = tTenderMessageMapper.querySupplierProject(querywithPageHandle.getUserId());
         List<TenderMessageVO> voList = new ArrayList<>();
         for (TTenderMessage entity : tTenderMessages) {
             TenderMessageVO vo = new TenderMessageVO();

@@ -86,6 +86,10 @@ public class WinBidRecordServiceImlp implements WinBidRecordService {
             entity.setProcessStatus(AnnouncementProcessStatusEnum.NOT_SUBMIT.getCode());
             entity.setProjectName(nominate.getProjectName());
             entity.setProjectCode(nominate.getProjectCode());
+            TPurchaseProjectBids purchaseProjectBids =tPurchaseProjectBidsMapper.selectByPrimaryKey(nominate.getBidId());
+            if(purchaseProjectBids!=null){
+                entity.setProjectId(purchaseProjectBids.getProjectId());
+            }
             entity.setBidName(nominate.getBidName());
             entity.setBidCode(nominate.getBidCode());
             entity.setBidId(nominate.getBidId());

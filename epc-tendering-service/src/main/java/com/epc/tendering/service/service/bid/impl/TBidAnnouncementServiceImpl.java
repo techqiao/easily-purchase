@@ -4,10 +4,13 @@ package com.epc.tendering.service.service.bid.impl;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.bid.*;
+import com.epc.tendering.service.domain.supplier.TSupplierDetailInfo;
+import com.epc.tendering.service.domain.supplier.TSupplierDetailInfoCriteria;
 import com.epc.tendering.service.mapper.bid.TBidAnnouncementMapper;
 import com.epc.tendering.service.mapper.bid.TOpeningRecordMapper;
 import com.epc.tendering.service.mapper.bid.TPurchaserDetailInfoMapper;
 import com.epc.tendering.service.mapper.bid.TTenderMessageMapper;
+import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.bid.BidAnnouncementService;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
@@ -40,6 +43,8 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
     @Autowired
     TTenderMessageMapper tTenderMessageMapper;
+    @Autowired
+    TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
 
     /**
      * 查询唱标记录路径
@@ -99,11 +104,11 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
         List<BidAnnouncementVO> voList=new ArrayList<>();
         for(TOpeningRecord entity:resultList){
             BidAnnouncementVO vo= new BidAnnouncementVO();
-            TPurchaserDetailInfoCriteria newCriteria=new TPurchaserDetailInfoCriteria();
-            TPurchaserDetailInfoCriteria.Criteria infoCriteria=newCriteria.createCriteria();
-            infoCriteria.andPurchaserIdEqualTo(entity.getSupplierCompanyId());
+            TSupplierDetailInfoCriteria newCriteria=new TSupplierDetailInfoCriteria();
+            TSupplierDetailInfoCriteria.Criteria infoCriteria=newCriteria.createCriteria();
+            infoCriteria.andSupplierIdEqualTo(entity.getSupplierCompanyId());
             infoCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
-            List<TPurchaserDetailInfo> detailList=tPurchaserDetailInfoMapper.selectByExample(newCriteria);
+            List<TSupplierDetailInfo> detailList=tSupplierDetailInfoMapper.selectByExample(newCriteria);
             if(detailList.size()==0){
                 LOGGER.error("queryBidAnnouncement 查无此供应商");
                 return Result.error("queryBidAnnouncement 查无此供应商");

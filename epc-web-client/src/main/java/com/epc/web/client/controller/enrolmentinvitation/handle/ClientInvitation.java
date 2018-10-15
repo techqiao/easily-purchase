@@ -18,8 +18,6 @@ public class ClientInvitation implements Serializable {
     private Long id;
     @ApiModelProperty("状态（true:确认，false:拒绝）")
     private Boolean status;
-    @ApiModelProperty("采购项目Id")
-    private Long procurementProjectId;
     @ApiModelProperty("0-公告 1-私有")
     private Integer signUpType;
 }

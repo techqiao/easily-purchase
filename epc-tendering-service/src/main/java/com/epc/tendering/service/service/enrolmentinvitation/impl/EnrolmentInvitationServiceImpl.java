@@ -163,6 +163,7 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
         entity.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         SignUpHandle signUpHandle = new SignUpHandle();
         BeanUtils.copyProperties(entity, signUpHandle);
+        signUpHandle.setUserId(updateInvitation.getUserId());
         //更新数据（操作后下次不能查出来）
         try {
             bInvitationMapper.updateByPrimaryKey(entity);

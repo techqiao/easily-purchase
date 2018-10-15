@@ -17,6 +17,10 @@ public interface LetterOfTenderMapper {
 
     int insertSelective(LetterOfTender record);
 
+    List<LetterOfTender> selectByExampleWithBLOBsWithRowbounds(LetterOfTenderCriteria example, RowBounds rowBounds);
+
+    List<LetterOfTender> selectByExampleWithBLOBs(LetterOfTenderCriteria example);
+
     List<LetterOfTender> selectByExampleWithRowbounds(LetterOfTenderCriteria example, RowBounds rowBounds);
 
     List<LetterOfTender> selectByExample(LetterOfTenderCriteria example);
@@ -25,9 +29,13 @@ public interface LetterOfTenderMapper {
 
     int updateByExampleSelective(@Param("record") LetterOfTender record, @Param("example") LetterOfTenderCriteria example);
 
+    int updateByExampleWithBLOBs(@Param("record") LetterOfTender record, @Param("example") LetterOfTenderCriteria example);
+
     int updateByExample(@Param("record") LetterOfTender record, @Param("example") LetterOfTenderCriteria example);
 
     int updateByPrimaryKeySelective(LetterOfTender record);
+
+    int updateByPrimaryKeyWithBLOBs(LetterOfTender record);
 
     int updateByPrimaryKey(LetterOfTender record);
 }

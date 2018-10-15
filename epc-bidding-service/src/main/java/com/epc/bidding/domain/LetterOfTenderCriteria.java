@@ -296,52 +296,62 @@ public class LetterOfTenderCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameEqualTo(Long value) {
+        public Criteria andSupplierNameEqualTo(String value) {
             addCriterion("supplier_name =", value, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameNotEqualTo(Long value) {
+        public Criteria andSupplierNameNotEqualTo(String value) {
             addCriterion("supplier_name <>", value, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameGreaterThan(Long value) {
+        public Criteria andSupplierNameGreaterThan(String value) {
             addCriterion("supplier_name >", value, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameGreaterThanOrEqualTo(Long value) {
+        public Criteria andSupplierNameGreaterThanOrEqualTo(String value) {
             addCriterion("supplier_name >=", value, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameLessThan(Long value) {
+        public Criteria andSupplierNameLessThan(String value) {
             addCriterion("supplier_name <", value, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameLessThanOrEqualTo(Long value) {
+        public Criteria andSupplierNameLessThanOrEqualTo(String value) {
             addCriterion("supplier_name <=", value, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameIn(List<Long> values) {
+        public Criteria andSupplierNameLike(String value) {
+            addCriterion("supplier_name like", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameNotLike(String value) {
+            addCriterion("supplier_name not like", value, "supplierName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSupplierNameIn(List<String> values) {
             addCriterion("supplier_name in", values, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameNotIn(List<Long> values) {
+        public Criteria andSupplierNameNotIn(List<String> values) {
             addCriterion("supplier_name not in", values, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameBetween(Long value1, Long value2) {
+        public Criteria andSupplierNameBetween(String value1, String value2) {
             addCriterion("supplier_name between", value1, value2, "supplierName");
             return (Criteria) this;
         }
 
-        public Criteria andSupplierNameNotBetween(Long value1, Long value2) {
+        public Criteria andSupplierNameNotBetween(String value1, String value2) {
             addCriterion("supplier_name not between", value1, value2, "supplierName");
             return (Criteria) this;
         }

@@ -66,7 +66,7 @@ public class BiddingFileUploadController extends BaseController {
                 handleNotice.setCompanyId(getLoginUser().getBossId());
                 handleNotice.setCompanyName(getLoginUser().getBossName());
                 handleNotice.setIp(request.getRemoteHost());
-                 biddingClient.updateNotice(handleNotice);
+                biddingClient.updateNotice(handleNotice);
             }
         }
         return Result.success(true);

@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="procurement_project_id" property="procurementProjectId" jdbcType="BIGINT" />
     <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
-    <result column="supplier_name" property="supplierName" jdbcType="BIGINT" />
+    <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
     <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
     <result column="bids_name" property="bidsName" jdbcType="VARCHAR" />
     <result column="money" property="money" jdbcType="DECIMAL" />
@@ -17,6 +17,9 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.LetterOfTender" extends="BaseResultMap" >
+    <result column="memo" property="memo" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,6 +84,25 @@
     quality_target, duration, validity, manager_name, certificate_number, create_at, 
     update_at, is_deleted
   </sql>
+  <sql id="Blob_Column_List" >
+    memo
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.LetterOfTenderCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from letter_of_tender
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.LetterOfTenderCriteria" >
     select
     <if test="distinct" >
@@ -95,9 +117,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from letter_of_tender
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -119,12 +143,14 @@
       bids_id, bids_name, money, 
       quality_target, duration, validity, 
       manager_name, certificate_number, create_at, 
-      update_at, is_deleted)
-    values (#{procurementProjectId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=BIGINT}, 
+      update_at, is_deleted, memo
+      )
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, 
       #{bidsId,jdbcType=BIGINT}, #{bidsName,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
       #{qualityTarget,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, #{validity,jdbcType=INTEGER}, 
       #{managerName,jdbcType=VARCHAR}, #{certificateNumber,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER})
+      #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{memo,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.LetterOfTender" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -174,6 +200,9 @@
       <if test="isDeleted != null" >
         is_deleted,
       </if>
+      <if test="memo != null" >
+        memo,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="procurementProjectId != null" >
@@ -183,7 +212,7 @@
         #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="supplierName != null" >
-        #{supplierName,jdbcType=BIGINT},
+        #{supplierName,jdbcType=VARCHAR},
       </if>
       <if test="bidsId != null" >
         #{bidsId,jdbcType=BIGINT},
@@ -218,6 +247,9 @@
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.epc.bidding.domain.LetterOfTenderCriteria" resultType="java.lang.Integer" >
@@ -239,7 +271,7 @@
         supplier_id = #{record.supplierId,jdbcType=BIGINT},
       </if>
       <if test="record.supplierName != null" >
-        supplier_name = #{record.supplierName,jdbcType=BIGINT},
+        supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       </if>
       <if test="record.bidsId != null" >
         bids_id = #{record.bidsId,jdbcType=BIGINT},
@@ -274,7 +306,32 @@
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update letter_of_tender
+    set id = #{record.id,jdbcType=BIGINT},
+      procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
+      supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
+      bids_id = #{record.bidsId,jdbcType=BIGINT},
+      bids_name = #{record.bidsName,jdbcType=VARCHAR},
+      money = #{record.money,jdbcType=DECIMAL},
+      quality_target = #{record.qualityTarget,jdbcType=VARCHAR},
+      duration = #{record.duration,jdbcType=INTEGER},
+      validity = #{record.validity,jdbcType=INTEGER},
+      manager_name = #{record.managerName,jdbcType=VARCHAR},
+      certificate_number = #{record.certificateNumber,jdbcType=VARCHAR},
+      create_at = #{record.createAt,jdbcType=TIMESTAMP},
+      update_at = #{record.updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      memo = #{record.memo,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -284,7 +341,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
-      supplier_name = #{record.supplierName,jdbcType=BIGINT},
+      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
@@ -310,7 +367,7 @@
         supplier_id = #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="supplierName != null" >
-        supplier_name = #{supplierName,jdbcType=BIGINT},
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
       </if>
       <if test="bidsId != null" >
         bids_id = #{bidsId,jdbcType=BIGINT},
@@ -345,14 +402,36 @@
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.epc.bidding.domain.LetterOfTender" >
+    update letter_of_tender
+    set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      bids_id = #{bidsId,jdbcType=BIGINT},
+      bids_name = #{bidsName,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      quality_target = #{qualityTarget,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=INTEGER},
+      validity = #{validity,jdbcType=INTEGER},
+      manager_name = #{managerName,jdbcType=VARCHAR},
+      certificate_number = #{certificateNumber,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      update_at = #{updateAt,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.epc.bidding.domain.LetterOfTender" >
     update letter_of_tender
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{supplierId,jdbcType=BIGINT},
-      supplier_name = #{supplierName,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
       bids_name = #{bidsName,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
@@ -366,6 +445,22 @@
       is_deleted = #{isDeleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.LetterOfTenderCriteria" id="selectByExampleWithBLOBsWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from letter_of_tender
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select resultMap="BaseResultMap" parameterType="com.epc.bidding.domain.LetterOfTenderCriteria" id="selectByExampleWithRowbounds" >
     select
     <if test="distinct" >

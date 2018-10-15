@@ -8,12 +8,10 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.PretrialMessageEnum;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.BasePretriaFile;
+import com.epc.web.facade.bidding.handle.Entrust;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +43,10 @@ public class FileServiceImpl implements FileService {
     BTenderDocumentsPlaceSaleMapper bTenderDocumentsPlaceSaleMapper;
     @Autowired
     BSaleDocumentsFileMapper bSaleDocumentsFileMapper;
+    @Autowired
+    LetterOfTenderMapper letterOfTenderMapper;
+    @Autowired
+    TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     /**
      * 投标文件记录(新增/修改/删除)
      * @param handleNotice
@@ -72,7 +73,23 @@ public class FileServiceImpl implements FileService {
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
         if(handleNotice.getId()!=null){
+            //委托信息
+            Entrust entrust=handleNotice.getEntrust();
             //更新(不允许操作金额)
+            LetterOfTender letter=letterOfTenderMapper.selectByPrimaryKey(entrust.getId());
+            letter.setQualityTarget(entrust.getQualityTarget());
+            letter.setDuration(entrust.getDuration());
+            letter.setValidity(entrust.getValidity());
+            letter.setManagerName(entrust.getManagerName());
+            letter.setCertificateNumber(entrust.getCertificateNumber());
+            try{
+                letterOfTenderMapper.updateByPrimaryKey(letter);
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+letter.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+
             try{
                 tTenderMessageMapper.updateByPrimaryKey(entity);
             }catch (Exception e){
@@ -81,7 +98,28 @@ public class FileServiceImpl implements FileService {
                 return Result.error();
             }
         }else if(handleNotice.getId()==null){
-            //新增
+            //新增委托书(不允许操作金额)
+            Entrust entrust=handleNotice.getEntrust();
+            LetterOfTender letter=new LetterOfTender();
+            BeanUtils.copyProperties(entrust,letter);
+            letter.setProcurementProjectId(entity.getPurchaseProjectId());
+            letter.setSupplierId(entity.getCompanyId());
+            letter.setSupplierName(entity.getCompanyName());
+            letter.setBidsId(entity.getBidsId());
+            letter.setBidsName(handleNotice.getBidsName());
+            letter.setCreateAt(new Date());
+            letter.setUpdateAt(new Date());
+            TPurchaseProjectBids tPurchaseProjectBids =tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
+            entity.setPurchaseProjectId(tPurchaseProjectBids.getPurchaseProjectId());
+            letter.setProcurementProjectId(tPurchaseProjectBids.getPurchaseProjectId());
+            try{
+                letterOfTenderMapper.insertSelective(letter);
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+letter.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+            //新增投标信息
             try{
                 tTenderMessageMapper.insertSelective(entity);
             }catch (Exception e){

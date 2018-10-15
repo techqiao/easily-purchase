@@ -124,7 +124,7 @@ CREATE TABLE `t_operator_basic_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商:法人及其员工基本(登录)信息';
 
--- 运营商 详情
+-- 运营商 详情()
 DROP TABLE IF EXISTS `t_operator_detail_info`;
 CREATE TABLE `t_operator_detail_info` (
     `id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -134,7 +134,7 @@ CREATE TABLE `t_operator_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	   `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-    `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+    `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
     `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
     `create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -215,7 +215,7 @@ CREATE TABLE `t_supplier_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-    `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+    `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
     `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
     `create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -271,7 +271,7 @@ CREATE TABLE `t_purchaser_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`uniform_credit_code` varchar(64) DEFAULT NULL unique  COMMENT '统一信用代码',
 	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
 	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`extended_field` varchar(128) DEFAULT NULL COMMENT '扩展字段',
@@ -378,7 +378,7 @@ CREATE TABLE `t_agency_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-    `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+    `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
     `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
     `create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -443,7 +443,7 @@ CREATE TABLE `t_expert_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
   `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-  `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+  `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
   `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
   `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
   `extended_field` varchar(128) DEFAULT NULL COMMENT '扩展字段',

@@ -149,6 +149,11 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
+    <delete id="deleteAttachmentByAgencyId">
+        DELETE
+        FROM t_agency_attachment
+        WHERE  agency_id=#{agency}
+    </delete>
 
     <insert id="insertListAttachment" parameterType="java.util.List" useGeneratedKeys="true">
     insert into
@@ -390,5 +395,8 @@
         <include refid="Base_Column_List"/>
         from t_agency_attachment
         where agency_id =#{agencyId}
+    </select>
+    <select id="selectCountByAgencyId" resultType="java.lang.Integer">
+        SELECT COUNT(0) FROM t_agency_attachment   where agency_id =#{agencyId}
     </select>
 </mapper>

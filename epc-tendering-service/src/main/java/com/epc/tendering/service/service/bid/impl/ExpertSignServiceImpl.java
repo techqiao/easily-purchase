@@ -14,6 +14,7 @@ import com.epc.tendering.service.mapper.expert.TExpertBasicInfoMapper;
 import com.epc.tendering.service.service.bid.ExpertSignService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
+import com.epc.web.facade.terdering.bid.vo.SignVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,11 +71,14 @@ public class ExpertSignServiceImpl implements ExpertSignService {
     }
 
     @Override
-    public Result<List<ExpertSignVO>> getExpertList(Long procurementProjectId) {
-        List<ExpertSignVO> returnList = new ArrayList<>();
+    public Result<List<SignVO>> getExpertList(Long procurementProjectId) {
+        List<SignVO> recordVOList = new ArrayList<>();
         List<Long> bidsIdList = tPurchaseProjectBidsMapper.getBidsIdList(procurementProjectId);
         for (Long bidsId : bidsIdList) {
+            SignVO recordVO = new SignVO();
+            recordVO.setBidId(bidsId);
             List<Long> committeeBidIdList = bAssessmentCommitteeBidMapper.getCommitteeBidIdList(bidsId);
+            List<ExpertSignVO> returnList = new ArrayList<>();
             for (Long committeeBidId : committeeBidIdList) {
                 BAssessmentCommitteeExpertCriteria criteria = new BAssessmentCommitteeExpertCriteria();
                 criteria.createCriteria().andCommitteeBidIdEqualTo(committeeBidId);
@@ -99,8 +103,10 @@ public class ExpertSignServiceImpl implements ExpertSignService {
                     }
                     returnList.add(pojo);
                 }
+                recordVO.setSignVOList(returnList);
             }
+            recordVOList.add(recordVO);
         }
-        return Result.success(returnList);
+        return Result.success(recordVOList);
     }
 }

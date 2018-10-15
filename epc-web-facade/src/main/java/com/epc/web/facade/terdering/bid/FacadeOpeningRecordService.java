@@ -3,6 +3,7 @@ package com.epc.web.facade.terdering.bid;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
 import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,5 +32,5 @@ public interface FacadeOpeningRecordService {
      * @return
      */
     @GetMapping(value = "getOpeningRecordList", consumes = "application/json; charset=UTF-8")
-    Result<List<OpeningRecordVO>> getOpeningRecordList(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId);
+    Result<List<RecordVO>> getOpeningRecordList(@RequestParam(value = "purchaseProjectId") Long purchaseProjectId);
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 public class AnswerQuestionHystrix implements FacadeAnswerQuestionService {
 
     @Override
-    public Result<List<FacadeAnswerQuestionVO>> getQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
+    public Result<Map<String, Object>> getQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
         return Result.hystrixError();
     }
 

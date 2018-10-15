@@ -7,6 +7,8 @@ import com.epc.web.facade.terdering.bid.FacadeExpertSignService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
 import com.epc.web.facade.terdering.bid.query.QueryExpertDTO;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
+import com.epc.web.facade.terdering.bid.vo.SignVO;
 import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,10 +41,7 @@ public class ExpertSignController extends BaseController implements FacadeExpert
     }
 
     @Override
-    public Result<Map<String, Object>> getExpertList(@RequestBody QueryExpertDTO queryExpertDTO) {
-        PageHelper.startPage(queryExpertDTO.getPage(),queryExpertDTO.getRows());
-        Result<List<ExpertSignVO>> expertList = expertSignService.getExpertList(queryExpertDTO.getProcurementProjectId());
-        PageInfo<ExpertSignVO> pageInfo = new PageInfo<>(expertList.getData());
-        return Result.success(getDataTable(pageInfo));
+    public Result<List<SignVO>> getExpertList(@RequestBody QueryExpertDTO queryExpertDTO) {
+        return expertSignService.getExpertList(queryExpertDTO.getProcurementProjectId());
     }
 }

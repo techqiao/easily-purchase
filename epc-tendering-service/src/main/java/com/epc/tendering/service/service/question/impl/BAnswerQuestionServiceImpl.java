@@ -1,21 +1,24 @@
 package com.epc.tendering.service.service.question.impl;
 
 import com.epc.common.Result;
+import com.epc.common.constants.ProcessStatusEnum;
+import com.epc.common.util.DateTimeUtil;
+import com.epc.tendering.service.domain.bid.LetterOfTender;
+import com.epc.tendering.service.domain.bid.LetterOfTenderCriteria;
+import com.epc.tendering.service.domain.bid.TWinBidNominate;
+import com.epc.tendering.service.domain.bid.TWinBidNominateCriteria;
+import com.epc.tendering.service.domain.purchase.TPurchaseProjectBasicInfo;
 import com.epc.tendering.service.domain.question.BAnswerQuestion;
 import com.epc.tendering.service.domain.question.BAnswerQuestionCriteria;
 import com.epc.tendering.service.domain.question.BAnswerQuestionWithBLOBs;
-import com.epc.tendering.service.domain.supplier.TSupplierDetailInfo;
-import com.epc.tendering.service.domain.supplier.TSupplierDetailInfoCriteria;
-import com.epc.tendering.service.domain.winBid.TWinBid;
-import com.epc.tendering.service.domain.winBid.TWinBidCriteria;
+import com.epc.tendering.service.mapper.bid.LetterOfTenderMapper;
+import com.epc.tendering.service.mapper.bid.TWinBidNominateMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
 import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
-import com.epc.tendering.service.mapper.winBid.TWinBidMapper;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
-import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
-import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
+import com.epc.web.facade.terdering.answer.query.*;
 import com.epc.web.facade.terdering.answer.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,10 +44,11 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     @Autowired
     private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
     @Autowired
-    private TWinBidMapper tWinBidMapper;
+    private TWinBidNominateMapper tWinBidNominateMapper;
     @Autowired
     private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
-
+    @Autowired
+    private LetterOfTenderMapper letterOfTenderMapper;
 
     @Override
     public Result<List<FacadeAnswerQuestionVO>> getQuestionList(QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
@@ -100,30 +105,81 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     }
 
     /**
-     * 查询中标公示
+     * 查询官网中标公示列表
      * @return
      */
     @Override
-    public Result<List<WinBidVO>> getBidPublicity() {
-        TWinBidCriteria tWinBidCriteria = new TWinBidCriteria();
-        tWinBidCriteria.setOrderByClause("id desc");
-        List<TWinBid> tWinBids = tWinBidMapper.selectByExample(tWinBidCriteria);
-        List<WinBidVO> winBidVOS = new ArrayList<>();
-        for (TWinBid tWinBid : tWinBids) {
-            TSupplierDetailInfoCriteria tSupplierDetailInfoCriteria = new TSupplierDetailInfoCriteria();
-            tSupplierDetailInfoCriteria.createCriteria().andSupplierIdEqualTo(tWinBid.getSupplierId());
-            List<TSupplierDetailInfo> tSupplierDetailInfos = tSupplierDetailInfoMapper.selectByExample(tSupplierDetailInfoCriteria);
-            WinBidVO winBidVO = new WinBidVO();
-            winBidVO.setBidName(tWinBid.getBidName());
-            winBidVO.setCreateAt(tWinBid.getCreateAt());
-            if(!tSupplierDetailInfos.isEmpty()){
-                winBidVO.setSupplierName(tSupplierDetailInfos.get(0).getCompanyName());
-            }else {
-                winBidVO.setSupplierName(null);
+    public List<WinBidNominateVO> getBidPublicity() {
+        TWinBidNominateCriteria tWinBidCriteria = new TWinBidNominateCriteria();
+        tWinBidCriteria.setOrderByClause("create_at desc");
+        TWinBidNominateCriteria.Criteria cubCriterial =tWinBidCriteria.createCriteria();
+        cubCriterial.andProcessStatusEqualTo(ProcessStatusEnum.RELEASED.getCode());
+        //获取中标公示列表
+        List<TWinBidNominate> tWinBids = tWinBidNominateMapper.selectByExample(tWinBidCriteria);
+
+        List<WinBidNominateVO> voList = new ArrayList<>();
+        for (TWinBidNominate entity : tWinBids) {
+            WinBidNominateVO vo =new WinBidNominateVO();
+
+            FirstBidCompanyDTO firstDTO =new FirstBidCompanyDTO();
+            SecondBidCompanyDTO secondDTO =new SecondBidCompanyDTO();
+            ThreeBidCompanyDTO threeDTO =new ThreeBidCompanyDTO();
+
+            //获取标段信息
+            BeanUtils.copyProperties(entity,vo);
+            vo.setOpenStart(DateTimeUtil.dateToStr(entity.getOpenStart()));
+            vo.setOpenEnd(DateTimeUtil.dateToStr(entity.getOpenEnd()));
+            //获取采购项目信息
+            TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo= tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
+            if(tPurchaseProjectBasicInfo!=null){
+                vo.setPurchaseProjectName(tPurchaseProjectBasicInfo.getPurchaseProjectName());
+                vo.setPurchaseProjectCode(tPurchaseProjectBasicInfo.getPurchaseProjectCode());
             }
-            winBidVOS.add(winBidVO);
+
+            LetterOfTenderCriteria criteria=new LetterOfTenderCriteria();
+            LetterOfTenderCriteria.Criteria cubCriteria=criteria.createCriteria();
+            cubCriteria.andBidsIdEqualTo(entity.getBidId());
+
+            //获取第一中标人信息
+            firstDTO.setCompanyName(entity.getFirstCompanyname());
+            firstDTO.setMoney(entity.getFirstPrice());
+            //获取第一投标函信息
+            cubCriteria.andSupplierIdEqualTo(entity.getFirstSupplierid());
+            List<LetterOfTender> firstLetterOfTender=letterOfTenderMapper.selectByExample(criteria);
+            if(firstLetterOfTender.size()>0){
+                LetterOfTender firstLetter=firstLetterOfTender.get(0);
+                BeanUtils.copyProperties(firstLetter,firstDTO);
+                vo.setFirstBidCompany(firstDTO);
+            }
+
+
+            //获取第二中标人信息
+            secondDTO.setCompanyName(entity.getFirstCompanyname());
+            secondDTO.setMoney(entity.getFirstPrice());
+            //获取第二投标函信息
+            cubCriteria.andSupplierIdEqualTo(entity.getTwoSupplierid());
+            List<LetterOfTender> SecondLetterOfTender=letterOfTenderMapper.selectByExample(criteria);
+            if(SecondLetterOfTender.size()>0){
+                LetterOfTender SecondLetter=SecondLetterOfTender.get(0);
+                BeanUtils.copyProperties(SecondLetter,secondDTO);
+                vo.setSecondBidCompany(secondDTO);
+
+            }
+
+            //获取第三中标人信息
+            threeDTO.setCompanyName(entity.getFirstCompanyname());
+            threeDTO.setMoney(entity.getFirstPrice());
+            //获取第三投标函信息
+            cubCriteria.andSupplierIdEqualTo(entity.getThreeSupplierid());
+            List<LetterOfTender> ThreeLetterOfTender=letterOfTenderMapper.selectByExample(criteria);
+            if(ThreeLetterOfTender.size()>0){
+                LetterOfTender threeLetter=ThreeLetterOfTender.get(0);
+                BeanUtils.copyProperties(threeLetter,threeDTO);
+                vo.setThreeBidCompany(threeDTO);
+            }
+            voList.add(vo);
         }
-        return Result.success(winBidVOS);
+        return voList;
     }
 
     @Override

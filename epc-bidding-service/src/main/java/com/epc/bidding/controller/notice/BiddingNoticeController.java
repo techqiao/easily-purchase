@@ -49,8 +49,7 @@ public class BiddingNoticeController extends QueryRequest implements FacadeNotic
 
 
     /**
-     * 根据Id查看招标公告详情 及 附件路径
-     * @param queryNoticeDetail
+     * 根据Id查看招标公告详情
      * @return
      */
     @Override

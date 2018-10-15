@@ -14,6 +14,8 @@ public class TenderMessageVO implements Serializable {
     private String projectName;
     @ApiModelProperty("项目编码")
     private String projectCode;
+    @ApiModelProperty("采购项目id")
+    private Long purchaseProjectId;
     @ApiModelProperty("标段Id")
     private Long bidId;
     @ApiModelProperty("标段名称")

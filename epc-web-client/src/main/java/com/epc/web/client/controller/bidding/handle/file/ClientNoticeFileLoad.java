@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@ApiModel("投标文件记路")
+@ApiModel("投标文件详情")
 public class ClientNoticeFileLoad {
     @ApiModelProperty("投标文件记录id")
     private Long id;

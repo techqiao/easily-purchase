@@ -54,7 +54,7 @@ public class BiddingNoticeController extends BaseController {
        return noticeClient.queryBIssueDocumentsList(queryNoticeDTO);
     }
 
-    @ApiOperation(value = "查看公告详情及下载文件")
+    @ApiOperation(value = "查看公告详情")
     @PostMapping(value="/getNoticeDetailWithFile")
     public Result<NoticeDetailVO> getProjectList(@RequestBody  ClientNoticeDetailDTO dto){
         QueryNoticeDetail queryNoticeDetail=new QueryNoticeDetail();

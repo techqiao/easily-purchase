@@ -11,7 +11,7 @@ import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 public interface FileService {
 
     /**
-     * 投标上传
+     * 投标文件记录(新增/修改/删除)
      * @param handleNotice
      * @return
      */

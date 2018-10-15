@@ -72,7 +72,7 @@ public class FileServiceImpl implements FileService {
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
         if(handleNotice.getId()!=null){
-            //更新
+            //更新(不允许操作金额)
             try{
                 tTenderMessageMapper.updateByPrimaryKey(entity);
             }catch (Exception e){

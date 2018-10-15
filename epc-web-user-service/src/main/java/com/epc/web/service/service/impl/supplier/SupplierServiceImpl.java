@@ -912,7 +912,7 @@ public class SupplierServiceImpl implements SupplierService {
             TPurchaseProjectBids bisEntity = tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
             BeanUtils.copyProperties(bisEntity, vo);
             TProjectBasicInfo projectEntity = tProjectBasicInfoMapper.selectByPrimaryKey(bisEntity.getProjectId());
-           if(!bisEntity.getPurchaseProjectName().contains(querywithPageHandle.getProjectName())){
+           if(querywithPageHandle.getProjectName()!=null && !bisEntity.getPurchaseProjectName().contains(querywithPageHandle.getProjectName())){
                break;
            }
             if (projectEntity.getSourceOfInvestment() == 0) {
@@ -942,7 +942,7 @@ public class SupplierServiceImpl implements SupplierService {
             }
             if(vo.getStatus()==null){
                 continue;
-            }else if(!querywithPageHandle.getStatus().equals(vo.getStatus())){
+            }else if(querywithPageHandle.getStatus()!=null && !querywithPageHandle.getStatus().equals(vo.getStatus())){
                 break;
             }
             voList.add(vo);

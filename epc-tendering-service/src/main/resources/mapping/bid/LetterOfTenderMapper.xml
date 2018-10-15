@@ -5,7 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="procurement_project_id" jdbcType="BIGINT" property="procurementProjectId" />
     <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
-    <result column="supplier_name" jdbcType="BIGINT" property="supplierName" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
     <result column="bids_id" jdbcType="BIGINT" property="bidsId" />
     <result column="bids_name" jdbcType="VARCHAR" property="bidsName" />
     <result column="money" jdbcType="DECIMAL" property="money" />
@@ -145,7 +145,7 @@
       manager_name, certificate_number, create_at, 
       update_at, is_deleted, memo
       )
-    values (#{procurementProjectId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=BIGINT}, 
+    values (#{procurementProjectId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, 
       #{bidsId,jdbcType=BIGINT}, #{bidsName,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
       #{qualityTarget,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, #{validity,jdbcType=INTEGER}, 
       #{managerName,jdbcType=VARCHAR}, #{certificateNumber,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
@@ -212,7 +212,7 @@
         #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="supplierName != null">
-        #{supplierName,jdbcType=BIGINT},
+        #{supplierName,jdbcType=VARCHAR},
       </if>
       <if test="bidsId != null">
         #{bidsId,jdbcType=BIGINT},
@@ -271,7 +271,7 @@
         supplier_id = #{record.supplierId,jdbcType=BIGINT},
       </if>
       <if test="record.supplierName != null">
-        supplier_name = #{record.supplierName,jdbcType=BIGINT},
+        supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       </if>
       <if test="record.bidsId != null">
         bids_id = #{record.bidsId,jdbcType=BIGINT},
@@ -319,7 +319,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
-      supplier_name = #{record.supplierName,jdbcType=BIGINT},
+      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
@@ -341,7 +341,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       procurement_project_id = #{record.procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{record.supplierId,jdbcType=BIGINT},
-      supplier_name = #{record.supplierName,jdbcType=BIGINT},
+      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DECIMAL},
@@ -367,7 +367,7 @@
         supplier_id = #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="supplierName != null">
-        supplier_name = #{supplierName,jdbcType=BIGINT},
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
       </if>
       <if test="bidsId != null">
         bids_id = #{bidsId,jdbcType=BIGINT},
@@ -412,7 +412,7 @@
     update letter_of_tender
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{supplierId,jdbcType=BIGINT},
-      supplier_name = #{supplierName,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
       bids_name = #{bidsName,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
@@ -431,7 +431,7 @@
     update letter_of_tender
     set procurement_project_id = #{procurementProjectId,jdbcType=BIGINT},
       supplier_id = #{supplierId,jdbcType=BIGINT},
-      supplier_name = #{supplierName,jdbcType=BIGINT},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
       bids_name = #{bidsName,jdbcType=VARCHAR},
       money = #{money,jdbcType=DECIMAL},
@@ -475,5 +475,6 @@
       order by ${orderByClause}
     </if>
   </select>
+
 
 </mapper>

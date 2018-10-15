@@ -21,7 +21,7 @@ public class LetterTenderVO {
     @ApiModelProperty(value = "供货商id")
     private Long supplierId;
     @ApiModelProperty(value = "供货商名称")
-    private Long supplierName;
+    private String supplierName;
     @ApiModelProperty(value = "标段ID")
     private Long bidsId;
     @ApiModelProperty(value = "标段名称")

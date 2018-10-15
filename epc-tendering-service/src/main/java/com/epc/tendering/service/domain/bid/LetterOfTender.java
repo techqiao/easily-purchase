@@ -11,7 +11,7 @@ public class LetterOfTender implements Serializable {
 
     private Long supplierId;
 
-    private Long supplierName;
+    private String supplierName;
 
     private Long bidsId;
 
@@ -63,12 +63,12 @@ public class LetterOfTender implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public Long getSupplierName() {
+    public String getSupplierName() {
         return supplierName;
     }
 
-    public void setSupplierName(Long supplierName) {
-        this.supplierName = supplierName;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName == null ? null : supplierName.trim();
     }
 
     public Long getBidsId() {

@@ -1410,3 +1410,366 @@ CREATE TABLE `supplier_category` (
   `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供货商:供货商类别管理';
+
+
+
+
+
+
+
+
+
+
+
+-- 一键采购所需的表
+
+-- #一键采项目流程表
+DROP TABLE if exists `e_project_procedure` ;
+CREATE TABLE `e_project_procedure` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目ID',
+  `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `purchasing_information_id` bigint(11) NOT NULL COMMENT '标段ID',
+  `procedure_code` varchar(64) NOT NULL COMMENT '流程编码',
+  `procedure_name` varchar(64) NOT NULL COMMENT '流程名称',
+  `operate_type` varchar(32) NOT NULL COMMENT '用户类别（supplier,purchaser）',
+  `creator` varchar(16) DEFAULT NULL COMMENT '创建人姓名',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_end` int(1) DEFAULT '0' COMMENT '是否删除: 0-进行中,1-结束',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目流程表';
+
+-- #公告表
+
+-- #发布采购信息表 （特别字段--可见范围）。
+DROP TABLE if exists `e_purchasing_information` ;
+CREATE TABLE `e_purchasing_information` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目ID',
+  `purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+  `procurement_classification` VARCHAR(32) NOT NULL COMMENT '采购分类',
+  `procurement_professional` VARCHAR(32) NOT NULL COMMENT '采购专业',
+  `information_content` VARCHAR(256) DEFAULT NULL COMMENT '信息内容',
+  `is_need_evaluation` INT(1) DEFAULT '0' COMMENT '是否需要评标，0-不需要 1-需要',
+  `visual_range` INT(1) DEFAULT '0' COMMENT '可见范围，0-全网可见 1-内部所有可见 2内部指定可见',
+  `process_status` VARCHAR(64) DEFAULT 'not_submit' COMMENT '审核 auditing, 批复 reply, 待发布wait_release,已发布 released, 未提交not_submit, 失效invalid',
+  `registration_time_start` datetime NOT NULL COMMENT '报名开始时间',
+  `registration_time_end` datetime NOT NULL COMMENT '报名结束时间',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发布采购信息表';
+
+
+-- #采购分类表
+DROP TABLE if exists `e_procurement_classification_professional`;
+CREATE TABLE `e_procurement_classification_professional` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `procurement_classification` VARCHAR(32) NOT NULL COMMENT '采购分类',
+  `procurement_professional` VARCHAR(32) NOT NULL COMMENT '采购专业',
+  `product_name` VARCHAR(32) NOT NULL COMMENT '产品名称',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购分类表';
+
+
+-- #采购人项目信息的可见供应商表
+DROP TABLE if exists `e_visual_supplier`;
+CREATE TABLE `e_visual_supplier` (
+  `id` BIGINT(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` BIGINT(11) NOT NULL COMMENT '项目ID',
+  `purchase_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+  `purchasing_information_id` BIGINT(11) NOT NULL COMMENT '采购信息表id',
+  `supplier_id` BIGINT(11) NOT NULL COMMENT '可见供应商ID',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='采购人项目信息的可见供应商表';
+
+-- #问题澄清
+-- #问题回答表
+DROP TABLE if exists `e_answer_question` ;
+CREATE TABLE `e_answer_question` (
+  `id` BIGINT(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+  `question_type` VARCHAR(64) NOT NULL COMMENT '问题类型（公告-announcement,招标文件-bidFile,评标-bidEvaluation）',
+  `questioner_id` BIGINT(11) unsigned DEFAULT NULL COMMENT '提问人ID',
+  `questioner_name` VARCHAR(64) DEFAULT NULL COMMENT '提问人姓名',
+  `type_id` BIGINT(11) unsigned DEFAULT NULL COMMENT '类型ID',
+  `problem` text COMMENT '问题',
+  `answer_id` BIGINT(11) unsigned DEFAULT NULL COMMENT '回答问题人Id',
+  `answer_name` VARCHAR(64) DEFAULT NULL COMMENT '回答问题人姓名',
+  `answer` text COMMENT '回答内容',
+  `status` varchar(64) DEFAULT 'wait_reply' COMMENT '问题状态 待回复 wait_reply 已回复 replied',
+  `operate_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='招标流程:问题答复';
+
+
+
+-- 供应商报名采购项目表
+DROP TABLE if exists `e_sign_up`;
+CREATE TABLE `e_sign_up` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` BIGINT(11) NOT NULL COMMENT '项目ID',
+  `procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+  `purchasing_information_id` VARCHAR(256) NOT NULL COMMENT '标段ID',
+  `bids_name` VARCHAR(256) NOT NULL COMMENT '标段名称',
+  `bids_code` VARCHAR(256) DEFAULT NULL COMMENT '标段编码',
+  `supplier_id` BIGINT(11) NOT NULL COMMENT '供应商ID',
+  `supplier_name` VARCHAR(64) DEFAULT NULL COMMENT '供应商名称',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='报名表';
+
+
+-- 预审文件表
+DROP TABLE if exists `e_pretrial_file`;
+CREATE TABLE `e_pretrial_file` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `pretrial_message_id` BIGINT(11) NOT NULL COMMENT '预审信息ID',
+  `file_path` VARCHAR(256) NOT NULL COMMENT '文件路径',
+  `file_name` VARCHAR(256) NOT NULL COMMENT '文件名',
+  `operate_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
+  `creator` VARCHAR(16) NOT NULL COMMENT '创建人姓名',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投标流程:预审文件';
+
+-- #预审信息表
+DROP TABLE if exists `e_pretrial_message` ;
+CREATE TABLE `e_pretrial_message` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `release_announcement_id` bigint(11) DEFAULT NULL COMMENT '公告ID',
+  `purchasing_information_id` bigint(11) NOT NULL COMMENT '标段ID',
+  `company_id` bigint(11) NOT NULL COMMENT '公司ID',
+  `status` varchar(64) NOT NULL COMMENT '是否通过: review-审核中,noPass-未通过,pass-通过',
+  `content` varchar(1024) NOT NULL COMMENT '信息',
+  `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
+  `creator` varchar(16) NOT NULL COMMENT '创建人姓名',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投标流程:提交预审信息';
+
+
+-- 采购要求文件表
+DROP TABLE if exists `e_procurement_files`;
+CREATE TABLE `e_procurement_files` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+   `procurement_requirement_id` bigint(11) NOT NULL COMMENT '采购要求ID',
+  `technical_requirements_file_path` VARCHAR(64) NOT NULL COMMENT '技术要求',
+  `contract_requirement_file_path` VARCHAR(64) NOT NULL COMMENT '合同要求',
+  `rests_remark` VARCHAR(1024) DEFAULT NULL COMMENT '其他备注',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发布采购要求表';
+
+
+-- #发布采购要求表
+DROP TABLE if exists `e_procurement_requirement`;
+CREATE TABLE `e_procurement_requirement` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目ID',
+  `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `purchasing_information_id` bigint(11) NOT NULL COMMENT '标段id',
+  `ceiling_price` decimal(18,2) NOT NULL COMMENT '最高限价',
+  `is_fully_accepted_technical` int(1) DEFAULT '0' COMMENT '0-只接受完全符合技术要求 1-可接受基本符合技术要求',
+  `technical_remark` VARCHAR(256) DEFAULT NULL COMMENT '备注；可接受基本符合技术要求时填写不满足原因',
+  `is_fully_accepted_contract` int(1) DEFAULT '0' COMMENT '0-只接受完全符合合同要求 1-可接受基本符合合同要求',
+  `contract_remark` VARCHAR(256) DEFAULT NULL COMMENT '备注；可接受基本符合合同要求时填写不满足原因',
+  `rests_remark` VARCHAR(1024) DEFAULT NULL COMMENT '其他备注',
+  `cash_deposit` decimal(18,2) NOT NULL COMMENT '保证金',
+  `earnest_money_endtime` datetime NOT NULL COMMENT '缴纳保证金截止时间',
+  `process_status` varchar(64) DEFAULT 'not_submit' COMMENT '审核 auditing, 批复 reply, 待发布wait_release,已发布 released, 未提交not_submit, 失效invalid',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发布采购要求表';
+
+
+-- #保证金缴纳表
+-- #发售招标文件 - 标段保证金表
+DROP TABLE IF EXISTS `b_bids_guarantee_amount`;
+CREATE TABLE `b_bids_guarantee_amount` (
+	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+	`procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+	`b_issue_documents_id` BIGINT(11) NOT NULL COMMENT '发售招标文件表主键ID',
+	`tender_guarantee_amount` DECIMAL(18,2) DEFAULT 0.00 COMMENT '投标保证金',
+	`bids_name` VARCHAR(64) DEFAULT NULL COMMENT '标段名称',
+	`purchasing_information_id` BIGINT(11) NOT NULL COMMENT  '标段ID',
+	`supplier_id` BIGINT(11) NOT NULL COMMENT  '供应商ID',
+	`bids_code` VARCHAR(64) NOT NULL COMMENT  '标段编号',
+	`receivables`VARCHAR(64) NOT NULL COMMENT  '收款单位',
+	`bank_account` VARCHAR(64) NOT NULL COMMENT  '开户行帐号',
+	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:发售招标文件-标段保证金';
+
+
+-- #供应商投标列表
+DROP TABLE if exists `e_supplier_tender_list`;
+CREATE TABLE `e_supplier_tender_list` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目ID',
+  `purchase_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `purchasing_information_id` bigint(11) NOT NULL COMMENT '标段id',
+  `supplier_id` BIGINT(11) NOT NULL COMMENT '供应商id',
+  `supplier_name` VARCHAR(32) NOT NULL COMMENT '供应商名称',
+  `the_bid_amount` decimal(18,2) NOT NULL COMMENT '投标金额',
+  `is_second_quotation` int(1) DEFAULT '0' COMMENT '是否二次报价 0-否 1-是',
+  `second_quotation_remark` VARCHAR(128) DEFAULT NULL COMMENT '二次报价备注说明',
+  `technical_requirements` int(1) NOT NULL COMMENT '技术要求满足情况 0-完全符合 1-基本符合',
+  `technical_remark` VARCHAR(256) DEFAULT NULL COMMENT '备注；可接受基本符合技术要求时填写不满足原因',
+  `contract_condition` int(1) NOT NULL COMMENT '合同条件满足情况 0-完全符合 1-基本符合',
+  `contract_remark` VARCHAR(256) DEFAULT NULL COMMENT '备注；可接受基本符合合同要求时填写不满足原因',
+  `remark` VARCHAR(1024) NOT NULL COMMENT '备注',
+  `is_deposit_payment` int(1) DEFAULT '0' COMMENT '保证金缴纳情况 0-未缴纳  1-已缴纳',
+  `is_finalist` int(1) DEFAULT '0' COMMENT '0-不入围 1-入围',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供应商投标列表';
+
+
+-- #评委会组建
+DROP TABLE if exists `e_assessment_committee_expert`;
+CREATE TABLE `e_assessment_committee_expert` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目ID',
+  `purchasing_information_id` bigint(11) NOT NULL COMMENT '标段ID',
+  `committee_bid_id` bigint(11) NOT NULL COMMENT '标段专家对应主键',
+  `notice_time` datetime DEFAULT NULL COMMENT '通知时间',
+  `notice_mode` varchar(64) DEFAULT NULL COMMENT '通知方式',
+  `expert_area` varchar(64) DEFAULT NULL COMMENT '专家区域',
+  `expert_id` bigint(11) NOT NULL COMMENT '专家ID',
+  `expert_name` varchar(64) NOT NULL COMMENT '专家姓名',
+  `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `update_at` datetime NOT NULL COMMENT '最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:组建评委员会专家';
+
+
+-- 招标流程: 评审结果  表
+DROP TABLE IF EXISTS `e_expert_score_report`;
+CREATE TABLE `e_expert_score_report` (
+	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+	`memo` TEXT COMMENT '评分报告',
+	`score` BIGINT(32) NOT NULL COMMENT '评标分数',
+	`purchasing_information_id` BIGINT(11) NOT NULL COMMENT  '标段ID',
+	`supplier_id` BIGINT(11) NOT NULL COMMENT '供应商ID',
+	`operate_id`  BIGINT(11) NOT NULL COMMENT '操作人ID',
+	`is_bidding`  INT(1) DEFAULT '0' COMMENT '是否中标 0-未中标 1-已中标',
+	`create_at` DATETIME NOT NULL COMMENT '创建时间',
+	`update_at` DATETIME NOT NULL COMMENT '最后修改时间',
+	`is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:评审报告';
+
+
+-- #中标结果表
+
+-- #中标通知书表
+DROP TABLE if exists `e_win_bid`;
+CREATE TABLE `e_win_bid` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `project_id` bigint(11) NOT NULL COMMENT '项目id',
+  `project_name` varchar(64) NOT NULL COMMENT '项目名称',
+  `project_code` varchar(64) NOT NULL COMMENT '项目编号',
+  `procurement_project_id` bigint(11) NOT NULL COMMENT '采购项目id',
+  `procurement_project_name` varchar(64) NOT NULL COMMENT '采购项目名称',
+  `bid_id` bigint(11) NOT NULL COMMENT '标段id',
+  `bid_name` varchar(64) NOT NULL COMMENT '标段名称',
+  `bid_code` varchar(64) NOT NULL COMMENT '标段编号',
+  `purchaser_id` bigint(11) unsigned DEFAULT NULL COMMENT '采购人(法人)ID',
+  `purchaser_monety` decimal(18,2) DEFAULT NULL COMMENT '中标价格',
+  `file_path` varchar(256) NOT NULL COMMENT '中标通知书路径',
+  `supplier_id` bigint(11) unsigned DEFAULT NULL COMMENT '供应商Id',
+  `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
+  `process_status` varchar(64) DEFAULT 'not_submit' COMMENT '审核 auditing, 批复 reply, 待发布wait_release,已发布 released, 未提交not_submit, 失效invalid',
+  `create_at` datetime NOT NULL COMMENT '创建时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='招标流程:中标表';
+
+-- #中标合同表
+
+DROP TABLE IF EXISTS `e_contract_awarded`;
+CREATE TABLE `e_contract_awarded` (
+	`id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+	`procurement_project_id` BIGINT(11) NOT NULL COMMENT '采购项目ID',
+	`sale_documents_id` BIGINT(11) NOT NULL COMMENT '文件ID',
+	`announcement_url` VARCHAR(256) DEFAULT NULL COMMENT '招标公告url',
+	`notice_bidder_url` VARCHAR(256) DEFAULT NULL COMMENT '投标人须知',
+	`technical_requirement_url` VARCHAR(256) DEFAULT NULL COMMENT '技术要求url',
+	`terms_contract_url` VARCHAR(256) DEFAULT NULL COMMENT '合同主要条款url',
+	`evaluation_url` VARCHAR(256) DEFAULT NULL COMMENT '评标标准url',
+  `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+  `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:发售招标文件';
+
+
+
+-- #易建采购--流程表
+
+
+
+-- #供货商:投标函信息
+DROP TABLE IF EXISTS `letter_of_tender`;
+CREATE TABLE `letter_of_tender` (
+  `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
+  `procurement_project_id` varchar(11) DEFAULT NULL COMMENT '采购项目ID',
+  `supplier_id` BIGINT(11) NOT NULL COMMENT '供货商id',
+  `supplier_name` BIGINT(11) NOT NULL COMMENT '供货商名称',
+  `bids_id` BIGINT(11) NOT NULL COMMENT '标段ID',
+  `bids_name` varchar(256) NOT NULL COMMENT '标段名称',
+  `money` decimal(18,2) NOT NULL COMMENT '投标总金额',
+  `quality_target` varchar(256) NOT NULL COMMENT '工程质量目标',
+  `duration` int NOT NULL COMMENT '工期',
+  `validity` int NOT NULL COMMENT '投标有效期',
+  `manager_name` varchar(64) NOT NULL COMMENT '项目经理姓名',
+  `certificate_number` varchar(64) NOT NULL COMMENT '执业证书号码',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
+  `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供货商:投标函信息';

@@ -37,7 +37,7 @@ import java.util.List;
  * @Description :
  * @Date:2018/9/15
  */
-@Api(value = "代理机构")
+@Api(value = "代理机构",description = "代理机构服务")
 @RequestMapping(value = "/agency", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @RestController
 public class AgencyController extends BaseController {

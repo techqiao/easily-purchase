@@ -1,21 +1,17 @@
 # system file for storing directory properties
 # ===================================================
 .DS_Store
-epc.sql
 generator
 # ===================================================
 # idea project file 
 # ===================================================
-.ipr
+*.ipr
 *.iml
-.iws
+*.iws
 .idea/
 @logging.path@
 target
-*.log
-README.md
 *.properties
-logback.xml
 rebel.xml
 # ===================================================
 # eclipse project file
@@ -51,7 +47,7 @@ out/
 # ===================================================
 log/
 logs/
-.log
+*.log*
 
 # ===================================================
 # git
@@ -72,3 +68,4 @@ out
 gen
 @logging.path@/
 epc-eureka-server.log
+*.bak

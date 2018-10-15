@@ -5,6 +5,7 @@ import com.epc.web.facade.terdering.bid.FacadeExpertSignService;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
 import com.epc.web.facade.terdering.bid.query.QueryExpertDTO;
 import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
+import com.epc.web.facade.terdering.bid.vo.SignVO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class ExpertSignHystrix implements FacadeExpertSignService {
     }
 
     @Override
-    public Result<Map<String, Object>> getExpertList(QueryExpertDTO queryExpertDTO) {
+    public Result<List<SignVO>> getExpertList(QueryExpertDTO queryExpertDTO) {
         return Result.hystrixError();
     }
 

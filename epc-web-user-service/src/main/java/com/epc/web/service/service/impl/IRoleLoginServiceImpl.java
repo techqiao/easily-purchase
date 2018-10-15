@@ -429,13 +429,13 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 basicInfo.setRole(Const.Role.ROLE_CORPORATION);
                 basicInfo.setState(Const.STATE.PERFECTING);
                 tSupplierBasicInfoMapper.insertSelective(basicInfo);
-                Long supplierId = basicInfo.getId();
-                SupplierCategory supplierCategory = new SupplierCategory();
-                supplierCategory.setSupplierId(supplierId);
-                supplierCategory.setValue(registerUser.getCategorySupplier());
-                supplierCategory.setCreateAt(date);
-                supplierCategory.setUpdateAt(date);
-                supplierCategoryMapper.insertSelective(supplierCategory);
+//                Long supplierId = basicInfo.getId();
+//                SupplierCategory supplierCategory = new SupplierCategory();
+//                supplierCategory.setSupplierId(supplierId);
+//                supplierCategory.setValue(registerUser.getCategorySupplier());
+//                supplierCategory.setCreateAt(date);
+//                supplierCategory.setUpdateAt(date);
+//                supplierCategoryMapper.insertSelective(supplierCategory);
                 return Result.success("供货商注册成功", true);
             } else {
                 return Result.success("供货商" + name + "已存在!");

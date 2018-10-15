@@ -31,6 +31,7 @@ import com.epc.web.service.mapper.purchaser.*;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
+import com.epc.web.service.service.impl.UpdateAttachment;
 import com.epc.web.service.service.purchaser.PurchaserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PurchaserServiceImpl implements PurchaserService {
+public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserService {
     @Autowired
     TPurchaserBasicInfoMapper tPurchaserBasicInfoMapper;
 
@@ -85,6 +86,15 @@ public class PurchaserServiceImpl implements PurchaserService {
     TExpertAttachmentMapper tExpertAttachmentMapper;
     @Autowired
     TExpertDetailInfoMapper tExpertDetailInfoMapper;
+    @Autowired
+    TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
+
+    @Autowired
+    BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
+
+    @Autowired
+    TWinBidNominateMapper tWinBidNominateMapper;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PurchaserServiceImpl.class);
 
@@ -101,9 +111,7 @@ public class PurchaserServiceImpl implements PurchaserService {
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> createSupplierByPurchaser(HandleSupplierDto handleSupplier) {
-
         //根据页面传入的信息查询依据手机号和姓名来查询
-        String name = handleSupplier.getName();
         String cellphone = handleSupplier.getCellphone();
         //返回该供应商信息
         TSupplierBasicInfo basicInfo = null;
@@ -131,7 +139,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 purchaserSupplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
                 //从公库basicinfo中获得
                 purchaserSupplier.setState(Const.STATE.AUDIT_SUCCESS);
-                purchaserSupplier.setSupplierId(basicInfo.getSupplierId());
+                purchaserSupplier.setSupplierId(supplierId);
                 try {
                     //添加到私库
                     tPurchaserSupplierMapper.insertSelective(purchaserSupplier);
@@ -142,7 +150,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                     return Result.error("采购人同步供货商入库失败");
                 }
             } else {
-                return Result.error("供货商没有审核通过或供货商信息不正确");
+                return Result.success("供货商没有审核通过或供货商信息不正确");
             }
         } else {
             //供应商不存在的时候抽取handleSupplier的字段添加
@@ -201,39 +209,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tPurchaserSupplierMapper.insertSelective(purchaserSupplier);
                 detailInfo.setSupplierId(supplierId);
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
-
-                TSupplierAttachment attachment = new TSupplierAttachment();
-                attachment.setSupplierId(supplierId);
-                attachment.setCreateAt(date);
-                attachment.setUpdateAt(date);
-                attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-                //添加身份证正面
-                attachment.setCertificateFilePath(handleSupplier.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //法人身份证反面照片url
-                attachment.setCertificateFilePath(handleSupplier.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //营业执照照片url
-                attachment.setCertificateFilePath(handleSupplier.getBusinessLicense());
-                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                if (!CollectionUtils.isEmpty(atts)) {
-                    for (Attachement att : atts) {
-                        TSupplierAttachment attachmen = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachmen);
-                        attachmen.setSupplierId(supplierId);
-                        attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                        attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                        attachmen.setCreateAt(date);
-                        attachmen.setUpdateAt(date);
-                        tSupplierAttachmentMapper.insertSelective(attachmen);
-                    }
-                }
+                super.updateSupplierAttachment(handleSupplier.getAtts(),handleSupplier.getLegalIdCardPositive(),handleSupplier.getLegalIdCardOther(),handleSupplier.getBusinessLicense(),supplierId);
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -260,7 +236,6 @@ public class PurchaserServiceImpl implements PurchaserService {
     public Result<Boolean> createExpertUserInfo(HandleExpert handleExpert) {
         //根据提供的name和cellphone查询专家信息专家状态为已审核状态自动根跟新全部信息到私库,其他情况私库添加手机号码和name
         //以及经办人id
-        String name = handleExpert.getName();
         String cellphone = handleExpert.getCellPhone();
         TExpertBasicInfo basicInfo = null;
         TPurchaserExpert purchaserExpert = null;
@@ -324,8 +299,6 @@ public class PurchaserServiceImpl implements PurchaserService {
             pojo.setUpdateAt(new Date());
             pojo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
             pojo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
-
             //私库新增
             TPurchaserExpert operator = new TPurchaserExpert();
             operator.setState(Const.STATE.REGISTERED);
@@ -359,33 +332,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                     tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
                 }
                 tPurchaserExpertMapper.insertSelective(operator);
-                TExpertAttachment attachment = new TExpertAttachment();
-                attachment.setExpertId(expertId);
-                attachment.setCreateAt(new Date());
-                attachment.setUpdateAt(new Date());
-                attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                //上传身份证正面
-                attachment.setCertificateFilePath(handleExpert.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-                tExpertAttachmentMapper.insertSelective(attachment);
-                //上传身份证反面
-                attachment.setCertificateFilePath(handleExpert.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-                tExpertAttachmentMapper.insertSelective(attachment);
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TExpertAttachment expertAttachment = new TExpertAttachment();
-                        BeanUtils.copyProperties(att, expertAttachment);
-                        expertAttachment.setExpertId(expertId);
-                        attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                        attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                        expertAttachment.setCreateAt(date);
-                        expertAttachment.setUpdateAt(date);
-                        tExpertAttachmentMapper.insertSelective(expertAttachment);
-                    }
-                }
+                super.updateExpertAttachment(handleExpert.getAtts(),handleExpert.getLegalIdCardPositive(),handleExpert.getLegalIdCardOther(),expertId);
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -506,35 +453,7 @@ public class PurchaserServiceImpl implements PurchaserService {
                 detailInfo.setAgencyId(agencyId);
                 tAgencyDetailInfoMapper.insertSelective(detailInfo);
                 tPurchaserAgencyMapper.insertSelective(agency);
-                TAgencyAttachment attachments = new TAgencyAttachment();
-                attachments.setCreateAt(date);
-                attachments.setUpdateAt(date);
-                attachments.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                attachments.setAgencyId(agencyId);
-                //法人身份证反面照片url
-                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                attachments.setCertificateFilePath(handleAgnecy.getLegalIdCardOther());
-                tAgencyAttachmentMapper.insertSelective(attachments);
-                //法人身份证正面照片url
-                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                attachments.setCertificateFilePath(handleAgnecy.getLegalIdCardPositive());
-                tAgencyAttachmentMapper.insertSelective(attachments);
-                //营业执照照片url
-                attachments.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                attachments.setCertificateFilePath(handleAgnecy.getBusinessLicense());
-                tAgencyAttachmentMapper.insertSelective(attachments);
-                //附件信息
-                List<Attachement> list = handleAgnecy.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TAgencyAttachment attachment = new TAgencyAttachment();
-                        BeanUtils.copyProperties(att, attachment);
-                        attachment.setAgencyId(agencyId);
-                        attachment.setCreateAt(new Date());
-                        attachment.setUpdateAt(new Date());
-                        tAgencyAttachmentMapper.insertSelective(attachment);
-                    }
-                }
+                super.updateAgencyAttachment(handleAgnecy.getAtts(),handleAgnecy.getLegalIdCardPositive(),handleAgnecy.getLegalIdCardOther(),handleAgnecy.getBusinessLicense(),agencyId);
             } catch (BusinessException e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 LOGGER.error("采购人添加代理机构失败", e);
@@ -603,7 +522,8 @@ public class PurchaserServiceImpl implements PurchaserService {
     }
 
     /**
-     * 完善采购人信息
+     *
+     * 采购人信息
      * 点击注册按钮后页面进入完善信息阶段,传递过去的信息,nama ,password,自动生成的id
      *
      * @param handlePurchaser
@@ -653,11 +573,7 @@ public class PurchaserServiceImpl implements PurchaserService {
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        //身份证相关信息
-        TPurchaserAttachment attachment = new TPurchaserAttachment();
-        attachment.setPurchaserId(purchaserId);
-        attachment.setUpdateAt(date);
-        attachment.setCreateAt(date);
+        List<Attachement> list = handlePurchaser.getAtts();
         try {
             //修该基本信息
             tPurchaserBasicInfoMapper.updateByPrimaryKeySelective(basicInfo);
@@ -669,34 +585,13 @@ public class PurchaserServiceImpl implements PurchaserService {
                 detailInfo.setId(tPurchaserDetailInfo.getId());
                 tPurchaserDetailInfoMapper.updateByPrimaryKey(detailInfo);
             }
-            //身份证正面照片url
-            attachment.setCertificateType(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getCode());
-            attachment.setCertificateName(AttachmentEnum.OPERATOR_ID_CARD_FRONT.getDesc());
-            attachment.setCertificateFilePath(handlePurchaser.getLegalIdCardPositive());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //法人身份证反面照片url
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-            attachment.setCertificateFilePath(handlePurchaser.getLegalIdCardOther());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //营业执照照片url
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
-            attachment.setCertificateFilePath(handlePurchaser.getBusinessLicense());
-            tPurchaserAttachmentMapper.insertSelective(attachment);
-            //附件信息
-            List<Attachement> list = handlePurchaser.getAtts();
-            if (!CollectionUtils.isEmpty(list)) {
-                for (Attachement att : list) {
-                    TPurchaserAttachment at = new TPurchaserAttachment();
-                    BeanUtils.copyProperties(att, at);
-                    at.setPurchaserId(purchaserId);
-                    at.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                    at.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                    at.setCreateAt(date);
-                    at.setUpdateAt(date);
-                    tPurchaserAttachmentMapper.insertSelective(at);
-                }
+            //是否存在附件
+            int records = tPurchaserAttachmentMapper.selectCountByPurchaserId(purchaserId);
+            if (records > 0) {
+                tPurchaserAttachmentMapper.deleteByPurchaserId(purchaserId);
+                super.updatePuechaserAttachment(list, handlePurchaser.getLegalIdCardPositive(), handlePurchaser.getLegalIdCardOther(), handlePurchaser.getBusinessLicense(), purchaserId);
+            } else {
+                super.updatePuechaserAttachment(list, handlePurchaser.getLegalIdCardPositive(), handlePurchaser.getLegalIdCardOther(), handlePurchaser.getBusinessLicense(), purchaserId);
             }
 
         } catch (Exception e) {
@@ -729,92 +624,52 @@ public class PurchaserServiceImpl implements PurchaserService {
             return Result.error("没有该供货商的注册信息");
         }
         try {
+            TPurchaserSupplier supplier = new TPurchaserSupplier();
+            supplier.setState(basicInfo.getState());
+            supplier.setSupplierId(basicInfo.getSupplierId());
+            supplier.setOperateId((int) dto.getOperatorId());
+            supplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
+            supplier.setSource(Const.SOURCE.PUBLICS);
+            supplier.setCreateAt(new Date());
+            supplier.setUpdateAt(new Date());
+            supplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             TPurchaserSupplier psupplier = tPurchaserSupplierMapper.selectPurchaserSupplierBySupplierId(supplierId);
-            TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(supplierId);
             if (psupplier == null) {
-                TPurchaserSupplier supplier = new TPurchaserSupplier();
-                //agency.setId(0L);
-                supplier.setState(basicInfo.getState());
-                supplier.setSupplierId(basicInfo.getSupplierId());
-                supplier.setOperateId((int) dto.getOperatorId());
-                supplier.setSupplierType(Const.TRUST_OR_NOT.TRUST);
-                supplier.setSource(Const.SOURCE.PUBLICS);
-                supplier.setCreateAt(new Date());
-                supplier.setUpdateAt(new Date());
-                supplier.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
                 tPurchaserSupplierMapper.insertSelective(supplier);
+            } else {
+                //防止重复完善
+                supplier.setId(psupplier.getId());
+                tPurchaserSupplierMapper.updateByPrimaryKeySelective(supplier);
             }
-            if (detailInfo == null) {
-                detailInfo = new TSupplierDetailInfo();
-                //detailInfo.setId(0L);
-                detailInfo.setSupplierId(supplierId);
-                detailInfo.setCompanyName(dto.getCompanyName());
-                detailInfo.setCompanyAddress(dto.getCompanyAddress());
-                detailInfo.setProvince(dto.getProvince());
-                detailInfo.setCity(dto.getCity());
-                detailInfo.setArea(dto.getArea());
-                detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-                detailInfo.setPublicBankName(dto.getPublicBankName());
-                detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
-                detailInfo.setCreateAt(new Date());
-                detailInfo.setUpdateAt(new Date());
-                detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
+            detailInfo.setSupplierId(supplierId);
+            detailInfo.setCompanyName(dto.getCompanyName());
+            detailInfo.setCompanyAddress(dto.getCompanyAddress());
+            detailInfo.setProvince(dto.getProvince());
+            detailInfo.setCity(dto.getCity());
+            detailInfo.setArea(dto.getArea());
+            detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
+            detailInfo.setPublicBankName(dto.getPublicBankName());
+            detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
+            detailInfo.setCreateAt(new Date());
+            detailInfo.setUpdateAt(new Date());
+            detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            TSupplierDetailInfo info = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(supplierId);
+            if (info == null) {
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
+            } else {
+                detailInfo.setId(info.getId());
+                tSupplierDetailInfoMapper.updateByPrimaryKeySelective(detailInfo);
             }
             //附件信息
-            //附件新增
-            TSupplierAttachment attachment = new TSupplierAttachment();
-            attachment.setSupplierId(supplierId);
-            attachment.setCreateAt(new Date());
-            attachment.setUpdateAt(new Date());
-            attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-
-            List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
-            if (CollectionUtils.isEmpty(attachments)) {
-                //添加身份证正面
-                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //法人身份证反面照片url
-                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //营业执照照片url
-                attachment.setCertificateFilePath(dto.getBusinessLicense());
-                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                List<Attachement> list = dto.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TSupplierAttachment attachmen = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachmen);
-                        attachmen.setSupplierId(supplierId);
-                        tSupplierAttachmentMapper.insertSelective(attachmen);
-                    }
-                }
+            List<Attachement> list = dto.getAtts();
+            //List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
+            int records = tSupplierAttachmentMapper.selectCountBySupplierId(supplierId);
+            if (records>0) {
+                super.updateSupplierAttachment(list, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), supplierId);
             } else {
-                tSupplierAttachmentMapper.deleteAttachaments(attachments);
-                //添加身份证正面
-                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //法人身份证反面照片url
-                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //营业执照照片url
-                attachment.setCertificateFilePath(dto.getBusinessLicense());
-                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                List<Attachement> list = dto.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TSupplierAttachment attachmen = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachmen);
-                        attachmen.setSupplierId(supplierId);
-                        tSupplierAttachmentMapper.insertSelective(attachmen);
-                    }
-                }
+                tSupplierAttachmentMapper.deleteAttachamentById(supplierId);
+                super.updateSupplierAttachment(list, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), supplierId);
             }
         } catch (Exception e) {
             //捕获异常回滚
@@ -845,76 +700,53 @@ public class PurchaserServiceImpl implements PurchaserService {
                 return Result.success("没有代理机构的注册信息");
             }
             //代理机构的id
-            Long agencyId = dto.getAgencyId();
-
-            TPurchaserAgency agency = tPurchaserAgencyMapper.selectAgencyByAgencyId(agencyId);
-            TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
-            if (agency == null) {
-                agency = new TPurchaserAgency();
-                //agency.setId(0L);
-                agency.setState(basicInfo.getState());
-                agency.setAgencyId(basicInfo.getAgencyId());
-                agency.setCreaterId(basicInfo.getInviterId());
-                agency.setPurchaserId(basicInfo.getInviterCompanyId() + "");
-                agency.setSource(Const.SOURCE.PRIVATES);
-                agency.setCreateAt(new Date());
-                agency.setUpdateAt(new Date());
-                agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-                agency.setPurchaserId(dto.getCompanyId() + "");
+            Long agencyId = basicInfo.getAgencyId();
+            TPurchaserAgency agency = new TPurchaserAgency();
+            agency.setState(basicInfo.getState());
+            agency.setAgencyId(basicInfo.getAgencyId());
+            agency.setCreaterId(basicInfo.getInviterId());
+            agency.setPurchaserId(basicInfo.getInviterCompanyId() + "");
+            agency.setSource(Const.SOURCE.PRIVATES);
+            agency.setCreateAt(new Date());
+            agency.setUpdateAt(new Date());
+            agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            agency.setPurchaserId(dto.getCompanyId() + "");
+            TPurchaserAgency agencys = tPurchaserAgencyMapper.selectAgencyByAgencyId(agencyId);
+            if (agencys == null) {
                 tPurchaserAgencyMapper.insertSelective(agency);
+            } else {
+                agency.setId(agencys.getId());
+                tPurchaserAgencyMapper.updateByPrimaryKeySelective(agency);
             }
-            if (detailInfo == null) {
-                detailInfo = new TAgencyDetailInfo();
-                detailInfo.setAgencyId(agencyId);
-                detailInfo.setCompanyName(dto.getCompanyName());
-                detailInfo.setCompanyAddress(dto.getCompanyAddress());
-                detailInfo.setProvince(dto.getProvince());
-                detailInfo.setCity(dto.getCity());
-                detailInfo.setArea(dto.getArea());
-                detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-                detailInfo.setPublicBankName(dto.getPublicBankName());
-                detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
-                detailInfo.setCreateAt(new Date());
-                detailInfo.setUpdateAt(new Date());
-                detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+
+            TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
+            detailInfo.setAgencyId(agencyId);
+            detailInfo.setCompanyName(dto.getCompanyName());
+            detailInfo.setCompanyAddress(dto.getCompanyAddress());
+            detailInfo.setProvince(dto.getProvince());
+            detailInfo.setCity(dto.getCity());
+            detailInfo.setArea(dto.getArea());
+            detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
+            detailInfo.setPublicBankName(dto.getPublicBankName());
+            detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
+            detailInfo.setCreateAt(new Date());
+            detailInfo.setUpdateAt(new Date());
+            detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            TAgencyDetailInfo info = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
+            if (info == null) {
                 tAgencyDetailInfoMapper.insertSelective(detailInfo);
+            } else {
+                detailInfo.setId(info.getId());
+                tAgencyDetailInfoMapper.updateByPrimaryKeySelective(detailInfo);
             }
             //附件信息
-            List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
-            if (CollectionUtils.isEmpty(tAgencyAttachments)) {
-                TAgencyAttachment attachment = new TAgencyAttachment();
-                attachment.setAgencyId(agencyId);
-                attachment.setCreateAt(new Date());
-                attachment.setUpdateAt(new Date());
-                attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-                //添加身份证正面
-                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-                tAgencyAttachmentMapper.insertSelective(attachment);
-                //法人身份证反面照片url
-                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-                tAgencyAttachmentMapper.insertSelective(attachment);
-                //营业执照照片url
-                attachment.setCertificateFilePath(dto.getBusinessLicense());
-                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
-                tAgencyAttachmentMapper.insertSelective(attachment);
-                List<Attachement> list = dto.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TAgencyAttachment at = new TAgencyAttachment();
-                        BeanUtils.copyProperties(att, at);
-                        at.setAgencyId(agencyId);
-                        at.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                        at.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                        at.setCreateAt(new Date());
-                        at.setUpdateAt(new Date());
-                        tAgencyAttachmentMapper.insertSelective(at);
-                    }
-                }
+            int records = tAgencyAttachmentMapper.selectCountByAgencyId(agencyId);
+            //List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
+            if (records>0) {
+                tAgencyAttachmentMapper.deleteAttachmentByAgencyId(agencyId);
+                super.updateAgencyAttachment(dto.getAtts(), dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), agencyId);
+            } else {
+                super.updateAgencyAttachment(dto.getAtts(), dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), agencyId);
             }
         } catch (Exception e) {
             //捕获异常回滚
@@ -925,52 +757,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         return Result.success("更新成功", true);
 
     }
-
-//    /**
-//     * @author :winlin
-//     * @Description :采购人注册
-//     * @param:
-//     * @return:
-//     * @date:2018/9/20
-//     */
-//    @Override
-//    @Transactional(rollbackFor = {Exception.class})
-//    public Result<HandleRegisterPurchaser> registerPurchaser(HandleRegisterPurchaser purchaser) {
-//        TPurchaserBasicInfo basicInfo = new TPurchaserBasicInfo();
-//        //或的基本信息密码加密密码加密
-//        String cellphone = purchaser.getCellphone();
-//        String pwd = MD5Util.MD5EncodeUtf8(purchaser.getPassword());
-//        TPurchaserBasicInfoCriteria infoCriteria = new TPurchaserBasicInfoCriteria();
-//        TPurchaserBasicInfoCriteria.Criteria criteria = infoCriteria.createCriteria();
-//        criteria.andCellphoneEqualTo(cellphone);
-//        criteria.andPasswordEqualTo(pwd);
-//        List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(infoCriteria);
-//        if (!CollectionUtils.isEmpty(tPurchaserBasicInfos)) {
-//            return Result.error(ErrorMessagesEnum.LOGINNAME_NUMBER_EXIST);
-//        }
-//        basicInfo.setCellphone(cellphone);
-//        basicInfo.setPassword(pwd);
-//        basicInfo.setCreateAt(new Date());
-//        Result result = new Result();
-//        int sucess = 0;
-//        try {
-//            sucess = tPurchaserBasicInfoMapper.insertSelective(basicInfo);
-//        } catch (Exception e) {
-//            //捕获异常回滚
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            LOGGER.error("采购人注册失败", e);
-//            return Result.error(e.getMessage());
-//        }
-//        Long id = basicInfo.getId();
-//        if (sucess > 0) {
-//            //数据库生成的id放入对象传入下个页面
-//            purchaser.setPurchaseId(id);
-//            result.setData(purchaser);
-//            result.setMsg("注册成功");
-//            return result;
-//        }
-//        return Result.error("注册成功");
-//    }
 
     /**
      * @author :winlin
@@ -1336,152 +1122,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         return CollectionUtils.isEmpty(supplierVos) ? Result.success("没有符合要求的员工") : Result.success("查询成功", supplierVos);
     }
 
-//    /**
-//     * @author :winlin
-//     * @Description :查找所有的供货商
-//     * @param:
-//     * @return:
-//     * @date:2018/9/20
-//     */
-//    @Override
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public Result<List<PurchaserSupplierVo>> queryAllSuppliers(Long purchaseId) {
-//        //封装查询条件
-//        TPurchaserSupplierCriteria supplierCriteria = new TPurchaserSupplierCriteria();
-//        TPurchaserSupplierCriteria.Criteria criteria = supplierCriteria.createCriteria();
-//        criteria.andPurchaserIdEqualTo(purchaseId.toString());
-//
-//        TSupplierDetailInfoCriteria detailInfoCriteria = new TSupplierDetailInfoCriteria();
-//        TSupplierDetailInfoCriteria.Criteria criteria1 = detailInfoCriteria.createCriteria();
-//
-//        TSupplierAttachmentCriteria attachmentCriteria = new TSupplierAttachmentCriteria();
-//        TSupplierAttachmentCriteria.Criteria criteria2 = attachmentCriteria.createCriteria();
-//
-//        //查询结果
-//        List<TPurchaserSupplier> supplierVos = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
-//        if (CollectionUtils.isEmpty(supplierVos)) {
-//            return Result.error("没有供货商存在");
-//        }
-//        //封装附件查询的条件list,得到该采购人下所有供货商的id
-//        List<Long> supplierIds = new ArrayList<>();
-//        for (TPurchaserSupplier supplier : supplierVos) {
-//            Long supplierId = supplier.getSupplierId();
-//            supplierIds.add(supplierId);
-//        }
-//        //依据id查询所有的供应商
-//        criteria1.andSupplierIdIn(supplierIds);
-//        criteria2.andSupplierIdIn(supplierIds);
-//        List<TSupplierDetailInfo> infoList = tSupplierDetailInfoMapper.selectByExample(detailInfoCriteria);
-//        List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectByExample(attachmentCriteria);
-//        if (CollectionUtils.isEmpty(infoList)) {
-//            return Result.error("供应商不存在或信息不完全");
-//        }
-//        //封装返回值
-//        List<PurchaserSupplierVo> list = new ArrayList<>();
-//        for (TPurchaserSupplier supplierVo : supplierVos) {
-//            Long supplierId = supplierVo.getSupplierId();
-//            for (TSupplierDetailInfo info : infoList) {
-//                Long supplierId1 = info.getSupplierId();
-//                if (supplierId.equals(supplierId1)) {
-//                    PurchaserSupplierVo vo = new PurchaserSupplierVo();
-//                    vo.setSupplierId(supplierId);
-//                    vo.setCompanyName(info.getCompanyName());
-//                    vo.setCreateAt(new Date());
-//                    vo.setUniformCreditCode(info.getUniformCreditCode());
-//                    vo.setPublicBankName(info.getPublicBankName());
-//                    vo.setPublicBanAccountNumber(info.getPublicBanAccountNumber());
-//                    vo.setCellphone(supplierVo.getCellphone());
-//                    list.add(vo);
-//                }
-//            }
-//        }
-//        for (PurchaserSupplierVo vo : list) {
-//            Long supplierId = vo.getSupplierId();
-//            List<Attachement> attachements = new ArrayList<>();
-//            for (TSupplierAttachment attachment : attachments) {
-//                Long supplierId1 = attachment.getSupplierId();
-//                Attachement attachement = new Attachement();
-//                if (supplierId.equals(supplierId1)) {
-//                    BeanUtils.copyProperties(attachment, attachement);
-//                    attachement.setTypeId(supplierId.toString());
-//                    attachements.add(attachement);
-//                }
-//            }
-//            vo.setAtts(attachements);
-//        }
-//        return Result.success("查询成功", list);
-//    }
-
-//    /**
-//     * @author :winlin
-//     * @Description :依据姓名模糊查找供货商
-//     * @param:
-//     * @return:
-//     * @date:2018/9/21
-//     */
-//    @Override
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public Result<List<PurchaserSupplierVo>> querySuppliers(String fuzzyName, Long purchaseId) {
-//        //封装查询条件
-//        TPurchaserSupplierCriteria supplierCriteria = new TPurchaserSupplierCriteria();
-//        TPurchaserSupplierCriteria.Criteria criteria = supplierCriteria.createCriteria();
-//        criteria.andPurchaserIdEqualTo(purchaseId.toString());
-//
-//        TSupplierDetailInfoCriteria detailInfoCriteria = new TSupplierDetailInfoCriteria();
-//        TSupplierDetailInfoCriteria.Criteria criteria1 = detailInfoCriteria.createCriteria();
-//        criteria1.andCompanyNameLike(fuzzyName);
-//
-//        TSupplierAttachmentCriteria attachmentCriteria = new TSupplierAttachmentCriteria();
-//        TSupplierAttachmentCriteria.Criteria criteria2 = attachmentCriteria.createCriteria();
-//
-//        //查询结果
-//        List<TSupplierDetailInfo> supplierVos = tSupplierDetailInfoMapper.selectByExample(detailInfoCriteria);
-//        List<TPurchaserSupplier> basicInfos = tPurchaserSupplierMapper.selectByExample(supplierCriteria);
-//        if (CollectionUtils.isEmpty(supplierVos) || CollectionUtils.isEmpty(basicInfos)) {
-//            return Result.error("没有符合要求的供货商");
-//        }
-//        //封装附件查询的条件list
-//        List<Long> longs = new ArrayList<>();
-//        //封装
-//        List<PurchaserSupplierVo> vos = new ArrayList<>();
-//        for (TSupplierDetailInfo detailInfo : supplierVos) {
-//            PurchaserSupplierVo vo = new PurchaserSupplierVo();
-//            Long supplierId = detailInfo.getSupplierId();
-//            for (TPurchaserSupplier supplier : basicInfos) {
-//                Long supplierId1 = supplier.getSupplierId();
-//                if (supplierId.equals(supplierId1)) {
-//                    longs.add(supplierId);
-//                    vo.setCellphone(supplier.getCellphone());
-//                    vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
-//                    vo.setPublicBankName(detailInfo.getPublicBankName());
-//                    vo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
-//                    vo.setCreateAt(detailInfo.getCreateAt());
-//                    vo.setCompanyName(detailInfo.getCompanyName());
-//                    vo.setSupplierId(supplierId);
-//                    vos.add(vo);
-//                }
-//            }
-//        }
-//        criteria2.andSupplierIdIn(longs);
-//        List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectByExample(attachmentCriteria);
-//        if (!CollectionUtils.isEmpty(attachments)) {
-//            for (PurchaserSupplierVo vo : vos) {
-//                Long supplierId = vo.getSupplierId();
-//                List<Attachement> list = new ArrayList<>();
-//                for (TSupplierAttachment attachment : attachments) {
-//                    Long supplierId2 = attachment.getSupplierId();
-//                    if (supplierId.equals(supplierId2)) {
-//                        Attachement att = new Attachement();
-//                        BeanUtils.copyProperties(attachment, att);
-//                        att.setTypeId(attachment.getSupplierId().toString());
-//                        list.add(att);
-//                    }
-//                }
-//                vo.setAtts(list);
-//            }
-//        }
-//        return Result.success("查询成功", vos);
-//    }
 
     /**
      * @author :winlin
@@ -1602,7 +1242,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         return vo == null ? Result.success("没有相关专家信息") : Result.success("查询成功", vo);
     }
 
-
     @Override
     public Result<PurchaserAgencyDetailVo> queryAgencyDetailById(QueryDto dto) {
         Long agencyId = dto.getId();
@@ -1661,79 +1300,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         return vo == null ? Result.success("没有代理机构相关信息") : Result.success("查询成功", vo);
     }
 
-//    /**
-//     * @author :winlin
-//     * @Description :修改供应商信息,需要供货商id
-//     * @param:
-//     * @return:
-//     * @date:2018/9/21
-//     */
-//    @Override
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    @Transactional(rollbackFor = {Exception.class})
-//    public Result<Boolean> updateSuppliers(HandleSupplierDto dto) {
-//        //t_purchaser_Supplier t_SUPPLIER _attachment t_SUPPLIER _basic_info ,t_SUPPLIER_detail_info查询信息封装
-//        //供货商id
-//        Long supplierId = dto.getSupplierId();
-//
-//        TPurchaserSupplierCriteria supplierCriteria = new TPurchaserSupplierCriteria();
-//        TPurchaserSupplierCriteria.Criteria criteria = supplierCriteria.createCriteria();
-//        //数据库字段为supplierId
-//        criteria.andSupplierIdEqualTo(supplierId);
-//
-//        TSupplierBasicInfoCriteria tSupplierBasicInfoCriteria = new TSupplierBasicInfoCriteria();
-//        TSupplierBasicInfoCriteria.Criteria criteria1 = tSupplierBasicInfoCriteria.createCriteria();
-//        criteria1.andIdEqualTo(supplierId);
-//
-//        TSupplierAttachmentCriteria tSupplierAttachmentCriteria = new TSupplierAttachmentCriteria();
-//        TSupplierAttachmentCriteria.Criteria criteria2 = tSupplierAttachmentCriteria.createCriteria();
-//        criteria2.andSupplierIdEqualTo(supplierId);
-//
-//        TSupplierDetailInfoCriteria tSupplierDetailInfoCriteria = new TSupplierDetailInfoCriteria();
-//        TSupplierDetailInfoCriteria.Criteria criteria3 = tSupplierDetailInfoCriteria.createCriteria();
-//        criteria3.andSupplierIdEqualTo(supplierId);
-//        //接受页面穿过来的信息,录入数据库,受影响的表,之前
-//        //实例化对象接受数据
-//        TSupplierBasicInfo basicInfo = new TSupplierBasicInfo();
-//        basicInfo.setName(dto.getName());
-//        basicInfo.setCellphone(dto.getCellphone());
-//        basicInfo.setUpdateAt(new Date());
-//
-//        TPurchaserSupplier supplier = new TPurchaserSupplier();
-//        supplier.setCellphone(dto.getCellphone());
-//        supplier.setSupplierName(dto.getCompanyName());
-//        supplier.setUpdateAt(new Date());
-//
-//        TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
-//        detailInfo.setCompanyName(dto.getCompanyName());
-//        detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-//        detailInfo.setPublicBankName(dto.getPublicBankName());
-//        detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
-//        detailInfo.setUpdateAt(new Date());
-//        try {
-//            tSupplierBasicInfoMapper.updateByExample(basicInfo, tSupplierBasicInfoCriteria);
-//            tPurchaserSupplierMapper.updateByExample(supplier, supplierCriteria);
-//            tSupplierDetailInfoMapper.updateByExample(detailInfo, tSupplierDetailInfoCriteria);
-//            List<Attachement> list = dto.getAtts();
-//            if (!CollectionUtils.isEmpty(list)) {
-//                for (Attachement attachement : dto.getAtts()) {
-//                    TSupplierAttachment att = new TSupplierAttachment();
-//                    BeanUtils.copyProperties(attachement, att);
-//                    att.setSupplierId(supplierId);
-//                    tSupplierAttachmentMapper.updateByExample(att, tSupplierAttachmentCriteria);
-//                }
-//            }
-//        } catch (Exception e) {
-//            //捕获异常回滚
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            LOGGER.error("修改供货商信息失败", e);
-//            return Result.error("修改供货商信息失败");
-//        }
-//
-//
-//        return Result.success("更新成功", true);
-//    }
-
     /**
      * @author :winlin
      * @Description :依据条件查专家 条件可以升是专家name,专家专业 profession
@@ -1784,17 +1350,79 @@ public class PurchaserServiceImpl implements PurchaserService {
      */
     @Override
     public Result<Boolean> deletePurchaserEmployee(Long id) {
-        if(id ==null){
+        if (id == null) {
             return Result.success("请传入有效的信息");
         }
-        int success =0;
-        try{
-           success= tPurchaserBasicInfoMapper.updateDeleteStateById(id);
-        }catch(Exception e){
-            LOGGER.error("删除员工失败Exception:{}",e);
+        int success = 0;
+        try {
+            success = tPurchaserBasicInfoMapper.updateDeleteStateById(id);
+        } catch (Exception e) {
+            LOGGER.error("删除员工失败Exception:{}", e);
             return Result.error("删除员工失败");
         }
-        return success>0?Result.success("删除员工成功"):Result.success("删除员工失败");
+        return success > 0 ? Result.success("删除员工成功") : Result.success("删除员工失败");
+    }
+
+    @Override
+    public Result selectPurchaserProjectStatus(Long id, Integer userType, String stepType) {
+        if (stepType.equals("announcement")) {
+            List<Long> list = this.selectProjectInfo(id, userType, stepType).getData();
+            if (CollectionUtils.isEmpty(list)) {
+                return Result.success("没有待操作的公告信息");
+            }
+            List<BReleaseAnnouncement> bReleaseAnnouncements = null;
+            try {
+                bReleaseAnnouncements = bReleaseAnnouncementMapper.selectByIds(list);
+            } catch (Exception e) {
+                LOGGER.error("查询代办公告失败Exception:{}", e);
+                return Result.error("查询代办公告失败");
+            }
+            return CollectionUtils.isEmpty(bReleaseAnnouncements) ? Result.success("没有符合条件的公告") : Result.success("查询成功", bReleaseAnnouncements);
+        }
+        if (stepType.equals("publicity")) {
+            List<Long> list = this.selectProjectInfo(id, userType, stepType).getData();
+            if (CollectionUtils.isEmpty(list)) {
+                return Result.success("没有待操作的中标公示信息");
+            }
+            List<TWinBidNominate> nominates = null;
+            try {
+                nominates = tWinBidNominateMapper.selectByIds(list);
+            } catch (Exception e) {
+                LOGGER.error("查询代办公告失败Exception:{}", e);
+                return Result.error("查询代办公告失败");
+            }
+            return CollectionUtils.isEmpty(nominates) ? Result.success("没有符合条件的中标公示") : Result.success("查询成功", nominates);
+        }
+        return Result.success("没有待操作的公告或中标公示信息");
+    }
+
+    public Result<List<Long>> selectProjectInfo(Long id, Integer userType, String stepType) {
+        if (id == null || userType == null) {
+            return Result.success("请传入有效的信息");
+        }
+        List<TPurchaseProjectParticipantPermission> tPurchaseProjectParticipantPermissions = null;
+        //所有的项目id
+        List<Long> purchaseProjectIds = new ArrayList<>();
+        try {
+            //依据 userID 和 userType 查询项目代办信息
+            Integer state = Const.ACTION_STATE.NEED_DEAL;
+            tPurchaseProjectParticipantPermissions = tPurchaseProjectParticipantPermissionMapper.selectByUserId(id, userType, state);
+            if (CollectionUtils.isEmpty(tPurchaseProjectParticipantPermissions)) {
+                return Result.success("没有待操作的公告或中标工时信息");
+            }
+            for (TPurchaseProjectParticipantPermission permission : tPurchaseProjectParticipantPermissions) {
+                if (permission.getStepType().equals(stepType)) {
+                    purchaseProjectIds.add(permission.getPurchaseProjectId());
+                }
+            }
+            if (CollectionUtils.isEmpty(purchaseProjectIds)) {
+                return Result.success("没有待操作的公告或中标工时信息");
+            }
+        } catch (Exception e) {
+            LOGGER.error("查询项目详情失败Exception:{}", e);
+            return Result.error("查询项目详情失败");
+        }
+        return Result.success("查询成功", purchaseProjectIds);
     }
 
     /**
@@ -1838,18 +1466,21 @@ public class PurchaserServiceImpl implements PurchaserService {
                 return Result.error("没有此手机号" + dto.getCellphone() + "的专家");
             }
             //实例化插入对象接受数据
-            TPurchaserExpert tPurchaserExpert = tPurchaserExpertMapper.selectExpertByExpertId(expertId);
-            if (tPurchaserExpert == null) {
-                tPurchaserExpert = new TPurchaserExpert();
-                tPurchaserExpert.setState(Const.STATE.REGISTERED);
-                tPurchaserExpert.setExpertId(expertId);
-                tPurchaserExpert.setPurchaserId(basicInfo.getInviterCompanyId() + "");
-                tPurchaserExpert.setCreaterId(basicInfo.getInviterId());
-                tPurchaserExpert.setSource(Const.SOURCE.PRIVATES);
-                tPurchaserExpert.setCreateAt(new Date());
-                tPurchaserExpert.setUpdateAt(new Date());
-                tPurchaserExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            TPurchaserExpert purchaserExpert = tPurchaserExpertMapper.selectExpertByExpertId(expertId);
+            TPurchaserExpert tPurchaserExpert = new TPurchaserExpert();
+            tPurchaserExpert.setState(Const.STATE.REGISTERED);
+            tPurchaserExpert.setExpertId(expertId);
+            tPurchaserExpert.setPurchaserId(basicInfo.getInviterCompanyId() + "");
+            tPurchaserExpert.setCreaterId(basicInfo.getInviterId());
+            tPurchaserExpert.setSource(Const.SOURCE.PRIVATES);
+            tPurchaserExpert.setCreateAt(new Date());
+            tPurchaserExpert.setUpdateAt(new Date());
+            tPurchaserExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
+            if (purchaserExpert == null) {
                 tPurchaserExpertMapper.insertSelective(tPurchaserExpert);
+            }else{
+                tPurchaserExpert.setId(purchaserExpert.getId());
+                tPurchaserExpertMapper.updateByPrimaryKeySelective(tPurchaserExpert);
             }
             //采购人公司的详细信息
             TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(dto.getPuchaserId());
@@ -1869,34 +1500,14 @@ public class PurchaserServiceImpl implements PurchaserService {
                 tExpertDetailInfo.setUpdateAt(new Date());
                 tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
             }
-            //封装附件信息对象
-            TExpertAttachment attachment = new TExpertAttachment();
-            attachment.setExpertId(expertId);
-            attachment.setCreateAt(new Date());
-            attachment.setUpdateAt(new Date());
-            attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-            //上传身份证正面
-            attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            //上传身份证反面
-            attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            List<Attachement> list = dto.getAtts();
-            if (!CollectionUtils.isEmpty(list)) {
-                for (Attachement att : list) {
-                    TExpertAttachment expertAttachment = new TExpertAttachment();
-                    BeanUtils.copyProperties(att, expertAttachment);
-                    expertAttachment.setExpertId(expertId);
-                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                    attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                    expertAttachment.setCreateAt(new Date());
-                    expertAttachment.setUpdateAt(new Date());
-                    tExpertAttachmentMapper.insertSelective(expertAttachment);
-                }
+            //查询附件信息状态
+            List<TExpertAttachment> list = tExpertAttachmentMapper.selectAttchamentByExpertId(expertId);
+            List<Attachement> atts = dto.getAtts();
+            if (CollectionUtils.isEmpty(list)) {
+                super.updateExpertAttachment(atts, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), expertId);
+            } else {
+                tExpertAttachmentMapper.deleteByAttachmentByExpertId(expertId);
+                super.updateExpertAttachment(atts, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), expertId);
             }
         } catch (Exception e) {
             //捕获异常回滚
@@ -1930,143 +1541,6 @@ public class PurchaserServiceImpl implements PurchaserService {
         }
         return Result.success("删除采购人专家成功", true);
     }
-
-//    /**
-//     * @author :winlin
-//     * @Description :修改采购人代理机构的信息前端页面附带代理机构唯一的id
-//     * @param:
-//     * @return:
-//     * @date:2018/9/21
-//     */
-//    @Override
-//    @Transactional(rollbackFor = {Exception.class})
-//    public Result<Boolean> updatePurchaserAgency(HandleAgencyDto dto) {
-//        //t_purchaser_Agency t_Agency _attachment t_Agency _basic_info ,t_agency_detail_info查询信息封装
-//        //代理机构id
-//        Long agencyId = dto.getAgencyId();
-//
-//        TPurchaserAgencyCriteria agencyCriteria = new TPurchaserAgencyCriteria();
-//        TPurchaserAgencyCriteria.Criteria criteria = agencyCriteria.createCriteria();
-//        //数据库字段为supplierId
-//        criteria.andSupplierIdEqualTo(agencyId);
-//
-//        TAgencyBasicInfoCriteria tAgencyBasicInfoCriteria = new TAgencyBasicInfoCriteria();
-//        TAgencyBasicInfoCriteria.Criteria criteria1 = tAgencyBasicInfoCriteria.createCriteria();
-//        criteria1.andIdEqualTo(agencyId);
-//
-//        TAgencyAttachmentCriteria tExpertAttachmentCriteria = new TAgencyAttachmentCriteria();
-//        TAgencyAttachmentCriteria.Criteria criteria2 = tExpertAttachmentCriteria.createCriteria();
-//        criteria2.andAgencyIdEqualTo(agencyId);
-//
-//        TAgencyDetailInfoCriteria tAgencyDetailInfoCriteria = new TAgencyDetailInfoCriteria();
-//        TAgencyDetailInfoCriteria.Criteria criteria3 = tAgencyDetailInfoCriteria.createCriteria();
-//        criteria3.andAgencyIdEqualTo(agencyId);
-//        //接受页面穿过来的信息,录入数据库,受影响的表,之前
-//        //实例化对象接受数据
-//        TAgencyBasicInfo basicInfo = new TAgencyBasicInfo();
-//        basicInfo.setName(dto.getName());
-//        basicInfo.setCellphone(dto.getCellphone());
-//        basicInfo.setState(dto.getState());
-//        basicInfo.setUpdateAt(new Date());
-//
-//        TPurchaserAgency agency = new TPurchaserAgency();
-//        agency.setCellphone(dto.getCellphone());
-//        agency.setState(dto.getState());
-//        agency.setSupplierName(dto.getCompanyName());
-//        agency.setUpdateAt(new Date());
-//
-//        TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
-//        detailInfo.setCompanyName(dto.getCompanyName());
-//        detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-//        detailInfo.setPublicBankName(dto.getPublicBankName());
-//        detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
-//        detailInfo.setUpdateAt(new Date());
-//        try {
-//            tAgencyBasicInfoMapper.updateByExample(basicInfo, tAgencyBasicInfoCriteria);
-//            tPurchaserAgencyMapper.updateByExample(agency, agencyCriteria);
-//            tAgencyDetailInfoMapper.updateByExample(detailInfo, tAgencyDetailInfoCriteria);
-//            List<Attachement> list = dto.getAtts();
-//            if (!CollectionUtils.isEmpty(list)) {
-//                for (Attachement attachement : dto.getAtts()) {
-//                    TAgencyAttachment att = new TAgencyAttachment();
-//                    BeanUtils.copyProperties(attachement, att);
-//                    att.setAgencyId(agencyId);
-//                    tAgencyAttachmentMapper.updateByExample(att, tExpertAttachmentCriteria);
-//                }
-//            }
-//        } catch (Exception e) {
-//            //捕获异常回滚
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            LOGGER.error("修改代理机构信息失败");
-//            return Result.error(e.getMessage());
-//        }
-//        return Result.success("更新成功", true);
-//    }
-
-//    /**
-//     * @author :winlin
-//     * @description :修改采购人专家的信息,前端页面附带专家唯一的id
-//     * @param:
-//     * @return:
-//     * @date:2018/9/21
-//     */
-//    @Override
-//    @Transactional(rollbackFor = {Exception.class})
-//    public Result<Boolean> updatePurchaserExpert(HandleExpertDto dto) {
-//        //t_purchaser_expert t_expert_attachment t_expert_basic_info 查询信息封装
-//        //专家id
-//        Long expertId = dto.getExpertId();
-//
-//        TPurchaserExpertCriteria expertCriteria = new TPurchaserExpertCriteria();
-//        TPurchaserExpertCriteria.Criteria criteria = expertCriteria.createCriteria();
-//        criteria.andExpertIdEqualTo(expertId);
-//
-//        TExpertBasicInfoCriteria tExpertBasicInfoCriteria = new TExpertBasicInfoCriteria();
-//        TExpertBasicInfoCriteria.Criteria criteria1 = tExpertBasicInfoCriteria.createCriteria();
-//        criteria1.andIdEqualTo(expertId);
-//
-//        TExpertAttachmentCriteria tExpertAttachmentCriteria = new TExpertAttachmentCriteria();
-//        TExpertAttachmentCriteria.Criteria criteria2 = tExpertAttachmentCriteria.createCriteria();
-//        criteria2.andExpertIdEqualTo(expertId);
-//
-//        //接受页面穿过来的信息,录入数据库,受影响的表,之前
-//        //实例化对象接受数据
-//        TExpertBasicInfo basicInfo = new TExpertBasicInfo();
-//
-//        basicInfo.setName(dto.getExpertName());
-//        basicInfo.setCellphone(dto.getCellphone());
-//        basicInfo.setProfession(dto.getProfession());
-//        basicInfo.setPositional(dto.getPositional());
-//        basicInfo.setLevel(dto.getLevel());
-//        basicInfo.setState(dto.getState());
-//        basicInfo.setUpdateAt(new Date());
-//
-//        TPurchaserExpert expert = new TPurchaserExpert();
-//        expert.setCellphone(dto.getCellphone());
-//        expert.setState(dto.getState());
-//        expert.setExpertName(dto.getExpertName());
-//        expert.setUpdateAt(new Date());
-//        try {
-//            tExpertBasicInfoMapper.updateByExample(basicInfo, tExpertBasicInfoCriteria);
-//            tPurchaserExpertMapper.updateByExample(expert, expertCriteria);
-//            List<Attachement> list = dto.getAtts();
-//            if (!CollectionUtils.isEmpty(list)) {
-//                for (Attachement attachement : list) {
-//                    TExpertAttachment att = new TExpertAttachment();
-//                    BeanUtils.copyProperties(attachement, att);
-//                    att.setExpertId(expertId);
-//                    tExpertAttachmentMapper.updateByExample(att, tExpertAttachmentCriteria);
-//                }
-//            }
-//        } catch (Exception e) {
-//            //捕获异常回滚
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            LOGGER.error("修改专家信息失败", e);
-//            return Result.error(e.getMessage());
-//        }
-//
-//        return Result.success("更新成功", true);
-//    }
 
     /**
      * @author :winlin

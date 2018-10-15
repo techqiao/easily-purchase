@@ -6,7 +6,6 @@ import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientBidAnnouncement;
 import com.epc.web.client.remoteApi.terdering.bid.BidAnnouncementClient;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
-import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,7 +58,7 @@ public class BidAnnouncementController extends BaseController {
     }
 
 
-    @ApiOperation(value = "查询供应商投标报详情")
+    @ApiOperation(value = "根据bidId查询唱标记录路径详情")
     @GetMapping(value = "getBidAnnouncementDetail")
     public Result<String> getBidAnnouncementDetail(@RequestParam("bidId") Long bidId) {
         return bidAnnouncementClient.bidAnnouncementDetail(bidId);

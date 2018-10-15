@@ -35,7 +35,7 @@ public class AnswerQuestionController extends BaseController {
 
     @ApiOperation(value = "查询采购项目问题列表")
     @PostMapping(value = "getQuestionList")
-    public Result<List<FacadeAnswerQuestionVO>> getPurchaseProjectBasicInfo(@RequestBody ClientQueryAnswerQuestionDTO clientQueryAnswerQuestionDTO) {
+    public Result<Map<String, Object>> getPurchaseProjectBasicInfo(@RequestBody ClientQueryAnswerQuestionDTO clientQueryAnswerQuestionDTO) {
         QueryAnswerQuestionDTO queryAnswerQuestionDTO = new QueryAnswerQuestionDTO();
         BeanUtils.copyProperties(clientQueryAnswerQuestionDTO,queryAnswerQuestionDTO);
         return answerQuestionClient.getQuestionList(queryAnswerQuestionDTO);

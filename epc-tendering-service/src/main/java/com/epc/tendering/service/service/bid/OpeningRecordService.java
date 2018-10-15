@@ -3,6 +3,7 @@ package com.epc.tendering.service.service.bid;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
 import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
 
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface OpeningRecordService {
      * @param purchaseProjectId
      * @return
      */
-    Result<List<OpeningRecordVO>> getOpeningRecordList(Long purchaseProjectId);
+    Result<List<RecordVO>> getOpeningRecordList(Long purchaseProjectId);
 }

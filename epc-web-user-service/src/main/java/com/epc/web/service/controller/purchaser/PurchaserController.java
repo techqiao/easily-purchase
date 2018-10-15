@@ -24,7 +24,7 @@ import java.util.List;
  * <p>Date : 2018-09-10  18:08
  */
 @RestController
-public  class PurchaserController implements FacadePurchaserService {
+public class PurchaserController implements FacadePurchaserService {
 
     @Autowired
     PurchaserService purchaserService;
@@ -136,7 +136,7 @@ public  class PurchaserController implements FacadePurchaserService {
 
     @Override
     public Result<Boolean> updateRole(Long id, Integer role) {
-        return purchaserService.updateRole(id,role);
+        return purchaserService.updateRole(id, role);
     }
 
     @Override
@@ -160,16 +160,25 @@ public  class PurchaserController implements FacadePurchaserService {
         return purchaserService.deletePurchaserEmployee(id);
     }
 
+
+
     @Override
-    public Result<Boolean> updateExpertState(Long id, Integer state) {
-        return purchaserService.updateEmployeeState(id,state);
+    public Result selectPurchaserProjectStatus(@PathVariable("id")Long id, @PathVariable("userType")Integer userType, @PathVariable("stepType")String stepType) {
+        return purchaserService.selectPurchaserProjectStatus(id,userType,stepType);
     }
 
+    ;
+
+
+    @Override
+    public Result<Boolean> updateExpertState(Long id, Integer state) {
+        return purchaserService.updateEmployeeState(id, state);
+    }
 
 
     @Override
     public Result queryEmployee(Long userId) {
-        return purchaserService.queryEmployee(userId+"");
+        return purchaserService.queryEmployee(userId + "");
     }
 
 }

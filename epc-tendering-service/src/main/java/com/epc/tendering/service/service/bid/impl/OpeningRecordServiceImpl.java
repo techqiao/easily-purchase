@@ -6,9 +6,11 @@ import com.epc.tendering.service.domain.bid.*;
 import com.epc.tendering.service.domain.pretrial.TPretrialMessage;
 import com.epc.tendering.service.mapper.bid.*;
 import com.epc.tendering.service.mapper.pretrial.TPretrialMessageMapper;
+import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.service.bid.OpeningRecordService;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
 import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,21 +56,30 @@ public class OpeningRecordServiceImpl implements OpeningRecordService {
     }
 
     @Override
-    public Result<List<OpeningRecordVO>> getOpeningRecordList(Long purchaseProjectId) {
-        final TTenderMessageCriteria criteria = new TTenderMessageCriteria();
-        criteria.createCriteria().andPurchaseProjectIdEqualTo(purchaseProjectId);
-        List<TTenderMessage> tTenderMessages = tTenderMessageMapper.selectByExample(criteria);
-        List<OpeningRecordVO> returnList = new ArrayList<>();
-        buildList(tTenderMessages, returnList);
+    public Result<List<RecordVO>> getOpeningRecordList(Long purchaseProjectId) {
+        List<RecordVO> returnList = new ArrayList<>();
+        List<Long> bidsIdList = tPurchaseProjectBidsMapper.getBidsIdList(purchaseProjectId);
+        for (Long bidId : bidsIdList) {
+            final TTenderMessageCriteria criteria = new TTenderMessageCriteria();
+            criteria.createCriteria().andPurchaseProjectIdEqualTo(purchaseProjectId).andBidsIdEqualTo(bidId);
+            List<TTenderMessage> tTenderMessages = tTenderMessageMapper.selectByExample(criteria);
+            List<OpeningRecordVO> openingRecordVOList = new ArrayList<>();
+            RecordVO recordVO = new RecordVO();
+            buildList(tTenderMessages, openingRecordVOList);
+            recordVO.setBidId(bidId);
+            recordVO.setOpeningRecordVOList(openingRecordVOList);
+            returnList.add(recordVO);
+        }
+
         return Result.success(returnList);
     }
 
     /**
      * 拼装页面数据
      * @param tTenderMessages
-     * @param returnList
+     * @param openingRecordVOList
      */
-    private void buildList(List<TTenderMessage> tTenderMessages, List<OpeningRecordVO> returnList) {
+    private void buildList(List<TTenderMessage> tTenderMessages, List<OpeningRecordVO> openingRecordVOList) {
         for (TTenderMessage item : tTenderMessages) {
             OpeningRecordVO openingRecordVO = new OpeningRecordVO();
             BeanUtils.copyProperties(item, openingRecordVO);
@@ -80,7 +91,7 @@ public class OpeningRecordServiceImpl implements OpeningRecordService {
             subPayCriteria.andProcurementProjectIdEqualTo(item.getPurchaseProjectId());
             subPayCriteria.andTendererCompanyIdEqualTo(item.getCompanyId());
             subPayCriteria.andTendererCompanyNameEqualTo(item.getCompanyName());
-            if(bBidOpeningPayMapper.countByExample(payCriteria) > 0){
+            if (bBidOpeningPayMapper.countByExample(payCriteria) > 0) {
                 //是否缴纳保证金
                 openingRecordVO.setIsPayBond(Const.IS_OK.IS_OK);
             }
@@ -90,13 +101,14 @@ public class OpeningRecordServiceImpl implements OpeningRecordService {
             subSignCriteria.andCompanyNameEqualTo(item.getCompanyName());
             subSignCriteria.andProcurementProjectIdEqualTo(item.getPurchaseProjectId());
             subSignCriteria.andBidsIdEqualTo(item.getBidsId());
-            if(tSupplierSignMapper.countByExample(signCriteria)>0){
+            if (tSupplierSignMapper.countByExample(signCriteria) > 0) {
                 //是否签到
                 openingRecordVO.setIsSign(Const.IS_OK.IS_OK);
             }
             //关联委托人信息表主键
             openingRecordVO.setTenderMessageId(item.getId());
-            returnList.add(openingRecordVO);
+            openingRecordVOList.add(openingRecordVO);
         }
     }
+
 }

@@ -132,8 +132,13 @@ public class WinBidServiceImpl implements WinBidService {
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertTWinBidNominate(HandleWinBid handleWinBid) {
             TWinBidNominate entity=new TWinBidNominate();
+            //获取标段详情
+            TPurchaseProjectBids tPurchaseProjectBids= tPurchaseProjectBidsMapper.selectByPrimaryKey(handleWinBid.getBidId());
+            if(tPurchaseProjectBids==null){
+                return Result.error("false");
+            }
             //查询项目记录
-            TProjectBasicInfo tProjectBasicInfo = tProjectBasicInfoMapper.selectByPrimaryKey(handleWinBid.getProjectId());
+            TProjectBasicInfo tProjectBasicInfo = tProjectBasicInfoMapper.selectByPrimaryKey(tPurchaseProjectBids.getProjectId());
             entity.setPurchaserName(tPurchaserDetailInfoMapper.selectName(tProjectBasicInfo.getPurchaserId()));
             BeanUtils.copyProperties(handleWinBid,entity);
             entity.setProjectCode(tProjectBasicInfo.getProjectCode());
@@ -147,13 +152,13 @@ public class WinBidServiceImpl implements WinBidService {
             TPurchaseProjectBids purchaseProjectBids=tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidId());
             entity.setBidCode(purchaseProjectBids.getBidCode());
             //查询采购项目记录
-            TPurchaseProjectBasicInfo purchaseProjectBasicInfo = tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(handleWinBid.getProcurementProjectId());
+            TPurchaseProjectBasicInfo purchaseProjectBasicInfo = tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(tPurchaseProjectBids.getPurchaseProjectId());
             //判断是否委托代理机构(0否，1是)
             entity.setIsPowerAgency(purchaseProjectBasicInfo.getIsOtherAgency());
             //采购项目人员经办人
             TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
             TPurchaseProjectParticipantPermissionCriteria.Criteria newCriteria=criteria.createCriteria();
-            newCriteria.andPurchaseProjectIdEqualTo(handleWinBid.getProcurementProjectId());
+            newCriteria.andPurchaseProjectIdEqualTo(tPurchaseProjectBids.getPurchaseProjectId());
             newCriteria.andParticipantPermissionEqualTo(ParticipantPermissionEnum.AGENT.getCode());
             newCriteria.andIsDeletedEqualTo(Const.IS_DELETED.NOT_DELETED);
             List<TPurchaseProjectParticipantPermission> ppp=tPurchaseProjectParticipantPermissionMapper.selectByExample(criteria);

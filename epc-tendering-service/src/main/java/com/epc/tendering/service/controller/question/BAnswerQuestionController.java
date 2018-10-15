@@ -33,8 +33,11 @@ public class BAnswerQuestionController extends BaseController implements FacadeA
     private BAnswerQuestionService bAnswerQuestionService;
 
     @Override
-    public Result<List<FacadeAnswerQuestionVO>> getQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
-        return bAnswerQuestionService.getQuestionList(queryAnswerQuestionDTO);
+    public Result<Map<String, Object>> getQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO) {
+        PageHelper.startPage(queryAnswerQuestionDTO.getPage(),queryAnswerQuestionDTO.getRows());
+        Result<List<FacadeAnswerQuestionVO>> questionList = bAnswerQuestionService.getQuestionList(queryAnswerQuestionDTO);
+        PageInfo<FacadeAnswerQuestionVO> pageInfo = new PageInfo<>(questionList.getData());
+        return Result.success(getDataTable(pageInfo));
     }
 
     @Override

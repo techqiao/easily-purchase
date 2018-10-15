@@ -110,4 +110,8 @@ public interface TAgencyAttachmentMapper {
     List<TAgencyAttachment> selectAttachmentByAgencyId(Long agencyId);
 
 
+    int deleteAttachmentByAgencyId(Long agency);
+
+    int selectCountByAgencyId(Long agencyId);
+
 }

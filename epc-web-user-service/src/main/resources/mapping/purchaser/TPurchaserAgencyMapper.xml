@@ -104,7 +104,8 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
+
+    <insert id="insert" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -260,32 +261,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.epc.web.service.domain.purchaser.TPurchaserAgency" >
     update t_purchaser_agency
     <set >
-      <if test="cellphone != null" >
-        cellphone = #{cellphone,jdbcType=CHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=CHAR},
-      </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
       </if>
-      <if test="supplierId != null" >
-        supplier_id = #{supplierId,jdbcType=BIGINT},
+      <if test="agencyId != null" >
+        agency_id = #{agencyId,jdbcType=BIGINT},
       </if>
-      <if test="supplierName != null" >
-        supplier_name = #{supplierName,jdbcType=VARCHAR},
-      </if>
-      <if test="uniformCreditCode != null" >
-        uniform_credit_code = #{uniformCreditCode,jdbcType=VARCHAR},
-      </if>
-      <if test="publicBankName != null" >
-        public_bank_name = #{publicBankName,jdbcType=VARCHAR},
-      </if>
-      <if test="publicBanAccountNumber != null" >
-        public_ban_account_number = #{publicBanAccountNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="purchaserId != null" >
-        purchaser_id = #{purchaserId,jdbcType=CHAR},
+      <if test="createrId != null" >
+        creater_id = #{createrId,jdbcType=CHAR},
       </if>
       <if test="source != null" >
         source = #{source,jdbcType=CHAR},

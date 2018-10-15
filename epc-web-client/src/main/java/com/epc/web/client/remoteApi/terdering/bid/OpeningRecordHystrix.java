@@ -3,9 +3,12 @@ package com.epc.web.client.remoteApi.terdering.bid;
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.FacadeOpeningRecordService;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
+import com.epc.web.facade.terdering.bid.query.QueryBidsDTO;
 import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -20,7 +23,7 @@ public class OpeningRecordHystrix implements FacadeOpeningRecordService {
     }
 
     @Override
-    public Result<List<OpeningRecordVO>> getOpeningRecordList(Long purchaseProjectId) {
+    public Result<Map<String, Object>> getOpeningRecordList(QueryBidsDTO queryBidsDTO) {
         return Result.hystrixError();
     }
 }

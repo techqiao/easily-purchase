@@ -12,10 +12,6 @@ public class HandleWinBid implements Serializable {
 
     private Long bidId;
 
-    private Long projectId;
-
-    private Long procurementProjectId;
-
     private Long firstSupplierid;
 
     private BigDecimal firstPrice;

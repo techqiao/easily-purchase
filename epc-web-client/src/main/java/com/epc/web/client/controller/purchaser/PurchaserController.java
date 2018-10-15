@@ -11,6 +11,8 @@ import com.epc.web.facade.purchaser.dto.*;
 import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.*;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "采购人服务")
+@Api(value = "采购人服务", description = "采购人服务")
 @RestController
 @RequestMapping(value = "/purchaser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PurchaserController extends BaseController {
@@ -123,10 +125,7 @@ public class PurchaserController extends BaseController {
         HandleEmployeeDto dto = new HandleEmployeeDto();
         BeanUtils.copyProperties(employeeDto, dto);
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if (null != clientLoginUser) {
-//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-//                return Result.error("请先完善信息!");
-//            }
+        if (null != clientLoginUser){
             dto.setPurchaseId(clientLoginUser.getCompanyId());
             return purchaserClient.queryEmplyee(dto);
         }
@@ -495,17 +494,37 @@ public class PurchaserController extends BaseController {
         BeanUtils.copyProperties(dto, queryDto);
         return purchaserClient.queryAgencyDetailById(queryDto);
     }
+
     /**
-     *@author :winlin
-     *@Description :删除员工
-     *@date:2018/10/12
+     * @author :winlin
+     * @Description :删除员工
+     * @date:2018/10/12
      */
     @ApiOperation(value = "删除员工")
     @GetMapping(value = "deletePurchaserEmployee/{id}")
-    public Result<Boolean> deletePurchaserEmployee(@PathVariable("id") Long id){
+    public Result<Boolean> deletePurchaserEmployee(@PathVariable("id") Long id) {
         return purchaserClient.deletePurchaserEmployee(id);
-    };
+    }
 
+    ;
+
+    /**
+     * @author :winlin
+     * @Description :角色登录后依据id 查询项目详情
+     * @date:2018/10/12
+     */
+    @ApiOperation(value = "角色登录查看自己名下代办的公告或中标公示")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "角色id", required = true),
+            @ApiImplicitParam(paramType = "path", dataType = "Integer", name = "userType", value = "用户角色代理机构2,采购人4", required = true),
+            @ApiImplicitParam(paramType = "path", dataType = "String", name = "stepType", value = "中标公示(publicity)或公告(announcement)", required = true)
+    })
+    @GetMapping(value = "selectPurchaserProjectStatus/{id}/{userType}/{stepType}")
+    public Result selectPurchaserProjectStatus(@PathVariable("id") Long id, @PathVariable("userType") Integer userType, @PathVariable("stepType") String stepType) {
+        return purchaserClient.selectPurchaserProjectStatus(id, userType, stepType);
+    }
+
+    ;
 
     public Result queryEmployee(@RequestParam Long userId) {
         return purchaserClient.queryEmployee(userId);

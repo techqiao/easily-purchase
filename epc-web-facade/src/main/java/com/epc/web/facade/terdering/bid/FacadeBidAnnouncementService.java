@@ -2,14 +2,12 @@ package com.epc.web.facade.terdering.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.handle.HandleLetterTenderMemo;
 import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderVO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,10 +47,18 @@ public interface FacadeBidAnnouncementService {
 
 
     /**
-     * 获取唱标详情
+     * 获取唱标列表
      * @param procurementProjectId
      * @return
      */
     @GetMapping(value = "getLetterTenderList", consumes = "application/json; charset=UTF-8")
     Result<List<LetterTenderSubVO>> getLetterTenderList(@RequestParam(value = "procurementProjectId") Long procurementProjectId);
+
+    /**
+     * 唱标确认
+     * @param handleLetterTenderMemo
+     * @return
+     */
+    @PostMapping(value = "insertLetterTenderMemo", consumes = "application/json; charset=UTF-8")
+    Result<Boolean> insertLetterTenderMemo(@RequestBody HandleLetterTenderMemo handleLetterTenderMemo);
 }

@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.tendering.service.service.bid.BidAnnouncementService;
 import com.epc.web.facade.terdering.bid.FacadeBidAnnouncementService;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.handle.HandleLetterTenderMemo;
 import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
@@ -59,6 +60,11 @@ public class TBidAnnouncementController implements FacadeBidAnnouncementService 
     @Override
     public Result<List<LetterTenderSubVO>> getLetterTenderList(@RequestParam(value = "procurementProjectId") Long procurementProjectId) {
         return bidAnnouncementService.getLetterTenderList(procurementProjectId);
+    }
+
+    @Override
+    public Result<Boolean> insertLetterTenderMemo(@RequestBody HandleLetterTenderMemo handleLetterTenderMemo) {
+        return bidAnnouncementService.insertLetterTenderMemo(handleLetterTenderMemo);
     }
 
 }

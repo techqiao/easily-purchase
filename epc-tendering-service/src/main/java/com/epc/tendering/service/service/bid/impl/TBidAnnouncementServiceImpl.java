@@ -10,6 +10,7 @@ import com.epc.tendering.service.mapper.bid.*;
 import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.bid.BidAnnouncementService;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.handle.HandleLetterTenderMemo;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderVO;
@@ -86,6 +87,14 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
             returnList.add(letterTenderSubVO);
         }
         return Result.success(returnList);
+    }
+
+    @Override
+    public Result<Boolean> insertLetterTenderMemo(HandleLetterTenderMemo handleLetterTenderMemo) {
+        LetterOfTender letterOfTender = new LetterOfTender();
+        letterOfTender.setId(handleLetterTenderMemo.getId());
+        letterOfTender.setMemo(handleLetterTenderMemo.getMemo());
+        return Result.success(letterOfTenderMapper.updateByPrimaryKeyWithBLOBs(letterOfTender) > 0);
     }
 
     /**

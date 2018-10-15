@@ -35,6 +35,8 @@ public class LetterOfTender implements Serializable {
 
     private Integer isDeleted;
 
+    private String memo;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -157,6 +159,14 @@ public class LetterOfTender implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo == null ? null : memo.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -178,6 +188,7 @@ public class LetterOfTender implements Serializable {
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
+        sb.append(", memo=").append(memo);
         sb.append("]");
         return sb.toString();
     }

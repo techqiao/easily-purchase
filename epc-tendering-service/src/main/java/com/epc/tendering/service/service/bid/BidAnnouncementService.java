@@ -2,6 +2,7 @@ package com.epc.tendering.service.service.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.handle.HandleLetterTenderMemo;
 import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
@@ -40,10 +41,17 @@ public interface BidAnnouncementService {
     Result<String> BidAnnouncementDetail(Long bidId);
 
     /**
-     * 获取唱标详情
+     * 获取唱标列表
      * @param procurementProjectId
      * @return
      */
     Result<List<LetterTenderSubVO>> getLetterTenderList(Long procurementProjectId);
 
+    /**
+     * 唱标确认
+     *
+     * @param handleLetterTenderMemo
+     * @return
+     */
+    Result<Boolean> insertLetterTenderMemo(HandleLetterTenderMemo handleLetterTenderMemo);
 }

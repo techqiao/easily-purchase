@@ -4,8 +4,10 @@ package com.epc.web.client.controller.terdering.bid;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientBidAnnouncement;
+import com.epc.web.client.controller.terdering.bid.handle.ClientHandleLetterTenderMemo;
 import com.epc.web.client.remoteApi.terdering.bid.BidAnnouncementClient;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.handle.HandleLetterTenderMemo;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
 import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
 import io.swagger.annotations.Api;
@@ -73,9 +75,17 @@ public class BidAnnouncementController extends BaseController {
      */
     @ApiOperation(value = "获取唱标记录")
     @GetMapping(value = "getLetterTenderList")
-    Result<List<LetterTenderSubVO>> getLetterTenderList(@RequestParam(value = "procurementProjectId") Long procurementProjectId){
+    public Result<List<LetterTenderSubVO>> getLetterTenderList(@RequestParam(value = "procurementProjectId") Long procurementProjectId){
         return bidAnnouncementClient.getLetterTenderList(procurementProjectId);
     }
 
+
+    @ApiOperation(value = "唱标确认")
+    @PostMapping(value = "insertLetterTenderMemo", consumes = "application/json; charset=UTF-8")
+    public Result<Boolean> insertLetterTenderMemo(@RequestBody ClientHandleLetterTenderMemo clientHandleLetterTenderMemo){
+        HandleLetterTenderMemo handleLetterTenderMemo = new HandleLetterTenderMemo();
+        BeanUtils.copyProperties(clientHandleLetterTenderMemo,handleLetterTenderMemo);
+        return bidAnnouncementClient.insertLetterTenderMemo(handleLetterTenderMemo);
+    }
 
 }

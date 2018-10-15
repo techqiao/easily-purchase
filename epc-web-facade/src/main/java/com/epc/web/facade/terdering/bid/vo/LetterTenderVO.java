@@ -38,4 +38,6 @@ public class LetterTenderVO {
     private String managerName;
     @ApiModelProperty(value = "执业证书号码")
     private String certificateNumber;
+    @ApiModelProperty(value = "唱标备注")
+    private String memo;
 }

@@ -11,6 +11,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
+import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,8 +59,8 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
      * @return
      */
     @Override
-    public Result invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO){
-        return enrolmentInvitationService.invitationListForSupplier(invitationForSupplierDTO);
+    public Result<List<BInvitationVO>> invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO){
+        return Result.success(enrolmentInvitationService.invitationListForSupplier(invitationForSupplierDTO));
 
     }
 

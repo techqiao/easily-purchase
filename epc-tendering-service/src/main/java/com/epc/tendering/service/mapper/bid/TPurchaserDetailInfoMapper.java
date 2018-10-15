@@ -30,4 +30,6 @@ public interface TPurchaserDetailInfoMapper {
     int updateByPrimaryKeySelective(TPurchaserDetailInfo record);
 
     int updateByPrimaryKey(TPurchaserDetailInfo record);
+
+    String selectNameByPurchaserId(Long purchaserId);
 }

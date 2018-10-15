@@ -9,6 +9,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
+import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>Description : easilys
@@ -53,7 +56,7 @@ public class EnrolmentInvitationController  extends BaseController {
 
     @ApiOperation(value = "供应商收到的邀请列表",notes = "供应商收到的邀请列表")
     @PostMapping(value = "invitationListForSupplier" ,consumes = "application/json;charset=UTF-8")
-    public Result invitationListForSupplier(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
+    public  Result<List<BInvitationVO>>  invitationListForSupplier(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
         InvitationForSupplierDTO dto=new InvitationForSupplierDTO();
         dto.setSupplierId(getLoginUser().getBossId());
         dto.setSupplierName(getLoginUser().getBossName());

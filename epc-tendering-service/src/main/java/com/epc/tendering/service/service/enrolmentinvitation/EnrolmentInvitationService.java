@@ -9,6 +9,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
+import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public interface EnrolmentInvitationService {
      * @return
      */
 
-    Result invitationListForSupplier(InvitationForSupplierDTO invitationForSupplierDTO);
+    List<BInvitationVO> invitationListForSupplier(InvitationForSupplierDTO invitationForSupplierDTO);
 
 
     /**

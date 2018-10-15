@@ -13,10 +13,6 @@ import java.util.Date;
 public class ClientWinBid implements Serializable {
     @ApiModelProperty(value = "标段ID")
     private Long bidId;
-    @ApiModelProperty(value = "项目ID")
-    private Long projectId;
-    @ApiModelProperty(value = "采购项目ID")
-    private Long procurementProjectId;
     @ApiModelProperty(value = "第一中标人ID")
     private Long firstSupplierid;
     @ApiModelProperty(value = "第一中标人金额")

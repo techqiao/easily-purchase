@@ -275,12 +275,14 @@ public class TSupplierBasicInfoController extends BaseController {
         return supplierClient.querySupplierEmployeeAll(handleSupplierIdAndName);
     }
 
+
     @ApiOperation(value = "15:根据当前登录供应商获取对应项目列表")
     @PostMapping("/querySupplierProject")
     public Result<Map<String, Object>> querySupplierProject(@RequestBody ClientSupplierProject clientSupplierProject){
         QuerywithPageHandle querywithPageHandle = new QuerywithPageHandle();
         BeanUtils.copyProperties(clientSupplierProject,querywithPageHandle);
-        querywithPageHandle.setId(getLoginUser().getBossId());
+        querywithPageHandle.setBossId(getLoginUser().getBossId());
+        querywithPageHandle.setUserId(getLoginUser().getUserId());
         return supplierClient.querySupplierProject(querywithPageHandle);
     }
 
@@ -289,4 +291,14 @@ public class TSupplierBasicInfoController extends BaseController {
     public Result<List<SupplierCategoryVo>> querySupplierCategory(){
         return supplierClient.querySupplierCategory();
     }
+
+
+    /*@ApiOperation(value = "17:供应商法人指定项目负责人")
+    @PostMapping("/assignProjectPrincipal")
+    public Result assignProjectPrincipal(@RequestBody ClientProjectPrincipal ClientProjectPrincipal){
+        BeanUtils.copyProperties(clientSupplierProject,querywithPageHandle);
+        querywithPageHandle.setBossId(getLoginUser().getBossId());
+        querywithPageHandle.setUserId(getLoginUser().getUserId());
+        return supplierClient.querySupplierProject(querywithPageHandle);
+    }*/
 }

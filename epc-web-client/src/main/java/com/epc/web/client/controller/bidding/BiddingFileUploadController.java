@@ -2,6 +2,7 @@ package com.epc.web.client.controller.bidding;
 
 
 import com.epc.common.Result;
+import com.epc.web.client.controller.bidding.handle.file.ClientFileUpload;
 import com.epc.web.client.controller.bidding.handle.file.ClientHandleFileUpload;
 import com.epc.web.client.controller.bidding.handle.file.ClientNoticeFileLoad;
 import com.epc.web.client.controller.common.BaseController;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @Description:  提交 文件
@@ -34,14 +36,20 @@ public class BiddingFileUploadController extends BaseController {
 
     @ApiOperation(value = "新增/更新/删除  预审信息")
     @PostMapping(value="/updatePretrialFile")
-    public Result<Boolean> updatePretrialFile(@RequestBody ClientHandleFileUpload clientHandleFileUpload) {
-        HandlePretriaFile handlePretriaFile=new HandlePretriaFile();
-        BeanUtils.copyProperties(clientHandleFileUpload,handlePretriaFile);
-        handlePretriaFile.setOperateId(getLoginUser().getUserId());
-        handlePretriaFile.setOperateName(getLoginUser().getName());
-        handlePretriaFile.setCompanyId(getLoginUser().getBossId());
-        handlePretriaFile.setCompanyName(getLoginUser().getBossName());
-        return biddingClient.updatePretrialFile(handlePretriaFile);
+    public Result<Boolean> updatePretrialFile(@RequestBody ClientFileUpload clientFileUpload) {
+        List<ClientHandleFileUpload> list=clientFileUpload.getFileList();
+        if(list.size()>0){
+            for(ClientHandleFileUpload clientHandleFileUpload:list){
+                HandlePretriaFile handlePretriaFile=new HandlePretriaFile();
+                BeanUtils.copyProperties(clientHandleFileUpload,handlePretriaFile);
+                handlePretriaFile.setOperateId(getLoginUser().getUserId());
+                handlePretriaFile.setOperateName(getLoginUser().getName());
+                handlePretriaFile.setCompanyId(getLoginUser().getBossId());
+                handlePretriaFile.setCompanyName(getLoginUser().getBossName());
+                biddingClient.updatePretrialFile(handlePretriaFile);
+            }
+        }
+        return Result.success(true);
     }
 
     @ApiOperation(value = "新增/更新/删除 投标文件")

@@ -5,7 +5,7 @@ import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleOpeningRecord;
 import com.epc.web.client.remoteApi.terdering.bid.OpeningRecordClient;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
-import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -44,7 +44,7 @@ public class OpeningRecordController extends BaseController {
 
     @ApiOperation(value = "查询开标前置条件")
     @GetMapping(value = "getOpeningRecordList")
-    public Result<List<OpeningRecordVO>> getOpeningRecordList(Long purchaseProjectId){
+    public Result<List<RecordVO>> getOpeningRecordList(Long purchaseProjectId){
         return openingRecordClient.getOpeningRecordList(purchaseProjectId);
     }
 

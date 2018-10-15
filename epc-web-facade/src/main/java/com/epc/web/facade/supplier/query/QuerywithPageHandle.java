@@ -20,5 +20,6 @@ public class QuerywithPageHandle extends QueryRequest implements Serializable {
     /**
      * 用户id
      */
-    private Long id;
+    private Long userId;
+    private Long bossId;
 }

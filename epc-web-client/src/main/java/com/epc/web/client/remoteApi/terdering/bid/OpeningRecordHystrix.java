@@ -4,6 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.FacadeOpeningRecordService;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
 import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
+import com.epc.web.facade.terdering.bid.vo.RecordVO;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class OpeningRecordHystrix implements FacadeOpeningRecordService {
     }
 
     @Override
-    public Result<List<OpeningRecordVO>> getOpeningRecordList(Long purchaseProjectId) {
+    public Result<List<RecordVO>> getOpeningRecordList(Long purchaseProjectId) {
         return Result.hystrixError();
     }
 }

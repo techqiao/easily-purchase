@@ -12,9 +12,9 @@ public class HandlePretriaFile implements Serializable {
 
     private Long id;
 
-    private Long purchaseProjectId;
-
     private Long bidId;
+
+    private Long purchaseProjectId;
 
     private Long releaseAnnouncementId;
 

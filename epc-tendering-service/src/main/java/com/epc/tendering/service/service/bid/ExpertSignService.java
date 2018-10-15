@@ -2,8 +2,7 @@ package com.epc.tendering.service.service.bid;
 
 import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.handle.HandleExpertSign;
-import com.epc.web.facade.terdering.bid.vo.ExpertSignVO;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.epc.web.facade.terdering.bid.vo.SignVO;
 
 import java.util.List;
 
@@ -33,5 +32,5 @@ public interface ExpertSignService {
      * @param procurementProjectId
      * @return
      */
-    Result<List<ExpertSignVO>> getExpertList(Long procurementProjectId);
+    Result<List<SignVO>> getExpertList(Long procurementProjectId);
 }

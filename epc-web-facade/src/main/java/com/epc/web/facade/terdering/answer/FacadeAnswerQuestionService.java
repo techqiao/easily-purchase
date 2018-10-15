@@ -25,7 +25,7 @@ public interface FacadeAnswerQuestionService {
      * @return
      */
     @PostMapping(value = "getQuestionList", consumes = "application/json; charset=UTF-8")
-    Result<List<FacadeAnswerQuestionVO>> getQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO);
+    Result<Map<String, Object>> getQuestionList(@RequestBody QueryAnswerQuestionDTO queryAnswerQuestionDTO);
 
     /**
      * 处理采购项目问题

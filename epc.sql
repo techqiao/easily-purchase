@@ -937,6 +937,7 @@ CREATE TABLE `t_tender_message` (
   `identit_card` varchar(16) NOT NULL COMMENT '授权委托人身份证',
   `bailment_path` varchar(256) NOT NULL COMMENT '委托书记录',
   `bid_appendix` varchar(256) NOT NULL COMMENT '投标附录',
+  `memo` TEXT COMMENT '唱标备注',
   `ip` varchar(64) DEFAULT NULL COMMENT 'ip',
   `operate_id` bigint(11) NOT NULL COMMENT '操作人ID',
   `create_at` datetime NOT NULL COMMENT '创建时间',
@@ -1757,7 +1758,7 @@ CREATE TABLE `e_contract_awarded` (
 DROP TABLE IF EXISTS `letter_of_tender`;
 CREATE TABLE `letter_of_tender` (
   `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
-  `procurement_project_id` varchar(11) DEFAULT NULL COMMENT '采购项目ID',
+  `procurement_project_id` BIGINT(11) DEFAULT NULL COMMENT '采购项目ID',
   `supplier_id` BIGINT(11) NOT NULL COMMENT '供货商id',
   `supplier_name` BIGINT(11) NOT NULL COMMENT '供货商名称',
   `bids_id` BIGINT(11) NOT NULL COMMENT '标段ID',

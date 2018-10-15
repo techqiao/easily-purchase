@@ -7,6 +7,7 @@ import com.epc.web.client.controller.terdering.bid.handle.ClientBidAnnouncement;
 import com.epc.web.client.remoteApi.terdering.bid.BidAnnouncementClient;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
+import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -63,5 +64,18 @@ public class BidAnnouncementController extends BaseController {
     public Result<String> getBidAnnouncementDetail(@RequestParam("bidId") Long bidId) {
         return bidAnnouncementClient.bidAnnouncementDetail(bidId);
     }
+
+
+    /**
+     * 获取唱标记录
+     * @param procurementProjectId
+     * @return
+     */
+    @ApiOperation(value = "获取唱标记录")
+    @GetMapping(value = "getLetterTenderList")
+    Result<List<LetterTenderSubVO>> getLetterTenderList(@RequestParam(value = "procurementProjectId") Long procurementProjectId){
+        return bidAnnouncementClient.getLetterTenderList(procurementProjectId);
+    }
+
 
 }

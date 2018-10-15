@@ -27,4 +27,6 @@ public class UpdateInvitation implements Serializable {
      * 供应商ID
      */
     private Long supplierId;
+
+    private Long userId;
 }

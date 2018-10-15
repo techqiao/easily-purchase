@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @ApiModel("参与的采购项目列表")
@@ -17,7 +18,7 @@ public class TenderMessageVO implements Serializable {
     @ApiModelProperty("采购项目id")
     private Long purchaseProjectId;
     @ApiModelProperty("标段Id")
-    private Long bidId;
+    private String bidId;
     @ApiModelProperty("标段名称")
     private String bidName;
     @ApiModelProperty("投标进度")
@@ -26,5 +27,4 @@ public class TenderMessageVO implements Serializable {
     private String status;
     @ApiModelProperty("招标类型")
     private String projectType;
-
 }

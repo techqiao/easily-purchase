@@ -43,4 +43,7 @@ public class SignUpHandle implements Serializable {
      */
     private String  bidsName;
 
+
+    private Long userId;
+
 }

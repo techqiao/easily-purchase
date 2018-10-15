@@ -17,6 +17,7 @@
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
   </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -364,17 +365,5 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-  </select>
-  <select resultMap="BaseResultMap"  id="querySupplierProject" >
-   SELECT
-  ttm.*
-FROM
-  t_supplier_project_participant spp
-INNER JOIN t_tender_message ttm
-on ttm.bids_id =spp.bids_id
-where 1=1
-and spp.user_id= #{id}
-and spp.is_deleted=0
-and ttm.is_deleted=0
   </select>
 </mapper>

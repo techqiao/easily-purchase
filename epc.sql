@@ -1336,7 +1336,8 @@ CREATE TABLE `b_suppliers_number` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:供应商数量';
 
-DROP TABLE if EXISTS `b_sign_up` (10.11);
+-- #报名表(10.15)
+DROP TABLE if EXISTS `b_sign_up` ;
 CREATE TABLE `b_sign_up` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(11) NOT NULL COMMENT '项目ID',
@@ -1346,6 +1347,7 @@ CREATE TABLE `b_sign_up` (
   `bids_code` varchar(256) DEFAULT NULL COMMENT '标段编码',
   `supplier_id` bigint(11) NOT NULL COMMENT '供应商ID',
   `supplier_name` varchar(64) DEFAULT NULL COMMENT '供应商名称',
+  `user_id` bigint(11) NOT NULL COMMENT '操作人ID',
   `create_at` datetime NOT NULL COMMENT '创建时间',
   `update_at` datetime NOT NULL COMMENT '最后修改时间',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',

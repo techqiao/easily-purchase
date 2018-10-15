@@ -69,6 +69,8 @@ public class SupplierServiceImpl implements SupplierService {
     SupplierCategoryMapper supplierCategoryMapper;
     @Autowired
     TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
+    @Autowired
+    BSignUpMapper bSignUpMapper;
 
     private String supplierCategory ="supplier.type";
     /**
@@ -904,15 +906,26 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Result<List<TenderMessageVO>> querySupplierProject(QuerywithPageHandle querywithPageHandle) {
         //获取当前用户 参与的投标项目列表
-        List<TTenderMessage> tTenderMessages = tTenderMessageMapper.querySupplierProject(querywithPageHandle.getUserId());
+        List<BSignUp> tTenderMessages = bSignUpMapper.querySupplierProject(querywithPageHandle.getUserId());
+
         List<TenderMessageVO> voList = new ArrayList<>();
-        for (TTenderMessage entity : tTenderMessages) {
+        for (BSignUp entity : tTenderMessages) {
             TenderMessageVO vo = new TenderMessageVO();
             QueryProjectSchedule dto = new QueryProjectSchedule();
-            TPurchaseProjectBids bisEntity = tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
-            BeanUtils.copyProperties(bisEntity, vo);
-            TProjectBasicInfo projectEntity = tProjectBasicInfoMapper.selectByPrimaryKey(bisEntity.getProjectId());
-           if(querywithPageHandle.getProjectName()!=null && !bisEntity.getPurchaseProjectName().contains(querywithPageHandle.getProjectName())){
+            //获取项目信息
+            TProjectBasicInfo projectEntity = tProjectBasicInfoMapper.selectByPrimaryKey(entity.getProjectId());
+            if(projectEntity!=null){
+                vo.setProjectName(projectEntity.getProjectName());
+                vo.setProjectCode(projectEntity.getProjectCode());
+            }
+            //标段详情
+            vo.setBidId(entity.getBidsId());
+            vo.setBidName(entity.getBidsName());
+            vo.setPurchaseProjectId(entity.getProcurementProjectId());
+            dto.setPurchaseProjectId(entity.getProcurementProjectId());
+            dto.setOperateType("supplier");
+
+           if(querywithPageHandle.getProjectName()!=null && !projectEntity.getProjectName().contains(querywithPageHandle.getProjectName())){
                break;
            }
             if (projectEntity.getSourceOfInvestment() == 0) {
@@ -922,9 +935,7 @@ public class SupplierServiceImpl implements SupplierService {
             } else if (projectEntity.getSourceOfInvestment() == 2) {
                 vo.setProjectType("国有占主体投资");
             }
-            vo.setBidId(entity.getBidsId());
-            dto.setPurchaseProjectId(entity.getPurchaseProjectId());
-            dto.setOperateType("supplier");
+
             //获取
             String schedule = "";
             if (queryProjectSchedule(dto) != null) {
@@ -932,7 +943,7 @@ public class SupplierServiceImpl implements SupplierService {
             }
             vo.setSchedule(schedule);
             //获取采购项目
-            TPurchaseProjectBasicInfo purchaserBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(bisEntity.getPurchaseProjectId());
+            TPurchaseProjectBasicInfo purchaserBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getProcurementProjectId());
             if (purchaserBasicInfo.getIsEnd()==Const.PROJECT_STATUS.NOT_START) {
                 vo.setStatus("未开始");
             }else if (purchaserBasicInfo.getIsEnd()==Const.PROJECT_STATUS.STARTING) {
@@ -941,9 +952,9 @@ public class SupplierServiceImpl implements SupplierService {
                 vo.setStatus("已结束");
             }
             if(vo.getStatus()==null){
-                continue;
+
             }else if(querywithPageHandle.getStatus()!=null && !querywithPageHandle.getStatus().equals(vo.getStatus())){
-                break;
+                continue;
             }
             voList.add(vo);
         }

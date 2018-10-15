@@ -38,6 +38,7 @@ public class EnrolmentInvitationController  extends BaseController {
         SignUpHandle signUpHandle = new SignUpHandle();
         BeanUtils.copyProperties(clientSignUpHandle,signUpHandle);
         signUpHandle.setSupplierId(getLoginUser().getBossId());
+        signUpHandle.setUserId(getLoginUser().getUserId());
         return enrolmentInvitationClient.signUp(signUpHandle);
     }
 
@@ -83,6 +84,7 @@ public class EnrolmentInvitationController  extends BaseController {
         UpdateInvitation dto=new UpdateInvitation();
         BeanUtils.copyProperties(clientInvitation,dto);
         dto.setSupplierId(getLoginUser().getBossId());
+        dto.setUserId(getLoginUser().getUserId());
         return enrolmentInvitationClient.updateInvitation(dto);
     }
 }

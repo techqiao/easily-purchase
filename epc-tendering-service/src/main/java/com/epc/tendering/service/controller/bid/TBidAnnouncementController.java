@@ -6,6 +6,7 @@ import com.epc.web.facade.terdering.bid.FacadeBidAnnouncementService;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
 import com.epc.web.facade.terdering.bid.query.QueryBidAnnouncement;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
+import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,6 +54,11 @@ public class TBidAnnouncementController implements FacadeBidAnnouncementService 
     @Override
     public Result<String> bidAnnouncementDetail(Long bidId){
         return bidAnnouncementService.BidAnnouncementDetail(bidId);
+    }
+
+    @Override
+    public Result<List<LetterTenderSubVO>> getLetterTenderList(@RequestParam(value = "procurementProjectId") Long procurementProjectId) {
+        return bidAnnouncementService.getLetterTenderList(procurementProjectId);
     }
 
 }

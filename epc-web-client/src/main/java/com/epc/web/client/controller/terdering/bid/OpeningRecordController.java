@@ -3,8 +3,10 @@ package com.epc.web.client.controller.terdering.bid;
 import com.epc.common.Result;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.bid.handle.ClientHandleOpeningRecord;
+import com.epc.web.client.controller.terdering.bid.query.ClientQueryBidsDTO;
 import com.epc.web.client.remoteApi.terdering.bid.OpeningRecordClient;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
+import com.epc.web.facade.terdering.bid.query.QueryBidsDTO;
 import com.epc.web.facade.terdering.bid.vo.RecordVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easily-purchase
@@ -43,9 +46,11 @@ public class OpeningRecordController extends BaseController {
     }
 
     @ApiOperation(value = "查询开标前置条件")
-    @GetMapping(value = "getOpeningRecordList")
-    public Result<List<RecordVO>> getOpeningRecordList(Long purchaseProjectId){
-        return openingRecordClient.getOpeningRecordList(purchaseProjectId);
+    @PostMapping(value = "getOpeningRecordList")
+    public Result<Map<String, Object>> getOpeningRecordList(@RequestBody ClientQueryBidsDTO clientQueryBidsDTO){
+        QueryBidsDTO queryBidsDTO = new QueryBidsDTO();
+        BeanUtils.copyProperties(clientQueryBidsDTO,queryBidsDTO);
+        return openingRecordClient.getOpeningRecordList(queryBidsDTO);
     }
 
 }

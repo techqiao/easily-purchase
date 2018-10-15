@@ -33,4 +33,12 @@ public interface TPurchaserAttachmentMapper {
     int updateByPrimaryKeySelective(TPurchaserAttachment record);
 
     int updateByPrimaryKey(TPurchaserAttachment record);
+
+    List<TPurchaserAttachment> selectAttachmentByPurchaser(Long purchaserId);
+
+    int selectCountByPurchaserId(Long purchaserId);
+
+    int deleteByPurchaserId(Long purchaserId);
 }
+
+

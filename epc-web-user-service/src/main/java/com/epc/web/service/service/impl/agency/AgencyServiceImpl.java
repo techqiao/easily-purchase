@@ -32,6 +32,7 @@ import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.agency.AgencyService;
+import com.epc.web.service.service.impl.UpdateAttachment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ import java.util.List;
  * @date ate:2018/9/13
  */
 @Service
-public class AgencyServiceImpl implements AgencyService {
+public class AgencyServiceImpl extends UpdateAttachment implements AgencyService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AgencyServiceImpl.class);
 
@@ -561,8 +562,6 @@ public class AgencyServiceImpl implements AgencyService {
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public Result<Boolean> completeInfo(HandleAgency agency) {
-        String name = agency.getName();
-        String cellphone = agency.getCellphone();
         TAgencyBasicInfo basicInfo = null;
         Long agencyId = agency.getAgencyId();
         if (agencyId == null) {
@@ -605,8 +604,6 @@ public class AgencyServiceImpl implements AgencyService {
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-        //附件信息
-        List<Attachement> list = agency.getAtts();
         try {
             tAgencyBasicInfoMapper.updateByPrimaryKeySelective(basicInfo);
             TAgencyDetailInfo detail = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
@@ -616,48 +613,22 @@ public class AgencyServiceImpl implements AgencyService {
                 detailInfo.setId(detail.getId());
                 tAgencyDetailInfoMapper.updateByPrimaryKeySelective(detailInfo);
             }
-            TAgencyAttachment attachment = new TAgencyAttachment();
-            attachment.setAgencyId(agencyId);
-            attachment.setCreateAt(date);
-            attachment.setUpdateAt(date);
-            attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-            //添加身份证正面
-            attachment.setCertificateFilePath(agency.getLegalIdCardPositive());
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-            tAgencyAttachmentMapper.insertSelective(attachment);
-            //法人身份证反面照片url
-            attachment.setCertificateFilePath(agency.getLegalIdCardOther());
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-            tAgencyAttachmentMapper.insertSelective(attachment);
-            //营业执照照片url
-            attachment.setCertificateFilePath(agency.getBusinessLicense());
-            attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-            attachment.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
-            tAgencyAttachmentMapper.insertSelective(attachment);
-            if (!CollectionUtils.isEmpty(list)) {
-                for (Attachement att : list) {
-                    TAgencyAttachment at = new TAgencyAttachment();
-                    BeanUtils.copyProperties(att, at);
-                    at.setAgencyId(agencyId);
-                    at.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                    at.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                    at.setCreateAt(date);
-                    at.setUpdateAt(date);
-                    tAgencyAttachmentMapper.insertSelective(at);
-                }
+            int records = tAgencyAttachmentMapper.selectCountByAgencyId(agencyId);
+            //List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
+            List<Attachement> list = agency.getAtts();
+            if (records>0) {
+                tAgencyAttachmentMapper.deleteAttachmentByAgencyId(agencyId);
+                super.updateAgencyAttachment(list, agency.getLegalIdCardPositive(), agency.getLegalIdCardOther(), agency.getBusinessLicense(), agencyId);
+            } else {
+                super.updateAgencyAttachment(list, agency.getLegalIdCardPositive(), agency.getLegalIdCardOther(), agency.getBusinessLicense(), agencyId);
             }
-
         } catch (Exception e) {
             //捕获异常回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             LOGGER.error("完善代理信息失败", e);
             return Result.error("完善代理信息失败");
         }
-
         return Result.success("代理机构信息完善成功", true);
-
     }
 
 
@@ -1153,58 +1124,14 @@ public class AgencyServiceImpl implements AgencyService {
                 tSupplierDetailInfoMapper.updateByPrimaryKeySelective(detailInfo);
             }
             //附件新增
-            TSupplierAttachment attachment = new TSupplierAttachment();
-            attachment.setSupplierId(supplierId);
-            attachment.setCreateAt(date);
-            attachment.setUpdateAt(date);
-            attachment.setIsDeleted(Const.IS_DELETED.IS_DELETED);
-
-            List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
-            if (CollectionUtils.isEmpty(attachments)) {
-                //添加身份证正面
-                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //法人身份证反面照片url
-                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //营业执照照片url
-                attachment.setCertificateFilePath(dto.getBusinessLicense());
-                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                List<Attachement> list = dto.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TSupplierAttachment attachmen = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachmen);
-                        attachmen.setSupplierId(supplierId);
-                        tSupplierAttachmentMapper.insertSelective(attachmen);
-                    }
-                }
+            int records = tSupplierAttachmentMapper.selectCountBySupplierId(supplierId);
+            //List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
+            List<Attachement> list = dto.getAtts();
+            if (records>0) {
+                super.updateSupplierAttachment(list, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), supplierId);
             } else {
-                tSupplierAttachmentMapper.deleteAttachaments(attachments);
-                //添加身份证正面
-                attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //法人身份证反面照片url
-                attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-                attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                //营业执照照片url
-                attachment.setCertificateFilePath(dto.getBusinessLicense());
-                attachment.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                tSupplierAttachmentMapper.insertSelective(attachment);
-                List<Attachement> list = dto.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TSupplierAttachment attachmen = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachmen);
-                        attachmen.setSupplierId(supplierId);
-                        tSupplierAttachmentMapper.insertSelective(attachmen);
-                    }
-                }
+                tSupplierAttachmentMapper.deleteAttachamentById(supplierId);
+                super.updateSupplierAttachment(list, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), supplierId);
             }
         } catch (Exception e) {
             //捕获异常回滚
@@ -1257,34 +1184,15 @@ public class AgencyServiceImpl implements AgencyService {
                 tExpertDetailInfo.setUpdateAt(new Date());
                 tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
             }
-            //封装附件信息对象
-            TExpertAttachment attachment = new TExpertAttachment();
-            attachment.setExpertId(info.getId());
-            attachment.setCreateAt(new Date());
-            attachment.setUpdateAt(new Date());
-            attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-            //上传身份证正面
-            attachment.setCertificateFilePath(dto.getLegalIdCardPositive());
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            //上传身份证反面
-            attachment.setCertificateFilePath(dto.getLegalIdCardOther());
-            attachment.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-            attachment.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-            tExpertAttachmentMapper.insertSelective(attachment);
-            List<Attachement> list = dto.getAtts();
-            if (!CollectionUtils.isEmpty(list)) {
-                for (Attachement att : list) {
-                    TExpertAttachment expertAttachment = new TExpertAttachment();
-                    BeanUtils.copyProperties(att, expertAttachment);
-                    expertAttachment.setExpertId(info.getId());
-                    attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                    attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                    expertAttachment.setCreateAt(new Date());
-                    expertAttachment.setUpdateAt(new Date());
-                    tExpertAttachmentMapper.insertSelective(expertAttachment);
-                }
+            //查询附件信息状态
+            int records = tExpertAttachmentMapper.selectAttchamentNumsByExpertId(info.getId());
+            //List<TExpertAttachment> list = tExpertAttachmentMapper.selectAttchamentByExpertId(info.getId());
+            List<Attachement> atts = dto.getAtts();
+            if (records>0) {
+                super.updateExpertAttachment(atts, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), info.getId());
+            } else {
+                tExpertAttachmentMapper.deleteByAttachmentByExpertId(info.getId());
+                super.updateExpertAttachment(atts, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), info.getId());
             }
         } catch (Exception e) {
             //捕获异常回滚

@@ -38,4 +38,8 @@ public interface TSupplierAttachmentMapper {
 
     int deleteAttachaments(List<TSupplierAttachment> attachments);
 
+    int selectCountBySupplierId(Long supplierId);
+
+    int  deleteAttachamentById(Long supplierId);
+
 }

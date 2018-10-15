@@ -125,10 +125,7 @@ public class PurchaserController extends BaseController {
         HandleEmployeeDto dto = new HandleEmployeeDto();
         BeanUtils.copyProperties(employeeDto, dto);
         ClientLoginUser clientLoginUser = super.getLoginUser();
-        if (null != clientLoginUser) {
-//            if (StringUtils.isEmpty(clientLoginUser.getBossId())) {
-//                return Result.error("请先完善信息!");
-//            }
+        if (null != clientLoginUser){
             dto.setPurchaseId(clientLoginUser.getCompanyId());
             return purchaserClient.queryEmplyee(dto);
         }

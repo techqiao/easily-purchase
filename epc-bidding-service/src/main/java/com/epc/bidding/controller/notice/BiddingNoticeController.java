@@ -1,11 +1,14 @@
 package com.epc.bidding.controller.notice;
 
 import com.epc.bidding.service.advanceNotice.AdvanceNoticeService;
-import com.epc.bidding.service.bidding.BiddingService;
+import com.epc.bidding.service.bidding.NoticeService;
 import com.epc.common.QueryRequest;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeNoticeService;
-import com.epc.web.facade.bidding.query.notice.*;
+import com.epc.web.facade.bidding.query.notice.PretrialMessageDTO;
+import com.epc.web.facade.bidding.query.notice.QueryAdvanceNoticeDTO;
+import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
+import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeDetailVO;
 import com.epc.web.facade.bidding.vo.AdvanceNoticeVO;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
@@ -14,7 +17,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.Map;
 public class BiddingNoticeController extends QueryRequest implements FacadeNoticeService {
 
     @Autowired
-    BiddingService biddingService;
+    NoticeService noticeService;
     @Autowired
     AdvanceNoticeService advanceNoticeService;
     /**
@@ -40,7 +42,7 @@ public class BiddingNoticeController extends QueryRequest implements FacadeNotic
     @Override
     public Result<Map<String, Object>> queryBIssueDocumentsList(@RequestBody QueryNoticeDTO queryNoticeDTO) {
         PageHelper.startPage(queryNoticeDTO.getPageNum(),queryNoticeDTO.getPageSize());
-        List<NoticeDetailVO> voList=biddingService.findBySupplierId(queryNoticeDTO);
+        List<NoticeDetailVO> voList=noticeService.findBySupplierId(queryNoticeDTO);
         PageInfo<NoticeDetailVO> pageInfo = new PageInfo<>(voList);
         Map<String, Object> dataTable = getDataTable(pageInfo);
 
@@ -54,7 +56,7 @@ public class BiddingNoticeController extends QueryRequest implements FacadeNotic
      */
     @Override
     public NoticeDetailVO getNoticeDetail(@RequestBody QueryNoticeDetail queryNoticeDetail) {
-        return biddingService.findByNoticeId(queryNoticeDetail);
+        return noticeService.findByNoticeId(queryNoticeDetail);
     }
 
 

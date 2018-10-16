@@ -80,7 +80,7 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
     @Autowired
     TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
     /**
-     * * 供应商报名采购项目
+     * * 供应商报名采购项目(公告)
      *
      * @param signUpHandle
      * @return
@@ -89,6 +89,10 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
     public Result signUp(SignUpHandle signUpHandle) {
         BSignUp bSignUp = new BSignUp();
         BeanUtils.copyProperties(signUpHandle, bSignUp);
+        TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(signUpHandle.getProcurementProjectId());
+        if(tPurchaseProjectBasicInfo!=null){
+            bSignUp.setProjectId(tPurchaseProjectBasicInfo.getProjectId());
+         }
         Date date = new Date();
         bSignUp.setCreateAt(date);
         bSignUp.setUpdateAt(date);

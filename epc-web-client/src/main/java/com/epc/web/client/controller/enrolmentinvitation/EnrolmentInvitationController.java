@@ -74,10 +74,10 @@ public class EnrolmentInvitationController  extends BaseController {
 
     @ApiOperation(value = "采购人查看标段报名列表",notes = "采购人查看标段报名列表")
     @PostMapping(value = "querySignUpList" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result querySignUpList(@RequestBody ClientSignUpList ClientSignUpList){
+    public Result querySignUpList(@RequestBody ClientSignUpList clientSignUpList){
         QuerySignUpList dto=new QuerySignUpList();
         dto.setPurchaserId(getLoginUser().getBossId());
-        BeanUtils.copyProperties(ClientSignUpList,dto);
+        BeanUtils.copyProperties(clientSignUpList,dto);
         return enrolmentInvitationClient.querySignUpList(dto);
     }
 

@@ -2,7 +2,6 @@ package com.epc.tendering.service.service.bid.impl;
 
 import com.epc.common.Result;
 import com.epc.common.constants.AnnouncementProcessStatusEnum;
-import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBids;
 import com.epc.tendering.service.domain.bid.TPurchaseProjectBidsCriteria;
 import com.epc.tendering.service.domain.bid.TWinBidNominate;
@@ -31,8 +30,8 @@ import java.util.List;
 * @Date: 2018/9/27
 */
 @Service
-public class WinBidRecordServiceImlp implements WinBidRecordService {
-    final static Logger LOGGER=LoggerFactory.getLogger(WinBidRecordServiceImlp.class);
+public class WinBidRecordServiceImpl implements WinBidRecordService {
+    final static Logger LOGGER=LoggerFactory.getLogger(WinBidRecordServiceImpl.class);
 
     @Autowired
     TWinBidNominateMapper tWinBidNominateMapper;

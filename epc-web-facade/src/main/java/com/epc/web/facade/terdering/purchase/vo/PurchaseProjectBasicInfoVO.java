@@ -51,5 +51,7 @@ public class PurchaseProjectBasicInfoVO implements Serializable {
     private String purchaseProjectStatus;
     @ApiModelProperty(value = "项目地址")
     private String projectAddress;
+    @ApiModelProperty(value = "创建人")
+    private String creator;
 
 }

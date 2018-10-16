@@ -4,6 +4,8 @@ import com.epc.tendering.service.domain.bid.LetterOfTender;
 import com.epc.tendering.service.domain.bid.LetterOfTenderCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
 public interface LetterOfTenderMapper {
@@ -38,4 +40,16 @@ public interface LetterOfTenderMapper {
     int updateByPrimaryKeyWithBLOBs(LetterOfTender record);
 
     int updateByPrimaryKey(LetterOfTender record);
+
+    /**
+     * 唱标 唱标备注为null count=0 false -->唱标已完成
+     * @param procurementProjectId
+     * @return
+     */
+    @Select("Select count(b.id) from letter_of_tender b where b.procurement_project_id =#{procurementProjectId} and b.memo IS NOT NULL")
+    @ResultType(Boolean.class)
+    Boolean getIdMEMO(Long procurementProjectId);
+
+    @Select("Select count(b.id) from letter_of_tender b where b.procurement_project_id =#{procurementProjectId}")
+    Integer getId(Long procurementProjectId);
 }

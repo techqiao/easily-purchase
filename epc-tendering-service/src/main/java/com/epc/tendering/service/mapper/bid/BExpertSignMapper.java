@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.BExpertSign;
 import com.epc.tendering.service.domain.bid.BExpertSignCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
@@ -32,9 +33,15 @@ public interface BExpertSignMapper {
 
     int updateByPrimaryKey(BExpertSign record);
 
+    /**
+     * 评标专家签到 总数量
+     * @param procurementProjectId
+     * @return
+     */
     @Select("Select count(b.id) from b_expert_sign b where b.procurement_project_id =#{procurementProjectId}")
     Integer getId(Long procurementProjectId);
 
     @Select("Select count(b.id) from b_expert_sign b where b.procurement_project_id =#{procurementProjectId} and b.is_leader = '1'")
-    Integer getIdLeader(Long procurementProjectId);
+    @ResultType(Boolean.class)
+    Boolean getIdLeader(Long procurementProjectId);
 }

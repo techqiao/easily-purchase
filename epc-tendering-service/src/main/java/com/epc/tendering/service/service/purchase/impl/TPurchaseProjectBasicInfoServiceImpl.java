@@ -20,10 +20,13 @@ import com.epc.tendering.service.mapper.bid.*;
 import com.epc.tendering.service.mapper.committee.BAssessmentCommitteeMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantMapper;
 import com.epc.tendering.service.mapper.participant.TPurchaseProjectParticipantPermissionMapper;
+import com.epc.tendering.service.mapper.pretrial.TPretrialMessageMapper;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchase.TProcurementProjectSupplierMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchaser.TProjectPurchaserEmployeeRelationMapper;
+import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
+import com.epc.tendering.service.mapper.signup.BInvitationMapper;
 import com.epc.tendering.service.mapper.winBid.TWinBidMapper;
 import com.epc.tendering.service.service.purchase.TPurchaseProjectBasicInfoService;
 import com.epc.web.facade.terdering.participant.handle.HandleParticipantBasicInfo;
@@ -85,6 +88,10 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
     private TWinBidMapper tWinBidMapper;
     @Autowired
     private BBidOpeningPayMapper bBidOpeningPayMapper;
+    @Autowired
+    private LetterOfTenderMapper letterOfTenderMapper;
+    @Autowired
+    private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
 
     @Override
     @Transactional
@@ -172,12 +179,13 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
 
     /**
      * 指定供应商
+     *
      * @param pojo
      * @param supplierIds
      */
     private void insertProjectSupplier(TPurchaseProjectBasicInfo pojo, List<Long> supplierIds) {
-        if(!CollectionUtils.isEmpty(supplierIds)
-                && pojo.getPurchaseRange().equals(Const.IS_OK.IS_OK)){
+        if (!CollectionUtils.isEmpty(supplierIds)
+                && pojo.getPurchaseRange().equals(Const.IS_OK.IS_OK)) {
             for (Long supplierId : supplierIds) {
                 TProcurementProjectSupplier projectSupplier = new TProcurementProjectSupplier();
                 projectSupplier.setProcurementProjectId(pojo.getId());
@@ -351,28 +359,148 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
         return Result.success(returnList);
     }
 
+    @Autowired
+    private TPretrialMessageMapper tPretrialMessageMapper;
+    @Autowired
+    private BInvitationMapper bInvitationMapper;
+    @Autowired
+    private BAnswerQuestionMapper bAnswerQuestionMapper;
+    @Autowired
+    private TTenderMessageMapper tTenderMessageMapper;
 
     @Override
     public Result<FlowVO> getFlowByProcurementProjectId(Long procurementProjectId) {
         FlowVO flowVO = new FlowVO();
-        flowVO.setAnnouncementId(bReleaseAnnouncementMapper.getId(procurementProjectId));
-        flowVO.setSaleDocumentsId(bSaleDocumentsMapper.getId(procurementProjectId));
-        flowVO.setEvaluationId(bEvaluationTenderStandardMapper.getId(procurementProjectId));
-        flowVO.setAssessmentCommitteeId(bAssessmentCommitteeMapper.getId(procurementProjectId));
-        flowVO.setOpeningRecordId(tOpeningRecordMapper.getId(procurementProjectId));
-        flowVO.setBidAnnouncement(tBidAnnouncementMapper.getId(procurementProjectId) > 0);
-        flowVO.setRecordPublicityId(tOpeningRecordPublicityMapper.getId(procurementProjectId));
-        flowVO.setExpertSign(bExpertSignMapper.getId(procurementProjectId) > 0);
-        flowVO.setExpertSignLeader(bExpertSignMapper.getIdLeader(procurementProjectId) > 0);
-        flowVO.setReport(bExpertScoreReportMapper.getId(procurementProjectId) > 0);
-        flowVO.setNominateId(tWinBidNominateMapper.getId(procurementProjectId));
-        flowVO.setWinBid(tWinBidMapper.getId(procurementProjectId) > 0);
-        flowVO.setOpeningPay(bBidOpeningPayMapper.getId(procurementProjectId) > 0);
+        //公告ID 状态=发布 --> 发布成功
+        Long announcementId = bReleaseAnnouncementMapper.getId(procurementProjectId);
+        //供应商资格审查 预审信息状态=审核 count=0 false -->审核完成
+        Boolean message = tPretrialMessageMapper.getMessage(procurementProjectId);
+        //供应商邀请  true --> 邀请完成
+        Boolean invitation = bInvitationMapper.getInvitation(procurementProjectId);
+        //发售招标文件ID 状态=发布 ->发布完成
+        Long bSaleDocumentsId = bSaleDocumentsMapper.getId(procurementProjectId);
+        //评标标准设定ID 状态=发布 ->发布完成
+        Long evaluationId = bEvaluationTenderStandardMapper.getId(procurementProjectId);
+        //招标文件答疑 状态为wait_reply 待回复 0 false ->已完成
+        Boolean question = bAnswerQuestionMapper.getId(procurementProjectId);
+        //确认供应商数量 3家为可以进行下一步
+        Boolean countSupplier = tTenderMessageMapper.countSupplier(procurementProjectId) > 2;
+        //组建评委会ID 状态为2 通过 ->已完成
+        Long committeeId = bAssessmentCommitteeMapper.getId(procurementProjectId);
+        //开标ID 状态为1 正常 true 已完成
+        Boolean openingRecord = tOpeningRecordMapper.getId(procurementProjectId);
+        //唱标 唱标备注为null count=0 false -->唱标已完成
+        Boolean tender = letterOfTenderMapper.getIdMEMO(procurementProjectId);
+        //公示开标记录ID 开标记录为已发布 ->已完成
+        Long recordPublicityId = tOpeningRecordPublicityMapper.getId(procurementProjectId);
+        //评标专家是否签到 true 签到完成
+        Integer totalNumber = bAssessmentCommitteeMapper.getTotalNumber(procurementProjectId);
+        Integer number = bExpertSignMapper.getId(procurementProjectId);
+        Boolean expert =Boolean.FALSE;
+        if (totalNumber != null) {
+            expert  = (totalNumber-number==0);
+        }
+        //专家评审 专家签到 true 设定组长完成
+        Boolean idLeader = bExpertSignMapper.getIdLeader(procurementProjectId);
+        //评审报告 true 评审报告发布完成
+        Boolean report = (tPurchaseProjectBidsMapper.getBidsNum(procurementProjectId) - bExpertScoreReportMapper.getId(procurementProjectId) == 0);
+        //中标公示ID
+        Long winBidNominateId = tWinBidNominateMapper.getId(procurementProjectId);
+        //中标通知书ID
+        Long winBidId = tWinBidMapper.getId(procurementProjectId);
+        //退还保证金ID
+        Long payId = bBidOpeningPayMapper.getId(procurementProjectId);
+        if(payId!=null){
+            flowVO.setStep("pay");
+            flowVO.setId(payId);
+            return Result.success(flowVO);
+        }
+        if(winBidId!=null){
+            flowVO.setStep("winBid");
+            flowVO.setId(winBidId);
+            return Result.success(flowVO);
+        }
+        if(winBidNominateId!=null){
+            flowVO.setStep("winBidNominate");
+            flowVO.setId(winBidNominateId);
+            return Result.success(flowVO);
+        }
+        if(report){
+            flowVO.setStep("report");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(idLeader){
+            flowVO.setStep("idLeader");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(expert){
+            flowVO.setStep("expert");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(recordPublicityId!=null){
+            flowVO.setStep("recordPublicity");
+            flowVO.setId(recordPublicityId);
+            return Result.success(flowVO);
+        }
+        if(!tender){
+            flowVO.setStep("tender");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(openingRecord){
+            flowVO.setStep("openingRecord");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(committeeId!=null){
+            flowVO.setStep("committee");
+            flowVO.setId(committeeId);
+            return Result.success(flowVO);
+        }
+        if(countSupplier){
+            flowVO.setStep("countSupplier");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(!question){
+            flowVO.setStep("question");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if(evaluationId!=null){
+            flowVO.setStep("evaluation");
+            flowVO.setId(evaluationId);
+            return Result.success(flowVO);
+        }
+        if(bSaleDocumentsId!=null){
+            flowVO.setStep("bSaleDocuments");
+            flowVO.setId(bSaleDocumentsId);
+            return Result.success(flowVO);
+        }
+        if(invitation){
+            flowVO.setStep("invitation");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if (!message) {
+            flowVO.setStep("message");
+            flowVO.setId(null);
+            return Result.success(flowVO);
+        }
+        if (announcementId != null) {
+            flowVO.setStep("announcement");
+            flowVO.setId(announcementId);
+            return Result.success(flowVO);
+        }
         return Result.success(flowVO);
     }
 
     /**
      * 条件过滤查询
+     *
      * @param queryPurchaseBasicInfoVO
      * @param criteria
      * @param subCriteria

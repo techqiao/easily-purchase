@@ -15,8 +15,6 @@
         <module>epc-mobile-gateway</module>
         <!--  移动端接口服务      -->
         <module>epc-mobile-client</module>
-        <!--  移动端接口api      -->
-        <module>epc-mobile-facade</module>
         <!--  管理后台运营商数据服务      -->
         <module>epc-operator-service</module>
         <!--  管理后台平台数据服务      -->

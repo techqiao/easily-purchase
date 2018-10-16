@@ -1,20 +1,26 @@
 package com.epc.tendering.service.controller.bid;
 
 import com.epc.common.Result;
+import com.epc.tendering.service.controller.common.BaseController;
 import com.epc.tendering.service.service.bid.EvaluationService;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
 import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.query.evaluation.QueryEvaluation;
 import com.epc.web.facade.bidding.vo.ClauseTemplateVO;
 import com.epc.web.facade.bidding.vo.GuaranteeVO;
 import com.epc.web.facade.bidding.vo.SubEvaluationV0;
 import com.epc.web.facade.bidding.vo.TPretrialFileVO;
+import com.epc.web.facade.terdering.purchase.vo.PurchaseProjectBasicInfoVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easilys
@@ -23,7 +29,7 @@ import java.util.List;
  * <p>EvaluationController
  */
 @RestController
-public class EvaluationController implements FacadeEvaluationService {
+public class EvaluationController extends BaseController implements FacadeEvaluationService {
 
     @Autowired
     private EvaluationService evaluationService;
@@ -44,8 +50,11 @@ public class EvaluationController implements FacadeEvaluationService {
     }
 
     @Override
-    public Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(@RequestParam("purchaseProjectId") Long purchaseProjectId) {
-        return evaluationService.getFilesByPurchaseProjectId(purchaseProjectId);
+    public Result<Map<String, Object>> getFilesByPurchaseProjectId(@RequestBody QueryEvaluation queryEvaluation) {
+        PageHelper.startPage(queryEvaluation.getPage(),queryEvaluation.getRows());
+        Result<List<TPretrialFileVO>> result = evaluationService.getFilesByPurchaseProjectId(queryEvaluation.getPurchaseProjectId());
+        PageInfo<TPretrialFileVO> pageInfo = new PageInfo<>(result.getData());
+        return Result.success(getDataTable(pageInfo));
     }
 
     @Override

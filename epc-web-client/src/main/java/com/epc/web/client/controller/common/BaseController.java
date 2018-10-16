@@ -52,9 +52,11 @@ public class BaseController {
             StringRedisSerializer redisSerializer = new StringRedisSerializer();
             redisTemplate.setKeySerializer(redisSerializer);
             LoginUser loginUser = (LoginUser) redisTemplate.opsForValue().get(header);
-            ClientLoginUser user = new ClientLoginUser();
-            BeanUtils.copyProperties(loginUser,user);
-            return user;
+            if(loginUser!=null) {
+                ClientLoginUser user = new ClientLoginUser();
+                BeanUtils.copyProperties(loginUser, user);
+                return user;
+            }
         }
         return null;
     }

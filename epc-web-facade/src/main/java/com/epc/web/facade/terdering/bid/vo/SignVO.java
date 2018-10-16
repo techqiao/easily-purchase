@@ -18,4 +18,6 @@ public class SignVO {
     private List<ExpertSignVO> signVOList;
     @ApiModelProperty(value = "标段ID")
     private Long bidId;
+    @ApiModelProperty(value = "标段名称")
+    private String bidName;
 }

@@ -49,6 +49,7 @@ public class ExpertScoreServiceImpl implements ExpertScoreService {
         for (Long bidsId : bidsIdList) {
             BidderListVO bidderListVO = new BidderListVO();
             bidderListVO.setBidsId(bidsId);
+            bidderListVO.setBidName(tPurchaseProjectBidsMapper.getBidName(bidsId));
             List<BidderVO> list = new ArrayList<>();
             TOpeningRecordCriteria criteria = new TOpeningRecordCriteria();
             criteria.createCriteria().andBidsIdEqualTo(bidsId).andStatusEqualTo(Const.IS_OK.IS_OK);

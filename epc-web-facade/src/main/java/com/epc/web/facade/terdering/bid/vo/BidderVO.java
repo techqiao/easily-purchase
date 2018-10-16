@@ -1,5 +1,7 @@
 package com.epc.web.facade.terdering.bid.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -8,21 +10,14 @@ import lombok.Data;
  * <p>@Author : wjq
  */
 @Data
+@ApiModel(value = "投标人信息")
 public class BidderVO {
-    /**
-     * 标段ID
-     */
+    @ApiModelProperty(value = "标段ID")
     private Long bidsId;
-    /**
-     * 供应商ID
-     */
+    @ApiModelProperty(value = "供应商ID")
     private Long supplierId;
-    /**
-     * 供应商公司名称
-     */
+    @ApiModelProperty(value = "供应商公司名称")
     private String supplierCompanyName;
-    /**
-     * 状态 待评分 已评分
-     */
+    @ApiModelProperty(value = "状态 待评分wait 已评分already")
     private String status;
 }

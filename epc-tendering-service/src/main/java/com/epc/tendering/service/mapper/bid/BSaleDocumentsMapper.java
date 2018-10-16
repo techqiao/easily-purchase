@@ -32,8 +32,8 @@ public interface BSaleDocumentsMapper {
 
     int updateByPrimaryKey(BSaleDocuments record);
 
-    @Select("Select b.bidding_documents_download_url from b_sale_documents b where b.procurement_project_id=#{procurementProjectId}")
-    String getUrl(Long procurementProjectId);
+    @Select("Select b.bidding_documents_download_url from b_sale_documents b where b.procurement_project_id=#{procurementProjectId} and process_status='released'")
+    List<String> getUrl(Long procurementProjectId);
 
     /**
      * 招标文件为已发布 完成

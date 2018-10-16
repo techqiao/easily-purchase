@@ -51,4 +51,7 @@ public interface TPurchaserDetailInfoMapper {
 
 
     List<ProjectOperatorCompany> selectCompanyNameByCriteria(@Param("tPurchaseProjectBasicInfos") List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos, @Param("purchaserName") String purchaserName);
+
+    TPurchaserDetailInfo selectDetailByCriteria(@Param("companName") String companyName, @Param("publicBankAccout") String publicBankCount, @Param("uniformCode") String uniformCreditCode);
+
 }

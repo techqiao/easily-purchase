@@ -110,4 +110,6 @@ public interface TAgencyDetailInfoMapper {
 
     List<PurchaserAgencyVo> selectAgencyByCriteria(QueryAgencyDto dto);
 
+    TAgencyDetailInfo selectDetailByCriteria(@Param("cpN") String companyName, @Param("pBC") String publicBankCount, @Param("uCC") String uniformCreditCode);
+
 }

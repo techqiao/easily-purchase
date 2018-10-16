@@ -415,6 +415,9 @@
     </if>
   </select>
   <select id="selectEmployee" resultMap="BaseResultMap" parameterType="com.epc.web.facade.agency.dto.AgencyEmployeeDto">
+    <if test="name!=null">
+      <bind name="pattern" value="'%'+name+'%'"/>
+    </if>
     SELECT
     <include refid="Base_Column_List"/>
     FROM
@@ -422,7 +425,7 @@
     <where>
       agency_id = #{agencyId,jdbcType=BIGINT}
       <if test="name != null" >
-       AND `name` = #{name,jdbcType=VARCHAR}
+       AND `name` LIKE  #{pattern}
       </if>
       <if test="cellphone != null" >
         AND cellphone = #{cellphone,jdbcType=CHAR}
@@ -440,6 +443,7 @@
         AND id = #{employeeId}
       </if>
       AND is_deleted =0
+      AND state =5
     </where>
   </select>
   <select id="selectAgencyBasicByCellphoneAndName"

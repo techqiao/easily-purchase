@@ -442,4 +442,11 @@
             </if>
         </where>
     </select>
+    <select id="selectDetailByCriteria" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_agency_detail_info
+        WHERE company_name =#{cpN}
+        OR uniform_credit_code =#{uCC}
+        OR public_ban_account_number =#{pBC}
+    </select>
 </mapper>

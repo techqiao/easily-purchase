@@ -514,7 +514,7 @@
 
     </select>
     <select id="selectBasicInfosByProjectIdsAndCriteria"
-            resultMap="BaseResultMap">
+            resultMap="BaseResultMap" parameterType="com.epc.web.facade.expert.dto.ProjectDto">
         <if test="projectName!=null">
             <bind name="pattern" value="'%'+projectName+'%'"/>
         </if>
@@ -529,6 +529,9 @@
             </foreach>
             <if test="projectName!=null">
                 AND project_name Like #{pattern}
+            </if>
+            <if test="isEnd!=null">
+                AND is_end =#{isEnd}
             </if>
             <!--<if test="purchaserName!=null">-->
             <!--AND project_name Like #{pattern}-->

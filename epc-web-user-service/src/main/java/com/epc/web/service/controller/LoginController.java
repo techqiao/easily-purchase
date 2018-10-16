@@ -1,14 +1,8 @@
 package com.epc.web.service.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.epc.common.Result;
-import com.epc.common.constants.Const;
-import com.epc.common.constants.ErrorMessagesEnum;
 import com.epc.common.util.CookieUtil;
-import com.epc.common.util.MD5Util;
-import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.FacadeLoginUserService;
-import com.epc.web.facade.loginuser.dto.LoginUser;
 import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
@@ -18,14 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author :winlin
@@ -36,7 +22,7 @@ import java.util.UUID;
  */
 @RestController
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoginController implements FacadeLoginUserService {
+public class LoginController  implements FacadeLoginUserService {
 
     @Autowired
     IRoleLoginService iRoleLoginService;

@@ -149,7 +149,7 @@ public class PurchaserHystrix implements FacadePurchaserService {
 
 
     @Override
-    public Result selectPurchaserProjectStatus(Long id, Integer userType, String stepType) {
+    public Result selectPurchaserProjectStatus(RoleProjectProcessDetail detail) {
         return Result.hystrixError();
     }
 

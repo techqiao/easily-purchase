@@ -194,20 +194,10 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
             Date date = new Date();
             //专家不存在,在公库中添加详细的信息
             TExpertBasicInfo expertBasicInfo = new TExpertBasicInfo();
-            expertBasicInfo.setName(handleExpert.getName());
-            expertBasicInfo.setCellphone(handleExpert.getCellphone());
-            expertBasicInfo.setProfession(handleExpert.getProfession());
-            expertBasicInfo.setPositional(handleExpert.getPositional());
-            expertBasicInfo.setLevel(handleExpert.getLevel());
-            expertBasicInfo.setWorkingYears(handleExpert.getWorkingYears());
+            BeanUtils.copyProperties(handleExpert,expertBasicInfo,"id");
             expertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
-            expertBasicInfo.setCircularDt(handleExpert.getCircularDt());
-            expertBasicInfo.setCircularDtEnd(handleExpert.getCircularDtEnd());
-            expertBasicInfo.setCircularMethod(handleExpert.getCircularMethod());
-            expertBasicInfo.setOtherInformation(handleExpert.getOtherInformation());
             expertBasicInfo.setInviterType(Const.INVITER_TYPE.PROXY);
             expertBasicInfo.setInviterId(handleExpert.getInviterid());
-            expertBasicInfo.setInviterCompanyId(Integer.parseInt(handleExpert.getInvterCompanyId()));
             expertBasicInfo.setState(Const.STATE.REGISTERED);
             expertBasicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
             expertBasicInfo.setCreateAt(date);
@@ -221,53 +211,18 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
                 //添加信息到公库
                 tExpertBasicInfoMapper.insertSelective(expertBasicInfo);
                 Long expertId = expertBasicInfo.getId();
-
                 //获得代理机构公司的信息
                 TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
                 //添加专家detail表
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
                 if (detailInfo != null) {
-                    tExpertDetailInfo.setCompanyName(detailInfo.getCompanyName());
-                    tExpertDetailInfo.setProvince(detailInfo.getProvince());
-                    tExpertDetailInfo.setCity(detailInfo.getCity());
-                    tExpertDetailInfo.setArea(detailInfo.getArea());
-                    tExpertDetailInfo.setCompanyAddress(detailInfo.getCompanyAddress());
-                    tExpertDetailInfo.setUniformCreditCode(detailInfo.getUniformCreditCode());
-                    tExpertDetailInfo.setPublicBankName(detailInfo.getPublicBankName());
-                    tExpertDetailInfo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
+                    BeanUtils.copyProperties(detailInfo,tExpertDetailInfo,"id");
                     tExpertDetailInfo.setCreateAt(date);
                     tExpertDetailInfo.setUpdateAt(date);
                     tExpertDetailInfo.setExpertId(expertId);
                     tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
                 }
-                //身份附件
-                TExpertAttachment attachments = new TExpertAttachment();
-                attachments.setExpertId(expertId);
-                attachments.setUpdateAt(date);
-                attachments.setCreateAt(date);
-                //身份证正面照片url
-                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-                attachments.setCertificateFilePath(handleExpert.getLegalIdCardPositive());
-                tExpertAttachmentMapper.insertSelective(attachments);
-                //身份证反面照片url
-                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-                attachments.setCertificateFilePath(handleExpert.getLegalIdCardOther());
-                tExpertAttachmentMapper.insertSelective(attachments);
-                //附件信息入库
-                if (!CollectionUtils.isEmpty(list) && expertId != null) {
-                    for (Attachement att : list) {
-                        TExpertAttachment attachment = new TExpertAttachment();
-                        BeanUtils.copyProperties(att, attachment);
-                        attachment.setExpertId(expertId);
-                        attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                        attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                        attachment.setCreateAt(date);
-                        attachment.setUpdateAt(date);
-                        tExpertAttachmentMapper.insertSelective(attachment);
-                    }
-                }
+                super.updateExpertAttachment(list,handleExpert.getLegalIdCardPositive(),handleExpert.getLegalIdCardOther(),expertId);
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -317,19 +272,16 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
             basicInfo.setUpdateAt(new Date());
             basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             basicInfo.setIsForbidden(Const.ENABLE_OR_DISABLE.ENABLE);
-            //详细信息封装
-            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
-            detailInfo.setCompanyName(handleSupplier.getCompanyName());
-            detailInfo.setCompanyAddress(handleSupplier.getCompanyAddress());
-            detailInfo.setProvince(handleSupplier.getProvince());
-            detailInfo.setCity(handleSupplier.getCity());
-            detailInfo.setArea(handleSupplier.getArea());
-            detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
-            detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
-            detailInfo.setPublicBanAccountNumber(handleSupplier.getPublicBanAccountNumber());
+            //详细信息封装,公司信息唯一性验证
+            TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectDetailByCriteria(handleSupplier.getCompanyName(), handleSupplier.getPublicBanAccountNumber(), handleSupplier.getUniformCreditCode());
+            Result result = super.whichIsDuplicateForSupplier(detailInfo, handleSupplier.getCompanyName(), handleSupplier.getUniformCreditCode(), handleSupplier.getPublicBanAccountNumber());
+            if (result != null) {
+                return result;
+            }
+            detailInfo = new TSupplierDetailInfo();
+            BeanUtils.copyProperties(handleSupplier,detailInfo,"id","supplierId");
             detailInfo.setCreateAt(date);
             detailInfo.setUpdateAt(date);
-            detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             try {
                 tSupplierBasicInfoMapper.insertSelective(basicInfo);
                 //供货商id
@@ -339,41 +291,9 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
                 tSupplierBasicInfoMapper.updateByPrimaryKey(basicInfo);
                 detailInfo.setSupplierId(basicInfo.getId());
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
-                //身份附件
-                TSupplierAttachment attachments = new TSupplierAttachment();
-                attachments.setSupplierId(supplierId);
-                attachments.setUpdateAt(date);
-                attachments.setCreateAt(date);
-                //身份证正面照片url
-                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getCode());
-                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_POSITIVE.getDesc());
-                attachments.setCertificateFilePath(handleSupplier.getLegalIdCardPositive());
-                tSupplierAttachmentMapper.insertSelective(attachments);
-                //法人身份证反面照片url
-                attachments.setCertificateType(AttachmentEnum.LEGAL_ID_CARD_OTHER.getCode());
-                attachments.setCertificateName(AttachmentEnum.LEGAL_ID_CARD_OTHER.getDesc());
-                attachments.setCertificateFilePath(handleSupplier.getLegalIdCardOther());
-                tSupplierAttachmentMapper.insertSelective(attachments);
-                //营业执照照片url
-                attachments.setCertificateType(AttachmentEnum.BUSINESS_LICENSE.getCode());
-                attachments.setCertificateName(AttachmentEnum.BUSINESS_LICENSE.getDesc());
-                attachments.setCertificateFilePath(handleSupplier.getBusinessLicense());
-                tSupplierAttachmentMapper.insertSelective(attachments);
                 //附件信息
                 List<Attachement> list = handleSupplier.getAtts();
-                if (!CollectionUtils.isEmpty(list)) {
-                    for (Attachement att : list) {
-                        TSupplierAttachment attachment = new TSupplierAttachment();
-                        BeanUtils.copyProperties(att, attachment);
-                        attachment.setSupplierId(supplierId);
-                        attachment.setCertificateType(AttachmentEnum.QUALIFICATION_CERTIFICATE.getCode());
-                        attachment.setCertificateName(AttachmentEnum.QUALIFICATION_CERTIFICATE.getDesc());
-                        attachment.setCreateAt(date);
-                        attachment.setUpdateAt(date);
-                        tSupplierAttachmentMapper.insertSelective(attachment);
-                    }
-                }
-
+                super.updateSupplierAttachment(list,handleSupplier.getLegalIdCardPositive(),handleSupplier.getLegalIdCardOther(),handleSupplier.getBusinessLicense(),supplierId);
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -589,18 +509,15 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
         basicInfo.setCreateAt(date);
         basicInfo.setUpdateAt(date);
         basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-
+        TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectDetailByCriteria(agency.getCompanyName(), agency.getPublicBanAccountNumber(), agency.getUniformCreditCode());
+        Result result = super.whichIsDuplicateForAgency(detailInfo, agency.getCompanyName(), agency.getUniformCreditCode(), agency.getPublicBanAccountNumber());
+        if (result != null) {
+            return result;
+        }
         //分装添加的条件
-        TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
+        detailInfo = new TAgencyDetailInfo();
+        BeanUtils.copyProperties(agency,detailInfo,"id");
         detailInfo.setAgencyId(agencyId);
-        detailInfo.setCompanyName(agency.getCompanyName());
-        detailInfo.setCompanyAddress(agency.getCompanyAddress());
-        detailInfo.setProvince(agency.getProvince());
-        detailInfo.setCity(agency.getCity());
-        detailInfo.setArea(agency.getArea());
-        detailInfo.setUniformCreditCode(agency.getUniformCreditCode());
-        detailInfo.setPublicBankName(agency.getPublicBankName());
-        detailInfo.setPublicBanAccountNumber(agency.getPublicBanAccountNumber());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
         basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -616,7 +533,7 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
             int records = tAgencyAttachmentMapper.selectCountByAgencyId(agencyId);
             //List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
             List<Attachement> list = agency.getAtts();
-            if (records>0) {
+            if (records > 0) {
                 tAgencyAttachmentMapper.deleteAttachmentByAgencyId(agencyId);
                 super.updateAgencyAttachment(list, agency.getLegalIdCardPositive(), agency.getLegalIdCardOther(), agency.getBusinessLicense(), agencyId);
             } else {
@@ -1102,15 +1019,15 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
         //操作时间
         Date date = new Date();
         try {
-            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
+            //公司信息唯一性的验证
+            TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectDetailByCriteria(dto.getCompanyName(), dto.getPublicBankCount(), dto.getUniformCreditCode());
+            Result result = super.whichIsDuplicateForSupplier(detailInfo, dto.getCompanyName(), dto.getUniformCreditCode(), dto.getPublicBankCount());
+            if (result != null) {
+                return result;
+            }
+            detailInfo = new TSupplierDetailInfo();
+            BeanUtils.copyProperties(dto,detailInfo,"id");
             detailInfo.setSupplierId(supplierId);
-            detailInfo.setCompanyName(dto.getCompanyName());
-            detailInfo.setCompanyAddress(dto.getCompanyAddress());
-            detailInfo.setProvince(dto.getProvince());
-            detailInfo.setCity(dto.getCity());
-            detailInfo.setArea(dto.getArea());
-            detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-            detailInfo.setPublicBankName(dto.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
             detailInfo.setCreateAt(date);
             detailInfo.setUpdateAt(date);
@@ -1127,7 +1044,7 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
             int records = tSupplierAttachmentMapper.selectCountBySupplierId(supplierId);
             //List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
             List<Attachement> list = dto.getAtts();
-            if (records>0) {
+            if (records > 0) {
                 super.updateSupplierAttachment(list, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), supplierId);
             } else {
                 tSupplierAttachmentMapper.deleteAttachamentById(supplierId);
@@ -1171,24 +1088,16 @@ public class AgencyServiceImpl extends UpdateAttachment implements AgencyService
             TAgencyDetailInfo tAgencyDetailInfo = tAgencyDetailInfoMapper.selectAgencyDetailByAgencyId(agencyId);
             if (tAgencyDetailInfo != null) {
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+                BeanUtils.copyProperties(tAgencyDetailInfo,tExpertDetailInfo,"id");
                 tExpertDetailInfo.setExpertId(info.getId());
-                tExpertDetailInfo.setCompanyName(tAgencyDetailInfo.getCompanyName());
-                tExpertDetailInfo.setProvince(tAgencyDetailInfo.getProvince());
-                tExpertDetailInfo.setCity(tAgencyDetailInfo.getCity());
-                tExpertDetailInfo.setArea(tAgencyDetailInfo.getArea());
-                tExpertDetailInfo.setCompanyAddress(tAgencyDetailInfo.getCompanyAddress());
-                tExpertDetailInfo.setUniformCreditCode(tAgencyDetailInfo.getUniformCreditCode());
-                tExpertDetailInfo.setPublicBankName(tAgencyDetailInfo.getPublicBankName());
-                tExpertDetailInfo.setPublicBanAccountNumber(tAgencyDetailInfo.getPublicBanAccountNumber());
                 tExpertDetailInfo.setCreateAt(new Date());
                 tExpertDetailInfo.setUpdateAt(new Date());
                 tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
             }
             //查询附件信息状态
             int records = tExpertAttachmentMapper.selectAttchamentNumsByExpertId(info.getId());
-            //List<TExpertAttachment> list = tExpertAttachmentMapper.selectAttchamentByExpertId(info.getId());
             List<Attachement> atts = dto.getAtts();
-            if (records>0) {
+            if (records > 0) {
                 super.updateExpertAttachment(atts, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), info.getId());
             } else {
                 tExpertAttachmentMapper.deleteByAttachmentByExpertId(info.getId());

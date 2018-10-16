@@ -63,8 +63,9 @@ public class TBidAnnouncementController implements FacadeBidAnnouncementService 
     }
 
     @Override
-    public Result<Boolean> insertLetterTenderMemo(@RequestBody HandleLetterTenderMemo handleLetterTenderMemo) {
+    public Result<Boolean> insertLetterTenderMemo(List<HandleLetterTenderMemo> handleLetterTenderMemo) {
         return bidAnnouncementService.insertLetterTenderMemo(handleLetterTenderMemo);
     }
+
 
 }

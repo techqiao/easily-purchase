@@ -60,5 +60,5 @@ public interface FacadeBidAnnouncementService {
      * @return
      */
     @PostMapping(value = "insertLetterTenderMemo", consumes = "application/json; charset=UTF-8")
-    Result<Boolean> insertLetterTenderMemo(@RequestBody HandleLetterTenderMemo handleLetterTenderMemo);
+    Result<Boolean> insertLetterTenderMemo(@RequestBody List<HandleLetterTenderMemo> handleLetterTenderMemo);
 }

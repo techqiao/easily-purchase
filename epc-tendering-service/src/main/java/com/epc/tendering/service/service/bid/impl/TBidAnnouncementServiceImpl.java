@@ -19,8 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -49,7 +52,8 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
     private LetterOfTenderMapper letterOfTenderMapper;
     @Autowired
     private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
-
+    @Autowired
+    private TransactionTemplate transactionTemplate;
     /**
      * 查询唱标记录路径
      * @return
@@ -90,11 +94,19 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
     }
 
     @Override
-    public Result<Boolean> insertLetterTenderMemo(HandleLetterTenderMemo handleLetterTenderMemo) {
-        LetterOfTender letterOfTender = new LetterOfTender();
-        letterOfTender.setId(handleLetterTenderMemo.getId());
-        letterOfTender.setMemo(handleLetterTenderMemo.getMemo());
-        return Result.success(letterOfTenderMapper.updateByPrimaryKeyWithBLOBs(letterOfTender) > 0);
+    public Result<Boolean> insertLetterTenderMemo(List<HandleLetterTenderMemo> handleLetterTenderMemo) {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                for (HandleLetterTenderMemo letterTenderMemo : handleLetterTenderMemo) {
+                    LetterOfTender letterOfTender = new LetterOfTender();
+                    letterOfTender.setId(letterTenderMemo.getId());
+                    letterOfTender.setMemo(letterTenderMemo.getMemo());
+                    letterOfTenderMapper.updateByPrimaryKeyWithBLOBs(letterOfTender);
+                }
+            }
+        });
+        return Result.success();
     }
 
     /**

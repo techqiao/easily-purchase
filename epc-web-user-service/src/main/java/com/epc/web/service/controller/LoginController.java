@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoginController  implements FacadeLoginUserService {
+public class LoginController  implements FacadeLoginUserService{
 
     @Autowired
     IRoleLoginService iRoleLoginService;
@@ -93,6 +93,7 @@ public class LoginController  implements FacadeLoginUserService {
                 return Result.error("密码修改失败");
         }
     }
+
 
     @Override
     public Result retrieveVerifyCode(@PathVariable("cellphone") String cellphone) {

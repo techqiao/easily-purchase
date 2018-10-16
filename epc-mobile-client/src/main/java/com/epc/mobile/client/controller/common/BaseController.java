@@ -2,7 +2,7 @@ package com.epc.mobile.client.controller.common;
 
 import com.alibaba.fastjson.JSONObject;
 import com.epc.common.util.CookieUtil;
-import com.epc.mobile.client.controller.loginuser.ClientLoginUser;
+import com.epc.mobile.client.controller.loginuser.vo.ClientLoginUser;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;

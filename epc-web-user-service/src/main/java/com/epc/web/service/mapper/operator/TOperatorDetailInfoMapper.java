@@ -37,4 +37,6 @@ public interface TOperatorDetailInfoMapper {
     /*wenlin*/
     TOperatorDetailInfo selectOperatorDetailByOperatorId(Long operatorId);
 
+    TOperatorDetailInfo selectDetailByCriteria(@Param("companyName") String companyName, @Param("uniformCode") String uniformCreditCode, @Param("publicBankNum") String publicBanAccountNumber);
+
 }

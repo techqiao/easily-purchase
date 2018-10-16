@@ -58,4 +58,6 @@ public class BaseController {
         redisTemplate.expire(listKey, 10, TimeUnit.MINUTES);
     }
 
+
+
 }

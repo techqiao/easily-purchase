@@ -7,6 +7,7 @@ import com.epc.web.facade.agency.handle.Attachement;
 import com.epc.web.service.domain.agency.TAgencyAttachment;
 import com.epc.web.service.domain.agency.TAgencyDetailInfo;
 import com.epc.web.service.domain.expert.TExpertAttachment;
+import com.epc.web.service.domain.operator.TOperatorDetailInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserAttachment;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
 import com.epc.web.service.domain.supplier.TSupplierAttachment;
@@ -215,6 +216,20 @@ public class UpdateAttachment {
     }
 
     public Result whichIsDuplicateForSupplier(TSupplierDetailInfo detailInfo, String companyName, String uniformCreditCode, String publicBanAccountNumber) {
+        if (detailInfo != null) {
+            if (detailInfo.getPublicBanAccountNumber().equals(publicBanAccountNumber)) {
+                return Result.success("对公账号已存在");
+            }
+            if (detailInfo.getUniformCreditCode().equals(uniformCreditCode)) {
+                return Result.success("统一信用编码已存在");
+            }
+            if (detailInfo.getCompanyName().equals(companyName)) {
+                return Result.success("公司已存在");
+            }
+        }
+        return null;
+    }
+    public Result whichIsDuplicateForOpertator(TOperatorDetailInfo detailInfo, String companyName, String uniformCreditCode, String publicBanAccountNumber) {
         if (detailInfo != null) {
             if (detailInfo.getPublicBanAccountNumber().equals(publicBanAccountNumber)) {
                 return Result.success("对公账号已存在");

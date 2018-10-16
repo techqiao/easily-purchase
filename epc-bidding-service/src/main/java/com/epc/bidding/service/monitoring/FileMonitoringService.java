@@ -15,5 +15,5 @@ public interface FileMonitoringService {
 
      Result<Boolean> createMonitoringFile(HandleMonitoringFile handle);
 
-    Result<List<listMonitorVO>> listMonitor(QueryListMonitor queryListMonitor);
+    List<listMonitorVO> listMonitor(QueryListMonitor queryListMonitor);
 }

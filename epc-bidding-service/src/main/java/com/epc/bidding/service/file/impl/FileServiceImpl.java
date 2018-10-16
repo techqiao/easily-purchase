@@ -3,7 +3,7 @@ package com.epc.bidding.service.file.impl;
 import com.epc.bidding.domain.*;
 import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.file.FileService;
-import com.epc.bidding.service.monitoring.impl.FileMonitoringServiceImpl;
+import com.epc.bidding.service.monitoring.FileMonitoringService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.LoginTypeEnum;
@@ -41,6 +41,8 @@ public class FileServiceImpl implements FileService {
     LetterOfTenderMapper letterOfTenderMapper;
     @Autowired
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
+    @Autowired
+    FileMonitoringService fileMonitoringService;
     /**
      * 投标文件记录(新增/修改/删除)
      * @param handleNotice
@@ -51,12 +53,12 @@ public class FileServiceImpl implements FileService {
     public Result<Boolean> insertNotice(HandleNotice handleNotice){
 
         //新增监控记录
-        FileMonitoringServiceImpl fileMonitoringServiceImpl=new FileMonitoringServiceImpl();
         HandleMonitoringFile  handleMonitoringFile=new HandleMonitoringFile();
-        handleMonitoringFile.setOperateType(LoginTypeEnum.EXPERT.getCode());
+        handleMonitoringFile.setOperateType(LoginTypeEnum.SUPPLIER.getCode());
         handleMonitoringFile.setOperateId(handleNotice.getOperateId());
+        handleMonitoringFile.setOperater(handleNotice.getOperateName());
         handleMonitoringFile.setCreateAt(new Date());
-
+        handleMonitoringFile.setUpdateAt(new Date());
         //删除
         if(handleNotice.getId()!=null && handleNotice.getIsDelete()==1){
             try{
@@ -126,6 +128,7 @@ public class FileServiceImpl implements FileService {
             letter.setCreateAt(new Date());
             letter.setUpdateAt(new Date());
             TPurchaseProjectBids tPurchaseProjectBids =tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
+            handleMonitoringFile.setProjectId(tPurchaseProjectBids.getProjectId());
             entity.setPurchaseProjectId(tPurchaseProjectBids.getPurchaseProjectId());
             letter.setProcurementProjectId(tPurchaseProjectBids.getPurchaseProjectId());
             try{
@@ -158,7 +161,6 @@ public class FileServiceImpl implements FileService {
             tTenderFile.setCreateAt(new Date());
             tTenderFile.setUpdateAt(new Date());
             tTenderFile.setOperateId(handleNotice.getOperateId());
-
             if(file.getId()!=null){
                 //文件id不为空则修改记录
                 try{
@@ -173,9 +175,10 @@ public class FileServiceImpl implements FileService {
                 try{
                     tTenderFileMapper.insertSelective(tTenderFile);
                     //新增文件监控
-                    handleMonitoringFile.setFileType(MonitoringFileEnum.TENDER_DOCUMENTS.getCode());
                     BeanUtils.copyProperties(tTenderFile,handleMonitoringFile);
-                    fileMonitoringServiceImpl.createMonitoringFile(handleMonitoringFile);
+                    handleMonitoringFile.setFileId(tTenderFile.getId());
+                    handleMonitoringFile.setFileType(MonitoringFileEnum.BIDDING_DOCUMENTS.getCode());
+                    fileMonitoringService.createMonitoringFile(handleMonitoringFile);
                 }catch(Exception e){
                     LOGGER.error("insertSelective_"+e.getMessage());
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

@@ -14,6 +14,7 @@ import com.epc.web.facade.bidding.query.monitor.file.QueryMonitoringFileDTO;
 import com.epc.web.facade.bidding.query.monitor.list.QueryListMonitor;
 import com.epc.web.facade.bidding.vo.MonitorFileVO;
 import com.epc.web.facade.bidding.vo.listMonitorVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -115,7 +116,7 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
      * @return
      */
     @Override
-    public Result<List<listMonitorVO>> listMonitor(QueryListMonitor queryListMonitor){
+    public List<listMonitorVO> listMonitor(QueryListMonitor queryListMonitor){
         TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
         TPurchaseProjectParticipantPermissionCriteria.Criteria newCriteria=criteria.createCriteria();
         newCriteria.andUserIdEqualTo(queryListMonitor.getSupplier());
@@ -129,13 +130,29 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
         for(TPurchaseProjectParticipantPermission entity:result){
                 listMonitorVO vo =new listMonitorVO();
                 TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
+                //模糊查询
+                if(StringUtils.isNotEmpty(queryListMonitor.getProjectName())){
+                    if(!tPurchaseProjectBasicInfo.getProjectName().contains(queryListMonitor.getProjectName())){
+                        continue;
+                     }
+                }
+                if(StringUtils.isNotEmpty(queryListMonitor.getPurchaseMode())){
+                    if(!tPurchaseProjectBasicInfo.getPurchaseMode().contains(queryListMonitor.getPurchaseMode())){
+                        continue;
+                    }
+                }
+                if(queryListMonitor.getIsEnd()!=null && queryListMonitor.getIsEnd()>-1){
+                    if(!tPurchaseProjectBasicInfo.getIsEnd().equals(queryListMonitor.getIsEnd())){
+                        continue;
+                    }
+                }
                 BeanUtils.copyProperties(tPurchaseProjectBasicInfo,vo);
                 vo.setPurchaseStartTime(sdf.format(tPurchaseProjectBasicInfo.getPurchaseStartTime()));
                 vo.setPurchaseEndTime(sdf.format(tPurchaseProjectBasicInfo.getPurchaseEndTime()));
                 vo.setPurchaseProjectId(entity.getPurchaseProjectId());
                 voList.add(vo);
         }
-        return Result.success(voList);
+        return voList;
     }
 
 }

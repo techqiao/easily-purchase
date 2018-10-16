@@ -14,4 +14,7 @@ public class QueryEvaluation extends PagerParam {
      * 采购项目ID
      */
     private Long purchaseProjectId;
+
+
+
 }

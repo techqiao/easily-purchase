@@ -33,11 +33,11 @@ public class WinBidRecordController {
      * @return
      */
 
-    @ApiOperation(value = "获取采购项目下各标段的中标公示记录")
+   /* @ApiOperation(value = "获取采购项目下各标段的中标公示记录")
     @GetMapping(value = "getTWinBidNominated", consumes = "application/json; charset=UTF-8")
     public Result<List<NominateVO>> getTWinBidNominated(@RequestParam("procurementProjectId") Long procurementProjectId) {
         return  winBidClient.getTWinBidNominated(procurementProjectId);
-    }
+    }*/
 
 
     /**

@@ -33,6 +33,7 @@ public class HandleNotice implements Serializable {
     private String companyName;
 
     private Long operateId;
+    private String operateName;
 
     private String ip;
     private List<BasePretriaFile> filePathList;

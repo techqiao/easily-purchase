@@ -33,7 +33,8 @@ public class BidAnnouncementHystrix implements FacadeBidAnnouncementService {
     }
 
     @Override
-    public Result<Boolean> insertLetterTenderMemo(HandleLetterTenderMemo handleLetterTenderMemo) {
+    public Result<Boolean> insertLetterTenderMemo(List<HandleLetterTenderMemo> handleLetterTenderMemo) {
         return Result.hystrixError();
     }
+
 }

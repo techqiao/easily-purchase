@@ -39,7 +39,7 @@ public class MonitoringFileController extends BaseController {
 
     @ApiOperation(value = "监控项目列表")
     @PostMapping(value = "listMonitor", consumes = "application/json; charset=UTF-8")
-    public Result<List<listMonitorVO>> listMonitor(@RequestBody ClientListMonitor clientListMonitor){
+    public Result listMonitor(@RequestBody ClientListMonitor clientListMonitor){
         QueryListMonitor queryListMonitor=new QueryListMonitor();
         BeanUtils.copyProperties(clientListMonitor,queryListMonitor);
         queryListMonitor.setBossId(getLoginUser().getBossId());
@@ -61,8 +61,8 @@ public class MonitoringFileController extends BaseController {
     public Result<Boolean> createMonitoringFile(@RequestBody HandleMonitoringFile dto){
         HandleMonitoringFile handleMonitoringFile=new HandleMonitoringFile();
         BeanUtils.copyProperties(handleMonitoringFile,dto);
-        dto.setOperateId(1L);
-        dto.setOperator("lin");
+        dto.setOperateId(getLoginUser().getUserId());
+        dto.setOperater(getLoginUser().getName());
         String personType=null;
         //运营商1,代理商2,供货商3,采购商4
         switch (getLoginUser().getType()){

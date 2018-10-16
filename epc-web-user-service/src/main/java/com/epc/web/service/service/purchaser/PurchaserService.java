@@ -283,7 +283,7 @@ public interface PurchaserService {
      * @Description :角色登录查看自己名下的项目详情
      * @date:2018/10/12
      */
-    public Result selectPurchaserProjectStatus(Long id, Integer userType, String stepType);
+    public Result selectPurchaserProjectStatus(RoleProjectProcessDetail detail);
 
 
 }

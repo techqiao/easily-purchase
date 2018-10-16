@@ -77,6 +77,7 @@ public class ExpertSignServiceImpl implements ExpertSignService {
         for (Long bidsId : bidsIdList) {
             SignVO recordVO = new SignVO();
             recordVO.setBidId(bidsId);
+            recordVO.setBidName(tPurchaseProjectBidsMapper.getBidName(bidsId));
             List<Long> committeeBidIdList = bAssessmentCommitteeBidMapper.getCommitteeBidIdList(bidsId);
             List<ExpertSignVO> returnList = new ArrayList<>();
             for (Long committeeBidId : committeeBidIdList) {

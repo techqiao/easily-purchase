@@ -510,18 +510,18 @@ public class PurchaserController extends BaseController {
 
     /**
      * @author :winlin
-     * @Description :角色登录后依据id 查询项目详情
+     * @Description :角色登录后依据id 查询项目详情,添加分頁信息
      * @date:2018/10/12
      */
     @ApiOperation(value = "角色登录查看自己名下代办的公告或中标公示")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path", dataType = "long", name = "id", value = "角色id", required = true),
-            @ApiImplicitParam(paramType = "path", dataType = "Integer", name = "userType", value = "用户角色代理机构2,采购人4", required = true),
-            @ApiImplicitParam(paramType = "path", dataType = "String", name = "stepType", value = "中标公示(publicity)或公告(announcement)", required = true)
-    })
-    @GetMapping(value = "selectPurchaserProjectStatus/{id}/{userType}/{stepType}")
-    public Result selectPurchaserProjectStatus(@PathVariable("id") Long id, @PathVariable("userType") Integer userType, @PathVariable("stepType") String stepType) {
-        return purchaserClient.selectPurchaserProjectStatus(id, userType, stepType);
+    @PostMapping(value = "selectPurchaserProjectStatus")
+    public Result selectPurchaserProjectStatus(@RequestBody ClientRoleProjectProcessDetail detail) {
+        if(detail.getId()==null||detail.getStepType()==null||detail.getUserType()==null){
+            return  Result.success("输入的信息不完全,请检查后重现输入");
+        }
+        RoleProjectProcessDetail roleProjectProcessDetail = new RoleProjectProcessDetail();
+        BeanUtils.copyProperties(detail,roleProjectProcessDetail);
+        return purchaserClient.selectPurchaserProjectStatus(roleProjectProcessDetail);
     }
 
     ;

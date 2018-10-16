@@ -475,4 +475,11 @@
             </if>
         </where>
     </select>
+    <select id="selectDetailByCriteria" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_purchaser_detail_info
+        WHERE uniform_credit_code =#{uniformCode}
+        OR public_ban_account_number=#{publicBankAccout}
+        OR  company_name =#{companName}
+    </select>
 </mapper>

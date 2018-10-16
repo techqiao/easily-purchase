@@ -4,7 +4,10 @@ import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeEvaluationService;
 import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.query.evaluation.QueryEvaluation;
 import com.epc.web.facade.bidding.vo.SubEvaluationV0;
+
+import java.util.Map;
 
 /**
  * <p>Description : easilys
@@ -31,9 +34,10 @@ public class EvaluationHystrix implements FacadeEvaluationService {
     }
 
     @Override
-    public Result getFilesByPurchaseProjectId(Long BIssueDocumentsId) {
+    public Result<Map<String, Object>> getFilesByPurchaseProjectId(QueryEvaluation queryEvaluation) {
         return Result.hystrixError();
     }
+
 
     @Override
     public Result getClauseTemplateById(Long id) {

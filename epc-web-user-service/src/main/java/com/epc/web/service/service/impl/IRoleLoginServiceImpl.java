@@ -1,10 +1,8 @@
 package com.epc.web.service.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.constants.ErrorMessagesEnum;
-import com.epc.common.util.CookieUtil;
 import com.epc.common.util.MD5Util;
 import com.epc.common.util.RedisShardedPoolUtil;
 import com.epc.web.facade.loginuser.dto.LoginUser;
@@ -18,7 +16,6 @@ import com.epc.web.service.domain.operator.TOperatorBasicInfo;
 import com.epc.web.service.domain.operator.TOperatorDetailInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserBasicInfo;
 import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
-import com.epc.web.service.domain.supplier.SupplierCategory;
 import com.epc.web.service.domain.supplier.TSupplierBasicInfo;
 import com.epc.web.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.web.service.mapper.agency.TAgencyBasicInfoMapper;
@@ -32,17 +29,14 @@ import com.epc.web.service.mapper.supplier.SupplierCategoryMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.web.service.service.IRoleLoginService;
+import com.epc.web.service.utils.RedisUtils;
 import com.epc.web.service.utils.SmsUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -80,6 +74,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     @Autowired
     SmsUtils smsUtils;
 
+    @Autowired
+    RedisUtils redisUtils;
     private static final String MEETING_SMS_CACHE_KEY = "meeting:sms:";
 
     @Override
@@ -768,7 +764,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
     public Result<String> getTokenValue(String token) {
         if (!StringUtils.isEmpty(token)) {
             token = "EPC_PRIVATE_" + token;
-            String tokenValue = RedisShardedPoolUtil.get(token);
+            String tokenValue = redisUtils.getValue(token);
             return Result.success("TOKEN的值为:"+tokenValue);
         }
         return Result.success("没有此token对应的值");
@@ -780,7 +776,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
             String tokens = "EPC_PRIVATE_" + token;
             Map<String, Object> resultMap = new HashMap<String, Object>(16);
             resultMap.put("epc-token", token);
-            RedisShardedPoolUtil.setEx(tokens, JSONObject.toJSONString(loginUser), Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+            redisUtils.setValue(tokens,loginUser);
             return Result.success("登陆成功", resultMap);
         }
         return Result.success("没有用户信息", null);

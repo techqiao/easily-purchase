@@ -14,6 +14,8 @@ import java.util.Date;
 public class HandleMonitoringFile implements Serializable {
 
     private static final long serialVersionUID = -3614878021944416043L;
+    private Long projectId;
+
     private String fileType;
 
     private Long fileId;
@@ -26,8 +28,10 @@ public class HandleMonitoringFile implements Serializable {
 
     private Long operateId;
 
-    private String operator;
+    private String operater;
 
     private Date createAt;
+
+    private Date updateAt;
 
 }

@@ -45,7 +45,6 @@ public class BiddingNoticeController extends QueryRequest implements FacadeNotic
         List<NoticeDetailVO> voList=noticeService.findBySupplierId(queryNoticeDTO);
         PageInfo<NoticeDetailVO> pageInfo = new PageInfo<>(voList);
         Map<String, Object> dataTable = getDataTable(pageInfo);
-
         return Result.success(dataTable);
     }
 

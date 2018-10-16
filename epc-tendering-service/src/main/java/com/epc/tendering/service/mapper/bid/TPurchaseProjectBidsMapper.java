@@ -45,4 +45,7 @@ public interface TPurchaseProjectBidsMapper {
 
     @Select("SELECT count(t.id) FROM t_purchase_project_bids t WHERE t.purchase_project_id = #{purchaseProjectId}")
     Integer getBidsNum(Long purchaseProjectId);
+
+    @Select("SELECT t.bid_name FROM t_purchase_project_bids t WHERE t.id = #{id}")
+    String getBidName(Long id);
 }

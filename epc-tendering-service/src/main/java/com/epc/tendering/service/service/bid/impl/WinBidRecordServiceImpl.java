@@ -23,6 +23,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 /**
 * @Description:  中标公示
@@ -88,10 +89,13 @@ public class WinBidRecordServiceImpl implements WinBidRecordService {
             TPurchaseProjectBids purchaseProjectBids =tPurchaseProjectBidsMapper.selectByPrimaryKey(nominate.getBidId());
             if(purchaseProjectBids!=null){
                 entity.setProjectId(purchaseProjectBids.getProjectId());
+                entity.setProcurementProjectId(purchaseProjectBids.getPurchaseProjectId());
+                entity.setProcurementProjectName(purchaseProjectBids.getPurchaseProjectName());
             }
             entity.setBidName(nominate.getBidName());
             entity.setBidCode(nominate.getBidCode());
             entity.setBidId(nominate.getBidId());
+            entity.setCreateAt(new Date());
             try{
                 tWinBidMapper.insertSelective(entity);
             }catch (Exception e){

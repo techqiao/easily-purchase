@@ -1,10 +1,7 @@
 package com.epc.bidding.service.monitoring.impl;
 
 import com.epc.bidding.domain.*;
-import com.epc.bidding.mapper.BMonitoringFileMapper;
-import com.epc.bidding.mapper.TPurchaseProjectBasicInfoMapper;
-import com.epc.bidding.mapper.TPurchaseProjectParticipantMapper;
-import com.epc.bidding.mapper.TPurchaseProjectParticipantPermissionMapper;
+import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.monitoring.FileMonitoringService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
@@ -14,6 +11,7 @@ import com.epc.web.facade.bidding.query.monitor.file.QueryMonitoringFileDTO;
 import com.epc.web.facade.bidding.query.monitor.list.QueryListMonitor;
 import com.epc.web.facade.bidding.vo.MonitorFileVO;
 import com.epc.web.facade.bidding.vo.listMonitorVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -41,7 +39,8 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
     TPurchaseProjectParticipantMapper tPurchaseProjectParticipantMapper;
     @Autowired
     TPurchaseProjectParticipantPermissionMapper tPurchaseProjectParticipantPermissionMapper;
-
+    @Autowired
+    TProjectBasicInfoMapper tProjectBasicInfoMapper;
     /**
      * 监控文件列表
      * @return
@@ -115,7 +114,7 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
      * @return
      */
     @Override
-    public Result<List<listMonitorVO>> listMonitor(QueryListMonitor queryListMonitor){
+    public List<listMonitorVO> listMonitor(QueryListMonitor queryListMonitor){
         TPurchaseProjectParticipantPermissionCriteria criteria=new TPurchaseProjectParticipantPermissionCriteria();
         TPurchaseProjectParticipantPermissionCriteria.Criteria newCriteria=criteria.createCriteria();
         newCriteria.andUserIdEqualTo(queryListMonitor.getSupplier());
@@ -129,13 +128,55 @@ public class FileMonitoringServiceImpl implements FileMonitoringService {
         for(TPurchaseProjectParticipantPermission entity:result){
                 listMonitorVO vo =new listMonitorVO();
                 TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getPurchaseProjectId());
-                BeanUtils.copyProperties(tPurchaseProjectBasicInfo,vo);
+                TProjectBasicInfo tProjectBasicInfo=tProjectBasicInfoMapper.selectByPrimaryKey(tPurchaseProjectBasicInfo.getProjectId());
+                if(tProjectBasicInfo!=null){
+                    vo.setProjectCode(tProjectBasicInfo.getProjectCode());
+                }
+                //模糊查询
+                if(StringUtils.isNotEmpty(queryListMonitor.getProjectName())){
+                    if(!tPurchaseProjectBasicInfo.getProjectName().contains(queryListMonitor.getProjectName())){
+                        continue;
+                     }
+                }
+                if(StringUtils.isNotEmpty(queryListMonitor.getPurchaseMode())){
+                    if(!tPurchaseProjectBasicInfo.getPurchaseMode().equals(queryListMonitor.getPurchaseMode())){
+                        continue;
+                    }
+                }
+                if(queryListMonitor.getIsEnd()!=null && queryListMonitor.getIsEnd()>-1){
+                    if(!tPurchaseProjectBasicInfo.getIsEnd().equals(queryListMonitor.getIsEnd())){
+                        continue;
+                    }
+                }
+            BeanUtils.copyProperties(tPurchaseProjectBasicInfo,vo);
+            switch (tPurchaseProjectBasicInfo.getPurchaseMode()){
+                    case "selective_tendering":
+                        vo.setPurchaseMode("招标采购");
+                        break;
+                    case "inquiries_tendering":
+                        vo.setPurchaseMode("询比采购");
+                        break;
+                    case "bidding_tendering":
+                        vo.setPurchaseMode("竞价采购");
+                        break;
+                    case "negotiation_tendering":
+                        vo.setPurchaseMode("谈判采购");
+                        break;
+                    case "direct_tendering":
+                        vo.setPurchaseMode("直接采购");
+                        break;
+                    case "framework_tendering":
+                        vo.setPurchaseMode("框架协议采购");
+                        break;
+                        default:
+                            break;
+                }
                 vo.setPurchaseStartTime(sdf.format(tPurchaseProjectBasicInfo.getPurchaseStartTime()));
                 vo.setPurchaseEndTime(sdf.format(tPurchaseProjectBasicInfo.getPurchaseEndTime()));
                 vo.setPurchaseProjectId(entity.getPurchaseProjectId());
                 voList.add(vo);
         }
-        return Result.success(voList);
+        return voList;
     }
 
 }

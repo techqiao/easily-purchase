@@ -36,7 +36,10 @@ public class ClientHandlePurchaseProjectBasicInfo {
     private Date purchaseEndTime;
     @ApiModelProperty(value = "采购项目预算金额")
     private BigDecimal purchaseProjectBudgetaryAmount;
-    @ApiModelProperty(value = "采购方式 招标采购:selective_tendering 询比采购:  竞价采购: 谈判采购: 直接采购: 框架协议采购")
+    @ApiModelProperty(value = "采购方式 招标采购-资格预审:selective_tendering_retrial " +
+                                      "招标采购-资格后审:selective_tendering_after" +
+                                      "招标采购-邀请招标:selective_tendering_invitation" +
+                                      "询比采购:  竞价采购: 谈判采购: 直接采购: 框架协议采购")
     private String purchaseMode;
     @ApiModelProperty(value = "采购分类 劳务分包labor_subcontract 专业分包professional_subcontracting 设备租赁 货物采购 服务采购 工程采购")
     private String purchaseCategory;

@@ -63,6 +63,7 @@ public class BiddingFileUploadController extends BaseController {
                 HandleNotice handleNotice=new HandleNotice();
                 BeanUtils.copyProperties(dto,handleNotice);
                 handleNotice.setOperateId(getLoginUser().getUserId());
+                handleNotice.setOperateName(getLoginUser().getName());
                 handleNotice.setCompanyId(getLoginUser().getBossId());
                 handleNotice.setCompanyName(getLoginUser().getBossName());
                 handleNotice.setIp(request.getRemoteHost());

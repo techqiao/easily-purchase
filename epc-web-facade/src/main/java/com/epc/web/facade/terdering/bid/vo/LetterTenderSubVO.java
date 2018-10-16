@@ -18,4 +18,6 @@ public class LetterTenderSubVO {
     private Long bidsId;
     @ApiModelProperty(value = "详情VO")
     private List<LetterTenderVO> letterTenderVOList;
+    @ApiModelProperty(value = "标段名称")
+    private String bidName;
 }

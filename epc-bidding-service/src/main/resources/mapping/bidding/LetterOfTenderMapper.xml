@@ -8,7 +8,7 @@
     <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
     <result column="bids_id" property="bidsId" jdbcType="BIGINT" />
     <result column="bids_name" property="bidsName" jdbcType="VARCHAR" />
-    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="money" property="money" jdbcType="VARCHAR" />
     <result column="quality_target" property="qualityTarget" jdbcType="VARCHAR" />
     <result column="duration" property="duration" jdbcType="INTEGER" />
     <result column="validity" property="validity" jdbcType="INTEGER" />
@@ -146,7 +146,7 @@
       update_at, is_deleted, memo
       )
     values (#{procurementProjectId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, 
-      #{bidsId,jdbcType=BIGINT}, #{bidsName,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{bidsId,jdbcType=BIGINT}, #{bidsName,jdbcType=VARCHAR}, #{money,jdbcType=VARCHAR}, 
       #{qualityTarget,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, #{validity,jdbcType=INTEGER}, 
       #{managerName,jdbcType=VARCHAR}, #{certificateNumber,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
       #{updateAt,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=INTEGER}, #{memo,jdbcType=LONGVARCHAR}
@@ -221,7 +221,7 @@
         #{bidsName,jdbcType=VARCHAR},
       </if>
       <if test="money != null" >
-        #{money,jdbcType=DECIMAL},
+        #{money,jdbcType=VARCHAR},
       </if>
       <if test="qualityTarget != null" >
         #{qualityTarget,jdbcType=VARCHAR},
@@ -280,7 +280,7 @@
         bids_name = #{record.bidsName,jdbcType=VARCHAR},
       </if>
       <if test="record.money != null" >
-        money = #{record.money,jdbcType=DECIMAL},
+        money = #{record.money,jdbcType=VARCHAR},
       </if>
       <if test="record.qualityTarget != null" >
         quality_target = #{record.qualityTarget,jdbcType=VARCHAR},
@@ -322,7 +322,7 @@
       supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
-      money = #{record.money,jdbcType=DECIMAL},
+      money = #{record.money,jdbcType=VARCHAR},
       quality_target = #{record.qualityTarget,jdbcType=VARCHAR},
       duration = #{record.duration,jdbcType=INTEGER},
       validity = #{record.validity,jdbcType=INTEGER},
@@ -344,7 +344,7 @@
       supplier_name = #{record.supplierName,jdbcType=VARCHAR},
       bids_id = #{record.bidsId,jdbcType=BIGINT},
       bids_name = #{record.bidsName,jdbcType=VARCHAR},
-      money = #{record.money,jdbcType=DECIMAL},
+      money = #{record.money,jdbcType=VARCHAR},
       quality_target = #{record.qualityTarget,jdbcType=VARCHAR},
       duration = #{record.duration,jdbcType=INTEGER},
       validity = #{record.validity,jdbcType=INTEGER},
@@ -376,7 +376,7 @@
         bids_name = #{bidsName,jdbcType=VARCHAR},
       </if>
       <if test="money != null" >
-        money = #{money,jdbcType=DECIMAL},
+        money = #{money,jdbcType=VARCHAR},
       </if>
       <if test="qualityTarget != null" >
         quality_target = #{qualityTarget,jdbcType=VARCHAR},
@@ -415,7 +415,7 @@
       supplier_name = #{supplierName,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
       bids_name = #{bidsName,jdbcType=VARCHAR},
-      money = #{money,jdbcType=DECIMAL},
+      money = #{money,jdbcType=VARCHAR},
       quality_target = #{qualityTarget,jdbcType=VARCHAR},
       duration = #{duration,jdbcType=INTEGER},
       validity = #{validity,jdbcType=INTEGER},
@@ -434,7 +434,7 @@
       supplier_name = #{supplierName,jdbcType=VARCHAR},
       bids_id = #{bidsId,jdbcType=BIGINT},
       bids_name = #{bidsName,jdbcType=VARCHAR},
-      money = #{money,jdbcType=DECIMAL},
+      money = #{money,jdbcType=VARCHAR},
       quality_target = #{qualityTarget,jdbcType=VARCHAR},
       duration = #{duration,jdbcType=INTEGER},
       validity = #{validity,jdbcType=INTEGER},

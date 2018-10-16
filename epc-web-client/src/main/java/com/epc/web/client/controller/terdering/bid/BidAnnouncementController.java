@@ -16,7 +16,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springsource.loaded.C;
+import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +41,7 @@ public class BidAnnouncementController extends BaseController {
      * @param dto
      * @return
      */
+    @ApiIgnore
     @ApiOperation(value = "创建唱标记录")
     @PostMapping(value = "insertBidAnnouncement")
     public Result<Boolean> insertBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {
@@ -82,9 +86,13 @@ public class BidAnnouncementController extends BaseController {
 
     @ApiOperation(value = "唱标确认")
     @PostMapping(value = "insertLetterTenderMemo", consumes = "application/json; charset=UTF-8")
-    public Result<Boolean> insertLetterTenderMemo(@RequestBody ClientHandleLetterTenderMemo clientHandleLetterTenderMemo){
-        HandleLetterTenderMemo handleLetterTenderMemo = new HandleLetterTenderMemo();
-        BeanUtils.copyProperties(clientHandleLetterTenderMemo,handleLetterTenderMemo);
+    public Result<Boolean> insertLetterTenderMemo(@RequestBody List<ClientHandleLetterTenderMemo> clientHandleLetterTenderMemoList){
+        List<HandleLetterTenderMemo> handleLetterTenderMemo = new ArrayList<>();
+        for (ClientHandleLetterTenderMemo item : clientHandleLetterTenderMemoList) {
+            HandleLetterTenderMemo pojo = new HandleLetterTenderMemo();
+            BeanUtils.copyProperties(item, pojo);
+            handleLetterTenderMemo.add(pojo);
+        }
         return bidAnnouncementClient.insertLetterTenderMemo(handleLetterTenderMemo);
     }
 

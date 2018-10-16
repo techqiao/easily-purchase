@@ -4,8 +4,6 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.bid.FacadeOpeningRecordService;
 import com.epc.web.facade.terdering.bid.handle.HandleOpeningRecord;
 import com.epc.web.facade.terdering.bid.query.QueryBidsDTO;
-import com.epc.web.facade.terdering.bid.vo.OpeningRecordVO;
-import com.epc.web.facade.terdering.bid.vo.RecordVO;
 
 import java.util.List;
 import java.util.Map;

@@ -42,4 +42,6 @@ public interface TSupplierDetailInfoMapper {
     List<PurchaserSupplierVo> selectSupplierByCriteria(QuerySupplierDto dto);
 
 
+    TSupplierDetailInfo selectDetailByCriteria(@Param("companyName") String companyName, @Param("publicBankCount") String publicBankCount,@Param("uniformCode") String uniformCreditCode);
+
 }

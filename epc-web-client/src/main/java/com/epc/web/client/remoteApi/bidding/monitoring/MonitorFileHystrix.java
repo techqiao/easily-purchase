@@ -22,7 +22,7 @@ public class MonitorFileHystrix implements FacadeFileMonitorService {
     }
 
     @Override
-    public Result<List<listMonitorVO>> listMonitor(QueryListMonitor queryListMonitor) {
+    public Result listMonitor(QueryListMonitor queryListMonitor) {
         return Result.hystrixError();
     }
 }

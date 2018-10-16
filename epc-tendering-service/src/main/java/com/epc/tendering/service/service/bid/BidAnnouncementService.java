@@ -53,5 +53,5 @@ public interface BidAnnouncementService {
      * @param handleLetterTenderMemo
      * @return
      */
-    Result<Boolean> insertLetterTenderMemo(HandleLetterTenderMemo handleLetterTenderMemo);
+    Result<Boolean> insertLetterTenderMemo(List<HandleLetterTenderMemo> handleLetterTenderMemo);
 }

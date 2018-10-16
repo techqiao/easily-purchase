@@ -27,7 +27,7 @@ public class LetterTenderVO {
     @ApiModelProperty(value = "标段名称")
     private String bidsName;
     @ApiModelProperty(value = "投标总金额")
-    private BigDecimal money;
+    private String money;
     @ApiModelProperty(value = "工程质量目标")
     private String qualityTarget;
     @ApiModelProperty(value = "工期")

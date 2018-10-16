@@ -16,6 +16,8 @@ import java.util.List;
 public class BidderListVO {
     @ApiModelProperty(value = "标段ID")
     private Long bidsId;
+    @ApiModelProperty(value = "标段名称")
+    private String bidName;
     @ApiModelProperty(value = "投标人列表")
     private List<BidderVO> bidderVOList;
 }

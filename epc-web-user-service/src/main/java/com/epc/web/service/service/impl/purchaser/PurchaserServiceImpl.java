@@ -167,16 +167,14 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             purchaserSupplier.setState(Const.STATE.REGISTERED);
             purchaserSupplier.setOperateId(handleSupplier.getOperatorId().intValue());
             purchaserSupplier.setPurchaserId(handleSupplier.getCompanyId());
-            //供应商详情数据库
-            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
-            //if(StringUtils.)
-            detailInfo.setCompanyName(handleSupplier.getCompanyName());
-            detailInfo.setArea(handleSupplier.getArea());
-            detailInfo.setProvince(handleSupplier.getProvince());
-            detailInfo.setCity(handleSupplier.getCity());
-            detailInfo.setCompanyAddress(handleSupplier.getCompanyAddress());
-            detailInfo.setUniformCreditCode(handleSupplier.getUniformCreditCode());
-            detailInfo.setPublicBankName(handleSupplier.getPublicBankName());
+            //对公司信息唯一性进行校验
+            TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectDetailByCriteria(handleSupplier.getCompanyName(), handleSupplier.getPublicBankCount(), handleSupplier.getUniformCreditCode());
+            Result result = super.whichIsDuplicateForSupplier(detailInfo, handleSupplier.getCompanyName(), handleSupplier.getUniformCreditCode(), handleSupplier.getPublicBankCount());
+            if (result != null) {
+                return result;
+            }
+            detailInfo = new TSupplierDetailInfo();
+            BeanUtils.copyProperties(handleSupplier, detailInfo, "id");
             detailInfo.setPublicBanAccountNumber(handleSupplier.getPublicBankCount());
             detailInfo.setCreateAt(date);
             detailInfo.setUpdateAt(date);
@@ -209,7 +207,7 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 tPurchaserSupplierMapper.insertSelective(purchaserSupplier);
                 detailInfo.setSupplierId(supplierId);
                 tSupplierDetailInfoMapper.insertSelective(detailInfo);
-                super.updateSupplierAttachment(handleSupplier.getAtts(),handleSupplier.getLegalIdCardPositive(),handleSupplier.getLegalIdCardOther(),handleSupplier.getBusinessLicense(),supplierId);
+                super.updateSupplierAttachment(handleSupplier.getAtts(), handleSupplier.getLegalIdCardPositive(), handleSupplier.getLegalIdCardOther(), handleSupplier.getBusinessLicense(), supplierId);
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -234,8 +232,7 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> createExpertUserInfo(HandleExpert handleExpert) {
-        //根据提供的name和cellphone查询专家信息专家状态为已审核状态自动根跟新全部信息到私库,其他情况私库添加手机号码和name
-        //以及经办人id
+        //根据提供的cellphone查询专家信息专家状态为已审核状态自动根跟新全部信息到私库,其他情况私库添加手机号码和name
         String cellphone = handleExpert.getCellPhone();
         TExpertBasicInfo basicInfo = null;
         TPurchaserExpert purchaserExpert = null;
@@ -279,17 +276,9 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             TExpertBasicInfo pojo = new TExpertBasicInfo();
             //pojo.setId(0L);
             Date date = new Date();
-            pojo.setName(handleExpert.getName());
-            pojo.setCellphone(handleExpert.getCellPhone());
-            pojo.setProfession(handleExpert.getProfession());
-            pojo.setPositional(handleExpert.getPositional());
-            pojo.setLevel(handleExpert.getLevel());
-            pojo.setWorkingYears(handleExpert.getWorkingYears());
-            pojo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
-            pojo.setCircularDt(handleExpert.getCircularDt());
-            pojo.setCircularDtEnd(handleExpert.getCircularDtEnd());
-            pojo.setCircularMethod(handleExpert.getCircularMethod());
+            BeanUtils.copyProperties(handleExpert, pojo, "id");
             pojo.setOtherInformation(handleExpert.getOtherInformation());
+            pojo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
             pojo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));//默认密码
             pojo.setInviterType(Const.INVITER_TYPE.PURCHASER);
             pojo.setInviterId(handleExpert.getOperatorId());//操作人员的id
@@ -318,21 +307,14 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 operator.setExpertId(expertId);
                 if (tPurchaserDetailInfo == null) {
                     TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+                    BeanUtils.copyProperties(tPurchaserDetailInfo, tExpertDetailInfo);
                     tExpertDetailInfo.setExpertId(expertId);
-                    tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
-                    tExpertDetailInfo.setProvince(tPurchaserDetailInfo.getProvince());
-                    tExpertDetailInfo.setCity(tPurchaserDetailInfo.getCity());
-                    tExpertDetailInfo.setArea(tPurchaserDetailInfo.getArea());
-                    tExpertDetailInfo.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
-                    tExpertDetailInfo.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
-                    tExpertDetailInfo.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
-                    tExpertDetailInfo.setPublicBanAccountNumber(tPurchaserDetailInfo.getPublicBanAccountNumber());
                     tExpertDetailInfo.setCreateAt(date);
                     tExpertDetailInfo.setUpdateAt(date);
                     tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);
                 }
                 tPurchaserExpertMapper.insertSelective(operator);
-                super.updateExpertAttachment(handleExpert.getAtts(),handleExpert.getLegalIdCardPositive(),handleExpert.getLegalIdCardOther(),expertId);
+                super.updateExpertAttachment(handleExpert.getAtts(), handleExpert.getLegalIdCardPositive(), handleExpert.getLegalIdCardOther(), expertId);
             } catch (Exception e) {
                 //捕获异常回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -354,9 +336,9 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
     @Transactional(rollbackFor = {Exception.class})
     public Result<Boolean> createAgencyUserInfo(HandleAgnecy handleAgnecy) {
         //先查询是否存在,不存在添加私库
-        String name = handleAgnecy.getName();
         String cellphone = handleAgnecy.getCellphone();
         TAgencyBasicInfo basicInfo = tAgencyBasicInfoMapper.selectAgencyBasicByCellphone(cellphone);
+        Date date = new Date();
         if (basicInfo != null) {
             int state = basicInfo.getState();
             int role = basicInfo.getRole();
@@ -376,8 +358,8 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 purchaserAgency.setCreaterId(handleAgnecy.getOperatorId());
                 purchaserAgency.setPurchaserId(handleAgnecy.getCompanyId() + "");
                 purchaserAgency.setSource(Const.SOURCE.PUBLICS);
-                purchaserAgency.setCreateAt(new Date());
-                purchaserAgency.setUpdateAt(new Date());
+                purchaserAgency.setCreateAt(date);
+                purchaserAgency.setUpdateAt(date);
                 purchaserAgency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
                 try {
@@ -392,7 +374,12 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 return Result.error("未通过审核或机构不存在");
             }
         } else {
-            //公库t_agency_basic和私库t_purchaser_agency都不存在时候私库添加手机号和姓名
+            //对公司信息唯一性进行校验
+            TAgencyDetailInfo detailInfo = tAgencyDetailInfoMapper.selectDetailByCriteria(handleAgnecy.getCompanyName(), handleAgnecy.getPublicBankCount(), handleAgnecy.getUniformCreditCode());
+            Result result = super.whichIsDuplicateForAgency(detailInfo, handleAgnecy.getCompanyName(), handleAgnecy.getUniformCreditCode(), handleAgnecy.getPublicBankCount());
+            if (result != null) {
+                return result;
+            }
             //公库t_agency_basic添加详细信息
             basicInfo = new TAgencyBasicInfo();
             basicInfo.setName(handleAgnecy.getName());
@@ -408,36 +395,24 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             basicInfo.setRole(Const.Role.ROLE_CORPORATION);
             //指定默认密码
             basicInfo.setPassword(MD5Util.MD5EncodeUtf8(Const.DEFAULT_PASSWORD.PASSWORD));
-            basicInfo.setCreateAt(new Date());
-            basicInfo.setUpdateAt(new Date());
+            basicInfo.setCreateAt(date);
+            basicInfo.setUpdateAt(date);
 
-            TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
-            detailInfo.setCreateAt(new Date());
-            detailInfo.setUpdateAt(new Date());
+            detailInfo = new TAgencyDetailInfo();
+            BeanUtils.copyProperties(handleAgnecy, detailInfo, "id");
+            detailInfo.setCreateAt(date);
+            detailInfo.setUpdateAt(date);
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
-            detailInfo.setCompanyName(handleAgnecy.getCompanyName());
-            detailInfo.setCompanyAddress(handleAgnecy.getCompanyAddress());
-            detailInfo.setProvince(handleAgnecy.getProvince());
-            detailInfo.setCity(handleAgnecy.getCity());
-            detailInfo.setArea(handleAgnecy.getArea());
-            detailInfo.setUniformCreditCode(handleAgnecy.getUniformCreditCode());
-            detailInfo.setPublicBankName(handleAgnecy.getPublicBankName());
             detailInfo.setPublicBanAccountNumber(handleAgnecy.getPublicBankCount());
-            detailInfo.setCompanyAddress(handleAgnecy.getCompanyAddress());
-            detailInfo.setCreateAt(new Date());
-            detailInfo.setUpdateAt(new Date());
             //私库添加基本name和cellphone
             TPurchaserAgency agency = new TPurchaserAgency();
             agency.setCreaterId(handleAgnecy.getOperatorId());
-            agency.setCreateAt(new Date());
-            agency.setUpdateAt(new Date());
+            agency.setCreateAt(date);
+            agency.setUpdateAt(date);
             agency.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             agency.setState(Const.STATE.REGISTERED);
             agency.setPurchaserId(handleAgnecy.getCompanyId() + "");
             agency.setSource(Const.SOURCE.PRIVATES);
-
-            agency.setCreateAt(new Date());
-            agency.setUpdateAt(new Date());
 
             try {
                 //提交到 数据库
@@ -445,7 +420,6 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 //得到公库生成的agencyId
                 Long agencyId = basicInfo.getId();
                 basicInfo.setAgencyId(agencyId);
-                Date date = new Date();
                 tAgencyBasicInfoMapper.updateByPrimaryKey(basicInfo);
                 //id设如私库中
                 agency.setAgencyId(agencyId);
@@ -453,7 +427,7 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 detailInfo.setAgencyId(agencyId);
                 tAgencyDetailInfoMapper.insertSelective(detailInfo);
                 tPurchaserAgencyMapper.insertSelective(agency);
-                super.updateAgencyAttachment(handleAgnecy.getAtts(),handleAgnecy.getLegalIdCardPositive(),handleAgnecy.getLegalIdCardOther(),handleAgnecy.getBusinessLicense(),agencyId);
+                super.updateAgencyAttachment(handleAgnecy.getAtts(), handleAgnecy.getLegalIdCardPositive(), handleAgnecy.getLegalIdCardOther(), handleAgnecy.getBusinessLicense(), agencyId);
             } catch (BusinessException e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 LOGGER.error("采购人添加代理机构失败", e);
@@ -522,7 +496,6 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
     }
 
     /**
-     *
      * 采购人信息
      * 点击注册按钮后页面进入完善信息阶段,传递过去的信息,nama ,password,自动生成的id
      *
@@ -560,15 +533,15 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
         basicInfo.setUpdateAt(date);
         basicInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         //分装添加的条件,和跟新对象,添加数据到数据库三张表,t_purchaser_basic_info,t_purchaser_detail_info,t_purchaser_attachment
-        TPurchaserDetailInfo detailInfo = new TPurchaserDetailInfo();
+        //对公司信息唯一性进行校验
+        TPurchaserDetailInfo detailInfo = tPurchaserDetailInfoMapper.selectDetailByCriteria(handlePurchaser.getCompanyName(), handlePurchaser.getPublicBankCount(), handlePurchaser.getUniformCreditCode());
+        Result result = super.whichIsDuplicateForPurchaser(detailInfo, handlePurchaser.getCompanyName(), handlePurchaser.getUniformCreditCode(), handlePurchaser.getPublicBankCount());
+        if (result != null) {
+            return result;
+        }
+        detailInfo = new TPurchaserDetailInfo();
+        BeanUtils.copyProperties(handlePurchaser, detailInfo, "id");
         detailInfo.setPurchaserId(purchaserId);
-        detailInfo.setCompanyName(handlePurchaser.getCompanyName());
-        detailInfo.setCity(handlePurchaser.getCity());
-        detailInfo.setCompanyAddress(handlePurchaser.getCompanyAddress());
-        detailInfo.setProvince(handlePurchaser.getProvince());
-        detailInfo.setCompanyAddress(handlePurchaser.getCompanyAddress());
-        detailInfo.setUniformCreditCode(handlePurchaser.getUniformCreditCode());
-        detailInfo.setPublicBankName(handlePurchaser.getPublicBankName());
         detailInfo.setPublicBanAccountNumber(handlePurchaser.getPublicBankCount());
         detailInfo.setCreateAt(date);
         detailInfo.setUpdateAt(date);
@@ -641,16 +614,16 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
                 supplier.setId(psupplier.getId());
                 tPurchaserSupplierMapper.updateByPrimaryKeySelective(supplier);
             }
-            TSupplierDetailInfo detailInfo = new TSupplierDetailInfo();
+
+            //对公司信息唯一性进行校验
+            TSupplierDetailInfo detailInfo = tSupplierDetailInfoMapper.selectDetailByCriteria(dto.getCompanyName(), dto.getPublicBankCount(), dto.getUniformCreditCode());
+            Result result = super.whichIsDuplicateForSupplier(detailInfo, dto.getCompanyName(), dto.getUniformCreditCode(), dto.getPublicBankCount());
+            if (result != null) {
+                return result;
+            }
+            detailInfo = new TSupplierDetailInfo();
+            BeanUtils.copyProperties(dto, detailInfo, "id", "supplierId");
             detailInfo.setSupplierId(supplierId);
-            detailInfo.setCompanyName(dto.getCompanyName());
-            detailInfo.setCompanyAddress(dto.getCompanyAddress());
-            detailInfo.setProvince(dto.getProvince());
-            detailInfo.setCity(dto.getCity());
-            detailInfo.setArea(dto.getArea());
-            detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-            detailInfo.setPublicBankName(dto.getPublicBankName());
-            detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
             detailInfo.setCreateAt(new Date());
             detailInfo.setUpdateAt(new Date());
             detailInfo.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
@@ -663,9 +636,8 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             }
             //附件信息
             List<Attachement> list = dto.getAtts();
-            //List<TSupplierAttachment> attachments = tSupplierAttachmentMapper.selectAttachmentBySupplierId(supplierId);
             int records = tSupplierAttachmentMapper.selectCountBySupplierId(supplierId);
-            if (records>0) {
+            if (records > 0) {
                 super.updateSupplierAttachment(list, dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), supplierId);
             } else {
                 tSupplierAttachmentMapper.deleteAttachamentById(supplierId);
@@ -721,13 +693,7 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
 
             TAgencyDetailInfo detailInfo = new TAgencyDetailInfo();
             detailInfo.setAgencyId(agencyId);
-            detailInfo.setCompanyName(dto.getCompanyName());
-            detailInfo.setCompanyAddress(dto.getCompanyAddress());
-            detailInfo.setProvince(dto.getProvince());
-            detailInfo.setCity(dto.getCity());
-            detailInfo.setArea(dto.getArea());
-            detailInfo.setUniformCreditCode(dto.getUniformCreditCode());
-            detailInfo.setPublicBankName(dto.getPublicBankName());
+            BeanUtils.copyProperties(dto, detailInfo);
             detailInfo.setPublicBanAccountNumber(dto.getPublicBankCount());
             detailInfo.setCreateAt(new Date());
             detailInfo.setUpdateAt(new Date());
@@ -742,7 +708,7 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             //附件信息
             int records = tAgencyAttachmentMapper.selectCountByAgencyId(agencyId);
             //List<TAgencyAttachment> tAgencyAttachments = tAgencyAttachmentMapper.selectAttachmentByAgencyId(agencyId);
-            if (records>0) {
+            if (records > 0) {
                 tAgencyAttachmentMapper.deleteAttachmentByAgencyId(agencyId);
                 super.updateAgencyAttachment(dto.getAtts(), dto.getLegalIdCardPositive(), dto.getLegalIdCardOther(), dto.getBusinessLicense(), agencyId);
             } else {
@@ -1153,18 +1119,8 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
         }
         //封装返回信息
         SupplierDetailVo vo = new SupplierDetailVo();
+        BeanUtils.copyProperties(detailInfo, vo);
         vo.setSupplierId(id);
-        vo.setCompanyName(detailInfo.getCompanyName());
-        vo.setArea(detailInfo.getArea());
-        vo.setProvince(detailInfo.getProvince());
-        vo.setCity(detailInfo.getCity());
-        vo.setCompanyAddress(detailInfo.getCompanyAddress());
-        vo.setCreateAt(basicInfo.getCreateAt());
-        vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
-        vo.setPublicBankName(detailInfo.getPublicBankName());
-        vo.setPublicBanAccountNumber(detailInfo.getPublicBanAccountNumber());
-        vo.setCellphone(basicInfo.getCellphone());
-        vo.setName(basicInfo.getName());
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TSupplierAttachment attachment : attachments) {
@@ -1264,17 +1220,9 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
         }
         //封装返回信息
         PurchaserAgencyDetailVo vo = new PurchaserAgencyDetailVo();
+        BeanUtils.copyProperties(detailInfo, vo);
         vo.setAgencyId(agencyId);
-        vo.setCompanyName(detailInfo.getCompanyName());
-        vo.setArea(detailInfo.getArea());
-        vo.setProvince(detailInfo.getProvince());
-        vo.setCity(detailInfo.getCity());
-        vo.setCompanyAddress(detailInfo.getCompanyAddress());
-        vo.setUniformCreditCode(detailInfo.getUniformCreditCode());
-        vo.setPublicBankName(detailInfo.getPublicBankName());
         vo.setPublicBankCount(detailInfo.getPublicBanAccountNumber());
-        vo.setCellphone(basicInfo.getCellphone());
-        vo.setName(basicInfo.getName());
         if (!CollectionUtils.isEmpty(attachments)) {
             List<Attachement> list = new ArrayList<>();
             for (TAgencyAttachment attachment : attachments) {
@@ -1364,7 +1312,10 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
     }
 
     @Override
-    public Result selectPurchaserProjectStatus(Long id, Integer userType, String stepType) {
+    public Result selectPurchaserProjectStatus(RoleProjectProcessDetail detail) {
+        Long id = detail.getId();
+        Integer userType = detail.getUserType();
+        String stepType = detail.getStepType();
         if (stepType.equals("announcement")) {
             List<Long> list = this.selectProjectInfo(id, userType, stepType).getData();
             if (CollectionUtils.isEmpty(list)) {
@@ -1478,7 +1429,7 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             tPurchaserExpert.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
             if (purchaserExpert == null) {
                 tPurchaserExpertMapper.insertSelective(tPurchaserExpert);
-            }else{
+            } else {
                 tPurchaserExpert.setId(purchaserExpert.getId());
                 tPurchaserExpertMapper.updateByPrimaryKeySelective(tPurchaserExpert);
             }
@@ -1486,16 +1437,8 @@ public class PurchaserServiceImpl extends UpdateAttachment implements PurchaserS
             TPurchaserDetailInfo tPurchaserDetailInfo = tPurchaserDetailInfoMapper.selectDetailByPurchaserId(dto.getPuchaserId());
             if (tPurchaserDetailInfo != null) {
                 TExpertDetailInfo tExpertDetailInfo = new TExpertDetailInfo();
+                BeanUtils.copyProperties(tExpertDetailInfo, tExpertDetailInfo, "id");
                 tExpertDetailInfo.setExpertId(expertId);
-                tExpertDetailInfo.setArea(tPurchaserDetailInfo.getArea());
-                tExpertDetailInfo.setCity(tPurchaserDetailInfo.getCity());
-                tExpertDetailInfo.setProvince(tPurchaserDetailInfo.getProvince());
-                tExpertDetailInfo.setCompanyName(tPurchaserDetailInfo.getCompanyName());
-                tExpertDetailInfo.setCompanyAddress(tPurchaserDetailInfo.getCompanyAddress());
-                tExpertDetailInfo.setUniformCreditCode(tPurchaserDetailInfo.getUniformCreditCode());
-                tExpertDetailInfo.setPublicBankName(tPurchaserDetailInfo.getPublicBankName());
-                tExpertDetailInfo.setPublicBanAccountNumber(tPurchaserDetailInfo.getPublicBanAccountNumber());
-                tExpertDetailInfo.setExtendedField(tPurchaserDetailInfo.getExtendedField());
                 tExpertDetailInfo.setCreateAt(new Date());
                 tExpertDetailInfo.setUpdateAt(new Date());
                 tExpertDetailInfoMapper.insertSelective(tExpertDetailInfo);

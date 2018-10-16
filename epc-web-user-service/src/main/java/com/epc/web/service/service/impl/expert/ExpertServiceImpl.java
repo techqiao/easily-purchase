@@ -9,6 +9,7 @@ import com.epc.web.facade.expert.Handle.ProjectOperatorCompany;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
 import com.epc.web.facade.expert.dto.ProjectDto;
 import com.epc.web.facade.expert.vo.ExpertProjectVo;
+import com.epc.web.service.controller.BaseController;
 import com.epc.web.service.domain.expert.*;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
 import com.epc.web.service.mapper.expert.*;
@@ -16,6 +17,7 @@ import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.web.service.service.expert.ExpertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,15 +82,8 @@ public class ExpertServiceImpl implements ExpertService {
             return Result.error("完善专家信息失败");
         }
         //更新基本信息
-        tExpertBasicInfo.setProfession(expert.getProfession());
-        tExpertBasicInfo.setPositional(expert.getPositional());
-        tExpertBasicInfo.setLevel(expert.getLevel());
-        tExpertBasicInfo.setWorkingYears(expert.getWorkingYears());
+        BeanUtils.copyProperties(expert, tExpertBasicInfo, "id");
         tExpertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
-        tExpertBasicInfo.setCircularDt(expert.getCircularDt());
-        tExpertBasicInfo.setCircularDtEnd(expert.getCircularDtEnd());
-        tExpertBasicInfo.setCircularMethod(expert.getCircularMethod());
-        tExpertBasicInfo.setOtherInformation(expert.getOtherInformation());
         tExpertBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
         tExpertBasicInfo.setInviterId(Long.parseLong(Const.INVITER_TYPE.PLATFORM_ID + ""));
         tExpertBasicInfo.setInviterCompanyId(Const.INVITER_TYPE.PLATFORM_ID);
@@ -148,15 +143,8 @@ public class ExpertServiceImpl implements ExpertService {
             return Result.error("修改专家信息失败");
         }
         //更新基本信息
-        tExpertBasicInfo.setProfession(expert.getProfession());
-        tExpertBasicInfo.setPositional(expert.getPositional());
-        tExpertBasicInfo.setLevel(expert.getLevel());
-        tExpertBasicInfo.setWorkingYears(expert.getWorkingYears());
+        BeanUtils.copyProperties(expert, tExpertBasicInfo, "id");
         tExpertBasicInfo.setIsIdle(Const.IS_IDLE_OR_NOT.IS_IDLE);
-        tExpertBasicInfo.setCircularDt(expert.getCircularDt());
-        tExpertBasicInfo.setCircularDtEnd(expert.getCircularDtEnd());
-        tExpertBasicInfo.setCircularMethod(expert.getCircularMethod());
-        tExpertBasicInfo.setOtherInformation(expert.getOtherInformation());
 //        tExpertBasicInfo.setInviterType(Const.INVITER_TYPE.PLATFORM);
 //        tExpertBasicInfo.setInviterId(Long.parseLong(Const.INVITER_TYPE.PLATFORM_ID + ""));
 //        tExpertBasicInfo.setInviterCompanyId(Const.INVITER_TYPE.PLATFORM_ID);
@@ -214,7 +202,7 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     public Result selectAllBid(ProjectDto projecctDto) {
         //信息返回集合
-        List<ExpertProjectVo> expertProjectVos =null;
+        List<ExpertProjectVo> expertProjectVos = null;
         try {
             Long expertId = projecctDto.getExpertId();
             List<BAssessmentCommitteeExpert> bAssessmentCommitteeExpert = bAssessmentCommitteeExpertMapper.selectByExpertId(expertId);
@@ -237,20 +225,20 @@ public class ExpertServiceImpl implements ExpertService {
             }
             //查询专家所有的采购项目信息
             projecctDto.setProjectIds(purchaserProjectIds);
-            List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos =tPurchaseProjectBasicInfoMapper.selectBasicInfosByProjectIdsAndCriteria(projecctDto);
-            if(CollectionUtils.isEmpty(tPurchaseProjectBasicInfos)){
+            List<TPurchaseProjectBasicInfo> tPurchaseProjectBasicInfos = tPurchaseProjectBasicInfoMapper.selectBasicInfosByProjectIdsAndCriteria(projecctDto);
+            if (CollectionUtils.isEmpty(tPurchaseProjectBasicInfos)) {
                 return Result.success("该专家下没有在评审的项目信息");
             }
             //查询项目中公司的名称
-            List<ProjectOperatorCompany>  projectOperatorCompanies = tPurchaserDetailInfoMapper.selectCompanyNameByCriteria(tPurchaseProjectBasicInfos,projecctDto.getPurchaserName());
-            if(CollectionUtils.isEmpty(projectOperatorCompanies)){
+            List<ProjectOperatorCompany> projectOperatorCompanies = tPurchaserDetailInfoMapper.selectCompanyNameByCriteria(tPurchaseProjectBasicInfos, projecctDto.getPurchaserName());
+            if (CollectionUtils.isEmpty(projectOperatorCompanies)) {
                 return Result.success("该专家下没有符合条件评审的项目信息");
             }
             //返回封装信息
             expertProjectVos = new ArrayList<>();
-            for (TPurchaseProjectBasicInfo basicInfo:tPurchaseProjectBasicInfos) {
-                for(ProjectOperatorCompany operatorCompany:projectOperatorCompanies){
-                    if(basicInfo.getOperateId().equals(operatorCompany.getOperatorId())) {
+            for (TPurchaseProjectBasicInfo basicInfo : tPurchaseProjectBasicInfos) {
+                for (ProjectOperatorCompany operatorCompany : projectOperatorCompanies) {
+                    if (basicInfo.getOperateId().equals(operatorCompany.getOperatorId())) {
                         ExpertProjectVo vo = new ExpertProjectVo();
                         vo.setSerialNum(basicInfo.getId());//序号,采购项目id
                         vo.setProjectName(basicInfo.getProjectName()); //项目名称
@@ -268,7 +256,7 @@ public class ExpertServiceImpl implements ExpertService {
             LOGGER.error("查看评审标段详情失败Exception:{}", e);
             return Result.error("查看评审标段详情失败");
         }
-        return CollectionUtils.isEmpty(expertProjectVos)?Result.success("没有符合条件的项目信息"):Result.success("查询成功",expertProjectVos);
+        return CollectionUtils.isEmpty(expertProjectVos) ? Result.success("没有符合条件的项目信息") : Result.success("查询成功", expertProjectVos);
     }
 
     @Override

@@ -34,6 +34,7 @@ import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierAttachmentMapper;
 import com.epc.web.service.mapper.supplier.TSupplierBasicInfoMapper;
 import com.epc.web.service.mapper.supplier.TSupplierDetailInfoMapper;
+import com.epc.web.service.service.impl.UpdateAttachment;
 import com.epc.web.service.service.operator.OperatorService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ import java.util.List;
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-public class OperatorServiceImpl implements OperatorService {
+public class OperatorServiceImpl extends UpdateAttachment implements OperatorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperatorServiceImpl.class);
 
     //运营商基本表
@@ -168,8 +169,13 @@ public class OperatorServiceImpl implements OperatorService {
             return Result.error("前端传入参数错误");
         }
         Date date = new Date();
-        //完善详情表
-        TOperatorDetailInfo detailInfo = new TOperatorDetailInfo();
+        //完善详情表,公司信息唯一性验证
+        TOperatorDetailInfo detailInfo = tOperatorDetailInfoMapper.selectDetailByCriteria(roleDetailInfo.getCompanyName(),roleDetailInfo.getUniformCreditCode(),roleDetailInfo.getPublicBanAccountNumber());
+        Result result = super.whichIsDuplicateForOpertator(detailInfo,detailInfo.getCompanyName(),detailInfo.getUniformCreditCode(),detailInfo.getPublicBanAccountNumber());
+        if(result!=null){
+            return Result.success(result.getMsg(),true);
+        }
+        detailInfo = new TOperatorDetailInfo();
         BeanUtils.copyProperties(roleDetailInfo, detailInfo);
         detailInfo.setOperatorId(supplierId);
         detailInfo.setCreateAt(date);
@@ -927,7 +933,7 @@ public class OperatorServiceImpl implements OperatorService {
             subCriteria.andNameLike("%"+name+"%");
         }
         if(StringUtils.isNotBlank(cellphone)){
-            subCriteria.andCellphoneEqualTo("%"+cellphone+"%");
+            subCriteria.andCellphoneLike("%"+cellphone+"%");
         }
         List<TPurchaserBasicInfo> tPurchaserBasicInfos = tPurchaserBasicInfoMapper.selectByExample(criteria);
         if(CollectionUtils.isEmpty(tPurchaserBasicInfos)){

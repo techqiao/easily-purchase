@@ -13,7 +13,6 @@ import com.epc.common.util.MD5Util;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.*;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -202,6 +200,18 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> updatePretrialFile(HandlePretriaFile handlePretriaFile) {
+        //新增监控记录
+        HandleMonitoringFile  handleMonitoringFile=new HandleMonitoringFile();
+        handleMonitoringFile.setOperateType(LoginTypeEnum.SUPPLIER.getCode());
+        handleMonitoringFile.setOperateId(handlePretriaFile.getOperateId());
+        handleMonitoringFile.setOperater(handlePretriaFile.getOperateName());
+        handleMonitoringFile.setCreateAt(new Date());
+        handleMonitoringFile.setUpdateAt(new Date());
+
+        TPurchaseProjectBids tPurchaseProjectBids =tPurchaseProjectBidsMapper.selectByPrimaryKey(handlePretriaFile.getBidId());
+        if(tPurchaseProjectBids!=null){
+            handleMonitoringFile.setProjectId(tPurchaseProjectBids.getProjectId());
+        }
         TPretrialMessage attachment=new TPretrialMessage();
         BeanUtils.copyProperties(handlePretriaFile,attachment);
         attachment.setCreateAt(new Date());
@@ -209,6 +219,7 @@ public class FileServiceImpl implements FileService {
         attachment.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
         attachment.setStatus(PretrialMessageEnum.REVIEW.getCode());
         attachment.setCreator(handlePretriaFile.getOperateName());
+
         if(handlePretriaFile.getId()!=null && handlePretriaFile.getIsDelete()!=null && handlePretriaFile.getIsDelete()==1 ){
             try{
                 //删除
@@ -265,6 +276,11 @@ public class FileServiceImpl implements FileService {
                 //文件id为空则新增记录
                 try{
                     tPretrialFileMapper.insertSelective(tPretrialFile);
+                    //新增文件监控
+                    BeanUtils.copyProperties(tPretrialFile,handleMonitoringFile);
+                    handleMonitoringFile.setFileId(tPretrialFile.getId());
+                    handleMonitoringFile.setFileType(MonitoringFileEnum.BIDDING_DOCUMENTS.getCode());
+                    fileMonitoringService.createMonitoringFile(handleMonitoringFile);
                 }catch(Exception e){
                     LOGGER.error("updatePretrialFile_"+tPretrialFile.toString()+e.getMessage(),e);
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

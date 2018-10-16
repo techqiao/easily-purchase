@@ -2,11 +2,12 @@ package com.epc.tendering.service.mapper.bid;
 
 import com.epc.tendering.service.domain.bid.LetterOfTender;
 import com.epc.tendering.service.domain.bid.LetterOfTenderCriteria;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 public interface LetterOfTenderMapper {
     int countByExample(LetterOfTenderCriteria example);

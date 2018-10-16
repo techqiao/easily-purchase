@@ -12,6 +12,8 @@ import java.io.Serializable;
 @ApiModel("监管项目列表")
 public class listMonitorVO implements Serializable {
     private static final long serialVersionUID = -7424820334281892255L;
+    @ApiModelProperty("项目编码")
+    private String projectCode;
     @ApiModelProperty("项目名称")
     private String projectName;
     @ApiModelProperty("采购项目id")

@@ -354,6 +354,7 @@ public class TPurchaseProjectBasicInfoServiceImpl implements TPurchaseProjectBas
             PurchaseProjectBasicInfoVO pojo = new PurchaseProjectBasicInfoVO();
             BeanUtils.copyProperties(item, pojo);
             pojo.setProjectAddress(tProjectBasicInfoMapper.getProjectAddress(item.getProjectId()));
+            pojo.setProjectCode(tProjectBasicInfoMapper.getProjectCode(item.getProjectId()));
             returnList.add(pojo);
         });
         return Result.success(returnList);

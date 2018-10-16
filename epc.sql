@@ -321,7 +321,7 @@ CREATE TABLE `t_purchaser_expert` (
 	`id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
 	`state` INT(1) UNSIGNED COMMENT '0-已注册, 1-完善中, 2-已提交, 3-审核通过, 4-审核失败',
 	`expert_id` BIGINT(11)  NOT NULL COMMENT '角色Id',
-	`purchaser_id` CHAR(32) NOT NULL COMMENT '采购机构ID',
+	`purchaser_id` BIGINT(32) NOT NULL COMMENT '采购机构ID',
 	`creater_id` BIGINT(11) NOT NULL COMMENT '操作人ID',
 	`source` CHAR(32)  NOT NULL COMMENT '来源(public,private)',
 	`create_at` DATETIME NOT NULL COMMENT '创建时间',

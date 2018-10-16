@@ -3,6 +3,7 @@ package com.epc.web.facade.bidding;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.ClauseTemplateHandle;
 import com.epc.web.facade.bidding.handle.EvaluationHandle;
+import com.epc.web.facade.bidding.query.evaluation.QueryEvaluation;
 import com.epc.web.facade.bidding.vo.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Description : easilys
@@ -45,11 +47,11 @@ public interface FacadeEvaluationService {
 
     /**
      * 查询对应投递文件列表
-     * @param purchaseProjectId 公司id
+     * @param queryEvaluation
      * @return
      */
-    @GetMapping(value = "getFilesByPurchaseProjectId")
-    Result<List<TPretrialFileVO>> getFilesByPurchaseProjectId(@RequestParam("purchaseProjectId") Long purchaseProjectId);
+    @PostMapping(value = "getFilesByPurchaseProjectId",consumes = "application/json; charset=UTF-8"  )
+    Result<Map<String, Object>> getFilesByPurchaseProjectId(@RequestBody QueryEvaluation queryEvaluation);
 
 
     /**

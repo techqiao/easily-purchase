@@ -3,14 +3,14 @@ package com.epc.bidding.service.file.impl;
 import com.epc.bidding.domain.*;
 import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.file.FileService;
+import com.epc.bidding.service.monitoring.impl.FileMonitoringServiceImpl;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.LoginTypeEnum;
+import com.epc.common.constants.MonitoringFileEnum;
 import com.epc.common.constants.PretrialMessageEnum;
 import com.epc.web.facade.bidding.dto.FileListDTO;
-import com.epc.web.facade.bidding.handle.BasePretriaFile;
-import com.epc.web.facade.bidding.handle.Entrust;
-import com.epc.web.facade.bidding.handle.HandleNotice;
-import com.epc.web.facade.bidding.handle.HandlePretriaFile;
+import com.epc.web.facade.bidding.handle.*;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +38,6 @@ public class FileServiceImpl implements FileService {
     @Autowired
     TPretrialFileMapper tPretrialFileMapper;
     @Autowired
-    BSaleDocumentsMapper bSaleDocumentsMapper;
-    @Autowired
-    BTenderDocumentsPlaceSaleMapper bTenderDocumentsPlaceSaleMapper;
-    @Autowired
-    BSaleDocumentsFileMapper bSaleDocumentsFileMapper;
-    @Autowired
     LetterOfTenderMapper letterOfTenderMapper;
     @Autowired
     TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
@@ -55,10 +49,32 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertNotice(HandleNotice handleNotice){
+
+        //新增监控记录
+        FileMonitoringServiceImpl fileMonitoringServiceImpl=new FileMonitoringServiceImpl();
+        HandleMonitoringFile  handleMonitoringFile=new HandleMonitoringFile();
+        handleMonitoringFile.setOperateType(LoginTypeEnum.EXPERT.getCode());
+        handleMonitoringFile.setOperateId(handleNotice.getOperateId());
+        handleMonitoringFile.setCreateAt(new Date());
+
         //删除
         if(handleNotice.getId()!=null && handleNotice.getIsDelete()==1){
             try{
                 tTenderMessageMapper.deleteByPrimaryKey(handleNotice.getId());
+                if(handleNotice.getEntrust()!=null){
+                    //删除投标函信息
+                    LetterOfTenderCriteria criteria=new LetterOfTenderCriteria();
+                    LetterOfTenderCriteria.Criteria ccCriteria=criteria.createCriteria();
+                    ccCriteria.andBidsIdEqualTo(handleNotice.getBidsId());
+                    ccCriteria.andSupplierIdEqualTo(handleNotice.getCompanyId());
+                    List<LetterOfTender> letterOfTender= letterOfTenderMapper.selectByExample(criteria);
+                    if(letterOfTender.size()>0){
+                        LetterOfTender entity= letterOfTender.get(0);
+                        entity.setIsDeleted(1);
+                        letterOfTenderMapper.updateByPrimaryKey(entity);
+                    }
+                }
+                return Result.success(true);
             }catch (Exception e){
                 LOGGER.error("insertNotice"+handleNotice.getId().toString()+e.getMessage(),e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -142,6 +158,7 @@ public class FileServiceImpl implements FileService {
             tTenderFile.setCreateAt(new Date());
             tTenderFile.setUpdateAt(new Date());
             tTenderFile.setOperateId(handleNotice.getOperateId());
+
             if(file.getId()!=null){
                 //文件id不为空则修改记录
                 try{
@@ -155,6 +172,10 @@ public class FileServiceImpl implements FileService {
                 //文件id为空则新增记录
                 try{
                     tTenderFileMapper.insertSelective(tTenderFile);
+                    //新增文件监控
+                    handleMonitoringFile.setFileType(MonitoringFileEnum.TENDER_DOCUMENTS.getCode());
+                    BeanUtils.copyProperties(tTenderFile,handleMonitoringFile);
+                    fileMonitoringServiceImpl.createMonitoringFile(handleMonitoringFile);
                 }catch(Exception e){
                     LOGGER.error("insertSelective_"+e.getMessage());
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

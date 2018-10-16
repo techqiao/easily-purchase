@@ -61,8 +61,8 @@ public class MonitoringFileController extends BaseController {
     public Result<Boolean> createMonitoringFile(@RequestBody HandleMonitoringFile dto){
         HandleMonitoringFile handleMonitoringFile=new HandleMonitoringFile();
         BeanUtils.copyProperties(handleMonitoringFile,dto);
-        dto.setOperateId(1L);
-        dto.setOperator("lin");
+        dto.setOperateId(getLoginUser().getUserId());
+        dto.setOperator(getLoginUser().getName());
         String personType=null;
         //运营商1,代理商2,供货商3,采购商4
         switch (getLoginUser().getType()){

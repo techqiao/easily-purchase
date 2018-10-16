@@ -8,6 +8,7 @@ public enum MonitoringFileEnum {
     TENDER_DOCUMENTS("tenderDocuments投标文件","投标文件"),
     EVALUATION_REPORT("evaluationReport","评标报告"),
     WIN_BID("winBid","中标通知书"),
+    IN_BID("winBid","中标通知书"),
     CONTRACT("contract","合同");
 
 

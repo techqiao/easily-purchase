@@ -22,7 +22,7 @@ public class ExpertSignVO {
     private String expertName;
     @ApiModelProperty(value = "评标专家电话")
     private String expertPhone;
-    @ApiModelProperty(value = "是否已签到")
+    @ApiModelProperty(value = "是否已签到 0 否 1 是")
     private Integer isSign;
     @ApiModelProperty(value = "id")
     private Long id;

@@ -15,7 +15,6 @@ import com.epc.tendering.service.mapper.bid.LetterOfTenderMapper;
 import com.epc.tendering.service.mapper.bid.TWinBidNominateMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.question.BAnswerQuestionMapper;
-import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.question.BAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.*;
@@ -45,8 +44,6 @@ public class BAnswerQuestionServiceImpl implements BAnswerQuestionService {
     private TPurchaseProjectBasicInfoMapper tPurchaseProjectBasicInfoMapper;
     @Autowired
     private TWinBidNominateMapper tWinBidNominateMapper;
-    @Autowired
-    private TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
     @Autowired
     private LetterOfTenderMapper letterOfTenderMapper;
 

@@ -87,6 +87,7 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
                 letterTenderVOList.add(letterTenderVO);
             }
             letterTenderSubVO.setBidsId(bidsId);
+            letterTenderSubVO.setBidName(tPurchaseProjectBidsMapper.getBidName(bidsId));
             letterTenderSubVO.setLetterTenderVOList(letterTenderVOList);
             returnList.add(letterTenderSubVO);
         }

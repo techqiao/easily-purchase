@@ -66,6 +66,7 @@ public class OpeningRecordServiceImpl implements OpeningRecordService {
             List<OpeningRecordVO> openingRecordVOList = new ArrayList<>();
             RecordVO recordVO = new RecordVO();
             buildList(tTenderMessages, openingRecordVOList);
+            recordVO.setBidName(tPurchaseProjectBidsMapper.getBidName(bidId));
             recordVO.setBidId(bidId);
             recordVO.setOpeningRecordVOList(openingRecordVOList);
             returnList.add(recordVO);

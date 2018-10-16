@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
@@ -98,7 +99,10 @@ public class EvaluationServiceImpl implements EvaluationService {
             BeanUtils.copyProperties(item, pojo);
             evaluationVOList.add(pojo);
         }
-        subEvaluationV0.setBiddingDocumentsDownloadUrl(bSaleDocumentsMapper.getUrl(procurementProjectId));
+        List<String> url = bSaleDocumentsMapper.getUrl(procurementProjectId);
+        if(!CollectionUtils.isEmpty(url)){
+            subEvaluationV0.setBiddingDocumentsDownloadUrl(url.get(0));
+        }
         return Result.success(subEvaluationV0);
     }
 

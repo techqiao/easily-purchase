@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * <p>Description : easily-purchase
@@ -27,6 +28,7 @@ public class OpeningRecordPublicityController extends BaseController {
     @Autowired
     private OpeningRecordPublicityClient openingRecordPublicityClient;
 
+    @ApiIgnore
     @ApiOperation(value = "处理公示开标记录")
     @PostMapping(value = "insertOpeningRecordPublicity", consumes = "application/json; charset=UTF-8")
     public Result<Boolean> insertOpeningRecordPublicity(@RequestBody ClientHandOpeningRecordPublicity clientHandOpeningRecordPublicity){

@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class BidAnnouncementController extends BaseController {
      * @param dto
      * @return
      */
+    @ApiIgnore
     @ApiOperation(value = "创建唱标记录")
     @PostMapping(value = "insertBidAnnouncement")
     public Result<Boolean> insertBidAnnouncement(@RequestBody ClientBidAnnouncement dto) {

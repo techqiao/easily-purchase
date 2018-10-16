@@ -4,6 +4,7 @@ import com.epc.tendering.service.domain.bid.BExpertScoreReport;
 import com.epc.tendering.service.domain.bid.BExpertScoreReportCriteria;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
@@ -41,6 +42,11 @@ public interface BExpertScoreReportMapper {
     int updateByPrimaryKey(BExpertScoreReport record);
 
 
+    /**
+     * 评审报告 数量
+     * @param procurementProjectId
+     * @return
+     */
     @Select("Select count(b.id) from b_expert_score_report b where b.procurement_project_id =#{procurementProjectId}")
     Integer getId(Long procurementProjectId);
 }

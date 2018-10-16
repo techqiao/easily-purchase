@@ -544,7 +544,8 @@ CREATE TABLE `t_purchase_project_basic_info` (
 	`purchase_end_time` DATETIME NOT NULL COMMENT '采购项目结束时间',
 	`is_state_designation` INT(1) DEFAULT '0' COMMENT '是否国家指定必须招标:0是，1不是',
 	`purchase_project_budgetary_amount` decimal(18,2) NOT NULL COMMENT '采购项目预算金额',
-	`purchase_mode` VARCHAR(64)  COMMENT '采购方式 招标采购:selective_tendering 询比采购:  竞价采购: 谈判采购: 直接采购: 框架协议采购 :',
+	`purchase_mode` VARCHAR(64)  COMMENT '采购方式 招标采购-邀请招标:selective_tendering_invitation' ||
+	 '招标采购-资格后审:selective_tendering_after 招标采购-资格预审:selective_tendering_retrial 询比采购:  竞价采购: 谈判采购: 直接采购: 框架协议采购 :',
 	`purchase_category` VARCHAR(64)  COMMENT '采购分类 劳务分包labor_subcontract 专业分包professional_subcontracting 设备租赁 货物采购 服务采购 工程采购',
 	`purchase_type` VARCHAR(64) COMMENT '采购类型 36种 13种  根据采购分类来',
 	`purchase_range` INT(1) DEFAULT '0' COMMENT '可见范围 0：全平台 1：供应商私库',

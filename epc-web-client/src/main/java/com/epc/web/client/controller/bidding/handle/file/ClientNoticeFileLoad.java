@@ -18,8 +18,6 @@ public class ClientNoticeFileLoad {
     private Long bidsId;
     @ApiModelProperty("标段名称")
     private String bidsName;
-    @ApiModelProperty("执业证书号码")
-    private String certificateNumber;
     @ApiModelProperty("委托人姓名")
     private String delegator;
     @ApiModelProperty("委托人身份证")

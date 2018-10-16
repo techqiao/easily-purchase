@@ -9,9 +9,11 @@ import com.epc.common.constants.Const;
 import com.epc.common.constants.LoginTypeEnum;
 import com.epc.common.constants.MonitoringFileEnum;
 import com.epc.common.constants.PretrialMessageEnum;
+import com.epc.common.util.MD5Util;
 import com.epc.web.facade.bidding.dto.FileListDTO;
 import com.epc.web.facade.bidding.handle.*;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,11 +118,12 @@ public class FileServiceImpl implements FileService {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return Result.error();
             }
-        }else if(handleNotice.getId()==null){
+        }else if(handleNotice.getId()==null || handleNotice.getId()==0){
             //新增委托书(不允许操作金额)
             Entrust entrust=handleNotice.getEntrust();
             LetterOfTender letter=new LetterOfTender();
             BeanUtils.copyProperties(entrust,letter);
+            letter.setMoney(MD5Util.MD5EncodeUtf8(entrust.getMoney().toString()));
             letter.setProcurementProjectId(entity.getPurchaseProjectId());
             letter.setSupplierId(entity.getCompanyId());
             letter.setSupplierName(entity.getCompanyName());

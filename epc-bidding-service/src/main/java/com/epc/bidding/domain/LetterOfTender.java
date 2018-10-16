@@ -1,7 +1,6 @@
 package com.epc.bidding.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class LetterOfTender implements Serializable {
@@ -17,7 +16,7 @@ public class LetterOfTender implements Serializable {
 
     private String bidsName;
 
-    private BigDecimal money;
+    private String money;
 
     private String qualityTarget;
 
@@ -87,12 +86,12 @@ public class LetterOfTender implements Serializable {
         this.bidsName = bidsName == null ? null : bidsName.trim();
     }
 
-    public BigDecimal getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(BigDecimal money) {
-        this.money = money;
+    public void setMoney(String money) {
+        this.money = money == null ? null : money.trim();
     }
 
     public String getQualityTarget() {

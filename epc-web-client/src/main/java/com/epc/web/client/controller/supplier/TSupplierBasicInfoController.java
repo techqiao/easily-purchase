@@ -283,7 +283,7 @@ public class TSupplierBasicInfoController extends BaseController {
         BeanUtils.copyProperties(clientSupplierProject,querywithPageHandle);
         querywithPageHandle.setBossId(getLoginUser().getBossId());
         querywithPageHandle.setUserId(getLoginUser().getUserId());
-        return supplierClient.querySupplierProject(querywithPageHandle);
+         return supplierClient.querySupplierProject(querywithPageHandle);
     }
 
     @ApiOperation(value = "16:获得供货商类别列表")

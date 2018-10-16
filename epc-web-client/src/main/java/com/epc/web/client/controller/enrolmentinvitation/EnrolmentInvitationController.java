@@ -9,6 +9,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.SignUpHandle;
 import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
+import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>Description : easilys
@@ -38,6 +41,7 @@ public class EnrolmentInvitationController  extends BaseController {
         SignUpHandle signUpHandle = new SignUpHandle();
         BeanUtils.copyProperties(clientSignUpHandle,signUpHandle);
         signUpHandle.setSupplierId(getLoginUser().getBossId());
+        signUpHandle.setUserId(getLoginUser().getUserId());
         return enrolmentInvitationClient.signUp(signUpHandle);
     }
 
@@ -52,7 +56,7 @@ public class EnrolmentInvitationController  extends BaseController {
 
     @ApiOperation(value = "供应商收到的邀请列表",notes = "供应商收到的邀请列表")
     @PostMapping(value = "invitationListForSupplier" ,consumes = "application/json;charset=UTF-8")
-    public Result invitationListForSupplier(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
+    public  Result<List<BInvitationVO>>  invitationListForSupplier(@RequestBody ClientInvitationForSupplier clientInvitationForSupplier){
         InvitationForSupplierDTO dto=new InvitationForSupplierDTO();
         dto.setSupplierId(getLoginUser().getBossId());
         dto.setSupplierName(getLoginUser().getBossName());
@@ -70,10 +74,10 @@ public class EnrolmentInvitationController  extends BaseController {
 
     @ApiOperation(value = "采购人查看标段报名列表",notes = "采购人查看标段报名列表")
     @PostMapping(value = "querySignUpList" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result querySignUpList(@RequestBody ClientSignUpList ClientSignUpList){
+    public Result querySignUpList(@RequestBody ClientSignUpList clientSignUpList){
         QuerySignUpList dto=new QuerySignUpList();
         dto.setPurchaserId(getLoginUser().getBossId());
-        BeanUtils.copyProperties(ClientSignUpList,dto);
+        BeanUtils.copyProperties(clientSignUpList,dto);
         return enrolmentInvitationClient.querySignUpList(dto);
     }
 
@@ -83,6 +87,7 @@ public class EnrolmentInvitationController  extends BaseController {
         UpdateInvitation dto=new UpdateInvitation();
         BeanUtils.copyProperties(clientInvitation,dto);
         dto.setSupplierId(getLoginUser().getBossId());
+        dto.setUserId(getLoginUser().getUserId());
         return enrolmentInvitationClient.updateInvitation(dto);
     }
 }

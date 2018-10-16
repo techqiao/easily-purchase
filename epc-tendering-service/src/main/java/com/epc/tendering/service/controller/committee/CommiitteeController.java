@@ -37,6 +37,4 @@ CommitteeService committeeService;
     public Result<List<CommittVO>> createBAssessmentCommittee(@RequestBody QueryExtractExpertList dto){
         return  committeeService.createBAssessmentCommittee(dto);
     }
-
-
 }

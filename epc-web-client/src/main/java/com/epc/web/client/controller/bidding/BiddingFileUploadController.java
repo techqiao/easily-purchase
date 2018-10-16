@@ -5,6 +5,7 @@ import com.epc.common.Result;
 import com.epc.web.client.controller.bidding.handle.file.ClientFileUpload;
 import com.epc.web.client.controller.bidding.handle.file.ClientHandleFileUpload;
 import com.epc.web.client.controller.bidding.handle.file.ClientNoticeFileLoad;
+import com.epc.web.client.controller.bidding.handle.file.ClientNoticeLoad;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.remoteApi.bidding.pretrialFile.BiddingClient;
 import com.epc.web.facade.bidding.handle.HandleNotice;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,13 +56,19 @@ public class BiddingFileUploadController extends BaseController {
 
     @ApiOperation(value = "新增/更新/删除 投标文件")
     @PostMapping(value="/updateNotice")
-    Result<Boolean> updateNotice(@RequestBody ClientNoticeFileLoad dto, HttpServletRequest request){
-        HandleNotice handleNotice=new HandleNotice();
-        BeanUtils.copyProperties(dto,handleNotice);
-        handleNotice.setOperateId(getLoginUser().getUserId());
-        handleNotice.setCompanyId(getLoginUser().getBossId());
-        handleNotice.setCompanyName(getLoginUser().getBossName());
-        handleNotice.setIp(request.getRemoteHost());
-        return biddingClient.updateNotice(handleNotice);
+    Result<Boolean> updateNotice(@RequestBody ClientNoticeLoad clientNoticeLoad, HttpServletRequest request){
+        List<ClientNoticeFileLoad> list=clientNoticeLoad.getClientNoticeFileLoad();
+        if(!CollectionUtils.isEmpty(list)){
+            for(ClientNoticeFileLoad dto:list){
+                HandleNotice handleNotice=new HandleNotice();
+                BeanUtils.copyProperties(dto,handleNotice);
+                handleNotice.setOperateId(getLoginUser().getUserId());
+                handleNotice.setCompanyId(getLoginUser().getBossId());
+                handleNotice.setCompanyName(getLoginUser().getBossName());
+                handleNotice.setIp(request.getRemoteHost());
+                biddingClient.updateNotice(handleNotice);
+            }
+        }
+        return Result.success(true);
     }
 }

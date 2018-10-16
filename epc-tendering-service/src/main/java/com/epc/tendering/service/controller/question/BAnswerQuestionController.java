@@ -8,10 +8,7 @@ import com.epc.web.facade.terdering.answer.FacadeAnswerQuestionService;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
-import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
-import com.epc.web.facade.terdering.answer.vo.MonitorAnswerQuestionVO;
-import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
+import com.epc.web.facade.terdering.answer.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +55,8 @@ public class BAnswerQuestionController extends BaseController implements FacadeA
     @Override
     public Result<Map<String, Object>> getBidPublicity(@RequestBody PagerParam pagerParam) {
         PageHelper.startPage(pagerParam.getPage(),pagerParam.getRows());
-        Result<List<WinBidVO>> bidPublicity = bAnswerQuestionService.getBidPublicity();
-        PageInfo<WinBidVO> pageInfo = new PageInfo<>(bidPublicity.getData());
+        List<WinBidNominateVO> bidPublicity = bAnswerQuestionService.getBidPublicity();
+        PageInfo<WinBidNominateVO> pageInfo = new PageInfo<>(bidPublicity);
         return Result.success(getDataTable(pageInfo));
     }
 

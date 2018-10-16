@@ -3,11 +3,10 @@ package com.epc.bidding.service.bidding.impl;
 
 import com.epc.bidding.domain.*;
 import com.epc.bidding.mapper.*;
-import com.epc.bidding.service.bidding.BiddingService;
+import com.epc.bidding.service.bidding.NoticeService;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
 import com.epc.common.util.DateTimeUtil;
-import com.epc.web.facade.bidding.query.downLoad.QueryProgramPayDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDTO;
 import com.epc.web.facade.bidding.query.notice.QueryNoticeDetail;
 import com.epc.web.facade.bidding.vo.NoticeDetailVO;
@@ -18,7 +17,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +27,8 @@ import java.util.List;
 * @Date: 2018/9/18
 */
 @Service
-public class BiddingServiceimpl implements BiddingService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BiddingServiceimpl.class);
+public class NoticeServiceimpl implements NoticeService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoticeServiceimpl.class);
     @Autowired
     BReleaseAnnouncementMapper bReleaseAnnouncementMapper;
     @Autowired

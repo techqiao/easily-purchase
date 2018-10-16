@@ -32,6 +32,19 @@ public interface BAssessmentCommitteeMapper {
 
     int updateByPrimaryKey(BAssessmentCommittee record);
 
+    /**
+     * 状态为通过 已完成
+     * @param procurementProjectId
+     * @return
+     */
     @Select("Select b.id from b_assessment_committee b where b.procurement_project_id =#{procurementProjectId} and b.process_state='2'")
     Long getId(Long procurementProjectId);
+
+    /**
+     * 采购项目 专家总数量
+     * @param procurementProjectId
+     * @return
+     */
+    @Select("Select IFNULL(b.total_number,0) from b_assessment_committee b where b.procurement_project_id =#{procurementProjectId} and b.process_state='2'")
+    Integer getTotalNumber(Long procurementProjectId);
 }

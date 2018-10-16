@@ -20,6 +20,8 @@ public class BSignUp implements Serializable {
 
     private String supplierName;
 
+    private Long userId;
+
     private Date createAt;
 
     private Date updateAt;
@@ -92,6 +94,14 @@ public class BSignUp implements Serializable {
         this.supplierName = supplierName == null ? null : supplierName.trim();
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public Date getCreateAt() {
         return createAt;
     }
@@ -130,6 +140,7 @@ public class BSignUp implements Serializable {
         sb.append(", bidsCode=").append(bidsCode);
         sb.append(", supplierId=").append(supplierId);
         sb.append(", supplierName=").append(supplierName);
+        sb.append(", userId=").append(userId);
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);

@@ -3,17 +3,15 @@ package com.epc.bidding.service.file.impl;
 import com.epc.bidding.domain.*;
 import com.epc.bidding.mapper.*;
 import com.epc.bidding.service.file.FileService;
+import com.epc.bidding.service.monitoring.impl.FileMonitoringServiceImpl;
 import com.epc.common.Result;
 import com.epc.common.constants.Const;
+import com.epc.common.constants.LoginTypeEnum;
+import com.epc.common.constants.MonitoringFileEnum;
 import com.epc.common.constants.PretrialMessageEnum;
 import com.epc.web.facade.bidding.dto.FileListDTO;
-import com.epc.web.facade.bidding.handle.BasePretriaFile;
-import com.epc.web.facade.bidding.handle.HandleNotice;
-import com.epc.web.facade.bidding.handle.HandlePretriaFile;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
+import com.epc.web.facade.bidding.handle.*;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,11 +38,9 @@ public class FileServiceImpl implements FileService {
     @Autowired
     TPretrialFileMapper tPretrialFileMapper;
     @Autowired
-    BSaleDocumentsMapper bSaleDocumentsMapper;
+    LetterOfTenderMapper letterOfTenderMapper;
     @Autowired
-    BTenderDocumentsPlaceSaleMapper bTenderDocumentsPlaceSaleMapper;
-    @Autowired
-    BSaleDocumentsFileMapper bSaleDocumentsFileMapper;
+    TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
     /**
      * 投标文件记录(新增/修改/删除)
      * @param handleNotice
@@ -54,10 +49,32 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<Boolean> insertNotice(HandleNotice handleNotice){
+
+        //新增监控记录
+        FileMonitoringServiceImpl fileMonitoringServiceImpl=new FileMonitoringServiceImpl();
+        HandleMonitoringFile  handleMonitoringFile=new HandleMonitoringFile();
+        handleMonitoringFile.setOperateType(LoginTypeEnum.EXPERT.getCode());
+        handleMonitoringFile.setOperateId(handleNotice.getOperateId());
+        handleMonitoringFile.setCreateAt(new Date());
+
         //删除
         if(handleNotice.getId()!=null && handleNotice.getIsDelete()==1){
             try{
                 tTenderMessageMapper.deleteByPrimaryKey(handleNotice.getId());
+                if(handleNotice.getEntrust()!=null){
+                    //删除投标函信息
+                    LetterOfTenderCriteria criteria=new LetterOfTenderCriteria();
+                    LetterOfTenderCriteria.Criteria ccCriteria=criteria.createCriteria();
+                    ccCriteria.andBidsIdEqualTo(handleNotice.getBidsId());
+                    ccCriteria.andSupplierIdEqualTo(handleNotice.getCompanyId());
+                    List<LetterOfTender> letterOfTender= letterOfTenderMapper.selectByExample(criteria);
+                    if(letterOfTender.size()>0){
+                        LetterOfTender entity= letterOfTender.get(0);
+                        entity.setIsDeleted(1);
+                        letterOfTenderMapper.updateByPrimaryKey(entity);
+                    }
+                }
+                return Result.success(true);
             }catch (Exception e){
                 LOGGER.error("insertNotice"+handleNotice.getId().toString()+e.getMessage(),e);
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -72,7 +89,23 @@ public class FileServiceImpl implements FileService {
         entity.setIsDeleted(Const.IS_DELETED.NOT_DELETED);
 
         if(handleNotice.getId()!=null){
-            //更新
+            //委托信息
+            Entrust entrust=handleNotice.getEntrust();
+            //更新(不允许操作金额)
+            LetterOfTender letter=letterOfTenderMapper.selectByPrimaryKey(entrust.getId());
+            letter.setQualityTarget(entrust.getQualityTarget());
+            letter.setDuration(entrust.getDuration());
+            letter.setValidity(entrust.getValidity());
+            letter.setManagerName(entrust.getManagerName());
+            letter.setCertificateNumber(entrust.getCertificateNumber());
+            try{
+                letterOfTenderMapper.updateByPrimaryKey(letter);
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+letter.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+
             try{
                 tTenderMessageMapper.updateByPrimaryKey(entity);
             }catch (Exception e){
@@ -81,7 +114,28 @@ public class FileServiceImpl implements FileService {
                 return Result.error();
             }
         }else if(handleNotice.getId()==null){
-            //新增
+            //新增委托书(不允许操作金额)
+            Entrust entrust=handleNotice.getEntrust();
+            LetterOfTender letter=new LetterOfTender();
+            BeanUtils.copyProperties(entrust,letter);
+            letter.setProcurementProjectId(entity.getPurchaseProjectId());
+            letter.setSupplierId(entity.getCompanyId());
+            letter.setSupplierName(entity.getCompanyName());
+            letter.setBidsId(entity.getBidsId());
+            letter.setBidsName(handleNotice.getBidsName());
+            letter.setCreateAt(new Date());
+            letter.setUpdateAt(new Date());
+            TPurchaseProjectBids tPurchaseProjectBids =tPurchaseProjectBidsMapper.selectByPrimaryKey(entity.getBidsId());
+            entity.setPurchaseProjectId(tPurchaseProjectBids.getPurchaseProjectId());
+            letter.setProcurementProjectId(tPurchaseProjectBids.getPurchaseProjectId());
+            try{
+                letterOfTenderMapper.insertSelective(letter);
+            }catch (Exception e){
+                LOGGER.error("insertNotice"+letter.toString()+e.getMessage(),e);
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return Result.error();
+            }
+            //新增投标信息
             try{
                 tTenderMessageMapper.insertSelective(entity);
             }catch (Exception e){
@@ -104,6 +158,7 @@ public class FileServiceImpl implements FileService {
             tTenderFile.setCreateAt(new Date());
             tTenderFile.setUpdateAt(new Date());
             tTenderFile.setOperateId(handleNotice.getOperateId());
+
             if(file.getId()!=null){
                 //文件id不为空则修改记录
                 try{
@@ -117,6 +172,10 @@ public class FileServiceImpl implements FileService {
                 //文件id为空则新增记录
                 try{
                     tTenderFileMapper.insertSelective(tTenderFile);
+                    //新增文件监控
+                    handleMonitoringFile.setFileType(MonitoringFileEnum.TENDER_DOCUMENTS.getCode());
+                    BeanUtils.copyProperties(tTenderFile,handleMonitoringFile);
+                    fileMonitoringServiceImpl.createMonitoringFile(handleMonitoringFile);
                 }catch(Exception e){
                     LOGGER.error("insertSelective_"+e.getMessage());
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

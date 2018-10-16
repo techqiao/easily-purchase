@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class CommitteeServiceImpl implements CommitteeService {
+public class CommitteeServiceImpl  implements CommitteeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommitteeServiceImpl.class);
 
     @Autowired

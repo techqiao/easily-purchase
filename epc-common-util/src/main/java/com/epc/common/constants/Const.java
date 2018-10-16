@@ -188,4 +188,12 @@ public class Const {
         int STARTING=1;
         int END=2;
     }
+
+    /**
+     * 一键采流程用户类别使用常量
+     */
+    public interface OPERATE_TYPE{
+        String SUPPLIER="supplier";
+        String PURCHASER="purchaser";
+    }
 }

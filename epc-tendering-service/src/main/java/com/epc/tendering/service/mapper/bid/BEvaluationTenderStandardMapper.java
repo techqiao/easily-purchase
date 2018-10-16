@@ -40,6 +40,11 @@ public interface BEvaluationTenderStandardMapper {
 
     int updateByPrimaryKey(BEvaluationTenderStandard record);
 
+    /**
+     * 评标标准 状态=发布
+     * @param procurementProjectId
+     * @return
+     */
     @Select("Select b.id from b_evaluation_tender_standard b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
     Long getId(Long procurementProjectId);
 

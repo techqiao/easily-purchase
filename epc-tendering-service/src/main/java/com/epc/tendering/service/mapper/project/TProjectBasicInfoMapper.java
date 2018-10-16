@@ -42,4 +42,8 @@ public interface TProjectBasicInfoMapper {
 
     @Select("SELECT t.project_address FROM t_project_basic_info t where t.id =#{id}")
     String getProjectAddress(Long id);
+
+
+    @Select("SELECT t.project_code FROM t_project_basic_info t where t.id =#{id}")
+    String getProjectCode(Long id);
 }

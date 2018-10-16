@@ -4,10 +4,7 @@ import com.epc.common.Result;
 import com.epc.web.facade.terdering.answer.handle.HandleReplyQuestion;
 import com.epc.web.facade.terdering.answer.query.QueryAnswerQuestionDTO;
 import com.epc.web.facade.terdering.answer.query.QueryPublicityDTO;
-import com.epc.web.facade.terdering.answer.vo.FacadeAnswerQuestionVO;
-import com.epc.web.facade.terdering.answer.vo.MonitorAnswerQuestionVO;
-import com.epc.web.facade.terdering.answer.vo.PublicityVO;
-import com.epc.web.facade.terdering.answer.vo.WinBidVO;
+import com.epc.web.facade.terdering.answer.vo.*;
 
 import java.util.List;
 
@@ -45,7 +42,7 @@ public interface BAnswerQuestionService {
      * 中标公示
      * @return
      */
-    Result<List<WinBidVO>> getBidPublicity();
+    List<WinBidNominateVO> getBidPublicity();
 
 
     /**

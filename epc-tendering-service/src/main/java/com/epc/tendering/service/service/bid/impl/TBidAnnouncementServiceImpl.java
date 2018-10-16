@@ -6,14 +6,14 @@ import com.epc.common.constants.Const;
 import com.epc.tendering.service.domain.bid.*;
 import com.epc.tendering.service.domain.supplier.TSupplierDetailInfo;
 import com.epc.tendering.service.domain.supplier.TSupplierDetailInfoCriteria;
-import com.epc.tendering.service.mapper.bid.TBidAnnouncementMapper;
-import com.epc.tendering.service.mapper.bid.TOpeningRecordMapper;
-import com.epc.tendering.service.mapper.bid.TPurchaserDetailInfoMapper;
-import com.epc.tendering.service.mapper.bid.TTenderMessageMapper;
+import com.epc.tendering.service.mapper.bid.*;
 import com.epc.tendering.service.mapper.supplier.TSupplierDetailInfoMapper;
 import com.epc.tendering.service.service.bid.BidAnnouncementService;
 import com.epc.web.facade.terdering.bid.handle.HandleBidAnnouncement;
+import com.epc.web.facade.terdering.bid.handle.HandleLetterTenderMemo;
 import com.epc.web.facade.terdering.bid.vo.BidAnnouncementVO;
+import com.epc.web.facade.terdering.bid.vo.LetterTenderSubVO;
+import com.epc.web.facade.terdering.bid.vo.LetterTenderVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -45,6 +45,10 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
     TTenderMessageMapper tTenderMessageMapper;
     @Autowired
     TSupplierDetailInfoMapper tSupplierDetailInfoMapper;
+    @Autowired
+    private LetterOfTenderMapper letterOfTenderMapper;
+    @Autowired
+    private TPurchaseProjectBidsMapper tPurchaseProjectBidsMapper;
 
     /**
      * 查询唱标记录路径
@@ -61,6 +65,36 @@ public class TBidAnnouncementServiceImpl implements BidAnnouncementService {
         }else  {
             return Result.success(null);
         }
+    }
+
+    @Override
+    public Result<List<LetterTenderSubVO>> getLetterTenderList(Long procurementProjectId) {
+        List<LetterTenderSubVO> returnList = new ArrayList<>();
+        List<Long> bidsIdList = tPurchaseProjectBidsMapper.getBidsIdList(procurementProjectId);
+        for (Long bidsId : bidsIdList) {
+            LetterTenderSubVO letterTenderSubVO = new LetterTenderSubVO();
+            List<LetterTenderVO> letterTenderVOList = new ArrayList<>();
+            LetterOfTenderCriteria criteria = new LetterOfTenderCriteria();
+            criteria.createCriteria().andBidsIdEqualTo(bidsId).andProcurementProjectIdEqualTo(procurementProjectId);
+            List<LetterOfTender> tenderList = letterOfTenderMapper.selectByExample(criteria);
+            for (LetterOfTender letterOfTender : tenderList) {
+                LetterTenderVO letterTenderVO = new LetterTenderVO();
+                BeanUtils.copyProperties(letterOfTender, letterTenderVO);
+                letterTenderVOList.add(letterTenderVO);
+            }
+            letterTenderSubVO.setBidsId(bidsId);
+            letterTenderSubVO.setLetterTenderVOList(letterTenderVOList);
+            returnList.add(letterTenderSubVO);
+        }
+        return Result.success(returnList);
+    }
+
+    @Override
+    public Result<Boolean> insertLetterTenderMemo(HandleLetterTenderMemo handleLetterTenderMemo) {
+        LetterOfTender letterOfTender = new LetterOfTender();
+        letterOfTender.setId(handleLetterTenderMemo.getId());
+        letterOfTender.setMemo(handleLetterTenderMemo.getMemo());
+        return Result.success(letterOfTenderMapper.updateByPrimaryKeyWithBLOBs(letterOfTender) > 0);
     }
 
     /**

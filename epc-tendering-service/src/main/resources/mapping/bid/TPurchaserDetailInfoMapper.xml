@@ -302,4 +302,15 @@
       order by ${orderByClause}
     </if>
   </select>
+    <select id="selectNameByPurchaserId" resultType="java.lang.String">
+
+SELECT
+	company_name
+FROM
+	t_purchaser_detail_info
+WHERE
+	1 = 1
+AND purchaser_id = #{purchaserId}
+AND is_deleted= 0
+    </select>
 </mapper>

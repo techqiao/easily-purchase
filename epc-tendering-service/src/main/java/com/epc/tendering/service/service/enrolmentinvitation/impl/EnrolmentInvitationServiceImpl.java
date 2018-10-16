@@ -13,6 +13,7 @@ import com.epc.tendering.service.domain.signup.BSignUpCriteria;
 import com.epc.tendering.service.mapper.bid.BBidOpeningPayMapper;
 import com.epc.tendering.service.mapper.bid.BBidsGuaranteeAmountMapper;
 import com.epc.tendering.service.mapper.bid.TPurchaseProjectBidsMapper;
+import com.epc.tendering.service.mapper.bid.TPurchaserDetailInfoMapper;
 import com.epc.tendering.service.mapper.project.TProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectBasicInfoMapper;
 import com.epc.tendering.service.mapper.purchase.TPurchaseProjectFileDownloadMapper;
@@ -76,9 +77,10 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
     TPurchaseProjectFileDownloadMapper tPurchaseProjectFileDownloadMapper;
     @Autowired
     TPurchaseProjectFilePayMapper tPurchaseProjectFilePayMapper;
-
+    @Autowired
+    TPurchaserDetailInfoMapper tPurchaserDetailInfoMapper;
     /**
-     * * 供应商报名采购项目
+     * * 供应商报名采购项目(公告)
      *
      * @param signUpHandle
      * @return
@@ -87,6 +89,10 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
     public Result signUp(SignUpHandle signUpHandle) {
         BSignUp bSignUp = new BSignUp();
         BeanUtils.copyProperties(signUpHandle, bSignUp);
+        TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo=tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(signUpHandle.getProcurementProjectId());
+        if(tPurchaseProjectBasicInfo!=null){
+            bSignUp.setProjectId(tPurchaseProjectBasicInfo.getProjectId());
+         }
         Date date = new Date();
         bSignUp.setCreateAt(date);
         bSignUp.setUpdateAt(date);
@@ -129,7 +135,7 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
      * @return
      */
     @Override
-    public Result<List<BInvitationVO>> invitationListForSupplier(InvitationForSupplierDTO invitationForSupplierDTO) {
+    public List<BInvitationVO> invitationListForSupplier(InvitationForSupplierDTO invitationForSupplierDTO) {
         BInvitationCriteria criteria = new BInvitationCriteria();
         BInvitationCriteria.Criteria cubCriteria = criteria.createCriteria();
         cubCriteria.andSupplierIdEqualTo(invitationForSupplierDTO.getSupplierId());
@@ -143,10 +149,17 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
             String dateString = sdf.format(entity.getCreateAt());
             vo.setId(entity.getId());
             vo.setCreateAt(dateString);
-            vo.setSupplierName(invitationForSupplierDTO.getSupplierName());
+            //获取采购人姓名
+            String purchaserName= tPurchaserDetailInfoMapper.selectNameByPurchaserId(entity.getPurchaserId());
+            vo.setPurchaserName(purchaserName);
+            vo.setContext(entity.getContent());
+            TPurchaseProjectBasicInfo tPurchaseProjectBasicInfo= tPurchaseProjectBasicInfoMapper.selectByPrimaryKey(entity.getProcurementProjectId());
+            if(tPurchaseProjectBasicInfo!=null){
+                vo.setProcurementProjectName(tPurchaseProjectBasicInfo.getPurchaseProjectName());
+            }
             voList.add(vo);
         }
-        return Result.success(voList);
+        return voList;
     }
 
     /**
@@ -163,6 +176,7 @@ public class EnrolmentInvitationServiceImpl implements EnrolmentInvitationServic
         entity.setIsDeleted(Const.IS_DELETED.IS_DELETED);
         SignUpHandle signUpHandle = new SignUpHandle();
         BeanUtils.copyProperties(entity, signUpHandle);
+        signUpHandle.setUserId(updateInvitation.getUserId());
         //更新数据（操作后下次不能查出来）
         try {
             bInvitationMapper.updateByPrimaryKey(entity);

@@ -16,11 +16,6 @@ public class SignUpHandle implements Serializable {
     private static final long serialVersionUID = -3782652077490872144L;
 
     /**
-     * 项目id
-     */
-    private Long projectId;
-
-    /**
      * 采购项目ID
      */
     private Long procurementProjectId;
@@ -42,5 +37,8 @@ public class SignUpHandle implements Serializable {
      * 标段名称列表拼接
      */
     private String  bidsName;
+
+
+    private Long userId;
 
 }

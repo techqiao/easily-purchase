@@ -17,8 +17,6 @@ import java.io.Serializable;
 @ApiModel("公告报名")
 public class ClientSignUpHandle implements Serializable {
     private static final long serialVersionUID = -8362626050903023605L;
-    @ApiModelProperty("项目id")
-    private Long projectId;
     @ApiModelProperty("采购项目id")
     private Long procurementProjectId;
     @ApiModelProperty("标段id列表拼接")

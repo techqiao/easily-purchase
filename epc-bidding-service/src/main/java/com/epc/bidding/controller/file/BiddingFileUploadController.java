@@ -1,17 +1,13 @@
 package com.epc.bidding.controller.file;
-import com.epc.bidding.service.bidding.BiddingService;
+
 import com.epc.bidding.service.file.FileService;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.FacadeFileUploadService;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

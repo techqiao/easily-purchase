@@ -1,5 +1,6 @@
 package com.epc.web.service.mapper.supplier;
 
+import com.epc.web.service.domain.supplier.BSignUp;
 import com.epc.web.service.domain.supplier.TTenderMessage;
 import com.epc.web.service.domain.supplier.TTenderMessageCriteria;
 import java.util.List;
@@ -31,5 +32,4 @@ public interface TTenderMessageMapper {
 
     int updateByPrimaryKey(TTenderMessage record);
 
-    List<TTenderMessage>  querySupplierProject(Long id);
 }

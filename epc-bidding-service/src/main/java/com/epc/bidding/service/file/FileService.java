@@ -3,15 +3,12 @@ package com.epc.bidding.service.file;
 import com.epc.common.Result;
 import com.epc.web.facade.bidding.handle.HandleNotice;
 import com.epc.web.facade.bidding.handle.HandlePretriaFile;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsFileVO;
-import com.epc.web.facade.bidding.vo.BSaleDocumentsVO;
 import com.epc.web.facade.bidding.vo.PretrialMessageVO;
-import com.epc.web.facade.bidding.vo.TenderDocumentsPlaceSaleVO;
 
 public interface FileService {
 
     /**
-     * 投标上传
+     * 投标文件记录(新增/修改/删除)
      * @param handleNotice
      * @return
      */

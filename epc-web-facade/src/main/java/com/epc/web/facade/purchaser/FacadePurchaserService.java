@@ -238,8 +238,8 @@ public interface FacadePurchaserService {
      *@Description : 角色登录后查询项目信息
      *@date:2018/10/12
      */
-    @GetMapping(value = "selectPurchaserProjectStatus/{id}/{userType}/{stepType}")
-    public  Result selectPurchaserProjectStatus(@PathVariable("id")Long id,@PathVariable("userType")Integer userType,@PathVariable("stepType")String stepType);
+    @PostMapping(value = "selectPurchaserProjectStatus")
+    public  Result selectPurchaserProjectStatus(@RequestBody RoleProjectProcessDetail detail);
 
     /**
      *@author :winlin

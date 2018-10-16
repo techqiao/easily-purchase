@@ -37,6 +37,6 @@ public interface TWinBidMapper {
     List<WinBidVO> selectPublicWinning();
 
 
-    @Select("Select COUNT(b.id) from t_win_bid b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
-    Integer getId(Long procurementProjectId);
+    @Select("Select b.id from t_win_bid b where b.procurement_project_id =#{procurementProjectId} and b.process_status='released'")
+    Long getId(Long procurementProjectId);
 }

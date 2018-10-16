@@ -47,7 +47,7 @@ public interface FacadeNoticeService {
     Result<AdvanceNoticeDetailVO> AdvanceNoticeDetail(@RequestParam("id") Long id);
 
         /**
-         * 根据公告ID 查看公告详情 及 下载文件路径
+         * 根据公告ID 查看公告详情
          * @param queryNoticeDetail
          * @return
          */

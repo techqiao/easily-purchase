@@ -1,7 +1,6 @@
 package com.epc.tendering.service.controller.enrolmentinvitation;
 
 import com.epc.common.Result;
-import com.epc.tendering.service.domain.signup.BSignUp;
 import com.epc.tendering.service.service.enrolmentinvitation.EnrolmentInvitationService;
 import com.epc.web.facade.bidding.vo.PayListForAllVO;
 import com.epc.web.facade.enrolmentinvitation.FacadeEnrolmentInvitation;
@@ -11,9 +10,9 @@ import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
+import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,8 +57,8 @@ public class EnrolmentInvitationController implements FacadeEnrolmentInvitation 
      * @return
      */
     @Override
-    public Result invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO){
-        return enrolmentInvitationService.invitationListForSupplier(invitationForSupplierDTO);
+    public Result<List<BInvitationVO>> invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO){
+        return Result.success(enrolmentInvitationService.invitationListForSupplier(invitationForSupplierDTO));
 
     }
 

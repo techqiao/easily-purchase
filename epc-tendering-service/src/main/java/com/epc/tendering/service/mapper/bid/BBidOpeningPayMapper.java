@@ -33,6 +33,6 @@ public interface BBidOpeningPayMapper {
     int updateByPrimaryKey(BBidOpeningPay record);
 
 
-    @Select("Select count(b.id) from b_bid_opening_pay b where b.procurement_project_id =#{procurementProjectId} and b.is_back='1'")
-    Integer getId(Long procurementProjectId);
+    @Select("Select b.id from b_bid_opening_pay b where b.procurement_project_id =#{procurementProjectId} and b.is_back='1'")
+    Long getId(Long procurementProjectId);
 }

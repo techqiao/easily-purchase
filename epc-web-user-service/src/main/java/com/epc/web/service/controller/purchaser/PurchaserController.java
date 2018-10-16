@@ -2,20 +2,19 @@ package com.epc.web.service.controller.purchaser;
 
 
 import com.epc.common.Result;
-import com.epc.common.constants.Const;
+import com.epc.web.facade.expert.Handle.HandleExpert;
+import com.epc.web.facade.purchaser.FacadePurchaserService;
 import com.epc.web.facade.purchaser.dto.*;
 import com.epc.web.facade.purchaser.handle.*;
 import com.epc.web.facade.purchaser.vo.*;
+import com.epc.web.service.controller.BaseController;
 import com.epc.web.service.service.purchaser.PurchaserService;
-import com.epc.web.facade.expert.Handle.HandleExpert;
-import com.epc.web.facade.purchaser.FacadePurchaserService;
-import com.epc.web.facade.supplier.handle.HandleSupplierDetail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -24,7 +23,7 @@ import java.util.List;
  * <p>Date : 2018-09-10  18:08
  */
 @RestController
-public class PurchaserController implements FacadePurchaserService {
+public class PurchaserController extends BaseController implements FacadePurchaserService {
 
     @Autowired
     PurchaserService purchaserService;
@@ -161,10 +160,30 @@ public class PurchaserController implements FacadePurchaserService {
     }
 
 
-
     @Override
-    public Result selectPurchaserProjectStatus(@PathVariable("id")Long id, @PathVariable("userType")Integer userType, @PathVariable("stepType")String stepType) {
-        return purchaserService.selectPurchaserProjectStatus(id,userType,stepType);
+    public Result selectPurchaserProjectStatus(@RequestBody RoleProjectProcessDetail detail) {
+        //获得页面显示size
+        Integer pageSize = detail.getPageSize() == null || detail.getPageSize() <= 0 ? 10 : detail.getPageSize();
+        //获得页码
+        Integer pageNum = detail.getPageNum() == null || detail.getPageNum() <= 0 ? 0 : detail.getPageNum() - 1;
+        //查询结果,先依据查询条件从缓存中取
+        String listKey = detail.getStepType() + detail.getUserType() + detail.getId();
+        List<?> targetList = super.getList(listKey);
+        if (CollectionUtils.isEmpty(targetList)) {
+            targetList = (List) purchaserService.selectPurchaserProjectStatus(detail).getData();
+            if (CollectionUtils.isEmpty(targetList)) {
+                return Result.success("没有符合条件的信息");
+            }
+            super.setList(listKey, targetList);
+        }
+        //获得size大小
+        int size = targetList.size();
+        //获得开始的index和结束的index
+        int fromIndex = pageNum * 10 > (size - 1) ? (size - 1) : pageNum * 10;
+        int toIndex = fromIndex + pageSize > (size - 1) ? (size - 1) : fromIndex + pageSize;
+        //返回截取的list
+        List pageList = targetList.subList(fromIndex, toIndex + 1);
+        return Result.success(super.getDataList(pageList, size));
     }
 
     ;

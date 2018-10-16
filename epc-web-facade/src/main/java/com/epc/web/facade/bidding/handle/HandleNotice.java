@@ -1,5 +1,6 @@
 package com.epc.web.facade.bidding.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +15,8 @@ public class HandleNotice implements Serializable {
     private Long purchaseProjectId;
 
     private Long bidsId;
+
+    private String bidsName;
 
     private String delegator;
 
@@ -33,5 +36,5 @@ public class HandleNotice implements Serializable {
 
     private String ip;
     private List<BasePretriaFile> filePathList;
-
+    private Entrust entrust;
 }

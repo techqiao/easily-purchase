@@ -8,6 +8,7 @@ import com.epc.web.facade.enrolmentinvitation.handle.UpdateInvitation;
 import com.epc.web.facade.enrolmentinvitation.query.InvitationForSupplierDTO;
 import com.epc.web.facade.enrolmentinvitation.query.PayForGuarantyDTO;
 import com.epc.web.facade.enrolmentinvitation.query.QuerySignUpList;
+import com.epc.web.facade.enrolmentinvitation.vo.BInvitationVO;
 import com.epc.web.facade.enrolmentinvitation.vo.BSignUpVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,7 @@ public interface FacadeEnrolmentInvitation {
      * @return
      */
     @PostMapping(value ="invitationListForSupplier",consumes = "application/json;charset=UTF-8")
-    Result invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO);
+    Result<List<BInvitationVO>>  invitationListForSupplier(@RequestBody InvitationForSupplierDTO invitationForSupplierDTO);
 
 
     /**

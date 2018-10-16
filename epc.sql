@@ -124,7 +124,7 @@ CREATE TABLE `t_operator_basic_info` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运营商:法人及其员工基本(登录)信息';
 
--- 运营商 详情
+-- 运营商 详情()
 DROP TABLE IF EXISTS `t_operator_detail_info`;
 CREATE TABLE `t_operator_detail_info` (
     `id` BIGINT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -134,7 +134,7 @@ CREATE TABLE `t_operator_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	   `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-    `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+    `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
     `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
     `create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -215,7 +215,7 @@ CREATE TABLE `t_supplier_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-    `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+    `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
     `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
     `create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -271,7 +271,7 @@ CREATE TABLE `t_purchaser_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-	`uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+	`uniform_credit_code` varchar(64) DEFAULT NULL unique  COMMENT '统一信用代码',
 	`public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
 	`public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
 	`extended_field` varchar(128) DEFAULT NULL COMMENT '扩展字段',
@@ -378,7 +378,7 @@ CREATE TABLE `t_agency_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
 	 `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-    `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+    `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
     `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
     `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
     `create_at` DATETIME NOT NULL COMMENT '创建时间',
@@ -443,7 +443,7 @@ CREATE TABLE `t_expert_detail_info` (
 	`city` VARCHAR(64)  DEFAULT NULL COMMENT '市区',
 	`area` VARCHAR(64)  DEFAULT NULL COMMENT '区域',
   `company_address` varchar(128) DEFAULT NULL COMMENT '公司地址',
-  `uniform_credit_code` varchar(64) DEFAULT NULL COMMENT '统一信用代码',
+  `uniform_credit_code` varchar(64) DEFAULT NULL unique COMMENT '统一信用代码',
   `public_bank_name` varchar(32) DEFAULT NULL COMMENT '对公银行名称',
   `public_ban_account_number` varchar(32) DEFAULT NULL COMMENT '对公银行账号',
   `extended_field` varchar(128) DEFAULT NULL COMMENT '扩展字段',
@@ -1336,7 +1336,8 @@ CREATE TABLE `b_suppliers_number` (
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招标流程:供应商数量';
 
-DROP TABLE if EXISTS `b_sign_up` (10.11);
+-- #报名表(10.15)
+DROP TABLE if EXISTS `b_sign_up` ;
 CREATE TABLE `b_sign_up` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `project_id` bigint(11) NOT NULL COMMENT '项目ID',
@@ -1346,6 +1347,7 @@ CREATE TABLE `b_sign_up` (
   `bids_code` varchar(256) DEFAULT NULL COMMENT '标段编码',
   `supplier_id` bigint(11) NOT NULL COMMENT '供应商ID',
   `supplier_name` varchar(64) DEFAULT NULL COMMENT '供应商名称',
+  `user_id` bigint(11) NOT NULL COMMENT '操作人ID',
   `create_at` datetime NOT NULL COMMENT '创建时间',
   `update_at` datetime NOT NULL COMMENT '最后修改时间',
   `is_deleted` int(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',
@@ -1757,7 +1759,7 @@ CREATE TABLE `e_contract_awarded` (
 DROP TABLE IF EXISTS `letter_of_tender`;
 CREATE TABLE `letter_of_tender` (
   `id` BIGINT(11) AUTO_INCREMENT COMMENT '主键ID',
-  `procurement_project_id` varchar(11) DEFAULT NULL COMMENT '采购项目ID',
+  `procurement_project_id` BIGINT(11) DEFAULT NULL COMMENT '采购项目ID',
   `supplier_id` BIGINT(11) NOT NULL COMMENT '供货商id',
   `supplier_name` BIGINT(11) NOT NULL COMMENT '供货商名称',
   `bids_id` BIGINT(11) NOT NULL COMMENT '标段ID',
@@ -1768,6 +1770,7 @@ CREATE TABLE `letter_of_tender` (
   `validity` int NOT NULL COMMENT '投标有效期',
   `manager_name` varchar(64) NOT NULL COMMENT '项目经理姓名',
   `certificate_number` varchar(64) NOT NULL COMMENT '执业证书号码',
+  `memo` TEXT COMMENT '唱标备注',
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP  COMMENT'最后修改时间',
   `is_deleted` INT(1) DEFAULT '0' COMMENT '是否删除: 0-存在,1-删除',

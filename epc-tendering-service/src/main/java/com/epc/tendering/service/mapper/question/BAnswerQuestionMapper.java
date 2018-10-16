@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.epc.web.facade.terdering.answer.vo.PublicitySubVO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 
@@ -50,5 +51,15 @@ public interface BAnswerQuestionMapper {
      */
     @Select("select b.problem,b.answer,b.create_at as startTime from b_answer_question b where b.procurement_project_id ={procurementProjectId} group by b.procurement_project_id")
     List<PublicitySubVO> getListGroupByProcurementProjectId(Long procurementProjectId);
+
+
+    /**
+     * 状态为wait_reply 待回复 0 false ->已完成
+     * @param procurementProjectId
+     * @return
+     */
+    @Select("Select count(b.id) from b_answer_question b where b.procurement_project_id =#{procurementProjectId} and b.question_type='bidFile' and b.status='wait_reply'")
+    @ResultType(Boolean.class)
+    Boolean getId(Long procurementProjectId);
 
 }

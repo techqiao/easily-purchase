@@ -9,18 +9,11 @@ import com.epc.web.facade.expert.Handle.ProjectOperatorCompany;
 import com.epc.web.facade.expert.dto.IdleExpertDto;
 import com.epc.web.facade.expert.dto.ProjectDto;
 import com.epc.web.facade.expert.vo.ExpertProjectVo;
-import com.epc.web.service.domain.bid.TProjectBasicInfo;
-import com.epc.web.service.domain.bid.TPurchaseProjectBids;
 import com.epc.web.service.domain.expert.*;
-import com.epc.web.service.domain.purchaser.TPurchaserBasicInfoCriteria;
-import com.epc.web.service.domain.purchaser.TPurchaserDetailInfo;
-import com.epc.web.service.mapper.bid.TProjectBasicInfoMapper;
 import com.epc.web.service.mapper.bid.TPurchaseProjectBidsMapper;
 import com.epc.web.service.mapper.expert.*;
-import com.epc.web.service.mapper.purchaser.TPurchaserBasicInfoMapper;
 import com.epc.web.service.mapper.purchaser.TPurchaserDetailInfoMapper;
 import com.epc.web.service.service.expert.ExpertService;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +23,6 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

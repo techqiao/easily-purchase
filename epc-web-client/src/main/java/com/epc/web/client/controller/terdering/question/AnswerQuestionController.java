@@ -2,6 +2,7 @@ package com.epc.web.client.controller.terdering.question;
 
 import com.epc.common.PagerParam;
 import com.epc.common.Result;
+import com.epc.common.constants.LoginTypeEnum;
 import com.epc.web.client.controller.common.BaseController;
 import com.epc.web.client.controller.terdering.question.handle.ClientHandleReplyQuestion;
 import com.epc.web.client.controller.terdering.question.query.ClientQueryAnswerQuestionDTO;
@@ -49,6 +50,23 @@ public class AnswerQuestionController extends BaseController {
         BeanUtils.copyProperties(clientHandleReplyQuestion, handleReplyQuestion);
         handleReplyQuestion.setOperateId(getLoginUser().getUserId());
         handleReplyQuestion.setOperateName(getLoginUser().getName());
+        if(getLoginUser().getLoginRole()!=null){
+            switch (getLoginUser().getLoginRole()){
+                //代理商2,供货商3,采购商4,专家 5
+                case 2:
+                    handleReplyQuestion.setAnswerPersonType(LoginTypeEnum.AGENCY.getCode());
+                    break;
+                case 3:
+                    handleReplyQuestion.setAnswerPersonType(LoginTypeEnum.SUPPLIER.getCode());
+                    break;
+                case 4:
+                    handleReplyQuestion.setAnswerPersonType(LoginTypeEnum.PURCHASER.getCode());
+                    break;
+                case 5:
+                    handleReplyQuestion.setAnswerPersonType(LoginTypeEnum.EXPERT.getCode());
+                    break;
+            }
+        }
         return answerQuestionClient.replyQuestion(handleReplyQuestion);
     }
 

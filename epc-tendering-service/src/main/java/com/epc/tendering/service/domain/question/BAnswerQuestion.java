@@ -8,13 +8,17 @@ public class BAnswerQuestion implements Serializable {
 
     private Long procurementProjectId;
 
-    private Long questionerId;
+    private String questionerFromType;
 
-    private String questionerName;
+    private Long questionerId;
 
     private String questionType;
 
+    private String questionerName;
+
     private Long typeId;
+
+    private String answerPersonType;
 
     private Long answerId;
 
@@ -48,20 +52,20 @@ public class BAnswerQuestion implements Serializable {
         this.procurementProjectId = procurementProjectId;
     }
 
+    public String getQuestionerFromType() {
+        return questionerFromType;
+    }
+
+    public void setQuestionerFromType(String questionerFromType) {
+        this.questionerFromType = questionerFromType == null ? null : questionerFromType.trim();
+    }
+
     public Long getQuestionerId() {
         return questionerId;
     }
 
     public void setQuestionerId(Long questionerId) {
         this.questionerId = questionerId;
-    }
-
-    public String getQuestionerName() {
-        return questionerName;
-    }
-
-    public void setQuestionerName(String questionerName) {
-        this.questionerName = questionerName == null ? null : questionerName.trim();
     }
 
     public String getQuestionType() {
@@ -72,12 +76,28 @@ public class BAnswerQuestion implements Serializable {
         this.questionType = questionType == null ? null : questionType.trim();
     }
 
+    public String getQuestionerName() {
+        return questionerName;
+    }
+
+    public void setQuestionerName(String questionerName) {
+        this.questionerName = questionerName == null ? null : questionerName.trim();
+    }
+
     public Long getTypeId() {
         return typeId;
     }
 
     public void setTypeId(Long typeId) {
         this.typeId = typeId;
+    }
+
+    public String getAnswerPersonType() {
+        return answerPersonType;
+    }
+
+    public void setAnswerPersonType(String answerPersonType) {
+        this.answerPersonType = answerPersonType == null ? null : answerPersonType.trim();
     }
 
     public Long getAnswerId() {
@@ -144,10 +164,12 @@ public class BAnswerQuestion implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", procurementProjectId=").append(procurementProjectId);
+        sb.append(", questionerFromType=").append(questionerFromType);
         sb.append(", questionerId=").append(questionerId);
-        sb.append(", questionerName=").append(questionerName);
         sb.append(", questionType=").append(questionType);
+        sb.append(", questionerName=").append(questionerName);
         sb.append(", typeId=").append(typeId);
+        sb.append(", answerPersonType=").append(answerPersonType);
         sb.append(", answerId=").append(answerId);
         sb.append(", answerName=").append(answerName);
         sb.append(", status=").append(status);

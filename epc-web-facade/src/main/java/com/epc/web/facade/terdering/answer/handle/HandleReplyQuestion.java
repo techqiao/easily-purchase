@@ -27,4 +27,7 @@ public class HandleReplyQuestion {
      * 操作人姓名
      */
     private String operateName;
+
+    private String answerPersonType;
+
 }

@@ -1,5 +1,6 @@
 package com.epc.web.facade.bidding.handle;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -33,5 +34,12 @@ public class HandleQuestion implements Serializable {
     private String problem;
 
     private String title;
+
+
+    private String answerId;
+    private String answerPersonType;
+
+    private String questionerFromType;
+
 
 }

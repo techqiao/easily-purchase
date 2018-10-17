@@ -30,6 +30,10 @@ public class BAnswerQuestion implements Serializable {
 
     private Integer isDeleted;
 
+    private String answerPersonType;
+
+    private String questionerFromType;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -136,6 +140,22 @@ public class BAnswerQuestion implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public String getAnswerPersonType() {
+        return answerPersonType;
+    }
+
+    public void setAnswerPersonType(String answerPersonType) {
+        this.answerPersonType = answerPersonType == null ? null : answerPersonType.trim();
+    }
+
+    public String getQuestionerFromType() {
+        return questionerFromType;
+    }
+
+    public void setQuestionerFromType(String questionerFromType) {
+        this.questionerFromType = questionerFromType == null ? null : questionerFromType.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -155,6 +175,8 @@ public class BAnswerQuestion implements Serializable {
         sb.append(", createAt=").append(createAt);
         sb.append(", updateAt=").append(updateAt);
         sb.append(", isDeleted=").append(isDeleted);
+        sb.append(", answerPersonType=").append(answerPersonType);
+        sb.append(", questionerFromType=").append(questionerFromType);
         sb.append("]");
         return sb.toString();
     }

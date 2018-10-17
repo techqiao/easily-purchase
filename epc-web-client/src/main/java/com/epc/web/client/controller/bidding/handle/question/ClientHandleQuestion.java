@@ -23,4 +23,8 @@ public class ClientHandleQuestion {
     private String title;
     @ApiModelProperty("问题内容")
     private String problem;
+    @ApiModelProperty("指定人类型(供应商：supplier)")
+    private String answerPersonType;
+    @ApiModelProperty("指定人id")
+    private String answerId;
 }

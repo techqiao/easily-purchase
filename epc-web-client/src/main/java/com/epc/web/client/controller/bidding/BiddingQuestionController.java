@@ -1,6 +1,8 @@
 package com.epc.web.client.controller.bidding;
 
 import com.epc.common.Result;
+import com.epc.common.constants.Const;
+import com.epc.common.constants.LoginTypeEnum;
 import com.epc.web.client.controller.bidding.handle.question.ClientHandleQuestion;
 import com.epc.web.client.controller.bidding.query.answerQuestion.ClientAnswerQuestionDTO;
 import com.epc.web.client.controller.common.BaseController;
@@ -48,6 +50,23 @@ public class BiddingQuestionController extends BaseController {
         BeanUtils.copyProperties(dto,handleQuestion);
         handleQuestion.setQuestionerId(getLoginUser().getUserId());
         handleQuestion.setQuestionerName(getLoginUser().getName());
+        if(getLoginUser().getLoginRole()!=null){
+            switch (getLoginUser().getLoginRole()){
+                //代理商2,供货商3,采购商4,专家 5
+                case 2:
+                    handleQuestion.setQuestionerFromType(LoginTypeEnum.AGENCY.getCode());
+                    break;
+                case 3:
+                    handleQuestion.setQuestionerFromType(LoginTypeEnum.SUPPLIER.getCode());
+                    break;
+                case 4:
+                    handleQuestion.setQuestionerFromType(LoginTypeEnum.PURCHASER.getCode());
+                    break;
+                case 5:
+                    handleQuestion.setQuestionerFromType(LoginTypeEnum.EXPERT.getCode());
+                    break;
+            }
+        }
         return  biddingClient.insertQuestion(handleQuestion);
     }
 

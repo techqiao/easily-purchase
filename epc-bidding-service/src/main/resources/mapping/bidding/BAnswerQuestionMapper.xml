@@ -15,6 +15,8 @@
     <result column="create_at" property="createAt" jdbcType="TIMESTAMP" />
     <result column="update_at" property="updateAt" jdbcType="TIMESTAMP" />
     <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+    <result column="answer_person_type" property="answerPersonType" jdbcType="VARCHAR" />
+    <result column="questioner_from_type" property="questionerFromType" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" extends="BaseResultMap" >
     <result column="problem" property="problem" jdbcType="LONGVARCHAR" />
@@ -80,7 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, procurement_project_id, questioner_id, question_type, questioner_name, type_id, 
-    answer_id, answer_name, status, operate_id, create_at, update_at, is_deleted
+    answer_id, answer_name, status, operate_id, create_at, update_at, is_deleted, answer_person_type, 
+    questioner_from_type
   </sql>
   <sql id="Blob_Column_List" >
     problem, answer
@@ -141,14 +144,14 @@
       question_type, questioner_name, type_id, 
       answer_id, answer_name, status, 
       operate_id, create_at, update_at, 
-      is_deleted, problem, answer
-      )
+      is_deleted, answer_person_type, questioner_from_type, 
+      problem, answer)
     values (#{procurementProjectId,jdbcType=BIGINT}, #{questionerId,jdbcType=BIGINT}, 
       #{questionType,jdbcType=VARCHAR}, #{questionerName,jdbcType=VARCHAR}, #{typeId,jdbcType=BIGINT}, 
       #{answerId,jdbcType=BIGINT}, #{answerName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{operateId,jdbcType=BIGINT}, #{createAt,jdbcType=TIMESTAMP}, #{updateAt,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER}, #{problem,jdbcType=LONGVARCHAR}, #{answer,jdbcType=LONGVARCHAR}
-      )
+      #{isDeleted,jdbcType=INTEGER}, #{answerPersonType,jdbcType=VARCHAR}, #{questionerFromType,jdbcType=VARCHAR}, 
+      #{problem,jdbcType=LONGVARCHAR}, #{answer,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.epc.bidding.domain.BAnswerQuestionWithBLOBs" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -191,6 +194,12 @@
       </if>
       <if test="isDeleted != null" >
         is_deleted,
+      </if>
+      <if test="answerPersonType != null" >
+        answer_person_type,
+      </if>
+      <if test="questionerFromType != null" >
+        questioner_from_type,
       </if>
       <if test="problem != null" >
         problem,
@@ -235,6 +244,12 @@
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="answerPersonType != null" >
+        #{answerPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionerFromType != null" >
+        #{questionerFromType,jdbcType=VARCHAR},
       </if>
       <if test="problem != null" >
         #{problem,jdbcType=LONGVARCHAR},
@@ -292,6 +307,12 @@
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="record.answerPersonType != null" >
+        answer_person_type = #{record.answerPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.questionerFromType != null" >
+        questioner_from_type = #{record.questionerFromType,jdbcType=VARCHAR},
+      </if>
       <if test="record.problem != null" >
         problem = #{record.problem,jdbcType=LONGVARCHAR},
       </if>
@@ -318,6 +339,8 @@
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      answer_person_type = #{record.answerPersonType,jdbcType=VARCHAR},
+      questioner_from_type = #{record.questionerFromType,jdbcType=VARCHAR},
       problem = #{record.problem,jdbcType=LONGVARCHAR},
       answer = #{record.answer,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
@@ -338,7 +361,9 @@
       operate_id = #{record.operateId,jdbcType=BIGINT},
       create_at = #{record.createAt,jdbcType=TIMESTAMP},
       update_at = #{record.updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{record.isDeleted,jdbcType=INTEGER}
+      is_deleted = #{record.isDeleted,jdbcType=INTEGER},
+      answer_person_type = #{record.answerPersonType,jdbcType=VARCHAR},
+      questioner_from_type = #{record.questionerFromType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -382,6 +407,12 @@
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},
       </if>
+      <if test="answerPersonType != null" >
+        answer_person_type = #{answerPersonType,jdbcType=VARCHAR},
+      </if>
+      <if test="questionerFromType != null" >
+        questioner_from_type = #{questionerFromType,jdbcType=VARCHAR},
+      </if>
       <if test="problem != null" >
         problem = #{problem,jdbcType=LONGVARCHAR},
       </if>
@@ -405,6 +436,8 @@
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=INTEGER},
+      answer_person_type = #{answerPersonType,jdbcType=VARCHAR},
+      questioner_from_type = #{questionerFromType,jdbcType=VARCHAR},
       problem = #{problem,jdbcType=LONGVARCHAR},
       answer = #{answer,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -422,7 +455,9 @@
       operate_id = #{operateId,jdbcType=BIGINT},
       create_at = #{createAt,jdbcType=TIMESTAMP},
       update_at = #{updateAt,jdbcType=TIMESTAMP},
-      is_deleted = #{isDeleted,jdbcType=INTEGER}
+      is_deleted = #{isDeleted,jdbcType=INTEGER},
+      answer_person_type = #{answerPersonType,jdbcType=VARCHAR},
+      questioner_from_type = #{questionerFromType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select resultMap="ResultMapWithBLOBs" parameterType="com.epc.bidding.domain.BAnswerQuestionCriteria" id="selectByExampleWithBLOBsWithRowbounds" >

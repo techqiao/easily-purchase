@@ -3,10 +3,11 @@ package com.epc.mobile.client.controller.loginuser;
 import com.epc.common.Result;
 import com.epc.common.util.CookieUtil;
 import com.epc.common.util.RedisShardedPoolUtil;
+import com.epc.mobile.client.controller.common.BaseController;
 import com.epc.mobile.client.controller.loginuser.dto.ClientLoginer;
 import com.epc.mobile.client.controller.loginuser.dto.ClientModifyUser;
 import com.epc.mobile.client.controller.loginuser.dto.ClientRegisterUser;
-import com.epc.mobile.client.remoteApi.ILoginUserClient;
+import com.epc.mobile.client.remoteApi.loginer.ILoginUserClient;
 import com.epc.web.facade.loginuser.dto.Loginer;
 import com.epc.web.facade.loginuser.dto.ModifyUser;
 import com.epc.web.facade.loginuser.dto.RegisterUser;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "角色登录服务", tags = {"角色登录服务"})
 @RestController
 @RequestMapping(value = "/public")
-public class LoginController {
+public class LoginController extends BaseController {
 
     @Autowired
     ILoginUserClient iLoginUserClient;
@@ -37,16 +39,23 @@ public class LoginController {
         return iLoginUserClient.login(loginer);
     }
 
+//    @ApiIgnore
+//    @ApiOperation(value = "角色登出", notes = "根据用户类型登录,运营商1,代理商2,供货商3,采购商4专家5")
+//    @PostMapping(value = "/roleLoginOut", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public Result<Boolean> loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+//        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
+//        CookieUtil.delLoginToken(httpServletRequest, httpServletResponse);
+//        RedisShardedPoolUtil.del(loginToken);
+//        return Result.success();
+//    }
+
 
     @ApiOperation(value = "角色登出", notes = "根据用户类型登录,运营商1,代理商2,供货商3,采购商4专家5")
-    @PostMapping(value = "/roleLoginOut", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<Boolean> loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        String loginToken = CookieUtil.readLoginToken(httpServletRequest);
-        CookieUtil.delLoginToken(httpServletRequest, httpServletResponse);
-        RedisShardedPoolUtil.del(loginToken);
-        return Result.success();
+    @PostMapping(value = "/roleLoginOut", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<Boolean> loginOut(HttpServletRequest httpServletRequest) {
+        Boolean aBoolean =super.delLoginUser(httpServletRequest);
+        return Result.success("注销成功",aBoolean);
     }
-
     /**
      * @author :winlin
      * @Description :统一注册接口

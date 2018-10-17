@@ -122,6 +122,7 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 detailInfo = tOperatorDetailInfoMapper.selectOperatorDetailByOperatorId(operatorId);
             } catch (Exception e) {
                 LOGGER.error("公司信息不完善Exception:{}", e);
+                return Result.error("登录失败");
             }
             //封装登录信息返回
             if (boss != null && detailInfo != null) {
@@ -290,7 +291,8 @@ public class IRoleLoginServiceImpl implements IRoleLoginService {
                 boss2 = tSupplierBasicInfoMapper.selectBossBasicInfoByPurchaserIdAndRole(suuplierId, Const.Role.ROLE_CORPORATION);
                 detailInfo2 = tSupplierDetailInfoMapper.selectTSupplierDetailInfoBySupplierId(suuplierId);
             } catch (Exception e) {
-                LOGGER.error("公司信息不完善Exception:{}");
+                LOGGER.error("公司信息不完善Exception:{}",e);
+                return Result.error("登录失败");
             }
             if (boss2 != null && detailInfo2 != null) {
                 loginUser2.setBossName(boss2.getName());
